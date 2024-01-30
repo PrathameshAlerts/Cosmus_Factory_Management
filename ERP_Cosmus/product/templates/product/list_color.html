@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List-color</title>
+</head>
+<body>
+    <button type="button"> <a href="{%url 'colorcreate'%}">Create Color</a></button>
+
+    <table>
+        <tr>
+        <th>Color Id</th>
+        <th>Color Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </tr>
+       {%for color in colors%}
+        <tr>
+          <td>{{color.color_name}}</td>
+          <td><a href="{% url 'coloredit' color.slug %}">Edit</a></td>
+          <td><a href="{% url 'colordelete' color.slug %}">click</a></td>
+        </tr>
+      {% endfor %}
+
+    
+      </table>
+</body>
+</html>

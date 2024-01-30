@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List-color</title>
+</head>
+<body>
+    <a href="{%url 'item-create'%}"><button type="button">Create Item</button></a>
+
+    <form action="">
+      <label for="i_search">Search</label>
+      <input type="search" id="i_search" name="item_search">
+      <input type="submit">
+
+    </form>
+    <table>
+        <tr>
+        <th>Description</th>
+        <th>Fabric Group</th>
+        <th>Name</th>
+        <th>Item Color</th>
+        <th>Material Code</th>
+        <th>Packing</th>
+        <th>Unit Name</th>
+        <th>Units</th>
+        <th>Panha</th>
+        <th>Fabric/ Non Fabric</th>
+        <th>Fabric Finishes</th>
+        <th>GST</th>
+        <th>HSN Code</th>
+        <th>Status</th>
+        </tr>
+
+       {%for item in items %}
+        <tr>
+          <td>{{item.Description}}</td>
+          <td>{{item.Fabric_Group}}</td>
+          <td>{{item.Name}}</td>
+          <td>{{item.Item_Color}}</td>
+          <td>{{item.Material_code}}</td>
+          <td>{{item.Packing}}</td>
+          <td>{{item.Unit_Name}}</td>
+          <td>{{item.Units}}</td>
+          <td>{{item.Panha}}</td>
+          <td>{{item.Fabric_nonfabric}}</td>
+          <td>{{item.Fabric_Finishes}}</td>
+          <td>{{item.GST}}</td>
+          <td>{{item.HSN_Code}}</td>
+          <td>{{item.status}}</td>
+          <td><a href="{% url 'item-fabgroup-create' %}">Fabric Group</a></td>
+          <td><a href="{% url 'item-name-create' %}">Name</a></td>
+          <td><a href="{% url 'colorcreate' %}">Item Color</a></td>
+          <td><a href="{% url 'item-edit' item.id %}">Edit</a></td>
+          <td><a href="{% url 'item-delete' item.id %}">click</a></td>
+    
+        </tr>
+      {% endfor %}
+
+    
+      </table>
+</body>
+</html>

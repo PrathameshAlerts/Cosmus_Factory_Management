@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List-color</title>
+</head>
+<body>
+    <button type="button"> <a href="{%url 'item-fabgroup-create'%}">Create Item</a></button> need to remove this from all list views as return button causing loop
+
+    <table>
+        <tr>
+        
+        <th>Item Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </tr>
+        {% for group in fab_group_all %}
+        <tr>
+          <td>{{group.fab_grp_name}}</td>
+          <td><a href="{% url 'item-fabgroup-update' group.slug %}">Edit</a></td>
+          <td><a href="{% url 'item-fabgroup-delete' group.slug %}">click</a></td>
+
+        </tr>
+      {% endfor %}
+
+    
+      </table>
+</body>
+</html>

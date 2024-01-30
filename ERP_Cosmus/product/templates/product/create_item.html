@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Item</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" name = 'save' value = 'Save'>
+        <input type="submit" name = 'save_and_add_another' value = 'Save and Add Another'>
+
+    </form>
+
+    <a href="{% url 'item-name-create' %}">Add Item Name</a>
+    <br>
+    <a href="{% url 'colorcreate'  %}">Add Color</a>
+    <br>
+    <a href="{% url 'item-fabgroup-create'  %}">Add Fabric Group</a>
+    <br>
+    <td><a href="{% url 'item-list' %}">Item List</a></td>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const field1Input = document.querySelector('#id_Fabric_Group');
+            const field2Input = document.querySelector('#id_Name');
+            const field3Input = document.querySelector('#id_Item_Color');
+            const field4Input = document.querySelector('#id_Description');
+    
+            // Event listener to trigger autofill when field1, field2, or field3 change
+            field1Input.addEventListener('input', autofillField4);
+            field2Input.addEventListener('input', autofillField4);
+            field3Input.addEventListener('input', autofillField4);
+    
+            // Function to autofill field4
+            function autofillField4() {
+                const value1 = field1Input.value;
+                const value2 = field2Input.value;
+                const value3 = field3Input.value;
+                const newValue = value1+'-'+value2+'-'+value3;  // Your logic to combine values
+    
+                field4Input.value = newValue;
+            }
+        });
+    </script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <p>
+        {{ form.PProduct_SKU.errors }}
+        <label for="id_PProduct_image_1">PProduct image:</label>
+        <input type="file" name="PProduct_image_1" accept="image/*" id="id_PProduct_image_1">
+
+        <label for="id_PProduct_color_1">PProduct color:</label>
+        <select name="PProduct_color_1" required id="id_PProduct_color_1">
+            <option value="-" selected>---------</option>
+            {%for c in color %}
+            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            {% endfor %}
+        
+        </select>
+        
+        <label for="id_PProduct_SKU_1">PProduct SKU:</label>
+        <input type="number" name="PProduct_SKU_1" id="id_PProduct_SKU_1">
+    </p>
+
+    
+    <p>
+        <label for="id_PProduct_image_2">PProduct image:</label>
+        <input type="file" name="PProduct_image_2" accept="image/*" id="id_PProduct_image_2">
+
+        <label for="id_PProduct_color_2">PProduct color:</label>
+        <select name="PProduct_color_2" required id="id_PProduct_color_2">
+            <option value="-" selected>---------</option>
+            {%for c in color %}
+            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            {% endfor %}
+        
+        </select>
+        
+        <label for="id_PProduct_SKU_2">PProduct SKU:</label>
+        <input type="number" name="PProduct_SKU_2" id="id_PProduct_SKU_2">
+    </p>
+
+
+    <p>
+        <label for="id_PProduct_image_3">PProduct image:</label>
+        <input type="file" name="PProduct_image_3" accept="image/*" id="id_PProduct_image_3">
+
+        <label for="id_PProduct_color_3">PProduct color:</label>
+        <select name="PProduct_color_3" required id="id_PProduct_color_3">
+            <option value="-" selected>---------</option>
+            {%for c in color %}
+            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            {% endfor %}
+        
+        </select>
+        
+        <label for="id_PProduct_SKU_3">PProduct SKU:</label>
+        <input type="number" name="PProduct_SKU_3" id="id_PProduct_SKU_3">
+
+    </p>
+
+    <p>
+        <label for="id_PProduct_image_4">PProduct image:</label>
+        <input type="file" name="PProduct_image_4" accept="image/*" id="id_PProduct_image_4">
+
+        <label for="id_PProduct_color_4">PProduct color:</label>
+        <select name="PProduct_color_4" required id="id_PProduct_color_4">
+            <option value="-" selected>---------</option>
+            {%for c in color %}
+            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            {% endfor %}
+        
+        </select>
+        
+        
+        <label for="id_PProduct_SKU_4">PProduct SKU:</label>
+        <input type="number" name="PProduct_SKU_4" id="id_PProduct_SKU_4">
+    </p>
+
+    <p>
+        <label for="id_Product_Refrence_ID">Product_Refrence_ID:</label>
+        <input type="number" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+    </p>
+    <p>
+        <a href="{% url 'colorcreate' %}">Add Color</a>
+    </p>
+
+    <input type="submit" value = 'Save'>
+</form>
+
+</body>
+
+</html>

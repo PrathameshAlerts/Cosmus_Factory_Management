@@ -1,0 +1,33 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List-color</title>
+</head>
+<body>
+    <button type="button"> <a href="{%url 'item-name-create'%}">Create Item</a></button>
+
+    <table>
+        <tr>
+        
+        <th>Item Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </tr>
+        {% for item in Item_name_all %}
+        <tr>
+          
+          <td>{{item.Item_name}}</td>
+          <td><a href="{% url 'item-name-update' item.slug %}">Edit</a></td>
+          <td><a href="{% url 'item-name-delete' item.slug %}">click</a></td>
+
+        </tr>
+      {% endfor %}
+
+    
+      </table>
+</body>
+</html>

@@ -1,0 +1,6 @@
+if using multiselect field you can use 
+widgets = {
+    'Product_Channel': forms.CheckboxSelectMultiple,
+    # Add widgets for other fields if needed
+} for selecting multiple options 
+

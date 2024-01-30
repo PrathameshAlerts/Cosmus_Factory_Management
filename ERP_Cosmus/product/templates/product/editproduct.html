@@ -1,0 +1,96 @@
+{% extends 'product/base.html' %}
+
+{% block section %}
+  <h2>Edit Product</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <h3>Image 1</h3>
+    <input type="file" name="Image_1" accept="image/*">
+    <label for="Image_type_1">Image Type:</label>
+    <input type="text" name="Image_type_1">
+    <label for="Order_by_1">Order By:</label>
+    <input type="text" name="Order_by_1">
+    <input type="hidden" name="Image_ID_1" value="1">
+
+    <h3>Image 2</h3>
+    <input type="file" name="Image_2" accept="image/*">
+    <label for="Image_type_2">Image Type:</label>
+    <input type="text" name="Image_type_2">
+    <label for="Order_by_2">Order By:</label>
+    <input type="text" name="Order_by_2">
+    <input type="hidden" name="Image_ID_2" value="2">
+
+    <h3>Image 3</h3>
+    <input type="file" name="Image_3" accept="image/*">
+    <label for="Image_type_3">Image Type:</label>
+    <input type="text" name="Image_type_3">
+    <label for="Order_by_3">Order By:</label>
+    <input type="text" name="Order_by_3">
+    <input type="hidden" name="Image_ID_3" value="3">
+
+    <h3>Image 4</h3>
+    <input type="file" name="Image_4" accept="image/*">
+    <label for="Image_type_4">Image Type:</label>
+    <input type="text" name="Image_type_4">
+    <label for="Order_by_4">Order By:</label>
+    <input type="text" name="Order_by_4">
+    <input type="hidden" name="Image_ID_4" value="4">
+
+
+    <h3>Image 5</h3>
+    <input type="file" name="Image_5" accept="image/*">
+    <label for="Image_type_5">Image Type:</label>
+    <input type="text" name="Image_type_5">
+    <label for="Order_by_5">Order By:</label>
+    <input type="text" name="Order_by_5">
+    <input type="hidden" name="Image_ID_5" value="5">
+
+    <h3>Image 6</h3>
+    <input type="file" name="Image_6" accept="image/*">
+    <label for="Image_type_6">Image Type:</label>
+    <input type="text" name="Image_type_6">
+    <label for="Order_by_6">Order By:</label>
+    <input type="text" name="Order_by_6">
+    <input type="hidden" name="Image_ID_6" value="6">
+
+    <h3>Image 7</h3>
+    <input type="file" name="Image_7" accept="image/*">
+    <label for="Image_type_7">Image Type:</label>
+    <input type="text" name="Image_type_7">
+    <label for="Order_by_7">Order By:</label>
+    <input type="text" name="Order_by_7">
+    <input type="hidden" name="Image_ID_7" value="7">
+
+
+    <h3>Image 8</h3>
+    <input type="file" name="Image_8" accept="image/*">
+    <label for="Image_type_8">Image Type:</label>
+    <input type="text" name="Image_type_8">
+    <label for="Order_by_8">Order By:</label>
+    <input type="text" name="Order_by_8">
+    <input type="hidden" name="Image_ID_8" value="8">
+
+
+    <h3>Image 9</h3>
+    <input type="file" name="Image_9" accept="image/*">
+    <label for="Image_type_9">Image Type:</label>
+    <input type="text" name="Image_type_9">
+    <label for="Order_by_9">Order By:</label>
+    <input type="text" name="Order_by_9">
+    <input type="hidden" name="Image_ID_9" value="9">
+
+
+    <h3>Image 10</h3>
+    <input type="file" name="Image_10" accept="image/*">
+    <label for="Image_type_10">Image Type:</label>
+    <input type="text" name="Image_type_10">
+    <label for="Order_by_10">Order By:</label>
+    <input type="text" name="Order_by_10">
+    <input type="hidden" name="Image_ID_10" value="10">
+
+
+    <button type="submit">Save Changes</button>
+  </form>
+{% endblock %}

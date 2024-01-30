@@ -1,0 +1,62 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+  <form action="">
+    <label for="p_search">Search</label>
+    <input type="search" id="p_search" name="product_search">
+    <input type="submit">
+
+  </form>
+
+  <a href="{% url 'pproduct_creation' %}"><button>Create Product</button></a>
+    <table>
+        <tr>
+          <th>Product Name</th>
+          <br>
+          <th>Model Name</th>
+          <br>
+          <th>Product Refrence ID</th>
+          <br>
+          <th>Product SKU</th>
+          
+          <br>
+          <th>Product Color</th>
+          <br>
+          <th>Edit</th>
+          <br>
+          <th>Delete</th>
+          <br>
+          <th>View</th> 
+          
+        </tr>
+
+        {% for product  in products  %}
+        <tr>
+          <td>{{product.Product_Name}}</td>
+          <td>{{product.Model_Name}}</td>
+          <td>{{product.Product_Refrence_ID}}</td>
+        
+          {% for pproduct in product.productdetails.all %}
+          <td>{{pproduct.PProduct_SKU}}</td>
+          <td>{{pproduct.PProduct_image}}</td>
+          <td>{{pproduct.PProduct_color}}</td>
+          {% endfor %}
+          
+          <td><a href="{% url 'edit_production_product' product.Product_Refrence_ID %}">Edit</a></td>
+          <td><a href="{% url 'pproductdelete' product.Product_Refrence_ID %}">Delete</a> </td>
+         
+        </tr>
+        {% endfor %}
+      </table>
+</body>
+</html>
