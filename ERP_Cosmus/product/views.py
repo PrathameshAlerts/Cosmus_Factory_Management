@@ -104,8 +104,6 @@ def edit_product(request, pk):
 
 
 
-
-
 def deleteproduct(request, pk):
     product = Product.objects.get(id = pk)
     product.delete()
@@ -141,15 +139,17 @@ def edit_production_product(request,pk):
     return render(request, 'product/edit_production_product.html',{'form': form})
 
 
+from django.db import transaction
 
+@transaction.atomic
 def product_color_sku(request):
     color = Color.objects.all()
-    print(request)
+    
     if request.method == 'POST':
         # OR Product_ref_id = request.POST['Product_Refrence_ID']
             product_ref_id = request.POST.get('Product_Refrence_ID')
             
-            print(request.POST)
+            
             # Flag to check if all sets of fields are valid
             all_sets_valid = False
             for i in range(1, 5):  #Assuming up to 5 sets of fields
@@ -165,30 +165,34 @@ def product_color_sku(request):
                     'PProduct_SKU': request.POST.get(sku_field_name),
                     'Product_Refrence_ID': product_ref_id
                 }
-                
+                print(data)
                 # Create a form instance for the current set of fields
                 current_form = PProductCreateForm(data)
 
                 
                 # Save the form if it is valid
                 if current_form.is_valid():
-                    all_sets_valid = True
-                    pproduct = current_form.save(commit=False)
+                    try:
+                        all_sets_valid = True
+                        pproduct = current_form.save(commit=False)
                     
 
-                    # Create a new Product instance or get an existing one based on Product_Refrence_ID
-                    # product will be the object retrieved from the db and then created ,created will be a boolean field
-                    product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
-                    #product = Product.objects.create(Product_Refrence_ID=product_ref_id)
+                        # Create a new Product instance or get an existing one based on Product_Refrence_ID
+                        # product will be the object retrieved from the db and then created ,created will be a boolean field
+                        product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
+                        #product = Product.objects.create(Product_Refrence_ID=product_ref_id)
                     
-                    # Associate the PProduct instance with the Product
-                    pproduct.Product = product
+                        # Associate the PProduct instance with the Product
+                        pproduct.Product = product
 
-                    #The variable pproduct holds the unsaved instance of the PProduct_Creation model. 
-                    #This instance is populated with the data from the form, and you can use it to perform 
-                    #any additional logic or modifications before finally saving it to the database.
-                    current_form.save()
-                    
+                        #The variable pproduct holds the unsaved instance of the PProduct_Creation model. 
+                        #This instance is populated with the data from the form, and you can use it to perform 
+                        #any additional logic or modifications before finally saving it to the database.
+                        current_form.save()
+                        transaction.commit()
+                    except Exception as e:
+                        print(e)
+
                 else:
                     if current_form.errors:
                         print(current_form.errors)
@@ -196,7 +200,7 @@ def product_color_sku(request):
                     return render(request,'product/product_color_sku.html',{'form':current_form,'color':color})
                     
             #Redirect to the detail view of the created instance with id 
-            if all_sets_valid:    
+            if all_sets_valid:
                 return redirect(reverse('edit_production_product', args=[product_ref_id]))
     else:
         form = PProductCreateForm()
@@ -214,7 +218,7 @@ def pproduct_list(request):
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
     print(queryset)
     context = {'products': queryset}
-    return render(request, 'product/pproduct_list.html', context=context)
+    return render(request,'product/pproduct_list.html',context=context)
 
 
 
