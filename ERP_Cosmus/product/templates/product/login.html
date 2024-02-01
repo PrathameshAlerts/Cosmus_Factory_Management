@@ -1,0 +1,44 @@
+{%  extends 'product/base.html'  %}
+
+{% load static %}
+
+{% block head %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title> 
+  </head>
+
+{% endblock head %}
+
+
+{% block section %}
+<body >
+    <section class="banner"> 
+        <div class="container">
+        <div class="form-back">
+          <h1 class="pb-2 text-dark">LOGIN</h1>
+          <form>
+            <div class="mb-3">
+              <input type="email" class="form-page" id="exampleInputEmail1" placeholder="Email*">
+            </div>
+            <div class="mb-2">
+              <input type="password" class="form-page" id="exampleInputPassword1" placeholder="Password*">
+            </div>
+            <div class="mb-3 fs-6">
+              <span for="exampleCheck1" class="text-dark px-2">Forget Password?</span>
+            </div>
+            <button type="submit" class="btn btn-danger button1">Login</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    
+   
+  </body>
+
+
+{% endblock section %}
+
+
