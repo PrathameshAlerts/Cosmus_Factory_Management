@@ -256,7 +256,17 @@ class Fabric_Group_Model(models.Model):
     
     def __str__(self):
         return self.fab_grp_name     
-    
+
+class Unit_Name_Create(models.Model):
+    unit_name = models.CharField(primary_key = True, max_length= 255)
+    slug = models.SlugField(unique = True)
+
+    def save(self,  *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.unit_name)
+        super().save(*args, **kwargs)
+
+
 class Item_Creation(models.Model):
     STATUS =  [
 
@@ -271,11 +281,6 @@ class Item_Creation(models.Model):
         ("Roll","Roll"),
         ("Bundle","Bundle")]
     
-    UNITNAME = [
-
-        ("Meter","Roll"),
-        ("Yard","Yard"),
-        ("Pcs","Pcs")]
     
     FandNFB = [
 
@@ -300,16 +305,16 @@ class Item_Creation(models.Model):
     ]
     #need to add many to many field to vendor 
     Description = models.CharField(unique= True, null=False, max_length = 255) 
-    Name = models.ForeignKey(item_name, on_delete=models.CASCADE)
+    Name = models.ForeignKey(item_name, on_delete=models.PROTECT)
     Material_code = models.CharField(max_length = 255, null = True)
-    Item_Color = models.ForeignKey(Color, on_delete=models.CASCADE, null=False, related_name='ItemColor')
+    Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Packing = models.CharField(max_length = 255, choices = PACKING)
-    Unit_Name = models.CharField(max_length = 255, choices = UNITNAME) 
+    unit_name = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False,) 
     Units = models.DecimalField(max_digits=10, decimal_places=2)
     Panha = models.DecimalField(max_digits=10, decimal_places=2)
     Fabric_nonfabric = models.CharField(max_length = 255, choices = FandNFB)
     Fabric_Finishes =  models.CharField(max_length = 255, choices = FINISHES)
-    Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.CASCADE)
+    Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     GST = models.CharField(max_length = 255,choices=GST)
     HSN_Code = models.IntegerField()
     status= models.CharField(max_length=50, choices= STATUS)

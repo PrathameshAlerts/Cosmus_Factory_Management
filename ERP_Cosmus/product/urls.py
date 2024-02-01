@@ -48,6 +48,13 @@ urlpatterns = [
     path('itemnamelist/',views.item_name_list , name= 'item-name-list'),
     path('itemnamedelete/<slug:slug>',views.item_name_delete , name= 'item-name-delete'),
 
+
+        #unitname
+    path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),
+    path('unitnameupdate/<slug:slug>',views.unit_name_update , name= 'unit_name-update'),
+    path('unitnamelist/',views.unit_name_list , name= 'unit_name-list'),
+    path('unitnamedelete/<slug:slug>',views.unit_name_delete , name= 'unit_name-delete'),
+
     #common Routes
     path('allmaster/', views.allmaster , name= 'all-master')
 

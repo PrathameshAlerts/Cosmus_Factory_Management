@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, item_name
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, ItemName, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm
+from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create, item_name
+from .forms import ColorForm, CreateUserForm, ItemFabricGroup, ItemName, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName
 from django.urls import reverse
 from django.forms import formset_factory
 from django.contrib.auth.models import User , Group
@@ -141,11 +141,12 @@ def edit_production_product(request,pk):
 
 from django.db import transaction
 
-@transaction.atomic
+
 def product_color_sku(request):
     color = Color.objects.all()
     
     if request.method == 'POST':
+            print(request.FILES)
         # OR Product_ref_id = request.POST['Product_Refrence_ID']
             product_ref_id = request.POST.get('Product_Refrence_ID')
             
@@ -172,7 +173,7 @@ def product_color_sku(request):
                 
                 # Save the form if it is valid
                 if current_form.is_valid():
-                    try:
+                    
                         all_sets_valid = True
                         pproduct = current_form.save(commit=False)
                     
@@ -189,9 +190,8 @@ def product_color_sku(request):
                         #This instance is populated with the data from the form, and you can use it to perform 
                         #any additional logic or modifications before finally saving it to the database.
                         current_form.save()
-                        transaction.commit()
-                    except Exception as e:
-                        print(e)
+                        
+                    
 
                 else:
                     if current_form.errors:
@@ -460,7 +460,43 @@ def item_fabric_group_delete(request,slug):
 
 #_______________________fabric group end___________________________________
 
+#_______________________Unit Name Start____________________________________
 
+def unit_name_create(request):
+    form = UnitName()
+    if request.method == 'POST':
+        form = UnitName(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('unit_name-list')
+        else:
+            return render(request, "product/unit_name_create.html", {'form':form})
+    else:
+        return render(request, "product/unit_name_create.html", {'form':form})
+
+
+
+def unit_name_list(request):
+    unit_name_all = Unit_Name_Create.objects.all()
+    return render(request,'product/fabric_group_list.html', {"unit_name_all":unit_name_all})
+
+
+def unit_name_update(request,slug):
+    unit_name_pk = Unit_Name_Create.objects.get(slug = slug)
+    form = UnitName(instance=unit_name_pk)
+    if request.method == 'POST':
+        form = UnitName(request.POST ,instance=unit_name_pk)
+
+
+
+def unit_name_delete(request,slug):
+    unit_name_pk = Unit_Name_Create.objects.get(slug=slug)
+    unit_name_pk.delete()
+    return redirect('unit_name-list')
+
+
+
+#______________________Unit Name End_______________________________________
 
 #_______________________authentication View start___________________________
 def login(request):
