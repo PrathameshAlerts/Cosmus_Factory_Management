@@ -6,8 +6,24 @@
     <title>Unit Name List</title>
 </head>
 <body>
-    {% for unit in unit_name_all %}
-    {{unit.unit_name}}
-    {% endfor %}
+
+    <table>
+        <tr>
+          <th>Unit_name</th>
+            <th>edit</th>
+            <th>delete</th>
+        </tr>
+
+        {% for unit in unit_name_all %}
+        <tr>
+          <td>{{unit.unit_name}}</td>
+          <td><a href="{% url 'unit_name-update' unit.slug %}">Edit</a></td>
+          <td><a href="{% url 'unit_name-delete' unit.slug %}">Delete</a></td>
+
+        </tr>
+
+        {% endfor %}
+      </table>
+
 </body>
 </html>

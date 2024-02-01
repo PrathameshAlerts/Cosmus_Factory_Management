@@ -227,7 +227,7 @@ class Product(models.Model):
 
 class PProduct_Creation(models.Model):
     Product = models.ForeignKey(Product, on_delete = models.CASCADE , related_name='productdetails')  
-    PProduct_image = models.ImageField(upload_to ='pproduct/images',null=True , blank=True)
+    PProduct_image = models.ImageField(upload_to ='pproduct/images' ,null=True ,blank=True)
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
     PProduct_SKU = models.IntegerField(primary_key = True)
 
@@ -286,6 +286,7 @@ class Item_Creation(models.Model):
 
         ("Fabric","Fabric"),
         ("Non Fabric","Non Fabric"),
+
         ]
     
     FINISHES = [
@@ -316,6 +317,7 @@ class Item_Creation(models.Model):
     Fabric_Finishes =  models.CharField(max_length = 255, choices = FINISHES)
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     GST = models.CharField(max_length = 255,choices=GST)
+    item_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
     HSN_Code = models.IntegerField()
     status= models.CharField(max_length=50, choices= STATUS)
 

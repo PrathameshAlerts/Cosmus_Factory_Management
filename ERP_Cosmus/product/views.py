@@ -139,14 +139,13 @@ def edit_production_product(request,pk):
     return render(request, 'product/edit_production_product.html',{'form': form})
 
 
-from django.db import transaction
 
 
 def product_color_sku(request):
     color = Color.objects.all()
     
     if request.method == 'POST':
-            print(request.FILES)
+           
         # OR Product_ref_id = request.POST['Product_Refrence_ID']
             product_ref_id = request.POST.get('Product_Refrence_ID')
             
@@ -158,25 +157,25 @@ def product_color_sku(request):
                 image_field_name = f'PProduct_image_{i}'
                 color_field_name = f'PProduct_color_{i}'
                 sku_field_name = f'PProduct_SKU_{i}'
-            
+
                 # Create a dictionary with the dynamic field names
                 data = {
-                    'PProduct_image': request.FILES.get(image_field_name),
                     'PProduct_color': request.POST.get(color_field_name),
                     'PProduct_SKU': request.POST.get(sku_field_name),
                     'Product_Refrence_ID': product_ref_id
                 }
-                print(data)
-                # Create a form instance for the current set of fields
-                current_form = PProductCreateForm(data)
-
                 
+                files = {
+                     'PProduct_image': request.FILES.get(image_field_name)
+                }
+
+                # Create a form instance for the current set of fields
+
+                current_form = PProductCreateForm(data, files)
                 # Save the form if it is valid
                 if current_form.is_valid():
-                    
                         all_sets_valid = True
                         pproduct = current_form.save(commit=False)
-                    
 
                         # Create a new Product instance or get an existing one based on Product_Refrence_ID
                         # product will be the object retrieved from the db and then created ,created will be a boolean field
@@ -191,8 +190,6 @@ def product_color_sku(request):
                         #any additional logic or modifications before finally saving it to the database.
                         current_form.save()
                         
-                    
-
                 else:
                     if current_form.errors:
                         print(current_form.errors)
@@ -234,10 +231,9 @@ def pproduct_delete(request, pk):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
-
-
     if request.method == 'POST':
-        form = Itemform(request.POST)
+        print(request.FILES)
+        form = Itemform(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return render(request,'product/success.html')
