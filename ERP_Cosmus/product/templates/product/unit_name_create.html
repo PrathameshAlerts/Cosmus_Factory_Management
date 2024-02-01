@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Name List</title>
+    <title>Unit Name Create</title>
 </head>
 <body>
-    {% for unit in unit_name_all %}
-    {{unit.unit_name}}
-    {% endfor %}
+    <form action="" method="POST">
+        {% csrf_token %}
+    {{form}}
+        <input type="submit">
+</form>
 </body>
 </html>

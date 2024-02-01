@@ -49,7 +49,7 @@ urlpatterns = [
     path('itemnamedelete/<slug:slug>',views.item_name_delete , name= 'item-name-delete'),
 
 
-        #unitname
+    #unitname
     path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),
     path('unitnameupdate/<slug:slug>',views.unit_name_update , name= 'unit_name-update'),
     path('unitnamelist/',views.unit_name_list , name= 'unit_name-list'),

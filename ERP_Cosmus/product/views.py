@@ -478,7 +478,7 @@ def unit_name_create(request):
 
 def unit_name_list(request):
     unit_name_all = Unit_Name_Create.objects.all()
-    return render(request,'product/fabric_group_list.html', {"unit_name_all":unit_name_all})
+    return render(request,'product/unit_name_list.html', {"unit_name_all":unit_name_all})
 
 
 def unit_name_update(request,slug):
@@ -486,6 +486,12 @@ def unit_name_update(request,slug):
     form = UnitName(instance=unit_name_pk)
     if request.method == 'POST':
         form = UnitName(request.POST ,instance=unit_name_pk)
+        if form.is_valid():
+            form.save()
+            return redirect('unit_name-list')
+        else:
+            return render(request, 'product/unit_name_update.html', {"form":form})
+    return render(request, 'product/unit_name_update.html', {"form":form})
 
 
 
