@@ -9,12 +9,11 @@
     <form action="" method="POST">
         {% csrf_token %}
 {{form}}
-
 <input type="submit" name = 'save' value = 'Save'>
 <input type="submit" name = 'save_and_add_another' value = 'Save and Add Another'>
 
-</form>
 
+</form>
 <a href="{{ return_url_get }}"><button type="button">Return</button></a>
 <a href="{% url 'colorlist' %}"><button type="button">Color List</button></a>
 </body>
