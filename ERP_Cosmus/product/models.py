@@ -309,7 +309,7 @@ class Item_Creation(models.Model):
     Material_code = models.CharField(max_length = 255, null = True)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Packing = models.CharField(max_length = 255, choices = PACKING)
-    unit_name = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False,) 
+    unit_name_item = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False) 
     Units = models.DecimalField(max_digits=10, decimal_places=2)
     Panha = models.DecimalField(max_digits=10, decimal_places=2)
     Fabric_nonfabric = models.CharField(max_length = 255, choices = FandNFB)
