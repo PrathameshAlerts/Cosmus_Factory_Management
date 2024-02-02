@@ -3,7 +3,6 @@ from django.http import HttpRequest, HttpResponse
 from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create, item_name
 from .forms import ColorForm, CreateUserForm, ItemFabricGroup, ItemName, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName
 from django.urls import reverse
-from django.forms import formset_factory
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
@@ -143,9 +142,8 @@ def edit_production_product(request,pk):
 
 def product_color_sku(request):
     color = Color.objects.all()
-    
     if request.method == 'POST':
-           
+            
         # OR Product_ref_id = request.POST['Product_Refrence_ID']
             product_ref_id = request.POST.get('Product_Refrence_ID')
             
@@ -245,11 +243,17 @@ def item_create(request):
         return render(request,'product/create_item.html', {'form':form})
 
 
+# in request.get data is sent to server via url and it can be accessed using the name variable 
+# which has ?namevaraible = data data from the querystring
+
+# in request.POST u can access data sent to server with name varaible which has data from the
+# value= atribite in the form
+    
 def item_list(request):
     i_search = request.GET.get('item_search')
-    print(i_search)
     queryset = Item_Creation.objects.all()
-
+    
+    print(request.GET)
 # cannot use icontains on foreignkey fields even if it has data in the fields
     if i_search != '' and  i_search is not None:
         queryset = Item_Creation.objects.filter(Q(Description__icontains=i_search)|
@@ -294,10 +298,6 @@ def color_list(request):
     color = Color.objects.all()
     context = {'colors':color}
     return render(request,'product/list_color.html', context=context)
-
-
-
-
 
 
 # write code to delete the session data in the main pages
