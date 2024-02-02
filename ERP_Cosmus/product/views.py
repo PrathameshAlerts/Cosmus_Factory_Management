@@ -114,12 +114,9 @@ def aplus(request):
     return render(request, 'product/aplus.html')
 
 
-
-
 #____________________________Production-Product-View-Start__________________________________
 
 def allmaster(request):
-    
     return render(request,'product/all_master.html')
 
 
@@ -146,8 +143,6 @@ def product_color_sku(request):
             
         # OR Product_ref_id = request.POST['Product_Refrence_ID']
             product_ref_id = request.POST.get('Product_Refrence_ID')
-            
-            
             # Flag to check if all sets of fields are valid
             all_sets_valid = False
             for i in range(1, 5):  #Assuming up to 5 sets of fields
@@ -170,8 +165,8 @@ def product_color_sku(request):
                 # Create a form instance for the current set of fields
 
                 current_form = PProductCreateForm(data, files)
-                # Save the form if it is valid
-                if current_form.is_valid():
+                # Save the form if it is valid 
+                if current_form.is_valid():   
                         all_sets_valid = True
                         pproduct = current_form.save(commit=False)
 
@@ -187,7 +182,7 @@ def product_color_sku(request):
                         #This instance is populated with the data from the form, and you can use it to perform 
                         #any additional logic or modifications before finally saving it to the database.
                         current_form.save()
-                        
+
                 else:
                     if current_form.errors:
                         print(current_form.errors)
@@ -250,17 +245,55 @@ def item_create(request):
 # value= atribite in the form
     
 def item_list(request):
-    i_search = request.GET.get('item_search')
+    g_search = request.GET.get('item_search')
     queryset = Item_Creation.objects.all()
     
     print(request.GET)
 # cannot use icontains on foreignkey fields even if it has data in the fields
-    if i_search != '' and  i_search is not None:
-        queryset = Item_Creation.objects.filter(Q(Description__icontains=i_search)|
-                                                Q(Name__Item_name__icontains=i_search)|
-                                                Q(Item_Color__color_name__icontains=i_search)|
-                                                Q(Fabric_Group__fab_grp_name__icontains=i_search))
+    if g_search != '' and  g_search is not None:
+        queryset = Item_Creation.objects.filter(Q(Description__icontains=g_search)|
+                                                Q(Name__Item_name__icontains=g_search)|
+                                                Q(Item_Color__color_name__icontains=g_search)|
+                                                Q(Fabric_Group__fab_grp_name__icontains=g_search))
+        
 
+
+    sort_name = request.GET.get('sort_name')
+
+    if sort_name == 'p_name_sort_asc':
+        queryset = Item_Creation.objects.order_by('Name__Item_name')
+
+    elif sort_name == 'p_name_sort_dsc':
+        queryset = Item_Creation.objects.order_by('-Name__Item_name')
+
+    elif sort_name == "description_sort_asc" :
+        queryset = Item_Creation.objects.order_by('Description')
+    
+    elif sort_name == "description_sort_dsc" :
+        queryset = Item_Creation.objects.order_by('-Description')
+
+    elif sort_name == "fabgrp_sort_asc" :
+        queryset = Item_Creation.objects.order_by('Fabric_Group__fab_grp_name')
+
+    elif sort_name == "fabgrp_sort_dsc" :
+        queryset = Item_Creation.objects.order_by('-Fabric_Group__fab_grp_name')
+
+    elif sort_name == "item_color_sort_dsc" :
+        queryset = Item_Creation.objects.order_by('Item_Color__color_name')
+    
+    elif sort_name == "item_color_sort_dsc" :
+        queryset = Item_Creation.objects.order_by('-Item_Color__color_name')
+
+    any_desc = request.GET.get('any_desc')
+    exact_desc = request.GET.get('exact_desc')
+
+    if any_desc:
+        if any_desc != '' and any_desc is not None:
+            queryset = Item_Creation.objects.filter(Description__icontains=any_desc)
+        
+    if exact_desc:
+        if exact_desc != '' and exact_desc is not None:
+            queryset = Item_Creation.objects.filter(Description__exact=exact_desc)
 
     return render(request,'product/list_item.html', {"items":queryset})
 

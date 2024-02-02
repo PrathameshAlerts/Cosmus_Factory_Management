@@ -5,15 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List-color</title>
 </head>
+
+<!-- 
+In this case, value="{{ request.GET.parameter1 }}" sets the initial value of the input field 
+to the value of the GET parameter named parameter1, if it exists.
+This means that if the user has previously submitted the form with a value for parameter1,
+ the input field will be pre-filled with that value when the page is loaded. -->
 <body>
     <a href="{%url 'item-create'%}"><button type="button">Create Item</button></a>
 
-    <form action="">
+    <!-- while search in input the data is taken by the user and sent to backend with the name variable in the url
+    while sorting the variable name is combined with the value for identification and sorted accordingly  -->
+
+    <form action="" method="get">
       <label for="i_search">Search</label>
       <input type="search" id="i_search" name="item_search" value={{request.GET.item_search}}>
       <input type="submit">
-
     </form>
+
+    <form action="" method="get">
+    <button name = 'sort_name' value = 'p_name_sort_asc' >ascending</button>
+    </form>
+
+    <form action="" method="get">
+    <button name = 'sort_name'  value = 'p_name_sort_dsc'>descending</button>
+    </form>
+
+
+
+    <form action="" method="get">
+
+      <label for="all_description">any Search</label>
+      <input type="search" id="all_description" name="any_desc" value = {{request.GET.any_desc}} >
+
+      <label for="exact_description">exact Search</label>
+      <input type="search" id="exact_description" name="exact_desc" value = {{request.GET.exact_desc}}>
+      
+      <input type="submit">
+    </form>
+
+
+
     <table>
         <tr>
         <th>Description</th>
@@ -40,7 +72,7 @@
           <td>{{item.Item_Color}}</td>
           <td>{{item.Material_code}}</td>
           <td>{{item.Packing}}</td>
-          <td>{{item.Unit_Name}}</td>
+          <td>{{item.unit_name_item}}</td>
           <td>{{item.Units}}</td>
           <td>{{item.Panha}}</td>
           <td>{{item.Fabric_nonfabric}}</td>
