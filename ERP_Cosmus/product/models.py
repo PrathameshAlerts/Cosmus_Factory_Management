@@ -163,15 +163,15 @@ class Product(models.Model):
 
     Product_Name = models.CharField(max_length=255, null = True, blank = True)
     Model_Name = models.CharField(max_length=255, null = True, blank = True)
-    Product_ShortName = models.CharField(max_length=255, null=True, blank = True)
+    Product_ShortName = models.CharField(max_length=200, null=True, blank = True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , null=True, blank = True)
-    Product_Status= models.CharField(max_length=255, choices= PRODUCT_STATUS, null = True, blank = True)
+    Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS, null = True, blank = True)
     Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL ,null=True  , blank = True )
-    Product_EANCode= models.CharField(max_length=255,  null=True, blank = True)
+    Product_EANCode= models.CharField(max_length=100,  null=True, blank = True)
     Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False, null = False)
     Product_Compartments=  models.CharField(max_length=50, choices= PRODUCT_COMPARTMENTS, null=True, blank = True)
     Product_UOM = models.CharField(max_length=50, choices =PRODUCT_UCOM , null=True, blank = True)
-    Product_Accessory_Compartments= models.CharField(max_length=6, choices= PRODUCT_ACCESSORY_COMPARTMENTS, null=True, blank = True)
+    Product_Accessory_Compartments= models.CharField(max_length=20, choices= PRODUCT_ACCESSORY_COMPARTMENTS, null=True, blank = True)
     Product_CapacityLtrs= models.PositiveIntegerField(null = True , blank = True)
     Product_Material= models.CharField(max_length=100,choices = PRODUCT_MATERIAL,  null=True, blank = True)
     Product_BulletPoint1= models.CharField(max_length=255,  null=True, blank = True)
@@ -181,14 +181,14 @@ class Product(models.Model):
     Product_BulletPoint5= models.CharField(max_length=255, null=True, blank = True)
     Product_ShortDescription= models.CharField(max_length=255, null=True, blank = True)
     Product_LongDescription= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WP_Length= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WP_Width= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WP_Height= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WP_Weight= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WOP_Length= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WOP_Width= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WOP_Height= models.CharField(max_length=255, null=True, blank = True)
-    Product_Dimensions_WOP_Weight= models.CharField(max_length=255, null=True, blank = True)
+    Product_Dimensions_WP_Length= models.CharField(max_length=150, null=True, blank = True)
+    Product_Dimensions_WP_Width= models.CharField(max_length=150, null=True, blank = True)
+    Product_Dimensions_WP_Height= models.CharField(max_length=150, null=True, blank = True)
+    Product_Dimensions_WP_Weight= models.CharField(max_length=150, null=True, blank = True)
+    Product_Dimensions_WOP_Length= models.CharField(max_length=150, null=True, blank = True)
+    Product_Dimensions_WOP_Width= models.CharField(max_length=150, null=True, blank = True)
+    Product_Dimensions_WOP_Height= models.CharField(max_length=150, null=True, blank = True)
+    Product_Dimensions_WOP_Weight= models.CharField(max_length=150, null=True, blank = True)
     Product_Cost_price = models.DecimalField(null= True, max_digits=10, decimal_places=2, blank = True)
     Product_MRP = models.DecimalField(null = True,max_digits=10, decimal_places=2, blank = True)
     Product_SalePrice_CustomerPrice= models.DecimalField(null = True,max_digits=10, decimal_places=2, blank = True)
@@ -207,7 +207,7 @@ class Product(models.Model):
     Product_WarehouseQty=models.IntegerField(null=True, blank = True)
     Product_RetailStoreQty=models.IntegerField(null=True, blank = True)
     Product_ManufacturingDate=models.DateField(auto_now_add=True, blank = True)
-    Product_WarrantyCode= models.CharField(max_length=255,null=True, blank = True)
+    Product_WarrantyCode= models.CharField(max_length=150,null=True, blank = True)
     Product_WarrantyTime= models.CharField(null = True,max_length=15, choices=WARRANTY_TIME, blank = True)
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER,null=True, blank = True)
     Product_Rating = models.FloatField(null=True, blank = True)
@@ -324,7 +324,15 @@ class Item_Creation(models.Model):
     HSN_Code = models.IntegerField()
     status= models.CharField(max_length=50, choices= STATUS)
 
+class Account_Group(models.Model):
+    acc_grp = models.CharField(max_length = 100, null=False, blank = False)
 
+
+class Account_master(models.Model):
+    name = 
+    short_name = 
+    account_group = models.ForeignKey(Account_Group, on_delete = models.PROTECT)
+    ref_number = models.IntegerField()
 
 # @receiver(pre_save, sender=Item_Creation)
 # def update_combined_field(sender, instance, **kwargs):
