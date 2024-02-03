@@ -19,7 +19,7 @@
                 <a href="#" class="nav-link"><span class="pcoded-micon"><i class="fa-solid fa-house"></i></i></span><span class="pcoded-mtext">Dashboard</span></a>
             </li>
             <li class="nav-item pcoded-hasmenu">
-                <a href="#" class="nav-link dropdown-toggle"><span class="pcoded-micon"><i class="fa-brands fa-product-hunt"></i></span><span class="pcoded-mtext">Product Category</span></a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="pcoded-micon"><i class="fa-brands fa-product-hunt"></i></span><span class="pcoded-mtext">Product Category</span></a>
                 <ul class="pcoded-submenu">
                     <li><a href="{% url 'pproductlist' %}" target="_blank">Product Master</a></li>
                     <li><a href="{% url 'item-list' %}" target="_blank">Item Master</a></li>
@@ -98,9 +98,9 @@
                   </li>
                   <li class="notification">
                     <div class="media">
-                      <img class="img-radius" src="assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
+                      <img class="img-radius" src="../../static/images/logo.jpg" alt="Generic placeholder image">
                       <div class="media-body">
-                        <p><strong>John Doe</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
+                        <p><strong>John Doe</strong><span class="n-time text-muted"><i class="fa-solid fa-clock m-r-10"></i>5 min</span></p>
                         <p>New ticket Added</p>
                       </div>
                     </div>
@@ -115,7 +115,7 @@
           </li>
           <li>
             <div class="dropdown drp-user">
-              <a href="#!" class="dropdown-toggle" data-toggle="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                  <img src="../../static/images/logo.jpg" class="img-radius wid-40" alt="User-Profile-Image">
                               </a>
               <div class="dropdown-menu dropdown-menu-right profile-notification">
@@ -128,7 +128,7 @@
                 </div>
                 <ul class="pro-body">
                   <li><a href="user-profile.html" class="dropdown-item"><i class="fa-regular fa-user"></i> Profile</a></li>
-                  <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-envelope"></i> My Messages</a></li>
+                  <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
                   <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
                 </ul>
               </div>
