@@ -1,108 +1,412 @@
-{%  extends 'product/base.html'  %}
-
-{% load static %}
-
-{% block head %}
+{% extends 'product/base.html' %} {% load static %} {% block head %}
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master All</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master All</title>
 </head>
-{% endblock head %}
-
-{% block body %}
+{% endblock head %} {% block body %}
 <body>
-    <div>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary py-2">
-            <div class="container">
-              <a class="navbar-brand" href="#">Cosmus</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                  </li>
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="#">Logout</a>
-                    </li>
-                  </ul>
-              </div>
-            </div>
-          </nav>
-    </div>
-    <section class="dashboard_main">
-    <div class="row"> 
+  <div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary py-2">
+      <div class="container">
+        <a class="navbar-brand" href="#">Cosmus</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <section class="dashboard_main">
+    <div class="row">
       <div class="col-lg-2 main">
         <h4>Create Master</h4>
-        <button type="button" class="button_main"><a class="text-decoration-none" href="{% url 'pproductlist' %}"> Product Master </a></button>
-        <button type="button" class="button_main"><a class="text-decoration-none" href="{% url 'item-list' %}"> Item Master </a></button>
-         <h4>Category Master</h4>
-         <button type="button" class="button_main"><a class="text-decoration-none" href="{% url 'colorlist' %}"> Color Master</a></button>
-         <button type="button" class="button_main"><a class="text-decoration-none" href="{% url 'item-fabgroup-list' %}"> Fabric-Group Master </a></button>
-         <button type="button" class="button_main"><a class="text-decoration-none" href="{% url 'item-name-list' %}"> Item-Name Master</a></button>
-        
+        <button type="button" class="button_main">
+          <a class="text-decoration-none" href="{% url 'pproductlist' %}">
+            Product Master
+          </a>
+        </button>
+        <button type="button" class="button_main">
+          <a class="text-decoration-none" href="{% url 'item-list' %}">
+            Item Master
+          </a>
+        </button>
+        <h4>Category Master</h4>
+        <button type="button" class="button_main">
+          <a class="text-decoration-none" href="{% url 'colorlist' %}">
+            Color Master</a
+          >
+        </button>
+        <button type="button" class="button_main">
+          <a class="text-decoration-none" href="{% url 'item-fabgroup-list' %}">
+            Fabric-Group Master
+          </a>
+        </button>
+        <button type="button" class="button_main">
+          <a class="text-decoration-none" href="{% url 'item-name-list' %}">
+            Item-Name Master</a
+          >
+        </button>
       </div>
       <div class="col-lg-10 sub_main">
-        <div class="d-flex">
-          <div class="d-flex form_input">
-            <h2>Dashboard</h2>
-            <input class="form-control search_input" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </div>
-          <div class="dropdown">
-            <button class="dropbtn rounded-5 my-2 py-2 px-3">Filtter <i class="fa-solid fa-angle-down"></i></button>
-            <div class="dropdown-content">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
-            </div>
-          </div>
+        <div class="d-flex form_input">
+          <h2>Dashboard</h2>
+
+          <input
+            class="form-control search_input my-2 py-2 px-3"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-sucess my-2 py-1 px-3" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </button>
+
+          <button class="dropbtn rounded-5 my-2">Clear Filter</button>
         </div>
-        
-        <div >
-          <table class="table">
+        <div>
+          <table class="table table-striped">
             <thread>
-            <tr>
-              <th scope="col">Sr No</th>
-              <th scope="col">Product Name</th>
-              <th scope="col">Model Name</th>
-              <th scope="col">Product Refrence ID	</th>
-              <th scope="col">Product SKU</th>
-              <th scope="col">Product SKU</th>
-              <th scope="col">PProduct Color	</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Delete</th>
-              <th scope="col">View</th>
-            </tr>
-          </thread>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td><i class="fa-solid fa-pen-to-square"></i></td>
-              <td><i class="fa-solid fa-trash"></i></td>
-              <td><i class="fa-solid fa-eye"></i></td>
-            </tr>
-          
-          </tbody>
-         
-            <table>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col" class="name_absolute">
+                  Product name
+                  <div class="nav-item dropdown icons">
+                    <a
+                      class="nav-link dropdown"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="fa-solid fa-angle-down icons"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Ascending
+                          <i class="fa-solid fa-arrow-up-long"></i>
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Decending
+                          <i class="fa-solid fa-arrow-down-long"></i>
+                        </button>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li class="nav-item dropend">
+                        <button
+                          class="nav-link dropdown px-4 fs-6"
+                          data-bs-toggle=" dropdown"
+                          aria-expanded="false"
+                        >
+                          Filter
+                          <i
+                            class="fa-solid fa-angle-right text-decoration-none"
+                          ></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Any match.."
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Exact match.."
+                            />
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
+                <th scope="col" class="name_absolute">
+                  Model Name
+                  <div class="nav-item dropdown model_icons">
+                    <a
+                      class="nav-link dropdown"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="fa-solid fa-angle-down mx-2"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Ascending
+                          <i class="fa-solid fa-arrow-up-long"></i>
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Decending
+                          <i class="fa-solid fa-arrow-down-long"></i>
+                        </button>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li class="nav-item dropend">
+                        <button
+                          class="nav-link dropdown px-4 fs-6"
+                          data-bs-toggle=" dropdown"
+                          aria-expanded="false"
+                        >
+                          Filter
+                          <i
+                            class="fa-solid fa-angle-right text-decoration-none"
+                          ></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Any match.."
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Exact match.."
+                            />
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
+                <th scope="col" class="name_absolute">
+                  Product Refrence ID
+                  <div class="nav-item dropdown product_icons">
+                    <a
+                      class="nav-link dropdown"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="fa-solid fa-angle-down mx-2"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Ascending
+                          <i class="fa-solid fa-arrow-up-long"></i>
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Decending
+                          <i class="fa-solid fa-arrow-down-long"></i>
+                        </button>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li class="nav-item dropend">
+                        <button
+                          class="nav-link dropdown px-4 fs-6"
+                          data-bs-toggle=" dropdown"
+                          aria-expanded="false"
+                        >
+                          Filter
+                          <i
+                            class="fa-solid fa-angle-right text-decoration-none"
+                          ></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Any match.."
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Exact match.."
+                            />
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
+                <th scope="col" class="name_absolute">
+                  Product SKU
+                  <div class="nav-item dropdown sku_icons">
+                    <a
+                      class="nav-link dropdown"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="fa-solid fa-angle-down mx-2"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Ascending
+                          <i class="fa-solid fa-arrow-up-long"></i>
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Decending
+                          <i class="fa-solid fa-arrow-down-long"></i>
+                        </button>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li class="nav-item dropend">
+                        <button
+                          class="nav-link dropdown px-4 fs-6"
+                          data-bs-toggle=" dropdown"
+                          aria-expanded="false"
+                        >
+                          Filter
+                          <i
+                            class="fa-solid fa-angle-right text-decoration-none"
+                          ></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Any match.."
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Exact match.."
+                            />
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
+                <th scope="col" class="name_absolute">
+                  PProduct Color
+                  <div class="nav-item dropdown color_icons">
+                    <a
+                      class="nav-link dropdown"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="fa-solid fa-angle-down mx-2"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Ascending
+                          <i class="fa-solid fa-arrow-up-long"></i>
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" href="#">
+                          Sort Decending
+                          <i class="fa-solid fa-arrow-down-long"></i>
+                        </button>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li class="nav-item dropend">
+                        <button
+                          class="nav-link dropdown px-4 fs-6"
+                          data-bs-toggle=" dropdown"
+                          aria-expanded="false"
+                        >
+                          Filter
+                          <i
+                            class="fa-solid fa-angle-right text-decoration-none"
+                          ></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Any match.."
+                            />
+                          </li>
+                          <li>
+                            <input
+                              type="text"
+                              class="dropdown-item input_text"
+                              placeholder="Exact match.."
+                            />
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+                <th scope="col">View</th>
+              </tr>
+            </thread>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td><i class="fa-solid fa-pen-to-square"></i></td>
+                <td><i class="fa-solid fa-trash"></i></td>
+                <td><i class="fa-solid fa-eye"></i></td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td><i class="fa-solid fa-pen-to-square"></i></td>
+                <td><i class="fa-solid fa-trash"></i></td>
+                <td><i class="fa-solid fa-eye"></i></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-    
   </section>
- 
-   
 </body>
 {% endblock body %}

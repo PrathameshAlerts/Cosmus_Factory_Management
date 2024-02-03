@@ -1,0 +1,97 @@
+.dashboard_main{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+ }
+
+ .main{
+    background-color: rgb(23, 186, 195);
+    height: 100vh;
+    width: 240px;
+    padding-top: 66px;
+    font-size: 17px;
+ } 
+ .button_main{
+    padding:5px 5px;
+    border-radius: 10px;
+    margin: 5px;
+    background-color:  rgb(23, 186, 195);
+    border: 1px solid rgb(23, 186, 195);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+ }
+ .button_main:hover{
+    background-color: whitesmoke;
+    color: rgb(23, 186, 195);
+    width: 100%;
+ }
+ .sub_main{
+    padding: 30px 20px;
+    background-color:whitesmoke; 
+ }
+ .search_input{
+    width: 30%;
+ }
+ .form_input{
+    padding-left:20px;
+    gap: 20px;
+    padding-bottom: 60px;
+ }
+ .dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px;
+    font-size: 15px;
+    border: none;
+  }
+  .dropdown{
+   list-style: none;
+  }
+
+  .dropdown .dropdown-menu{
+   display: none;
+  }
+  .dropdown:hover > .dropdown-menu ,.dropend:hover > .dropdown-menu{
+   display: block;
+   margin-top: .125em;
+  }
+
+  .dropend:hover > .dropdown-menu{
+   position: absolute;
+   top: 0;
+   left: 100%;
+   margin-left: .125em;
+  }
+  .input_text{
+   height: auto;
+   width: 150px;
+  }
+  .name_absolute{
+   position: relative;
+  }
+  
+  .icons{
+   position: absolute;
+   top:9px;
+   left: 60px;
+  }
+  .model_icons{
+   position: absolute;
+   top:9px;
+   left: 100px;
+  }
+  .product_icons{
+   position: absolute;
+   top:9px;
+   left: 153px;
+  }
+  .sku_icons{
+   position: absolute;
+   top:9px;
+   left: 97px;
+  }
+  .color_icons{
+   position: absolute;
+   top:9px;
+   left: 115px;
+  }
