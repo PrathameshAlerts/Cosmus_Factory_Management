@@ -55,5 +55,7 @@ urlpatterns = [
     path('unitnamedelete/<slug:slug>',views.unit_name_delete , name= 'unit_name-delete'),
 
     #common Routes
-    path('allmaster/', views.allmaster , name= 'all-master')
+    path('allmaster/', views.allmaster , name= 'all-master'),
+
+
 ]
