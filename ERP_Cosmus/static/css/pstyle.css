@@ -1,12 +1,4 @@
-/**======================================================================
-=========================================================================
-Template Name: Gradient able Bootstrap Admin Template
-Author: Phoenixcoded
-Support: support@phoenixcoded.net
-File: style.css
-=========================================================================
-=================================================================================== */
-/* devanagari */
+
 @import url(plugins/animate.min.css);
 
 @font-face {
@@ -204,85 +196,6 @@ File: style.css
     }
 }
 
-/*
-    description Of variables for build for theme layouts
-        1) menu-caption-color
-            List of color for sidebar menu caption
-
-        2) brand-background
-            List of color for logo background
-
-        3) header-dark-background
-            List of color for Dark Header
-
-        4) header-light-background
-            List of color for light Header
-
-        5) menu-dark-background
-            List of color for Dark sidebar menu
-
-        6) menu-light-background
-            List of color for light sidebar menu
-
-        7) menu-active-color
-            List of color for Active item highliter
-
-        8) menu-icon-color
-            List of color for sidebar menu items icon colors
-*/
-/*!
- * Bootstrap v4.3.1 (https://getbootstrap.com/)
- * Copyright 2011-2019 The Bootstrap Authors
- * Copyright 2011-2019 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
-:root {
-    --blue: #4099ff;
-    --indigo: #6610f2;
-    --purple: #6f42c1;
-    --pink: #e83e8c;
-    --red: #FF5370;
-    --orange: #fd7e14;
-    --yellow: #FFB64D;
-    --green: #2ed8b6;
-    --teal: #20c997;
-    --cyan: #00bcd4;
-    --white: #fff;
-    --gray: #6c757d;
-    --gray-dark: #343a40;
-    --primary: #4099ff;
-    --secondary: #6c757d;
-    --success: #2ed8b6;
-    --info: #00bcd4;
-    --warning: #FFB64D;
-    --danger: #FF5370;
-    --light: #f8f9fa;
-    --dark: #343a40;
-    --breakpoint-xs: 0;
-    --breakpoint-sm: 576px;
-    --breakpoint-md: 768px;
-    --breakpoint-lg: 992px;
-    --breakpoint-xl: 1200px;
-    --font-family-sans-serif: "Poppins", sans-serif;
-    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-html {
-    font-family: sans-serif;
-    line-height: 1.15;
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
-    display: block;
-}
 
 body {
     margin: 0;
@@ -10990,10 +10903,7 @@ a.text-dark:hover, a.text-dark:focus {
   h3 {
         page-break-after: avoid;
     }
-  @    page {
-        size: a3;
-    }
-
+ 
     body {
         min-width: 992px !important;
     }
@@ -11062,7 +10972,7 @@ a.text-dark:hover, a.text-dark:focus {
     -moz-osx-font-smoothing: grayscale;
 }
 
-[class^="pct-"]:before, [class*=" pct-"]:before {
+[class*="pct-"]:before, [class*=" pct-"]:before {
     font-family: "pct" !important;
     font-style: normal !important;
     font-weight: normal !important;
@@ -22111,7 +22021,7 @@ pre[class*=language-]:before {
 .pcoded-content {
     position: relative;
     display: block;
-    padding: 25px;
+    padding: 90px 30px;
 }
 
 .pcoded-main-container {
@@ -26487,3 +26397,11 @@ div.dtk-focus-alt table.dataTable tbody th.focus {
 
 /* image varient End */
 /**====== Authentication css end ======**/
+
+.sub_main{
+    
+   
+}
+.search_input{
+    width: 70%;
+}
