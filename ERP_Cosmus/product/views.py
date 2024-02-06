@@ -313,7 +313,6 @@ def item_edit(request,pk):
         return render(request,'product/edit_item.html',{'form':form})
 
 
-
 def item_delete(request, pk):
     item_pk = Item_Creation.objects.get(pk = pk)
     item_pk.delete()
@@ -398,8 +397,6 @@ def item_name_create(request):
             if 'save_and_add_another' in request.POST:
                 form = ItemName()
                 return render(request,'product/item_name_create.html', {'form':form})
-            
-
             #get the return url from the session and redirect it to the same 
             return_url = request.session.get('return_url', '/')
             # delete the session
@@ -431,6 +428,8 @@ def item_name_update(request,slug):
 def item_name_list(request):
     Item_name_all = item_name.objects.all()
     return render(request, 'product/item_name_list.html', {'Item_name_all':Item_name_all})
+
+
 
 def item_name_delete(request,slug):
     item_name_pk = item_name.objects.get(slug=slug)
@@ -532,6 +531,10 @@ def unit_name_delete(request,slug):
 
 
 #________________________Unit Name End_______________________________________
+
+
+
+
 
 
 

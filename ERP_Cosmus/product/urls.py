@@ -9,13 +9,13 @@ urlpatterns = [
     path('register/',views.register , name= 'register'),
 
     #erp routes
-    path('index/', views.index, name= 'index'),
-    path('listproduct/', views.listproduct, name= 'listproduct'),
-    path('editproduct/<int:pk>',views.edit_product , name= 'edit_product'),
-    path('addproduct/',views.add_product , name= 'add_product'),
-    path('aplus/',views.aplus , name= 'aplus'),
-    path('deleteproduct/<int:pk>',views.deleteproduct , name= 'deleteproduct'),
-    path(' ',views.index , name= 'index'),
+    # path('index/', views.index, name= 'index'),
+    # path('listproduct/', views.listproduct, name= 'listproduct'),
+    # path('editproduct/<int:pk>',views.edit_product , name= 'edit_product'),
+    # path('addproduct/',views.add_product , name= 'add_product'),
+    # path('aplus/',views.aplus , name= 'aplus'),
+    # path('deleteproduct/<int:pk>',views.deleteproduct , name= 'deleteproduct'),
+    # path(' ',views.index , name= 'index'),
 
     #factoryroutes
     #product_routes
