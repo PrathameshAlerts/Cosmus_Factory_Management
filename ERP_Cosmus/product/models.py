@@ -324,15 +324,15 @@ class Item_Creation(models.Model):
     HSN_Code = models.IntegerField()
     status= models.CharField(max_length=50, choices= STATUS)
 
-class Account_Group(models.Model):
-    acc_grp = models.CharField(max_length = 100, null=False, blank = False)
+# class Account_Group(models.Model):
+#     acc_grp = models.CharField(max_length = 100, null=False, blank = False)
 
 
-class Account_master(models.Model):
-    name = 
-    short_name = 
-    account_group = models.ForeignKey(Account_Group, on_delete = models.PROTECT)
-    ref_number = models.IntegerField()
+# class Account_master(models.Model):
+#     name = 
+#     short_name = 
+#     account_group = models.ForeignKey(Account_Group, on_delete = models.PROTECT)
+#     ref_number = models.IntegerField()
 
 # @receiver(pre_save, sender=Item_Creation)
 # def update_combined_field(sender, instance, **kwargs):

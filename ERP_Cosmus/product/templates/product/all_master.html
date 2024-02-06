@@ -1,4 +1,7 @@
-{% extends 'product/base.html' %} {% load static %} {% block head %}
+
+{% extends 'product/base.html' %} 
+{% load static %} 
+{% block head %}
 
 <head>
   <meta charset="UTF-8" />
@@ -8,9 +11,9 @@
 {% endblock head %} {% block body %}
 <body>
   <section class="">
-    <nav class="pcoded-navbar menupos-fixed menu-light ">
+    <nav class="pcoded-navbar menupos-fixed menu-light">
       <div class="navbar-wrapper">
-        <div class="navbar-content scroll-div " >
+        <div class="navbar-content" >
           <ul class="nav pcoded-inner-navbar">
             <li class="nav-item pcoded-menu-caption">
               <label>Navigation</label>
@@ -19,7 +22,7 @@
                 <a href="#" class="nav-link"><span class="pcoded-micon"><i class="fa-solid fa-house"></i></i></span><span class="pcoded-mtext">Dashboard</span></a>
             </li>
             <li class="nav-item pcoded-hasmenu">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="pcoded-micon"><i class="fa-brands fa-product-hunt"></i></span><span class="pcoded-mtext">Product Category</span></a>
+                <a href="#" class="nav-link" data-toggle="dropdown"><span class="pcoded-micon"><i class="fa-brands fa-product-hunt"></i></span><span class="pcoded-mtext">Product Category</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
                 <ul class="pcoded-submenu">
                     <li><a href="{% url 'pproductlist' %}" target="_blank">Product Master</a></li>
                     <li><a href="{% url 'item-list' %}" target="_blank">Item Master</a></li>
@@ -29,7 +32,7 @@
               <label>Category Master</label>
             </li>
             <li class="nav-item pcoded-hasmenu">
-              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="fa fa-light fa-box"></i></span><span class="pcoded-mtext">Category</span></a>
+              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="fa fa-light fa-box"></i></span><span class="pcoded-mtext">Category</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
               <ul class="pcoded-submenu">
                 <li><a href="{% url 'colorlist' %}">Color Master</a></li>
                 <li><a href="{% url 'item-fabgroup-list' %}">Fabric-Group Master</a></li>
@@ -41,7 +44,7 @@
               <label>Pages</label>
             </li>
             <li class="nav-item pcoded-hasmenu">
-                <a href="#!" class="nav-link dropdown-toggle"><span class="pcoded-micon"><i class="fa-solid fa-lock"></i></span><span class="pcoded-mtext">Authentication</span><span><i class="fa-solid fa-sort-down"></i></span></a>
+                <a href="#!" class="nav-link dropdown-toggle"><span class="pcoded-micon"><i class="fa-solid fa-lock"></i></span><span class="pcoded-mtext">Authentication</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
                 <ul class="pcoded-submenu">
                     <li><a href="auth-signup.html" target="_blank">Sign up</a></li>
                     <li><a href="auth-signin.html" target="_blank">Sign in</a></li>
@@ -54,36 +57,17 @@
       </div>
     </nav>
     <header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-fixed header-blue">
-		
-			
       <div class="m-header">
-        <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
-        <a href="#!" class="b-brand">
-          <!-- ========   change your logo hear   ============ -->
-          <img src="assets/images/logo.png" alt="" class="logo">
-          <img src="assets/images/logo-icon.png" alt="" class="logo-thumb">
+        <a href="#!" class="navbar-brand">
+          COSMUS
         </a>
-        <a href="#!" class="mob-toggler">
-          <i class="feather icon-more-vertical"></i>
-        </a>
+  
       </div>
       <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a href="#!" class="pop-search"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <div class="search-bar">
-              <input type="text" class="form-control border-0 shadow-none" placeholder="Search here">
-              <button type="button" class="close" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </li>
-        
-        </ul>
         <ul class="navbar-nav ms-auto">
           <li>
-            <div class="dropdown">
-              <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa-solid fa-bell"></i><span class="badge bg-danger"><span class="sr-only"></span></span></a>
+            <div class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-ds-toggle="dropdown"><i class="fa-solid fa-bell"></i><span class="badge bg-danger"><span class="sr-only"></span></span></a>
               <div class="dropdown-menu dropdown-menu-right notification">
                 <div class="noti-head">
                   <h6 class="d-inline-block m-b-0">Notifications</h6>
@@ -113,10 +97,9 @@
               </div>
             </div>
           </li>
-          <li>
-            <div class="dropdown drp-user">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                 <img src="../../static/images/logo.jpg" class="img-radius wid-40" alt="User-Profile-Image">
+          <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" data-ds-toggle="dropdown">
+                 <img src="../../static/images/logo.jpg" class="rounded-circle icon" alt="User-Profile-Image">
                               </a>
               <div class="dropdown-menu dropdown-menu-right profile-notification">
                 <div class="pro-head">
@@ -132,7 +115,7 @@
                   <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
                 </ul>
               </div>
-            </div>
+            
           </li>
         </ul>
       </div>
@@ -142,56 +125,52 @@
     <div class="pcoded-content">
       <div class="row">
         <!-- order-card start -->
-        <div class="col-md-6 col-xl-3">
+        <div class="col-lg-3">
             <div class="card bg-c-blue order-card">
                 <div class="card-body">
                     <h6 class="text-white">Orders Received</h6>
-                    <h2 class="text-right text-white"><i class="fa fa-regular fa-cart-shopping float-left"></i><span>486</span></h2>
-                    <p class="m-b-0">Completed Orders<span class="float-right">351</span></p>
+                    <h2 class="text-right text-white"><i class="fa fa-solid fa-cart-shopping card-icons"></i><span class="bcard-pad">486</span></h2>
+                    <p class=" text-white">Completed Orders<span class="card-pa">351</span></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-xl-3">
+        <div class="col-lg-3">
             <div class="card bg-c-green order-card">
                 <div class="card-body">
                     <h6 class="text-white">Total Sales</h6>
-                    <h2 class="text-right text-white"><i class="fa fa-regular fa-tag float-left"></i><span>1641</span></h2>
-                    <p class="m-b-0">This Month<span class="float-right">213</span></p>
+                    <h2 class="text-right text-white"><i class="fa-solid fa-tag card-icons"></i><span class="gcard-pad">1641</span></h2>
+                    <p class="text-right text-white">This Month<span class="gcard-pa">213</span></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-xl-3">
+        <div class="col-lg-3">
             <div class="card bg-c-yellow order-card">
                 <div class="card-body">
                     <h6 class="text-white">Revenue</h6>
-                    <h2 class="text-right text-white"><i class="fa fa-regular fa-repeat float-left"></i><span>$42,562</span></h2>
-                    <p class="m-b-0">This Month<span class="float-right">$5,032</span></p>
+                    <h2 class="text-right text-white"><i class="fa fa-solid fa-repeat card-icons"></i><span class="ycard-pad">$42,562</span></h2>
+                    <p class="text-right text-white">This Month<span class="ycard-pa">$5,032</span></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-xl-3">
+        <div class="col-lg-3">
             <div class="card bg-c-red order-card">
                 <div class="card-body">
                     <h6 class="text-white">Total Profit</h6>
-                    <h2 class="text-right text-white"><i class="fa-solid fa-award float-left"></i><span>$9,562</span></h2>
-                    <p class="m-b-0">This Month<span class="float-right">$542</span></p>
+                    <h2 class="text-right text-white"><i class="fa-solid fa-award card-icons"></i><span class="rcard-pad">$9,562</span></h2>
+                    <p class="text-right text-white">This Month<span class="rcard-pa">$542</span></p>
                 </div>
             </div>
         </div>
         <div class="row">
           <div class="col-lg-12 sub_main">
-            <div class="d-flex form_input">
-              <input
-                class="form-control search_input my-2 py-2 px-3"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-outline-sucess my-2 " type="submit">
+            <div class=" mb-3">
+              <input class=" search_input rounded-5" type="text" placeholder="Search" aria-label="Search"/>
+              <button class="btn btn-outline-success my-2" type="button">
                 <span><i class="fa-solid fa-magnifying-glass"></i></span>
               </button>
-              <button class="dropbtn rounded-4 my-2">Clear Filter</button>
+              <button class="dropbtn rounded-4 my-2 mx-3">Clear Filter</button>
             </div>
+           
             <div>
               <table class="table table-striped">
                 <thread>
@@ -200,13 +179,7 @@
                     <th scope="col" class="name_absolute">
                       Product name
                       <div class="nav-item dropdown icons">
-                        <a
-                          class="nav-link dropdown"
-                          href="#"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
+                        <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fa-solid fa-angle-down icons"></i>
                         </a>
                         <ul class="dropdown-menu">
