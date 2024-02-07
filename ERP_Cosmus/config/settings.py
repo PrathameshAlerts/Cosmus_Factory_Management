@@ -89,12 +89,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'erp',
         'HOST': 'localhost',
-        'USER': 'root',
+        'USER': 'root', 
         'PASSWORD': 'root'
     }
 }
-
-
 
 
 # Password validation

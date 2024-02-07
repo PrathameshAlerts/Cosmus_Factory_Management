@@ -1,5 +1,5 @@
 from django import forms
-from .models import Color, Fabric_Group_Model, Item_Creation, Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_name
+from .models import Color, Fabric_Group_Model, Item_Creation, Product, ProductImage, PProduct_Creation, Unit_Name_Create
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 
@@ -85,14 +85,15 @@ class ColorForm(forms.ModelForm):
 class Itemform(forms.ModelForm):
     class Meta:
         model = Item_Creation
-        fields = ['Description','Name','Material_code','Item_Color','Packing',
+        fields = ['item_name','Material_code','Item_Color','Packing',
                  'unit_name_item','Units','Panha', 'Fabric_nonfabric','Fabric_Finishes','Fabric_Group',
                  'GST','HSN_Code','status','item_image']
 
-class ItemName(forms.ModelForm):
-    class Meta:
-        model = item_name
-        fields = ['Item_name']
+
+# class ItemName(forms.ModelForm):
+#     class Meta:
+#         model = item_name
+#         fields = ['Item_name']
 
 class ItemFabricGroup(forms.ModelForm):
     class Meta:

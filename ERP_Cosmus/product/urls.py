@@ -9,13 +9,13 @@ urlpatterns = [
     path('register/',views.register , name= 'register'),
 
     #erp routes
-    path('index/', views.index, name= 'index'),
-    path('listproduct/', views.listproduct, name= 'listproduct'),
-    path('editproduct/<int:pk>',views.edit_product , name= 'edit_product'),
-    path('addproduct/',views.add_product , name= 'add_product'),
-    path('aplus/',views.aplus , name= 'aplus'),
-    path('deleteproduct/<int:pk>',views.deleteproduct , name= 'deleteproduct'),
-    path(' ',views.index , name= 'index'),
+    # path('index/', views.index, name= 'index'),
+    # path('listproduct/', views.listproduct, name= 'listproduct'),
+    # path('editproduct/<int:pk>',views.edit_product , name= 'edit_product'),
+    # path('addproduct/',views.add_product , name= 'add_product'),
+    # path('aplus/',views.aplus , name= 'aplus'),
+    # path('deleteproduct/<int:pk>',views.deleteproduct , name= 'deleteproduct'),
+    # path(' ',views.index , name= 'index'),
 
     #factoryroutes
     #product_routes
@@ -42,11 +42,11 @@ urlpatterns = [
     path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
     path('itemfabricgroupdelete/<slug:slug>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
 
-    #itemname
-    path('itemnamecreate/',views.item_name_create , name= 'item-name-create'),
-    path('itemnameupdate/<slug:slug>',views.item_name_update , name= 'item-name-update'),
-    path('itemnamelist/',views.item_name_list , name= 'item-name-list'),
-    path('itemnamedelete/<slug:slug>',views.item_name_delete , name= 'item-name-delete'),
+    # #itemname
+    # path('itemnamecreate/',views.item_name_create , name= 'item-name-create'),
+    # path('itemnameupdate/<slug:slug>',views.item_name_update , name= 'item-name-update'),
+    # path('itemnamelist/',views.item_name_list , name= 'item-name-list'),
+    # path('itemnamedelete/<slug:slug>',views.item_name_delete , name= 'item-name-delete'),
 
     #unitname
     path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),
