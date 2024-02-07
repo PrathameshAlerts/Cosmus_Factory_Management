@@ -326,6 +326,7 @@ class Item_Creation(models.Model):
 
 # class Account_Group(models.Model):
 #     acc_grp = models.CharField(max_length = 100, null=False, blank = False)
+<<<<<<< HEAD
 
 
 # class Account_master(models.Model):
@@ -345,6 +346,15 @@ class Item_Creation(models.Model):
 
 
 
+=======
+
+
+# class Account_master(models.Model):
+#     name = 
+#     short_name = 
+#     account_group = models.ForeignKey(Account_Group, on_delete = models.PROTECT)
+#     ref_number = models.IntegerField()
+>>>>>>> b8f7777fcb71c169aa0274e42dfa06af460188be
 
 # @receiver(pre_save, sender=Item_Creation)
 # def update_combined_field(sender, instance, **kwargs):
