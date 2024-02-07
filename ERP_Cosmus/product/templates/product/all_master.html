@@ -11,35 +11,50 @@
 {% endblock head %} {% block body %}
 <body>
   <section class="">
-    <div class="side-bar">
-      <div class="menu">
-        <div class="item"><a href="#"><i class="fas fa-desktop"></i>Dashboard</a></div>
-        <div class="item">
-          <a class="sub-btn"><i class="fas fa-table"></i>Product Catagory<i class="fas fa-angle-right dropdown"></i></a>
-          <div class="sub-menu">
-            <a href="#" class="sub-item">Product Master</a>
-            <a href="#" class="sub-item">Item Master</a>
-          </div>
-        </div>
-        <div class="item">
-          <a class="sub-btn"><i class="fas fa-table"></i>Catagary<i class="fas fa-angle-right dropdown"></i></a>
-          <div class="sub-menu">
-            <a href="#" class="sub-item">Color Master</a>
-            <a href="#" class="sub-item">Fabric-group-master</a>
-            <a href="#" class="sub-item">Item-Name-Master</a>
-          </div>
-        </div>
-        <div class="item">
-          <a class="sub-btn"><i class="fas fa-table"></i>Accounts<i class="fas fa-angle-right dropdown"></i></a>
-          <div class="sub-menu">
-            <a href="#" class="sub-item"></a>
-            <a href="#" class="sub-item">Sub Item 02</a>
-            <a href="#" class="sub-item">Sub Item 03</a>
-          </div>
+    <nav class="pcoded-navbar menupos-fixed menu-light">
+      <div class="navbar-wrapper">
+        <div class="navbar-content" >
+          <ul class="nav pcoded-inner-navbar">
+            <li class="nav-item pcoded-menu-caption">
+              <label>Navigation</label>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link"><span class="pcoded-micon"><i class="fa-solid fa-house"></i></i></span><span class="pcoded-mtext">Dashboard</span></a>
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+                <a href="#" class="nav-link" data-toggle="dropdown"><span class="pcoded-micon"><i class="fa-brands fa-product-hunt"></i></span><span class="pcoded-mtext">Product Category</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
+                <ul class="pcoded-submenu">
+                    <li><a href="{% url 'pproductlist' %}">Product Master</a></li>
+                    <li><a href="{% url 'item-list' %}" >Item Master</a></li>
+                </ul>
+            </li>
+            <li class="nav-item pcoded-menu-caption">
+              <label>Category Master</label>
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="fa fa-light fa-box"></i></span><span class="pcoded-mtext">Category</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
+              <ul class="pcoded-submenu">
+                <li><a href="{% url 'colorlist' %}">Color Master</a></li>
+                <li><a href="{% url 'item-fabgroup-list' %}">Fabric-Group Master</a></li>
+                <li><a href="{% url 'item-name-list' %}">Item-Name Master</a></li>
+              </ul>
+            </li>
+            
+            <li class="nav-item pcoded-menu-caption">
+              <label>Pages</label>
+            </li>
+            <li class="nav-item pcoded-hasmenu pcoded-toggle">
+                <a href="#!" class="nav-link dropdown-toggle"><span class="pcoded-micon"><i class="fa-solid fa-lock"></i></span><span class="pcoded-mtext">Authentication</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
+                <ul class="pcoded-submenu">
+                    <li><a href="auth-signup.html" target="_blank">Sign up</a></li>
+                    <li><a href="auth-signin.html" target="_blank">Sign in</a></li>
+                </ul>
+            </li>
+          </ul>
         </div>
       </div>
-  </div>
-    <header class="navbar x navbar-expand-lg navbar-light headerpos-fixed header-blue">
+    </nav>
+    <header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-fixed header-blue">
       <div class="m-header">
         <a href="#!" class="navbar-brand">
           COSMUS
@@ -92,7 +107,7 @@
                   </a>
                 </div>
                 <ul class="pro-body">
-                  <li><a href="user-profile.html" class="dropdown-item"><i class="fa-regular fa-user"></i> Profile</a></li>
+                  <li><a href="user-profile.html" class="dropdown-item bg-body-primary"><i class="fa-regular fa-user"></i> Profile</a></li>
                   <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
                   <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
                 </ul>
@@ -146,7 +161,7 @@
         <div class="row">
           <div class="col-lg-12 sub_main">
             <div class=" mb-3">
-              <button class="dropbtn rounded-4 my-2 mx-3"><a href="{%url 'item-create'%}">Add Item +</a></button>
+              <button class="dropbtn rounded-4 my-2 mx-3">Add Item +</button>
               <input class=" search_input" type="text" placeholder="Search" aria-label="Search"/>
               <button class="btn btn-outline-success my-2" type="button">
                 <span><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -693,7 +708,7 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
   </div>
 </section>
