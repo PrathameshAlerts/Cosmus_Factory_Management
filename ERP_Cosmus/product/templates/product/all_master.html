@@ -26,7 +26,6 @@
           <div class="sub-menu">
             <a href="#" class="sub-item">Color Master</a>
             <a href="#" class="sub-item">Fabric-group-master</a>
-            <a href="#" class="sub-item">Item-Name-Master</a>
           </div>
         </div>
         <div class="item">
@@ -160,7 +159,7 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col" class="name_absolute">
-                      Description
+                      Name
                       <div class="nav-item dropdown icons">
                         <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fa-solid fa-angle-down icons"></i>
@@ -267,63 +266,7 @@
                         </ul>
                       </div>
                     </th>
-                    <th scope="col" class="name_absolute">
-                      Name
-                      <div class="nav-item dropdown product_icons">
-                        <a
-                          class="nav-link dropdown"
-                          href="#"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i class="fa-solid fa-angle-down mx-2"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <button class="dropdown-item" href="#">
-                              Sort Ascending
-                              <i class="fa-solid fa-arrow-up-long"></i>
-                            </button>
-                          </li>
-                          <li>
-                            <button class="dropdown-item" href="#">
-                              Sort Decending
-                              <i class="fa-solid fa-arrow-down-long"></i>
-                            </button>
-                          </li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li class="nav-item dropend">
-                            <button
-                              class="nav-link dropdown px-4 fs-6"
-                              data-bs-toggle=" dropdown"
-                              aria-expanded="false"
-                            >
-                              Filter
-                              <i
-                                class="fa-solid fa-angle-right text-decoration-none"
-                              ></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                              <li>
-                                <input
-                                  type="text"
-                                  class="dropdown-item input_text"
-                                  placeholder="Any match.."
-                                />
-                              </li>
-                              <li>
-                                <input
-                                  type="text"
-                                  class="dropdown-item input_text"
-                                  placeholder="Exact match.."
-                                />
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </th>
+                    
                     <th scope="col" class="name_absolute">
                       Item Color
                       <div class="nav-item dropdown sku_icons">
@@ -666,13 +609,15 @@
                     <th scope="col">View</th>
                   </tr>
                 </thread>
+                
                 <tbody>
-                  {%for item in items %}
-                  <tr>
-                    <td>1</td>
-                    <td>{{item.Description}}</td>
+                  {% for item in items %}
+                    
+                  
+                </tr>
+                <td>{{ forloop.counter }}</td>              
+                    <td>{{item.item_name}}</td>
                     <td>{{item.Fabric_Group}}</td>
-                    <td>{{item.Name}}</td>
                     <td>{{item.Item_Color}}</td>
                     <td>{{item.Material_code}}</td>
                     <td>{{item.Packing}}</td>
@@ -687,8 +632,9 @@
                     <td><a href="{% url 'item-edit' item.id %}">Edit</a></td>
                     <td><a href="{% url 'item-delete' item.id %}">click</a></td>
                   </tr>
-                  {% endfor %}
+                  {% endfor %}  
                 </tbody>
+                
               </table>
             </div>
           </div>
