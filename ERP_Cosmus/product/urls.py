@@ -42,11 +42,11 @@ urlpatterns = [
     path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
     path('itemfabricgroupdelete/<slug:slug>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
 
-    #itemname
-    path('itemnamecreate/',views.item_name_create , name= 'item-name-create'),
-    path('itemnameupdate/<slug:slug>',views.item_name_update , name= 'item-name-update'),
-    path('itemnamelist/',views.item_name_list , name= 'item-name-list'),
-    path('itemnamedelete/<slug:slug>',views.item_name_delete , name= 'item-name-delete'),
+    # #itemname
+    # path('itemnamecreate/',views.item_name_create , name= 'item-name-create'),
+    # path('itemnameupdate/<slug:slug>',views.item_name_update , name= 'item-name-update'),
+    # path('itemnamelist/',views.item_name_list , name= 'item-name-list'),
+    # path('itemnamedelete/<slug:slug>',views.item_name_delete , name= 'item-name-delete'),
 
     #unitname
     path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),

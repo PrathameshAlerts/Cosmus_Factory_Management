@@ -1,14 +1,13 @@
 from django.shortcuts import redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create, item_name
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, ItemName, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName
+from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create
+from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-
 
 
 def index(request):
@@ -251,8 +250,7 @@ def item_list(request):
     print(request.GET)
 # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '' and  g_search is not None:
-        queryset = Item_Creation.objects.filter(Q(Description__icontains=g_search)|
-                                                Q(Name__Item_name__icontains=g_search)|
+        queryset = Item_Creation.objects.filter(Q(item_name__icontains=g_search)|
                                                 Q(Item_Color__color_name__icontains=g_search)|
                                                 Q(Fabric_Group__fab_grp_name__icontains=g_search))
         
@@ -260,17 +258,12 @@ def item_list(request):
 
     sort_name = request.GET.get('sort_name')
 
-    if sort_name == 'p_name_sort_asc':
-        queryset = Item_Creation.objects.order_by('Name__Item_name')
 
-    elif sort_name == 'p_name_sort_dsc':
-        queryset = Item_Creation.objects.order_by('-Name__Item_name')
-
-    elif sort_name == "description_sort_asc" :
-        queryset = Item_Creation.objects.order_by('Description')
+    if sort_name == "item_name_sort_asc" :
+        queryset = Item_Creation.objects.order_by('item_name')
     
-    elif sort_name == "description_sort_dsc" :
-        queryset = Item_Creation.objects.order_by('-Description')
+    elif sort_name == "item_name_sort_dsc" :
+        queryset = Item_Creation.objects.order_by('-item_name')
 
     elif sort_name == "fabgrp_sort_asc" :
         queryset = Item_Creation.objects.order_by('Fabric_Group__fab_grp_name')
@@ -289,11 +282,11 @@ def item_list(request):
 
     if any_desc:
         if any_desc != '' and any_desc is not None:
-            queryset = Item_Creation.objects.filter(Description__icontains=any_desc)
+            queryset = Item_Creation.objects.filter(item_name__icontains=any_desc)
         
     if exact_desc:
         if exact_desc != '' and exact_desc is not None:
-            queryset = Item_Creation.objects.filter(Description__exact=exact_desc)
+            queryset = Item_Creation.objects.filter(item_name__exact=exact_desc)
 
     return render(request,'product/list_item.html', {"items":queryset})
 
@@ -386,59 +379,59 @@ def color_delete(request, slug):
 
 
 
-#_______________________item name start___________________________________
+# #_______________________item name start___________________________________
 
-def item_name_create(request):
-    form = ItemName()
-    if request.method == 'POST':
-        form = ItemName(request.POST)
-        if form.is_valid():
-            form.save()
-            if 'save_and_add_another' in request.POST:
-                form = ItemName()
-                return render(request,'product/item_name_create.html', {'form':form})
-            #get the return url from the session and redirect it to the same 
-            return_url = request.session.get('return_url', '/')
-            # delete the session
-            del request.session['return_url']
-            return redirect(return_url)
-        else:
-            print(form.errors)
-            return render(request,'product/item_name_create.html', {'form':form})
-    else:
-        return_url_get = request.META.get('HTTP_REFERER', '/')
-        request.session['return_url'] = return_url_get
-        return render(request,'product/item_name_create.html', {'form':form,'return_url_get':return_url_get })
-
-
-def item_name_update(request,slug):
-    item_name_instance = item_name.objects.get(slug=slug)
-    form = ItemName(instance=item_name_instance)
-    if request.method == 'POST':
-        form = ItemName(request.POST, instance=item_name_instance)
-        if form.is_valid():
-            form.save()
-            return redirect('item-name-list')
-        else:
-            return render(request,'product/item_name_update.html', {"form":form})
-    else:
-        return render(request, 'product/item_name_update.html', {"form":form})
+# def item_name_create(request):
+#     form = ItemName()
+#     if request.method == 'POST':
+#         form = ItemName(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             if 'save_and_add_another' in request.POST:
+#                 form = ItemName()
+#                 return render(request,'product/item_name_create.html', {'form':form})
+#             #get the return url from the session and redirect it to the same 
+#             return_url = request.session.get('return_url', '/')
+#             # delete the session
+#             del request.session['return_url']
+#             return redirect(return_url)
+#         else:
+#             print(form.errors)
+#             return render(request,'product/item_name_create.html', {'form':form})
+#     else:
+#         return_url_get = request.META.get('HTTP_REFERER', '/')
+#         request.session['return_url'] = return_url_get
+#         return render(request,'product/item_name_create.html', {'form':form,'return_url_get':return_url_get })
 
 
-def item_name_list(request):
-    Item_name_all = item_name.objects.all()
-    return render(request, 'product/item_name_list.html', {'Item_name_all':Item_name_all})
+# def item_name_update(request,slug):
+#     item_name_instance = item_name.objects.get(slug=slug)
+#     form = ItemName(instance=item_name_instance)
+#     if request.method == 'POST':
+#         form = ItemName(request.POST, instance=item_name_instance)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('item-name-list')
+#         else:
+#             return render(request,'product/item_name_update.html', {"form":form})
+#     else:
+#         return render(request, 'product/item_name_update.html', {"form":form})
 
 
-
-def item_name_delete(request,slug):
-    item_name_pk = item_name.objects.get(slug=slug)
-    item_name_pk.delete()
-    return redirect('item-name-list')
+# def item_name_list(request):
+#     Item_name_all = item_name.objects.all()
+#     return render(request, 'product/item_name_list.html', {'Item_name_all':Item_name_all})
 
 
 
-#_______________________item name end___________________________________
+# def item_name_delete(request,slug):
+#     item_name_pk = item_name.objects.get(slug=slug)
+#     item_name_pk.delete()
+#     return redirect('item-name-list')
+
+
+
+# #_______________________item name end___________________________________
 
 
 

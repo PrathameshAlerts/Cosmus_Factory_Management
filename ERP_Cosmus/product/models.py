@@ -233,19 +233,19 @@ class PProduct_Creation(models.Model):
 
 
 
-class item_name(models.Model):
-    Item_name = models.CharField(primary_key = True, max_length = 255)
-    slug = models.SlugField(unique = True)
+# class item_name(models.Model):
+#     Item_name = models.CharField(primary_key = True, max_length = 255)
+#     slug = models.SlugField(unique = True)
 
-    def save(self,  *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.Item_name)
-        super().save(*args, **kwargs)
+#     def save(self,  *args, **kwargs):
+#         if not self.slug:
+#             self.slug = slugify(self.Item_name)
+#         super().save(*args, **kwargs)
     
 
 
-    def __str__(self):
-        return self.Item_name   
+    # def __str__(self):
+    #     return self.Item_name   
 
 class Fabric_Group_Model(models.Model):
     fab_grp_name = models.CharField(primary_key = True, max_length = 255)
@@ -308,8 +308,7 @@ class Item_Creation(models.Model):
 
     ]
     #need to add many to many field to vendor 
-    Description = models.CharField(unique= True, null=False, max_length = 255) 
-    Name = models.ForeignKey(item_name, on_delete=models.PROTECT)
+    item_name = models.CharField(unique= True, null=False, max_length = 255)
     Material_code = models.CharField(max_length = 255, null = True)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Packing = models.CharField(max_length = 255, choices = PACKING)
@@ -326,7 +325,6 @@ class Item_Creation(models.Model):
 
 # class Account_Group(models.Model):
 #     acc_grp = models.CharField(max_length = 100, null=False, blank = False)
-<<<<<<< HEAD
 
 
 # class Account_master(models.Model):
@@ -335,26 +333,6 @@ class Item_Creation(models.Model):
 #     account_group = models.ForeignKey(Account_Group, on_delete = models.PROTECT)
 #     ref_number = models.IntegerField()
 
-
-
-
-
-
-
-
-
-
-
-
-=======
-
-
-# class Account_master(models.Model):
-#     name = 
-#     short_name = 
-#     account_group = models.ForeignKey(Account_Group, on_delete = models.PROTECT)
-#     ref_number = models.IntegerField()
->>>>>>> b8f7777fcb71c169aa0274e42dfa06af460188be
 
 # @receiver(pre_save, sender=Item_Creation)
 # def update_combined_field(sender, instance, **kwargs):
@@ -376,7 +354,6 @@ class Item_Creation(models.Model):
             cleaned_data['autofill_field'] = autofill_value
 
         return cleaned_data
-
     """
 
 

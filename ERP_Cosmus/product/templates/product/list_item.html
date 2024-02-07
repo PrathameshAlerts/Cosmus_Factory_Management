@@ -24,22 +24,22 @@ This means that if the user has previously submitted the form with a value for p
     </form>
 
     <form action="" method="get">
-    <button name = 'sort_name' value = 'p_name_sort_asc' >ascending</button>
+    <button name = 'sort_name' value = 'item_name_sort_asc' >ascending</button>
     </form>
 
     <form action="" method="get">
-    <button name = 'sort_name'  value = 'p_name_sort_dsc'>descending</button>
+    <button name = 'sort_name'  value = 'item_name_sort_dsc'>descending</button>
     </form>
 
 
 
     <form action="" method="get">
 
-      <label for="all_description">any Search</label>
-      <input type="search" id="all_description" name="any_desc" value = {{request.GET.any_desc}} >
+      <label for="all_item_name">any Search</label>
+      <input type="search" id="all_item_name" name="any_item_name" value = {{request.GET.any_item_name}} >
 
-      <label for="exact_description">exact Search</label>
-      <input type="search" id="exact_description" name="exact_desc" value = {{request.GET.exact_desc}}>
+      <label for="exact_item_name">exact Search</label>
+      <input type="search" id="exact_item_name" name="exact_item_name" value = {{request.GET.exact_item_name}}>
       
       <input type="submit">
     </form>
@@ -48,9 +48,8 @@ This means that if the user has previously submitted the form with a value for p
 
     <table>
         <tr>
-        <th>Description</th>
-        <th>Fabric Group</th>
         <th>Name</th>
+        <th>Fabric Group</th>
         <th>Item Color</th>
         <th>Material Code</th>
         <th>Packing</th>
@@ -66,9 +65,8 @@ This means that if the user has previously submitted the form with a value for p
 
        {%for item in items %}
         <tr>
-          <td>{{item.Description}}</td>
+          <td>{{item.item_name}}</td>
           <td>{{item.Fabric_Group}}</td>
-          <td>{{item.Name}}</td>
           <td>{{item.Item_Color}}</td>
           <td>{{item.Material_code}}</td>
           <td>{{item.Packing}}</td>
@@ -80,14 +78,16 @@ This means that if the user has previously submitted the form with a value for p
           <td>{{item.GST}}</td>
           <td>{{item.HSN_Code}}</td>
           <td>{{item.status}}</td>
-          <td><a href="{% url 'item-fabgroup-create' %}">Fabric Group</a></td>
-          <td><a href="{% url 'item-name-create' %}">Name</a></td>
-          <td><a href="{% url 'colorcreate' %}">Item Color</a></td>
           <td><a href="{% url 'item-edit' item.id %}">Edit</a></td>
           <td><a href="{% url 'item-delete' item.id %}">click</a></td>
+          {% endfor %}
+
+          <td><a href="{% url 'item-fabgroup-create' %}">Fabric Group</a></td>
+          <td><a href="{% url 'colorcreate' %}">Item Color</a></td>
+
     
         </tr>
-      {% endfor %}
+      
 
     
       </table>
