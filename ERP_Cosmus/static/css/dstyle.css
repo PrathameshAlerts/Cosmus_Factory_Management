@@ -121,7 +121,13 @@ body{
   }
   .name_icons{
     position: absolute;
-    
+    top: 9px;
+    left: 46px;
+   }
+   .Fabric_icons{
+    position: absolute;
+    top: 9px;
+    left: 46px;
    }
  
   .dropdown-menu-right {
