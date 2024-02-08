@@ -168,7 +168,7 @@ def product_color_sku(request):
                 if current_form.is_valid():   
                         all_sets_valid = True
                         pproduct = current_form.save(commit=False)
-
+                        print(form.cleaned_data)
                         # Create a new Product instance or get an existing one based on Product_Refrence_ID
                         # product will be the object retrieved from the db and then created ,created will be a boolean field
                         product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
@@ -224,17 +224,18 @@ def pproduct_delete(request, pk):
 
 def item_create(request):
     if request.method == 'POST':
-        print(request.FILES)
         form = Itemform(request.POST, request.FILES)
+        
         if form.is_valid():
+            
             form.save()
             return render(request,'product/success.html')
         else:
             return render(request,'product/create_item.html', {'form':form})
     else:
-
         form = Itemform()
-        return render(request,'product/create_item.html', {'form':form})
+       
+        return render(request, 'product/create_item.html', {'form':form})
 
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
@@ -436,6 +437,7 @@ def color_delete(request, slug):
 
 
 #_______________________fabric group start___________________________________
+
 def item_fabric_group_create(request):
     form = ItemFabricGroup()
     if request.method == 'POST':
