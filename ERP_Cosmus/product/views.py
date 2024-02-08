@@ -115,8 +115,8 @@ def aplus(request):
 
 #____________________________Production-Product-View-Start__________________________________
 
-def allmaster(request):
-    return render(request,'product/all_master.html')
+def dashboard(request):
+    return render(request,'product/dashboard.html')
 
 
 
@@ -289,7 +289,7 @@ def item_list(request):
         if exact_desc != '' and exact_desc is not None:
             queryset = Item_Creation.objects.filter(item_name__exact=exact_desc)
 
-    return render(request,'product/all_master.html', {"items":queryset})
+    return render(request,'product/list_item.html', {"items":queryset})
 
 
 

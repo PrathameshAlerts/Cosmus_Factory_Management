@@ -1,0 +1,53 @@
+
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+
+<section>
+  <div class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="row">
+            <!-- order-card start -->
+            <div class="col-lg-3">
+                <div class="card bg-c-blue order-card">
+                    <div class="card-body">
+                        <h6 class="text-white">Orders Received</h6>
+                        <h2 class="text-right text-white"><i class="fa fa-solid fa-cart-shopping card-icons"></i><span class="bcard-pad">486</span></h2>
+                        <p class=" text-white">Completed Orders<span class="bcard-pa">351</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card bg-c-green order-card">
+                    <div class="card-body">
+                        <h6 class="text-white">Total Sales</h6>
+                        <h2 class="text-right text-white"><i class="fa-solid fa-tag card-icons"></i><span class="gcard-pad">1641</span></h2>
+                        <p class="text-right text-white">This Month<span class="gcard-pa">213</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card bg-c-yellow order-card">
+                    <div class="card-body">
+                        <h6 class="text-white">Revenue</h6>
+                        <h2 class="text-right text-white"><i class="fa fa-solid fa-repeat card-icons"></i><span class="ycard-pad">$42,562</span></h2>
+                        <p class="text-right text-white">This Month<span class="ycard-pa">$5,032</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card bg-c-red order-card">
+                    <div class="card-body">
+                        <h6 class="text-white">Total Profit</h6>
+                        <h2 class="text-right text-white"><i class="fa-solid fa-award card-icons"></i><span class="rcard-pad">$9,562</span></h2>
+                        <p class="text-right text-white">This Month<span class="rcard-pa">$542</span></p>
+                    </div>
+                </div>
+            </div>
+    </div>
+  </div>
+</section>
+    
+      
+
+{% endblock body %}

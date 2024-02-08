@@ -51,7 +51,7 @@ urlpatterns = [
     path('unitnamedelete/<slug:slug>',views.unit_name_delete , name= 'unit_name-delete'),
 
     #common Routes
-    path('allmaster/', views.item_list , name= 'all-master'),
+    path('dashboard/', views.dashboard , name='dashboard-main'),
 
 
 ]

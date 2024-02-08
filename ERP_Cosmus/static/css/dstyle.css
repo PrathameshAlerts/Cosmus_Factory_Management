@@ -35,8 +35,8 @@ body{
 .gcard-pad{
     padding-left: 142px;
 }
-.card-pa{
-    padding-left: 80px;
+.bcard-pa{
+    padding-left: 64px;
 }
 .gcard-pa{
     padding-left: 122px;
@@ -151,7 +151,7 @@ body{
     background:#fff;
     color: #666;
     backdrop-filter: blur(15px);
-    width: 240px;
+    width: 230px;
     height: 100vh;
     min-height: 56px;
     position: absolute;
@@ -181,10 +181,10 @@ body{
    
    .side-bar .menu .item a{
     color: #666;
-    font-size: 16px;
+    font-size: 15px;
     text-decoration: none;
     display: block;
-    padding: 2px 30px;
+    padding: 3px 25px;
     line-height: 60px;
     background-color: #fff;
 }
@@ -212,7 +212,7 @@ body{
    }
    
    .side-bar .menu .item .sub-menu a{
-    padding-left: 25px;
+    padding-left: 20px;
    }
    
    .rotate{
@@ -453,7 +453,7 @@ body{
 .pcoded-content{
     position: relative;
     display: block;
-    padding: 25px;
+    padding: 15px;
 }
 
 .pcoded-main-container {

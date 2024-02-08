@@ -16,11 +16,81 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" >
     <link rel="stylesheet" type="text/css" href="{% static 'css/dstyle.css' %}" >
-  {% block head %}
-    
-  {% endblock head %}
+
 </head>
 
+<body>
+  <div class="side-bar">
+    <div class="menu">
+      <div class="item"><a href="{% url 'dashboard-main' %}"><i class="fas fa-desktop"></i>Dashboard</a></div>
+      <div class="item">
+        <a class="sub-btn"><i class="fa-brands fa-product-hunt"></i></i>Product Category<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="{% url 'pproductlist' %}" class="sub-item">Product Master</a>
+          <a href="{% url 'item-list' %}" class="sub-item">Item Master</a>
+        </div>
+      </div>
+    
+      <div class="item">
+        <a class="sub-btn"><i class="fas fa-table"></i>Category<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="{% url 'colorlist' %}" class="sub-item">Color Master</a>
+          <a href="{% url 'item-fabgroup-list' %}" class="sub-item">Fabric-group-master</a>
+        </div>
+      </div>
+      
+      <div class="item">
+        <a class="sub-btn"><i class="fa-solid fa-file-invoice"></i>Accounts<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="#" class="sub-item"></a>
+          <a href="#" class="sub-item">Sub Item 02</a>
+         
+        </div>
+      </div>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg coder-navbar navbar-light headerpos-fixed header-blue">
+  <div class="container">
+    <a class="navbar-brand text-white" href="#">Cosmus</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown notifiaction">
+              <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="fs-5"><i class="fa-regular fa-bell"></i></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                  <div class="pro-head d-flex fs-6">
+                      <h6 class="d-inline-block">Notifiaction</h6>
+                      <a href="#" class="fs-6 float-right">Mark as all</a>
+                      <a href="#" class="fs-6 float-right">Clear all</a>
+                    </div>
+              </ul>
+            </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img alt="user-profile" src="../../static/images/logo.jpg" class="rounded-circle image-h">
+          </a>
+          
+          <ul class="dropdown-menu dropdown-menu-right">
+              <div class="pro-head">
+                  <img src="../../static/images/logo.jpg" class="rounded-circle image-h" alt="User-Profile-Image">
+                  <span>John Doe</span>
+                  <a href="auth-signin.html" class="dud-logout" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                  </a>
+                </div>
+                <li><a href="user-profile.html" class="dropdown-item "><i class="fa-regular fa-user"></i> Profile</a></li>
+                <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
+                <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
         {% block body %} {% endblock body %}
 
