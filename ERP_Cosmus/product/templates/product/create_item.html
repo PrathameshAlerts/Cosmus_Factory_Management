@@ -8,12 +8,14 @@
 <body>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        
+
         {{form.as_p}}
+        
         <input type="submit" name = 'save' value = 'Save'>
         <input type="submit" name = 'save_and_add_another' value = 'Save and Add Another'>
 
     </form>
-
     
     <br>
     <a href="{% url 'colorcreate'  %}">Add Color</a>
