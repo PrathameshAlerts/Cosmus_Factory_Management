@@ -11,34 +11,50 @@
 {% endblock head %} {% block body %}
 <body>
   <section class="">
-    <div class="side-bar">
-      <div class="menu">
-        <div class="item"><a href="#"><i class="fas fa-desktop"></i>Dashboard</a></div>
-        <div class="item">
-          <a class="sub-btn"><i class="fas fa-table"></i>Product Catagory<i class="fas fa-angle-right dropdown"></i></a>
-          <div class="sub-menu">
-            <a href="#" class="sub-item">Product Master</a>
-            <a href="#" class="sub-item">Item Master</a>
-          </div>
-        </div>
-        <div class="item">
-          <a class="sub-btn"><i class="fas fa-table"></i>Catagary<i class="fas fa-angle-right dropdown"></i></a>
-          <div class="sub-menu">
-            <a href="#" class="sub-item">Color Master</a>
-            <a href="#" class="sub-item">Fabric-group-master</a>
-          </div>
-        </div>
-        <div class="item">
-          <a class="sub-btn"><i class="fas fa-table"></i>Accounts<i class="fas fa-angle-right dropdown"></i></a>
-          <div class="sub-menu">
-            <a href="#" class="sub-item"></a>
-            <a href="#" class="sub-item">Sub Item 02</a>
-            <a href="#" class="sub-item">Sub Item 03</a>
-          </div>
+    <nav class="pcoded-navbar menupos-fixed menu-light">
+      <div class="navbar-wrapper">
+        <div class="navbar-content" >
+          <ul class="nav pcoded-inner-navbar">
+            <li class="nav-item pcoded-menu-caption">
+              <label>Navigation</label>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link"><span class="pcoded-micon"><i class="fa-solid fa-house"></i></i></span><span class="pcoded-mtext">Dashboard</span></a>
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+                <a href="#" class="nav-link" data-toggle="dropdown"><span class="pcoded-micon"><i class="fa-brands fa-product-hunt"></i></span><span class="pcoded-mtext">Product Category</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
+                <ul class="pcoded-submenu">
+                    <li><a href="{% url 'pproductlist' %}">Product Master</a></li>
+                    <li><a href="{% url 'item-list' %}" >Item Master</a></li>
+                </ul>
+            </li>
+            <li class="nav-item pcoded-menu-caption">
+              <label>Category Master</label>
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="fa fa-light fa-box"></i></span><span class="pcoded-mtext">Category</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
+              <ul class="pcoded-submenu">
+                <li><a href="{% url 'colorlist' %}">Color Master</a></li>
+                <li><a href="{% url 'item-fabgroup-list' %}">Fabric-Group Master</a></li>
+              
+              </ul>
+            </li>
+            
+            <li class="nav-item pcoded-menu-caption">
+              <label>Pages</label>
+            </li>
+            <li class="nav-item pcoded-hasmenu pcoded-toggle">
+                <a href="#!" class="nav-link dropdown-toggle"><span class="pcoded-micon"><i class="fa-solid fa-lock"></i></span><span class="pcoded-mtext">Authentication</span><span class="float-right"><i class="fa-solid fa-chevron-down"></i></span></a>
+                <ul class="pcoded-submenu">
+                    <li><a href="auth-signup.html" target="_blank">Sign up</a></li>
+                    <li><a href="auth-signin.html" target="_blank">Sign in</a></li>
+                </ul>
+            </li>
+          </ul>
         </div>
       </div>
-  </div>
-    <header class="navbar x navbar-expand-lg navbar-light headerpos-fixed header-blue">
+    </nav>
+    <header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-fixed header-blue">
       <div class="m-header">
         <a href="#!" class="navbar-brand">
           COSMUS
@@ -91,7 +107,7 @@
                   </a>
                 </div>
                 <ul class="pro-body">
-                  <li><a href="user-profile.html" class="dropdown-item"><i class="fa-regular fa-user"></i> Profile</a></li>
+                  <li><a href="user-profile.html" class="dropdown-item bg-body-primary"><i class="fa-regular fa-user"></i> Profile</a></li>
                   <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
                   <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
                 </ul>
@@ -145,7 +161,7 @@
         <div class="row">
           <div class="col-lg-12 sub_main">
             <div class=" mb-3">
-              <button class="dropbtn rounded-4 my-2 mx-3"><a href="{%url 'item-create'%}">Add Item +</a></button>
+              <button class="dropbtn rounded-4 my-2 mx-3">Add Item +</button>
               <input class=" search_input" type="text" placeholder="Search" aria-label="Search"/>
               <button class="btn btn-outline-success my-2" type="button">
                 <span><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -159,7 +175,7 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col" class="name_absolute">
-                      Name
+                      Description
                       <div class="nav-item dropdown icons">
                         <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="fa-solid fa-angle-down icons"></i>
@@ -266,7 +282,63 @@
                         </ul>
                       </div>
                     </th>
-                    
+                    <th scope="col" class="name_absolute">
+                      Name
+                      <div class="nav-item dropdown product_icons">
+                        <a
+                          class="nav-link dropdown"
+                          href="#"
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i class="fa-solid fa-angle-down mx-2"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <button class="dropdown-item" href="#">
+                              Sort Ascending
+                              <i class="fa-solid fa-arrow-up-long"></i>
+                            </button>
+                          </li>
+                          <li>
+                            <button class="dropdown-item" href="#">
+                              Sort Decending
+                              <i class="fa-solid fa-arrow-down-long"></i>
+                            </button>
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li class="nav-item dropend">
+                            <button
+                              class="nav-link dropdown px-4 fs-6"
+                              data-bs-toggle=" dropdown"
+                              aria-expanded="false"
+                            >
+                              Filter
+                              <i
+                                class="fa-solid fa-angle-right text-decoration-none"
+                              ></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li>
+                                <input
+                                  type="text"
+                                  class="dropdown-item input_text"
+                                  placeholder="Any match.."
+                                />
+                              </li>
+                              <li>
+                                <input
+                                  type="text"
+                                  class="dropdown-item input_text"
+                                  placeholder="Exact match.."
+                                />
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </th>
                     <th scope="col" class="name_absolute">
                       Item Color
                       <div class="nav-item dropdown sku_icons">
@@ -609,15 +681,13 @@
                     <th scope="col">View</th>
                   </tr>
                 </thread>
-                
                 <tbody>
-                  {% for item in items %}
-                    
-                  
-                </tr>
-                <td>{{ forloop.counter }}</td>              
-                    <td>{{item.item_name}}</td>
+                  {%for item in items %}
+                  <tr>
+                    <td>1</td>
+                    <td>{{item.Description}}</td>
                     <td>{{item.Fabric_Group}}</td>
+                    <td>{{item.Name}}</td>
                     <td>{{item.Item_Color}}</td>
                     <td>{{item.Material_code}}</td>
                     <td>{{item.Packing}}</td>
@@ -632,14 +702,13 @@
                     <td><a href="{% url 'item-edit' item.id %}">Edit</a></td>
                     <td><a href="{% url 'item-delete' item.id %}">delete</a></td>
                   </tr>
-                  {% endfor %}  
+                  {% endfor %}
                 </tbody>
-                
               </table>
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
   </div>
 </section>
