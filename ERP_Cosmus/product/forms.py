@@ -88,7 +88,7 @@ class Itemform(forms.ModelForm):
     class Meta:
         model = Item_Creation
         fields = ['item_name','Material_code','Item_Color','shades','Packing',
-                 'unit_name_item','Units','Panha', 'Fabric_nonfabric','Fabric_Finishes','Fabric_Group',
+                 'Units','Panha', 'Fabric_nonfabric','Fabric_Finishes','Fabric_Group',
                  'GST','HSN_Code','status']
         
 
