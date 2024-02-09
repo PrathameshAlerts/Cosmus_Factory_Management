@@ -16,3 +16,13 @@ $(document).ready(function(){
       $('.menu-btn').css("visibility", "visible");
     });
   });
+
+  //search in using sort option
+  $(document).ready(function () {
+    $('select').selectize({
+        sortField: 'text'
+    });
+});
+
+// edit and add items
+

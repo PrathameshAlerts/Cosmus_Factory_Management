@@ -223,6 +223,7 @@ def pproduct_delete(request, pk):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
+    print(request.POST)
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
         
@@ -231,6 +232,7 @@ def item_create(request):
             form.save()
             return render(request,'product/success.html')
         else:
+            print(form.errors)
             return render(request,'product/create_item.html', {'form':form})
     else:
         form = Itemform()

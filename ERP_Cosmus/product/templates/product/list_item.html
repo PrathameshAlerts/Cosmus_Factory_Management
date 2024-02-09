@@ -117,13 +117,13 @@ This means that if the user has previously submitted the form with a value for p
           </div>  
         </div>    
       <div class="">
-        <table class="table table-striped table-hover table-responsive p-3">
+        <table class="table table-striped table-hover table-responsive">
           <thread>
             <tr>
-              <th scope="col" class="fs-6">#</th>
+              <th scope="col" class="fs-6 p-2">#</th>
               <th scope="col" class="name_absolute">Name
                 <div class="nav-item dropdown name_icons">
-                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down icons"></i></a>
+                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
                     <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
                     <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
@@ -168,7 +168,7 @@ This means that if the user has previously submitted the form with a value for p
                     <li><button class="dropdown-item" href="#"> Sort Decending <i class="fa-solid fa-arrow-down-long"></i></button></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li class="nav-item dropend">
-                     <button class="nav-link dropdown px-4 fs-6" data-bs-toggle=" dropdown" aria-expanded="false" >Filter
+                     <button class="nav-link dropdown px-4 fs-6" data-bs-toggle="dropdown" aria-expanded="false" >Filter
                       <i class="fa-solid fa-angle-right text-decoration-none"></i>
                       </button>
                       <ul class="dropdown-menu">
@@ -180,96 +180,32 @@ This means that if the user has previously submitted the form with a value for p
                 </div>
               </th>
               <th scope="col" class="name_absolute">Material Code
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-angle-down mx-2"></i></a>
+                <div class="nav-item dropdown material_icons">
+                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending <i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
+                    <li><input type="text" class="dropdown-item input_text" placeholder="Any match.."/></li>
                   </ul>
-                </div>
-              </th>
+                </div> </th>
               <th scope="col" class="name_absolute">Packing
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-angle-down mx-2"></i></a>
+                <div class="nav-item dropdown packing_icons">
+                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
+                    <li><input type="text" class="dropdown-item input_text" placeholder="Any match.."/></li>
                   </ul>
                 </div>
               </th>
               <th scope="col" class="name_absolute">Unit Name
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="nav-item dropdown unit_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#"> Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button> </li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
+                    <li><input type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
                   </ul>
                 </div>
               </th>
-              <th scope="col" class="name_absolute">Units
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-angle-down mx-2"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#"> Sort Ascending<i class="fa-solid fa-arrow-up-long"></i> </button></li>
-                    <li> <button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i> </button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </th>
-              <th scope="col" class="name_absolute">Panha
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-angle-down mx-2"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button> </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i></button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </th>
+              <th scope="col" class="name_absolute">Units</th>
+              <th scope="col" class="name_absolute">Panha</th>
               <th scope="col" class="name_absolute">Fabric/ Non Fabric
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="nav-item dropdown fn_fabric_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
                     <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
@@ -279,82 +215,38 @@ This means that if the user has previously submitted the form with a value for p
                       <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
                       </button>
                       <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
+                        <li><input type="text" class="dropdown-item input_text"placeholder="Any match.." /></li>
+                        <li><input type="text" class="dropdown-item input_text"placeholder="Exact match.."/></li>
                       </ul>
                     </li>
                   </ul>
                 </div>
               </th>
               <th scope="col" class="name_absolute">Fabric Finishes
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="nav-item dropdown ffabric_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
+                    <li><input type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
                   </ul>
                 </div>
               </th>
-              <th scope="col" class="name_absolute">GST
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-angle-down mx-2"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#"> Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </th>
+              <th scope="col" class="name_absolute">GST</th>
               <th scope="col" class="name_absolute">HSN Code
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-angle-down mx-2"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
+                <div class="nav-item dropdown hsn_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-angle-down mx-2"></i></a>
+                <ul class="dropdown-menu">
+                  <li><input type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
+                </ul>
+              </div>
               </th>
               <th scope="col" class="name_absolute">Status
-                <div class="nav-item dropdown color_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="nav-item dropdown status_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li> <button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6"data-bs-toggle=" dropdown">Filter<i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><inputtype="text"class="dropdown-item input_text"placeholder="Any match.." /></li>
-                        <li><inputtype="text" lass="dropdown-item input_text"placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
+                    <li><button class="dropdown-item" href="#">Unused</button></li>
+                    <li> <button class="dropdown-item" href="#">Used</button></li>
+                    <li> <button class="dropdown-item" href="#">Slow Moving</button></li>
+                    <li> <button class="dropdown-item" href="#">Dead</button></li> 
                   </ul>
                 </div>
               </th>
@@ -383,7 +275,7 @@ This means that if the user has previously submitted the form with a value for p
               <td>{{item.status}}</td>
               <td><a href="{% url 'item-edit' item.id %}"><span<i class="fa-solid fa-pen-to-square"></i></span></a></td>
               <td><a href="{% url 'item-delete' item.id %}"><span><i class="fa-solid fa-trash"></i></span></a></td>
-              <td><a href="{% url 'item-delete' item.id %}"><span><i class="fa-solid fa-eye"></i></span></a></td>
+              <td><a href="#"><span><i class="fa-solid fa-eye"></i></span></a></td>
               
             </tr>
             {% endfor %}  

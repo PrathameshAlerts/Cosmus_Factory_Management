@@ -114,32 +114,75 @@ body{
   .input_text{
    height: auto;
    width: 150px;
+   border-radius: 20px;
+   outline: none;
+  }
+  .input_text li{
+    color: #fff;
+    background-color: gray;
   }
   .name_absolute{
    position: relative;
    font-size: 13px;
+   width: 200px;
   }
   .name_icons{
     position: absolute;
-    top: 9px;
-    left: 50px;
+    top: 10px;
+    left: 49px;
    }
    .fabric_icons{
     position: absolute;
     top: 10px;
-    left: 66px;
+    left: 44px;
    }
  .Item_color_icons{
     position: absolute;
+    top:10px;
+    left: 36px;
+ }
+ .material_icons{
+    position: absolute;
     top: 9px;
-    left: 46px;
+    left: 54px;
+ }
+ .packing_icons{
+    position: absolute;
+    top: 9px;
+    left: 52px;
+ }
+ .unit_icons{
+    position: absolute;
+    top: 9px;
+    left: 39px;
+ }
+ .fn_fabric_icons{
+    position: absolute;
+    top: 10px;
+    left: 47px;
+ }
+ .ffabric_icons{
+    position: absolute;
+    top: 10px;
+    left: 47px;
+ }
+ .hsn_icons{
+    position: absolute;
+    top: 10px;
+    left: 43px;
+ }
+ .status_icons{
+    position: absolute;
+    top: 10px;
+    left: 43px;
  }
   .dropdown-menu-right {
     right: 0;
     left: auto;
 }
 .float-right {
-    float: right !important;
+    font-size: 10px;
+    float: left !important;
 }
 .card-icons{
     font-size: 27px;
@@ -164,26 +207,27 @@ body{
     left:0px;
     margin: 5px 0px;
 }
+
 .side-bar::-webkit-scrollbar {
      width: 200px;
 }  
    
 .side-bar.active{
     left: 0;
+    overflow: auto;
 }
 
-   
-   .side-bar .menu{
+.side-bar .menu{
     width: 100%;
     margin-top: 30px;
-   }
+}
    
-   .side-bar .menu .item{
+.side-bar .menu .item{
     position: relative;
     cursor: pointer;
-   }
+}
    
-   .side-bar .menu .item a{
+.side-bar .menu .item a{
     color: #666;
     font-size: 15px;
     text-decoration: none;
@@ -193,58 +237,58 @@ body{
     background-color: #fff;
 }
    
-   .side-bar .menu .item a:hover{
+.side-bar .menu .item a:hover{
     background: #b6b8b9;
-    transition: 0.3s ease;
+    transition: 0.2s ease;
 
-   }
+}
    
-   .side-bar .menu .item i{
+.side-bar .menu .item i{
     margin-right: 15px;
-   }
+}
    
-   .side-bar .menu .item a .dropdown{
+.side-bar .menu .item a .dropdown{
     position: absolute;
     right: 0;
     margin: 20px;
-    transition: 0.3s ease;
-   }
+    transition: 0.2s ease;
+}
    
-   .side-bar .menu .item .sub-menu{
+.side-bar .menu .item .sub-menu{
     background: #262627;
     display: none;
-   }
+}
    
-   .side-bar .menu .item .sub-menu a{
+.side-bar .menu .item .sub-menu a{
     padding-left: 20px;
-   }
+}
    
-   .rotate{
+.rotate{
     transform: rotate(90deg);
-   }
-   .menu-btn{
+}
+.menu-btn{
     position: absolute;
     color: rgb(0, 0, 0);
     font-size: 35px;
     margin: 25px;
     cursor: pointer;
-   }
+}
    
-   .main{
+.main{
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 50px;
-   }
+}
    
 
-   @media (max-width: 900px){
+@media (max-width: 900px){
     .main h1{
       font-size: 40px;
       line-height: 60px;
     }
-   }
+ 
    img{
      width: 100px;
      margin: 15px;
@@ -259,7 +303,7 @@ body{
     background-color: #fff;
     color: #666;
    }
-
+}
 .coder-navbar{
     z-index: 1029;
     position: relative;
@@ -369,7 +413,6 @@ body{
 .search_input{
     position: relative;
     width: 40%;
-    
     border-radius: 30px;
     padding-left: 10px;
     margin-left: 250px;
@@ -412,40 +455,12 @@ body{
    left: 100%;
    margin-left: .125em;
   }
-  .input_text{
-   height: auto;
-   width: 150px;
-  }
-  .icons{
-    position: absolute;
  
-   }
-  .model_icons{
-   position: absolute;
-
-  }
-  .product_icons{
-   position: absolute;
-   top:9px;
-   left: 152px;
-  }
-  .sku_icons{
-   position: absolute;
-   top:9px;
-   left: 97px;
-  }
-  .color_icons{
-   position: absolute;
-   top:9px;
-   left: 115px;
-  }
-  .dropdown-menu-right {
+.dropdown-menu-right {
     right: 0;
     left: auto;
 }
-.float-right {
-    float: left !important;
-}
+
 .card-icons{
     font-size: 27px;
     padding-left: 12px;
@@ -556,3 +571,29 @@ body{
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
+/*===========create item form =========*/
+
+.item-form{
+    width: 170px;
+  }
+  .item-select{
+    width: 200px;
+    border: 1px solid #666;
+    border-radius: 7px;
+  }
+
+  .form-button{
+    font-family:"Poppins", sans-serif;
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 10px;
+    margin-left: 20px;
+  }
+
+  .create_item_form{
+    font-family:"Poppins", sans-serif;
+    font-size: 10px;
+  }
