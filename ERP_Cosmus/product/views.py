@@ -168,7 +168,7 @@ def product_color_sku(request):
                 if current_form.is_valid():   
                         all_sets_valid = True
                         pproduct = current_form.save(commit=False)
-                        print(form.cleaned_data)
+            
                         # Create a new Product instance or get an existing one based on Product_Refrence_ID
                         # product will be the object retrieved from the db and then created ,created will be a boolean field
                         product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
@@ -377,62 +377,6 @@ def color_delete(request, slug):
 
 
 #_____________________Color-end________________________
-
-
-
-# #_______________________item name start___________________________________
-
-# def item_name_create(request):
-#     form = ItemName()
-#     if request.method == 'POST':
-#         form = ItemName(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             if 'save_and_add_another' in request.POST:
-#                 form = ItemName()
-#                 return render(request,'product/item_name_create.html', {'form':form})
-#             #get the return url from the session and redirect it to the same 
-#             return_url = request.session.get('return_url', '/')
-#             # delete the session
-#             del request.session['return_url']
-#             return redirect(return_url)
-#         else:
-#             print(form.errors)
-#             return render(request,'product/item_name_create.html', {'form':form})
-#     else:
-#         return_url_get = request.META.get('HTTP_REFERER', '/')
-#         request.session['return_url'] = return_url_get
-#         return render(request,'product/item_name_create.html', {'form':form,'return_url_get':return_url_get })
-
-
-# def item_name_update(request,slug):
-#     item_name_instance = item_name.objects.get(slug=slug)
-#     form = ItemName(instance=item_name_instance)
-#     if request.method == 'POST':
-#         form = ItemName(request.POST, instance=item_name_instance)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('item-name-list')
-#         else:
-#             return render(request,'product/item_name_update.html', {"form":form})
-#     else:
-#         return render(request, 'product/item_name_update.html', {"form":form})
-
-
-# def item_name_list(request):
-#     Item_name_all = item_name.objects.all()
-#     return render(request, 'product/item_name_list.html', {'Item_name_all':Item_name_all})
-
-
-
-# def item_name_delete(request,slug):
-#     item_name_pk = item_name.objects.get(slug=slug)
-#     item_name_pk.delete()
-#     return redirect('item-name-list')
-
-
-
-# #_______________________item name end___________________________________
 
 
 
