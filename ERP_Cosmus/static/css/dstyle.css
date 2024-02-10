@@ -596,3 +596,65 @@ body{
   .create_item_form{
     font-family:"Poppins", sans-serif;
   }
+  /*=========create color form=======*/
+  .modal {
+    display: none; /* Hide the modal by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    
+    z-index: 1000; /* Ensure the modals appear on top of other content */
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    height: 369px;
+    width: 452px;
+    top: 20%;
+    left: 35%;
+  }
+
+  .close {
+    display: flex;
+   color: #aaa;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn {
+    cursor: pointer;
+    background-color: transparent;
+    height: auto;
+    width: auto;
+    color: #3498db;
+    font-size: 1.5em;
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
+}
+.create_color_lable{
+  width: 110px;
+}
+.create_icons{
+    position: absolute;
+    left: 171px;
+    top: 207px;
+}
+.create-btn{
+  background-color: #3498db;
+  color: white;
+  padding: 6px;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  margin: 10px;
+}

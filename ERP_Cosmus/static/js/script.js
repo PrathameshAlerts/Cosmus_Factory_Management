@@ -24,5 +24,15 @@ $(document).ready(function(){
     });
 });
 
-// edit and add items
+//create color form
 
+function openModal(modalId) {
+  var modal = document.getElementById(modalId);
+  modal.style.display = 'block';
+}
+
+// Function to close a modal
+function closeModal(modalId) {
+  var modal = document.getElementById(modalId);
+  modal.style.display = 'none';
+}
