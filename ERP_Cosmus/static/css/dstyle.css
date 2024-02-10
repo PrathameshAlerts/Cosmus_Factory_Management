@@ -256,7 +256,7 @@ body{
    
 .side-bar .menu .item .sub-menu{
     background: #262627;
-    display: none;
+    display: block;
 }
    
 .side-bar .menu .item .sub-menu a{
@@ -598,13 +598,12 @@ body{
   }
   /*=========create color form=======*/
   .modal {
-    display: none; /* Hide the modal by default */
+    display: block; /* Hide the modal by default */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.5);
-    
     z-index: 1000; /* Ensure the modals appear on top of other content */
   }
   

@@ -15,6 +15,7 @@ $(document).ready(function(){
       $('.side-bar').removeClass('active');
       $('.menu-btn').css("visibility", "visible");
     });
+  
   });
 
   //search in using sort option
@@ -25,7 +26,6 @@ $(document).ready(function(){
 });
 
 //create color form
-
 function openModal(modalId) {
   var modal = document.getElementById(modalId);
   modal.style.display = 'block';
