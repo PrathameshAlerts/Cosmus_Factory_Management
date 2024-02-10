@@ -8,7 +8,6 @@ urlpatterns = [
     path('login/',views.login , name='login'),
     path('register/',views.register , name= 'register'),
 
-
     #factoryroutes
     #product_routes
     path('editpproduct/<int:pk>',views.edit_production_product , name= 'edit_production_product'),
@@ -17,7 +16,7 @@ urlpatterns = [
     path('pproductdelete/<int:pk>',views.pproduct_delete, name= 'pproductdelete'),
 
     #color routes
-    path('colorlist/',views.color_list, name= 'colorlist'),
+    # path('colorlist/',views.color_list, name= 'colorlist'),
     path('colordelete/<slug:slug>',views.color_delete,name= 'colordelete'),
     path('colorcreate/',views.color_create, name='colorcreate'),
     path('coloredit/<slug:slug>',views.color_edit, name= 'coloredit'),
@@ -33,8 +32,6 @@ urlpatterns = [
     path('itemfabricgroupupdate/<slug:slug>',views.item_fabric_group_update , name= 'item-fabgroup-update'),
     path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
     path('itemfabricgroupdelete/<slug:slug>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
-
- 
 
     #unitname
     path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),

@@ -327,37 +327,53 @@ def item_delete(request, pk):
 
 
 
-def color_list(request):
-    color = Color.objects.all()
-    context = {'colors':color}
-    return render(request,'product/list_color.html', context=context)
+# def color_list(request):
+#     color = Color.objects.all()
+#     context = {'colors':color}
+#     return render(request,'product/list_color.html', context=context)
 
 
-# write code to delete the session data in the main pages
-# color create updated code for session data need to change to all create views save_and_add_another also need to add in other views
+
 def color_create(request):
+
     if request.method == 'POST':
         form = ColorForm(request.POST)
         if form.is_valid():
             form.save()
-            if 'save_and_add_another' in request.POST:
-                form = ColorForm()
-                return render(request,'product/create_color.html',{'form': form, 'return_url_get': request.session.get('return_url_color', '/')})
-            #get the return url from the session and redirect it to the same 
-            return_url = request.session.get('return_url_color', '/')
-            # delete the session
-            del request.session['return_url_color']
-            return redirect(return_url)
+            return redirect('item-create')
         else:
             print(form.errors)
             return render(request,"product/create_color.html",{'form': form})
+        
     else:
-        #store HTTP_REFERER which has the previous page route in the session 
-        if 'return_url_color' not in request.session:
-            return_url_get = request.META.get('HTTP_REFERER', '/')
-            request.session['return_url_color'] = return_url_get
+        color = Color.objects.all()
         form = ColorForm()
-        return render(request,'product/create_color.html',{'form': form, 'return_url_get': request.session.get('return_url_color', '/')})
+        return render(request,'product/create_color.html',{'form': form,'colors':color})
+        
+
+# def color_create(request):
+#     if request.method == 'POST':
+#         form = ColorForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             if 'save_and_add_another' in request.POST:
+#                 form = ColorForm()
+#                 return render(request,'product/create_color.html',{'form': form, 'return_url_get': request.session.get('return_url_color', '/')})
+#             #get the return url from the session and redirect it to the same 
+#             return_url = request.session.get('return_url_color', '/')
+#             # delete the session
+#             del request.session['return_url_color']
+#             return redirect(return_url)
+#         else:
+#             print(form.errors)
+#             return render(request,"product/create_color.html",{'form': form})
+#     else:
+#         #store HTTP_REFERER which has the previous page route in the session 
+#         if 'return_url_color' not in request.session:
+#             return_url_get = request.META.get('HTTP_REFERER', '/')
+#             request.session['return_url_color'] = return_url_get
+#         form = ColorForm()
+#         return render(request,'product/create_color.html',{'form': form, 'return_url_get': request.session.get('return_url_color', '/')})
 
 
 
