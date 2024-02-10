@@ -222,6 +222,7 @@ class Product(models.Model):
     Product_GST = models.CharField(null = True,choices = PRODUCT_GST, max_length = 200, blank = True)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
 
+
     
 
 
@@ -230,6 +231,7 @@ class PProduct_Creation(models.Model):
     PProduct_image = models.ImageField(upload_to ='pproduct/images' ,null=True ,blank=True)
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
     PProduct_SKU = models.IntegerField(primary_key = True)
+
 
 
 
