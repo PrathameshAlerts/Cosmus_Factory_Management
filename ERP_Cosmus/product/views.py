@@ -335,7 +335,7 @@ def item_delete(request, pk):
 
 
 def color_create(request):
-
+    print(request.POST)
     if request.method == 'POST':
         form = ColorForm(request.POST)
         if form.is_valid():
@@ -348,7 +348,7 @@ def color_create(request):
     else:
         color = Color.objects.all()
         form = ColorForm()
-        return render(request,'product/create_color.html',{'form': form,'colors':color})
+        return render(request,'product/create_color.html',{'form': form, 'colors':color})
         
 
 # def color_create(request):
@@ -396,7 +396,7 @@ def color_edit(request,slug):
 def color_delete(request, slug):
     product_color = Color.objects.get(slug=slug)
     product_color.delete()
-    return redirect('colorlist')
+    return redirect('colorcreate')
 
 
 #_____________________Color-end________________________

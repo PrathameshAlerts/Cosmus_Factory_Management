@@ -22,7 +22,7 @@
             <table class="table table-striped table-hover table-responsive">
               <thread>
                 <tr>
-                  <th scope="col" class="fs-6 p-2">#</th>
+                  <th scope="col" class="fs-6 p-2">No</th>
                   <th scope="col" class="name_absolute">Color Name
                     <div class="nav-item dropdown create_icons">
                       <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
@@ -36,12 +36,16 @@
                 </tr>
               </thread>
               <tbody>
+
+
+                {%for color in colors%}
                 <tr>
-                  <td>1</td>              
-                  <td>red</td>
-                  <td><a href="#"><span<i class="fa-solid fa-pen-to-square"></i></span></a></td>
-                  <td><a href="#"><span><i class="fa-solid fa-trash"></i></span></a></td>
+                  <td>{{forloop.counter}}</td>
+                <td>{{color.color_name}}</td>
+                <td><a href="{% url 'coloredit' color.slug %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                <td><a href="{% url 'colordelete' color.slug %}"><i class="fa-solid fa-trash"></i></a></td>
                 </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
