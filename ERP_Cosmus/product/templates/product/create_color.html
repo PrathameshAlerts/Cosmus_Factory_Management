@@ -7,11 +7,12 @@
     <div id="modal1" class="modal">
         <div class="modal-content">
           <h5>Create Color <span class="close" onclick="closeModal('modal1')">&times;</span></h5>
+          {{ form.color_name.errors }}
           <form  action="" method="POST">
             {% csrf_token %}
             <div class=" d-flex">
               <label for="id_color_name" class="form-label create_color_lable">Color Name:</label>
-              <input type="text" class="item-select"value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
+              <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
             </div>
             <input type="submit" class="create-btn" name="save" value="Save">
             <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
@@ -39,7 +40,7 @@
 
                 {% for color in colors %}
                 <tr>
-                <td>{{color.id}}</td>
+                <td>{{forloop.counter}}</td>
                 <td>{{color.color_name}}</td>
                 <td><a href="{% url 'coloredit' color.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
                 <td><a href="{% url 'colordelete' color.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
