@@ -306,7 +306,7 @@ body{
 }
 .coder-navbar{
     z-index: 1029;
-    position: relative;
+    position: fixed;
     display: flex;
     padding: 0;
     top: 0;
@@ -472,7 +472,7 @@ body{
 .pcoded-content{
     position: relative;
     display: block;
-    padding: 15px;
+    padding: 90px 25px;
 }
 
 .pcoded-main-container {
@@ -507,10 +507,11 @@ body{
     padding: 7px 8px;
     font-size: 14px;
     color: inherit;
-    border: 1px solid transparent 0.1;
+    border: 1px solid;
     border-radius: 17px;
     outline: none;
     width: 100%;
+    height: 32px;
   }
 
   button[type="submit"] {
@@ -610,9 +611,9 @@ body{
   .modal-content {
     background-color: #fff;
     padding: 20px;
-    height: 369px;
+    height: 550px;
     width: 452px;
-    top: 20%;
+    top: 15%;
     left: 35%;
   }
 
@@ -656,4 +657,17 @@ body{
   border: none;
   border-radius: 10px;
   margin: 10px;
+}
+.color_search{
+    color: #555;
+    display: flex;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    width: 45%;
+    margin-left: 10px;
+    margin-top: 40px;
+}
+
+.color_table{
+    font-size: 14px;
 }
