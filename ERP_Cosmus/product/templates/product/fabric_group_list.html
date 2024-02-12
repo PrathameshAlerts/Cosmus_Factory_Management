@@ -18,8 +18,8 @@
         {% for group in fab_group_all %}
         <tr>
           <td>{{group.fab_grp_name}}</td>
-          <td><a href="{% url 'item-fabgroup-update' group.slug %}">Edit</a></td>
-          <td><a href="{% url 'item-fabgroup-delete' group.slug %}">click</a></td>
+          <td><a href="{% url 'item-fabgroup-update' group.id %}">Edit</a></td>
+          <td><a href="{% url 'item-fabgroup-delete' group.id %}">click</a></td>
 
         </tr>
       {% endfor %}

@@ -18,8 +18,8 @@
        {%for color in colors%}
         <tr>
           <td>{{color.color_name}}</td>
-          <td><a href="{% url 'coloredit' color.slug %}">Edit</a></td>
-          <td><a href="{% url 'colordelete' color.slug %}">click</a></td>
+          <td><a href="{% url 'coloredit' color.id %}">Edit</a></td>
+          <td><a href="{% url 'colordelete' color.id %}">click</a></td>
         </tr>
       {% endfor %}
 

@@ -17,8 +17,8 @@
         {% for unit in unit_name_all %}
         <tr>
           <td>{{unit.unit_name}}</td>
-          <td><a href="{% url 'unit_name-update' unit.slug %}">Edit</a></td>
-          <td><a href="{% url 'unit_name-delete' unit.slug %}">Delete</a></td>
+          <td><a href="{% url 'unit_name-update' unit.id %}">Edit</a></td>
+          <td><a href="{% url 'unit_name-delete' unit.id %}">Delete</a></td>
 
         </tr>
 

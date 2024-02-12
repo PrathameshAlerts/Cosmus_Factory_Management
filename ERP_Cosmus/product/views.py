@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
 from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create
 from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName
@@ -334,21 +334,29 @@ def item_delete(request, pk):
 
 
 
-def color_create(request):
+def color_create(request, pk=None):
     print(request.POST)
+    template_name = "product/create_color.html"
+    if pk:
+        instance = get_object_or_404(Color, pk = pk)
+    else:
+        instance = None
     if request.method == 'POST':
-        form = ColorForm(request.POST)
+        form = ColorForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
+
+            if 'save_and_add_another' in request.POST:
+                return redirect('colorlist')
+            
             return redirect('item-create')
         else:
             print(form.errors)
-            return render(request,"product/create_color.html",{'form': form})
-        
-    else:
-        color = Color.objects.all()
-        form = ColorForm()
-        return render(request,'product/create_color.html',{'form': form, 'colors':color})
+            return render(request, template_name ,{'form': form})
+
+    color = Color.objects.all()
+    form = ColorForm(instance=instance)
+    return render(request, template_name ,{'form': form, 'colors':color})
         
 
 # def color_create(request):
@@ -378,11 +386,13 @@ def color_create(request):
 
 
 
-def color_edit(request,slug):
-    colors = Color.objects.get(slug = slug)
-    form = ColorForm(instance = colors)
+def color_edit(request,pk):
+    colors = Color.objects.get(pk = pk)
+    form = ColorForm(instance=colors)
+    print(colors)
     if request.method == "POST":
         form = ColorForm(request.POST,instance = colors)
+        print(form)
         if form.is_valid():
             form.save()
             return redirect('colorlist')
@@ -393,10 +403,10 @@ def color_edit(request,slug):
 
 
 
-def color_delete(request, slug):
-    product_color = Color.objects.get(slug=slug)
+def color_delete(request, pk):
+    product_color = Color.objects.get(pk=pk)
     product_color.delete()
-    return redirect('colorcreate')
+    return redirect('colorlist')
 
 
 #_____________________Color-end________________________
@@ -429,8 +439,8 @@ def item_fabric_group_list(request):
     return render(request,'product/fabric_group_list.html', {"fab_group_all":fab_group_all})
 
 
-def item_fabric_group_update(request,slug):
-    item_fabric_pk = Fabric_Group_Model.objects.get(slug=slug)
+def item_fabric_group_update(request,pk):
+    item_fabric_pk = Fabric_Group_Model.objects.get(pk=pk)
     form = ItemFabricGroup(instance = item_fabric_pk)
     if request.method == 'POST':
         form = ItemFabricGroup(request.POST,instance = item_fabric_pk)
@@ -443,8 +453,8 @@ def item_fabric_group_update(request,slug):
         return render(request,'product/fabric_group_update.html',{'form':form})
 
 
-def item_fabric_group_delete(request,slug):
-    item_fabric_pk = Fabric_Group_Model.objects.get(slug=slug)
+def item_fabric_group_delete(request,pk):
+    item_fabric_pk = Fabric_Group_Model.objects.get(pk=pk)
     item_fabric_pk.delete()
     return redirect('item-fabgroup-list')
 
@@ -471,8 +481,8 @@ def unit_name_list(request):
     return render(request,'product/unit_name_list.html', {"unit_name_all":unit_name_all})
 
 
-def unit_name_update(request,slug):
-    unit_name_pk = Unit_Name_Create.objects.get(slug = slug)
+def unit_name_update(request,pk):
+    unit_name_pk = Unit_Name_Create.objects.get(pk=pk)
     form = UnitName(instance=unit_name_pk)
     if request.method == 'POST':
         form = UnitName(request.POST ,instance=unit_name_pk)
@@ -485,8 +495,8 @@ def unit_name_update(request,slug):
 
 
 
-def unit_name_delete(request,slug):
-    unit_name_pk = Unit_Name_Create.objects.get(slug=slug)
+def unit_name_delete(request,pk):
+    unit_name_pk = Unit_Name_Create.objects.get(pk=pk)
     unit_name_pk.delete()
     return redirect('unit_name-list')
 

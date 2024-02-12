@@ -17,9 +17,9 @@ urlpatterns = [
 
     #color routes
     # path('colorlist/',views.color_list, name= 'colorlist'),
-    path('colordelete/<slug:slug>',views.color_delete,name= 'colordelete'),
-    path('colorcreate/',views.color_create, name='colorcreate'),
-    path('coloredit/<slug:slug>',views.color_edit, name= 'coloredit'),
+    path('colordelete/<int:pk>',views.color_delete,name= 'colordelete'),
+    path('colorcreate_update/',views.color_create, name='colorlist'),
+    path('colorcreate_update/<int:pk>',views.color_create, name='coloredit'),
 
     #item_routes
     path('itemedit/<int:pk>',views.item_edit , name= 'item-edit'),
@@ -29,15 +29,15 @@ urlpatterns = [
 
     #itemfabgroup
     path('itemfabricgroupcreate/',views.item_fabric_group_create , name= 'item-fabgroup-create'),
-    path('itemfabricgroupupdate/<slug:slug>',views.item_fabric_group_update , name= 'item-fabgroup-update'),
+    path('itemfabricgroupupdate/<int:pk>',views.item_fabric_group_update , name= 'item-fabgroup-update'),
     path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
-    path('itemfabricgroupdelete/<slug:slug>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
+    path('itemfabricgroupdelete/<int:pk>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
 
     #unitname
     path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),
-    path('unitnameupdate/<slug:slug>',views.unit_name_update , name= 'unit_name-update'),
+    path('unitnameupdate/<int:pk>',views.unit_name_update , name= 'unit_name-update'),
     path('unitnamelist/',views.unit_name_list , name= 'unit_name-list'),
-    path('unitnamedelete/<slug:slug>',views.unit_name_delete , name= 'unit_name-delete'),
+    path('unitnamedelete/<int:pk>',views.unit_name_delete , name= 'unit_name-delete'),
 
     #common Routes
     path('dashboard/', views.dashboard , name='dashboard-main'),

@@ -3,7 +3,7 @@ from django.conf import settings
 from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
+from django.utils.text import slugify
 
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -26,20 +26,16 @@ class Product2Category(models.Model):
     def __str__(self):
         return f'{self.Category_id.category_name} --- {self.Product_id.Product_Name}'
     
-from django.utils.text import slugify
 
 class Color(models.Model):
-    color_name = models.CharField(primary_key = True, max_length=255)
+    color_name = models.CharField( max_length=255, null = False, blank = False)
 
-    slug = models.SlugField(unique= True)
+    
 
-    def save(self,  *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.color_name)
-        super().save(*args, **kwargs)
 
-    def __str__(self):
-        return self.color_name
+
+
+        
 
 class ProductImage(models.Model):
 
@@ -232,45 +228,15 @@ class PProduct_Creation(models.Model):
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
     PProduct_SKU = models.IntegerField(primary_key = True)
 
-
-
-
-# class item_name(models.Model):
-#     Item_name = models.CharField(primary_key = True, max_length = 255)
-#     slug = models.SlugField(unique = True)
-
-#     def save(self,  *args, **kwargs):
-#         if not self.slug:
-#             self.slug = slugify(self.Item_name)
-#         super().save(*args, **kwargs)
-    
-
-
-    # def __str__(self):
-    #     return self.Item_name   
+ 
 
 class Fabric_Group_Model(models.Model):
-    fab_grp_name = models.CharField(primary_key = True, max_length = 255)
-    slug = models.SlugField(unique = True)
-    def save(self,  *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.fab_grp_name)
-        super().save(*args, **kwargs)
-    
-    def __str__(self):
-        return self.fab_grp_name     
+    fab_grp_name = models.CharField( max_length=255, null = False, blank = False)
+
 
 class Unit_Name_Create(models.Model):
-    unit_name = models.CharField(primary_key = True, max_length= 255)
-    slug = models.SlugField(unique = True)
+    unit_name = models.CharField( max_length=255, null = False, blank = False)
 
-    def save(self,  *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.unit_name)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.unit_name
 
 class Item_Creation(models.Model):
     STATUS =  [
