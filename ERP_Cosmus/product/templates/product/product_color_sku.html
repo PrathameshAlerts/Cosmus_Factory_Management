@@ -21,7 +21,7 @@
         <select name="PProduct_color_1" required id="id_PProduct_color_1">
             <option value="-" selected>---------</option>
             {%for c in color %}
-            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            <option value="{{ c.id }}">{{c.color_name}}</option>
             {% endfor %}
         
         </select>
@@ -39,7 +39,7 @@
         <select name="PProduct_color_2" required id="id_PProduct_color_2">
             <option value="-" selected>---------</option>
             {%for c in color %}
-            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            <option value="{{ c.id }}">{{c.color_name}}</option>
             {% endfor %}
         
         </select>
@@ -57,7 +57,7 @@
         <select name="PProduct_color_3" required id="id_PProduct_color_3">
             <option value="-" selected>---------</option>
             {%for c in color %}
-            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            <option value="{{ c.id }}">{{c.color_name}}</option>
             {% endfor %}
         
         </select>
@@ -75,7 +75,7 @@
         <select name="PProduct_color_4" required id="id_PProduct_color_4">
             <option value="-" selected>---------</option>
             {%for c in color %}
-            <option value="{{c.color_name}}">{{c.color_name}}</option>
+            <option value="{{ c.id }}">{{c.color_name}}</option>
             {% endfor %}
         
         </select>
@@ -90,7 +90,7 @@
         <input type="number" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
     </p>
     <p>
-        <a href="{% url 'colorcreate' %}">Add Color</a>
+        <a href="{% url 'colorlist' %}">Add Color</a>
     </p>
 
     <input type="submit" value = 'Save'>

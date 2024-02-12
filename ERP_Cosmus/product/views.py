@@ -136,6 +136,7 @@ def edit_production_product(request,pk):
 
 #transaction.atomic
 def product_color_sku(request):
+    print(request.POST)
     color = Color.objects.all()
     if request.method == 'POST':
         product_ref_id = request.POST.get('Product_Refrence_ID')
@@ -335,12 +336,16 @@ def item_delete(request, pk):
 
 
 def color_create(request, pk=None):
-    print(request.POST)
+    color = Color.objects.all()
     template_name = "product/create_color.html"
+
+
     if pk:
         instance = get_object_or_404(Color, pk = pk)
     else:
         instance = None
+
+    form = ColorForm(instance=instance)
     if request.method == 'POST':
         form = ColorForm(request.POST, instance=instance)
         if form.is_valid():
@@ -352,12 +357,18 @@ def color_create(request, pk=None):
             return redirect('item-create')
         else:
             print(form.errors)
-            return render(request, template_name ,{'form': form})
+            return render(request, template_name ,{'form': form, 'colors':color})
 
-    color = Color.objects.all()
-    form = ColorForm(instance=instance)
+
     return render(request, template_name ,{'form': form, 'colors':color})
         
+
+def color_delete(request, pk):
+    product_color = Color.objects.get(pk=pk)
+    product_color.delete()
+    return redirect('colorlist')
+
+
 
 # def color_create(request):
 #     if request.method == 'POST':
@@ -386,27 +397,23 @@ def color_create(request, pk=None):
 
 
 
-def color_edit(request,pk):
-    colors = Color.objects.get(pk = pk)
-    form = ColorForm(instance=colors)
-    print(colors)
-    if request.method == "POST":
-        form = ColorForm(request.POST,instance = colors)
-        print(form)
-        if form.is_valid():
-            form.save()
-            return redirect('colorlist')
-        else:
-            return render(request, 'product/color_edit.html', {"form":form})
-    else:
-        return render(request, 'product/color_edit.html', {"form":form})
+# def color_edit(request,pk):
+#     colors = Color.objects.get(pk = pk)
+#     form = ColorForm(instance=colors)
+#     print(colors)
+#     if request.method == "POST":
+#         form = ColorForm(request.POST,instance = colors)
+#         print(form)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('colorlist')
+#         else:
+#             return render(request, 'product/color_edit.html', {"form":form})
+#     else:
+#         return render(request, 'product/color_edit.html', {"form":form})
 
 
 
-def color_delete(request, pk):
-    product_color = Color.objects.get(pk=pk)
-    product_color.delete()
-    return redirect('colorlist')
 
 
 #_____________________Color-end________________________
