@@ -28,7 +28,7 @@ class Product2Category(models.Model):
     
 
 class Color(models.Model):
-    color_name = models.CharField( max_length=255, null = False, blank = False)
+    color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
 
     
 
@@ -231,11 +231,11 @@ class PProduct_Creation(models.Model):
  
 
 class Fabric_Group_Model(models.Model):
-    fab_grp_name = models.CharField( max_length=255, null = False, blank = False)
+    fab_grp_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
 
 
 class Unit_Name_Create(models.Model):
-    unit_name = models.CharField( max_length=255, null = False, blank = False)
+    unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
 
 
 class Item_Creation(models.Model):
