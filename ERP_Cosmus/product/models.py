@@ -29,6 +29,7 @@ class Product2Category(models.Model):
 
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
+    
 
     
 
@@ -238,6 +239,7 @@ class Unit_Name_Create(models.Model):
     unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
 
 
+
 class Item_Creation(models.Model):
     STATUS =  [
 
@@ -292,10 +294,21 @@ class Item_Creation(models.Model):
     status= models.CharField(max_length=50, choices= STATUS)
 
 
+    def Color_Name(self):
+        return self.Item_Color.color_name
+    
+
+    def fab_grp(self):
+        return self.Fabric_Group.fab_grp_name
+    
+
+    def Unit_Name(self):
+        return self.unit_name_item.unit_name
+
 class item_color_shade(models.Model):
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades' )
-    item_name_rank = models.IntegerField(null = True, blank = True)
-    item_shade_name = models.CharField(max_length = 100, null = True, blank = True)
+    item_name_rank = models.PositiveIntegerField(null = True, blank = True)
+    item_shade_name = models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
 

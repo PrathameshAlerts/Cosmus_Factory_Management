@@ -15,14 +15,19 @@
               <div class=" d-flex my-3">
                 <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
                 <select id="select-state" class="item-select" name="Fabric_Group" required id="id_Fabric_Group" placeholder="Pick a state...">
-                  <option value="">Select a state...</option>
+                    
+                  {% for x in fab_grp %}  
+                  <option value="{{x.id}}">{{x.fab_grp_name}}</option>
+                  {% endfor %}
             
                 </select>
               </div>
               <div class=" d-flex my-3">
                 <label for="id_Item_Color" class="form-label item-form">Item Color:</label>
                 <select id="select-color" class="item-select" name="Item_Color" required id="id_Item_Color" placeholder="Pick a state...">
-                  <option value="">Select Color</option>
+                    {% for x in colors %}  
+                    <option value="{{x.id}}">{{x.color_name}}</option>
+                    {% endfor %}
                 </select>
               </div>
               <div class=" d-flex my-3">
@@ -44,10 +49,10 @@
               <div class=" d-flex my-3">
                 <label for="id_unit_name_item" class="form-label item-form">Unit Name:</label>
                 <select name="unit_name_item" class="item-select" required id="id_unit_name_item">
-                  <option value="" selected>----------------------</option>
-                  <option value="m">m</option>
-                  <option value="intch">intch</option>
-                  <option value="cm">cm</option>
+                    {% for x in unit_name %}  
+                    <option value="{{x.id}}">{{x.unit_name}}</option>
+                    {% endfor %}
+
                 </select>
               </div>
               <div class=" d-flex my-3">

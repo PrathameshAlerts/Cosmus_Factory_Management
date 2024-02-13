@@ -195,7 +195,7 @@ def product_color_sku(request):
             # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
             return redirect(reverse('edit_production_product', args=[product_ref_id]))
         else:
-                # Return a response with errors for invalid sets of fields
+                #Return a response with errors for invalid sets of fields
                 return render(request, 'product/product_color_sku.html', {'form':current_form,'color': color})
 
     else:
@@ -231,19 +231,21 @@ def pproduct_delete(request, pk):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
+    fab_grp = Fabric_Group_Model.objects.all()
+    unit_name = Unit_Name_Create.objects.all()
+    colors = Color.objects.all()
     print(request.POST)
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
         if form.is_valid():
-            
             form.save()
             return render(request,'product/success.html')
         else:
-            return render(request,'product/create_item.html', {'form':form})
+            print(form.errors)
+            return render(request,'product/create_item.html', {'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
     else:
         form = Itemform()
-       
-        return render(request, 'product/create_item.html', {'form':form})
+        return render(request,'product/create_item.html',{'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
 
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
@@ -257,6 +259,7 @@ def item_list(request):
     queryset = Item_Creation.objects.all()
     
     print(request.GET)
+
 # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '' and  g_search is not None:
         queryset = Item_Creation.objects.filter(Q(item_name__icontains=g_search)|

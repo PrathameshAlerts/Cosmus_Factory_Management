@@ -94,12 +94,6 @@ class Itemform(forms.ModelForm):
 
 
 
-
-# class ItemName(forms.ModelForm):
-#     class Meta:
-#         model = item_name
-#         fields = ['Item_name']
-
 class ItemFabricGroup(forms.ModelForm):
     class Meta:
         model = Fabric_Group_Model 
