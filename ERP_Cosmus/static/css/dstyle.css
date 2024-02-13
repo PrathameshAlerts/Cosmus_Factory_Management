@@ -507,7 +507,7 @@ body{
     padding: 7px 8px;
     font-size: 14px;
     color: inherit;
-    border: 1px solid;
+    border: 1px solid transparent 0.5;
     border-radius: 17px;
     outline: none;
     width: 100%;
@@ -531,12 +531,6 @@ body{
     opacity: 1;
   }
   
-  button[type="submit"]:focus,
-  input[type="search"]:focus {
-    box-shadow: 0 0 3px 0 #1183d6;
-    border-color: #1183d6;
-   
-  }
 
   /*=========card style=======*/
 

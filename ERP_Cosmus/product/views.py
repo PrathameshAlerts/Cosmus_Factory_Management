@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName
+from . models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create
+from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName, account_sub_grp_form
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -178,18 +178,14 @@ def product_color_sku(request):
                         #any additional logic or modifications before finally saving it to the database.
                         pproduct.save()
                         all_sets_valid = True
-                    
                     else:
                         print(current_form.errors)
                         all_sets_valid = False
                         #explicitly set transaction to rollback on errors
                         transaction.set_rollback(True)
                         break
-                    
             except Exception as e:
                 print('Exception occured', str(e))
-
-        
         if all_sets_valid:
 
             # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
@@ -513,6 +509,59 @@ def unit_name_delete(request,pk):
 
 
 #________________________Unit Name End_______________________________________
+
+
+
+
+
+#_________________________Accounts start___________________________
+
+def account_sub_group_create(request):
+    form = account_sub_grp_form()
+    if request.method == 'POST':
+        form = account_sub_grp_form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard-main')
+        else:
+            print(form.errors)
+            return render(request,'product/acc_sub_grp_create.html', {'form':form})
+        
+    return render(request,'product/acc_sub_grp_create.html', {'form':form})
+
+def account_sub_group_update(request, pk):
+    group = AccountSubGroup.objects.get(pk = pk)
+    form = account_sub_grp_form(instance = group)
+    if request.method == 'POST':
+        form = account_sub_grp_form(request.POST, instance = group)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+        else:
+            print(form.errors)
+            return render(request, 'product/acc_sub_grp_update.html', {'form':form})
+    return render(request, 'product/acc_sub_grp_update.html', {'form':form})
+
+
+
+
+
+
+def account_sub_group_list(request):
+    groups = AccountSubGroup.objects.all()
+    return render(request,'product/acc_sub_grp_list.html', {"groups":groups})
+
+    
+
+        
+
+
+
+
+
+
+#_________________________Accounts end___________________________
+
 
 
 

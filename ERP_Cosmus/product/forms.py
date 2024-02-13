@@ -1,5 +1,5 @@
 from django import forms
-from .models import Color, Fabric_Group_Model, Item_Creation, Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 
@@ -105,6 +105,16 @@ class UnitName(forms.ModelForm):
     class Meta:
         model = Unit_Name_Create
         fields = ['unit_name']
+
+
+class account_sub_grp_form(forms.ModelForm):
+    class Meta:
+        model = AccountSubGroup
+        fields = ['acc_grp', 'account_sub_group']
+
+
+
+
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())

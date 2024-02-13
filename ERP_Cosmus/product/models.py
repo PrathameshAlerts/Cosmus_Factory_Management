@@ -229,8 +229,6 @@ class PProduct_Creation(models.Model):
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
     PProduct_SKU = models.IntegerField(primary_key = True)
 
- 
-
 class Fabric_Group_Model(models.Model):
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
 
@@ -290,10 +288,12 @@ class Item_Creation(models.Model):
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     GST = models.CharField(max_length = 255,choices=GST)
     item_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
-    HSN_Code = models.IntegerField()
+    HSN_Code = models.CharField(max_length = 100, null = True, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
 
 
+
+# these functions are used to show related attributes instead of PK id in listview
     def Color_Name(self):
         return self.Item_Color.color_name
     
@@ -312,17 +312,57 @@ class item_color_shade(models.Model):
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
 
+class AccountGroup(models.Model):
+    account_group = models.CharField(max_length = 50)
 
 
-# class Account_Group(models.Model):
-#     acc_grp = models.CharField(max_length = 100, null=False, blank = False)
+class AccountSubGroup(models.Model):
+    acc_grp = models.ForeignKey(AccountGroup, on_delete = models.PROTECT)
+    account_sub_group = models.CharField(max_length = 50)
+
+    def account_main_group(self):
+        return self.acc_grp.account_group
+
+class StockItem(models.Model):
+    acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
+    stock_item_name = models.CharField(max_length= 150)
 
 
-# class Account_master(models.Model):
-#     name = 
-#     short_name = 
-#     account_group = models.ForeignKey(Account_Group, on_delete = models.PROTECT)
-#     ref_number = models.IntegerField()
+# class Ledger(models.Model):
+#     pass    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # @receiver(pre_save, sender=Item_Creation)

@@ -1,0 +1,33 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+
+
+<section>
+    <div class="pcoded-main-container">
+      <div class="pcoded-content">
+
+        <a href="{% url 'account_sub_group-create' %}">Create SubGroup</a>
+    <table>
+    <tr>
+
+      <th>No </th>
+      <th>Main Group</th>
+      <td>Sub Group</td>
+    </tr>
+    {% for grp in  groups %} 
+    <tr>
+      <td>{{grp.id}}</td>
+      <td>{{grp.account_main_group}}</td>
+      <td>{{grp.account_sub_group}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock body %} 
