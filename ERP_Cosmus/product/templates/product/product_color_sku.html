@@ -1,12 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'product/base.html' %} 
+{% load static %} 
 
+{% block body %}
+
+<section>
+    <div class="pcoded-main-container">
+      <div class="pcoded-content">
+        <div>
+            <h2>Create Product</h2>
+            <form>
+                <div class="mb-3 d-flex">
+                    <label for="" class="form-label">Product Refrence ID:</label>
+                    <input type="text" class="form-control w-25 mx-3" id="exampleInputEmail1" aria-describedby="">
+                  </div>
+                </form>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <form>
+                        <div class="card rounded-4" style="width: 19rem;">
+                            <img src="../../static/images/logo.jpg" class="card-img-top w-50 p-2 mx-5" alt="...">
+                            <div class="card-body bg-dark-subtle rounded-4">
+                                <div class="mb-2 d-flex">
+                                    <label for="formFile" class="form-label ">Image</label>
+                                    <input class="px-2  rounded-3" type="file" id="formFile">
+                                  </div>
+                                  <div class="mb-2 d-flex">
+                                    <label for="exampleInputEmail1" class="form-label">Color:</label>
+                                    <input type="text" class="rounded-3 px-2 w-50"  id="" aria-describedby="">
+                                   
+                                  </div>
+                                  <div class="mb-2 d-flex">
+                                    <label for="exampleInputEmail1" class="form-label">Sku ID:</label>
+                                    <input type="number" class="rounded-3 px-1" id="" aria-describedby="">
+                                  </div>
+                              <a href="#" class="btn ">Save</a>
+                            </div>
+                          </div>
+                        </form>
+                </div>
+                <div class="col-lg-1 add_btn">
+                    <button onclick="newPerson()" class="plus"> +
+                    </button>
+                    
+                </div>
+            </div>
+            
+        
+        </div>
 
 
 <form method="POST" enctype="multipart/form-data">
@@ -96,6 +137,8 @@
     <input type="submit" value = 'Save'>
 </form>
 
-</body>
+</div>
+</div>
+</section>
 
-</html>
+{% endblock body %}

@@ -511,7 +511,6 @@ body{
     border-radius: 17px;
     outline: none;
     width: 100%;
-    height: 32px;
   }
 
   button[type="submit"] {
@@ -670,4 +669,22 @@ body{
 
 .color_table{
     font-size: 14px;
+}
+
+/*====== product form ======*/
+.add_btn{
+  background-color: #3498db;
+  color: white;
+  padding: 6px;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  margin: 10px;
+  height:200px;
+  width: 200px;
+}
+.plus{
+  font-size: 25px;
+  color: #3498db;
+  cursor: pointer;
 }
