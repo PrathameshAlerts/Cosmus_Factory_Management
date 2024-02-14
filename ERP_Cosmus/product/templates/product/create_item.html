@@ -82,13 +82,11 @@
               </div>
               <div class="d-flex my-3">
                 <label for="id_GST" class="form-label item-form">GST:</label>
-                <select name="GST"  class="item-select" required id="id_GST">
-                  
-                  <option value="0%">0%</option>
-                  <option value="5%">5%</option>
-                  <option value="12%">12%</option>
-                  <option value="18%">18%</option>
-                  <option value="28%">28</option>
+                <select name="GST"  class="item-select" required id="id_Item_Creation_GST">
+
+                  {% for gst in gsts %}
+                  <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="d-flex my-3">

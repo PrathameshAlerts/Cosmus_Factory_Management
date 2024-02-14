@@ -32,7 +32,8 @@ class Color(models.Model):
     
 
     
-
+class gst(models.Model):
+    gst_percentage = models.CharField(max_length = 50)
 
 
 
@@ -82,15 +83,6 @@ class Product(models.Model):
           ("Corporate", 'Corporate'),
           ("Modern Trade"," Modern Trade"),
           ("Export"," Export"),
-
-    ]
-
-    PRODUCT_GST = [
-        ("0%", '0%'),
-        ("5%", '5%'),
-        ("12%", '12%'),
-        ("18%","18%"),
-        ("28%","28"),
 
     ]
 
@@ -216,7 +208,7 @@ class Product(models.Model):
     Flipkart_Link = models.URLField(max_length = 200, null=True, blank = True) 
     Cosmus_link = models.URLField(max_length = 200, null=True, blank = True) 
     Youtube_Link = models.URLField(max_length = 200, null=True, blank = True)
-    Product_GST = models.CharField(null = True,choices = PRODUCT_GST, max_length = 200, blank = True)
+    Product_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
 
 
@@ -267,14 +259,7 @@ class Item_Creation(models.Model):
         ("polypropylene(PP)","polypropylene(PP)"),
     ]
 
-    GST = [
-        ("0%", '0%'),
-        ("5%", '5%'),
-        ("12%", '12%'),
-        ("18%","18%"),
-        ("28%","28"),
 
-    ]
     #need to add many to many field to vendor 
     item_name = models.CharField(unique= True, null=False, max_length = 255)
     Material_code = models.CharField(max_length = 255, null = True)
@@ -286,7 +271,7 @@ class Item_Creation(models.Model):
     Fabric_nonfabric = models.CharField(max_length = 255, choices = FandNFB)
     Fabric_Finishes =  models.CharField(max_length = 255, choices = FINISHES)
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
-    GST = models.CharField(max_length = 255,choices=GST)
+    Item_Creation_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
     item_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
     HSN_Code = models.CharField(max_length = 100, null = True, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
@@ -313,23 +298,46 @@ class item_color_shade(models.Model):
 
 
 class AccountGroup(models.Model):
-    account_group = models.CharField(max_length = 50)
+    account_group = models.CharField(max_length = 50 , unique= True )
 
 
 class AccountSubGroup(models.Model):
     acc_grp = models.ForeignKey(AccountGroup, on_delete = models.PROTECT)
-    account_sub_group = models.CharField(max_length = 50)
+    account_sub_group = models.CharField(max_length = 50, unique= True)
 
     def account_main_group(self):
         return self.acc_grp.account_group
 
 class StockItem(models.Model):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
-    stock_item_name = models.CharField(max_length= 150)
+    stock_item_name = models.CharField(max_length= 150 ,unique= True)
+
 
 
 # class Ledger(models.Model):
-#     pass    
+
+#     MAINTAIN_BILLWISE = [
+#         ("Yes", 'Yes'),
+#         ("No", 'No'),
+#     ]
+
+#     MAINTAIN_BILLWISE = [
+#         ("Trader", 'Trader'),
+#         ("Manufacture", 'Manufacture'),
+#     ]
+#     name = 
+#     short_name =
+#     vendor_code = 
+#     under_group = 
+#     maintain_billwise = 
+#     default_credit_period = 
+#     types = 
+
+
+
+
+
+
 
 
 

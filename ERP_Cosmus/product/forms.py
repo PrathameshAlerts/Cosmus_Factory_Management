@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 
@@ -89,7 +89,7 @@ class Itemform(forms.ModelForm):
         model = Item_Creation
         fields = ['item_name','Material_code','Item_Color','shades','Packing',
                  'unit_name_item','Units','Panha', 'Fabric_nonfabric','Fabric_Finishes','Fabric_Group',
-                 'GST','HSN_Code','status']
+                 'Item_Creation_GST','HSN_Code','status']
         
 
 
@@ -113,7 +113,10 @@ class account_sub_grp_form(forms.ModelForm):
         fields = ['acc_grp', 'account_sub_group']
 
 
-
+class StockItemForm(forms.ModelForm):
+    class Meta:
+        model = StockItem
+        fields = ['acc_sub_grp','stock_item_name']
 
 
 class LoginForm(AuthenticationForm):

@@ -1,0 +1,39 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+
+
+<section>
+    <div class="pcoded-main-container">
+      <div class="pcoded-content">
+
+        <a href="{% url 'stock-item-create' %}">Create Stock Item</a>
+    <table>
+    <tr>
+
+      <th>No </th>
+      <th>Sub Group</th>
+      <td>Stock Item</td>
+      <td>Edit</td>
+      <td>Delete</td>
+      <td>View</td>
+    </tr>
+    {% for items in  stocks %} 
+    <tr>
+      <td>{{items.id}}</td>
+      <td>{{items.acc_sub_grp}}</td>
+      <td>{{items.stock_item_name}}</td>
+      <td><a href="{% url 'stock_item-update' items.id %}">E</a></td>
+      <td><a href="{% url 'stock_item-delete' items.id %}">D</a></td>
+      <td>View</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock body %} 
