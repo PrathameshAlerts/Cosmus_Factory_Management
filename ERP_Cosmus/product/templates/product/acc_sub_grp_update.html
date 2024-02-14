@@ -1,0 +1,20 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+ <section>
+ <div class="pcoded-main-container">
+   <div class="pcoded-content">
+
+    <form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit">
+    </form>
+</div>
+
+</div>
+
+</section>
+
+
+{% endblock body %} 

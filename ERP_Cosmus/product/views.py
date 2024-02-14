@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, Unit_Name_Create
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, UnitName
+from . models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst
+from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, StockItemForm, UnitName, account_sub_grp_form
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -121,6 +121,7 @@ def dashboard(request):
 
 
 def edit_production_product(request,pk):
+    gsts = gst.objects.all()
     pproduct = Product.objects.get(Product_Refrence_ID=pk)
     form = PProductAddForm(instance=pproduct)
     if request.method == 'POST':
@@ -130,8 +131,8 @@ def edit_production_product(request,pk):
             return redirect('pproductlist')
     else:
         print(form.errors)
-        return render(request, 'product/edit_production_product.html', {'form':form})
-    return render(request, 'product/edit_production_product.html',{'form': form})
+        return render(request, 'product/edit_production_product.html', {'gsts':gsts,'form':form})
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form})
 
 
 #transaction.atomic
@@ -178,18 +179,14 @@ def product_color_sku(request):
                         #any additional logic or modifications before finally saving it to the database.
                         pproduct.save()
                         all_sets_valid = True
-                    
                     else:
                         print(current_form.errors)
                         all_sets_valid = False
                         #explicitly set transaction to rollback on errors
                         transaction.set_rollback(True)
                         break
-                    
             except Exception as e:
                 print('Exception occured', str(e))
-
-        
         if all_sets_valid:
 
             # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
@@ -231,6 +228,8 @@ def pproduct_delete(request, pk):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
+   
+    gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
@@ -242,10 +241,10 @@ def item_create(request):
             return render(request,'product/success.html')
         else:
             print(form.errors)
-            return render(request,'product/create_item.html', {'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+            return render(request,'product/create_item.html', {'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
     else:
         form = Itemform()
-        return render(request,'product/create_item.html',{'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+        return render(request,'product/create_item.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
 
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
@@ -513,6 +512,101 @@ def unit_name_delete(request,pk):
 
 
 #________________________Unit Name End_______________________________________
+
+
+
+
+
+#_________________________Accounts start___________________________
+
+def account_sub_group_create(request):
+    form = account_sub_grp_form()
+    if request.method == 'POST':
+        form = account_sub_grp_form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard-main')
+        else:
+            print(form.errors)
+            return render(request,'product/acc_sub_grp_create.html', {'form':form})
+        
+    return render(request,'product/acc_sub_grp_create.html', {'form':form})
+
+def account_sub_group_update(request, pk):
+    group = AccountSubGroup.objects.get(pk = pk)
+    form = account_sub_grp_form(instance = group)
+    if request.method == 'POST':
+        form = account_sub_grp_form(request.POST, instance = group)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+        else:
+            print(form.errors)
+            return render(request, 'product/acc_sub_grp_update.html', {'form':form})
+    return render(request, 'product/acc_sub_grp_update.html', {'form':form})
+
+
+def account_sub_group_list(request):
+    groups = AccountSubGroup.objects.all()
+    return render(request,'product/acc_sub_grp_list.html', {"groups":groups})
+
+
+def account_sub_group_delete(request, pk):
+    group = AccountSubGroup.objects.get(pk = pk)
+    group.delete()
+    return redirect('account_sub_group-list')
+
+
+
+
+def stock_item_create(request):
+    
+    form = StockItemForm()
+    if request.method == 'POST':
+        form = StockItemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('stock_item-list')
+        else:
+            print(form.errors)
+            return render(request,'product/stock_item_create.html', {'form':form})
+        
+    return render(request,'product/stock_item_create.html', {'form':form})
+
+
+
+def stock_item_update(request, pk):
+    stock = StockItem.objects.get(pk = pk)
+    form = StockItemForm(instance = stock)
+    if request.method == 'POST':
+        form = StockItemForm(request.POST, instance = stock)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard-main')
+        else:
+            print(form.errors)
+            return render(request, 'product/stock_item_update.html', {'form':form})
+    return render(request, 'product/stock_item_update.html', {'form':form})
+
+
+def stock_item_list(request):
+    stocks = StockItem.objects.all()
+    return render(request,'product/stock_item_list.html', {"stocks":stocks})
+
+
+def stock_item_delete(request, pk):
+    stock = StockItem.objects.get(pk = pk)
+    stock.delete()
+    return redirect('stock_item-list')
+
+
+
+
+
+
+
+#_________________________Accounts end___________________________
+
 
 
 

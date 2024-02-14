@@ -39,6 +39,23 @@ urlpatterns = [
     path('unitnamelist/',views.unit_name_list , name= 'unit_name-list'),
     path('unitnamedelete/<int:pk>',views.unit_name_delete , name= 'unit_name-delete'),
 
+    #accountsubgrp
+    path('accsubgrpcreate/',views.account_sub_group_create , name= 'account_sub_group-create'),
+    path('accsubgrpupdate/<int:pk>',views.account_sub_group_update , name= 'account_sub_group-update'),
+    path('accsubgrplist/',views.account_sub_group_list , name='account_sub_group-list'),
+    path('accsubgrpdelete/<int:pk>',views.account_sub_group_delete , name= 'account_sub_group-delete'),
+
+    #stockitem
+    path('stockitemcreate/',views.stock_item_create , name= 'stock-item-create'),
+    path('stockitemupdate/<int:pk>',views.stock_item_update , name= 'stock_item-update'),
+    path('stockitemlist/',views.stock_item_list , name='stock_item-list'),
+    path('stockitemdelete/<int:pk>',views.stock_item_delete , name= 'stock_item-delete'),
+
+
+
+
+
+
     #common Routes
     path('dashboard/', views.dashboard , name='dashboard-main'),
 
