@@ -702,7 +702,7 @@ body{
 .card{
     border: 1px solid;
     border-radius: 15px;
-    margin: 5px;
+    margin: 25px;
     background-color: #f9f9f9;
     float: left;
     width: calc(20% - 10px); /* 20% width for each card with 5 cards per row */
