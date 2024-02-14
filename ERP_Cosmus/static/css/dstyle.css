@@ -673,18 +673,52 @@ body{
 
 /*====== product form ======*/
 .add_btn{
-  background-color: #3498db;
-  color: white;
-  padding: 6px;
-  font-size: 14px;
-  border: none;
-  border-radius: 10px;
-  margin: 10px;
-  height:200px;
-  width: 200px;
+    color: #666;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 13px;
+    margin-left: 10px;
+    height:35px;
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
-.plus{
-  font-size: 25px;
-  color: #3498db;
-  cursor: pointer;
+/*=====card item====*/
+.product_div{
+    font-family:"Poppins", sans-serif;
+    margin: 0px 15px;
+}
+.card-img{
+    width: 238px;
+    height: 200px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+  
+.card_btn{
+    font-family:"Poppins", sans-serif;
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 10px;
+    margin-left: 70px;
+    text-decoration: none;
+}
+.card{
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 5px;
+    background-color: #f9f9f9;
+    float: left;
+    width: calc(20% - 10px); /* 20% width for each card with 5 cards per row */
+    box-sizing: border-box;
+  }
+
+.card-body{
+    background-color: #aaacab;
+    font-size: 15px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }

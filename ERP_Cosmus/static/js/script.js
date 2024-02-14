@@ -36,3 +36,24 @@ function closeModal(modalId) {
   var modal = document.getElementById(modalId);
   modal.style.display = 'none';
 }
+
+//add card in form 
+function createCard(){
+  var staticCard = document.querySelector('.card');
+  var newCard = staticCard.cloneNode(true);
+  var container = document.getElementById("cardContainer");
+    container.appendChild(newCard);
+  
+  }
+  document.getElementById("addButton").addEventListener("click", function() {
+    createCard();
+  });
+  
+  //image preview and clear
+  function preview() {
+    frame.src = URL.createObjectURL(event.target.files[0]);
+  }
+  function clearImage() {
+    document.getElementById('formFile').value = null;
+    frame.src = "";
+  }

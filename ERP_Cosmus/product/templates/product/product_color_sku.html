@@ -8,134 +8,48 @@
       <div class="pcoded-content">
         <div>
             <h2>Create Product</h2>
-            <form>
-                <div class="mb-3 d-flex">
-                    <label for="" class="form-label">Product Refrence ID:</label>
-                    <input type="text" class="form-control w-25 mx-3" id="exampleInputEmail1" aria-describedby="">
-                  </div>
-                </form>
-
-            <div class="row">
-                <div class="col-lg-3">
-                    <form>
-                        <div class="card rounded-4" style="width: 19rem;">
-                            <img src="../../static/images/logo.jpg" class="card-img-top w-50 p-2 mx-5" alt="...">
-                            <div class="card-body bg-dark-subtle rounded-4">
-                                <div class="mb-2 d-flex">
-                                    <label for="formFile" class="form-label ">Image</label>
-                                    <input class="px-2  rounded-3" type="file" id="formFile">
-                                  </div>
-                                  <div class="mb-2 d-flex">
-                                    <label for="exampleInputEmail1" class="form-label">Color:</label>
-                                    <input type="text" class="rounded-3 px-2 w-50"  id="" aria-describedby="">
-                                   
-                                  </div>
-                                  <div class="mb-2 d-flex">
-                                    <label for="exampleInputEmail1" class="form-label">Sku ID:</label>
-                                    <input type="number" class="rounded-3 px-1" id="" aria-describedby="">
-                                  </div>
-                              <a href="#" class="btn ">Save</a>
-                            </div>
-                          </div>
-                        </form>
-                </div>
-                <div class="col-lg-1 add_btn">
-                    <button onclick="newPerson()" class="plus"> +
-                    </button>
-                    
-                </div>
+            <div class="d-flex my-4">
+                <form class="mb-3 d-flex">
+                    <label for="id_Product_Refrence_ID" class="form-label">Product Refrence ID:</label>
+                    <input type="text" class="rounded-3 px-2 mx-3" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+                    <button class="card_btn"><a class ="text-decoration-none" href="{% url 'colorlist' %}">Add Color</a></button>
+                </form>  
+                <button id="addButton" class="add_btn">+</button>
             </div>
-            
-        
-        </div>
-
-
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-
-    <p>
-        {{ form.PProduct_SKU.errors }}
-        <label for="id_PProduct_image_1">PProduct image:</label>
-        <input type="file" name="PProduct_image_1" accept="image/*" id="id_PProduct_image_1">
-
-        <label for="id_PProduct_color_1">PProduct color:</label>
-        <select name="PProduct_color_1" required id="id_PProduct_color_1">
-            <option value="-" selected>---------</option>
-            {%for c in color %}
-            <option value="{{ c.id }}">{{c.color_name}}</option>
-            {% endfor %}
-        
-        </select>
-        
-        <label for="id_PProduct_SKU_1">PProduct SKU:</label>
-        <input type="number" name="PProduct_SKU_1" id="id_PProduct_SKU_1">
-    </p>
-
+            <div >
+                <div id="cardContainer">
+                <div class="card" style="width: 15rem;">
+                    <img id="frame"  src="..." class="card-img-top card-img p-1"  alt="...">
+                    <div class="card-body">
+                      <div class="mb-2 d-flex">
+                         <label for="id_PProduct_image_1" class="form-label">Image</label>
+                          <input class="px-2 rounded-3" name="PProduct_image_1" type="file" id="formFile" onchange="preview()">
+                      </div>
+                          <div class="mb-2 d-flex">
+                            <label for="id_PProduct_color_1" class="form-label pe-3">Color</label>
+                            <select name="PProduct_color_1" required id="id_PProduct_color_1" class="rounded-3 w-50 px-2">
+                                <option value="-" selected>---------</option>
+                                {%for c in color %}
+                                <option value="{{ c.id }}">{{c.color_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-2 d-flex">
+                          <label  for="id_PProduct_SKU_1" class="form-label pe-4">SKU</label>
+                          <input type="text" name="PProduct_SKU_1" id="id_PProduct_SKU_1" class="rounded-3 w-75 px-2">
+                      </div>
+                      <button type="close" value = 'cancel' class="card_btn">Cancel</button>
+                    </div>
+                  </div>
+                  
+                </div>
     
-    <p>
-        <label for="id_PProduct_image_2">PProduct image:</label>
-        <input type="file" name="PProduct_image_2" accept="image/*"  id="id_PProduct_image_2">
-
-        <label for="id_PProduct_color_2">PProduct color:</label>
-        <select name="PProduct_color_2" required id="id_PProduct_color_2">
-            <option value="-" selected>---------</option>
-            {%for c in color %}
-            <option value="{{ c.id }}">{{c.color_name}}</option>
-            {% endfor %}
-        
-        </select>
-        
-        <label for="id_PProduct_SKU_2">PProduct SKU:</label>
-        <input type="number" name="PProduct_SKU_2" id="id_PProduct_SKU_2">
-    </p>
-
-
-    <p>
-        <label for="id_PProduct_image_3">PProduct image:</label>
-        <input type="file" name="PProduct_image_3"  accept="image/*" id="id_PProduct_image_3">
-
-        <label for="id_PProduct_color_3">PProduct color:</label>
-        <select name="PProduct_color_3" required id="id_PProduct_color_3">
-            <option value="-" selected>---------</option>
-            {%for c in color %}
-            <option value="{{ c.id }}">{{c.color_name}}</option>
-            {% endfor %}
-        
-        </select>
-        
-        <label for="id_PProduct_SKU_3">PProduct SKU:</label>
-        <input type="number" name="PProduct_SKU_3" id="id_PProduct_SKU_3">
-
-    </p>
-
-    <p>
-        <label for="id_PProduct_image_4">PProduct image:</label>
-        <input type="file" name="PProduct_image_4" accept="image/*"  id="id_PProduct_image_4">
-
-        <label for="id_PProduct_color_4">PProduct color:</label>
-        <select name="PProduct_color_4" required id="id_PProduct_color_4">
-            <option value="-" selected>---------</option>
-            {%for c in color %}
-            <option value="{{ c.id }}">{{c.color_name}}</option>
-            {% endfor %}
-        
-        </select>
-        
-        
-        <label for="id_PProduct_SKU_4">PProduct SKU:</label>
-        <input type="number" name="PProduct_SKU_4" id="id_PProduct_SKU_4">
-    </p>
-
-    <p>
-        <label for="id_Product_Refrence_ID">Product_Refrence_ID:</label>
-        <input type="number" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
-    </p>
-    <p>
-        <a href="{% url 'colorlist' %}">Add Color</a>
-    </p>
-
-    <input type="submit" value = 'Save'>
-</form>
+            </div> 
+      
+            <div>
+            <input type="submit" value = 'Save' class="card_btn">
+            </div>
+        </div>
 
 </div>
 </div>
