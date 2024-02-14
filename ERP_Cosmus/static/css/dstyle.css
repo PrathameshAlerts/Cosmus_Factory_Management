@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", "Lato", sans-serif;
 }
    
 body{
@@ -699,7 +699,7 @@ body{
     margin-left: 70px;
     text-decoration: none;
 }
-.card{
+.card-clone{
     border: 1px solid;
     border-radius: 15px;
     margin: 25px;
@@ -709,8 +709,8 @@ body{
     box-sizing: border-box;
   }
 
-.card-body{
-    background-color: #aaacab;
+.card-input{
+    background-color:#cfcccc ;
     font-size: 15px;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border-bottom-left-radius: 15px;

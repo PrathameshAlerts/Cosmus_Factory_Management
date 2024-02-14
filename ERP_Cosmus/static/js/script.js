@@ -39,7 +39,7 @@ function closeModal(modalId) {
 
 //add card in form 
 function createCard(){
-  var staticCard = document.querySelector('.card');
+  var staticCard = document.querySelector('.card-clone');
   var newCard = staticCard.cloneNode(true);
   var container = document.getElementById("cardContainer");
     container.appendChild(newCard);
