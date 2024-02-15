@@ -18,8 +18,13 @@ urlpatterns = [
     #color routes
     # path('colorlist/',views.color_list, name= 'colorlist'),
     path('colordelete/<int:pk>',views.color_delete,name= 'colordelete'),
-    path('colorcreate_update/',views.color_create, name='colorlist'),
-    path('colorcreate_update/<int:pk>',views.color_create, name='coloredit'),
+    path('colorcreate_update/',views.color_create_update, name='colorlist'),
+    path('colorcreate_update/<int:pk>',views.color_create_update, name='coloredit'),
+
+
+    path('simple_colorcreate_update/',views.color_create_update, name='simplecolorlist'),
+    path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlist'),
+    path('simple_colorcreate_list/',views.color_create_update, name='simplecolorlistonly'),
 
     #item_routes
     path('itemedit/<int:pk>',views.item_edit , name= 'item-edit'),
@@ -50,11 +55,6 @@ urlpatterns = [
     path('stockitemupdate/<int:pk>',views.stock_item_update , name= 'stock_item-update'),
     path('stockitemlist/',views.stock_item_list , name='stock_item-list'),
     path('stockitemdelete/<int:pk>',views.stock_item_delete , name= 'stock_item-delete'),
-
-
-
-
-
 
     #common Routes
     path('dashboard/', views.dashboard , name='dashboard-main'),
