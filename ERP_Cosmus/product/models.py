@@ -289,6 +289,9 @@ class Item_Creation(models.Model):
 
     def Unit_Name(self):
         return self.unit_name_item.unit_name
+    
+    def Item_GST(self):
+        return self.Item_Creation_GST.gst_percentage
 
 class item_color_shade(models.Model):
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades' )
@@ -332,6 +335,16 @@ class StockItem(models.Model):
 #     maintain_billwise = 
 #     default_credit_period = 
 #     types = 
+#     ledger_gst = 
+#     date =
+#     address = 
+#     state = 
+#     country = models.ForeignKey('cities_light.Country', on_delete=models.SET_NULL, null=True, blank=True) 
+#     city = models.ForeignKey('cities_light.City', on_delete=models.SET_NULL, null=True, blank=True) 
+#     pincode =
+#     mobile_no =
+#     landline_no = 
+
 
 
 
