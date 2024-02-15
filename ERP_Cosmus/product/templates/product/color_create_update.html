@@ -2,9 +2,7 @@
 {% load static %} 
 
 {% block body %} 
-<section> 
-    <div class="pcoded-main-container">
-      <div class="pcoded-content">
+<div>
         <h2>{{title}}</h2>
       <form class="mt-5" action="" method="POST">
            {% csrf_token %}
@@ -15,9 +13,11 @@
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
 
+<<<<<<< HEAD
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'simplecolorlistonly' %}">Return</a></button>
+=======
+   <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'item-fabgroup-list' %}">Return</a></button>
+</div>
+>>>>>>> b13371cdab0fbf91cff8c0e235a7e984649c36ff
 
-</div>
-</div>
-</section>
 {% endblock body %}

@@ -2,9 +2,7 @@
 {% load static %} 
 
 {% block body %} 
-<section> 
-    <div class="pcoded-main-container">
-      <div class="pcoded-content">
+<div>
         <h2 >{{title}}</h2>
       <form class="mt-5" action="" method="POST">
            {% csrf_token %}
@@ -16,8 +14,5 @@
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
 
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'item-fabgroup-list' %}">Return</a></button>
-
-</div>
-</div>
-</section>
+  </div>
 {% endblock body %}
