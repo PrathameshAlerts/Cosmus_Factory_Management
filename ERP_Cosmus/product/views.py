@@ -330,17 +330,25 @@ def item_delete(request, pk):
 
 
 
-# def color_list(request):
-#     color = Color.objects.all()
-#     context = {'colors':color}
-#     return render(request,'product/list_color.html', context=context)
+def color_create_update(request, pk=None):
+    print(request.GET)
 
+    if request.path == '/simple_colorcreate_list/':
+        template_name = 'product/color_list.html'
 
+    elif request.path == '/simple_colorcreate_update/':
+        template_name = 'product/color_create_update.html'
 
-def color_create(request, pk=None):
+    elif request.path == f'/simple_colorcreate_update/{pk}':
+        template_name = 'product/color_create_update.html'
+    
+    else:
+
+        template_name = "product/create_color.html"
+    
+   
+
     color = Color.objects.all()
-    template_name = "product/create_color.html"
-
 
     if pk:
         instance = get_object_or_404(Color, pk = pk)
@@ -359,7 +367,7 @@ def color_create(request, pk=None):
             return redirect('item-create')
         else:
             print(form.errors)
-            return render(request, template_name ,{'form': form, 'colors':color})
+            return render(request, template_name ,{'form': form,'colors':color})
 
 
     return render(request, template_name ,{'form': form, 'colors':color})
