@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst
 from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, StockItemForm, UnitName, account_sub_grp_form
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -378,7 +378,7 @@ def color_create_update(request, pk=None):
 def color_delete(request, pk):
     product_color = Color.objects.get(pk=pk)
     product_color.delete()
-    return redirect('colorlist')
+    return redirect('simplecolorlistonly')
 
 
 
@@ -405,26 +405,6 @@ def color_delete(request, pk):
 #             request.session['return_url_color'] = return_url_get
 #         form = ColorForm()
 #         return render(request,'product/create_color.html',{'form': form, 'return_url_get': request.session.get('return_url_color', '/')})
-
-
-
-
-# def color_edit(request,pk):
-#     colors = Color.objects.get(pk = pk)
-#     form = ColorForm(instance=colors)
-#     print(colors)
-#     if request.method == "POST":
-#         form = ColorForm(request.POST,instance = colors)
-#         print(form)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('colorlist')
-#         else:
-#             return render(request, 'product/color_edit.html', {"form":form})
-#     else:
-#         return render(request, 'product/color_edit.html', {"form":form})
-
-
 
 
 
@@ -530,6 +510,8 @@ def unit_name_delete(request,pk):
 #_________________________Accounts start___________________________
 
 def account_sub_group_create(request):
+
+    main_grp = AccountGroup.objects.all()
     form = account_sub_grp_form()
     if request.method == 'POST':
         form = account_sub_grp_form(request.POST)
@@ -538,22 +520,23 @@ def account_sub_group_create(request):
             return redirect('dashboard-main')
         else:
             print(form.errors)
-            return render(request,'product/acc_sub_grp_create_update.html', {'form':form})
+            return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Create','form':form})
         
-    return render(request,'product/acc_sub_grp_create_update.html', {'form':form})
+    return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp, 'title':'Account Sub-Group Create','form':form})
 
 def account_sub_group_update(request, pk):
+    main_grp = AccountGroup.objects.all()
     group = AccountSubGroup.objects.get(pk = pk)
     form = account_sub_grp_form(instance = group)
     if request.method == 'POST':
         form = account_sub_grp_form(request.POST, instance = group)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            return redirect('dashboard-main')
         else:
             print(form.errors)
-            return render(request, 'product/acc_sub_grp_create_update.html', {'form':form})
-    return render(request, 'product/acc_sub_grp_create_update.html', {'form':form})
+            return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Update','form':form})
+    return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Update','form':form})
 
 
 def account_sub_group_list(request):
@@ -568,9 +551,8 @@ def account_sub_group_delete(request, pk):
 
 
 
-
 def stock_item_create(request):
-    
+    accsubgrps = AccountSubGroup.objects.all()
     form = StockItemForm()
     if request.method == 'POST':
         form = StockItemForm(request.POST)
@@ -579,13 +561,15 @@ def stock_item_create(request):
             return redirect('stock_item-list')
         else:
             print(form.errors)
-            return render(request,'product/stock_item_create.html', {'form':form})
+            return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create','accsubgrps':accsubgrps,'form':form})
         
-    return render(request,'product/stock_item_create.html', {'form':form})
+    return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create','accsubgrps':accsubgrps,'form':form})
 
 
 
 def stock_item_update(request, pk):
+
+    accsubgrps = AccountSubGroup.objects.all()
     stock = StockItem.objects.get(pk = pk)
     form = StockItemForm(instance = stock)
     if request.method == 'POST':
@@ -595,8 +579,8 @@ def stock_item_update(request, pk):
             return redirect('dashboard-main')
         else:
             print(form.errors)
-            return render(request, 'product/stock_item_update.html', {'form':form})
-    return render(request, 'product/stock_item_update.html', {'form':form})
+            return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update','accsubgrps':accsubgrps,'form':form})
+    return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update','accsubgrps':accsubgrps,'form':form})
 
 
 def stock_item_list(request):

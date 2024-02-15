@@ -301,7 +301,8 @@ class item_color_shade(models.Model):
 
 
 class AccountGroup(models.Model):
-    account_group = models.CharField(max_length = 50 , unique= True )
+    account_group = models.CharField(max_length = 50 , unique= True)
+
 
 
 class AccountSubGroup(models.Model):
@@ -314,6 +315,10 @@ class AccountSubGroup(models.Model):
 class StockItem(models.Model):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     stock_item_name = models.CharField(max_length= 150 ,unique= True)
+
+    def account_sub_group(self):
+        return self.acc_sub_grp.account_sub_group
+    
 
 
 
@@ -344,6 +349,7 @@ class StockItem(models.Model):
 #     pincode =
 #     mobile_no =
 #     landline_no = 
+#     bank details = 
 
 
 
