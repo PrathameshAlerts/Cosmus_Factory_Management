@@ -3,9 +3,7 @@
 {% load static %} 
 
 {% block body %} 
-<section> 
-    <div class="pcoded-main-container">
-      <div class="pcoded-content">
+
         <h2 >{{title}}</h2>
       <form class="mt-5" action="" method="POST">
            {% csrf_token %}
@@ -27,7 +25,4 @@
 
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'account_sub_group-list' %}">Return</a></button>
 
-</div>
-</div>
-</section>
 {% endblock body %}
