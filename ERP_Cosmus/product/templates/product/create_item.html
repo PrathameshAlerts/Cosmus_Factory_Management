@@ -2,8 +2,7 @@
 {% load static %} 
  {% block body %}
 
-
-          <div class="create_item_form">
+<div class="create_item_form">
             <h2 class="px-5 py-3">Item create</h2>
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
@@ -11,9 +10,9 @@
                 <label for="id_item_name" class="form-label item-form">Item Name:</label>
                 <input type="text" class="item-select" name="item_name" maxlength="255" required id="id_item_name">
               </div>
-              <div class=" d-flex my-3">
+              <div class="d-flex my-3">
                 <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
-                <select id="select-state" class="item-select" name="Fabric_Group" required id="id_Fabric_Group" placeholder="Pick a state...">
+                <select id="select-state" class="item-select" name="Fabric_Group" required id="id_Fabric_Group" placeholder="Pick a Fabric...">
                     
                   {% for x in fab_grp %}  
                   <option value="{{x.id}}">{{x.fab_grp_name}}</option>
@@ -23,7 +22,7 @@
               </div>
               <div class=" d-flex my-3">
                 <label for="id_Item_Color" class="form-label item-form">Item Color:</label>
-                <select id="select-color" class="item-select" name="Item_Color" required id="id_Item_Color" placeholder="Pick a state...">
+                <select id="select-color" class="item-select" name="Item_Color" required id="id_Item_Color" placeholder="Pick a Color...">
                     {% for x in colors %}  
                     <option value="{{x.id}}">{{x.color_name}}</option>
                     {% endfor %}
@@ -105,5 +104,27 @@
               <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
             </form>
           </div>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            var inputField = document.getElementById('id_item_name');
+        var selectField = document.getElementById('id_Item_Color');
+
+        // Add event listeners for input and select fields
+        inputField.addEventListener('input', updateInput);
+        selectField.addEventListener('change', updateInput);
+
+        // Function to update the input field
+        function updateInput() {
+            var inputValue = inputField.value;
+            var selectedOption = selectField.value;
+
+            // Concatenate input value and selected option
+            var concatenatedText = inputValue + " - " + selectedOption;
+
+            // Update the input field with the concatenated text
+            inputField.value = concatenatedText;
+        };
+      });
+       </script>
     
  {% endblock body %}
