@@ -1,0 +1,23 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+
+{% block body %} 
+<section> 
+    <div class="pcoded-main-container">
+      <div class="pcoded-content">
+        <h2>Create Fabric Group</h2>
+      <form  action="" method="POST">
+           {% csrf_token %}
+       <div class="d-flex ">
+      <label for="id_fab_grp_name" class="form-label px-2">Fabric Group Name:</label>
+      <input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">
+    </div>
+    <input type="submit" class="create-btn" name="save" value="Save">
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+
+   <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'item-fabgroup-list' %}">Return</a></button>
+
+</div>
+</div>
+</section>
+{% endblock body %}

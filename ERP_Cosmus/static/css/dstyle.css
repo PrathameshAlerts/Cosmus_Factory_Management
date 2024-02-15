@@ -124,6 +124,7 @@ body{
   .name_absolute{
    position: relative;
    font-size: 13px;
+   font-family: "Lato", sans-serif;
    width: 200px;
   }
   .name_icons{

@@ -436,11 +436,11 @@ def item_fabric_group_create(request):
             del request.session['return_url']
             return redirect(return_url)
         else:
-            return render(request,'product/item_fabric_group_create.html',{'form':form})
+            return render(request,'product/item_fabric_group_create_update.html',{'form':form})
     else:
         return_url_get = request.META.get('HTTP_REFERER', '/')
         request.session['return_url'] = return_url_get
-        return render(request,'product/item_fabric_group_create.html',{'form':form,'return_url_get':return_url_get})
+        return render(request,'product/item_fabric_group_create_update.html',{'form':form,'return_url_get':return_url_get})
 
 
 def item_fabric_group_list(request):
@@ -457,9 +457,9 @@ def item_fabric_group_update(request,pk):
             form.save()
             return redirect('item-fabgroup-list')
         else:
-            return render(request,'product/fabric_group_update.html',{'form':form})
+            return render(request,'product/item_fabric_group_create_update.html',{'form':form})
     else:
-        return render(request,'product/fabric_group_update.html',{'form':form})
+        return render(request,'product/item_fabric_group_create_update.html',{'form':form})
 
 
 def item_fabric_group_delete(request,pk):
