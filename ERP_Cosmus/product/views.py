@@ -335,16 +335,18 @@ def color_create_update(request, pk=None):
 
     if request.path == '/simple_colorcreate_list/':
         template_name = 'product/color_list.html'
-
+        title = 'Color List'
     elif request.path == '/simple_colorcreate_update/':
         template_name = 'product/color_create_update.html'
+        title = 'Create Color'
 
     elif request.path == f'/simple_colorcreate_update/{pk}':
         template_name = 'product/color_create_update.html'
-    
+        title = 'Update Color'
+
     else:
 
-        template_name = "product/create_color.html"
+        template_name = "product/create_color_modal.html"
     
    
 
@@ -367,10 +369,10 @@ def color_create_update(request, pk=None):
             return redirect('item-create')
         else:
             print(form.errors)
-            return render(request, template_name ,{'form': form,'colors':color})
+            return render(request, template_name ,{'title': title,'form': form,'colors':color})
 
 
-    return render(request, template_name ,{'form': form, 'colors':color})
+    return render(request, template_name ,{'title': title, 'form': form, 'colors':color})
         
 
 def color_delete(request, pk):
@@ -487,9 +489,9 @@ def unit_name_create(request):
             form.save()
             return redirect('unit_name-list')
         else:
-            return render(request, "product/unit_name_create_update.html", {'title': 'Create Unit Name','form':form})
+            return render(request, "product/unit_name_create_update.html", {'title': 'Create Unit','form':form})
     else:
-        return render(request, "product/unit_name_create_update.html", {'title':'Create Unit Name','form':form})
+        return render(request, "product/unit_name_create_update.html", {'title':'Create Unit','form':form})
 
 
 
@@ -507,8 +509,8 @@ def unit_name_update(request,pk):
             form.save()
             return redirect('unit_name-list')
         else:
-            return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit Name' ,"form":form})
-    return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit Name' ,"form":form})
+            return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,"form":form})
+    return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,"form":form})
 
 
 
@@ -536,9 +538,9 @@ def account_sub_group_create(request):
             return redirect('dashboard-main')
         else:
             print(form.errors)
-            return render(request,'product/acc_sub_grp_create.html', {'form':form})
+            return render(request,'product/acc_sub_grp_create_update.html', {'form':form})
         
-    return render(request,'product/acc_sub_grp_create.html', {'form':form})
+    return render(request,'product/acc_sub_grp_create_update.html', {'form':form})
 
 def account_sub_group_update(request, pk):
     group = AccountSubGroup.objects.get(pk = pk)
@@ -550,8 +552,8 @@ def account_sub_group_update(request, pk):
             return redirect('dashboard')
         else:
             print(form.errors)
-            return render(request, 'product/acc_sub_grp_update.html', {'form':form})
-    return render(request, 'product/acc_sub_grp_update.html', {'form':form})
+            return render(request, 'product/acc_sub_grp_create_update.html', {'form':form})
+    return render(request, 'product/acc_sub_grp_create_update.html', {'form':form})
 
 
 def account_sub_group_list(request):
