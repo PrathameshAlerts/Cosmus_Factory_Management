@@ -571,13 +571,14 @@ body{
 .item-form{
     width: 170px;
   }
-  .item-select{
+.item-select{
     width: 200px;
     border: 1px solid #666;
     border-radius: 7px;
-  }
+    padding-left: 5px;
+}
 
-  .form-button{
+.form-button{
     font-family:"Poppins", sans-serif;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
     color: white;
@@ -586,13 +587,13 @@ body{
     border: none;
     border-radius: 10px;
     margin-left: 20px;
-  }
+}
 
-  .create_item_form{
+.create_item_form{
     font-family:"Poppins", sans-serif;
-  }
+}
   /*=========create color form=======*/
-  .modal {
+.modal {
     display: block; /* Hide the modal by default */
     position: fixed;
     top: 50%;
@@ -600,33 +601,33 @@ body{
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000; /* Ensure the modals appear on top of other content */
-  }
+}
   
-  .modal-content {
+.modal-content {
     background-color: #fff;
     padding: 20px;
     height: 550px;
     width: 452px;
     top: 15%;
     left: 35%;
-  }
+}
 
-  .close {
+.close {
     display: flex;
    color: #aaa;
     float: right;
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
-  }
+}
   
-  .close:hover,
-  .close:focus {
+.close:hover,
+ .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
-  }
-  .btn {
+}
+.btn {
     cursor: pointer;
     background-color: transparent;
     height: auto;
@@ -716,4 +717,21 @@ body{
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+
+/*=====end card item====*/
+/*=======fabric group item======*/
+.container-category{
+    color: #555;
+    display: flex;
+    border: 1px solid;
+    border-radius: 20px;
+    margin: 0 0;
+    width: 200px;
+    margin-left: 70px;
+}
+.fabric-list-icons{
+    position: absolute;
+    top: 10px;
+    left: 120px;
 }
