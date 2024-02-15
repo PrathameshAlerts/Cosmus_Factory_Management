@@ -6,7 +6,6 @@
         <h2 >{{title}}</h2>
       <form class="mt-5" action="" method="POST">
            {% csrf_token %}
-<<<<<<< HEAD
        <div class="d-flex">
       <label for="id_account_sub_group" class="form-label px-2">Account sub group </label>
       <input type="text" class="item-select" value="{{ form.instance.account_sub_group }}" name="account_sub_group" maxlength="50" required id="id_account_sub_group">
@@ -17,19 +16,6 @@
         {% for x in main_grp %}
         <option value="{{x.id}}">{{x.account_group}}</option>
         {% endfor %}
-=======
-       <div class="d-flex mb-3">
-      <label for="id_account_sub_group" class="form-label px-3">Account sub group:</label>
-      <input type="text" class="account-group-input" value="{{ form.instance.account_sub_group }}" name="account_sub_group" maxlength="50" required id="id_account_sub_group">
-    </div>
-    <div class="d-flex mb-3">
-      <label for="id_account_sub_group" class="form-label px-3">Account group:</label>
-      <select name="acc_grp" class="account-group-input ms-4" required id="id_acc_grp">
-        <option value="1">AccountGroup object (1)</option>
-        <option value="4">AccountGroup object (4)</option>
-        <option value="2">AccountGroup object (2)</option>
-        <option value="3">AccountGroup object (3)</option>
->>>>>>> b13371cdab0fbf91cff8c0e235a7e984649c36ff
       </select>
     </div>
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
