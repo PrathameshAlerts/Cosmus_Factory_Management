@@ -262,7 +262,7 @@ class Item_Creation(models.Model):
 
     #need to add many to many field to vendor 
     item_name = models.CharField(unique= True, null=False, max_length = 255)
-    Material_code = models.CharField(max_length = 255, null = True)
+    Material_code = models.CharField(max_length = 255)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Packing = models.CharField(max_length = 255, choices = PACKING)
     unit_name_item = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False) 
@@ -273,7 +273,7 @@ class Item_Creation(models.Model):
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     Item_Creation_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
     item_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
-    HSN_Code = models.CharField(max_length = 100, null = True, blank = True)
+    HSN_Code = models.CharField(max_length = 100, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
 
 
@@ -312,6 +312,7 @@ class AccountSubGroup(models.Model):
     def account_main_group(self):
         return self.acc_grp.account_group
 
+
 class StockItem(models.Model):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     stock_item_name = models.CharField(max_length= 150 ,unique= True)
@@ -320,10 +321,7 @@ class StockItem(models.Model):
         return self.acc_sub_grp.account_sub_group
     
 
-
-
 # class Ledger(models.Model):
-
 #     MAINTAIN_BILLWISE = [
 #         ("Yes", 'Yes'),
 #         ("No", 'No'),

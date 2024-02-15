@@ -304,17 +304,23 @@ def item_list(request):
 
 
 def item_edit(request,pk):
+    
+    gsts = gst.objects.all()
+    fab_grp = Fabric_Group_Model.objects.all()
+    unit_name = Unit_Name_Create.objects.all()
+    colors = Color.objects.all()
     item_pk = Item_Creation.objects.get(pk = pk)
     form = Itemform(instance = item_pk)
+    print(form.instance.Fabric_Group.id)
     if request.method == 'POST':
         form = Itemform(request.POST, instance=item_pk)
         if form.is_valid():
             form.save()
             return redirect('item-list')
         else:
-            return render(request,'product/edit_item.html',{'form':form})
+            return render(request,'product/create_item.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
     else:
-        return render(request,'product/edit_item.html',{'form':form})
+        return render(request,'product/create_item.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
 
 
 def item_delete(request, pk):
@@ -584,6 +590,7 @@ def stock_item_update(request, pk):
 
 
 def stock_item_list(request):
+
     stocks = StockItem.objects.all()
     return render(request,'product/stock_item_list.html', {"stocks":stocks})
 
