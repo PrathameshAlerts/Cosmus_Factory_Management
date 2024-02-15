@@ -14,7 +14,6 @@
              <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" />
                <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
-            <button class="dropbtn rounded-4  mx-4">Clear Filter</button>
            </div>
           </div>  
         </div>  
@@ -25,7 +24,7 @@
                 <tr>
                   <th scope="col" class="name_absolute">No</th>
                   <th scope="col" class="name_absolute">Color Name
-                    <div class="nav-item dropdown fabric-list-icons">
+                    <div class="nav-item dropdown color-list-icons">
                       <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                       <ul class="dropdown-menu">
                         <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
@@ -34,12 +33,9 @@
                   </th>
                   <th scope="col" class="name_absolute">Edit</th>
                   <th scope="col" class="name_absolute">Delete</th>
-                 
                 </tr>
               </thread>
-              
               <tbody>
-               
               </tr>
               {% for color in colors%}
               <tr>

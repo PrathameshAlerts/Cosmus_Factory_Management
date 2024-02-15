@@ -735,3 +735,13 @@ body{
     top: 10px;
     left: 120px;
 }
+.color-list-icons{
+    position: absolute;
+    top: 10px;
+    left: 77px;
+}
+.unit-list-icons{
+    position: absolute;
+    top: 10px;
+    left: 74px; 
+}
