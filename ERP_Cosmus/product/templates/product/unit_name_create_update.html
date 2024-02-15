@@ -2,7 +2,7 @@
 {% load static %} 
 
 {% block body %} 
-
+  <div>
         <h2>{{title}}</h2>
       <form class="mt-5" action="" method="POST">
            {% csrf_token %}
@@ -15,5 +15,5 @@
 
    <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'unit_name-list' %}">Return</a></button>
 
-
+  </div>
 {% endblock body %}
