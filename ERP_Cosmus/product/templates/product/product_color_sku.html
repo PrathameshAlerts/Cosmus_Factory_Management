@@ -3,17 +3,18 @@
 
 {% block body %}
         <div>
+          
             <h2>Create Product</h2>
+            <div class="d-flex">
+            <button class="card_btn" onclick="redirectToColorList()"><span>Add Color</span></button>
+            <button id="addButton" class="add_btn">Add +</button>
+            </div>
             <form class="mb-3" method="POST">
                 {% csrf_token %}
             <div class="d-flex my-4">
                     <label for="id_Product_Refrence_ID" class="form-label">Product Refrence ID:</label>
                     <input type="text" class="rounded-3 px-2 mx-3" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
-                    <button class="card_btn"><a class ="text-decoration-none" href="{% url 'colorlist' %}">Add Color</a></button>
-                    <input type="submit" value='Save'>
-                
-                <button id="addButton" class="add_btn">+</button>
-                
+                    <input type="submit"  class=" product-btn" name="submit" value="submit">
             </div>
             <div >
                 <div id="cardContainer">
@@ -50,5 +51,11 @@
             
             </div>
         </div>
+        <script>
+        function redirectToColorList() {
+                // Change the URL to the desired destination
+                window.location.href = "{% url 'simplecolorlist' %}";
+            }
+        </script>
 
 {% endblock body %}

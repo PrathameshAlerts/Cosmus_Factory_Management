@@ -6,8 +6,8 @@
       <h2>Units List</h2>
       <div class="row">
         <div class="col-lg-12 sub_main">
-          <div class="d-flex rounded-4 mb-3">
-            <button class="dropbtn rounded-4 mx-3"><span class="text-decoration-none"><a href={% url 'unit_name-create'%}>Add Units +</a></span></button>
+          <div class="d-flex mb-3">
+            <button class="dropbtn mx-3" onclick="redirectUnitList()"><span>Add Units +</span></button>
             <div class="container-category "> 
              <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" />
                <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -53,4 +53,9 @@
          
         </div>
 </div>
+<script>
+  function redirectUnitList(){
+    window.location.href= "{% url 'unit_name-create'%}"
+  }
+</script>
 {% endblock body %}

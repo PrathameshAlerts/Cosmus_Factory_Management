@@ -1,4 +1,4 @@
-
+/*=========================dashboard style===========================*/
 *{
     margin: 0;
     padding: 0;
@@ -32,11 +32,11 @@ body{
 .bcard-pad{
     padding-left: 139px;
 }
+.bcard-pa{
+    padding-left: 63px;
+}
 .gcard-pad{
     padding-left: 142px;
-}
-.bcard-pa{
-    padding-left: 64px;
 }
 .gcard-pa{
     padding-left: 122px;
@@ -45,13 +45,13 @@ body{
     padding-left: 74px;
 }
 .ycard-pa{
-    padding-left: 112px;
+    padding-left: 92px;
 }
 .rcard-pad{
     padding-left: 99px;
 }
 .rcard-pa{
-    padding-left: 126px;
+    padding-left: 106px;
 }
 .icon{
     height: 50px;
@@ -59,6 +59,7 @@ body{
 }
 
 .search_input{
+    position: relative;
     width: 40%;
     border-radius: 30px;
     padding-left: 10px;
@@ -74,21 +75,19 @@ body{
  .sub_main{
     padding-top: 40px;
  }
- .search_input{
-    width: 30%;
- }
+
  .form_input{
     padding-left:20px;
     gap: 20px;
     padding-bottom: 60px;
  }
  .dropbtn {
-    background-color: #04AA6D;
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
     color: white;
     padding: 12px;
     font-size: 15px;
     border: none;
-    border-radius: 20px;
+    border-radius: 40px;
     cursor: pointer;
   }
   .dropbtn a{
@@ -113,6 +112,7 @@ body{
    left: 100%;
    margin-left: .125em;
   }
+  /*=================Item Page=======================*/
   .input_text{
    height: auto;
    width: 150px;
@@ -194,7 +194,7 @@ body{
 .dud-logout{
     color: black
 }
-
+/*====item page end====*/
 /*====siderbar====*/
 
 .side-bar{
@@ -259,7 +259,7 @@ body{
    
 .side-bar .menu .item .sub-menu{
     background: #262627;
-    display: block;
+    display: none;
 }
    
 .side-bar .menu .item .sub-menu a{
@@ -307,6 +307,8 @@ body{
     color: #666;
    }
 }
+/*======sidebar end====*/
+/*======Navbar start====*/
 .coder-navbar{
     z-index: 1029;
     position: fixed;
@@ -368,110 +370,8 @@ body{
     left: 0;
 }
 }
-/*=====new code =======*/
-.coded-navbar .scroll-div.navbar-content {
-    height: 100%;
-}
-
-.coded-navbar.menupos-fixed {
-    position: absolute;
-    height: 100vh;
-    min-height: 100vh;
-}
-
-.coded-navbar.menupos-fixed .scroll-div.navbar-content {
-    height: calc(100% - 56px);
-    min-height: calc(100% - 56px);
-}
-
-.bcard-pad{
-    padding-left: 139px;
-}
-.bcard-pa{
-    padding-left: 63px;
-}
-.gcard-pad{
-    padding-left: 142px;
-}
-.gcard-pa{
-    padding-left: 122px;
-}
-.ycard-pad{
-    padding-left: 74px;
-}
-.ycard-pa{
-    padding-left: 92px;
-}
-.rcard-pad{
-    padding-left: 99px;
-}
-.rcard-pa{
-    padding-left: 106px;
-}
-.icon{
-    height: 50px;
-    border-radius: 20px;
-}
-
-.search_input{
-    position: relative;
-    width: 40%;
-    border-radius: 30px;
-    padding-left: 10px;
-    margin-left: 250px;
-    height:40px;
-}
-.search-icons{
-    position: absolute;
-    padding-right: 10px;
-    height: 30px;
-    margin-top: 5px;
-}
-.dashboard_main{
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
- }
-
- .dropbtn {
-    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-    color: white;
-    padding: 6px;
-    font-size: 13px;
-    border: none;
-  }
-  .dropdown{
-   list-style: none;
-  }
-
-  .dropdown .dropdown-menu{
-   display: none;
-  }
-  .dropdown:hover > .dropdown-menu ,.dropend:hover > .dropdown-menu{
-   display: block;
-   margin-top: .125em;
-  }
-
-  .dropend:hover > .dropdown-menu{
-   position: absolute;
-   top: 0;
-   left: 100%;
-   margin-left: .125em;
-  }
- 
-.dropdown-menu-right {
-    right: 0;
-    left: auto;
-}
-
-.card-icons{
-    font-size: 27px;
-    padding-left: 12px;
-}
-.dud-logout{
-    color: #fff;
-    padding: 10px;
-}
+/*======navbar end====*/
+/*=====Static code for all the pages =======*/
 .pcoded-content{
     position: relative;
     display: block;
@@ -671,7 +571,7 @@ body{
 
 /*====== product form ======*/
 .add_btn{
-    color: #666;
+    color: #fff;
     border: none;
     border-radius: 10px;
     padding: 5px 10px;
@@ -761,4 +661,14 @@ body{
     position: absolute;
     top: 10px;
     left: 70px;
+}
+
+.product-btn{
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    color: white;
+    padding: 7px 15px;
+    font-size: 15px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;  
 }

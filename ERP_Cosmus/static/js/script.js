@@ -1,30 +1,34 @@
 $(document).ready(function(){
-    //jquery for toggle sub menus
-    $('.sub-btn').click(function(){
+  // jQuery for toggle sub menus
+  $('.sub-btn').click(function(){
+      // Close other sub-menus
+      $('.sub-menu').not($(this).next('.sub-menu')).slideUp();
+      $('.dropdown').not($(this).find('.dropdown')).removeClass('rotate');
+
+      // Toggle current sub-menu
       $(this).next('.sub-menu').slideToggle();
       $(this).find('.dropdown').toggleClass('rotate');
-    });
-
-    //jquery for expand and collapse the sidebar
-    $('.menu-btn').click(function(){
-      $('.side-bar').addClass('active');
-      $('.menu-btn').css("visibility", "hidden");
-    });
-
-    $('.close-btn').click(function(){
-      $('.side-bar').removeClass('active');
-      $('.menu-btn').css("visibility", "visible");
-    });
-  
   });
 
-  //search in using sort option
-  $(document).ready(function () {
-    $('select').selectize({
-        sortField: 'text'
-    });
+  // jQuery for expand and collapse the sidebar
+  $('.menu-btn').click(function(){
+      $('.side-bar').addClass('active');
+      $('.menu-btn').css("visibility", "hidden");
+  });
+
+  $('.close-btn').click(function(){
+      $('.side-bar').removeClass('active');
+      $('.menu-btn').css("visibility", "visible");
+  });
+
+  // Event listener for submenu item click
+  $('.sub-item').click(function(){
+      // Add any additional functionality you need when a submenu item is clicked
+      console.log('Submenu item clicked');
+  });
 });
 
+  //search in using sort option
 //create color form
 function openModal(modalId) {
   var modal = document.getElementById(modalId);
