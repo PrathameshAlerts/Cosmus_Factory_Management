@@ -239,13 +239,13 @@ def item_create(request):
         form = Itemform(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request,'product/success.html')
+            return redirect("item-list")
         else:
             print(form.errors)
-            return render(request,'product/create_item.html', {'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+            return render(request,'product/item_create_update.html', {'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
     else:
         form = Itemform()
-        return render(request,'product/create_item.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
 
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
@@ -319,9 +319,9 @@ def item_edit(request,pk):
             form.save()
             return redirect('item-list')
         else:
-            return render(request,'product/create_item.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+            return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
     else:
-        return render(request,'product/create_item.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
 
 
 def item_delete(request, pk):
