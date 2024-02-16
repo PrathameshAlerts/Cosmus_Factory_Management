@@ -38,24 +38,47 @@ function closeModal(modalId) {
 }
 
 //add card in form 
-function createCard(){
-  var staticCard = document.querySelector('.card-clone');
-  var newCard = staticCard.cloneNode(true);
-  var container = document.getElementById("cardContainer");
-    container.appendChild(newCard);
-  
-  }
-  document.getElementById("addButton").addEventListener("click", function() {
-    createCard();
+document.addEventListener('DOMContentLoaded', function() {
+  // Event listener for adding new cards
+  document.getElementById('addButton').addEventListener('click', function() {
+      createCard();
   });
-  
-  //image preview and clear
-  function preview() {
-    frame.src = URL.createObjectURL(event.target.files[0]);
-  }
-  function clearImage() {
-    document.getElementById('formFile').value = null;
-    frame.src = "";
-  }
-  
+
+  // Event listener for canceling cards
+  document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('cancel-btn')) {
+          var card = event.target.closest('.card');
+          card.parentNode.removeChild(card);
+      }
+  });
+});
+
+function createCard() {
+  var cardContainer = document.getElementById('cardContainer');
+  var cardTemplate = document.querySelector('.card-clone');
+  var newCard = cardTemplate.cloneNode(true);
+
+  // Reset input values in the new card
+  newCard.querySelector('input[type="file"]').value = '';
+  newCard.querySelector('input[name="PProduct_SKU_1"]').value = '';
+  newCard.querySelector('select[name="PProduct_color_1"]').selectedIndex = 0;
+
+  // Event listener for image preview
+  newCard.querySelector('input[type="file"]').addEventListener('change', function(event) {
+      var imgPreview = newCard.querySelector('.card-img-top');
+      var file = event.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function() {
+          imgPreview.src = reader.result;
+      }
+
+      if (file) {
+          reader.readAsDataURL(file);
+      }
+  });
+
+  cardContainer.appendChild(newCard);
+}
+
 

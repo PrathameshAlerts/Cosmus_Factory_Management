@@ -208,7 +208,7 @@ class Product(models.Model):
     Flipkart_Link = models.URLField(max_length = 200, null=True, blank = True) 
     Cosmus_link = models.URLField(max_length = 200, null=True, blank = True) 
     Youtube_Link = models.URLField(max_length = 200, null=True, blank = True)
-    Product_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
+    Product_GST = models.ForeignKey(gst,null = True ,blank = True, on_delete = models.PROTECT)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
 
     def Item_GST(self):

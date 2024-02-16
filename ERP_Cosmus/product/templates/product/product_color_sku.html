@@ -2,17 +2,18 @@
 {% load static %} 
 
 {% block body %}
-
         <div>
             <h2>Create Product</h2>
+            <form class="mb-3" method="POST">
+                {% csrf_token %}
             <div class="d-flex my-4">
-                <form class="mb-3 d-flex">
                     <label for="id_Product_Refrence_ID" class="form-label">Product Refrence ID:</label>
                     <input type="text" class="rounded-3 px-2 mx-3" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
                     <button class="card_btn"><a class ="text-decoration-none" href="{% url 'colorlist' %}">Add Color</a></button>
-                </form>  
+                    <input type="submit" value='Save'>
+                
                 <button id="addButton" class="add_btn">+</button>
-                <button value='Save' class="add_btn">Submit</button>
+                
             </div>
             <div >
                 <div id="cardContainer">
@@ -36,13 +37,14 @@
                           <label  for="id_PProduct_SKU_1" class="form-label pe-4">SKU</label>
                           <input type="text" name="PProduct_SKU_1" id="id_PProduct_SKU_1" class="rounded-3 w-75 px-2">
                       </div>
-                      <button type="close" value = 'cancel' class="card_btn">Cancel</button>
+                      <button type="close" value = 'cancel' class="card_btn cancel-btn">Cancel</button>
                     </div>
                   </div>
                   
                 </div>
     
-            </div> 
+             </div> 
+            </form>  
       
             <div>
             

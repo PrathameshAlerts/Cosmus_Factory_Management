@@ -137,6 +137,7 @@ def edit_production_product(request,pk):
 
 #transaction.atomic
 def product_color_sku(request):
+    print("GET",request.GET)
     print(request.POST)
     color = Color.objects.all()
     if request.method == 'POST':
@@ -145,7 +146,7 @@ def product_color_sku(request):
         with transaction.atomic():
             all_sets_valid = False
             try:
-                for i in range(1, 5): 
+                for i in range(1, 2): 
                     # Build field names dynamically 
                     image_field_name = f'PProduct_image_{i}'
                     color_field_name = f'PProduct_color_{i}'

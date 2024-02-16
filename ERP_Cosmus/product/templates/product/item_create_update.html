@@ -2,8 +2,7 @@
 {% load static %} 
  {% block body %}
 
-
-          <div class="create_item_form">
+<div class="create_item_form">
             <h2 class="px-5 py-3">Item create</h2>
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
@@ -16,7 +15,7 @@
               
               <div class="d-flex my-3">
                 <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
-                <select id="select-state" class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
+                <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
                     
                   {% if form.instance.id %}
                   <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.fab_grp }}</option>
@@ -44,7 +43,7 @@
                   {% if form.instance.id %}
                   <option value="{{ form.instance.Item_Color.id}}">{{form.instance.Color_Name}}</option>
                   {% for x in colors %}
-                  <option value="{{x.id}}">{{x.color_name}}</option>
+                 <option value="{{x.id}}">{{x.color_name}}</option>
                   {% endfor %}
                     {% elif not form.instance.id %}
                     <option value=""></option>
@@ -119,8 +118,6 @@
               <div class="d-flex my-3">
                 <label for="id_GST" class="form-label item-form">GST:</label>
                 <select name="Item_Creation_GST"  class="item-select" required  id="id_Item_Creation_GST">
-
-
 
                   {% if form.instance.id %}
                   <option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.Item_GST}}</option>
