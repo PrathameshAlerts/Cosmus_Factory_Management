@@ -57,22 +57,5 @@ function createCard(){
     document.getElementById('formFile').value = null;
     frame.src = "";
   }
-  //edit item
+  
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const field3Input = document.querySelector('#id_Item_Color');
-    const field4Input = document.querySelector('#id_item_name');
-
-    // Event listener to trigger autofill when field1, field2, or field3 change
-    field3Input.addEventListener('input', autofillField4);
-    field4Input.addEventListener('input',autofillField4);
-    
-    // Function to autofill field4
-    function autofillField4() {
-        const value3 = field3Input.value;
-        const defvalue = field4Input.value; // Accessing field4Input directly
-        const newValue = defvalue.split('-')[0] + '-' + value3;  // Override with new value
-
-        field4Input.value = newValue;
-    }
-});
