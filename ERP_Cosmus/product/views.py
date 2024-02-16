@@ -508,7 +508,6 @@ def unit_name_create(request):
         return render(request, "product/unit_name_create_update.html", {'title':'Create Unit','form':form})
 
 
-
 def unit_name_list(request):
     unit_name_all = Unit_Name_Create.objects.all()
     return render(request,'product/unit_name_list.html', {"unit_name_all":unit_name_all})
@@ -544,7 +543,7 @@ def unit_name_delete(request,pk):
 #_________________________Accounts start___________________________
 
 def account_sub_group_create(request):
-
+    print(request.POST)
     main_grp = AccountGroup.objects.all()
     form = account_sub_grp_form()
     if request.method == 'POST':
@@ -586,6 +585,7 @@ def account_sub_group_delete(request, pk):
 
 
 def stock_item_create(request):
+    print(request.POST)
     accsubgrps = AccountSubGroup.objects.all()
     form = StockItemForm()
     if request.method == 'POST':
