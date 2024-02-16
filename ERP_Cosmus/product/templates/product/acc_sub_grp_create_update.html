@@ -13,15 +13,25 @@
     <div class="d-flex">
       <label for="id_account_sub_group" class="form-label px-2">Account group </label>
       <select name="acc_grp" required id="id_acc_grp">
+
+         {% if form.instance.id %}
+         <option value="{{form.instance.acc_grp.id}}">{{form.instance.account_main_group}}</option>
+         {% for x in main_grp %}
+         <option value="{{x.id}}">{{x.account_group}}</option>
+         {% endfor %}
+
+         {% elif not form.instance.id %}
+        <option value=""></option>
         {% for x in main_grp %}
         <option value="{{x.id}}">{{x.account_group}}</option>
         {% endfor %}
+
+       {% endif %}
       </select>
     </div>
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
 
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'account_sub_group-list' %}">Return</a></button>
-
   </div>
 {% endblock body %}

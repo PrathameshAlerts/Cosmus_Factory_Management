@@ -12,14 +12,14 @@
                 <input type="text" class="item-select" value="{{form.instance.item_name}}" name="item_name" maxlength="255" required id="id_item_name">
               </div>
 
-
-
+              <!-- {{form.instance.fab_grp }} - from a function def fab_grp(self): return self.Fabric_Group.fab_grp_name -->
+              
               <div class="d-flex my-3">
                 <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
                 <select id="select-state" class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
                     
                   {% if form.instance.id %}
-                  <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.Fabric_Group.fab_grp_name }}</option>
+                  <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.fab_grp }}</option>
                   {% for x in fab_grp %}
                   <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
               {% endfor %}
@@ -34,11 +34,15 @@
 
               <div class=" d-flex my-3">
                 <label for="id_Item_Color" class="form-label item-form">Item Color:</label>
-                <select id="select-color" class="item-select" name="Item_Color" required id="id_Item_Color">
-  
+                <select class="item-select" name="Item_Color" required id="id_Item_Color">
+
+                  <!-- form.instance.Color_Name got from (def Color_Name(self):) which returns Item_Color.color_name the actual color
+                  When you access a foreign key field in Django templates, by default, it returns the related object, not just its ID.
+                  To access the ID of the related object, you need to use the dot notation to access the ID attribute explicitly.
+                  {{ form.instance.Item_Color.id }} -->
 
                   {% if form.instance.id %}
-                  <option value="{{ form.instance.Item_Color.id }}">{{ form.instance.Item_Color.color_name }}</option>
+                  <option value="{{ form.instance.Item_Color.id}}">{{form.instance.Color_Name}}</option>
                   {% for x in colors %}
                   <option value="{{x.id}}">{{x.color_name}}</option>
                   {% endfor %}
@@ -50,10 +54,12 @@
                     {% endif %}
                 </select>
               </div>
+
               <!-- <div class=" d-flex my-3">
                 <label for="id_shades" class="form-label item-form">Shades:</label>
                 <input type="text" class="item-select" name="shades" value="{{form.instance.shades}}" required id="id_shades">
               </div> -->
+
               <div class=" d-flex my-3">
                 <label for="id_Material_code" class="form-label item-form">Material Code</label>
                 <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}" maxlength="255" required id="id_Material_code">
@@ -71,7 +77,7 @@
                 <select name="unit_name_item" class="item-select" required id="id_unit_name_item">
 
                     {% if form.instance.id %}
-                    <option value="{{ form.instance.unit_name_item.id }}">{{ form.instance.unit_name_item.unit_name }}</option>
+                    <option value="{{ form.instance.unit_name_item.id }}">{{ form.instance.Unit_Name }}</option>
                     {% for x in unit_name %}  
                     <option value="{{x.id}}">{{x.unit_name}}</option>
                     {% endfor %}
@@ -117,12 +123,12 @@
 
 
                   {% if form.instance.id %}
-                  <option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.Item_Creation_GST.gst_percentage }}</option>
+                  <option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.Item_GST}}</option>
                   {% for gst in gsts %}
                   <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
                   {% endfor %}
                   {% elif not form.instance.id %}
-                  <option value=""></option>
+                  <option value=""></option>  
                   {% for gst in gsts %}
                   <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
                   {% endfor %}
@@ -147,5 +153,35 @@
               <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
             </form>
           </div>
+
+          
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const field3Input = document.querySelector('#id_Item_Color');
+              const field4Input = document.querySelector('#id_item_name');
+              const colorOptions = Array.from(field3Input.options); // Convert options NodeList to Array
+          
+              // Event listener to trigger autofill when field1, field2, or field3 change
+              field3Input.addEventListener('change', autofillField4);
+              field4Input.addEventListener('input', autofillField4);
+          
+              // Function to autofill field4
+              function autofillField4() {
+                const selectedOption = colorOptions.find(option => option.value === field3Input.value);
+                const colorName = selectedOption ? selectedOption.textContent : ''; // Get the text content of the selected option
+            
+                if (colorName) {
+                    // Only update field4Input if a color is selected
+                    const defvalue = field4Input.value.split('-')[0]; // Get the first part of the current value of field4Input
+                    const newValue = defvalue + '-' + colorName; // Combine the first part and the color name
+                    field4Input.value = newValue; // Update the value of field4Input
+                }
+            }
+
+
+          });
+        </script>
     
  {% endblock body %}
+
+

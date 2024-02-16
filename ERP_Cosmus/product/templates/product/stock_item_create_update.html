@@ -14,11 +14,37 @@
     <div class="d-flex">
       <label for="id_acc_sub_grp" class="form-label px-2">Account Sub Group:</label>
 
-      <select name="acc_sub_grp" required id="id_acc_sub_grp">
+      <select name="acc_sub_grp" required id="id_acc_sub_grp"> -->
+
+         {% if form.instance %}
+
+        <option value="{{form.instance.acc_sub_grp.id}}">{{form.instance.account_sub_group}}</option>
+        {% for grp in accsubgrps %}
+          <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
+        {% endfor %}
+
+
+      {% elif not form.instance %}
+      <option value=""></option>
       {% for grp in accsubgrps %}
         <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
       {% endfor %}
+
+      {% endif %}
     </select>
+
+
+    <!-- <select name="acc_sub_grp" required id="id_acc_sub_grp">
+      {% if form.instance %}
+          <option value="{{ form.instance.acc_sub_grp.id }}">{{ form.instance.acc_sub_grp.account_sub_group }}</option>
+      {% else %}
+          <option value=""></option>
+      {% endif %}
+      {% for grp in accsubgrps %}
+          <option value="{{ grp.id }}">{{ grp.account_sub_group }}</option>
+      {% endfor %}
+  </select> -->
+
 
     </div>
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
