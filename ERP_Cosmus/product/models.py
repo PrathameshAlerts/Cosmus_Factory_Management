@@ -211,7 +211,8 @@ class Product(models.Model):
     Product_GST = models.ForeignKey(gst,null = True ,blank = True, on_delete = models.PROTECT)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
 
-
+    def Item_GST(self):
+        return self.Product_GST.gst_percentage
     
 
 
@@ -281,7 +282,8 @@ class Item_Creation(models.Model):
 # these functions are used to show related attributes instead of PK id in listview
     def Color_Name(self):
         return self.Item_Color.color_name
-    
+
+
 
     def fab_grp(self):
         return self.Fabric_Group.fab_grp_name

@@ -146,7 +146,7 @@ def product_color_sku(request):
         with transaction.atomic():
             all_sets_valid = False
             try:
-                for i in range(1, 2): 
+                for i in range(1, 5): 
                     # Build field names dynamically 
                     image_field_name = f'PProduct_image_{i}'
                     color_field_name = f'PProduct_color_{i}'
@@ -343,6 +343,7 @@ def color_create_update(request, pk=None):
     if request.path == '/simple_colorcreate_list/':
         template_name = 'product/color_list.html'
         title = 'Color List'
+
     elif request.path == '/simple_colorcreate_update/':
         template_name = 'product/color_create_update.html'
         title = 'Create Color'
@@ -371,12 +372,12 @@ def color_create_update(request, pk=None):
             form.save()
 
             if 'save_and_add_another' in request.POST:
-                return redirect('colorlist')
+                return redirect('simplecolorlist')
             
-            return redirect('item-create')
+            return redirect('simplecolorlistonly')
         else:
             print(form.errors)
-            return render(request, template_name ,{'title': title,'form': form,'colors':color})
+            return render(request, template_name,{'title': title,'form': form,'colors':color})
 
 
     return render(request, template_name ,{'title': title, 'form': form, 'colors':color})
@@ -421,23 +422,44 @@ def color_delete(request, pk):
 
 #_______________________fabric group start___________________________________
 
+# def item_fabric_group_create(request):
+#     form = ItemFabricGroup()
+#     if request.method == 'POST':
+#         form = ItemFabricGroup(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             #get the return url from the session and redirect it to the same 
+#             return_url = request.session.get('return_url', '/')
+#             # delete the session
+#             del request.session['return_url']
+#             return redirect(return_url)
+#         else:
+#             return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form})
+#     else:
+#         return_url_get = request.META.get('HTTP_REFERER', '/')
+#         request.session['return_url'] = return_url_get
+#         return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form,'return_url_get':return_url_get})
+
+
 def item_fabric_group_create(request):
     form = ItemFabricGroup()
+    print(request.POST)
     if request.method == 'POST':
         form = ItemFabricGroup(request.POST)
         if form.is_valid():
             form.save()
-            #get the return url from the session and redirect it to the same 
-            return_url = request.session.get('return_url', '/')
-            # delete the session
-            del request.session['return_url']
-            return redirect(return_url)
+
+            if 'save_and_add_another' in request.POST:
+
+                return redirect('item-fabgroup-create')
+            return redirect('item-fabgroup-list')
         else:
+            print(form.errors)
             return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form})
-    else:
-        return_url_get = request.META.get('HTTP_REFERER', '/')
-        request.session['return_url'] = return_url_get
-        return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form,'return_url_get':return_url_get})
+
+
+    return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form})
+
 
 
 def item_fabric_group_list(request):
@@ -474,7 +496,12 @@ def unit_name_create(request):
         form = UnitName(request.POST)
         if form.is_valid():
             form.save()
+
+            if 'save_and_add_another' in request.POST:
+                return redirect('unit_name-create')
+            
             return redirect('unit_name-list')
+        
         else:
             return render(request, "product/unit_name_create_update.html", {'title': 'Create Unit','form':form})
     else:
