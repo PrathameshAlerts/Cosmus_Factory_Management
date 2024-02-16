@@ -6,6 +6,7 @@
         <h2>{{title}}</h2>
       <form class="mt-5" action="" method="POST">
            {% csrf_token %}
+           {{form.fab_grp_name.errors}}
        <div class="d-flex">
       <label for="id_fab_grp_name" class="form-label px-2">Fabric Group Name:</label>
       <input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">
