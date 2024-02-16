@@ -8,37 +8,59 @@
               {% csrf_token %}
               <div class=" d-flex my-3">
                 <label for="id_item_name" class="form-label item-form">Item Name:</label>
-                <input type="text" class="item-select" name="item_name" maxlength="255" required id="id_item_name">
+                <input type="text" class="item-select" value="{{form.instance.item_name}}" name="item_name" maxlength="255" required id="id_item_name">
               </div>
+
+
+
               <div class="d-flex my-3">
                 <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
-                <select id="select-state" class="item-select" name="Fabric_Group" required id="id_Fabric_Group" placeholder="Pick a Fabric...">
+                <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
                     
-                  {% for x in fab_grp %}  
-                  <option value="{{x.id}}">{{x.fab_grp_name}}</option>
-                  {% endfor %}
-            
+                  {% if form.instance.id %}
+                  <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.Fabric_Group.fab_grp_name }}</option>
+                  {% for x in fab_grp %}
+                  <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
+              {% endfor %}
+                 {% elif not form.instance.id %}
+                 <option value=""></option>
+              {% for x in fab_grp %}
+                  <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
+              {% endfor %}
+              {% endif %}
                 </select>
-              </div>
+            </div>
+
               <div class=" d-flex my-3">
                 <label for="id_Item_Color" class="form-label item-form">Item Color:</label>
-                <select id="select-color" class="item-select" name="Item_Color" required id="id_Item_Color" placeholder="Pick a Color...">
-                    {% for x in colors %}  
+                <select class="item-select" name="Item_Color" required id="id_Item_Color">
+  
+
+                  {% if form.instance.id %}
+                  <option value="{{ form.instance.Item_Color.id }}">{{ form.instance.Item_Color.color_name }}</option>
+                  {% for x in colors %}
+                 <option value="{{x.id}}">{{x.color_name}}</option>
+                  {% endfor %}
+                    {% elif not form.instance.id %}
+                    <option value=""></option>
+                    {% for x in colors %}
                     <option value="{{x.id}}">{{x.color_name}}</option>
                     {% endfor %}
+                    {% endif %}
                 </select>
               </div>
-              <div class=" d-flex my-3">
+              <!-- <div class=" d-flex my-3">
                 <label for="id_shades" class="form-label item-form">Shades:</label>
-                <input type="text" class="item-select" name="shades" required id="id_shades">
-              </div>
+                <input type="text" class="item-select" name="shades" value="{{form.instance.shades}}" required id="id_shades">
+              </div> -->
               <div class=" d-flex my-3">
                 <label for="id_Material_code" class="form-label item-form">Material Code</label>
-                <input type="text" class="item-select" name="Material_code" maxlength="255" required id="id_Material_code">
+                <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}" maxlength="255" required id="id_Material_code">
               </div>
               <div class=" d-flex my-3">
                 <label for="id_Packing" class="form-label item-form">Packing</label>
-                <select name="Packing" class="item-select" required id="id_Packing">
+                <select name="Packing" class="item-select"  required id="id_Packing">
+                  <option value="{{form.instance.Packing}}">{{form.instance.Packing}}</option>
                   <option value="Roll">Roll</option>
                   <option value="Bundle">Bundle</option>
                 </select>
@@ -46,24 +68,33 @@
               <div class=" d-flex my-3">
                 <label for="id_unit_name_item" class="form-label item-form">Unit Name:</label>
                 <select name="unit_name_item" class="item-select" required id="id_unit_name_item">
+
+                    {% if form.instance.id %}
+                    <option value="{{ form.instance.unit_name_item.id }}">{{ form.instance.unit_name_item.unit_name }}</option>
                     {% for x in unit_name %}  
                     <option value="{{x.id}}">{{x.unit_name}}</option>
                     {% endfor %}
+                    {% elif not form.instance.id %}
+                  <option value=""></option>
+                    {% for x in unit_name %}  
+                    <option value="{{x.id}}">{{x.unit_name}}</option>
+                    {% endfor %}
+                    {% endif %}
 
                 </select>
               </div>
               <div class=" d-flex my-3">
                 <label for="id_Units" class="form-label item-form">Units:</label>
-                <input type="number" class="item-select" name="Units" step="0.01" required id="id_Units">
+                <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required id="id_Units">
               </div>
               <div class=" d-flex my-3">
                 <label for="id_Panha" class="form-label item-form">Panha:</label>
-                <input type="number" class="item-select" name="Panha" step="0.01" required id="id_Panha">
+                <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha}}" step="0.01" required id="id_Panha">
               </div>
               <div class=" d-flex my-3">
                 <label for="id_Fabric_nonfabric" class="form-label item-form">Fabric/ Non Fabric:</label>
-                <select name="Fabric_nonfabric" class="item-select" required id="id_Fabric_nonfabric">
-                  
+                <select name="Fabric_nonfabric" class="item-select"  required id="id_Fabric_nonfabric">
+                  <option value="{{form.instance.Fabric_nonfabric}}">{{form.instance.Fabric_nonfabric}}</option>
                   <option value="Fabric">Fabric</option>
                   <option value="Non Fabric">Non Fabric</option>
                 </select>
@@ -71,6 +102,7 @@
               <div class="d-flex my-3">
                 <label for="id_Fabric_Finishes" class="form-label item-form">Fabric Finishes:</label>
                 <select name="Fabric_Finishes" class="item-select" required id="id_Fabric_Finishes">
+                  <option value="{{form.instance.Fabric_Finishes}}">{{form.instance.Fabric_Finishes}}</option>
                   <option value="PVC Coating">PVC Coating</option>
                   <option value="PU Coating">PU Coating</option>
                   <option value="Black Nickle">Black Nickle</option>
@@ -79,21 +111,29 @@
               </div>
               <div class="d-flex my-3">
                 <label for="id_GST" class="form-label item-form">GST:</label>
-                <select name="Item_Creation_GST"  class="item-select" required id="id_Item_Creation_GST">
+                <select name="Item_Creation_GST"  class="item-select" required  id="id_Item_Creation_GST">
 
+                  {% if form.instance.id %}
+                  <option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.Item_Creation_GST.gst_percentage }}</option>
                   {% for gst in gsts %}
                   <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
                   {% endfor %}
+                  {% elif not form.instance.id %}
+                  <option value=""></option>
+                  {% for gst in gsts %}
+                  <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
+                  {% endfor %}
+                  {% endif %}
                 </select>
               </div>
               <div class="d-flex my-3">
                 <label for="id_HSN_Code" class="form-label item-form">HSN Code:</label>
-                <input type="text" class="item-select" name="HSN_Code" required id="id_HSN_Code">
+                <input type="text" class="item-select" name="HSN_Code" value="{{form.instance.HSN_Code}}" required id="id_HSN_Code">
               </div>
               <div class="d-flex my-3">
                 <label for="id_status" class="form-label item-form">Status:</label>
                 <select name="status" class="item-select" required  id="id_status">
-                  
+                  <option value="{{form.instance.status}}">{{form.instance.status}}</option>
                   <option value="Used">Used</option>
                   <option value="Unused">Unused</option>
                   <option value="Slow Moving">Slow Moving</option>
@@ -106,25 +146,27 @@
           </div>
           <script>
             document.addEventListener('DOMContentLoaded', function() {
-            var inputField = document.getElementById('id_item_name');
-        var selectField = document.getElementById('id_Item_Color');
-
-        // Add event listeners for input and select fields
-        inputField.addEventListener('input', updateInput);
-        selectField.addEventListener('change', updateInput);
-
-        // Function to update the input field
-        function updateInput() {
-            var inputValue = inputField.value;
-            var selectedOption = selectField.value;
-
-            // Concatenate input value and selected option
-            var concatenatedText = inputValue + " - " + selectedOption;
-
-            // Update the input field with the concatenated text
-            inputField.value = concatenatedText;
-        };
-      });
-       </script>
+              const field3Input = document.querySelector('#id_Item_Color');
+              const field4Input = document.querySelector('#id_item_name');
+              const colorOptions = Array.from(field3Input.options); // Convert options NodeList to Array
+          
+              // Event listener to trigger autofill when field1, field2, or field3 change
+              field3Input.addEventListener('change', autofillField4);
+              field4Input.addEventListener('input', autofillField4);
+          
+              // Function to autofill field4
+              function autofillField4() {
+                  const selectedOption = colorOptions.find(option => option.value === field3Input.value);
+                  const colorName = selectedOption ? selectedOption.textContent : ''; // Get the text content of the selected option
+                 if(colorName){
+                 
+                  const defvalue = field4Input.value.split('-')[0]; // Get the first part of the current value of field4Input
+                  const newValue = defvalue + '-' + colorName; // Combine the first part and the color name
+          
+                  field4Input.value = newValue; // Update the value of field4Input
+                 }
+              }
+          });
+        </script>
     
  {% endblock body %}

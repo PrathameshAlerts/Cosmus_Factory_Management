@@ -57,7 +57,7 @@ urlpatterns = [
     path('stockitemdelete/<int:pk>',views.stock_item_delete , name= 'stock_item-delete'),
 
     #common Routes
-    path('dashboard/', views.dashboard , name='dashboard-main'),
+    path('', views.dashboard , name='dashboard-main'),
 
 
 ]

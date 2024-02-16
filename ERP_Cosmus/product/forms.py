@@ -84,10 +84,10 @@ class ColorForm(forms.ModelForm):
 
 
 class Itemform(forms.ModelForm):
-    shades = forms.CharField(label='shades')
+    
     class Meta:
         model = Item_Creation
-        fields = ['item_name','Material_code','Item_Color','shades','Packing',
+        fields = ['item_name','Material_code','Item_Color','Packing',
                  'unit_name_item','Units','Panha', 'Fabric_nonfabric','Fabric_Finishes','Fabric_Group',
                  'Item_Creation_GST','HSN_Code','status']
         
