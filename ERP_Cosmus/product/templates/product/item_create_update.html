@@ -147,7 +147,12 @@
                 </select>
               </div>
               <input type="submit" class="form-button" name="save" value="Save">
+
+              {% if not form.instance.id %}
+
               <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
+
+              {% endif %}
             </form>
           </div>
 
