@@ -45,22 +45,19 @@ function closeModal(modalId) {
 document.addEventListener('DOMContentLoaded', function() {
   // Event listener for adding new cards
   document.getElementById('addButton').addEventListener('click', function() {
-      createCard();
-  });
-
-  // Event listener for canceling cards
-  document.addEventListener('click', function(event) {
-      if (event.target.classList.contains('cancel-btn')) {
-          var card = event.target.closest('.card');
-          card.parentNode.removeChild(card);
-      }
+    createCard();
   });
 });
 
 function createCard() {
   var cardContainer = document.getElementById('cardContainer');
-  var cardTemplate = document.querySelector('.card-clone');
-  var newCard = cardTemplate.cloneNode(true);
+  var cardClone = document.querySelector('.card-clone');
+
+  // Clone the card clone element
+  var newCard = cardClone.cloneNode(true);
+
+  // Display the new card
+  newCard.style.display = 'block';
 
   // Reset input values in the new card
   newCard.querySelector('input[type="file"]').value = '';
@@ -69,20 +66,27 @@ function createCard() {
 
   // Event listener for image preview
   newCard.querySelector('input[type="file"]').addEventListener('change', function(event) {
-      var imgPreview = newCard.querySelector('.card-img-top');
-      var file = event.target.files[0];
-      var reader = new FileReader();
+    var imgPreview = newCard.querySelector('.card-img-top');
+    var file = event.target.files[0];
+    var reader = new FileReader();
 
-      reader.onload = function() {
-          imgPreview.src = reader.result;
-      }
+    reader.onload = function() {
+      imgPreview.src = reader.result;
+    }
 
-      if (file) {
-          reader.readAsDataURL(file);
-      }
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Event listener for canceling the card
+  newCard.querySelector('.cancel-btn').addEventListener('click', function(event) {
+    var card = event.target.closest('.card');
+    card.parentNode.removeChild(card);
   });
 
   cardContainer.appendChild(newCard);
 }
+
 
 
