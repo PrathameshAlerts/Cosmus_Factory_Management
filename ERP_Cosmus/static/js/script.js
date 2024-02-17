@@ -88,5 +88,29 @@ function createCard() {
   cardContainer.appendChild(newCard);
 }
 
+// //create and update item form
+document.addEventListener('DOMContentLoaded', function() {
+  const field3Input = document.querySelector('#id_Item_Color');
+  const field4Input = document.querySelector('#id_item_name');
+  const colorOptions = Array.from(field3Input.options); // Convert options NodeList to Array
 
+  // Event listener to trigger autofill when field1, field2, or field3 change
+  field3Input.addEventListener('change', autofillField4);
+  field4Input.addEventListener('input', autofillField4);
+
+  // Function to autofill field4
+  function autofillField4() {
+    const selectedOption = colorOptions.find(option => option.value === field3Input.value);
+    const colorName = selectedOption ? selectedOption.textContent : ''; // Get the text content of the selected option
+
+    if (colorName) {
+        // Only update field4Input if a color is selected
+        const defvalue = field4Input.value.split('-')[0]; // Get the first part of the current value of field4Input
+        const newValue = defvalue + '-' + colorName; // Combine the first part and the color name
+        field4Input.value = newValue; // Update the value of field4Input
+    }
+}
+
+
+});
 
