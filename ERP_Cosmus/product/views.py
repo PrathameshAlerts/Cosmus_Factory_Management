@@ -146,7 +146,7 @@ def product_color_sku(request):
         with transaction.atomic():
             all_sets_valid = False
             try:
-                for i in range(1, 5): 
+                for i in range(1, 2): 
                     # Build field names dynamically 
                     image_field_name = f'PProduct_image_{i}'
                     color_field_name = f'PProduct_color_{i}'
@@ -508,7 +508,6 @@ def unit_name_create(request):
         return render(request, "product/unit_name_create_update.html", {'title':'Create Unit','form':form})
 
 
-
 def unit_name_list(request):
     unit_name_all = Unit_Name_Create.objects.all()
     return render(request,'product/unit_name_list.html', {"unit_name_all":unit_name_all})
@@ -544,14 +543,14 @@ def unit_name_delete(request,pk):
 #_________________________Accounts start___________________________
 
 def account_sub_group_create(request):
-
+    print(request.POST)
     main_grp = AccountGroup.objects.all()
     form = account_sub_grp_form()
     if request.method == 'POST':
         form = account_sub_grp_form(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dashboard-main')
+            return redirect('account_sub_group-list')
         else:
             print(form.errors)
             return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Create','form':form})
@@ -566,7 +565,7 @@ def account_sub_group_update(request, pk):
         form = account_sub_grp_form(request.POST, instance = group)
         if form.is_valid():
             form.save()
-            return redirect('dashboard-main')
+            return redirect('account_sub_group-list')
         else:
             print(form.errors)
             return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Update','form':form})
@@ -586,6 +585,7 @@ def account_sub_group_delete(request, pk):
 
 
 def stock_item_create(request):
+    print(request.POST)
     accsubgrps = AccountSubGroup.objects.all()
     form = StockItemForm()
     if request.method == 'POST':
@@ -610,7 +610,7 @@ def stock_item_update(request, pk):
         form = StockItemForm(request.POST, instance = stock)
         if form.is_valid():
             form.save()
-            return redirect('dashboard-main')
+            return redirect('stock_item-list')
         else:
             print(form.errors)
             return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update','accsubgrps':accsubgrps,'form':form})
