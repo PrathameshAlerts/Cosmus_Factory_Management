@@ -18,7 +18,20 @@
   <div class=" d-flex my-3">
   <label for="id_Product_Status" class="form-label item-form">Status:</label>
 <select name="Product_Status" class="item-select" id="id_Product_Status">
+
+if 
+elif 
+
+
+
+
+  {% if form.instance.id %}
+<option value="{{form.instance.Product_Status}}"selected>{{form.instance.Product_Status}}</option>
+
+{% elif %}
 <option value=""selected></option>
+
+  {% endif %}
 <option value="Preproduction">Preproduction</option>
 <option value="Active">Active</option>
 <option value="Inactive">Inactive</option>
