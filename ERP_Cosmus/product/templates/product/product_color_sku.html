@@ -6,19 +6,22 @@
             {{form.errors}}
             <h2>Create Product</h2>
             <div class="d-flex">
-            <button class="card_btn" onclick="redirectToColorList()"><span>Add Color</span></button>
-            <button id="addButton" class="add_btn">Add +</button>
+                
+                <button class="card_btn" onclick="redirectToColorList()"><span>Add Color</span></button>
+                <button id="addButton" class="add_btn">Add +</button>
+           
             </div>
             <form class="mb-3" method="POST">
                 {% csrf_token %}
             <div class="d-flex my-4">
                     <label for="id_Product_Refrence_ID" class="form-label">Product Refrence ID:</label>
                     <input type="text" class="rounded-3 px-2 mx-3" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
-                    <input type="submit" class="card_btn" value='Save'>
+                    <input type="submit" class="add_btn" value='Save'>
+                   
             </div>
             <div >
                 <div id="cardContainer">
-                <div class="card card-clone" style="width: 15rem;">
+                <div class="card card-clone" style="width: 15rem; display: none;">
                     <img id="frame"  src="..." class="card-img-top card-img p-1"  alt="...">
                     <div class="card-body card-input">
                       <div class="mb-2 d-flex">
