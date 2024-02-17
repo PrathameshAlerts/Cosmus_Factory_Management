@@ -11,9 +11,33 @@
         <label for="id_color_name" class="form-label create_color_lable">Color Name:</label>
         <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
     </div>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
 
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    {% if not form.instance %}
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+    {% endif %}
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'simplecolorlistonly' %}">Return</a></button>
 
 {% endblock body %}
+
+
+
+
+
+
+<!-- to check if form. instance exists
+{% if form.instance %}
+<p>form.instance exists: {{ form.instance }}</p>
+{% else %}
+<p>form.instance does not exist</p>
+{% endif %} -->
+
+<!-- You can also inspect the entire context available in your template to see what variables are 
+being passed from your view. You can use the {{ request }} template tag to display the request
+object, which includes the context.
+
+For example:
+
+html
+Copy code
+<pre>{{ request }}</pre> -->

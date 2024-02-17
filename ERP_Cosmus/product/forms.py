@@ -75,6 +75,7 @@ class PProductAddForm(forms.ModelForm):
                   'Product_BulkPrice', 'Product_Cost_price', 'Product_Refrence_ID']
 
 
+
 class ColorForm(forms.ModelForm):
     class Meta:
         model = Color
