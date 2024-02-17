@@ -30,14 +30,10 @@ class Product2Category(models.Model):
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
     
-
     
 class gst(models.Model):
     gst_percentage = models.CharField(max_length = 50)
 
-
-
-        
 
 class ProductImage(models.Model):
 
@@ -208,19 +204,23 @@ class Product(models.Model):
     Flipkart_Link = models.URLField(max_length = 200, null=True, blank = True) 
     Cosmus_link = models.URLField(max_length = 200, null=True, blank = True) 
     Youtube_Link = models.URLField(max_length = 200, null=True, blank = True)
-    Product_GST = models.ForeignKey(gst,null = True ,blank = True, on_delete = models.PROTECT)
+    Product_GST = models.ForeignKey(gst, blank = True,null = True, on_delete = models.PROTECT)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
 
-    def Item_GST(self):
+ 
+    def P_GST(self):
         return self.Product_GST.gst_percentage
     
-
 
 class PProduct_Creation(models.Model):
     Product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name='productdetails')  
     PProduct_image = models.ImageField(upload_to ='pproduct/images' ,null=True ,blank=True)
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
     PProduct_SKU = models.IntegerField(primary_key = True)
+
+    def product_color_name(self):
+        return self.PProduct_color.color_name
+     
 
 class Fabric_Group_Model(models.Model):
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)

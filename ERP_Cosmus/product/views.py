@@ -166,7 +166,6 @@ def product_color_sku(request):
 
                     if current_form.is_valid():
                         pproduct = current_form.save(commit=False)
-
                         # Create a new Product instance or get an existing one based on Product_Refrence_ID
                         # product will be the object retrieved from the db and then created ,created will be a boolean field
                         product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)

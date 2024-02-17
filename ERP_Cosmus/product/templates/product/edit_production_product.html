@@ -19,43 +19,50 @@
   <label for="id_Product_Status" class="form-label item-form">Status:</label>
 <select name="Product_Status" class="item-select" id="id_Product_Status">
 
-if 
-elif 
-
-
 
 
   {% if form.instance.id %}
 <option value="{{form.instance.Product_Status}}"selected>{{form.instance.Product_Status}}</option>
 
-{% elif %}
+{% elif not form.instance.id %}
 <option value=""selected></option>
+{% endif %}
 
-  {% endif %}
 <option value="Preproduction">Preproduction</option>
 <option value="Active">Active</option>
 <option value="Inactive">Inactive</option>
 <option value="Discontinued">Discontinued</option>
 </select>
 </div>
+
+
 <div class=" d-flex my-3">
-<label for="id_Product_Channel" class="form-label item-form">Channel:</label>
-<label for="id_Product_Channel_0" class="px-2"> <input type="checkbox" class="mx-1" name="Product_Channel" value="Ecommerce" id="id_Product_Channel_0">Ecommerce</label>
-<label for="id_Product_Channel_1" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Retail" id="id_Product_Channel_1">Retail</label>
-<label for="id_Product_Channel_2" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Corporate" id="id_Product_Channel_2">Corporate</label>
-<label for="id_Product_Channel_3" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Modern Trade" id="id_Product_Channel_3">Modern Trade</label>
-<label for="id_Product_Channel_4" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Export" id="id_Product_Channel_4">Export</label>
-</div>
+  <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
+  <label for="id_Product_Channel_0" class="px-2"> <input type="checkbox" class="mx-1" name="Product_Channel" value="Ecommerce" id="id_Product_Channel_0">Ecommerce</label>
+  <label for="id_Product_Channel_1" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Retail" id="id_Product_Channel_1">Retail</label>
+  <label for="id_Product_Channel_2" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Corporate" id="id_Product_Channel_2">Corporate</label>
+  <label for="id_Product_Channel_3" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Modern Trade" id="id_Product_Channel_3">Modern Trade</label>
+  <label for="id_Product_Channel_4" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Export" id="id_Product_Channel_4">Export</label>
+  <h1>{{request.get.data}}</h1> 
+ </div>
+
+
 <div class=" d-flex my-3">
 <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
 <select name="Product_Brand" class="item-select" id="id_Product_Brand">
-<option value="" selected></option>  
+
+ {% if form.instance.id %}
+ <option value="{{form.instance.Product_Brand}}">{{form.instance.Product_Brand}}</option>
+{% elif not form.instance.id %}
+<option value=""></option> 
+{% endif %} 
 <option value="Cosmus">Cosmus</option> 
 <option value="Killer">Killer</option>  
 <option value="Tuffgear">Tuffgear</option> 
 <option value="BeeArmour">BeeArmour</option>  
 <option value="INIT">INIT</option>  
 <option value="OEM">OEM</option>  
+
 </select>
 </div>
 <div class=" d-flex my-3">
@@ -64,35 +71,45 @@ elif
 </div>
 <div class="d-flex my-3">
 <label for="id_GST" class="form-label item-form">GST:</label>
-<select name="Item_Creation_GST"  class="item-select" required  id="id_Item_Creation_GST">
-{% if form.instance.id %}
-<option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.product_GST}}</option>
-{% for gst in gsts %}
-<option value="{{gst.id}}">{{gst.gst_percentage}}</option>
-{% endfor %}
+<select name="Product_GST"  class="item-select" required  id="id_GST">
+
+{% if form.instance.Product_GST.id %} <!-- checks if form.instance.Product_GST.id is true as form.instance.P_GST does not exists right now -->
+<option value="{{ form.instance.Product_GST.id }}">{{form.instance.P_GST}}</option>
+<h2>{{ form.instance.P_GST}}</h2>
 {% elif not form.instance.id %}
 <option value=""></option>  
+{% endif %}
 {% for gst in gsts %}
 <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
 {% endfor %}
-{% endif %}
+
 </select>
+
 </div>
+
 <div class="d-flex my-3">
 <label for="id_Product_WarrantyTime" class="form-label item-form">WarrantyTime:</label>
 <select name="Product_WarrantyTime" class="item-select" id="id_Product_WarrantyTime">
-<option value=""selected></option>
-<option value="6 Months">6 Months</option>
-<option value="12 Months">12 Months</option>
-<option value="18 Months">18 Months</option>
-<option value="24 Months">24 Months</option>
-<option value="30 Months">30 Months</option>
-<option value="36 Months">36 Months</option>
-<option value="42 Months">42 Months</option>
-<option value="48 Months">48 Months</option>
-<option value="54 Months">54 Months</option>
-<option value="60 Months">60 Months</option>
+
+  {% if form.instance.id %}
+  <option value="{{form.instance.Product_WarrantyTime}}">{{form.instance.Product_WarrantyTime}}</option>
+ {% elif not form.instance.id %}
+ <option value=""></option> 
+ {% endif %} 
+ <option value="6 Months">6 Months</option>
+ <option value="12 Months">12 Months</option>
+ <option value="18 Months">18 Months</option>
+ <option value="24 Months">24 Months</option>
+ <option value="30 Months">30 Months</option>
+ <option value="36 Months">36 Months</option>
+ <option value="42 Months">42 Months</option>
+ <option value="48 Months">48 Months</option>
+ <option value="54 Months">54 Months</option>
+ <option value="60 Months">60 Months</option>
 </select>
+
+
+
 </div>
 <div class="d-flex my-3">
 <label for="id_Product_MRP" class="form-label item-form"> MRP:</label>
@@ -114,11 +131,7 @@ elif
     <label for="id_Product_Refrence_ID" class="form-label item-form">Refrence ID:</label>
     <input type="number" readonly class="item-select" value = {{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID" required  id="id_Product_Refrence_ID">
 </div>
-<<<<<<< HEAD
 <input type="submit" class="dropbtn" value="submit">
-=======
-<input type="submit" class="item-select" value="submit">
->>>>>>> b7f8872163e43fb2d0846463a579b50350537dfa
 </form>
 {% endblock body %}
 

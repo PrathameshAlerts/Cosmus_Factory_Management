@@ -14,19 +14,13 @@
       <label for="id_account_sub_group" class="form-label px-2">Account group </label>
       <select name="acc_grp" class="item-select mx-5" required id="id_acc_grp">
 
-         {% if form.instance.id %}
-         <option value="{{form.instance.acc_grp.id}}">{{form.instance.account_main_group}}</option>
-         {% for x in main_grp %}
-         <option value="{{x.id}}">{{x.account_group}}</option>
-         {% endfor %}
-
-         {% elif not form.instance.id %}
-        <option value=""></option>
+        <!-- testingCode -->
+        <option value="{{form.instance.acc_grp.id}}">{{form.instance.account_main_group}}</option>
         {% for x in main_grp %}
         <option value="{{x.id}}">{{x.account_group}}</option>
         {% endfor %}
 
-       {% endif %}
+       
       </select>
     </div>
 
@@ -39,4 +33,8 @@
     {% endif %}
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'account_sub_group-list' %}">Return</a></button>
   </div>
+
 {% endblock body %}
+
+
+
