@@ -54,10 +54,26 @@
                 </select>
               </div>
 
-              <!-- <div class=" d-flex my-3">
+              <div class=" d-flex my-3">
                 <label for="id_shades" class="form-label item-form">Shades:</label>
-                <input type="text" class="item-select" name="shades" value="{{form.instance.shades}}" required id="id_shades">
-              </div> -->
+               <table id="updateRow" class="table table-striped table-hover">
+                <thread>
+                  <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                  </tr>
+                </thread>
+                  <tbody>
+                  <tr>
+                    <td>1</td>
+                      <td><input type="text" name="textInput_1" placeholder="Enter text"></td>
+                      <td><input type="file" name="fileInput_1"></td>
+                      <td><button onclick="addRow()">+</button></td>
+                  </tr>
+                </tbody>
+               </table>
+              </div> 
 
               <div class=" d-flex my-3">
                 <label for="id_Material_code" class="form-label item-form">Material Code</label>
@@ -158,37 +174,50 @@
 
 
 <script>
-
-  //create and update item
-
+ // Initialize the row count
+ var rowCount = 0;
+function addRow() {
   
-  document.addEventListener('DOMContentLoaded', function() {
-    const field3Input = document.querySelector('#id_Item_Color');
-    const field4Input = document.querySelector('#id_item_name');
-    const colorOptions = Array.from(field3Input.options); // Convert options NodeList to Array
+  var table = document.getElementById("updateRow");
+  var newRow = table.insertRow();
 
-    // Event listener to trigger autofill when field1, field2, or field3 change
-    field3Input.addEventListener('change', autofillField4);
-    field4Input.addEventListener('input', autofillField4);
+  var cell1 = newRow.insertCell(0);
+  var cell2 = newRow.insertCell(1);
+  var cell3 = newRow.insertCell(2);
+  var cell4 = newRow.insertCell(3);
 
-    // Function to autofill field4
-    function autofillField4() {
-      const selectedOption = colorOptions.find(option => option.value === field3Input.value);
-      const colorName = selectedOption ? selectedOption.textContent : ''; // Get the text content of the selected option
+  var textInput = document.createElement("input");
+  textInput.type = "text";
+  textInput.name = "textInput_" + rowCount;
+  textInput.placeholder = "Enter text";
+
+  var fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.name = "fileInput_" + rowCount;
+
+  var addButton = document.createElement("button");
+  addButton.textContent = "Add Row";
+  addButton.onclick = addRow;
+
+
+  var removeButton = document.createElement("button");
+  removeButton.textContent = "-";
+  removeButton.onclick = function() {
+    removeRow(newRow);
+  };
   
-      if (colorName) {
-          // Only update field4Input if a color is selected
-          const defvalue = field4Input.value.split('-')[0]; // Get the first part of the current value of field4Input
-          const newValue = defvalue + '-' + colorName; // Combine the first part and the color name
-          field4Input.value = newValue; // Update the value of field4Input
-      }
-  }
+  cell2.appendChild(textInput);
+  cell3.appendChild(fileInput);
+  cell4.appendChild(removeButton);
 
+  rowCount ++; // Increment the row count
+}
 
-});
-
-
-
+function removeRow(row) {
+  var table = document.getElementById("updateRow");
+  var rowIndex = row.rowIndex;
+  table.deleteRow(rowIndex);
+}
 </script>
 
 
