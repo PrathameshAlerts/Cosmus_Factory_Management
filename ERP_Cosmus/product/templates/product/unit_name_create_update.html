@@ -11,9 +11,12 @@
       <label for="id_unit_name" class="form-label px-2">Unit Name:</label>
       <input type="text" class="item-select" value="{{ form.instance.unit_name }}" name="unit_name" maxlength="255" required id="id_unit_name">
     </div>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
 
+    
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    {% if not form.instance.id %}
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+    {% endif %}
    <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'unit_name-list' %}">Return</a></button>
 
   </div>

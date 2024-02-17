@@ -17,7 +17,7 @@
 
       <select name="acc_sub_grp" class="item-select mx-1" required id="id_acc_sub_grp"> -->
 
-         {% if form.instance %}
+         {% if form.instance.id %}
 
         <option value="{{form.instance.acc_sub_grp.id}}">{{form.instance.account_sub_group}}</option>
         {% for grp in accsubgrps %}
@@ -25,7 +25,7 @@
         {% endfor %}
 
 
-      {% elif not form.instance %}
+      {% elif not form.instance.id %}
       <option value=""></option>
       {% for grp in accsubgrps %}
         <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
@@ -36,7 +36,7 @@
 
 
     <!-- <select name="acc_sub_grp" required id="id_acc_sub_grp">
-      {% if form.instance %}
+      {% if form.instance.id %}
           <option value="{{ form.instance.acc_sub_grp.id }}">{{ form.instance.acc_sub_grp.account_sub_group }}</option>
       {% else %}
           <option value=""></option>
@@ -49,8 +49,10 @@
 
     </div>
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
 
+    {% if not form.instance.id %}
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+    {% endif %}
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'stock_item-list' %}">Return</a></button>
 
 </div>
