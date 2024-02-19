@@ -241,8 +241,6 @@ def item_create(request):
         
         if form.is_valid():
             form.save()
-
-            form.cleaned_data['Item_Color']
             return redirect("item-list")
         else:
             print(form.errors)

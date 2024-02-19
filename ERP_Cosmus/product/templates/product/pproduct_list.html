@@ -193,29 +193,14 @@
               <td>{{product.Product_Name}}</td>
               <td>{{product.Model_Name}}</td>
               <td>{{product.Product_Refrence_ID}}</td>
-              <td> 
-                <table>
-                    <tbody>
-                        {% for pproduct in product.productdetails.all %} <!-- productdetails is related name of pproductcreation -->
-                        <tr>
-                            <td>{{pproduct.product_color_name}}</td> <!-- product_color_name is a function to get PProduct_color.color_name via pproductcreation -->
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </td>
-            <td> 
-              <table>
-                  <tbody>
-                      {% for pproduct in product.productdetails.all %} <!-- productdetails is related name of pproductcreation -->
-                      <tr>
-                         
-                          <td>{{pproduct.PProduct_SKU}}</td>
-                      </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-          </td>
+               {% for pproduct in product.productdetails.all %} <!-- productdetails is related name of pproductcreation -->
+              <td>
+                {{pproduct.product_color_name}}<!-- product_color_name is a function to get PProduct_color.color_name via pproductcreation -->
+              </td>
+              <td>
+                {{pproduct.PProduct_SKU}}
+              </td>
+              {% endfor %}
               <td>{{product.Product_Channel}}</td>
               <td>{{product.Product_Brand}}</td>
               <td>{{product.Product_SalePrice_CustomerPrice}}</td>
@@ -232,10 +217,8 @@
             </tr>
             {% endfor %}
           </tbody>
-          
         </table>
       </div>
-
     </div>
     <script>
       function redirectProductList(){
