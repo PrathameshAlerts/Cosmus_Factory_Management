@@ -21,29 +21,31 @@
             </div>
             <div >
                 <div id="cardContainer">
-                <div class="card card-clone" style="width: 15rem; display: none;">
-                    <img id="frame"  src="..." class="card-img-top card-img p-1"  alt="...">
-                    <div class="card-body card-input">
-                      <div class="mb-2 d-flex">
-                         <label for="id_PProduct_image_1" class="form-label">Image</label>
-                          <input class="px-2 rounded-3" name="PProduct_image_1" type="file" id="formFile" onchange="preview()">
-                      </div>
-                          <div class="mb-2 d-flex">
-                            <label for="id_PProduct_color_1" class="form-label pe-3">Color</label>
-                            <select name="PProduct_color_1" required id="id_PProduct_color_1" class="rounded-3 w-50 px-2">
-                                <option value="-" selected>---------</option>
-                                {%for c in color %}
-                                <option value="{{ c.id }}">{{c.color_name}}</option>
-                                {% endfor %}
-                            </select>
+                    <div class="card card-clone" style="width: 15rem; display: none;">
+                      <img id="frame" src="..." class="card-img-top card-img p-1" alt="...">
+                      <div class="card-body card-input">
+                        <div class="mb-2 d-flex">
+                          <label for="id_PProduct_image_1" class="form-label">Image</label>
+                          <input class="px-2 rounded-3" name="PProduct_image_" type="file" id="formFile" onchange="preview()">
                         </div>
                         <div class="mb-2 d-flex">
-                          <label  for="id_PProduct_SKU_1" class="form-label pe-4">SKU</label>
-                          <input type="text" name="PProduct_SKU_1" id="id_PProduct_SKU_1" class="rounded-3 w-75 px-2">
+                          <label for="id_PProduct_color_" class="form-label pe-3">Color</label>
+                          <select name="PProduct_color_" required id="id_PProduct_color_" class="rounded-3 w-50 px-2">
+                            <option value="-" selected>---------</option>
+                            {%for c in color %}
+                            <option value="{{ c.id }}">{{c.color_name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="mb-2 d-flex">
+                          <label for="id_PProduct_SKU_" class="form-label pe-4">SKU</label>
+                          <input type="text" name="PProduct_SKU_" class="rounded-3 w-75 px-2">
+                        </div>
+                        <button type="button" value="cancel" class="card_btn cancel-btn">Cancel</button>
                       </div>
-                      <button type="close" value = 'cancel' class="card_btn cancel-btn">Cancel</button>
                     </div>
-                  </div>
+                </div>
+                  
                   
                 </div>
     
@@ -58,7 +60,7 @@
         function redirectToColorList() {
                 // Change the URL to the desired destination
                 window.location.href = "{% url 'simplecolorlist' %}";
-            }
+            }   
         </script>
 
 {% endblock body %}

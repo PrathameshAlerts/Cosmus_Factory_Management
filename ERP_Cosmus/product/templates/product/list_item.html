@@ -86,6 +86,25 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div>
               </th>
+              <th scope="col" class="name_absolute"> Shades
+                <div class="nav-item dropdown Item_color_icons">
+                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
+                  <ul class="dropdown-menu">
+                    <li><button class="dropdown-item" href="#"> Sort Ascending <i class="fa-solid fa-arrow-up-long"></i></button> </li>
+                    <li><button class="dropdown-item" href="#"> Sort Decending <i class="fa-solid fa-arrow-down-long"></i></button></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li class="nav-item dropend">
+                     <button class="nav-link dropdown px-4 fs-6" data-bs-toggle="dropdown" aria-expanded="false" >Filter
+                      <i class="fa-solid fa-angle-right text-decoration-none"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><input type="text" class="dropdown-item input_text"placeholder="Any match.."/></li>
+                        <li><input type="text" class="dropdown-item input_text"placeholder="Exact match.."/></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </th>
               <th scope="col" class="name_absolute">Material Code
                 <div class="nav-item dropdown material_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
@@ -170,6 +189,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>{{item.item_name}}</td>
               <td>{{item.fab_grp}}</td>
               <td>{{item.Color_Name}}</td>
+              <td>red</td>
               <td>{{item.Material_code}}</td>
               <td>{{item.Packing}}</td>
               <td>{{item.Unit_Name}}</td>
