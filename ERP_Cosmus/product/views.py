@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst, item_color_shade
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, StockItemForm, UnitName, account_sub_grp_form
+from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -230,6 +230,7 @@ def pproduct_delete(request, pk):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
+    title = 'Item Create'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()
@@ -237,15 +238,18 @@ def item_create(request):
     print(request.POST, request.FILES)
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
+        
         if form.is_valid():
             form.save()
+
+            form.cleaned_data['Item_Color']
             return redirect("item-list")
         else:
             print(form.errors)
-            return render(request,'product/item_create_update.html', {'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+            return render(request,'product/item_create_update.html', {'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form})
     else:
         form = Itemform()
-        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form})
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
 # which has ?namevaraible = data data from the querystring
@@ -304,6 +308,7 @@ def item_list(request):
 
 
 def item_edit(request,pk): 
+    title = 'Item update'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()
@@ -311,9 +316,7 @@ def item_edit(request,pk):
     item_pk = Item_Creation.objects.get(pk = pk)
 
     form = Itemform(instance = item_pk)
-
-    print(form.instance.Fabric_Group.id)
-
+    formset = ShadeFormSet(instance=item_pk)
     for i in range(1,3):
         no_input = f'no_input_{i}'
         text_input = f'text_input_{i}'
@@ -333,14 +336,16 @@ def item_edit(request,pk):
 
         if request.method == 'POST':
             form = Itemform(request.POST, instance=item_pk)
-            if form.is_valid():
+            formset = ShadeFormSet(request.POST ,instance=item_pk)
+            if form.is_valid() and formset.is_valid():
                 form.save()
+                formset.save()
                 
                 return redirect('item-list')
             else:
-                return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+                return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
     else:
-        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'form':form})
+        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
 
 
 

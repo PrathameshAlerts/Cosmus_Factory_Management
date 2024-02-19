@@ -31,7 +31,8 @@ class Product2Category(models.Model):
 
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
-    
+    def __str__(self):
+        return self.color_name
     
 class gst(models.Model):
     gst_percentage = models.CharField(max_length = 50)
@@ -275,17 +276,15 @@ class Item_Creation(models.Model):
     Fabric_Finishes =  models.CharField(max_length = 255, choices = FINISHES)
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     Item_Creation_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
-    item_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
-    item_shade_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
+    item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
 
 
 # these functions are used to show related attributes instead of PK id in listview
+   
     def Color_Name(self):
         return self.Item_Color.color_name
-
-
 
     def fab_grp(self):
         return self.Fabric_Group.fab_grp_name
@@ -293,27 +292,31 @@ class Item_Creation(models.Model):
 
     def Unit_Name(self):
         return self.unit_name_item.unit_name
-    
+
+
     def Item_GST(self):
         return self.Item_Creation_GST.gst_percentage
 
 class item_color_shade(models.Model):
-    items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades' )
+    items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades')
     item_name_rank = models.PositiveIntegerField(null = True, blank = True)
-    item_shade_name = models.CharField(max_length=100, null = True, blank = True)
+    item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
 
+
+
+#post_save signal for item_color_shade if Item_Creation instance is created 
 @receiver(post_save, sender=Item_Creation)
-def save_primary_item_color_shade(sender, instance, created, **kwargs):
+def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
     if created:
-        # Get the primary key of the newly created instance
-        primary_key = instance.pk
+        #getting the color name attribte instead of object function
+        color_name = instance.Item_Color.color_name
         # Create a new item_color_shade object related to the newly created instance
-        primary_color_shade = item_color_shade.objects.create(items=primary_key,
-                                                              item_name_rank=1,
-                                                              item_shade_name=instance.Item_Color,
-                                                                item_color_image = instance.item_shade_image)
+        primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
+                                                            item_name_rank= 1,
+                                                            item_shade_name = color_name,
+                                                            item_color_image = instance.item_shade_image)
         # Save the newly created item_color_shade object
         primary_color_shade.save()
 
