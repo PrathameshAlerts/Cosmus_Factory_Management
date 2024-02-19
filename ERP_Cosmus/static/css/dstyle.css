@@ -473,6 +473,10 @@ body{
 .item-form{
     width: 170px;
   }
+.shade-form{
+    width: 70px;
+    
+  }
 .item-select{
     width: 200px;
     border: 1px solid #666;

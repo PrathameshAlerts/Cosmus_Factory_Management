@@ -55,8 +55,8 @@
               </div>
 
               <div class=" d-flex my-3">
-                <label for="id_shades" class="form-label item-form">Shades:</label>
-               <table id="updateRow" class="table table-striped table-hover">
+                <label for="id_shades" class="item-form">Shades:</label>
+               <table id="updateRow" class="table table-striped table-hover shade-form">
                 <thread>
                   <tr>
                     <th>No</th>
@@ -66,10 +66,10 @@
                 </thread>
                   <tbody>
                   <tr>
-                    <td>1</td>
-                      <td><input type="text" name="textInput_1" placeholder="Enter text"></td>
-                      <td><input type="file" name="fileInput_1"></td>
-                      <td><button onclick="addRow()">+</button></td>
+                    <td></td>
+                      <td><input type="text" name="textInput_0" placeholder="Enter text"></td>
+                      <td><input type="file" name="fileInput_0"></td>
+                      <td><button class="add_btn" onclick="addRow()">+</button></td>
                   </tr>
                 </tbody>
                </table>
@@ -186,6 +186,7 @@ function addRow() {
   var cell3 = newRow.insertCell(2);
   var cell4 = newRow.insertCell(3);
 
+  
   var textInput = document.createElement("input");
   textInput.type = "text";
   textInput.name = "textInput_" + rowCount;
@@ -202,10 +203,14 @@ function addRow() {
 
   var removeButton = document.createElement("button");
   removeButton.textContent = "-";
+  removeButton.style.background = "linear-gradient(45deg, #2ed8b6, #59e0c5)";
+  removeButton.style.width ="30px";
+  removeButton.style.borderRadius = "10px";
+  removeButton.style.border="none";
   removeButton.onclick = function() {
     removeRow(newRow);
   };
-  
+
   cell2.appendChild(textInput);
   cell3.appendChild(fileInput);
   cell4.appendChild(removeButton);
