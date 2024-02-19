@@ -3,7 +3,7 @@
  {% block body %}
 
 <div class="create_item_form">
-            <h2 class="px-5 py-3">Item create</h2>
+            <h2 class="px-5 py-3">{{title}}</h2>
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
               <div class=" d-flex my-3">
@@ -66,11 +66,11 @@
                 </thead>
                   <tbody>
                   <tr>
-<<<<<<< HEAD
-=======
+                    <h2>Shades</h2>
+                    
+
                     <td><span name="no_input_0">1</span></td>
->>>>>>> 7e57b379152c1eef31b207922452cd0ec7a9176e
-                      <td><input type="text" name="textInput_0" placeholder="Enter text"></td>
+                      <td><input type="text" name="textInput_0" value= "" placeholder="Enter text"></td>
                       <td><input type="file" name="fileInput_0"></td>
                       <td><button type="button" class="add_btn" onclick="addRow()">+</button></td>
                   </tr>
@@ -167,7 +167,7 @@
               </div>
               <div class="d-flex my-3">
                 <label for="id_status" class="form-label item-form">Image:</label>
-                <input type="file" class="item-select px-2 py-1" name="primary_image" value="" required id="">
+                <input type="file" class="item-select px-2 py-1" name="item_shade_image" required id="">
               </div>
               <input type="submit" class="form-button" name="save" value="Save">
 
@@ -176,8 +176,52 @@
               <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
 
               {% endif %}
+              
+              <div>
+                <h2>Shades</h2>
+                {{ formset.management_form }}
+                {% for shade_form in formset %}
+                    <div class="shade-form">
+                        {{ shade_form.id }} <!-- Render the form ID if needed -->
+            
+                        <!-- Render each field manually -->
+                        <div>
+                            <label for="{{ shade_form.prefix }}-item_name_rank">Item Name Rank:</label>
+                            {{ shade_form.item_name_rank }}
+                        </div>
+                        <div>
+                            <label for="{{ shade_form.prefix }}-item_shade_name">Item Shade Name:</label>
+                            {{ shade_form.item_shade_name}}
+                        </div>
+                        <div>
+                            <label for="{{ shade_form.prefix }}-item_color_image">Item Color Image:</label>
+                            {{ shade_form.item_color_image }}
+                        </div>
+            
+                        <!-- Render form errors if any -->
+                        {% for error in shade_form.non_field_errors %}
+                            <div class="shade-form-error">{{ error }}</div>
+                        {% endfor %}
+            
+                        <!-- Render individual field errors if any -->
+                        {% for field in shade_form.visible_fields %}
+                            {% if field.errors %}
+                                <div class="shade-form-error">
+                                    {% for error in field.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            
+              </div>
+
             </form>
           </div>
+
+
 
 
 <script>
