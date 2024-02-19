@@ -136,7 +136,7 @@ class Itemform(forms.ModelForm):
         model = Item_Creation
         fields = ['item_name','Material_code','Item_Color','Packing',
                  'unit_name_item','Units','Panha', 'Fabric_nonfabric','Fabric_Finishes','Fabric_Group',
-                 'Item_Creation_GST','HSN_Code','status']
+                 'Item_Creation_GST','HSN_Code','status','item_shade_image']
         
 
 

@@ -4,6 +4,8 @@ from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+from django.db.models.signals import post_save
+
 
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -276,7 +278,7 @@ class Item_Creation(models.Model):
     item_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
-
+    item_shade_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
 
 # these functions are used to show related attributes instead of PK id in listview
@@ -301,6 +303,19 @@ class item_color_shade(models.Model):
     item_shade_name = models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
+
+@receiver(post_save, sender=Item_Creation)
+def save_primary_item_color_shade(sender, instance, created, **kwargs):
+    if created:
+        # Get the primary key of the newly created instance
+        primary_key = instance.pk
+        # Create a new item_color_shade object related to the newly created instance
+        primary_color_shade = item_color_shade.objects.create(items=primary_key,
+                                                              item_name_rank=1,
+                                                              item_shade_name=instance.Item_Color,
+                                                                item_color_image = instance.item_shade_image)
+        # Save the newly created item_color_shade object
+        primary_color_shade.save()
 
 class AccountGroup(models.Model):
     account_group = models.CharField(max_length = 50 , unique= True)
