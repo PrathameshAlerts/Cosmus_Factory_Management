@@ -634,7 +634,7 @@ body{
     border-radius: 20px;
     margin: 0 0;
     width: 200px;
-    margin-left: 70px;
+    margin-left: 125px;
 }
 .fabric-list-icons{
     position: absolute;
@@ -675,4 +675,14 @@ body{
     border: none;
     border-radius: 40px;
     cursor: pointer;  
+}
+
+.container-account{
+    color: #555;
+    display: flex;
+    border: 1px solid;
+    border-radius: 20px;
+    margin: 0 0;
+    width: 200px;
+    margin-left: 200px;
 }

@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     newCard.querySelectorAll('input, select').forEach(function(element) {
       var name = element.getAttribute('name');
       element.setAttribute('name', name + cardCounter);
-      console.log(name + cardCounter);
     });
 
     // Event listener for image preview
@@ -93,6 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
     newCard.querySelector('.cancel-btn').addEventListener('click', function(event) {
       var card = event.target.closest('.card');
       card.parentNode.removeChild(card);
+      cardCounter--; // Decrement the counter
+  
     });
 
     cardContainer.appendChild(newCard);
