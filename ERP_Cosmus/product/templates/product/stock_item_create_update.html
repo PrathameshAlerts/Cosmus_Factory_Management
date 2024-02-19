@@ -19,16 +19,16 @@
 
          {% if form.instance.id %}
 
-        <option value="{{form.instance.acc_sub_grp.id}}">{{form.instance.account_sub_group}}</option>
+        <option class="item-select " value="{{form.instance.acc_sub_grp.id}}">{{form.instance.account_sub_group}}</option>
         {% for grp in accsubgrps %}
           <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
         {% endfor %}
 
 
       {% elif not form.instance.id %}
-      <option value=""></option>
+      <option class="item-select " value=""></option>
       {% for grp in accsubgrps %}
-        <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
+        <option class="item-select " value="{{grp.id}}">{{grp.account_sub_group}}</option>
       {% endfor %}
 
       {% endif %}

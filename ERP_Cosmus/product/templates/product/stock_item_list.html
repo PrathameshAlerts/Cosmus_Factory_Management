@@ -12,14 +12,14 @@
             <div class="container-category "> 
              <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" />
                <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-            </div>
+            </div> 
            </div>
           </div>  
         </div>  
         <div class="row">
-          <div class="col-lg-5">
+          <div class="stock-card col-lg-5 col-md-10 col-sm-12">
             <table class="table table-striped table-hover table-responsive">
-              <thread>
+              <thead>
                 <tr>
                   <th scope="col" class="name_absolute">No</th>
                   <th scope="col" class="name_absolute">Sub Group
@@ -41,7 +41,7 @@
                   <th scope="col" class="name_absolute">Edit</th>
                   <th scope="col" class="name_absolute">Delete</th>
                 </tr>
-              </thread>
+              </thead>
               <tbody>
               </tr>
               {% for items in  stocks %} 

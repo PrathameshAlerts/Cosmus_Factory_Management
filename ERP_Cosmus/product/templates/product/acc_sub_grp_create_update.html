@@ -12,12 +12,12 @@
     </div>
     <div class="d-flex mb-3">
       <label for="id_account_sub_group" class="form-label px-2">Account group </label>
-      <select name="acc_grp" class="item-select mx-5" required id="id_acc_grp">
+      <select name="acc_grp" class="item-select mx-3" required id="id_acc_grp">
 
         <!-- testingCode -->
-        <option value="{{form.instance.acc_grp.id}}">{{form.instance.account_main_group}}</option>
+        <option class="item-select" value="{{form.instance.acc_grp.id}}">{{form.instance.account_main_group}}</option>
         {% for x in main_grp %}
-        <option value="{{x.id}}">{{x.account_group}}</option>
+        <option class="item-select" value="{{x.id}}">{{x.account_group}}</option>
         {% endfor %}
 
        
