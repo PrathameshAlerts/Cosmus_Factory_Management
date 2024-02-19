@@ -125,7 +125,7 @@ class Product(models.Model):
         ]
     
     WARRANTY_TIME = [
-
+        ('0 Months','0 Months'),
         ("6 Months","6 Months"),
         ("12 Months","12 Months"),
         ("18 Months","18 Months"),
@@ -146,11 +146,11 @@ class Product(models.Model):
 
     ]
 
-    Product_Name = models.CharField(max_length=255, null = True, blank = True)
-    Model_Name = models.CharField(max_length=255, null = True, blank = True)
+    Product_Name = models.CharField(max_length=255,  blank = True)
+    Model_Name = models.CharField(max_length=255, blank = True)
     Product_ShortName = models.CharField(max_length=200, null=True, blank = True)
-    Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , null=True, blank = True)
-    Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS, null = True, blank = True)
+    Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, default = "Cosmus")
+    Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, default = "Active")
     Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL ,null=True  , blank = True )
     Product_EANCode= models.CharField(max_length=100,  null=True, blank = True)
     Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False, null = False)
@@ -193,7 +193,7 @@ class Product(models.Model):
     Product_RetailStoreQty=models.IntegerField(null=True, blank = True)
     Product_ManufacturingDate=models.DateField(auto_now_add=True, blank = True)
     Product_WarrantyCode= models.CharField(max_length=150,null=True, blank = True)
-    Product_WarrantyTime= models.CharField(null = True,max_length=15, choices=WARRANTY_TIME, blank = True)
+    Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, default = '0 Months')
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER,null=True, blank = True)
     Product_Rating = models.FloatField(null=True, blank = True)
     color_primary = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='primary_color', blank = True)
@@ -204,7 +204,7 @@ class Product(models.Model):
     Flipkart_Link = models.URLField(max_length = 200, null=True, blank = True) 
     Cosmus_link = models.URLField(max_length = 200, null=True, blank = True) 
     Youtube_Link = models.URLField(max_length = 200, null=True, blank = True)
-    Product_GST = models.ForeignKey(gst, blank = True,null = True, on_delete = models.PROTECT)
+    Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, default = 1)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
 
  

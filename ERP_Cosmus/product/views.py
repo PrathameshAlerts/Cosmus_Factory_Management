@@ -141,6 +141,7 @@ def product_color_sku(request):
     print(request.POST)
     color = Color.objects.all()
     if request.method == 'POST':
+        
         product_ref_id = request.POST.get('Product_Refrence_ID')
         
         with transaction.atomic():
@@ -165,6 +166,7 @@ def product_color_sku(request):
                     current_form = PProductCreateForm(data, files)
 
                     if current_form.is_valid():
+                        print(current_form.cleaned_data)
                         pproduct = current_form.save(commit=False)
                         # Create a new Product instance or get an existing one based on Product_Refrence_ID
                         # product will be the object retrieved from the db and then created ,created will be a boolean field
@@ -213,6 +215,8 @@ def pproduct_list(request):
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
     print(queryset)
     context = {'products': queryset}
+        
+    print(queryset.values_list('Product_GST', flat=True))
     return render(request,'product/pproduct_list.html',context=context)
 
 
@@ -228,7 +232,7 @@ def pproduct_delete(request, pk):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
-   
+    
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()

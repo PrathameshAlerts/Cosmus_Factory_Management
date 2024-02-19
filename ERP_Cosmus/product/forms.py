@@ -73,6 +73,52 @@ class PProductAddForm(forms.ModelForm):
                   'Product_Brand','Product_HSNCode', 'Product_GST', 
                   'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
                   'Product_BulkPrice', 'Product_Cost_price', 'Product_Refrence_ID']
+        
+        """
+    Initialization: The __init__ method is used to set up initial values, 
+    configurations, or any other setup tasks when creating a new instance of the form.
+
+    Customization: It allows you to customize the behavior of the form instance.
+    You can customize field attributes, set initial values, define choices dynamically,
+    and perform any other necessary setup tasks.
+
+    Access to Data: It provides access to data passed during form initialization,
+    such as instance data, form data, or additional keyword arguments.
+
+    Flexibility: By overriding the __init__ method, you can customize the behavior
+    of your form according to your specific requirements. This makes your forms more 
+    flexible and adaptable to different scenarios.
+
+    Integration with Django Models: When working with Django forms, you often need to
+    integrate them with Django models. The __init__ method allows you to handle model instances,
+    set initial values based on model data, and perform other tasks related to model forms.
+
+    In the context of Django forms, the __init__ method is often used to customize form fields,
+    set initial values, integrate with model instances, and perform other initialization tasks
+    to ensure that the form behaves as expected in different scenarios.
+
+
+    """
+        
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     instance = kwargs.get('instance')
+    #     print('instance=',instance.Product_Name)
+    #     if instance:
+    #         if instance.Product_Name is None:
+    #             self.initial['Product_Name'] = 'test'
+    #         if instance.Model_Name is None:
+    #             self.initial['Model_Name'] = ' '
+    #         if instance.Product_Status is None:
+    #             self.initial['Product_Status'] = ' '
+    #         if instance.Product_Brand is None:
+    #             self.initial['Product_Brand'] = ' '
+    #         if instance.Product_WarrantyTime is None:
+    #             self.initial['Product_WarrantyTime'] = ' '
+    #         if instance.Product_GST is None:
+    #             self.initial['Product_GST']
+    #     print('instance=',instance.Product_Name)
+            
 
 
 
