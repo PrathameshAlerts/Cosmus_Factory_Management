@@ -57,15 +57,19 @@
               <div class=" d-flex my-3">
                 <label for="id_shades" class="item-form">Shades:</label>
                <table id="updateRow" class="table table-striped table-hover shade-form">
-                <thread>
+                <thead>
                   <tr>
                     <th>No</th>
                     <th>Name</th>
                     <th>Image</th>
                   </tr>
-                </thread>
+                </thead>
                   <tbody>
                   <tr>
+<<<<<<< HEAD
+=======
+                    <td><span name="no_input_0">1</span></td>
+>>>>>>> 7e57b379152c1eef31b207922452cd0ec7a9176e
                       <td><input type="text" name="textInput_0" placeholder="Enter text"></td>
                       <td><input type="file" name="fileInput_0"></td>
                       <td><button type="button" class="add_btn" onclick="addRow()">+</button></td>
@@ -161,6 +165,10 @@
                   <option value="Dead">Dead</option>
                 </select>
               </div>
+              <div class="d-flex my-3">
+                <label for="id_status" class="form-label item-form">Image:</label>
+                <input type="file" class="item-select px-2 py-1" name="primary_image" value="" required id="">
+              </div>
               <input type="submit" class="form-button" name="save" value="Save">
 
               {% if not form.instance.id %}
@@ -174,7 +182,7 @@
 
 <script>
  // Initialize the row count
- var rowCount = 0;
+ var rowCount = 1;
 function addRow() {
   
   var table = document.getElementById("updateRow");
@@ -185,7 +193,11 @@ function addRow() {
   var cell3 = newRow.insertCell(2);
   var cell4 = newRow.insertCell(3);
 
-  
+  var noText = document.createElement("span");
+  noText.textContent = "";
+  noText.name = "no_input_" + rowCount;
+
+ 
   var textInput = document.createElement("input");
   textInput.type = "text";
   textInput.name = "textInput_" + rowCount;
@@ -209,7 +221,7 @@ function addRow() {
   removeButton.onclick = function() {
     removeRow(newRow);
   };
-
+  cell1.appendChild(noText);
   cell2.appendChild(textInput);
   cell3.appendChild(fileInput);
   cell4.appendChild(removeButton);
@@ -221,6 +233,28 @@ function removeRow(row) {
   var table = document.getElementById("updateRow");
   var rowIndex = row.rowIndex;
   table.deleteRow(rowIndex);
+
+  // Decrease the rowCount as a row is removed
+  rowCount--;
+
+  // Update the names of input elements and the No text spans in the table
+  for (var i = rowIndex; i < table.rows.length; i++) {
+    var row = table.rows[i];
+    var noText = row.cells[0].querySelector('span[name^="no_input_"]');
+    var textInput = row.cells[1].querySelector('input[name^="textInput_"]');
+    var fileInput = row.cells[2].querySelector('input[name^="fileInput_"]');
+
+    // Update No text span
+    noText.textContent = parseInt(noText.textContent) - 1;
+    noText.name = "no_input_" + parseInt(noText.textContent);
+    console.log(noText.textContent);
+
+    // Update textInput name
+    textInput.name = "textInput_" + parseInt(noText.textContent);
+
+    // Update fileInput name
+    fileInput.name = "fileInput_" + parseInt(noText.textContent);
+  }
 }
 </script>
 
