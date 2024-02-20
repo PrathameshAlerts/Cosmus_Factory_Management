@@ -297,9 +297,8 @@ body{
  
    img{
      width: 100px;
-     margin: 15px;
+    
      border-radius: 50%;
-     margin-left: 70px;
      border: 3px solid #b4b8b9;
    }
    header{
@@ -502,6 +501,24 @@ body{
 .create_item_form{
     font-family:"Poppins", sans-serif;
 }
+.container-item{
+    color: #555;
+    display: flex;
+    border: 1px solid;
+    border-radius: 20px;
+    margin: 0 0;
+    width: 35%;
+    margin-left: 470px; 
+}
+.item-btn{
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    color: white;
+    padding: 12px;
+    font-size: 15px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+  }
   /*=========create color form=======*/
 .modal {
     display: block; /* Hide the modal by default */
@@ -670,7 +687,15 @@ body{
     top: 10px;
     left: 70px;
 }
-
+.container-stock{
+    color: #555;
+    display: flex;
+    border: 1px solid;
+    border-radius: 20px;
+    margin: 0 0;
+    width: 200px;
+    margin-left: 125px; 
+}
 .product-btn{
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
     color: white;
@@ -689,6 +714,25 @@ body{
     margin: 0 0;
     width: 200px;
     margin-left: 200px;
+}
+.acc-btn{
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    color: white;
+    padding: 5px;
+    font-size: 15px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.stock-btn{
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    color: white;
+    padding: 7px;
+    font-size: 15px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
 }
 
 
@@ -714,11 +758,19 @@ body{
            padding-top: 60px;
           
         }
+        .side-bar .menu .item a{
+            padding: 5px 10px;
+            line-height: 60px;
+        }
+        .side-bar .menu .item a .dropdown{
+            position: absolute;
+            top: 15px;
+            margin: 10px;
+        }
     
         .side-bar .menu{
             display: block;
             background: transparent;
-
         }
         .pcoded-content {
             padding: 90px 0px;
@@ -738,79 +790,49 @@ body{
             transition: all 0.15s ease-in-out;
         }
         .dashboard-card{
-            width: 85%;
+            width: 77%;
             margin: 10px 35px;
         }
-           
-        
-        .pcoded-navbar .scroll-div.navbar-content {
-            height: 100%;
-        }
-        
         .pcoded-navbar.menupos-fixed {
             position: fixed;
             height: 100vh;
             min-height: 100vh;
         }
-        
-        .pcoded-navbar.menupos-fixed .scroll-div.navbar-content {
-            height: calc(100% - 56px);
-            min-height: calc(100% - 56px);
-        }
-        
         .bcard-pad{
-            padding-left: 139px;
+            padding-left: 140px;
         }
         .bcard-pa{
-            padding-left: 63px;
+            padding-left: 50px;
         }
         .gcard-pad{
-            padding-left: 142px;
+            padding-left: 145px;
         }
         .gcard-pa{
-            padding-left: 122px;
+            padding-left: 112px;
         }
         .ycard-pad{
-            padding-left: 74px;
-        }
-        .ycard-pa{
             padding-left: 92px;
         }
+        .ycard-pa{
+            padding-left: 90px;
+        }
         .rcard-pad{
-            padding-left: 99px;
+            padding-left: 109px;
         }
         .rcard-pa{
-            padding-left: 106px;
+            padding-left: 100px;
         }
         .icon{
             height: 50px;
             border-radius: 20px;
         }
-        
-        .search_input{
-            position: relative;
-            width: 30%;
-            border-radius: 30px;
-            padding-left: 10px;
-            margin-left: 250px;
-            height: 40px;
-        }
-        .dashboard_main{
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-bottom: 10px;
-         }
+    
         
          .sub_main{
             padding-top: 30px;
            
          }
         
-         .form_input{
-            padding-left:20px;
-            gap: 20px;
-            padding-bottom: 60px;
-         }
          .dropbtn {
             background: linear-gradient(45deg, #2ed8b6, #59e0c5);
             color: white;
@@ -818,117 +840,14 @@ body{
             border: none;
             border-radius: 40px;
             cursor: pointer;
-            width: 500px;
+            width: 325px;
           }
-          .dropbtn a{
-            text-decoration: none !important;
-            color: #fff;
-          }
-          .dropdown{
-           list-style: none;
-          }
-        
-          .dropdown .dropdown-menu{
-           display: none;
-          }
-          .dropdown:hover > .dropdown-menu ,.dropend:hover > .dropdown-menu{
-           display: block;
-           margin-top: .125em;
-          }
-        
-          .dropend:hover > .dropdown-menu{
-           position: absolute;
-           top: 0;
-           left: 100%;
-           margin-left: .125em;
-          }
+         
           /*=================Item Page=======================*/
-          .input_text{
-           height: auto;
-           width: 150px;
-           border-radius: 20px;
-           outline: none;
-          }
-          .input_text li{
-            color: #fff;
-            background-color: gray;
-          }
-          .name_absolute{
-           position: relative;
-           font-size: 13px;
-           font-family: "Lato", sans-serif;
-           width: 200px;
-          }
-          .name_icons{
-            position: absolute;
-            top: 10px;
-            left: 49px;
-           }
-           .fabric_icons{
-            position: absolute;
-            top: 10px;
-            left: 44px;
-           }
-         .Item_color_icons{
-            position: absolute;
-            top:10px;
-            left: 36px;
-         }
-         .material_icons{
-            position: absolute;
-            top: 9px;
-            left: 54px;
-         }
-         .packing_icons{
-            position: absolute;
-            top: 9px;
-            left: 52px;
-         }
-         .unit_icons{
-            position: absolute;
-            top: 9px;
-            left: 39px;
-         }
-         .fn_fabric_icons{
-            position: absolute;
-            top: 10px;
-            left: 47px;
-         }
-         .ffabric_icons{
-            position: absolute;
-            top: 10px;
-            left: 47px;
-         }
-         .hsn_icons{
-            position: absolute;
-            top: 10px;
-            left: 43px;
-         }
-         .status_icons{
-            position: absolute;
-            top: 10px;
-            left: 43px;
-         }
-          .dropdown-menu-right {
-            right: 0;
-            left: auto;
-        }
-        .float-right {
-            font-size: 10px;
-            float: left !important;
-        }
-        .card-icons{
-            font-size: 27px;
-            padding-left: 12px;
-        }
-        .dud-logout{
-            color: black
-        }
+          
+        
         /*====item page end====*/
         /*====siderbar====*/
-        
-     
-       
         .side-bar.active{
             left: 0;
             overflow: auto;
@@ -946,197 +865,24 @@ body{
             transition: transform 0.3s ease;
         }
            
-        .side-bar .menu .item a{
-            color: #666;
-            font-size: 15px;
-            text-decoration: none;
-            display: block;
-            padding: 3px 10px;
-            line-height: 60px;
-         
-        }
-           
-        .side-bar .menu .item a:hover{
-            transition: 0.2s ease;
-        }
-           
-        .side-bar .menu .item i{
-            margin-right: 12px;
-        }
-           
-        .side-bar .menu .item a .dropdown{
-            position: absolute;
-            right: 0;
-            margin: 20px;
-            transition: 0.2s ease;
-        }
-           
-        .side-bar .menu .item .sub-menu{
-            background: #262627;
-            display: none;
-        }
-           
-        .side-bar .menu .item .sub-menu a{
-            padding-left: 20px;
-        }
-           
-        .rotate{
-            transform: rotate(90deg);
-        }
-        .menu-btn{
-            position: absolute;
-            color: rgb(0, 0, 0);
-            font-size: 35px;
-            margin: 25px;
-            cursor: pointer;
-        }
-           
-        .main{
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 50px;
-        }
-           
+      
+        
+       
         
         /*======sidebar end====*/
         /*======Navbar start====*/
-        .coder-navbar{
-            z-index: 1029;
-            position: fixed;
-            display: flex;
-            padding: 0;
-            top: 0;
-            background: #fff;
-            color: rgba(255, 255, 255, 0.8);
-            width: 100%;
-            -webkit-transition: all 0.15s ease-in-out;
-            transition: all 0.15s ease-in-out;
-            box-shadow: 0 0 11px rgba(0, 0, 0, 0.13);
-            height: 60px;
-        }
-        
-        .coder-navbar .headerpos-fixed{
-            position: fixed;
-            top: 0;
-        }
-        
-        .coder-navbar.header-blue{
-            background: -webkit-gradient(linear, left top, right top, from(#4099ff), to(#73b4ff));
-            background: linear-gradient(to right, #4099ff, #73b4ff);
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .image-h{
-            height: 50px;
-            width: 50px;
-            margin: 5px;
-        }
-        .notifiaction{
-            font-size: 20px;
-            margin-top: 13px;
-            margin-right: 12px;
-        
-        }
-        .notification:after{
-            background-color: red;
-        }
-        
-        .dropdown-menu .float-right{
-            float: left;
-        }
-        .pro-head{
-            color: #fff;
-            background: #4099ff;
-        }
-        .dropdown-menu .dropdown-menu-right li:hover{
-            background: red;
-            transition: 0.3s ease;
-            
-        }
+    
+      
         
        
         /*======navbar end====*/
         /*=====Static code for all the pages =======*/
-        
-        
-       
+
         .container-flex {
-            color: #555;
-            display: flex;
-            border: 1px solid;
-            border-radius: 20px;
             margin: 0 0;
-            width: 35%;
-            margin-left: 470px;
+            width: 150px;
+            margin-left: 10px;
           }
-          
-          input[type="search"] {
-            border: none;
-            background: transparent;
-            margin: 0;
-            padding: 7px 8px;
-            font-size: 14px;
-            color: inherit;
-            border: 1px solid transparent 0.5;
-            border-radius: 17px;
-            outline: none;
-            width: 100%;
-          }
-        
-          button[type="submit"] {
-            text-indent: -999px;
-            overflow: hidden;
-            width: 40px;
-            padding: 0;
-            margin: 0;
-            border: 1px solid transparent;
-            border-radius: inherit;
-            background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
-            cursor: pointer;
-            opacity: 0.7;
-          }
-          
-          
-          button[type="submit"]:hover {
-            opacity: 1;
-          }
-          
-        
-          /*=========card style=======*/
-        
-          .bg-c-blue {
-            background: linear-gradient(45deg, #4099ff, #73b4ff);
-        }
-        
-        .bg-c-green {
-            background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-        }
-        .bg-c-yellow {
-            background: linear-gradient(45deg, #FFB64D, #ffcb80);
-        }
-        .bg-c-purple {
-            background: linear-gradient(45deg, #7759de, #9a84e6);
-        }
-        
-        .bg-c-red {
-            background: linear-gradient(45deg, #FF5370, #ff869a);
-        }
-        .order-card {
-            border-radius: 4px;
-            box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
-              transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
-          cursor: pointer;
-        }
-        
-        .order-card i {
-            font-size: 26px;
-        }
-        .order-card:hover{
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
-        }
         /*===========create item form =========*/
         
         .item-form{
@@ -1151,180 +897,54 @@ body{
         }
         
         .form-button{
-            font-family:"Poppins", sans-serif;
-            background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-            color: white;
             padding: 10px;
-            font-size: 14px;
-            border: none;
-            border-radius: 10px;
             margin-left: 20px;
         }
-        
-        .create_item_form{
-            font-family:"Poppins", sans-serif;
+        .container-item{
+            border-radius: 20px;
+            margin: 0 0;
+            width: 155px;
+            margin-left: 10px; 
         }
-          /*=========create color form=======*/
-        .modal {
-            display: block; /* Hide the modal by default */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000; /* Ensure the modals appear on top of other content */
-        }
-          
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            height: 550px;
-            width: 452px;
-            top: 15%;
-            left: 35%;
-        }
-        
-        .close {
-            display: flex;
-           color: #aaa;
-            float: right;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-          
-        .close:hover,
-         .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .btn {
-            cursor: pointer;
-            background-color: transparent;
-            height: auto;
-            width: auto;
-            color: #3498db;
-            font-size: 1.5em;
-            box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
-        }
-        .create_color_lable{
-          width: 110px;
-        }
-        .create_icons{
-            position: absolute;
-            left: 171px;
-            top: 207px;
-        }
-        .create-btn{
-          background-color: #3498db;
-          color: white;
-          padding: 6px;
-          font-size: 14px;
-          border: none;
-          border-radius: 10px;
-          margin: 10px;
-        }
-        .color_search{
-            color: #555;
-            display: flex;
-            border: 1px solid #fff;
-            border-radius: 10px;
-            width: 45%;
-            margin-left: 10px;
-            margin-top: 40px;
-        }
-        
-        .color_table{
-            font-size: 14px;
-        }
+        .item-btn{
+            padding: 7px;
+          }
         
         /*====== product form ======*/
         .add_btn{
-            color: #fff;
-            border: none;
-            border-radius: 10px;
             padding: 5px 10px;
-            font-size: 13px;
             margin-left: 10px;
             height:35px;
-            background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+
         }
         /*=====card item====*/
         .product_div{
-            font-family:"Poppins", sans-serif;
             margin: 0px 15px;
         }
-        .card-img{
-            width: 238px;
-            height: 200px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-          
-        .card_btn{
-            font-family:"Poppins", sans-serif;
-            background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-            color: white;
-            padding: 5px 10px;
-            font-size: 14px;
-            border: none;
-            border-radius: 10px;
-            margin-left: 70px;
-            text-decoration: none;
-        }
-        .card-clone{
-            border: 1px solid;
-            border-radius: 15px;
-            margin: 25px;
-            background-color: #f9f9f9;
-            float: left;
-            width: calc(20% - 10px); /* 20% width for each card with 5 cards per row */
-            box-sizing: border-box;
-          }
+
         
-        .card-input{
-            background-color:#cfcccc ;
-            font-size: 15px;
-            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
         
         /*=====end card item====*/
         /*=======fabric group item======*/
         .container-category{
-            color: #555;
-            display: flex;
-            border: 1px solid;
-            border-radius: 20px;
             margin: 0 0;
             width: 650px;
         
         }
         .fabric-list-icons{
-            position: absolute;
-            top: 10px;
-            left: 120px;
+            left: 40px;
         }
         /*=======Color group item======*/
         .color-list-icons{
-            position: absolute;
-            top: 10px;
-            left: 77px;
+            left: 27px;
         }
         /*=======Unit group item======*/
         .unit-list-icons{
-            position: absolute;
-            top: 10px;
-            left: 74px; 
+            left: 14px; 
         }
         
         .account-group-input{
-            width: 200px;
-            border: 1px solid #666;
-            border-radius: 10px;
-            padding-left: 5px;
+            width: 150px;
         }
         
         .stock-list-icons{
@@ -1338,23 +958,27 @@ body{
         }
         
         .product-btn{
-            background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-            color: white;
-            padding: 7px 15px;
-            font-size: 15px;
-            border: none;
-            border-radius: 40px;
-            cursor: pointer;  
+            padding: 7px;
+            font-size: 13px;  
         }
         
         .container-account{
-            color: #555;
-            display: flex;
-            border: 1px solid;
-            border-radius: 20px;
             margin: 0 0;
             width: 200px;
-            margin-left: 200px;
+            margin-left: 20px;
+        }
+        .acc-btn{
+            padding: 5px;
+        }
+
+        .stock-btn{
+            padding: 7px;
+            font-size: 15px;
+        }
+        .container-stock{
+            margin: 0 0;
+            width: 200px;
+            margin-left: 20px; 
         }
         
  } 

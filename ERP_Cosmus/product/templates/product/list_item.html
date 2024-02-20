@@ -14,12 +14,12 @@ the input field will be pre-filled with that value when the page is loaded. -->
       <div class="row">
         <div class="col-lg-12 sub_main">
           <div class="d-flex mb-3">
-            <button class="dropbtn  mx-3" onclick="redirectlistItem()"><span>Add Item +</span></button>
-            <div class="container-flex"> 
+            <button class="item-btn " onclick="redirectlistItem()"><span>Add Item +</span></button>
+            <div class="container-item"> 
              <input class="" type="search" placeholder="Search" aria-label="Search" />
                <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
-            <button class="dropbtn  mx-4">Clear Filter</button>
+            <button class="item-btn ms-1">Clear Filter</button>
            </div>
           </div>  
         </div>    
@@ -189,7 +189,6 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>{{item.item_name}}</td>
               <td>{{item.fab_grp}}</td>
               <td>{{item.Color_Name}}</td>
-              
               <!-- render reverse related fields -->
               <td>
                 <table>
@@ -200,9 +199,6 @@ the input field will be pre-filled with that value when the page is loaded. -->
                 </td>
                 </table> 
               </td>
-             
-              
-              
               <td>{{item.Material_code}}</td>
               <td>{{item.Packing}}</td>
               <td>{{item.Unit_Name}}</td>
