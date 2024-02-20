@@ -318,14 +318,16 @@ def item_edit(request,pk):
 
 
     if request.method == 'POST':
+        print(request.POST)
         form = Itemform(request.POST, instance=item_pk)
         formset = ShadeFormSet(request.POST ,instance=item_pk)
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
-                
             return redirect('item-list')
         else:
+            print(form.errors)
+            print(formset.errors)
             return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
     else:
         return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
