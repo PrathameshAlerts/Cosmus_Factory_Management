@@ -257,7 +257,8 @@ def item_create(request):
     
 def item_list(request):
     g_search = request.GET.get('item_search')
-    queryset = Item_Creation.objects.prefetch_related('shades').all()
+    #select related for loading forward FK relationships and select related for reverse relationship   
+    queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item','Fabric_Group','Item_Creation_GST').prefetch_related('shades').all()
     
 
 # cannot use icontains on foreignkey fields even if it has data in the fields
