@@ -73,7 +73,7 @@ body{
  }
 
  .sub_main{
-    padding-top: 40px;
+    padding-top: 30px;
     
  }
 
@@ -205,11 +205,13 @@ body{
     width: 230px;
     height: 100vh;
     min-height: 56px;
-    position: absolute;
+    position: fixed;
     font-size: 20px;
     top: 55px;
     left:0px;
     margin: 5px 0px;
+    z-index: 1;
+    overflow-y: auto;
 }
 
 .side-bar::-webkit-scrollbar {
@@ -218,7 +220,7 @@ body{
    
 .side-bar.active{
     left: 0;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .side-bar .menu{
@@ -376,7 +378,7 @@ body{
 .pcoded-content{
     position: relative;
     display: block;
-    padding: 90px 25px;
+    padding: 55px 25px;
 }
 
 .pcoded-main-container {
@@ -392,6 +394,7 @@ body{
     min-height: 100vh;
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
+    z-index: 0;
 }
 
 .container-flex {
@@ -799,7 +802,7 @@ body{
          }
         
          .sub_main{
-            padding-top: 40px;
+            padding-top: 30px;
            
          }
         
