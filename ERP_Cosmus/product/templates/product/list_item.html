@@ -191,11 +191,17 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>{{item.Color_Name}}</td>
               
               <!-- render reverse related fields -->
-               <td>
-                {% for shade in item.shades.all %}
-                    {{ shade.item_shade_name }}
-                {% endfor %}
-            </td>
+              <td>
+                <table>
+                  <td>
+                    {% for shade in item.shades.all %}
+                        {{ shade.item_shade_name }}
+                    {% endfor %}
+                </td>
+                </table> 
+              </td>
+             
+              
               
               <td>{{item.Material_code}}</td>
               <td>{{item.Packing}}</td>
