@@ -312,15 +312,15 @@ def item_edit(request,pk):
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
     item_pk = Item_Creation.objects.get(pk = pk)
-
-    form = Itemform(instance = item_pk)
+    
+    form = Itemform( instance = item_pk)
     formset = ShadeFormSet(instance=item_pk)
 
 
     if request.method == 'POST':
         print(request.POST)
-        form = Itemform(request.POST, instance=item_pk)
-        formset = ShadeFormSet(request.POST ,instance=item_pk)
+        form = Itemform(request.POST,request.FILES ,instance=item_pk)
+        formset = ShadeFormSet(request.POST ,request.FILES,instance=item_pk)
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
