@@ -185,11 +185,18 @@ the input field will be pre-filled with that value when the page is loaded. -->
           <tbody>
             {% for item in items %}
           </tr>
-          <td>{{ forloop.counter }}</td>              
+          <td>{{ forloop.counter}}</td>              
               <td>{{item.item_name}}</td>
               <td>{{item.fab_grp}}</td>
               <td>{{item.Color_Name}}</td>
-              <td>red</td>
+              
+              <!-- render reverse related fields -->
+               <td>
+                {% for shade in item.shades.all %}
+                    {{ shade.item_shade_name }}
+                {% endfor %}
+            </td>
+              
               <td>{{item.Material_code}}</td>
               <td>{{item.Packing}}</td>
               <td>{{item.Unit_Name}}</td>

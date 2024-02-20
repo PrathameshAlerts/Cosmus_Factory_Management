@@ -183,15 +183,78 @@
 
 
               <input type="submit" class="form-button" name="save" value="Save">
-              <div>
+
+
+              <!-- Render reverse related relationship fields manually using formset factory -->
+              <input type="hidden" name="shades-TOTAL_FORMS" value="2" id="id_shades-TOTAL_FORMS"><input type="hidden" name="shades-INITIAL_FORMS" value="1" id="id_shades-INITIAL_FORMS"><input type="hidden" name="shades-MIN_NUM_FORMS" value="0" id="id_shades-MIN_NUM_FORMS"><input type="hidden" name="shades-MAX_NUM_FORMS" value="1000" id="id_shades-MAX_NUM_FORMS">
                 
+              <div class="shade-form">
+                  <input type="hidden" name="shades-0-id" value="15" id="id_shades-0-id"> <!-- Render the form ID if needed -->
+      
+                  <!-- Render each field manually -->
+                  <div>
+                      <label for="shades-0-item_name_rank">Item Name Rank:</label>
+                      <input type="number" name="shades-0-item_name_rank" value="1" min="0" id="id_shades-0-item_name_rank">
+                  </div>
+                  <div>
+                      <label for="shades-0-item_shade_name">Item Shade Name:</label>
+                      <input type="text" name="shades-0-item_shade_name" value="green" maxlength="100" id="id_shades-0-item_shade_name">
+                  </div>
+                  <div>
+                      <label for="shades-0-item_color_image">Item Color Image:</label>
+                      Currently: <a href="/Media/rawmaterial/images/download_RpfwTQq.jpg">rawmaterial/images/download_RpfwTQq.jpg</a>
+<input type="checkbox" name="shades-0-item_color_image-clear" id="shades-0-item_color_image-clear_id">
+<label for="shades-0-item_color_image-clear_id">Clear</label><br>
+Change:
+<input type="file" name="shades-0-item_color_image" accept="image/*" id="id_shades-0-item_color_image">
+                  </div>
+      
+                  <!-- Render form errors if any -->
+                  <!-- Render individual field errors if any -->
+          
+              </div>
+          
+              <div class="shade-form">
+                  <input type="hidden" name="shades-1-id" id="id_shades-1-id"> <!-- Render the form ID if needed -->
+      
+                  <!-- Render each field manually -->
+                  <div>
+                      <label for="shades-1-item_name_rank">Item Name Rank:</label>
+                      <input type="number" name="shades-1-item_name_rank" min="0" id="id_shades-1-item_name_rank">
+                  </div>
+                  <div>
+                      <label for="shades-1-item_shade_name">Item Shade Name:</label>
+                      <input type="text" name="shades-1-item_shade_name" maxlength="100" id="id_shades-1-item_shade_name">
+                  </div>
+                  <div>
+                      <label for="shades-1-item_color_image">Item Color Image:</label>
+                      <input type="file" name="shades-1-item_color_image" accept="image/*" id="id_shades-1-item_color_image">
+                  </div>
+      
+                  <!-- Render form errors if any -->
+                  
+      
+                  <!-- Render individual field errors if any --> 
+                  
+              </div>
+          
+      
+        </div>
+
+      </form>
+    </div>
+
+              
+
+              <!-- Render reverse related relationship fields dynamically using formset factory  -->
+              <!-- <div>
                 {{ formset.management_form }}
                 {% for shade_form in formset %}
                     <div class="shade-form">
-                        {{ shade_form.id }} <!-- Render the form ID if needed -->
+                        {{ shade_form.id }} Render the form ID if needed -->
             
                         <!-- Render each field manually -->
-                        <div>
+                        <!-- <div>
                             <label for="{{ shade_form.prefix }}-item_name_rank">Item Name Rank:</label>
                             {{ shade_form.item_name_rank }}
                         </div>
@@ -202,15 +265,15 @@
                         <div>
                             <label for="{{ shade_form.prefix }}-item_color_image">Item Color Image:</label>
                             {{ shade_form.item_color_image }}
-                        </div>
+                        </div> -->
             
                         <!-- Render form errors if any -->
-                        {% for error in shade_form.non_field_errors %}
+                        <!-- {% for error in shade_form.non_field_errors %}
                             <div class="shade-form-error">{{ error }}</div>
-                        {% endfor %}
+                        {% endfor %} -->
             
                         <!-- Render individual field errors if any -->
-                        {% for field in shade_form.visible_fields %}
+                        <!-- {% for field in shade_form.visible_fields %}
                             {% if field.errors %}
                                 <div class="shade-form-error">
                                     {% for error in field.errors %}
@@ -225,7 +288,7 @@
               </div>
 
             </form>
-          </div>
+          </div> -->
 
 
 
