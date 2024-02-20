@@ -259,7 +259,9 @@ def item_list(request):
     g_search = request.GET.get('item_search')
     queryset = Item_Creation.objects.all()
     
-    print(request.GET)
+    for x in queryset:
+        for shades in x.shades.all():
+            print(shades.item_shade_name)
 
 # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '' and  g_search is not None:
@@ -315,33 +317,18 @@ def item_edit(request,pk):
 
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance=item_pk)
-    for i in range(1,3):
-        no_input = f'no_input_{i}'
-        text_input = f'text_input_{i}'
-        file_input = f'file_input_{i}' 
-
-        data = {
-            'no_input' : request.POST.get(no_input),
-            'text_input' : request.POST.get(text_input),
-        }
-
-        file = {
-            'file_input' : request.POST.get(file_input)
-        }
-
-        # if request.Method == 'POST' and 'textInput_0' in request.POST:
 
 
-        if request.method == 'POST':
-            form = Itemform(request.POST, instance=item_pk)
-            formset = ShadeFormSet(request.POST ,instance=item_pk)
-            if form.is_valid() and formset.is_valid():
-                form.save()
-                formset.save()
+    if request.method == 'POST':
+        form = Itemform(request.POST, instance=item_pk)
+        formset = ShadeFormSet(request.POST ,instance=item_pk)
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
                 
-                return redirect('item-list')
-            else:
-                return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
+            return redirect('item-list')
+        else:
+            return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
     else:
         return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
 
