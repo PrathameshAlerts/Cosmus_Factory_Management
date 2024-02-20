@@ -53,14 +53,16 @@
                     {% endif %}
                 </select>
               </div>
-              {% if form.instance.id %}
+              <div class="d-flex mb-3">
+                <label for="id_Item_shades" class="form-label item-form">Shades:</label>
+                {% if form.instance.id %}
                           <!-- Render reverse related relationship fields dynamically using formset factory  -->
-                          <div>
-                            <table>
+                          <div class="mb-3">
+                            <table class="table table-striped table-hover table-responsive">
                               <tr>
-                                <th>Item item_name_rank</th>
-                                <th>Item Shade Name</th>
-                                <th>Item color Image</th>
+                                <th><label for="{{ shade_form.prefix }}-item_name_rank">Item Name Rank:</label></th>
+                                <th> <label for="{{ shade_form.prefix }}-item_shade_name">Item Shade Name:</label></th>
+                                <th><label for="{{ shade_form.prefix }}-item_color_image">Item Color Image:</label></th>
                               </tr>
                             {{ formset.management_form }}
                             {% for shade_form in formset %}
@@ -69,24 +71,10 @@
                                     {{ shade_form.id }}
                                      
                                     <!-- Render each field manually -->
-                                    <td>
-                                    <div>
-                                        <label for="{{ shade_form.prefix }}-item_name_rank">Item Name Rank:</label>
-                                        {{ shade_form.item_name_rank }}
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div>
-                                        <label for="{{ shade_form.prefix }}-item_shade_name">Item Shade Name:</label>
-                                        {{ shade_form.item_shade_name}}
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div>
-                                        <label for="{{ shade_form.prefix }}-item_color_image">Item Color Image:</label>
-                                        {{ shade_form.item_color_image }}
-                                    </div> 
-                                  </td>
+                                    <tr>
+                                  <td> {{ shade_form.item_name_rank }}</td>
+                                  <td>{{ shade_form.item_shade_name}}</td>
+                                  <td><div>{{ shade_form.item_color_image }}</div></td>
                                   </tr>
                                   
                                     <!-- Render form errors if any -->
@@ -109,6 +97,7 @@
                           </table>
                           </div>
               {% endif %}
+              </div>
               <div class=" d-flex my-3">
                 <label for="id_Material_code" class="form-label item-form">Material Code</label>
                 <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}" maxlength="255" required id="id_Material_code">
@@ -196,28 +185,14 @@
                   <option value="Dead">Dead</option>
                 </select>
               </div>
-              
-
-              
               {% if not form.instance.id %}
               <div class="d-flex my-3">
                 <label for="id_status" class="form-label item-form">Image:</label>
                 <input type="file" class="item-select px-2 py-1" name="item_shade_image" required id="">
               </div>
-              
-
-              
-
               <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
-
               {% endif %}
-
-
               <input type="submit" class="form-button" name="save" value="Save">
-
-
-
-
             </form>
           </div>
 
@@ -309,5 +284,4 @@ function removeRow(row) {
 
     
  {% endblock body %}
-
 
