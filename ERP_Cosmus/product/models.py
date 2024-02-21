@@ -366,7 +366,7 @@ class Ledger(models.Model):
     default_credit_period = models.CharField(max_length = 100, blank = True)
     types = models.CharField(choices = TYPES , max_length = 30, blank = True)
     Gst_no = models.CharField(max_length = 100, blank = True)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateField(auto_now=True)
     address = models.TextField(blank = True)
     state = models.CharField(max_length = 255, blank = True)
     country = models.CharField(max_length = 255, null=True, blank=True) 
