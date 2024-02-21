@@ -44,9 +44,7 @@ class EditProductForm(forms.ModelForm):
      'Product_Wholesaler_DistributorPrice' , 'Product_IndiaMartPrice','Product_BulkPrice', 'Product_Cost_price',
      'Amazon_Link','Cosmus_link' ,'Youtube_Link','Flipkart_Link']
         
-    images = ProductImageFormSet(queryset=ProductImage.objects.none(), prefix='product_images')
-
-
+    #images = ProductImageFormSet(queryset=ProductImage.objects.none(), prefix='product_images')
 
 
 class PProductCreateForm(forms.ModelForm):

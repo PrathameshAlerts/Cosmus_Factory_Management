@@ -135,24 +135,25 @@ def edit_production_product(request,pk):
     return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form})
 
 
-#transaction.atomic
 def product_color_sku(request):
-    print("GET",request.GET)
-    print(request.POST)
+    print("POST",request.POST)
     color = Color.objects.all()
     if request.method == 'POST':
-        
         product_ref_id = request.POST.get('Product_Refrence_ID')
-        
+        request_dict = request.POST
+        count = 0
+        for x in request_dict.keys():
+            if x[0:12] == 'PProduct_SKU':
+                count = count + 1
         with transaction.atomic():
             all_sets_valid = False
             try:
-                for i in range(1, 2): 
+                print('count=',count+1)
+                for i in range(1, count): 
                     # Build field names dynamically 
                     image_field_name = f'PProduct_image_{i}'
                     color_field_name = f'PProduct_color_{i}'
                     sku_field_name = f'PProduct_SKU_{i}'
-
 
                     # Create a dictionary with the dynamic field names
                     data = {
@@ -235,7 +236,9 @@ def item_create(request):
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
+
     print(request.POST, request.FILES)
+
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
         
@@ -260,7 +263,6 @@ def item_list(request):
     #select related for loading forward FK relationships and select related for reverse relationship   
     queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item','Fabric_Group','Item_Creation_GST').prefetch_related('shades').all()
     
-
 # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '' and  g_search is not None:
         queryset = Item_Creation.objects.filter(Q(item_name__icontains=g_search)|
@@ -268,18 +270,20 @@ def item_list(request):
                                                 Q(Fabric_Group__fab_grp_name__icontains=g_search))
         
 
-
     sort_name = request.GET.get('sort_name')
 
 
     if sort_name == "item_name_sort_asc" :
         queryset = Item_Creation.objects.order_by('item_name')
     
+
     elif sort_name == "item_name_sort_dsc" :
         queryset = Item_Creation.objects.order_by('-item_name')
 
+
     elif sort_name == "fabgrp_sort_asc" :
         queryset = Item_Creation.objects.order_by('Fabric_Group__fab_grp_name')
+
 
     elif sort_name == "fabgrp_sort_dsc" :
         queryset = Item_Creation.objects.order_by('-Fabric_Group__fab_grp_name')
@@ -341,7 +345,6 @@ def item_delete(request, pk):
 
 
 #_____________________Item-Views-end_______________________
-
 
 #_____________________Color-start________________________
 
@@ -640,17 +643,29 @@ def stock_item_delete(request, pk):
 
 
 
+def ledgercreate(request):
+    pass
+
+
+def ledgerupdate(request):
+    pass
+
+
+def ledgerview(request):
+    pass
+
+
+def ledgerlist(request):
+    pass
+
+
+def ledgerdelete(request):
+    pass
 
 
 
 
 #_________________________Accounts end___________________________
-
-
-
-
-
-
 
 
 #_______________________authentication View start___________________________
