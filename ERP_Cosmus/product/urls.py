@@ -56,6 +56,14 @@ urlpatterns = [
     path('stockitemlist/',views.stock_item_list , name='stock_item-list'),
     path('stockitemdelete/<int:pk>',views.stock_item_delete , name= 'stock_item-delete'),
 
+
+    #accounts
+    path('ledgercreate/', views.ledgercreate, name = 'ledger-create'),
+    path('ledgerupdate/<int:pk>', views.ledgerupdate, name = 'ledger-update'),
+    path('ledgerlist/', views.ledgerlist, name = 'ledger-list'),
+    path('ledgerdelete/<int:pk>', views.ledgerdelete, name = 'ledger-delete'),
+
+
     #common Routes
     path('', views.dashboard , name='dashboard-main'),
 

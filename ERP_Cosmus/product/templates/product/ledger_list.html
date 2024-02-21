@@ -1,0 +1,41 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+
+
+ <div>
+
+    <table>
+        <tr>
+          <th>Name</th>
+          <th>Alias</th>
+          <th>Vendor Code</th>
+          <th>Sub Group</th>
+          <th>Type</th>
+          <th>GST No</th>
+          <th>Update</th>
+          <th>View</th>
+          <th>Delete</th>
+          
+        </tr>
+
+        {% for ledger in ledgers %}
+
+        <tr>
+          <td>{{ledger.name}}</td>
+          <td>{{ledger.short_name}}</td>
+          <td>{{ledger.vendor_code}}</td>
+          <td>{{ledger.account_sub_group_ledger}}</td>
+          <td>{{ledger.types}}</td>
+          <td>{{ledger.Gst_no}}</td>
+          <td> <a href=" {% url 'ledger-update' ledger.id %}">Update</a></td>
+          <td>View</td>
+          <td><a href="{% url 'ledger-delete' ledger.id %}">Delete</a></td>
+          
+        </tr>
+        {% endfor %}
+      </table>
+ </div>
+
+
+{% endblock body %}

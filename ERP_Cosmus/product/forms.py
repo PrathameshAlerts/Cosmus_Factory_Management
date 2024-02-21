@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 
@@ -44,9 +44,7 @@ class EditProductForm(forms.ModelForm):
      'Product_Wholesaler_DistributorPrice' , 'Product_IndiaMartPrice','Product_BulkPrice', 'Product_Cost_price',
      'Amazon_Link','Cosmus_link' ,'Youtube_Link','Flipkart_Link']
         
-    images = ProductImageFormSet(queryset=ProductImage.objects.none(), prefix='product_images')
-
-
+    #images = ProductImageFormSet(queryset=ProductImage.objects.none(), prefix='product_images')
 
 
 class PProductCreateForm(forms.ModelForm):
@@ -164,6 +162,18 @@ class StockItemForm(forms.ModelForm):
     class Meta:
         model = StockItem
         fields = ['acc_sub_grp','stock_item_name']
+
+
+
+
+class LedgerForm(forms.ModelForm):
+    class Meta:
+        model = Ledger
+        fields = ['name','short_name','vendor_code','under_group','maintain_billwise',
+                  'default_credit_period','types','Gst_no','address','state',
+                  'country','city','pincode','mobile_no','landline_no','bank_details',
+                  'Debit_Credit']
+
 
 
 class LoginForm(AuthenticationForm):

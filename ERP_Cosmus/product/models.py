@@ -31,6 +31,7 @@ class Product2Category(models.Model):
 
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
+
     def __str__(self):
         return self.color_name
     
@@ -280,7 +281,6 @@ class Item_Creation(models.Model):
     status= models.CharField(max_length=50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
 
-
 # these functions are used to show related attributes instead of PK id in listview
    
     def Color_Name(self):
@@ -311,7 +311,7 @@ class item_color_shade(models.Model):
 def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
     if created:
         #getting the color name attribte instead of object function
-        color_name = instance.Item_Color.color_name
+        color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of color
         # Create a new item_color_shade object related to the newly created instance
         primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
                                                             item_name_rank= 1,
@@ -320,9 +320,10 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
         # Save the newly created item_color_shade object
         primary_color_shade.save()
 
+
+
 class AccountGroup(models.Model):
     account_group = models.CharField(max_length = 50 , unique= True)
-
 
 
 class AccountSubGroup(models.Model):
@@ -341,36 +342,44 @@ class StockItem(models.Model):
         return self.acc_sub_grp.account_sub_group
     
 
-# class Ledger(models.Model):
-#     MAINTAIN_BILLWISE = [
-#         ("Yes", 'Yes'),
-#         ("No", 'No'),
-#     ]
+class Ledger(models.Model):
+    MAINTAIN_BILLWISE = [
+        ("Yes", 'Yes'),
+        ("No", 'No'),
+    ]
 
-#     MAINTAIN_BILLWISE = [
-#         ("Trader", 'Trader'),
-#         ("Manufacture", 'Manufacture'),
-#     ]
-#     name = 
-#     short_name =
-#     vendor_code = 
-#     under_group = 
-#     maintain_billwise = 
-#     default_credit_period = 
-#     types = 
-#     ledger_gst = 
-#     date =
-#     address = 
-#     state = 
-#     country = models.ForeignKey('cities_light.Country', on_delete=models.SET_NULL, null=True, blank=True) 
-#     city = models.ForeignKey('cities_light.City', on_delete=models.SET_NULL, null=True, blank=True) 
-#     pincode =
-#     mobile_no =
-#     landline_no = 
-#     bank details = 
+    TYPES = [
+        ("Trader", 'Trader'),
+        ("Manufacture", 'Manufacture'),
+    ]
+
+    DEBIT_CREDIT = [
+        ("Debit", 'Debit'),
+        ("Credit", 'Credit'),
+    ]
+
+    name = models.CharField(max_length = 100, blank = True)
+    short_name = models.CharField(max_length = 100, null= True,blank = True)
+    vendor_code = models.CharField(max_length = 100, null= True,blank = True)
+    under_group  = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
+    maintain_billwise = models.CharField(choices = MAINTAIN_BILLWISE, max_length = 30, blank = True)
+    default_credit_period = models.CharField(max_length = 100, blank = True)
+    types = models.CharField(choices = TYPES , max_length = 30, blank = True)
+    Gst_no = models.CharField(max_length = 100, blank = True)
+    date = models.DateTimeField(auto_now=True)
+    address = models.TextField(blank = True)
+    state = models.CharField(max_length = 255, blank = True)
+    country = models.CharField(max_length = 255, null=True, blank=True) 
+    city = models.CharField(max_length = 255, null=True, blank=True) 
+    pincode = models.IntegerField()
+    mobile_no = models.IntegerField()
+    landline_no = models.IntegerField()
+    bank_details =  models.TextField(blank = True)
+    Debit_Credit =  models.CharField( choices = DEBIT_CREDIT ,max_length = 255, blank = True)
 
 
-
+    def account_sub_group_ledger(self):
+        return self.under_group.account_sub_group
 
 
 
