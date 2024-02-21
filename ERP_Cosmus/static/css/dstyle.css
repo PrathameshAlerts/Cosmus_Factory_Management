@@ -202,12 +202,12 @@ body{
     background:#fff;
     color: #666;
     backdrop-filter: blur(15px);
-    width: 230px;
-    height: 100vh;
-    min-height: 56px;
+    width: 240px;
+    height: 100dvh;
+    min-height: 46px;
     position: fixed;
     font-size: 20px;
-    top: 55px;
+    top: 5opx;
     left:0px;
     margin: 5px 0px;
     z-index: 1;
@@ -215,12 +215,21 @@ body{
 }
 
 .side-bar::-webkit-scrollbar {
-     width: 200px;
+     width: 8px;
 }  
-   
+.side-bar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+} 
+.side-bar::-webkit-scrollbar-thumb {
+    background: #888; /* Thumb color */
+    border-radius: 4px;
+} 
+.side-bar::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Hover color */
+}
 .side-bar.active{
     left: 0;
-    overflow-y: auto;
+    overflow: auto;
 }
 
 .side-bar .menu{
@@ -239,7 +248,7 @@ body{
     text-decoration: none;
     display: block;
     padding: 3px 25px;
-    line-height: 60px;
+    line-height: 50px;
     background-color: #fff;
 }
    
