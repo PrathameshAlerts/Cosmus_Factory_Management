@@ -521,10 +521,9 @@ body{
     cursor: pointer;
   }
   /*=========create color form=======*/
-  .modal {
-    background-color: rgba(0, 0, 0, 0.5); /* Set background color to none */
-    border: none; /* Remove border if needed */
-    box-shadow: none; /* Remove box-shadow if needed */
+  .fade {
+    background-color: #f6f7fb; /* Set background color to none */
+  
   }
 
 .btn {
