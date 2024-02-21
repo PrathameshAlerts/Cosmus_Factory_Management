@@ -33,15 +33,15 @@
     <label for="id_under_group">Under group:</label>
 
     
-    <select value="{{form.instance.under_group}}" name="under_group" required id="id_under_group">
+    <select  name="under_group" required id="id_under_group">
 
         {% if form.instance.id %}
-
-        <option value="{{form.instance.under_group.id}}">{{form.instance.account_sub_group_ledger}}"</option>
+        <option value="{{form.instance.under_group.id}}">{{form.instance.account_sub_group_ledger}}</option>
         {% elif not form.instance.id %}
         <option value=""></option>
         {% endif %}
 
+        
        {% for grp in under_groups %}
         <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
         {% endfor %}

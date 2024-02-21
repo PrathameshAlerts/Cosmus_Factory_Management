@@ -641,11 +641,14 @@ def stock_item_delete(request, pk):
 
 
 def ledgercreate(request):
+    print(request.POST)
     under_groups = AccountSubGroup.objects.all()
     form = LedgerForm()
     if request.method == 'POST':
         form = LedgerForm(request.POST)
+        
         if form.is_valid():
+            
             form.save()
             return redirect('ledger-list')
         else:
@@ -657,12 +660,14 @@ def ledgercreate(request):
 
 
 def ledgerupdate(request,pk):
+    print(request.POST)
     under_groups = AccountSubGroup.objects.all()
-    Ledger_pk = Ledger.objects.get(pk=pk)
+    Ledger_pk = Ledger.objects.get(pk = pk)
     form = LedgerForm(instance = Ledger_pk)
     if request.method == 'POST':
         form = LedgerForm(request.POST, instance = Ledger_pk)
         if form.is_valid():
+            form.save()
             return redirect('ledger-list')
         else:
             return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update'})
@@ -679,8 +684,6 @@ def ledgerdelete(request, pk):
     Ledger_pk = Ledger.objects.get(pk=pk)
     Ledger_pk.delete()
     return redirect('ledger-list')
-
-
 
 
 #_________________________Accounts end___________________________
