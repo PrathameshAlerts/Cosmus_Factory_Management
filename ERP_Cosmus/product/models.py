@@ -31,6 +31,7 @@ class Product2Category(models.Model):
 
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
+
     def __str__(self):
         return self.color_name
     
@@ -310,7 +311,7 @@ class item_color_shade(models.Model):
 def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
     if created:
         #getting the color name attribte instead of object function
-        color_name = instance.Item_Color.color_name
+        color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of color
         # Create a new item_color_shade object related to the newly created instance
         primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
                                                             item_name_rank= 1,
@@ -321,10 +322,8 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 
 
 
-
 class AccountGroup(models.Model):
     account_group = models.CharField(max_length = 50 , unique= True)
-
 
 
 class AccountSubGroup(models.Model):
@@ -349,7 +348,7 @@ class Ledger(models.Model):
         ("No", 'No'),
     ]
 
-    MAINTAIN_BILLWISE = [
+    TYPES = [
         ("Trader", 'Trader'),
         ("Manufacture", 'Manufacture'),
     ]
@@ -365,21 +364,22 @@ class Ledger(models.Model):
     under_group  = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     maintain_billwise = models.CharField(choices = MAINTAIN_BILLWISE, max_length = 30, blank = True)
     default_credit_period = models.CharField(max_length = 100, blank = True)
-    types = models.CharField(choices = MAINTAIN_BILLWISE , max_length = 30, blank = True)
+    types = models.CharField(choices = TYPES , max_length = 30, blank = True)
     Gst_no = models.CharField(max_length = 100, blank = True)
     date = models.DateTimeField(auto_now=True)
-    address = models.CharField(max_length = 255, blank = True)
+    address = models.TextField(blank = True)
     state = models.CharField(max_length = 255, blank = True)
-    country = models.ForeignKey('cities_light.Country', on_delete=models.SET_NULL, null=True, blank=True) 
-    city = models.ForeignKey('cities_light.City', on_delete=models.SET_NULL, null=True, blank=True) 
+    country = models.CharField(max_length = 255, null=True, blank=True) 
+    city = models.CharField(max_length = 255, null=True, blank=True) 
     pincode = models.IntegerField()
     mobile_no = models.IntegerField()
     landline_no = models.IntegerField()
-    bank_details =  models.CharField(max_length = 255, blank = True)
+    bank_details =  models.TextField(blank = True)
     Debit_Credit =  models.CharField( choices = DEBIT_CREDIT ,max_length = 255, blank = True)
 
 
-
+    def account_sub_group_ledger(self):
+        return self.under_group.account_sub_group
 
 
 

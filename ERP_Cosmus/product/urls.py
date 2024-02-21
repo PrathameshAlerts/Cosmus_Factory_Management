@@ -58,11 +58,10 @@ urlpatterns = [
 
 
     #accounts
-    path('ledgercreate', views.ledgercreate, name = 'ledger-create'),
-    path('ledgerupdate', views.ledgerupdate, name = 'ledger-update'),
-    path('ledgerlist', views.ledgerlist, name = 'ledger-list'),
-    path('ledgerdelete', views.ledgerdelete, name = 'ledger-delete'),
-    path('ledgerview', views.ledgerview, name = 'ledger-view'),
+    path('ledgercreate/', views.ledgercreate, name = 'ledger-create'),
+    path('ledgerupdate/<int:pk>', views.ledgerupdate, name = 'ledger-update'),
+    path('ledgerlist/', views.ledgerlist, name = 'ledger-list'),
+    path('ledgerdelete/<int:pk>', views.ledgerdelete, name = 'ledger-delete'),
 
 
     #common Routes
