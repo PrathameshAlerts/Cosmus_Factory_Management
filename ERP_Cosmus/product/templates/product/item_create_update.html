@@ -60,9 +60,9 @@
     <div class="mb-3">
         <table class="table table-striped table-hover table-responsive rounded-3">
             <tr>
-                <th><label for="{{ shade_form.prefix }}-item_name_rank">Item Name Rank:</label></th>
-                <th><label for="{{ shade_form.prefix }}-item_shade_name">Item Shade Name:</label></th>
-                <th><label for="{{ shade_form.prefix }}-item_color_image">Item Color Image:</label></th>
+                <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
+                <th><label for="{{ shade_form.prefix }}-item_shade_name">Shade Name</label></th>
+                <th><label for="{{ shade_form.prefix }}-item_color_image">Color Image</label></th>
             </tr>
             {{ formset.management_form }}
             {% for shade_form in formset %}
@@ -72,9 +72,9 @@
                 <tr>
                     <td>
                         {% if forloop.first %}
-                        <input type="text" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
+                        <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
                         {% else %}
-                        <input type="text" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
+                        <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
                         {% endif %}
                     </td>
                     <td>{{ shade_form.item_shade_name }}</td>

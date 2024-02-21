@@ -2,9 +2,11 @@
 {% load static %} 
  {% block body %}
 
- {{title}}
+ <div class="create_item_form">
+ <h2>{{title}}</h2>
  <form action="" method="POST">
 {% csrf_token %}
+<<<<<<< HEAD
 <p>
     <label for="id_name">Name:</label>
     <input type="text" value="{{form.instance.name}}" name="name" maxlength="100" id="id_name">
@@ -39,154 +41,100 @@
         <option value="{{form.instance.under_group.id}}">{{form.instance.account_sub_group_ledger}}</option>
         {% elif not form.instance.id %}
         <option value=""></option>
+=======
+<div class="d-flex my-3">
+    <label for="id_name" class="form-label item-form">Name:</label>
+    <input type="text" class="item-select" value="{{form.instance.name}}" name="name" maxlength="100" id="id_name">
+  </div>
+  <div class=" d-flex my-3"> 
+    <label for="id_short_name" class="form-label item-form">Short name:</label>
+    <input type="text" class="item-select" value="{{form.instance.short_name}}" name="short_name" maxlength="100" id="id_short_name">
+  </div>
+  <div class="d-flex my-3">
+    <label for="id_vendor_code"  class="form-label item-form">Vendor code:</label>
+    <input type="text" class="item-select" value="{{form.instance.vendor_code}}" name="vendor_code" maxlength="100" id="id_vendor_code">
+  </div>
+  <div class=" d-flex my-3">
+    <label for="id_under_group" class="form-label item-form">Under group:</label>
+    <select value="{{form.instance.under_group}}" class="item-select" name="under_group" required id="id_under_group">
+        {% if not form.instance.id %}
+        <option value="" ></option>
+>>>>>>> 85206f5456b03426d9070f3808c6e0795c6dbe43
         {% endif %}
 
         
        {% for grp in under_groups %}
         <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
         {% endfor %}
-
-
-
-</select>
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_maintain_billwise">Maintain billwise:</label>
-    <select name="maintain_billwise" id="id_maintain_billwise">
-
-
-  <option value="{{form.instance.maintain_billwise}}">{{form.instance.maintain_billwise}}</option>
-  <option value="Yes">Yes</option>
-
-  <option value="No">No</option>
-
-</select>
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_default_credit_period">Default credit period:</label>
-    <input type="text" value="{{form.instance.default_credit_period}}" name="default_credit_period" maxlength="100" id="id_default_credit_period">
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_types">Types:</label>
-    <select name="types" id="id_types">
-  <option value="{{form.instance.types}}">{{form.instance.types}}</option>
-  <option value="Trader">Trader</option>
-
-  <option value="Manufacture">Manufacture</option>
-
-
-</select>
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_Gst_no">Gst no:</label>
-    <input type="text" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no">
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_address">Address:</label>
-    <textarea name="address" value = "{{form.instance.address}}" cols="35" rows="3" id="id_address">
-</textarea>
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_state">State:</label>
-    <input type="text" name="state" value ="{{form.instance.state}}" maxlength="255" id="id_state">
-    
-    
-  </p>
-
-  
-  <p>
-
- 
-        <label for="id_country">Country:</label>
-        <input type="text" value = "{{form.instance.country}}" name="country" maxlength="255" id="id_country">
-
-
-</select>
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_city">City:</label>
-    <input type="text" value = "{{form.instance.city}}" name="city" maxlength="255" id="id_city">
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_pincode">Pincode:</label>
-    <input type="number" value="{{form.instance.pincode}}" name="pincode" required id="id_pincode">
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_mobile_no">Mobile no:</label>
-    <input type="number" value="{{form.instance.mobile_no}}" name="mobile_no" required id="id_mobile_no">
-    
-    
-  </p>
-
-  
-  <p>
-    <label for="id_landline_no">Landline no:</label>
-    <input type="number" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no">
-    
-    
-  </p>
-
-  
-  <p>
-
-    <label for="id_bank_details">Bank details:</label>
-    <textarea name="bank_details" value="{{form.instance.bank_details}}" cols="25" rows="3" id="id_bank_details">
-</textarea>
-    
-  </p>
-
-  
-  <p>
-    <label for="id_Debit_Credit">Debit Credit:</label>
-    <select name="Debit_Credit" id="id_Debit_Credit">
+    </select> 
+  </div>
+  <div class="d-flex my-3">
+    <label for="id_maintain_billwise" class="form-label item-form">Maintain billwise:</label>
+    <select class="item-select" value="{{form.instance.maintain_billwise}}" name="maintain_billwise" id="id_maintain_billwise">
+      <option value="{{form.instance.maintain_billwise}}">{{form.instance.maintain_billwise}}</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+ </div>
+  <div class="d-flex my-3">
+    <label for="id_default_credit_period" class="form-label item-form">Default credit period:</label>
+    <input type="text" class="item-select" value="{{form.instance.default_credit_period}}" name="default_credit_period" maxlength="100" id="id_default_credit_period">
+  </div>
+  <div class="d-flex mb-3">
+    <label for="id_types" class="form-label item-form">Types:</label>
+    <select class="item-select" value="{{form.instance.types}}" name="types" id="id_types">
+      <option value="{{form.instance.types}}">{{form.instance.types}}</option>
+      <option value="Trader">Trader</option>
+      <option value="Manufacture">Manufacture</option>
+    </select> 
+  </div>
+  <div class="d-flex mb-3">
+    <label for="id_Gst_no" class="form-label item-form">Gst no:</label>
+    <input type="text" class="item-select" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no"> 
+  </div>
+  <div class="d-flex mb-3">
+    <label for="id_address" class="form-label item-form">Address:</label>
+    <textarea name="address" class="item-select" value = "{{form.instance.address}}" cols="35" rows="3" id="id_address"></textarea> 
+  </div>
+  <div class="d-flex mb-3">
+    <label for="id_state" class="form-label item-form">State:</label>
+    <input type="text"  class="item-select" name="state" value ="{{form.instance.state}}" maxlength="255" id="id_state">
+  </div>
+  <div class="d-flex mb-3">
+        <label for="id_country" class="form-label item-form">Country:</label>
+        <input type="text" class="item-select" value = "{{form.instance.country}}" name="country" maxlength="255" id="id_country"> 
+  </div> 
+  <div class="d-flex mb-3">
+    <label for="id_city" class="form-label item-form">City:</label>
+    <input type="text" class="item-select" value = "{{form.instance.city}}" name="city" maxlength="255" id="id_city">  
+  </div>
+  <div class="d-flex mb-3">
+    <label for="id_pincode" class="form-label item-form">Pincode:</label>
+    <input type="number" class="item-select" value="{{form.instance.pincode}}" name="pincode" required id="id_pincode">    
+  </div>
+   <div class="d-flex mb-3">
+    <label for="id_mobile_no" class="form-label item-form">Mobile no:</label>
+    <input type="number" class="item-select" value="{{form.instance.mobile_no}}" name="mobile_no" required id="id_mobile_no">    
+  </div>  
+  <div class="d-flex mb-3">
+    <label for="id_landline_no" class="form-label item-form">Landline no:</label>
+    <input type="number" class="item-select" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no"> 
+  </div>
+  <div class="d-flex mb-3">
+    <label for="id_bank_details" class="form-label item-form">Bank details:</label>
+    <textarea name="bank_details" class="item-select" value="{{form.instance.bank_details}}" cols="25" rows="3" id="id_bank_details"></textarea>  
+  </div>
+  <div class="d-flex mb-3">
+    <label for="id_Debit_Credit" class="form-label item-form">Debit Credit:</label>
+    <select class="item-select" value="{{form.instance.Debit_Credit}}" name="Debit_Credit" id="id_Debit_Credit">
   <option value="{{form.instance.Debit_Credit}}">{{form.instance.Debit_Credit}}</option>
   <option value="Debit">Debit</option>
-
   <option value="Credit">Credit</option>
-
-</select>
-    
-    
-      
-    
-  </p>
-<input type="submit">
-
+</select> 
+</div>
+<input type="submit" class="add_btn">
 </form>
+</div>
 {% endblock body %}
+
+    
