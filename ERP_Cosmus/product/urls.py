@@ -57,7 +57,7 @@ urlpatterns = [
     path('stockitemdelete/<int:pk>',views.stock_item_delete , name= 'stock_item-delete'),
 
 
-    #accounts
+    #ledger
     path('ledgercreate/', views.ledgercreate, name = 'ledger-create'),
     path('ledgerupdate/<int:pk>', views.ledgerupdate, name = 'ledger-update'),
     path('ledgerlist/', views.ledgerlist, name = 'ledger-list'),
