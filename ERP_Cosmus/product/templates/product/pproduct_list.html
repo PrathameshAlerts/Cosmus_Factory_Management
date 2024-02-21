@@ -19,7 +19,7 @@
       <div class="">
         <table class="table table-striped table-hover table-responsive">
           <thead>
-            <tr>
+            <tr >
               <th scope="col" class="name_absolute">No</th>
               <th scope="col" class="name_absolute">Product Name
                 <div class="nav-item dropdown name_icons">
@@ -185,48 +185,98 @@
           </thead>
           
           <tbody>
-
-            {% for product  in products  %}
-
-            <tr>
-              <td>{{forloop.counter}}</td>
-              <td>{{product.Product_Name}}</td>
-              <td>{{product.Model_Name}}</td>
-              <td>{{product.Product_Refrence_ID}}</td>
-               <!-- productdetails is related name of pproductcreation -->
-               <td>
-                {% for pproduct in product.productdetails.all %}
-                    {{ pproduct.product_color_name }}<br>
-                {% endfor %}
-            </td>
-            <td>
-              {% for pproduct in product.productdetails.all %}
-                  {{ pproduct.PProduct_SKU }}<br>
-              {% endfor %}
-          </td>
-              <td>{{product.Product_Channel}}</td>
-              <td>{{product.Product_Brand}}</td>
-              <td>{{product.Product_SalePrice_CustomerPrice}}</td>
-              <td>{{product.Product_MRP}}</td>
-              <td>{{product.Product_BulkPrice}}</td>
-              <td>{{product.Product_Cost_price}}</td>
-              <td>{{product.P_GST}}</td>
-               <td>{{product.Product_HSNCode}}</td>
-              <td>{{product.Product_WarrantyTime}}</td>
-              <td>{{product.Product_Status}}</td>
-              <td><a href="{% url 'edit_production_product' product.Product_Refrence_ID %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-              <td><a href="{% url 'pproductdelete' product.Product_Refrence_ID %}"><i class="fa-solid fa-trash text-danger px-2"></i></a> </td>
-              <td><a href=""><i class="fa-solid fa-eye px-2"></i></a></td>
+            {% for product in products %}
+            <tr id="productRow_{{ product.Product_Refrence_ID }}">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ product.Product_Name }}</td>
+                <td>{{ product.Model_Name }}</td>
+                <td>{{ product.Product_Refrence_ID }}</td>
+                <td>
+                    {% for pproduct in product.productdetails.all %}
+                        {{ pproduct.product_color_name }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for pproduct in product.productdetails.all %}
+                        {{ pproduct.PProduct_SKU }}<br>
+                    {% endfor %}
+                </td>
+                <td>{{ product.Product_Channel }}</td>
+                <td>{{ product.Product_Brand }}</td>
+                <td>{{ product.Product_SalePrice_CustomerPrice }}</td>
+                <td>{{ product.Product_MRP }}</td>
+                <td>{{ product.Product_BulkPrice }}</td>
+                <td>{{ product.Product_Cost_price }}</td>
+                <td>{{ product.P_GST }}</td>
+                <td>{{ product.Product_HSNCode }}</td>
+                <td>{{ product.Product_WarrantyTime }}</td>
+                <td>{{ product.Product_Status }}</td>
+                <td>
+                    <a href="{% url 'edit_production_product' product.Product_Refrence_ID %}">
+                        <i class="fa-solid fa-pen-to-square px-2"></i>
+                    </a>
+                </td>
+                <td><button type="button" class="border-0 mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  <i class="fa-solid fa-trash text-danger"></i>
+                </button></td>
+                <td>
+                    <a href=""><i class="fa-solid fa-eye px-2"></i></a>
+                </td>
             </tr>
+            
+  
             {% endfor %}
-          </tbody>
+         </tbody>
         </table>
-      </div>
-    </div>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm Deletion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this product?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" onclick="deleteProduct('{{ product.Product_Refrence_ID }}')">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>       
+
+        <script>
+          function deleteProduct(productId) {
+              // Close the modal manually if needed
+              $('#deleteModal' + productId).modal('hide');
+              
+              // Remove the row
+              document.getElementById('productRow_' + productId).remove();
+          
+              // Optionally, add an AJAX call here to also remove the product from the database
+              // $.ajax({
+              //     url: '/delete_product_url/', // Your API endpoint or URL to handle deletion
+              //     type: 'POST',
+              //     data: {
+              //         'product_id': productId,
+              //         'csrfmiddlewaretoken': '{{ csrf_token }}' // for Django CSRF token
+              //     },
+              //     success: function(response) {
+              //         // Handle success
+              //     },
+              //     error: function(error) {
+              //         // Handle error
+              //     }
+              // });
+          }
+   </script>
+          
     <script>
-      function redirectProductList(){
-        window.location.href="{% url 'pproduct_creation'%}"
+      function redirectProductList() {
+        window.location.href = "{% url 'pproduct_creation' %}";
       }
+    
     </script>
 {% endblock body %}
 
