@@ -34,9 +34,14 @@
 
     
     <select value="{{form.instance.under_group}}" name="under_group" required id="id_under_group">
-        {% if not form.instance.id %}
-        <option value="" ></option>
+
+        {% if form.instance.id %}
+
+        <option value="{{form.instance.under_group.id}}">{{form.instance.account_sub_group_ledger}}"</option>
+        {% elif not form.instance.id %}
+        <option value=""></option>
         {% endif %}
+
        {% for grp in under_groups %}
         <option value="{{grp.id}}">{{grp.account_sub_group}}</option>
         {% endfor %}
@@ -51,11 +56,10 @@
   
   <p>
     <label for="id_maintain_billwise">Maintain billwise:</label>
-    <select value="{{form.instance.maintain_billwise}}" name="maintain_billwise" id="id_maintain_billwise">
-  <!-- <option value="{{form.instance.maintain_billwise}}">{{form.instance.maintain_billwise}}</option> -->
-  {% if not form.instance.id %}
-  <option value="" ></option>
-  {% endif %}
+    <select name="maintain_billwise" id="id_maintain_billwise">
+
+
+  <option value="{{form.instance.maintain_billwise}}">{{form.instance.maintain_billwise}}</option>
   <option value="Yes">Yes</option>
 
   <option value="No">No</option>
@@ -76,11 +80,8 @@
   
   <p>
     <label for="id_types">Types:</label>
-    <select value="{{form.instance.types}}" name="types" id="id_types">
-  <!-- <option value="{{form.instance.types}}">{{form.instance.types}}</option> -->
-  {% if not form.instance.id %}
-  <option value="" ></option>
-  {% endif %}
+    <select name="types" id="id_types">
+  <option value="{{form.instance.types}}">{{form.instance.types}}</option>
   <option value="Trader">Trader</option>
 
   <option value="Manufacture">Manufacture</option>
@@ -173,11 +174,8 @@
   
   <p>
     <label for="id_Debit_Credit">Debit Credit:</label>
-    <select value="{{form.instance.Debit_Credit}}" name="Debit_Credit" id="id_Debit_Credit">
-  <!-- <option value="{{form.instance.Debit_Credit}}">{{form.instance.Debit_Credit}}</option> -->
-  {% if not form.instance.id %}
-  <option value="" ></option>
-  {% endif %}
+    <select name="Debit_Credit" id="id_Debit_Credit">
+  <option value="{{form.instance.Debit_Credit}}">{{form.instance.Debit_Credit}}</option>
   <option value="Debit">Debit</option>
 
   <option value="Credit">Credit</option>
@@ -189,7 +187,6 @@
     
   </p>
 <input type="submit">
-
 
 </form>
 {% endblock body %}
