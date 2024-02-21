@@ -4,7 +4,7 @@
 
 
  <div>
-  <h2>Product List</h2>
+  <h2>LedgerList</h2>
   <div class="row">
     <div class="col-lg-12 sub_main">
       <div class="d-flex mb-2">
@@ -40,7 +40,7 @@
                   </ul>
                 </div>
               </th>
-              <th scope="col" class="name_absolute">Vendor Code
+              <th scope="col" class="name_absolute">Alias
                 <div class="nav-item dropdown name_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
@@ -59,7 +59,7 @@
                   </ul>
                 </div>
               </th>
-              <th scope="col" class="name_absolute">Alias
+              <th scope="col" class="name_absolute">Vendor Code
                 <div class="nav-item dropdown name_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
@@ -135,27 +135,9 @@
                   </ul>
                 </div>
               </th>
-              <th scope="col" class="name_absolute">GST No
-                <div class="nav-item dropdown name_icons">
-                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider"/></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6" data-bs-toggle=" dropdown" aria-expanded="false">Filter
-                        <i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
-                        <li><input  type="text"class="dropdown-item input_text" placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </th>
               <th scope="col" class="name_absolute">Edit</th>
               <th scope="col" class="name_absolute">Delete</th>
+              <th scope="col" class="name_absolute">View</th>
           
         </tr>
 
@@ -170,8 +152,8 @@
           <td>{{ledger.types}}</td>
           <td>{{ledger.Gst_no}}</td>
           <td> <a href=" {% url 'ledger-update' ledger.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-          <td>View</td>
           <td><a href="{% url 'ledger-delete' ledger.id %}"> <i class="fa-solid fa-trash text-danger"></i></a></td>
+          <td>{{ledger.address}}</td>
           
         </tr>
         {% endfor %}

@@ -10,6 +10,7 @@ from django.contrib.auth import  update_session_auth_hash ,authenticate # help u
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db import transaction
+from django.utils.timezone import now
 
 def index(request):
     return render(request,"product/index.html")
@@ -583,7 +584,7 @@ def account_sub_group_update(request, pk):
 
 
 def account_sub_group_list(request):
-    groups = AccountSubGroup.objects.all()
+    groups = AccountSubGroup.objects.select_related('acc_grp').all()
     return render(request,'product/acc_sub_grp_list.html', {"groups":groups})
 
 
@@ -606,7 +607,8 @@ def stock_item_create(request):
         else:
             print(form.errors)
             return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create','accsubgrps':accsubgrps,'form':form})
-        
+    
+    
     return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create','accsubgrps':accsubgrps,'form':form})
 
 
@@ -654,13 +656,13 @@ def ledgercreate(request):
         else:
             print(form.errors)
             return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
-    else:
-        return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
+    
+    current_date = now().date()
+    return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
     
 
 
 def ledgerupdate(request,pk):
-    print(request.POST)
     under_groups = AccountSubGroup.objects.all()
     Ledger_pk = Ledger.objects.get(pk = pk)
     form = LedgerForm(instance = Ledger_pk)
@@ -671,8 +673,8 @@ def ledgerupdate(request,pk):
             return redirect('ledger-list')
         else:
             return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update'})
-    else:
-        return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update'})
+    current_date = now().date()
+    return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date})
 
 
 def ledgerlist(request):
