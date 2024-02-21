@@ -54,6 +54,7 @@
                 </select>
               </div>
               {% if form.instance.id %}
+<<<<<<< HEAD
               <div class="d-flex mb-3">
                 <label for="id_Item_shades" class="form-label item-form">Shades:</label>
                 
@@ -100,6 +101,55 @@
               
               </div>
               {% endif %}
+=======
+<div class="d-flex mb-3">
+    <label for="id_Item_shades" class="form-label item-form">Shades:</label>
+    <!-- Render reverse related relationship fields dynamically using formset factory  -->
+    <div class="mb-3">
+        <table class="table table-striped table-hover table-responsive rounded-3">
+            <tr>
+                <th><label for="{{ shade_form.prefix }}-item_name_rank">Item Name Rank:</label></th>
+                <th><label for="{{ shade_form.prefix }}-item_shade_name">Item Shade Name:</label></th>
+                <th><label for="{{ shade_form.prefix }}-item_color_image">Item Color Image:</label></th>
+            </tr>
+            {{ formset.management_form }}
+            {% for shade_form in formset %}
+            <div class="shade-form">
+                {{ shade_form.id }}
+                <!-- Render each field manually -->
+                <tr>
+                    <td>
+                        {% if forloop.first %}
+                        <input type="text" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
+                        {% else %}
+                        <input type="text" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
+                        {% endif %}
+                    </td>
+                    <td>{{ shade_form.item_shade_name }}</td>
+                    <td><div>{{ shade_form.item_color_image }}</div></td>
+                </tr>
+                <!-- Render form errors if any -->
+                {% for error in shade_form.non_field_errors %}
+                <div class="shade-form-error">{{ error }}</div>
+                {% endfor %}
+                <!-- Render individual field errors if any -->
+                {% for field in shade_form.visible_fields %}
+                {% if field.errors %}
+                <div class="shade-form-error">
+                    {% for error in field.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+
+>>>>>>> 3c40369539868122a47fdd5eb7d150b9d38d9773
               <div class=" d-flex my-3">
                 <label for="id_Material_code" class="form-label item-form">Material Code</label>
                 <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}" maxlength="255" required id="id_Material_code">
@@ -197,93 +247,6 @@
               <input type="submit" class="form-button" name="save" value="Save">
             </form>
           </div>
-
-              
-
-
-
-
-
-
-<script>
- // Initialize the row count
- var rowCount = 1;
-function addRow() {
-  
-  var table = document.getElementById("updateRow");
-  var newRow = table.insertRow();
-
-  var cell1 = newRow.insertCell(0);
-  var cell2 = newRow.insertCell(1);
-  var cell3 = newRow.insertCell(2);
-  var cell4 = newRow.insertCell(3);
-
-  var noText = document.createElement("span");
-  noText.textContent = "";
-  noText.name = "no_input_" + rowCount;
-
- 
-  var textInput = document.createElement("input");
-  textInput.type = "text";
-  textInput.name = "textInput_" + rowCount;
-  textInput.placeholder = "Enter text";
-
-  var fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.name = "fileInput_" + rowCount;
-
-  var addButton = document.createElement("button");
-  addButton.textContent = "Add Row";
-  addButton.onclick = addRow;
-
-
-  var removeButton = document.createElement("button");
-  removeButton.textContent = "-";
-  removeButton.style.background = "linear-gradient(45deg, #2ed8b6, #59e0c5)";
-  removeButton.style.width ="30px";
-  removeButton.style.borderRadius = "10px";
-  removeButton.style.border="none";
-  removeButton.onclick = function() {
-    removeRow(newRow);
-  };
-  cell1.appendChild(noText);
-  cell2.appendChild(textInput);
-  cell3.appendChild(fileInput);
-  cell4.appendChild(removeButton);
-
-  rowCount ++; // Increment the row count
-}
-
-function removeRow(row) {
-  var table = document.getElementById("updateRow");
-  var rowIndex = row.rowIndex;
-  table.deleteRow(rowIndex);
-
-  // Decrease the rowCount as a row is removed
-  rowCount--;
-
-  // Update the names of input elements and the No text spans in the table
-  for (var i = rowIndex; i < table.rows.length; i++) {
-    var row = table.rows[i];
-    var noText = row.cells[0].querySelector('span[name^="no_input_"]');
-    var textInput = row.cells[1].querySelector('input[name^="textInput_"]');
-    var fileInput = row.cells[2].querySelector('input[name^="fileInput_"]');
-
-    // Update No text span
-    noText.textContent = parseInt(noText.textContent) - 1;
-    noText.name = "no_input_" + parseInt(noText.textContent);
-    console.log(noText.textContent);
-
-    // Update textInput name
-    textInput.name = "textInput_" + parseInt(noText.textContent);
-
-    // Update fileInput name
-    fileInput.name = "fileInput_" + parseInt(noText.textContent);
-  }
-}
-</script>
-
-
     
  {% endblock body %}
 
