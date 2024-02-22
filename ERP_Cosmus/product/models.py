@@ -359,8 +359,8 @@ class Ledger(models.Model):
     ]
 
     name = models.CharField(max_length = 100, blank = True)
-    short_name = models.CharField(max_length = 100, null= True,blank = True)
-    vendor_code = models.CharField(max_length = 100, null= True,blank = True)
+    short_name = models.CharField(max_length = 100, blank = True)
+    vendor_code = models.CharField(max_length = 100, blank = True)
     under_group  = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     maintain_billwise = models.CharField(choices = MAINTAIN_BILLWISE, max_length = 30, blank = True)
     default_credit_period = models.CharField(max_length = 100, blank = True)
@@ -369,8 +369,8 @@ class Ledger(models.Model):
     date = models.DateField(auto_now=True)
     address = models.TextField(blank = True)
     state = models.CharField(max_length = 255, blank = True)
-    country = models.CharField(max_length = 255, null=True, blank=True) 
-    city = models.CharField(max_length = 255, null=True, blank=True) 
+    country = models.CharField(max_length = 255,  blank=True) 
+    city = models.CharField(max_length = 255,  blank=True) 
     pincode = models.IntegerField()
     mobile_no = models.IntegerField()
     landline_no = models.IntegerField()
