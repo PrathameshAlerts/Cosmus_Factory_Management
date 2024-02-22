@@ -53,7 +53,7 @@
                       
                       <p>Are you sure you want to remove this Unit?</p>
                       <div class="d-flex mx-2">
-                        <button type="button"class="btn" id="confirmYes"><a href="{% url 'unit_name-delete' unit.id %}">Yes</a></button>
+                        <a href="{% url 'unit_name-delete' unit.id %}"><button type="button" class="btn" id="confirmYes">Yes</button></a>
                       <button type="button" class="btn mx-2"  id="confirmNo">No</button>
                       </div>
                       
@@ -64,24 +64,18 @@
               </tbody>
           </table>
               </div>
-         
+              
             </div>
          
         </div>
 </div>
 <script>
-  var modal = document.getElementById("myModal");
 
-// Get the element that opens the modal
+var modal = document.getElementById("myModal");
 var modalTriggers = document.querySelectorAll(".modal-trigger");
-
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
-
-// Get the "Yes" button from the modal
 var confirmYesButton = document.getElementById("confirmYes");
 var confirmNoButton = document.getElementById("confirmNo");
-
 var currentRow; // To store the row to be deleted
 
 // Function to open the modal and set the current row
@@ -102,20 +96,36 @@ modalTriggers.forEach(function(trigger) {
   }
 });
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+// When the user clicks on <span> (x) or "No" in the modal, close the modal
+span.onclick = confirmNoButton.onclick = function() {
   closeModal();
 }
 
-// When the user clicks "Yes" in the modal, remove the row
+// When the user clicks "Yes" in the modal, send AJAX request to delete the data
 confirmYesButton.onclick = function() {
-  currentRow.parentNode.removeChild(currentRow);
-  closeModal();
-}
-confirmNoButton.onclick = function() {
-  closeModal();
-}
+  // Get the URL from the data attribute
+  var deleteUrl = currentRow.querySelector('.modal a').getAttribute('href');
 
+  // Send AJAX request to the delete URL
+  fetch(deleteUrl, {
+    method: 'DELETE', // Assuming you're using DELETE method for deletion
+    headers: {
+      'X-CSRFToken': '{{ csrf_token }}', // Add your CSRF token here
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      // If deletion is successful, remove the row from the table
+      currentRow.parentNode.removeChild(currentRow);
+      closeModal();
+    } else {
+      console.error('Error deleting data');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -124,12 +134,12 @@ window.onclick = function(event) {
   }
 }
 </script>
+
+
 <script>
   function redirectUnitList(){
     window.location.href = "{% url 'unit_name-create'%}"
   }
-  function redirectUnitDelete(){
-    window.location.href = "{% url 'unit_name-delete' %}"
-  }
+  
 </script>
 {% endblock body %}
