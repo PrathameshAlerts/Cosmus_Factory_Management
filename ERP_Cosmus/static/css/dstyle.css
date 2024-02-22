@@ -244,11 +244,11 @@ body{
    
 .side-bar .menu .item a{
     color: #666;
-    font-size: 15px;
+    font-size: 14px;
     text-decoration: none;
     display: block;
     padding: 3px 25px;
-    line-height: 50px;
+    line-height: 75px;
     background-color: #fff;
 }
    
@@ -491,7 +491,7 @@ body{
     
   }
 .item-select{
-    width: 200px;
+    width: 180px;
     border: 1px solid #666;
     border-radius: 7px;
     padding-left: 5px;
