@@ -64,6 +64,8 @@ urlpatterns = [
     path('ledgerdelete/<int:pk>', views.ledgerdelete, name = 'ledger-delete'),
 
 
+
+
     #common Routes
     path('', views.dashboard , name='dashboard-main'),
 

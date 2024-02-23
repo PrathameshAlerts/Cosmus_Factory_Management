@@ -12,7 +12,7 @@
                 <button type="button" class="card_btn edit-btn">Edit +</button>
            
             </div>
-            <form class="mb-3" method="POST">
+            <form class="mb-3" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
             <div class="d-flex my-4">
                     <label for="id_Product_Refrence_ID" class="form-label">Refrence ID:</label>

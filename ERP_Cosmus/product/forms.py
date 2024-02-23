@@ -71,8 +71,11 @@ class PProductAddForm(forms.ModelForm):
                   'Product_Brand','Product_HSNCode', 'Product_GST', 
                   'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
                   'Product_BulkPrice', 'Product_Cost_price', 'Product_Refrence_ID']
+
+PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'), extra=0)
+
         
-        """
+"""
     Initialization: The __init__ method is used to set up initial values, 
     configurations, or any other setup tasks when creating a new instance of the form.
 
@@ -96,7 +99,7 @@ class PProductAddForm(forms.ModelForm):
     to ensure that the form behaves as expected in different scenarios.
 
 
-    """
+"""
         
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
