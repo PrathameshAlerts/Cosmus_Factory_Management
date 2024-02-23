@@ -89,48 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
     cardContainer.appendChild(newCard);
     cardCounter++; // Increment the counter
   }
-  // Event listener for editing a card
-document.querySelectorAll('.edit-btn').forEach(function(editBtn) {
-  editBtn.addEventListener('click', function(event) {
-      var card = event.target.closest('.card');
-      var cardBody = card.querySelector('.card-body');
-      var cardImage = card.querySelector('.card-img-top');
-      var imageInput = cardBody.querySelector('input[type="file"]');
-      var colorSelect = cardBody.querySelector('select[name="PProduct_color_"]');
-      var skuInput = cardBody.querySelector('input[name="PProduct_SKU_"]');
-      var saveBtn = document.createElement('button');
-      saveBtn.textContent = 'Save Changes';
-      saveBtn.classList.add('save-btn');
-
-      // Display editable fields
-      imageInput.style.display = 'block';
-      colorSelect.style.display = 'block';
-      skuInput.style.display = 'block';
-      saveBtn.style.display = 'block';
-
-      // Event listener for saving changes
-      saveBtn.addEventListener('click', function() {
-          // Perform actions to save changes
-          // For example, you can update the card content with the new values
-          var newImageSrc = ''; // Get the new image source
-          var newColorValue = colorSelect.value; // Get the new color value
-          var newSkuValue = skuInput.value; // Get the new SKU value
-
-          // Update card content
-          cardImage.src = newImageSrc;
-          // Update other content as needed
-
-          // Hide editable fields and save button
-          imageInput.style.display = 'none';
-          colorSelect.style.display = 'none';
-          skuInput.style.display = 'none';
-          saveBtn.style.display = 'none';
-      });
-
-      // Append the save button to the card body
-      cardBody.appendChild(saveBtn);
-  });
-});
 
 });
 // //create and update item form
