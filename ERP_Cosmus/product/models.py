@@ -381,6 +381,15 @@ class Ledger(models.Model):
     def account_sub_group_ledger(self):
         return self.under_group.account_sub_group
 
+# class account_credit_debit_master_table(models.Model):
+#     debit = 
+#     credit = 
+#     voucher_no = 
+#     voucher_type = 
+#     account_name = 
+#     date = 
+
+
 
 
 
