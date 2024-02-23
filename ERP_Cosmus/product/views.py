@@ -340,6 +340,7 @@ def item_edit(request,pk):
 
 
 def item_delete(request, pk):
+    
     item_pk = Item_Creation.objects.get(pk = pk)
     item_pk.delete()
     return redirect('item-list')
@@ -541,6 +542,7 @@ def unit_name_update(request,pk):
 def unit_name_delete(request,pk):
     unit_name_pk = Unit_Name_Create.objects.get(pk=pk)
     unit_name_pk.delete()
+    print(unit_name_pk.unit_name)
     return redirect('unit_name-list')
 
 

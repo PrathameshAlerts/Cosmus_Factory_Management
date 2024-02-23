@@ -1,0 +1,29 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+
+{% block body %} 
+<div>
+        <h2 >Godawn Create</h2>
+      <form class="mt-5" action="" method="POST">
+           {% csrf_token %}
+       <div class="d-flex mb-3">
+      <label for="" class="form-label px-2">Purchase No:</label>
+      <input type="number" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="" class="form-label px-2">Supplier invoice No:</label>
+        <input type="number" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+      </div>
+    <div class="d-flex mb-3">
+      <label for="" class="form-label px-2">Godawn Materila types </label>
+      <select name="" class="item-select mx-3" required id="">
+        <option class="item-select" value="">Raw Material Godawn</option>
+        <option class="item-select" value="">Finished Goods Godawn</option>
+      </select>
+    </div>
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+   <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button>
+  </div>
+
+{% endblock body %}

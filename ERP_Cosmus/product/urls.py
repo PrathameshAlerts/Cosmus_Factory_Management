@@ -17,7 +17,7 @@ urlpatterns = [
 
     #color routes
     # path('colorlist/',views.color_list, name= 'colorlist'),
-    path('colordelete/<int:pk>',views.color_delete,name= 'colordelete'),
+    path('colordelete/<int:pk>',views.color_delete,name='colordelete'),
     path('colorcreate_update/',views.color_create_update, name='colorlist'),
     path('colorcreate_update/<int:pk>',views.color_create_update, name='coloredit'),
 
