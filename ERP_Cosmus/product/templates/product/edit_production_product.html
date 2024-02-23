@@ -6,7 +6,19 @@
 <form  method="POST">
 {% csrf_token %}
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
+
+  <div>
+    <h2>Product Images</h2>
+    {{ formset.management_form }}
+    {% for shade_form in formset %}
+        {{ shade_form.as_p }}
+    {% endfor %}
+  </div>
+
+
+
+
   <div class=" d-flex my-3">
     <label for="id_Product_Name" class="form-label item-form">Product Name:</label>
     <input type="text" class="item-select" value="{{form.instance.Product_Name}}" name="Product_Name"  required id="id_Product_Name">

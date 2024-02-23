@@ -2,7 +2,7 @@ import cities_light
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst, item_color_shade
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form
+from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -121,25 +121,28 @@ def dashboard(request):
     return render(request,'product/dashboard.html')
 
 
-
 def edit_production_product(request,pk):
     gsts = gst.objects.all()
     pproduct = Product.objects.get(Product_Refrence_ID=pk)
-    form = PProductAddForm(instance=pproduct)
+    
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=pproduct) 
-        if form.is_valid():
+        form = ProductForm(request.POST,instance=pproduct) 
+        formset = PProductaddFormSet(request.POST, request.FILES, instance=pproduct)
+        if form.is_valid() and formset.is_valid():
             form.save()
+            formset.save()
             return redirect('pproductlist')
-    else:
-        print(form.errors)
-        return render(request, 'product/edit_production_product.html', {'gsts':gsts,'form':form})
-    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form})
+        else:
+            print(form.errors)
+            return render(request, 'product/edit_production_product.html', {'gsts':gsts,'form':form,'formset':formset})
+    form = PProductAddForm(instance=pproduct)
+    formset = PProductaddFormSet(instance=pproduct)
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset})
 
 
 def product_color_sku(request):
-    print("POST",request.POST)
     color = Color.objects.all()
+    
     if request.method == 'POST':
         product_ref_id = request.POST.get('Product_Refrence_ID')
         request_dict = request.POST
@@ -165,10 +168,11 @@ def product_color_sku(request):
                     files = {
                         'PProduct_image': request.FILES.get(image_field_name)
                     }
+                
                     current_form = PProductCreateForm(data, files)
 
                     if current_form.is_valid():
-                        print(current_form.cleaned_data)
+                        print('clean:', current_form.cleaned_data)
                         pproduct = current_form.save(commit=False)
                         # Create a new Product instance or get an existing one based on Product_Refrence_ID
                         # product will be the object retrieved from the db and then created ,created will be a boolean field
@@ -688,6 +692,9 @@ def ledgerdelete(request, pk):
     Ledger_pk = Ledger.objects.get(pk=pk)
     Ledger_pk.delete()
     return redirect('ledger-list')
+
+
+
 
 
 #_________________________Accounts end___________________________
