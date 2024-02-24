@@ -63,6 +63,7 @@
                 <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
                 <th><label for="{{ shade_form.prefix }}-item_shade_name">Shade Name</label></th>
                 <th><label for="{{ shade_form.prefix }}-item_color_image">Color Image</label></th>
+                <th><label for="{{ shade_form.prefix }}-item_color_image">Delete</label></th>
             </tr>
             {{ formset.management_form }}
             {% for shade_form in formset %}
@@ -79,21 +80,8 @@
                     </td>
                     <td>{{ shade_form.item_shade_name }}</td>
                     <td><div>{{ shade_form.item_color_image }}</div></td>
-                </tr>
-                <!-- Render form errors if any -->
-                {% for error in shade_form.non_field_errors %}
-                <div class="shade-form-error">{{ error }}</div>
-                {% endfor %}
-                <!-- Render individual field errors if any -->
-                {% for field in shade_form.visible_fields %}
-                {% if field.errors %}
-                <div class="shade-form-error">
-                    {% for error in field.errors %}
-                    {{ error }}
-                    {% endfor %}
-                </div>
-                {% endif %}
-                {% endfor %}
+                    <td>{{ shade_form.DELETE }}</td>
+                  </tr>
             </div>
             {% endfor %}
         </table>

@@ -210,7 +210,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>{{item.HSN_Code}}</td>
               <td>{{item.status}}</td>
               <td><a href="{% url 'item-edit' item.id %}"><span></span><i class="fa-solid fa-pen-to-square"></i></span></a></td>
-              <td><a href="{% url 'item-delete' item.id %}"><span><i class="fa-solid fa-trash"></i></span></a></td>
+              <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ item.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
               <td><a href="#"><span><i class="fa-solid fa-eye"></i></span></a></td>
               
             </tr>
@@ -223,7 +223,43 @@ the input field will be pre-filled with that value when the page is loaded. -->
     </div>
   </div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          Are you sure you want to delete this Item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+
+<script>
+document.body.appendChild(document.getElementById('exampleModal'));
+
+$(document).ready(function(){
+    $('.delete-btn').click(function(){
+        var itemId = $(this).data('item-id');
+        $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+        $('#confirmDeleteModal').modal('show');
+    });
+
+    // Confirm delete button click event
+    $('#confirmDeleteButton').click(function(){
+        var itemId = $(this).data('item-id');
+        // Redirect to delete view
+        window.location.href = '/itemdelete/' + itemId;
+    });
+});
+</script>
 <script>
   function redirectlistItem (){
     window.location.href = "{% url 'item-create'%}"
