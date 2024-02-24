@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db import transaction
 from django.utils.timezone import now
+from django.contrib import messages
 
 def index(request):
     return render(request,"product/index.html")
@@ -118,7 +119,7 @@ def aplus(request):
 #____________________________Production-Product-View-Start__________________________________
 
 def dashboard(request):
-    return render(request,'product/dashboard.html')
+    return render(request,'misc/dashboard.html')
 
 
 def edit_production_product(request,pk):
@@ -143,69 +144,73 @@ def edit_production_product(request,pk):
 def product_color_sku(request):
     color = Color.objects.all()
     
-    if request.method == 'POST':
-        product_ref_id = request.POST.get('Product_Refrence_ID')
-        request_dict = request.POST
-        count = 0
-        for x in request_dict.keys():
-            if x[0:12] == 'PProduct_SKU':
-                count = count + 1
-        with transaction.atomic():
-            all_sets_valid = False
-            try:
-                for i in range(1, count): 
-                    # Build field names dynamically 
-                    image_field_name = f'PProduct_image_{i}'
-                    color_field_name = f'PProduct_color_{i}'
-                    sku_field_name = f'PProduct_SKU_{i}'
+    try:
 
-                    # Create a dictionary with the dynamic field names
-                    data = {
-                        'PProduct_color': request.POST.get(color_field_name),
-                        'PProduct_SKU': request.POST.get(sku_field_name),
-                        'Product_Refrence_ID': product_ref_id
-                    }
-                    files = {
-                        'PProduct_image': request.FILES.get(image_field_name)
-                    }
+        if request.method == 'POST':
+            product_ref_id = request.POST.get('Product_Refrence_ID')
+            request_dict = request.POST
+            count = 0
+            for x in request_dict.keys():
+                if x[0:12] == 'PProduct_SKU':
+                    count = count + 1
+            with transaction.atomic():
+                all_sets_valid = False
+                try:
+                    for i in range(1, count): 
+                        # Build field names dynamically 
+                        image_field_name = f'PProduct_image_{i}'
+                        color_field_name = f'PProduct_color_{i}'
+                        sku_field_name = f'PProduct_SKU_{i}'
+
+                        # Create a dictionary with the dynamic field names
+                        data = {
+                            'PProduct_color': request.POST.get(color_field_name),
+                            'PProduct_SKU': request.POST.get(sku_field_name),
+                            'Product_Refrence_ID': product_ref_id
+                        }
+                        files = {
+                            'PProduct_image': request.FILES.get(image_field_name)
+                        }
                 
-                    current_form = PProductCreateForm(data, files)
+                        current_form = PProductCreateForm(data, files)
 
-                    if current_form.is_valid():
-                        print('clean:', current_form.cleaned_data)
-                        pproduct = current_form.save(commit=False)
-                        # Create a new Product instance or get an existing one based on Product_Refrence_ID
-                        # product will be the object retrieved from the db and then created ,created will be a boolean field
-                        product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
-                        #product = Product.objects.create(Product_Refrence_ID=product_ref_id)
+                        if current_form.is_valid():
+                            print('clean:', current_form.cleaned_data)
+                            pproduct = current_form.save(commit=False)
+                            # Create a new Product instance or get an existing one based on Product_Refrence_ID
+                            # product will be the object retrieved from the db and then created ,created will be a boolean field
+                            product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
+                            #product = Product.objects.create(Product_Refrence_ID=product_ref_id)
                     
-                        # Associate the PProduct instance with the Product
-                        pproduct.Product = product
+                            # Associate the PProduct instance with the Product
+                            pproduct.Product = product
 
-                        #The variable pproduct holds the unsaved instance of the PProduct_Creation model. 
-                        #This instance is populated with the data from the form, and you can use it to perform 
-                        #any additional logic or modifications before finally saving it to the database.
-                        pproduct.save()
-                        all_sets_valid = True
-                    else:
-                        print(current_form.errors)
-                        all_sets_valid = False
-                        #explicitly set transaction to rollback on errors
-                        transaction.set_rollback(True)
-                        break
-            except Exception as e:
-                print('Exception occured', str(e))
-        if all_sets_valid:
+                            #The variable pproduct holds the unsaved instance of the PProduct_Creation model. 
+                            #This instance is populated with the data from the form, and you can use it to perform 
+                            #any additional logic or modifications before finally saving it to the database.
+                            pproduct.save()
+                            all_sets_valid = True
+                        else:
+                        
+                            all_sets_valid = False
+                            #explicitly set transaction to rollback on errors
+                            transaction.set_rollback(True)
+                            break
+                except Exception as e:
+                    print('Exception occured', str(e))
+            if all_sets_valid:
 
-            # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
-            return redirect(reverse('edit_production_product', args=[product_ref_id]))
-        else:
+                # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
+                return redirect(reverse('edit_production_product', args=[product_ref_id]))
+            else:
                 #Return a response with errors for invalid sets of fields
                 return render(request, 'product/product_color_sku.html', {'form':current_form,'color': color})
-
-    else:
-        form = PProductCreateForm()
-        return render(request, 'product/product_color_sku.html', {'form': form, 'color': color})
+    except Exception as e:
+        print('Exception occured', str(e))
+        messages.error(request,'add a product first')
+    
+    form = PProductCreateForm()
+    return render(request, 'product/product_color_sku.html', {'form': form, 'color': color})
 
 
 def pproduct_list(request):
@@ -661,10 +666,10 @@ def ledgercreate(request):
             return redirect('ledger-list')
         else:
             print(form.errors)
-            return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
     current_date = now().date()
-    return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
     
 
 
@@ -678,14 +683,14 @@ def ledgerupdate(request,pk):
             form.save()
             return redirect('ledger-list')
         else:
-            return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update'})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update'})
     current_date = now().date()
-    return render(request,'product/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date})
 
 
 def ledgerlist(request):
     ledgers = Ledger.objects.all()
-    return render(request, 'product/ledger_list.html', {'ledgers':ledgers})
+    return render(request, 'accounts/ledger_list.html', {'ledgers':ledgers})
 
 
 def ledgerdelete(request, pk):
