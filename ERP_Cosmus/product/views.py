@@ -49,6 +49,7 @@ def product_color_sku(request):
     color = Color.objects.all()
     try:
         if request.method == 'POST':
+            
             product_ref_id = request.POST.get('Product_Refrence_ID')
             request_dict = request.POST
             count = 0
