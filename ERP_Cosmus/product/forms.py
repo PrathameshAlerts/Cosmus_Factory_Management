@@ -2,17 +2,10 @@ from django import forms
 from .models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
-
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 
-class ProductImageForm(forms.ModelForm):
-    class Meta:
-        model = ProductImage
-        fields = ['Image_ID','Image_type', 'Order_by', 'Image']
-
-ProductImageFormSet = inlineformset_factory(Product, ProductImage, form=ProductImageForm, extra=1)
 
 
 
@@ -28,23 +21,6 @@ class ProductForm(forms.ModelForm):
                   'Product_Brand', 'Product_HSNCode', 'Product_GST', 
                   'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
                   'Product_BulkPrice', 'Product_Cost_price']
-
-class EditProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = ['Product_Name','Model_Name', 'Product_Brand', 'Product_Status', 'Product_Channel',
-     'color_primary' ,"Product_Compartments", 'Product_Accessory_Compartments' , 'Product_CapacityLtrs',
-     "Product_Material" ,'Product_Dimensions_WP_Length' ,'Product_Dimensions_WP_Height',"Product_Dimensions_WP_Width",
-     "Product_Dimensions_WP_Weight" ,'Product_QtyPerBox','Product_WarrantyTime',
-     'Product_Dimensions_WOP_Length','Product_Dimensions_WOP_Height', "Product_Dimensions_WOP_Width",
-     "Product_Dimensions_WOP_Weight",'Product_BulletPoint1','Product_BulletPoint2','Product_BulletPoint3',
-     'Product_BulletPoint4', 'Product_BulletPoint5','Product_ShortDescription','Product_LongDescription',
-     'Product_EANCode', 'Product_HSNCode','Product_GST', 'Product_UOM', 'Product_MRP',
-     'Product_SalePrice_CustomerPrice' ,'Product_WRP', 'Product_CashCounterPrice' ,'Product_Retailer_dealer_Price',
-     'Product_Wholesaler_DistributorPrice' , 'Product_IndiaMartPrice','Product_BulkPrice', 'Product_Cost_price',
-     'Amazon_Link','Cosmus_link' ,'Youtube_Link','Flipkart_Link']
-        
-    #images = ProductImageFormSet(queryset=ProductImage.objects.none(), prefix='product_images')
 
 
 class PProductCreateForm(forms.ModelForm):
@@ -65,6 +41,7 @@ class PProductCreateForm(forms.ModelForm):
 
 
 class PProductAddForm(forms.ModelForm):
+
     class Meta:
         model = Product
         fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
@@ -73,10 +50,12 @@ class PProductAddForm(forms.ModelForm):
                   'Product_BulkPrice', 'Product_Cost_price', 'Product_Refrence_ID']
 
 
-PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'), extra=0)
 
 
-        
+PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'), extra=0,can_delete=True)
+
+
+
 """
     Initialization: The __init__ method is used to set up initial values, 
     configurations, or any other setup tasks when creating a new instance of the form.

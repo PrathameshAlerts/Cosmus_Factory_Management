@@ -1,8 +1,9 @@
 import cities_light
+from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst, item_color_shade
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm , EditProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
+from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -12,108 +13,8 @@ from django.db.models import Q
 from django.db import transaction
 from django.utils.timezone import now
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
-def index(request):
-    return render(request,"product/index.html")
-
-
-def listproduct(request):
-    queryset = Product.objects.all()
-    product_image = ProductImage.objects.filter(Image_ID=1)
-    context = {'products' : queryset, 'image': product_image}
-    for image in product_image:
-        print(image.Image.url)
-    return render(request, 'product/list_products.html', context)
-
-
-def add_product(request):
-    form = ProductForm()
-    if request.method == 'POST':
-        form = ProductForm(request.POST,request.FILES) 
-        print(request.POST)
-        print(request.FILES)
-        if form.is_valid():
-            # product = Product(
-            #     # reference_image=request.FILES.get('reference_image'),
-            #     Product_Name=form.cleaned_data['Product_Name'],
-            #     Model_Name=form.cleaned_data['Model_Name'],
-            #     Product_Status=form.cleaned_data['Product_Status'],
-            #     Product_Channel = form.cleaned_data['Product_Channel'],
-            #     Product_SKU = form.cleaned_data['Product_SKU'],
-            #     Product_HSNCode =  form.cleaned_data['Product_HSNCode'],
-            #     Product_WarrantyTime = form.cleaned_data['Product_WarrantyTime'],
-            #     Product_MRP =  form.cleaned_data['Product_MRP'],
-            #     Product_SalePrice_CustomerPrice =  form.cleaned_data['Product_SalePrice_CustomerPrice'],
-            #     Product_BulkPrice = form.cleaned_data['Product_BulkPrice'],
-            #     Product_Cost_price = form.cleaned_data['Product_Cost_price']
-            #)
-            # product.save()
-            #or
-            product = form.save(commit=False)
-            product.images = ProductImage.objects.create(Image=request.FILES['Image'])
-            form.save()
-            return redirect('listproduct')
-
-    else:
-        return render(request, 'product/add_product.html', {'form':form})
-    return render(request, 'product/add_product.html',{'form': form})
-
-
-
-def edit_product(request, pk):
-    product = Product.objects.get(id = pk)
-    form = EditProductForm(instance=product)
-
-    if request.method == "POST":
-        form = EditProductForm(request.POST, instance=product) # request.POST has the data from the form and instance has the data from the database
-        if form.is_valid():
-            form.save() # saves the product changes in the database
-
-            # handles images
-            #request.POST has data sent by the form in key value pair 
-            #where key corresponds to the name = field in the form and value is the actual data
-            for i in range(1,11): # as we have 10 images to upload
-                image_type = request.POST.get(f'Image_type_{i}')
-                order_by =  request.POST.get(f'Order_by_{i}')
-                image_file = request.FILES.get(f'Image_{i}')  
-                #Product=product (product = Product.objects.get(id = pk)), Image_ID=i,: These are the conditions for
-                #finding an existing ProductImage instance. It looks for an instance where the 
-                #associated product is the given product and the Image_ID is equal to i. 
-                #defaults={'Image': image_file, 'Image_type': image_type, 'Order_by': order_by}: 
-                #If no matching instance is found, this dictionary specifies the default values 
-                #to use when creating a new instance. It sets the image file (Image), image type 
-                #(Image_type), and order (Order_by) with the values obtained from the form.
-                
-                if image_file:
-                    #ProductImage.objects.get_or_create(: This is a manager method 
-                    #(objects is the default manager for a Django model) that interacts with the database.
-                    #Get or create an image 
-                    product_image, created = ProductImage.objects.get_or_create(
-                        Product = product, Image_ID = i,
-                        defaults = {'Image':image_file, 'Image_type':image_type, 'Order_by': order_by}
-                    )
-
-                    if not created:
-                        #update the existing product
-                        product_image.Image = image_file
-                        product_image.Image_type = image_type
-                        product_image.Order_by = order_by
-                        product_image.save()
-            return redirect('listproduct')
-    context = {'form': form, 'product': product}
-    return render(request, 'product/edit_product.html', context)
-
-
-
-def deleteproduct(request, pk):
-    product = Product.objects.get(id = pk)
-    product.delete()
-    print('record deleted')
-    return redirect('listproduct')
-
-
-def aplus(request):
-    return render(request, 'product/aplus.html')
 
 
 #____________________________Production-Product-View-Start__________________________________
@@ -122,14 +23,17 @@ def dashboard(request):
     return render(request,'misc/dashboard.html')
 
 
+
 def edit_production_product(request,pk):
     gsts = gst.objects.all()
-    pproduct = Product.objects.get(Product_Refrence_ID=pk)
-    
+    pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
+
     if request.method == 'POST':
-        form = ProductForm(request.POST,instance=pproduct) 
-        formset = PProductaddFormSet(request.POST, request.FILES, instance=pproduct)
+        form = ProductForm(request.POST, request.FILES, instance = pproduct) 
+        formset = PProductaddFormSet(request.POST, request.FILES , instance=pproduct)
+        
         if form.is_valid() and formset.is_valid():
+            print(formset.cleaned_data)
             form.save()
             formset.save()
             return redirect('pproductlist')
@@ -143,10 +47,9 @@ def edit_production_product(request,pk):
 
 def product_color_sku(request):
     color = Color.objects.all()
-    
     try:
-
         if request.method == 'POST':
+            
             product_ref_id = request.POST.get('Product_Refrence_ID')
             request_dict = request.POST
             count = 0
@@ -207,7 +110,7 @@ def product_color_sku(request):
                 return render(request, 'product/product_color_sku.html', {'form':current_form,'color': color})
     except Exception as e:
         print('Exception occured', str(e))
-        messages.error(request,'add a product first')
+        messages.error(request,'Add a product first')
     
     form = PProductCreateForm()
     return render(request, 'product/product_color_sku.html', {'form': form, 'color': color})
@@ -222,10 +125,10 @@ def pproduct_list(request):
                                             Q(Model_Name__icontains=product_search)|
                                             Q(Product_Refrence_ID__icontains=product_search)|
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
-    print(queryset)
+    
     context = {'products': queryset}
         
-    print(queryset.values_list('Product_GST', flat=True))
+    
     return render(request,'product/pproduct_list.html',context=context)
 
 
@@ -326,22 +229,21 @@ def item_edit(request,pk):
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
     item_pk = Item_Creation.objects.get(pk = pk)
-    
-    form = Itemform(instance = item_pk)
-    formset = ShadeFormSet(instance=item_pk, initial=[])
 
+    form = Itemform(instance = item_pk)
+    formset = ShadeFormSet(instance=item_pk)
 
     if request.method == 'POST':
-        print(request.POST)
+        
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST ,request.FILES, instance=item_pk)
         if form.is_valid() and formset.is_valid():
+            print(formset.cleaned_data)
             form.save()
             formset.save()
             return redirect('item-list')
         else:
-            print(form.errors)
-            print(formset.errors)
+
             return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
     else:
         return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
@@ -745,6 +647,111 @@ def register(request):
 
 
 
+
+#_________________________________________ Cosmus ERP Code_______________________
+
+
+# def index(request):
+#     return render(request,"product/index.html")
+
+
+# def listproduct(request):
+#     queryset = Product.objects.all()
+#     product_image = ProductImage.objects.filter(Image_ID=1)
+#     context = {'products' : queryset, 'image': product_image}
+#     for image in product_image:
+#         print(image.Image.url)
+#     return render(request, 'product/list_products.html', context)
+
+
+# def add_product(request):
+#     form = ProductForm()
+#     if request.method == 'POST':
+#         form = ProductForm(request.POST,request.FILES) 
+#         print(request.POST)
+#         print(request.FILES)
+#         if form.is_valid():
+#             # product = Product(
+#             #     # reference_image=request.FILES.get('reference_image'),
+#             #     Product_Name=form.cleaned_data['Product_Name'],
+#             #     Model_Name=form.cleaned_data['Model_Name'],
+#             #     Product_Status=form.cleaned_data['Product_Status'],
+#             #     Product_Channel = form.cleaned_data['Product_Channel'],
+#             #     Product_SKU = form.cleaned_data['Product_SKU'],
+#             #     Product_HSNCode =  form.cleaned_data['Product_HSNCode'],
+#             #     Product_WarrantyTime = form.cleaned_data['Product_WarrantyTime'],
+#             #     Product_MRP =  form.cleaned_data['Product_MRP'],
+#             #     Product_SalePrice_CustomerPrice =  form.cleaned_data['Product_SalePrice_CustomerPrice'],
+#             #     Product_BulkPrice = form.cleaned_data['Product_BulkPrice'],
+#             #     Product_Cost_price = form.cleaned_data['Product_Cost_price']
+#             #)
+#             # product.save()
+#             #or
+#             product = form.save(commit=False)
+#             product.images = ProductImage.objects.create(Image=request.FILES['Image'])
+#             form.save()
+#             return redirect('listproduct')
+
+#     else:
+#         return render(request, 'product/add_product.html', {'form':form})
+#     return render(request, 'product/add_product.html',{'form': form})
+
+
+
+# def edit_product(request, pk):
+#     product = Product.objects.get(id = pk)
+#     form = EditProductForm(instance=product)
+
+#     if request.method == "POST":
+#         form = EditProductForm(request.POST, instance=product) # request.POST has the data from the form and instance has the data from the database
+#         if form.is_valid():
+#             form.save() # saves the product changes in the database
+
+#             # handles images
+#             #request.POST has data sent by the form in key value pair 
+#             #where key corresponds to the name = field in the form and value is the actual data
+#             for i in range(1,11): # as we have 10 images to upload
+#                 image_type = request.POST.get(f'Image_type_{i}')
+#                 order_by =  request.POST.get(f'Order_by_{i}')
+#                 image_file = request.FILES.get(f'Image_{i}')  
+#                 #Product=product (product = Product.objects.get(id = pk)), Image_ID=i,: These are the conditions for
+#                 #finding an existing ProductImage instance. It looks for an instance where the 
+#                 #associated product is the given product and the Image_ID is equal to i. 
+#                 #defaults={'Image': image_file, 'Image_type': image_type, 'Order_by': order_by}: 
+#                 #If no matching instance is found, this dictionary specifies the default values 
+#                 #to use when creating a new instance. It sets the image file (Image), image type 
+#                 #(Image_type), and order (Order_by) with the values obtained from the form.
+                
+#                 if image_file:
+#                     #ProductImage.objects.get_or_create(: This is a manager method 
+#                     #(objects is the default manager for a Django model) that interacts with the database.
+#                     #Get or create an image 
+#                     product_image, created = ProductImage.objects.get_or_create(
+#                         Product = product, Image_ID = i,
+#                         defaults = {'Image':image_file, 'Image_type':image_type, 'Order_by': order_by}
+#                     )
+
+#                     if not created:
+#                         #update the existing product
+#                         product_image.Image = image_file
+#                         product_image.Image_type = image_type
+#                         product_image.Order_by = order_by
+#                         product_image.save()
+#             return redirect('listproduct')
+#     context = {'form': form, 'product': product}
+#     return render(request, 'product/edit_product.html', context)
+
+
+
+# def deleteproduct(request, pk):
+#     product = Product.objects.get(id = pk)
+#     product.delete()
+#     print('record deleted')
+#     return redirect('listproduct')
+
+
+# def aplus(request):
+#     return render(request, 'product/aplus.html')
 
 
 
