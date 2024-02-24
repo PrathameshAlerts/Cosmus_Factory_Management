@@ -72,7 +72,9 @@ class PProductAddForm(forms.ModelForm):
                   'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
                   'Product_BulkPrice', 'Product_Cost_price', 'Product_Refrence_ID']
 
+
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'), extra=0)
+
 
         
 """
