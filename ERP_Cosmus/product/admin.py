@@ -4,9 +4,15 @@ from django.contrib import admin
 
 from . models import AccountGroup, AccountSubGroup,  Product , Product2Category , gst,MainCategory ,Color , ProductImage,PProduct_Creation, StockItem 
 
+class PProductCreationInline(admin.TabularInline):
+    model = PProduct_Creation
+    extra = 1
 
 
-admin.site.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [PProductCreationInline]
+
+admin.site.register(Product, ProductAdmin)
 admin.site.register(Product2Category)
 admin.site.register(Color)
 admin.site.register(ProductImage)
@@ -21,6 +27,7 @@ admin.site.register(gst)
 
 
 
-# @admin.register(Address)
-# class AddressAdmin(admin.ModelAdmin):
-#     pass
+
+
+
+

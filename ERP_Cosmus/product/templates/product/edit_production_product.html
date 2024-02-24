@@ -3,19 +3,20 @@
 {% block body %} 
 
 <h2>Update Product</h2>
+
+
 <form method="POST" enctype="multipart/form-data">
-{% csrf_token %}
-
+  {% csrf_token %}
+  <div>
     <h2>Product Images</h2>
-    
     {{ formset.management_form }}
-    {% for form in formset %}
-        {{ form.PProduct_image}}
-        {{ form.PProduct_color}}
-        {{ form.PProduct_SKU}}
-
+    {% for shade_form in formset %}
+        {{ shade_form.as_p }}
     {% endfor %}
-  
+  </div>
+
+
+
 
   <div class=" d-flex my-3">
     <label for="id_Product_Name" class="form-label item-form">Product Name:</label>
@@ -25,18 +26,19 @@
     <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
     <input type="text" class="item-select" value="{{form.instance.Model_Name}}" name="Model_Name"  required id="id_Model_Name">
   </div>
-
-
   <div class=" d-flex my-3">
   <label for="id_Product_Status" class="form-label item-form">Status:</label>
 <select name="Product_Status" class="item-select" id="id_Product_Status">
 
 
-{% if form.instance.id %}
+
+  {% if form.instance.id %}
 <option value="{{form.instance.Product_Status}}"selected>{{form.instance.Product_Status}}</option>
+
 {% elif not form.instance.id %}
 <option value=""selected></option>
 {% endif %}
+
 <option value="Preproduction">Preproduction</option>
 <option value="Active">Active</option>
 <option value="Inactive">Inactive</option>
@@ -45,17 +47,15 @@
 </div>
 
 
-<div class="d-flex my-3">
+<div class=" d-flex my-3">
   <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
-  {% for choice in form.Product_Channel.field.choices %}
-      <label for="id_Product_Channel_{{ forloop.counter0 }}" class="px-2">
-          <input type="checkbox" class="mx-1" name="Product_Channel" value="{{ choice.0 }}" id="id_Product_Channel_{{ forloop.counter0 }}"
-          {% if choice.0 in form.Product_Channel.value %} checked {% endif %}>
-          {{ choice.1 }}
-      </label>
-  {% endfor %}
-</div>
- 
+  <label for="id_Product_Channel_0" class="px-2"> <input type="checkbox" class="mx-1" name="Product_Channel" value="Ecommerce" id="id_Product_Channel_0">Ecommerce</label>
+  <label for="id_Product_Channel_1" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Retail" id="id_Product_Channel_1">Retail</label>
+  <label for="id_Product_Channel_2" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Corporate" id="id_Product_Channel_2">Corporate</label>
+  <label for="id_Product_Channel_3" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Modern Trade" id="id_Product_Channel_3">Modern Trade</label>
+  <label for="id_Product_Channel_4" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Export" id="id_Product_Channel_4">Export</label>
+  <h1>{{request.get.data}}</h1> 
+ </div>
 
 
 <div class=" d-flex my-3">
@@ -145,4 +145,3 @@
 <input type="submit" class="dropbtn" value="submit">
 </form>
 {% endblock body %}
-
