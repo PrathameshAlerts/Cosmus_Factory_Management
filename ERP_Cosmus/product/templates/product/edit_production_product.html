@@ -43,11 +43,19 @@
       
       <div class=" d-flex my-3">
         <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
-        <label for="id_Product_Channel_0" class="px-2"> <input type="checkbox" class="mx-1" name="Product_Channel" value="Ecommerce" id="id_Product_Channel_0">Ecommerce</label>
+        <div class="row">
+          <div class="col-lg-4">
+            <label for="id_Product_Channel_0" class="px-2"> <input type="checkbox" class="mx-1" name="Product_Channel" value="Ecommerce" id="id_Product_Channel_0">Ecommerce</label>
         <label for="id_Product_Channel_1" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Retail" id="id_Product_Channel_1">Retail</label>
         <label for="id_Product_Channel_2" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Corporate" id="id_Product_Channel_2">Corporate</label>
-        <label for="id_Product_Channel_3" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Modern Trade" id="id_Product_Channel_3">Modern Trade</label>
+          </div>
+          <div class="col-lg-5">
+            <label for="id_Product_Channel_3" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Modern Trade" id="id_Product_Channel_3">Modern Trade</label>
         <label for="id_Product_Channel_4" class="px-2"><input type="checkbox" class="mx-1" name="Product_Channel" value="Export" id="id_Product_Channel_4">Export</label>
+          </div>
+        </div>
+        
+        
        </div>
       
       
@@ -113,9 +121,6 @@
        <option value="54 Months">54 Months</option>
        <option value="60 Months">60 Months</option>
       </select>
-      
-      
-      
       </div>
       <div class="d-flex my-3">
       <label for="id_Product_MRP" class="form-label item-form"> MRP:</label>
@@ -142,46 +147,35 @@
         <h2>Product Images</h2>
         {{ formset.management_form }}
         {% for form in formset %}
-        <div class="row">
-          <div class="col-lg-2">
-            <img id="previewImage_" src="#" class="card-img-1 p-1" alt="Preview Image">
-          </div>
-          <div class="col-lg-4">
+          <div class="card mb-3 p-2">
+            <!--<img id="previewImage_" src="#" class="card-img card-img p-1" alt="Preview Image">-->
             <div class=" d-flex mb-3">
-              <label class="form-label item-form">Image:</label>
-              <span onchange="previewFile(event)">{{form.PProduct_image}}</span>
+              <label class="mx-3">Image:</label>
+                <span class="mx-1" onchange="previewFile(event)">{{form.PProduct_image}}</span>
             </div>
             <div class=" d-flex mb-3">
-              <label  class="form-label item-form">Color:</label>
-              <div>{{form.PProduct_color}}</div>
+              <label  class="mx-3 ">Color:</label>
+              <div class="mx-3">{{form.PProduct_color}}</div>
             </div>
             <div class="d-flex mb-3">
-              <label  class="form-label item-form">SKU:</label>
-              <span class="mx-3">{{form.PProduct_SKU}}</span>
+              <label  class="mx-3">SKU:</label>
+              <span class="mx-4">{{form.PProduct_SKU}}</span>
             </div>
             <div class="d-flex mb-2">
-              <label class="">Delete:</label>
-              <span class="mx-3">{{form.DELETE}}</span>
+              <label class="mx-3">Delete:</label>
+              <span >{{form.DELETE}}</span>
             </div>
-      
           </div>
-        </div>
-        
-       
+           
+            {% endfor %}
+          </div>
           
-        
-              </div>
-  
-        {% endfor %}
-        
-      </div>
+        </div>
       
+        </div>   
+      <input type="submit" class="dropbtn" value="submit">
     </div>
-      </div>
-    </div>
-
- 
-<input type="submit" class="dropbtn" value="submit">
+    
 </form>
 <script>
   function previewFile(event, counter) {
