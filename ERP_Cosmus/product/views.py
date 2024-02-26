@@ -559,11 +559,19 @@ def ledgercreate(request):
     if request.method == 'POST':
         form = LedgerForm(request.POST)
         if form.is_valid():
-            open_bal_value = form.cleaned_data['opening_balance']
-            open_bal_value = form.cleaned_data['opening_balance']
-            account_credit_debit_master_table.objects.create(ledger =,account_name=, debit='')
+            ledger_instance = form.save(commit = False) # ledger_instance this has the instance of ledger form
             form.save()
+            open_bal_value = form.cleaned_data['opening_balance']
+            name_value = form.cleaned_data['name']
+            debit_credit_value = form.cleaned_data['Debit_Credit']
+            if debit_credit_value == 'Debit':
+                account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger' ,debit= open_bal_value)
+            elif debit_credit_value == 'Credit':
+                account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger',credit= open_bal_value)
+            else:
+                print(form.errors)
             return redirect('ledger-list')
+        
         else:
             print(form.errors)
             return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
