@@ -28,20 +28,20 @@
     <div class="menu">
       <div class="item"><a href="{% url 'dashboard-main' %}"><i class="fas fa-desktop"></i>Dashboard</a></div>
       <div class="item">
-        <a class="sub-btn"><i class="fa-brands fa-product-hunt"></i></i>Product Category<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><i class="fa-brands fa-product-hunt"></i></i>Main Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'pproductlist' %}" class="sub-item">Product Master</a>
-          <a href="{% url 'item-list' %}" class="sub-item">Item Master</a>
+          <a href="{% url 'pproductlist' %}" class="sub-item">Products</a>
+          <a href="{% url 'item-list' %}" class="sub-item">Items</a>
         </div>
       </div>
     
       <div class="item">
-        <a class="sub-btn"><i class="fas fa-table"></i>Category<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><i class="fas fa-table"></i>Sub Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'simplecolorlistonly' %}" class="sub-item">Color Master</a>
-          <a href="{% url 'item-fabgroup-list' %}" class="sub-item">Fabric-group-master</a>
-          <a href="{% url 'unit_name-list' %}" class="sub-item">Unit-name-master</a>
-          <a href="godawn_list.html" class="sub-item">Godown</a>
+          <a href="{% url 'simplecolorlistonly' %}" class="sub-item">Colors</a>
+          <a href="{% url 'item-fabgroup-list' %}" class="sub-item">Fabric Groups</a>
+          <a href="{% url 'unit_name-list' %}" class="sub-item">Units(Metrics)</a>
+          <a href="godawn_list.html" class="sub-item">Godowns</a>
         </div>
       </div>
       
@@ -49,8 +49,8 @@
         <a class="sub-btn"><i class="fa-solid fa-file-invoice"></i>Accounts<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'account_sub_group-list' %}" class="sub-item">Groups</a>
-          <a href="{% url 'ledger-list' %}" class="sub-item">Ledger</a>
-          <a href="{% url 'stock_item-list' %}" class="sub-item">Stock Item</a>
+          <a href="{% url 'ledger-list' %}" class="sub-item">Ledgers</a>
+          <a href="{% url 'stock_item-list' %}" class="sub-item">Stock Items</a>
         </div>
       </div>
       <div class="item">

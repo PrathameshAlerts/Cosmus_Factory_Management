@@ -401,12 +401,12 @@ class Ledger(models.Model):
 
 class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.PROTECT, blank = False, null = False, related_name = 'transaction_entry')
-    debit = models.DecimalField(max_digits=12, decimal_places=2)
-    credit = models.DecimalField(max_digits=12, decimal_places=2)
+    debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
+    credit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     account_name = models.CharField(max_length = 100)
-    voucher_no = models.IntegerField()
-    voucher_type = models.IntegerField()
-    particulars = models.IntegerField()
+    voucher_no = models.IntegerField(null = True, blank= True)
+    voucher_type = models.CharField(max_length = 100)
+    particulars = models.CharField(max_length = 100)
     date = models.DateField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
