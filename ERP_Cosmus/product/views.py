@@ -2,7 +2,7 @@ import cities_light
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst, item_color_shade
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -76,7 +76,6 @@ def product_color_sku(request):
                         current_form = PProductCreateForm(data, files)
 
                         if current_form.is_valid():
-                            print('clean:', current_form.cleaned_data)
                             pproduct = current_form.save(commit=False)
                             # Create a new Product instance or get an existing one based on Product_Refrence_ID
                             # product will be the object retrieved from the db and then created ,created will be a boolean field
@@ -559,9 +558,10 @@ def ledgercreate(request):
     form = LedgerForm()
     if request.method == 'POST':
         form = LedgerForm(request.POST)
-        
         if form.is_valid():
-            
+            open_bal_value = form.cleaned_data['opening_balance']
+            open_bal_value = form.cleaned_data['opening_balance']
+            account_credit_debit_master_table.objects.create(ledger =,account_name=, debit='')
             form.save()
             return redirect('ledger-list')
         else:
@@ -577,9 +577,11 @@ def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
     Ledger_pk = Ledger.objects.get(pk = pk)
     form = LedgerForm(instance = Ledger_pk)
+    print(request.POST)
     if request.method == 'POST':
         form = LedgerForm(request.POST, instance = Ledger_pk)
         if form.is_valid():
+            print(form.cleaned_data)
             form.save()
             return redirect('ledger-list')
         else:

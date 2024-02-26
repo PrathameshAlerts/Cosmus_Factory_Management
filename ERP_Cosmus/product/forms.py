@@ -160,12 +160,29 @@ class StockItemForm(forms.ModelForm):
 
 
 class LedgerForm(forms.ModelForm):
+    opening_balance = forms.IntegerField(label='Opening Balance')
     class Meta:
         model = Ledger
         fields = ['name','short_name','vendor_code','under_group','maintain_billwise',
                   'default_credit_period','types','Gst_no','address','state',
                   'country','city','pincode','mobile_no','landline_no','bank_details',
                   'Debit_Credit']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

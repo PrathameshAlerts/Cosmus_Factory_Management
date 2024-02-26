@@ -151,7 +151,7 @@ class Product_additionals(models.Model):
     Product_MotherWarehouseQty=models.IntegerField(null=True, blank = True)
     Product_WarehouseQty=models.IntegerField(null=True, blank = True)
     Product_RetailStoreQty=models.IntegerField(null=True, blank = True)
-    Product_ManufacturingDate=models.DateField(auto_now_add=True, blank = True)
+    Product_ManufacturingDate=models.DateField(auto_now=True, blank = True)
     Product_WarrantyCode= models.CharField(max_length=150,null=True, blank = True)
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER,null=True, blank = True)
     Product_Rating = models.FloatField(null=True, blank = True)
@@ -163,8 +163,6 @@ class Product_additionals(models.Model):
     Cosmus_link = models.URLField(max_length = 200, null=True, blank = True) 
     Youtube_Link = models.URLField(max_length = 200, null=True, blank = True)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
-
-
 
 
 
@@ -301,6 +299,7 @@ class Item_Creation(models.Model):
     status= models.CharField(max_length=50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
 
+
 # these functions are used to show related attributes instead of PK id in listview
    
     def Color_Name(self):
@@ -400,13 +399,18 @@ class Ledger(models.Model):
     def account_sub_group_ledger(self):
         return self.under_group.account_sub_group
 
-# class account_credit_debit_master_table(models.Model):
-#     debit = 
-#     credit = 
-#     voucher_no = 
-#     voucher_type = 
-#     account_name = 
-#     date = 
+class account_credit_debit_master_table(models.Model):
+    ledger = models.ForeignKey(Ledger, on_delete=models.PROTECT, blank = False, null = False, related_name = 'transaction_entry')
+    debit = models.DecimalField(max_digits=12, decimal_places=2)
+    credit = models.DecimalField(max_digits=12, decimal_places=2)
+    account_name = models.CharField(max_length = 100)
+    voucher_no = models.IntegerField()
+    voucher_type = models.IntegerField()
+    particulars = models.IntegerField()
+    date = models.DateField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
+
+
 
 
 
