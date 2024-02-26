@@ -412,13 +412,16 @@ class account_credit_debit_master_table(models.Model):
 
 
 
+class Godown(models.Model):
+    godown_name = models.CharField(max_length = 100)
 
 
 
 
-
-
-
+class item_godown_quantity_through_table(models.Model):
+    godown_name = models.ForeignKey(Godown, on_delete = models.PROTECT, related_name= 'godown_names')
+    Items_name = models.ForeignKey(item_color_shade, related_name='godown_items', on_delete=models.PROTECT)
+    quantity = models.IntegerField()
 
 
 

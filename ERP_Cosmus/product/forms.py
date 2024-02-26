@@ -52,7 +52,7 @@ class PProductAddForm(forms.ModelForm):
 
 
 
-PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'), extra=0)
+PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'))
 
 
 # Customize the formset to make PProduct_SKU read-only
@@ -132,6 +132,10 @@ class Itemform(forms.ModelForm):
 
 ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
 
+
+
+
+
 class ItemFabricGroup(forms.ModelForm):
     class Meta:
         model = Fabric_Group_Model 
@@ -167,10 +171,6 @@ class LedgerForm(forms.ModelForm):
                   'default_credit_period','types','Gst_no','address','state',
                   'country','city','pincode','mobile_no','landline_no','bank_details',
                   'Debit_Credit']
-
-
-
-
 
 
 
