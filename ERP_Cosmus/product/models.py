@@ -224,7 +224,7 @@ class Product(models.Model):
     Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=2, blank = True, default = 0)
     Product_BulkPrice=models.DecimalField( max_digits=10, decimal_places=2, blank = True, default = 0)
     Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, default = '0 Months')
-    Product_HSNCode = models.IntegerField(default = '12345678', blank = True)
+    Product_HSNCode = models.BigIntegerField(default = '12345678', blank = True)
     Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, default = 1)
 
 
@@ -238,7 +238,7 @@ class PProduct_Creation(models.Model):
     Product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name='productdetails')  
     PProduct_image = models.ImageField(upload_to ='pproduct/images' ,null=True ,blank=True)
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
-    PProduct_SKU = models.IntegerField(primary_key = True)
+    PProduct_SKU = models.BigIntegerField(primary_key = True)
 
     def product_color_name(self):
         return self.PProduct_color.color_name
@@ -391,8 +391,8 @@ class Ledger(models.Model):
     country = models.CharField(max_length = 255,  blank=True) 
     city = models.CharField(max_length = 255,  blank=True) 
     pincode = models.IntegerField()
-    mobile_no = models.IntegerField()
-    landline_no = models.IntegerField()
+    mobile_no = models.BigIntegerField()
+    landline_no = models.BigIntegerField()
     bank_details =  models.TextField(blank = True)
     Debit_Credit =  models.CharField( choices = DEBIT_CREDIT ,max_length = 255, blank = True)
 

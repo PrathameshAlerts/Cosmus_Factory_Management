@@ -52,9 +52,18 @@ class PProductAddForm(forms.ModelForm):
 
 
 
-PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'), extra=0,can_delete=True)
+PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'), extra=0)
 
 
+# Customize the formset to make PProduct_SKU read-only
+class CustomPProductaddFormSet(PProductaddFormSet):
+    def __init__(self, *args, **kwargs):
+        super(CustomPProductaddFormSet, self).__init__(*args, **kwargs)
+
+        # Loop through the forms in the formset
+        for form in self.forms:
+            # Set PProduct_SKU field as read-only
+            form.fields['PProduct_SKU'].widget.attrs['readonly'] = True
 
 """
     Initialization: The __init__ method is used to set up initial values, 
