@@ -483,6 +483,18 @@ body{
 }
 
   /*=========end modal style=======*/
+  /*==========modal style========*/
+
+  .modal-btn{
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 15px;
+    margin-left: 10px;
+    height:35px;
+    background: linear-gradient( #e66465,#e66465);
+  }
 /*===========create item form =========*/
 
 .item-form{

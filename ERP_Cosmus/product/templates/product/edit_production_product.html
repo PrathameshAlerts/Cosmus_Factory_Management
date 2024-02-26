@@ -8,7 +8,7 @@
     {% csrf_token %}
     <div>
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-5">
           <div class=" d-flex my-3">
             <label for="id_Product_Name" class="form-label item-form">Product Name:</label>
             <input type="text" class="item-select" value="{{form.instance.Product_Name}}" name="Product_Name"  required id="id_Product_Name">
@@ -34,7 +34,7 @@
         <div class="d-flex mb-3">
           <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
           <div class="row">
-            <div class="col-lg-5 ms-4">
+            <div class="col-lg-6 ms-5">
               {% for choice in form.Product_Channel.field.choices %}
               <label for="id_Product_Channel_{{ forloop.counter0 }}" class="px-2">
                   <input type="checkbox" class="mx-1" name="Product_Channel" value="{{ choice.0 }}" id="id_Product_Channel_{{ forloop.counter0 }}"
@@ -123,23 +123,25 @@
         <div class="col-lg-6">
           {{ formset.management_form }}
           {% for form in formset %}
-            <div class="card mb-3 p-2">
+            <div class="card rounded-3 mb-3 p-2">
               <!--<img id="previewImage_" src="#" class="card-img card-img p-1" alt="Preview Image">-->
               <div class=" d-flex mb-3">
                 <label class="mx-3">Image:</label>
                   <span class="mx-1" onchange="previewFile(event)">{{form.PProduct_image}}</span>
               </div>
               <div class=" d-flex mb-3">
-                <label  class="mx-3 ">Color:</label>
-                <div class="mx-3">{{form.PProduct_color}}</div>
+                <label class="mx-2">Color:</label>
+                <div class="mx-2">{{form.PProduct_color}}</div>
+                <label class="mx-2">SKU:</label>
+                <span class="ms-1">{{form.PProduct_SKU}}</span>
+                <label class="mx-2 text-danger">Delete:</label>
+                <span class="">{{form.DELETE}}</span>
               </div>
               <div class="d-flex mb-3">
-                <label  class="mx-3">SKU:</label>
-                <span class="mx-4">{{form.PProduct_SKU}}</span>
+                
               </div>
               <div class="d-flex mb-2">
-                <label class="">Delete:</label>
-                <span class="mx-3">{{form.DELETE}}</span>
+                
               </div>
             </div>
             {% endfor %}
