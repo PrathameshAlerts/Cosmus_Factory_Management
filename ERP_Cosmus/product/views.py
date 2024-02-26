@@ -229,6 +229,8 @@ def item_edit(request,pk):
 
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
+
+
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
@@ -583,19 +585,31 @@ def ledgercreate(request):
 
 def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
-    Ledger_pk = Ledger.objects.get(pk = pk)
+    Ledger_pk = Ledger.objects.get(pk = pk) 
+    ledgers = Ledger_pk.transaction_entry.all() #get all the ledger objects of the instance
+    Opening_ledger = ledgers.filter(voucher_type ='Ledger')
     form = LedgerForm(instance = Ledger_pk)
-    print(request.POST)
+
+    opening_balance = 0
+
+    if form.instance.Debit_Credit == 'Debit':
+        opening_bal = Opening_ledger.first().debit
+        opening_balance = opening_balance + opening_bal
+    elif form.instance.Debit_Credit == 'Credit':
+        opening_bal = Opening_ledger.first().credit
+        opening_balance = opening_balance + opening_bal
+    else:
+        print('ERROR IN OPENING BALANCE')
+
     if request.method == 'POST':
         form = LedgerForm(request.POST, instance = Ledger_pk)
         if form.is_valid():
-            print(form.cleaned_data)
             form.save()
             return redirect('ledger-list')
         else:
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update'})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date , 'open_bal':opening_balance})
     current_date = now().date()
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date, 'open_bal':opening_balance})
 
 
 def ledgerlist(request):
@@ -603,11 +617,11 @@ def ledgerlist(request):
     return render(request, 'accounts/ledger_list.html', {'ledgers':ledgers})
 
 
+
 def ledgerdelete(request, pk):
     Ledger_pk = Ledger.objects.get(pk=pk)
     Ledger_pk.delete()
     return redirect('ledger-list')
-
 
 
 
