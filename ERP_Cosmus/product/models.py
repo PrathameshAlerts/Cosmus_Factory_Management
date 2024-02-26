@@ -151,7 +151,7 @@ class Product_additionals(models.Model):
     Product_MotherWarehouseQty=models.IntegerField(null=True, blank = True)
     Product_WarehouseQty=models.IntegerField(null=True, blank = True)
     Product_RetailStoreQty=models.IntegerField(null=True, blank = True)
-    Product_ManufacturingDate=models.DateField(auto_now_add=True, blank = True)
+    Product_ManufacturingDate=models.DateField(auto_now=True, blank = True)
     Product_WarrantyCode= models.CharField(max_length=150,null=True, blank = True)
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER,null=True, blank = True)
     Product_Rating = models.FloatField(null=True, blank = True)
@@ -163,8 +163,6 @@ class Product_additionals(models.Model):
     Cosmus_link = models.URLField(max_length = 200, null=True, blank = True) 
     Youtube_Link = models.URLField(max_length = 200, null=True, blank = True)
     Product_QtyPerBox = models.IntegerField(null=True, blank = True)
-
-
 
 
 
@@ -224,7 +222,7 @@ class Product(models.Model):
     Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=2, blank = True, default = 0)
     Product_BulkPrice=models.DecimalField( max_digits=10, decimal_places=2, blank = True, default = 0)
     Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, default = '0 Months')
-    Product_HSNCode = models.IntegerField(default = '12345678', blank = True)
+    Product_HSNCode = models.BigIntegerField(default = '12345678', blank = True)
     Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, default = 1)
 
 
@@ -238,7 +236,7 @@ class PProduct_Creation(models.Model):
     Product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name='productdetails')  
     PProduct_image = models.ImageField(upload_to ='pproduct/images' ,null=True ,blank=True)
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
-    PProduct_SKU = models.IntegerField(primary_key = True)
+    PProduct_SKU = models.BigIntegerField(primary_key = True)
 
     def product_color_name(self):
         return self.PProduct_color.color_name
@@ -300,6 +298,7 @@ class Item_Creation(models.Model):
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
+
 
 # these functions are used to show related attributes instead of PK id in listview
    
@@ -391,8 +390,8 @@ class Ledger(models.Model):
     country = models.CharField(max_length = 255,  blank=True) 
     city = models.CharField(max_length = 255,  blank=True) 
     pincode = models.IntegerField()
-    mobile_no = models.IntegerField()
-    landline_no = models.IntegerField()
+    mobile_no = models.BigIntegerField()
+    landline_no = models.BigIntegerField()
     bank_details =  models.TextField(blank = True)
     Debit_Credit =  models.CharField( choices = DEBIT_CREDIT ,max_length = 255, blank = True)
 
@@ -400,13 +399,18 @@ class Ledger(models.Model):
     def account_sub_group_ledger(self):
         return self.under_group.account_sub_group
 
-# class account_credit_debit_master_table(models.Model):
-#     debit = 
-#     credit = 
-#     voucher_no = 
-#     voucher_type = 
-#     account_name = 
-#     date = 
+class account_credit_debit_master_table(models.Model):
+    ledger = models.ForeignKey(Ledger, on_delete=models.PROTECT, blank = False, null = False, related_name = 'transaction_entry')
+    debit = models.DecimalField(max_digits=12, decimal_places=2)
+    credit = models.DecimalField(max_digits=12, decimal_places=2)
+    account_name = models.CharField(max_length = 100)
+    voucher_no = models.IntegerField()
+    voucher_type = models.IntegerField()
+    particulars = models.IntegerField()
+    date = models.DateField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
+
+
 
 
 

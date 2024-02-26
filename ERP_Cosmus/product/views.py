@@ -2,8 +2,8 @@ import cities_light
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, gst, item_color_shade
-from .forms import ColorForm, CreateUserForm, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade
+from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -30,10 +30,9 @@ def edit_production_product(request,pk):
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance = pproduct) 
-        formset = PProductaddFormSet(request.POST, request.FILES , instance=pproduct)
+        formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
         
         if form.is_valid() and formset.is_valid():
-            print(formset.cleaned_data)
             form.save()
             formset.save()
             return redirect('pproductlist')
@@ -41,7 +40,7 @@ def edit_production_product(request,pk):
             print(form.errors)
             return render(request, 'product/edit_production_product.html', {'gsts':gsts,'form':form,'formset':formset})
     form = PProductAddForm(instance=pproduct)
-    formset = PProductaddFormSet(instance=pproduct)
+    formset = CustomPProductaddFormSet(instance=pproduct)
     return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset})
 
 
@@ -49,7 +48,6 @@ def product_color_sku(request):
     color = Color.objects.all()
     try:
         if request.method == 'POST':
-            
             product_ref_id = request.POST.get('Product_Refrence_ID')
             request_dict = request.POST
             count = 0
@@ -78,7 +76,6 @@ def product_color_sku(request):
                         current_form = PProductCreateForm(data, files)
 
                         if current_form.is_valid():
-                            print('clean:', current_form.cleaned_data)
                             pproduct = current_form.save(commit=False)
                             # Create a new Product instance or get an existing one based on Product_Refrence_ID
                             # product will be the object retrieved from the db and then created ,created will be a boolean field
@@ -231,10 +228,10 @@ def item_edit(request,pk):
     item_pk = Item_Creation.objects.get(pk = pk)
 
     form = Itemform(instance = item_pk)
-    formset = ShadeFormSet(instance=item_pk)
-
+    formset = ShadeFormSet(instance= item_pk)
+    # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
+    # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
-        
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST ,request.FILES, instance=item_pk)
         if form.is_valid() and formset.is_valid():
@@ -561,9 +558,10 @@ def ledgercreate(request):
     form = LedgerForm()
     if request.method == 'POST':
         form = LedgerForm(request.POST)
-        
         if form.is_valid():
-            
+            # open_bal_value = form.cleaned_data['opening_balance']
+            # open_bal_value = form.cleaned_data['opening_balance']
+            # account_credit_debit_master_table.objects.create(ledger =,account_name=, debit='')
             form.save()
             return redirect('ledger-list')
         else:
@@ -579,9 +577,11 @@ def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
     Ledger_pk = Ledger.objects.get(pk = pk)
     form = LedgerForm(instance = Ledger_pk)
+    print(request.POST)
     if request.method == 'POST':
         form = LedgerForm(request.POST, instance = Ledger_pk)
         if form.is_valid():
+            print(form.cleaned_data)
             form.save()
             return redirect('ledger-list')
         else:

@@ -65,9 +65,11 @@
         <label for="id_name" class="form-label item-form">Current Date:</label> 
         <span>{{ current_date }}</span>
       </div>
+
       <div class="d-flex mb-4 ms-3 me-1">
-        <label for="id_Debit_Credit" class="form-label item-form ms-1">Openeing Balance:</label>
-        <input type="number" placeholder="Rs" class="item-select me-2" value="" name="" required id="">
+        <label for="id_opening_balance" class="form-label item-form ms-1">Openeing Balance:</label>
+        <input type="number" placeholder="Rs" class="item-select me-2" value="" name="opening_balance" required id="id_opening_balance">
+
         <select class="item-select w-25" value="{{form.instance.Debit_Credit}}" name="Debit_Credit" id="id_Debit_Credit">
       <option value="{{form.instance.Debit_Credit}}">{{form.instance.Debit_Credit}}</option>
       <option value="Debit">Debit</option>
