@@ -559,7 +559,7 @@ def ledgercreate(request):
     if request.method == 'POST':
         form = LedgerForm(request.POST)
         if form.is_valid():
-            ledger_instance = form.save(commit = False) # ledger_instance this has the instance of ledger form
+            ledger_instance = form.save(commit = False) #ledger_instance this has the instance of ledger form
             form.save()
             open_bal_value = form.cleaned_data['opening_balance']
             name_value = form.cleaned_data['name']
