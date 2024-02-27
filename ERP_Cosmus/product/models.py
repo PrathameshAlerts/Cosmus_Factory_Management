@@ -423,7 +423,6 @@ class item_godown_quantity_through_table(models.Model):
 
 
 
-
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225)
 
