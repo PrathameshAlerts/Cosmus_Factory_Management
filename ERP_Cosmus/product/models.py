@@ -318,7 +318,7 @@ class Item_Creation(models.Model):
 
 class item_color_shade(models.Model):
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades')
-    item_name_rank = models.PositiveIntegerField(blank = True)
+    item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
@@ -417,12 +417,10 @@ class Godown(models.Model):
 
 
 
-
 class item_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown, on_delete = models.PROTECT, related_name= 'godown_names')
-    Items_name = models.ForeignKey(item_color_shade, related_name='godown_items', on_delete=models.PROTECT)
+    Items_name = models.ForeignKey(item_color_shade, related_name='godown_items', on_delete = models.PROTECT)
     quantity = models.IntegerField()
-
 
 
 

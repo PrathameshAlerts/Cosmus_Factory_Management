@@ -230,7 +230,6 @@ def item_edit(request,pk):
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
 
-
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
