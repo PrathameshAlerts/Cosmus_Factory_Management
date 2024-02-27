@@ -630,7 +630,6 @@ def ledgerdelete(request, pk):
 
 
 def godowncreate(request):
-    
     if request.method == 'POST':
         print(request.POST)
         godown_name =  request.POST['godown_name']
@@ -653,34 +652,31 @@ def godowncreate(request):
     
 
 def godownupdate(request,pk):
-    raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
-    finished_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
-
     if request.method == 'POST':
         print(request.POST)
         godown_name =  request.POST['godown_name']
         godown_type = request.POST['Godown_types']
 
         if godown_type == 'Raw Material':
+            raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
             raw_godown_pk.godown_name_raw = godown_name
             raw_godown_pk.save()
             return redirect('godown-list')
         
         elif godown_type == 'Finished Goods':
+            finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
             finished_godown_pk.godown_name_finished = godown_name
             finished_godown_pk.save()
             return redirect('godown-list')
         else:
             return HttpResponse('enter a valid godown type')
-            
-        
     return render(request,'misc/godown_create_update.html')
+
 
 
 def godownlist(request):
     godowns_raw = Godown_raw_material.objects.all()
     godowns_finished = Godown_finished_goods.objects.all()
-
     return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 'godowns_finished':godowns_finished})
 
 
