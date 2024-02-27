@@ -175,27 +175,6 @@ class LedgerForm(forms.ModelForm):
 
 
 
-class Godown_raw_material_Form(forms.ModelForm):
-    class Meta:
-        model = Godown_raw_material
-        fields = [
-            'godown_name_raw'
-        ]
-
-
-
-class Godown_finished_goods_Form(forms.ModelForm):
-    class Meta:
-        model = Godown_finished_goods
-        fields = [
-            'godown_name_finished'
-        ]
-
-
-
-
-
-
 
 
 

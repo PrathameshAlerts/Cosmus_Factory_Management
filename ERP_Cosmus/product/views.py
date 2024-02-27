@@ -647,30 +647,82 @@ def godowncreate(request):
             return HttpResponse('enter a valid godown type')
             
         
-    return render(request,'misc/godown_create_update.html')
+    return render(request,'misc/godown_create.html')
 
     
 
-def godownupdate(request,pk):
-    if request.method == 'POST':
-        print(request.POST)
-        godown_name =  request.POST['godown_name']
-        godown_type = request.POST['Godown_types']
+def godownupdate(request,str,pk):
 
-        if godown_type == 'Raw Material':
-            raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
-            raw_godown_pk.godown_name_raw = godown_name
-            raw_godown_pk.save()
-            return redirect('godown-list')
-        
-        elif godown_type == 'Finished Goods':
-            finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
+    if str == 'finished':
+        godown_type = 'Finished Goods'
+        finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
+        instance_data = finished_godown_pk.godown_name_finished
+        if request.method == 'POST':
+            godown_name =  request.POST['godown_name']
             finished_godown_pk.godown_name_finished = godown_name
             finished_godown_pk.save()
             return redirect('godown-list')
-        else:
-            return HttpResponse('enter a valid godown type')
-    return render(request,'misc/godown_create_update.html')
+    elif str == 'raw':
+        godown_type = 'Raw Material'
+        raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
+        instance_data = raw_godown_pk.godown_name_raw
+        if request.method == 'POST':
+            godown_name =  request.POST['godown_name']
+            raw_godown_pk.godown_name_raw = godown_name
+            raw_godown_pk.save()
+            return redirect('godown-list')
+    else:
+        print('error in godownupdate str variable')
+    
+    context = {
+        'instance_data': instance_data,
+        'godown_type': godown_type
+    }
+    print(context)
+    return render(request,'misc/godown_update.html', context)
+
+
+
+    # if request.method == 'POST':
+    #     print(request.POST)
+    #     godown_name =  request.POST['godown_name']
+    #     godown_type = request.POST['Godown_types']
+
+    #     if godown_type == 'Raw Material':
+    #         raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
+    #         raw_godown_pk.godown_name_raw = godown_name
+    #         raw_godown_pk.save()
+    #         return redirect('godown-list')
+        
+    #     elif godown_type == 'Finished Goods':
+    #         finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
+    #         finished_godown_pk.godown_name_finished = godown_name
+    #         finished_godown_pk.save()
+    #         return redirect('godown-list')
+    #     else:
+    #         return HttpResponse('enter a valid godown type')
+        
+    # instance_data = None
+    # godown_type = None
+    
+    # if str == 'raw':
+    #     raw_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
+    #     instance_data = raw_godown_pk.godown_name_raw
+    #     godown_type = 'Raw Material'
+
+    # elif str == 'finished':
+    #     finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
+    #     instance_data = finished_godown_pk.godown_name_finished
+    #     godown_type = 'Finished Goods'
+    # else:
+    #     pass
+    # # Pass the instance data and godown type to the template
+    # context = {
+    #     'instance_data': instance_data,
+    #     'godown_type': godown_type
+    # }
+    # print(context)
+    # return render(request,'misc/godown_create_update.html', context)
 
 
 
@@ -681,9 +733,17 @@ def godownlist(request):
 
 
 
-def godowndelete(request,pk):
-    Godown_pk = Godown_raw_material.objects.get(pk=pk)
-    Godown_pk.delete()
+def godowndelete(request,str,pk):
+
+    if str == 'finished':
+        finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
+        finished_godown_pk.delete()
+
+    elif str == 'raw':
+        raw_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
+        raw_godown_pk.delete()
+    else:
+        print('issue with godown delete str')
     return redirect('godown-list')
     
 

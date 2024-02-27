@@ -65,9 +65,9 @@ urlpatterns = [
 
     #godown
     path('godowncreate/', views.godowncreate, name = 'godown-create'),
-    path('godownupdate/<int:pk>', views.godownupdate, name = 'godown-update'),
+    path('godownupdateraw/<str:str>/<int:pk>', views.godownupdate, name = 'godown-update'),
     path('godownlist/', views.godownlist, name = 'godown-list'),
-    path('godowndelete/<int:pk>', views.godowndelete, name = 'godown-delete'),
+    path('godowndelete/<str:str>/<int:pk>', views.godowndelete, name = 'godown-delete'),
 
 
     #stocktransfer
