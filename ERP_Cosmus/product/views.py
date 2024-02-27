@@ -603,9 +603,17 @@ def ledgerupdate(request,pk):
             form.save()
             return redirect('ledger-list')
         else:
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date , 'open_bal':opening_balance})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,
+                                                                        'under_groups':under_groups,
+                                                                        'title':'ledger Update',
+                                                                        'current_date':current_date ,
+                                                                        'open_bal':opening_balance})
     current_date = now().date()
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date, 'open_bal':opening_balance})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,
+                                                                'under_groups':under_groups,
+                                                                'title':'ledger Update',
+                                                                'current_date':current_date, 
+                                                                'open_bal':opening_balance})
 
 
 def ledgerlist(request):
@@ -683,53 +691,11 @@ def godownupdate(request,str,pk):
 
 
 
-    # if request.method == 'POST':
-    #     print(request.POST)
-    #     godown_name =  request.POST['godown_name']
-    #     godown_type = request.POST['Godown_types']
-
-    #     if godown_type == 'Raw Material':
-    #         raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
-    #         raw_godown_pk.godown_name_raw = godown_name
-    #         raw_godown_pk.save()
-    #         return redirect('godown-list')
-        
-    #     elif godown_type == 'Finished Goods':
-    #         finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
-    #         finished_godown_pk.godown_name_finished = godown_name
-    #         finished_godown_pk.save()
-    #         return redirect('godown-list')
-    #     else:
-    #         return HttpResponse('enter a valid godown type')
-        
-    # instance_data = None
-    # godown_type = None
-    
-    # if str == 'raw':
-    #     raw_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
-    #     instance_data = raw_godown_pk.godown_name_raw
-    #     godown_type = 'Raw Material'
-
-    # elif str == 'finished':
-    #     finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
-    #     instance_data = finished_godown_pk.godown_name_finished
-    #     godown_type = 'Finished Goods'
-    # else:
-    #     pass
-    # # Pass the instance data and godown type to the template
-    # context = {
-    #     'instance_data': instance_data,
-    #     'godown_type': godown_type
-    # }
-    # print(context)
-    # return render(request,'misc/godown_create_update.html', context)
-
-
-
 def godownlist(request):
     godowns_raw = Godown_raw_material.objects.all()
     godowns_finished = Godown_finished_goods.objects.all()
-    return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 'godowns_finished':godowns_finished})
+    return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 
+                                                   'godowns_finished':godowns_finished})
 
 
 
