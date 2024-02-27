@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -175,7 +175,21 @@ class LedgerForm(forms.ModelForm):
 
 
 
+class Godown_raw_material_Form(forms.ModelForm):
+    class Meta:
+        model = Godown_raw_material
+        fields = [
+            'godown_name_raw'
+        ]
 
+
+
+class Godown_finished_goods_Form(forms.ModelForm):
+    class Meta:
+        model = Godown_finished_goods
+        fields = [
+            'godown_name_finished'
+        ]
 
 
 

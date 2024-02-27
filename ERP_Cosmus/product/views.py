@@ -2,7 +2,7 @@ import cities_light
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -114,7 +114,7 @@ def product_color_sku(request):
 
 
 def pproduct_list(request):
-    queryset = Product.objects.all()
+    queryset = Product.objects.select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color').all()
     product_search = request.GET.get('product_search')
 
     if product_search != '' and product_search is not None:
@@ -124,8 +124,6 @@ def pproduct_list(request):
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
     
     context = {'products': queryset}
-        
-    
     return render(request,'product/pproduct_list.html',context=context)
 
 
@@ -148,7 +146,6 @@ def item_create(request):
     colors = Color.objects.all()
 
     print(request.POST, request.FILES)
-
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
         
@@ -234,7 +231,7 @@ def item_edit(request,pk):
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES , instance=item_pk)
-        formset = ShadeFormSet(request.POST ,request.FILES, instance=item_pk)
+        formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
         if form.is_valid() and formset.is_valid():
             print(formset.cleaned_data)
             form.save()
@@ -626,6 +623,76 @@ def ledgerdelete(request, pk):
 
 
 #_________________________Accounts end___________________________
+
+#________________________godown start______________________________
+
+
+
+
+def godowncreate(request):
+    
+    if request.method == 'POST':
+        print(request.POST)
+        godown_name =  request.POST['godown_name']
+        godown_type = request.POST['Godown_types']
+        if godown_type == 'Raw Material':
+            godown_raw = Godown_raw_material(godown_name_raw=godown_name)
+            godown_raw.save()
+            return redirect('godown-list')
+        
+        elif godown_type == 'Finished Goods':
+            godown_finished = Godown_finished_goods(godown_name_finished=godown_name)
+            godown_finished.save()
+            return redirect('godown-list')
+        else:
+            return HttpResponse('enter a valid godown type')
+            
+        
+    return render(request,'misc/godown_create_update.html')
+
+    
+
+def godownupdate(request,pk):
+    raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
+    finished_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
+
+    if request.method == 'POST':
+        print(request.POST)
+        godown_name =  request.POST['godown_name']
+        godown_type = request.POST['Godown_types']
+
+        if godown_type == 'Raw Material':
+            raw_godown_pk.godown_name_raw = godown_name
+            raw_godown_pk.save()
+            return redirect('godown-list')
+        
+        elif godown_type == 'Finished Goods':
+            finished_godown_pk.godown_name_finished = godown_name
+            finished_godown_pk.save()
+            return redirect('godown-list')
+        else:
+            return HttpResponse('enter a valid godown type')
+            
+        
+    return render(request,'misc/godown_create_update.html')
+
+
+def godownlist(request):
+    godowns_raw = Godown_raw_material.objects.all()
+    godowns_finished = Godown_finished_goods.objects.all()
+
+    return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 'godowns_finished':godowns_finished})
+
+
+
+def godowndelete(request,pk):
+    Godown_pk = Godown_raw_material.objects.get(pk=pk)
+    Godown_pk.delete()
+    return redirect('godown-list')
+    
+
+
+#_________________________godown end______________________________
 
 
 #_______________________authentication View start___________________________

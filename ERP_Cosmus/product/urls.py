@@ -63,7 +63,15 @@ urlpatterns = [
     path('ledgerlist/', views.ledgerlist, name = 'ledger-list'),
     path('ledgerdelete/<int:pk>', views.ledgerdelete, name = 'ledger-delete'),
 
+    #godown
+    path('godowncreate/', views.godowncreate, name = 'godown-create'),
+    path('godownupdate/<int:pk>', views.godownupdate, name = 'godown-update'),
+    path('godownlist/', views.godownlist, name = 'godown-list'),
+    path('godowndelete/<int:pk>', views.godowndelete, name = 'godown-delete'),
 
+
+    #stocktransfer
+    # path('stocktransfer/', views.stocktransfer, name = 'stock-transfer'),
 
 
     #common Routes

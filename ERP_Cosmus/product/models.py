@@ -243,7 +243,6 @@ class PProduct_Creation(models.Model):
      
 
 
-
 class Fabric_Group_Model(models.Model):
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
 
@@ -412,17 +411,21 @@ class account_credit_debit_master_table(models.Model):
 
 
 
-class Godown(models.Model):
-    godown_name = models.CharField(max_length = 100)
-
+class Godown_raw_material(models.Model):
+    godown_name_raw = models.CharField(max_length = 225)
+                
 
 
 class item_godown_quantity_through_table(models.Model):
-    godown_name = models.ForeignKey(Godown, on_delete = models.PROTECT, related_name= 'godown_names')
-    Items_name = models.ForeignKey(item_color_shade, related_name='godown_items', on_delete = models.PROTECT)
+    godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'godown_names')
+    Items_name = models.ForeignKey(item_color_shade, related_name='godown_rawmaterials', on_delete = models.PROTECT)
     quantity = models.IntegerField()
 
 
+
+
+class Godown_finished_goods(models.Model):
+    godown_name_finished = models.CharField(max_length = 225)
 
 
 
