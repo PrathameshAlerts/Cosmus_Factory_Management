@@ -9,7 +9,12 @@
            <div class="d-flex mb-3">
             <label for="" class="form-label px-2">Stock Vouchar No:</label>
             <input type="number" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+          
+          <div class="ms-auto">
+            <label for="" class="form-label px-2">Date:</label>
+            <h3 class="">{{ current_date }}</h3>
           </div>
+        </div>
            <div class="d-flex mb-3">
             <label for="" class="form-label px-2">Godown Type:</label>
             <select>
@@ -19,34 +24,70 @@
           </div>
        
     <div class="d-flex mb-3">
+      <div>
         <label for="" class="form-label px-2">Source Godown:</label>
-        <input type="text" class="item-select mx-3" value="" name="" maxlength="50" required id=""> To
-        <label for="" class="form-label px-2">Target Godown: </label>
-      <input type="text" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+        <p>(Transfer from)</p>
       </div>
+        <input type="text" class="item-select m-3" value="" name="" maxlength="50" required id="">
+        <span class="pt-3 pe-3">To</span>
+        <div>
+          <label for="" class="form-label">Target Godown: </label>
+        <p>(Transfer to)</p>
+        </div>
+        
+      <input type="text" class="item-select m-3" value="" name="" maxlength="50" required id="">
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <table class="table table-striped table-hover table-responsive">
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Color</th>
+                <th>Shades</th>
+                <th>QTY</th>
+                <th>Per</th>
+                <th>Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1680 Arpan</td>
+                <td>Navy</td>
+                <td>Shades-2</td>
+                <td> 600.00 </td>
+                <td>Meter</td>
+                <td>used</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-6">
+          <table class="table table-striped table-hover table-responsive">
+            <thead>
+              <tr>
+                <th>Model Name</th>
+                <th>Color</th>
+                <th>SKU</th>
+                <th>QTY</th>
+                <th>Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1680 Arpan</td>
+                <td>Navy</td>
+                <td>675424</td>
+                <td> 600.00 </td>
+                <td>used</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+   
 
-    <table class="table table-striped table-hover table-responsive">
-      <thead>
-        <tr>
-          <th>Item Names</th>
-          <th>Color</th>
-          <th>Shades</th>
-          <th>QTY</th>
-          <th>Per</th>
-          <th>Remark</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1680 Arpan</td>
-          <td>Navy</td>
-          <td>Shades-2</td>
-          <td> 600.00 </td>
-          <td>Meter</td>
-          <td> 7,53,000.00 dr</td>
-        </tr>
-      </tbody>
-    </table>
+   
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button>
