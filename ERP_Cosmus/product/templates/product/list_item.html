@@ -86,7 +86,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div>
               </th>
-              <th scope="col" colspan="3" class="name_absolute">Shades
+              <th scope="col" class="name_absolute">Shades
                 <div class="nav-item dropdown Item_color_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -190,13 +190,31 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>{{item.fab_grp}}</td>
               <td>{{item.Color_Name}}</td>
               <!-- render reverse related fields -->
-              <td colspan="3">
+              <td>
                 <table>
-                  <td colspan="3">
-                    {% for shade in item.shades.all %}
-                        {{ shade.item_shade_name }}
-                    {% endfor %}
-                </td>
+                    <tr>
+                      <th class="pe-3">Shade</th>
+                      <th class="pe-3">Godown</th>
+                      <th class="pe-3">Qty</th>
+                    </tr>
+                      {% for shade in item.shades.all %}
+                      <div class="d-flex ">
+                        <tr>
+                         <td>{{shade.item_shade_name}}</td>
+                           {% for shade_q in shade.godown_shades.all %}
+                           
+                          <td >{{shade_q.godown_name}}</td>
+                          
+                         <td >{{shade_q.quantity}}</td>
+                        </tr>
+                        </div>
+                          {% endfor %}
+                        {% endfor %}
+                    
+                      
+                    
+                      
+                
                 </table> 
               </td>
               <td>{{item.Material_code}}</td>
@@ -240,6 +258,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
     </div>
   </div>
 </div>
+
 
 
 <script>

@@ -321,6 +321,8 @@ class item_color_shade(models.Model):
     item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
+    def __str__(self) -> str:
+        return self.item_shade_name
 
 #post_save signal for item_color_shade if Item_Creation instance is created 
 @receiver(post_save, sender=Item_Creation)
@@ -413,14 +415,30 @@ class account_credit_debit_master_table(models.Model):
 
 class Godown_raw_material(models.Model):
     godown_name_raw = models.CharField(max_length = 225)
-                
+
+    def __str__(self) -> str:
+        return self.godown_name_raw      
 
 
 class item_godown_quantity_through_table(models.Model):
-    godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'godown_names')
-    Items_name = models.ForeignKey(item_color_shade, related_name='godown_rawmaterials', on_delete = models.PROTECT)
+    godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
+    Item_shade_name = models.ForeignKey(item_color_shade, related_name='godown_shades', on_delete = models.PROTECT)
     quantity = models.IntegerField()
 
+    class Meta:
+        unique_together = [['godown_name','Item_shade_name']]
+
+
+    def __str__(self):
+        return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
+    
+
+
+
+    # need to make godown and items unique together 
+    # if there are already item in a godown if user again enters quantity instead of creating
+    # one more entree for the same item in godown u just need to update the quantity of the item in that
+    # godown.
 
 
 class Godown_finished_goods(models.Model):
