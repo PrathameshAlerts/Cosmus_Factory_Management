@@ -193,9 +193,14 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>
                 <table>
                   <td>
-                    {% for shade in item.shades.all %}
-                        {{ shade.item_shade_name }}
-                    {% endfor %}
+                      {% for shade in item.shades.all %}
+                         <h6>item shade name - {{shade.item_shade_name}}</h6>
+                           {% for shade_q in shade.godown_shades.all %}
+                          <h6>godown name - {{shade_q.godown_name}}</h6>
+                         <h6> quantity - {{shade_q.quantity}}</h6>
+
+                          {% endfor %}
+                        {% endfor %}
                 </td>
                 </table> 
               </td>
@@ -240,6 +245,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
     </div>
   </div>
 </div>
+
 
 
 <script>
