@@ -38,7 +38,9 @@ def edit_production_product(request,pk):
             return redirect('pproductlist')
         else:
             print(form.errors)
-            return render(request, 'product/edit_production_product.html', {'gsts':gsts,'form':form,'formset':formset})
+            return render(request, 'product/edit_production_product.html', {'gsts':gsts,
+                                                                            'form':form,
+                                                                            'formset':formset})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
     return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset})
@@ -97,7 +99,7 @@ def product_color_sku(request):
                             transaction.set_rollback(True)
                             break
                 except Exception as e:
-                    print('Exception occured', str(e))
+                    print('Exception occured:', str(e))
             if all_sets_valid:
 
                 # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
@@ -154,10 +156,19 @@ def item_create(request):
             return redirect("item-list")
         else:
             print(form.errors)
-            return render(request,'product/item_create_update.html', {'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form})
+            return render(request,'product/item_create_update.html', {'gsts':gsts,
+                                                                      'fab_grp':fab_grp,
+                                                                      'unit_name':unit_name,
+                                                                      'colors':colors,
+                                                                      'title':title,'form':form})
     else:
         form = Itemform()
-        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form})
+        return render(request,'product/item_create_update.html',{'gsts':gsts,
+                                                                 'fab_grp':fab_grp,
+                                                                 'unit_name':unit_name,
+                                                                 'colors':colors,
+                                                                 'title':title,
+                                                                 'form':form})
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
 # which has ?namevaraible = data data from the querystring
@@ -168,7 +179,9 @@ def item_create(request):
 def item_list(request):
     g_search = request.GET.get('item_search')
     #select related for loading forward FK relationships and select related for reverse relationship   
-    queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item','Fabric_Group','Item_Creation_GST').prefetch_related('shades').all()
+    queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item',
+                                                    'Fabric_Group',
+                                                    'Item_Creation_GST').prefetch_related('shades').all()
     
 # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '' and  g_search is not None:
@@ -239,9 +252,21 @@ def item_edit(request,pk):
             return redirect('item-list')
         else:
 
-            return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
+            return render(request,'product/item_create_update.html',{'gsts':gsts,
+                                                                     'fab_grp':fab_grp,
+                                                                     'unit_name':unit_name,
+                                                                     'colors':colors,
+                                                                     'title':title,
+                                                                     'form':form,
+                                                                     'formset': formset})
     else:
-        return render(request,'product/item_create_update.html',{'gsts':gsts,'fab_grp':fab_grp,'unit_name':unit_name,'colors':colors,'title':title,'form':form,'formset': formset})
+        return render(request,'product/item_create_update.html',{'gsts':gsts,
+                                                                 'fab_grp':fab_grp,
+                                                                 'unit_name':unit_name,
+                                                                 'colors':colors,
+                                                                 'title':title,
+                                                                 'form':form,
+                                                                 'formset': formset})
 
 
 
@@ -373,10 +398,12 @@ def item_fabric_group_create(request):
             return redirect('item-fabgroup-list')
         else:
             print(form.errors)
-            return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form})
+            return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group',
+                                                                                  'form':form})
 
 
-    return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form})
+    return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group',
+                                                                          'form':form})
 
 
 
@@ -394,9 +421,11 @@ def item_fabric_group_update(request,pk):
             form.save()
             return redirect('item-fabgroup-list')
         else:
-            return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group','form':form})
+            return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group',
+                                                                                  'form':form})
     else:
-        return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group','form':form})
+        return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group',
+                                                                              'form':form})
 
 
 def item_fabric_group_delete(request,pk):
@@ -440,8 +469,10 @@ def unit_name_update(request,pk):
             form.save()
             return redirect('unit_name-list')
         else:
-            return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,"form":form})
-    return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,"form":form})
+            return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,
+                                                                            "form":form})
+    return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,
+                                                                    "form":form})
 
 
 
@@ -472,9 +503,13 @@ def account_sub_group_create(request):
             return redirect('account_sub_group-list')
         else:
             print(form.errors)
-            return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Create','form':form})
+            return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
+                                                                             'title':'Account Sub-Group Create',
+                                                                             'form':form})
         
-    return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp, 'title':'Account Sub-Group Create','form':form})
+    return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp, 
+                                                                     'title':'Account Sub-Group Create',
+                                                                     'form':form})
 
 def account_sub_group_update(request, pk):
     main_grp = AccountGroup.objects.all()
@@ -487,8 +522,13 @@ def account_sub_group_update(request, pk):
             return redirect('account_sub_group-list')
         else:
             print(form.errors)
-            return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Update','form':form})
-    return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,'title':'Account Sub-Group Update','form':form})
+            return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
+                                                                              'title':'Account Sub-Group Update',
+                                                                              'form':form})
+        
+    return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
+                                                                      'title':'Account Sub-Group Update',
+                                                                      'form':form})
 
 
 def account_sub_group_list(request):
@@ -514,10 +554,14 @@ def stock_item_create(request):
             return redirect('stock_item-list')
         else:
             print(form.errors)
-            return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create','accsubgrps':accsubgrps,'form':form})
+            return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
+                                                                            'accsubgrps':accsubgrps,
+                                                                            'form':form})
     
     
-    return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create','accsubgrps':accsubgrps,'form':form})
+    return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
+                                                                    'accsubgrps':accsubgrps,
+                                                                    'form':form})
 
 
 
@@ -533,8 +577,12 @@ def stock_item_update(request, pk):
             return redirect('stock_item-list')
         else:
             print(form.errors)
-            return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update','accsubgrps':accsubgrps,'form':form})
-    return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update','accsubgrps':accsubgrps,'form':form})
+            return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update',
+                                                                             'accsubgrps':accsubgrps,
+                                                                             'form':form})
+    return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update',
+                                                                     'accsubgrps':accsubgrps,
+                                                                     'form':form})
 
 
 def stock_item_list(request):
@@ -572,10 +620,15 @@ def ledgercreate(request):
         
         else:
             print(form.errors)
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,
+                                                                        'under_groups':under_groups,
+                                                                        'title':'ledger Create'})
     
     current_date = now().date()
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,
+                                                                'under_groups':under_groups,
+                                                                'title':'ledger Create',
+                                                                'current_date':current_date})
     
 
 
@@ -715,6 +768,15 @@ def godowndelete(request,str,pk):
 
 
 #_________________________godown end______________________________
+
+#__________________________stock transfer end__________________________
+
+def stocktransfer(request):
+    return render(request,'misc/stock_transfer.html')
+
+
+#__________________________stock transfer end__________________________
+
 
 
 #_______________________authentication View start___________________________

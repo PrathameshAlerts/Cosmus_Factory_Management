@@ -71,7 +71,7 @@ urlpatterns = [
 
 
     #stocktransfer
-    # path('stocktransfer/', views.stocktransfer, name = 'stock-transfer'),
+    path('stocktransfer/', views.stocktransfer, name = 'stock-transfer'),
 
 
     #common Routes
