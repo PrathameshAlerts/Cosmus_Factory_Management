@@ -427,19 +427,23 @@ class item_godown_quantity_through_table(models.Model):
 
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
-
+        # godown and items unique together as
+        # if there are already item in a godown if user again enters quantity instead of creating
+        # one more entry for the same item in godown u just need to update the quantity of the item in that
+        # godown.
 
     def __str__(self):
         return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
     
+# @receiver(pre_save, sender=item_godown_quantity_through_table)
+# def save_primary_item_color_shade(sender, instance, **kwargs):
 
-
-
-    # need to make godown and items unique together 
-    # if there are already item in a godown if user again enters quantity instead of creating
-    # one more entree for the same item in godown u just need to update the quantity of the item in that
-    # godown.
-
+#     if instance.pk is None:
+#         godown_name = instance.godown_name
+#         Item_shade_name =  instance.Item_shade_name
+#         quantity = instance.quantity
+#     else:
+#         pass
 
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225)
