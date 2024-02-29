@@ -1,10 +1,10 @@
 from django.db import models
 from django.conf import settings
 from multiselectfield import MultiSelectField
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save , post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
-from django.db.models.signals import post_save
+
 
 
 class Customer(models.Model):
@@ -327,7 +327,7 @@ class item_color_shade(models.Model):
 #post_save signal for item_color_shade if Item_Creation instance is created 
 @receiver(post_save, sender=Item_Creation)
 def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
-
+# data in the instance is from the form which is submitted in the front end 
     if created:
         #getting the color name attribte instead of object function
         color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of color
@@ -432,25 +432,52 @@ class item_godown_quantity_through_table(models.Model):
         # one more entry for the same item in godown u just need to update the quantity of the item in that
         # godown.
 
-    def __str__(self):
-        return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
     
+    # def save(self,*args, **kwargs):
+    #     existing_entry = item_godown_quantity_through_table.objects.filter(
+    #         godown_name = self.godown_name,
+    #         Item_shade_name  = self.Item_shade_name
+    #     ).first()
+    #     if existing_entry:
+    #         new_quantity = self.quantity + existing_entry.quantity
+
+    #         item_godown_quantity_through_table.objects.filter(
+    #         godown_name=self.godown_name,
+    #         Item_shade_name=self.Item_shade_name
+    #     ).update(quantity=new_quantity)
+    #     else:
+    #         # Create a new entry if it doesn't exist
+    #         # as a default behaviour 
+    #         super().save(*args, **kwargs)
+
+    # def __str__(self):
+    #     return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
+
 
 @receiver(pre_save, sender=item_godown_quantity_through_table)
-def save_primary_item_color_shade(sender, instance, **kwargs):
-    try:
-        existing_instance, created = item_godown_quantity_through_table.objects.get_or_create(
-            godown_name=instance.godown_name,
-            Item_shade_name=instance.Item_shade_name,
-            defaults={'quantity': instance.quantity}
-        )
-        if not created:
-            existing_instance.quantity += instance.quantity
-            existing_instance.save()
-    except Exception as e:
-        print(f"An error occurred: {e}")
+def update_quantity(sender, instance, **kwargs):
+     
+    existing_entry = item_godown_quantity_through_table.objects.filter(
+            godown_name = instance.godown_name,
+            Item_shade_name  = instance.Item_shade_name
+        ).first()
+     
+    if existing_entry:
+        new_quantity = new_quantity + existing_entry.quantity
 
-    
+
+        existing_entry = item_godown_quantity_through_table.objects.filter(
+            godown_name = instance.godown_name,
+            Item_shade_name  = instance.Item_shade_name
+        ).update(quantity = new_quantity)
+        
+
+        # Set instance to None to prevent it from being saved again
+        instance.pk = None
+    else:
+        pass
+
+
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225)
 

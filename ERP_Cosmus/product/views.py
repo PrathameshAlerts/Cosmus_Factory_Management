@@ -782,15 +782,15 @@ def stocktransfer(request):
 
 #__________________________purchase voucher start__________________________
 
-def puchasevouchercreate(request):
+def purchasevouchercreate(request):
     return render(request,'.html')
 
 
-def puchasevoucherupdate(request,pk):
+def purchasevoucherupdate(request,pk):
     return render(request,'.html')
 
 
-def puchasevoucherlist(request):
+def purchasevoucherlist(request):
     return render(request,'.html')
 
 
