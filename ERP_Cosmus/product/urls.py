@@ -74,6 +74,24 @@ urlpatterns = [
     path('stocktransfer/', views.stocktransfer, name = 'stock-transfer'),
 
 
+
+    #PurchaseVoucher
+    path('purchasevouchercreate/', views.purchasevouchercreate, name = 'purchase-voucher-create'),
+    path('purchasevoucherupdate/', views.purchasevoucherupdate, name = 'purchase-voucher-update'),
+    path('purchasevoucherlist/', views.purchasevoucherlist, name = 'purchase-voucher-list'),
+    path('purchasevoucherdelete/', views.purchasevoucherdelete, name = 'purchase-voucher-delete'),
+
+
+
+    #SalesVoucher
+    path('salesvouchercreate/', views.salesvouchercreate, name = 'sales-voucher-create'),
+    path('salesvoucherupdate/', views.salesvoucherupdate, name = 'sales-voucher-update'),
+    path('salesvoucherlist/', views.salesvoucherlist, name = 'sales-voucher-list'),
+    path('salesvoucherdelete/', views.salesvoucherdelete, name = 'sales-voucher-delete'),
+
+
+
+
     #common Routes
     path('', views.dashboard , name='dashboard-main'),
 

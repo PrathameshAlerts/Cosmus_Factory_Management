@@ -183,17 +183,6 @@ def item_list(request):
                                                     'Fabric_Group',
                                                     'Item_Creation_GST').prefetch_related('shades').all()
 
-    for items in queryset:
-        print(items.item_name)
-        print(items.Item_Color)
-
-        for shade in items.shades.all():
-            print(shade.item_shade_name)
-
-            for squantity in shade.godown_shades.all():
-                print(squantity.godown_name)
-                print(squantity.quantity)
-
 
 # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '' and  g_search is not None:
@@ -781,13 +770,59 @@ def godowndelete(request,str,pk):
 
 #_________________________godown end______________________________
 
-#__________________________stock transfer end__________________________
+#__________________________stock transfer start__________________________
 
 def stocktransfer(request):
     return render(request,'misc/stock_transfer.html')
 
 
 #__________________________stock transfer end__________________________
+
+
+
+#__________________________purchase voucher start__________________________
+
+def puchasevouchercreate(request):
+    return render(request,'.html')
+
+
+def puchasevoucherupdate(request,pk):
+    return render(request,'.html')
+
+
+def puchasevoucherlist(request):
+    return render(request,'.html')
+
+
+def purchasevoucherdelete(request,pk):
+    pass
+
+
+
+#__________________________purchase voucher end__________________________
+
+
+
+#__________________________salesvoucherstart__________________________
+
+def salesvouchercreate(request):
+    return render(request,'.html')
+
+
+def salesvoucherupdate(request,pk):
+    return render(request,'.html')
+
+
+def salesvoucherlist(request):
+    return render(request,'.html')
+
+
+def salesvoucherdelete(request,pk):
+    pass
+
+
+
+#__________________________sales voucher end__________________________
 
 
 
