@@ -734,6 +734,9 @@ body{
     cursor: pointer;
 }
 
+.qty-pad{
+    padding-left: 50px;
+}
 
  @media screen and (max-width: 600px) {
         .side-bar {

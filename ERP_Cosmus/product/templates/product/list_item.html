@@ -86,7 +86,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div>
               </th>
-              <th scope="col" class="name_absolute">Shades
+              <th scope="col" class="name_absolute ps-5">Shades
                 <div class="nav-item dropdown Item_color_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -194,31 +194,27 @@ the input field will be pre-filled with that value when the page is loaded. -->
                 <table>
                   <thead>
                     <tr>
-                      <th class="pe-3">Shade</th>
-                      <th class="pe-3">Godown</th>
-                      <th class="pe-3">Qty</th>
+                      <th class="px-2 ">Shade</th>
+                      <th class="px-2">Godown<span class="ps-5">Qty</span></th>              
                     </tr>
-                  </thead>
-                  <tbody>
-                    {% for shade in item.shades.all %}
                     <tr>
-                      <td>{{ shade.item_shade_name }}</td>
-                      <td>
+                        {% for shade in item.shades.all %}
+                      <td class="px-2">{{shade.item_shade_name}}</td>
+                      <td class="px-2 ms-5">
+                        {% for shade_q in shade.godown_shades.all %}
                         <table>
-                          <tbody>
-                            {% for shade_q in shade.godown_shades.all %}
                             <tr>
-                              <td>{{ shade_q.godown_name }}</td>
-                              <td>{{ shade_q.quantity }}</td>
-                            </tr>
-                            {% endfor %}
-                          </tbody>
+                              <td class="px-3">{{shade_q.godown_name}}</td>
+                              <td class="ps-5">{{shade_q.quantity}}</td>
+                          </tr>
+                          
                         </table>
+                        {% endfor %}
                       </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                      </tr>  
+                        {% endfor %} 
+                
+                </table> 
               </td>
               <td>{{item.Material_code}}</td>
               <td>{{item.Packing}}</td>
