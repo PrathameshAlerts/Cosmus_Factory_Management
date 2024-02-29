@@ -192,30 +192,33 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <!-- render reverse related fields -->
               <td>
                 <table>
+                  <thead>
                     <tr>
                       <th class="pe-3">Shade</th>
                       <th class="pe-3">Godown</th>
                       <th class="pe-3">Qty</th>
                     </tr>
-                      {% for shade in item.shades.all %}
-                      <div class="d-flex ">
-                        <tr>
-                         <td>{{shade.item_shade_name}}</td>
-                           {% for shade_q in shade.godown_shades.all %}
-                           
-                          <td >{{shade_q.godown_name}}</td>
-                          
-                         <td >{{shade_q.quantity}}</td>
-                        </tr>
-                        </div>
-                          {% endfor %}
-                        {% endfor %}
-                    
-                      
-                    
-                      
-                
-                </table> 
+                  </thead>
+                  <tbody>
+                    {% for shade in item.shades.all %}
+                    <tr>
+                      <td>{{ shade.item_shade_name }}</td>
+                      <td>
+                        <table>
+                          <tbody>
+                            {% for shade_q in shade.godown_shades.all %}
+                            <tr>
+                              <td>{{ shade_q.godown_name }}</td>
+                              <td>{{ shade_q.quantity }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </td>
               <td>{{item.Material_code}}</td>
               <td>{{item.Packing}}</td>

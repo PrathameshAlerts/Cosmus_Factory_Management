@@ -435,16 +435,22 @@ class item_godown_quantity_through_table(models.Model):
     def __str__(self):
         return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
     
-# @receiver(pre_save, sender=item_godown_quantity_through_table)
-# def save_primary_item_color_shade(sender, instance, **kwargs):
 
-#     if instance.pk is None:
-#         godown_name = instance.godown_name
-#         Item_shade_name =  instance.Item_shade_name
-#         quantity = instance.quantity
-#     else:
-#         pass
+@receiver(pre_save, sender=item_godown_quantity_through_table)
+def save_primary_item_color_shade(sender, instance, **kwargs):
+    try:
+        existing_instance, created = item_godown_quantity_through_table.objects.get_or_create(
+            godown_name=instance.godown_name,
+            Item_shade_name=instance.Item_shade_name,
+            defaults={'quantity': instance.quantity}
+        )
+        if not created:
+            existing_instance.quantity += instance.quantity
+            existing_instance.save()
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
+    
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225)
 
