@@ -737,6 +737,9 @@ body{
 .qty-pad{
     padding-left: 50px;
 }
+.table-left{
+    padding-left: 900px;
+}
 
  @media screen and (max-width: 600px) {
         .side-bar {
