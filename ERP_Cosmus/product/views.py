@@ -192,7 +192,6 @@ def item_list(request):
 
             for squantity in shade.godown_shades.all():
                 print(squantity.godown_name)
-                print(squantity.Item_shade_name)
                 print(squantity.quantity)
 
 

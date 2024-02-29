@@ -86,7 +86,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div>
               </th>
-              <th scope="col" class="name_absolute">Shades
+              <th scope="col" class="name_absolute ps-5">Shades
                 <div class="nav-item dropdown Item_color_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -193,27 +193,25 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>
                 <table>
                     <tr>
-                      <th class="pe-3">Shade</th>
-                      <th class="pe-3">Godown</th>
-                      <th class="pe-3">Qty</th>
+                      <th class="px-2 ">Shade</th>
+                      <th class="px-2">Godown<span class="ps-5">Qty</span></th>              
                     </tr>
-                      {% for shade in item.shades.all %}
-                      <div class="d-flex ">
-                        <tr>
-                         <td>{{shade.item_shade_name}}</td>
-                           {% for shade_q in shade.godown_shades.all %}
-                           
-                          <td >{{shade_q.godown_name}}</td>
+                    <tr>
+                        {% for shade in item.shades.all %}
+                      <td class="px-2">{{shade.item_shade_name}}</td>
+                      <td class="px-2 ms-5">
+                        {% for shade_q in shade.godown_shades.all %}
+                        <table>
+                            <tr>
+                              <td class="px-3">{{shade_q.godown_name}}</td>
+                              <td class="ps-5">{{shade_q.quantity}}</td>
+                          </tr>
                           
-                         <td >{{shade_q.quantity}}</td>
-                        </tr>
-                        </div>
-                          {% endfor %}
+                        </table>
                         {% endfor %}
-                    
-                      
-                    
-                      
+                      </td>
+                      </tr>  
+                        {% endfor %} 
                 
                 </table> 
               </td>
