@@ -782,11 +782,10 @@ def godowndelete(request,str,pk):
 def stocktransfer(request):
 
     raw_godowns = Godown_raw_material.objects.all()
-
+    items = Item_Creation.objects.all()
 
     if request.method == 'POST':
         voucher_no  = request.POST.get('voucher_no')
-        remarks = request.POST.get('remarks')
         print(request.POST)
         source_godown =request.POST.get('source_godown')
         target_godown = request.POST.get('target_godown')
@@ -797,18 +796,44 @@ def stocktransfer(request):
         item_unit_transfer = request.POST.get('item_unit_transfer')
         remarks = request.POST.get('remarks')
 
-        source_g = item_godown_quantity_through_table.objects.filter(godown_name=source_godown)
+        try:
+            # filter the source godown
+            source_g = item_godown_quantity_through_table.objects.filter(godown_name=source_godown)
 
-        destination_g = item_godown_quantity_through_table.objects.filter(godown_name=target_godown)
+            #filter the destination godown
+            destination_g = item_godown_quantity_through_table.objects.filter(godown_name=target_godown)
 
-        source_g_shades = source_g.filter(Item_shade_name = item_shade_transfer)
+            #get the shade from the godown source godown
+            source_g_shades = source_g.get(Item_shade_name = item_shade_transfer)
 
-        for x in source_g_shades:
-            print(x)
+            #get the shade from the godown source godown
+            destination_g_shades = destination_g.get(Item_shade_name = item_shade_transfer)
 
-        
+            try:
+                if source_g_shades == destination_g:
 
-    context = {'raw_godowns':raw_godowns}
+                    # Update the quantity
+                    source_g_shades.quantity = source_g_shades.quantity - item_quantity_transfer
+                    source_g_shades.save()
+
+                    destination_g_shades.shades.quantity = destination_g.shades.quantity + destination_g.shades.quantity
+                    destination_g_shades.save()
+                else:
+                    print('source item shade and destination item shade does not match')
+
+            except Exception as e:
+                print('source item shade and destination item shade does not match')
+
+        except item_godown_quantity_through_table.DoesNotExist:
+            print(f'Shade {item_shade_transfer} not found in the source godown')
+            # Handle the case when the shade is not found in the source godown
+
+        except ValueError:
+            print('Invalid quantity provided')  #Handle the case when invalid quantity is provided
+
+
+
+    context = {'raw_godowns':raw_godowns , 'items' : items}
     return render(request,'misc/stock_transfer.html',context)
 
 
