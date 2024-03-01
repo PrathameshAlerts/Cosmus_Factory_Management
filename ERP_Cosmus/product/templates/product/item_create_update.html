@@ -78,7 +78,11 @@
                         <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
                         {% endif %}
                     </td>
-                    <td>{{ shade_form.item_shade_name }}</td>
+                    {% if forloop.first %}
+                    <td>{{shade_form.item_shade_name}}</td> make this readonly
+                    {% else %}
+                    <td>{{shade_form.item_shade_name}}</td>
+                    {% endif %}
                     <td><div>{{ shade_form.item_color_image }}</div></td>
                     <td>{{ shade_form.DELETE }}</td>
                   </tr>
