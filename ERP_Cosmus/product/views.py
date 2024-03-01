@@ -785,16 +785,22 @@ def stocktransfer(request):
 
     selected_source_godown_id = request.GET.get('selected_godown_id')
     print(selected_source_godown_id)
-
+  
     selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
-    
-    for item_quantity in selected_source_godown_items:
-        item = item_quantity.Item_shade_name
+
+    """
+    godown - one to many - godownitems - many to one - item_shades - many to one - items
+
+    """
+
+    print(selected_source_godown_items)
+    for items in selected_source_godown_items:
+        item = items.Item_shade_name
         print("Item:", item.items.item_name)
         print("Color:", item.items.Item_Color.color_name)
         print("per:", item.items.unit_name_item.unit_name)
         print("Shade:", item.item_shade_name)
-        print("Quantity:", item_quantity.quantity)
+        print("Quantity:", items.quantity)
         
 
 
