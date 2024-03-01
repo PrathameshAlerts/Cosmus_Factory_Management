@@ -792,7 +792,7 @@ def stocktransfer(request):
         item_name_transfer = request.POST.get('item_name_transfer')
         item_color_transfer = request.POST.get('item_color_transfer')
         item_shade_transfer = request.POST.get('item_shade_transfer')
-        item_quantity_transfer = request.POST.get('item_quantity_transfer')
+        item_quantity_transfer = int(request.POST.get('item_quantity_transfer'))
         item_unit_transfer = request.POST.get('item_unit_transfer')
         remarks = request.POST.get('remarks')
 
@@ -809,20 +809,32 @@ def stocktransfer(request):
             #get the shade from the godown source godown
             destination_g_shades = destination_g.get(Item_shade_name = item_shade_transfer)
 
+            source_shade_name = source_g_shades.Item_shade_name
+            destination_shade_name = destination_g_shades.Item_shade_name
+            
+            print(source_shade_name)
+            print(destination_shade_name)
+            
             try:
-                if source_g_shades == destination_g:
+                if source_shade_name == destination_shade_name:
 
                     # Update the quantity
+                    #subsitact the quantity from source 
                     source_g_shades.quantity = source_g_shades.quantity - item_quantity_transfer
                     source_g_shades.save()
 
-                    destination_g_shades.shades.quantity = destination_g.shades.quantity + destination_g.shades.quantity
+                    # add the quantity to the destiantion
+                    destination_g_shades.quantity = destination_g_shades.quantity + item_quantity_transfer
                     destination_g_shades.save()
+                    
+                    
+
+
                 else:
                     print('source item shade and destination item shade does not match')
 
             except Exception as e:
-                print('source item shade and destination item shade does not match')
+                print(f'an exception occured{e}')
 
         except item_godown_quantity_through_table.DoesNotExist:
             print(f'Shade {item_shade_transfer} not found in the source godown')
