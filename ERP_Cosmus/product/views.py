@@ -791,6 +791,8 @@ def stocktransfer(request):
     for item_quantity in selected_source_godown_items:
         item = item_quantity.Item_shade_name
         print("Item:", item.items.item_name)
+        print("Color:", item.items.Item_Color.color_name)
+        print("per:", item.items.unit_name_item.unit_name)
         print("Shade:", item.item_shade_name)
         print("Quantity:", item_quantity.quantity)
         
