@@ -61,12 +61,58 @@
             </thead>
             <tbody>
               <tr>
-                <td><input type="text" class="item-select" value="" name="item_name_transfer" maxlength="50" required id=""></td>
-                <td><input type="text" class="item-select" value="" name="item_color_transfer" maxlength="50" required id=""></td>
-                <td><input type="text" class="item-select" value="" name="item_shade_transfer" maxlength="50" required id=""></td>
-                <td><input type="number" class="item-select" value="" name="item_quantity_transfer" maxlength="50" required id=""></td>
-                <td><input type="text" class="item-select" value="" name="item_unit_transfer" maxlength="50" required id=""></td>
-                <td><input type="text" class="item-select" value="" name="remarks" maxlength="50" required id=""></td>
+                <td>
+                  <input list="name" class="item-select">
+                      <datalist id="name">
+                        <option value="Internet Explorer">
+                        <option value="Firefox">
+                        <option value="Chrome">
+                        <option value="Opera">
+                        <option value="Safari">
+                      </datalist>
+                  </td>
+                  <td>
+                    <input list="color" class="item-select">
+                        <datalist id="color">
+                          <option value="blue">
+                          <option value="green">
+                          <option value="yellow">
+                       
+                        </datalist>
+                    </td>
+                    <td>
+                      <input list="shades" class="item-select">
+                          <datalist id="shades">
+                            <option value="Internet Explorer">
+                            <option value="Firefox">
+                            <option value="Chrome">
+                            <option value="Opera">
+                            <option value="">
+                          </datalist>
+                      </td>
+                      <td>
+                        <input list="qty" class="item-select">
+                            <datalist id="qty">
+                              <option value="">
+                              <option value="">
+                              <option value="">
+                              <option value="">
+                              <option value="Saari">
+                            </datalist>
+                        </td>
+                        <td>
+                          <input list="per" class="item-select">
+                              <datalist id="per">
+                                <option value="">
+                                <option value="">
+                                <option value="">
+                                <option value="">
+                                <option value="">
+                              </datalist>
+                          </td>
+                          <td>
+                            <span>used</span>
+                            </td>
               </tr>
             </tbody>
           </table>
