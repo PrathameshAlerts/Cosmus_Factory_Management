@@ -62,41 +62,37 @@
         <tbody>
           <tr>
             <td>
-              <input list="name" class="item-select">
+              <input list="name" class="item-select" id="nameInput">
               <datalist id="name">
-                {% for item in items %}
-                <option value="{{item.item_name}}">{{item.item_name}}</option>
-                  {% endfor %}
+               
               </datalist>
             </td>
             <td>
-              <input list="color" class="item-select">
+              <input list="color" class="item-select" id="colorInput">
               <datalist id="color">
-                {% for item in items %}
-                <option value="{{item.Color_Name}}">{{item.Color_Name}}</option>
-                {% endfor %}
+               
 
               </datalist>
             </td>
+           
             <td>
-              <input list="shades" class="item-select">
+              <input list="shades" class="item-select" id="shadesInput">
               <datalist id="shades">
-                <option value="Internet Explorer">
-                <option value="">
+                
+                
               </datalist>
             </td>
             <td>
-              <input list="qty" class="item-select">
+              <input list="qty" class="item-select" id="qtyInput">
               <datalist id="qty">
-                <option value="Saari">
+                
               </datalist>
             </td>
+          
             <td>
-              <input list="per" class="item-select">
+              <input list="per" class="item-select" id="perInput">
               <datalist id="per">
-                {% for item in items %}
-                <option value="{{item.Unit_Name}}">{{item.Unit_Name}}</option>
-                {% endfor %}
+                
               </datalist>
             </td>
             <td>
@@ -122,4 +118,38 @@
     });
   });
 </script>
+ <script>
+        $(document).ready(function(){
+            // Function to fetch data via AJAX
+            function fetchData(url, dataListId) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        // Clear existing options
+                        $(dataListId).empty();
+                        // Append fetched data to datalist
+                        response.forEach(function(item) {
+                            $(dataListId).append('<option value="' + item.value + '">');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            // Fetch data for name input
+            fetchData('/api/items/name', '#name');
+            // Fetch data for color input
+            fetchData('/api/items/color', '#color');
+            // Fetch data for shades input
+            fetchData('/api/items/shades', '#shades');
+            // Fetch data for qty input
+            fetchData('/api/items/qty', '#qty');
+            // Fetch data for per input
+            fetchData('/api/items/per', '#per');
+        });
+    </script>
 {% endblock body %}
