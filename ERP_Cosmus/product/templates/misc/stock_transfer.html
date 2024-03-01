@@ -150,4 +150,31 @@
    </form>
   </div>
 
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#id_source_godown').change(function() {
+            var selectedGodownId = $(this).val(); // Get the value of the selected option
+
+            // Send selectedGodownId to the backend using AJAX
+            $.ajax({
+                url: '/stocktransfer/',
+                method: 'GET',
+                data: {
+                    'selected_godown_id': selectedGodownId
+                },
+                success: function(response) {
+                    // Handle success response from the backend
+                    console.log('Value sent to the backend successfully');
+                },
+                error: function(xhr, errmsg, err) {
+                    // Handle error
+                    console.log('Error sending value to the backend');
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock body %}

@@ -780,9 +780,20 @@ def godowndelete(request,str,pk):
 
 
 def stocktransfer(request):
-
     raw_godowns = Godown_raw_material.objects.all()
     items = Item_Creation.objects.all()
+
+    selected_source_godown_id = request.GET.get('selected_godown_id')
+    print(selected_source_godown_id)
+
+    selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
+    
+    for x in selected_source_godown_items:
+        print(x.Item_shade_name)
+        print(x.quantity)
+        
+
+    
 
     if request.method == 'POST':
         voucher_no  = request.POST.get('voucher_no')
@@ -812,8 +823,6 @@ def stocktransfer(request):
             source_shade_name = source_g_shades.Item_shade_name
             destination_shade_name = destination_g_shades.Item_shade_name
             
-            print(source_shade_name)
-            print(destination_shade_name)
             
             try:
                 if source_shade_name == destination_shade_name:
@@ -827,8 +836,6 @@ def stocktransfer(request):
                     destination_g_shades.quantity = destination_g_shades.quantity + item_quantity_transfer
                     destination_g_shades.save()
                     
-                    
-
 
                 else:
                     print('source item shade and destination item shade does not match')
@@ -845,7 +852,7 @@ def stocktransfer(request):
 
 
 
-    context = {'raw_godowns':raw_godowns , 'items' : items}
+    context = {'raw_godowns':raw_godowns ,'items' : items , 'selected_source_godown_items':selected_source_godown_items}
     return render(request,'misc/stock_transfer.html',context)
 
 
