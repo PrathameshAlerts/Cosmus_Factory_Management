@@ -23,80 +23,106 @@
       <input type="text" class="item-select mx-3" value="" name="" maxlength="50" required id="">
     </div>
 
-    <table class="table table-striped table-hover table-responsive">
-      <thead>
-        <tr>
-          <th>Item Names</th>
-          <th>Colour</th>
-          <th>Shade</th>
-          <th>Quantity</th>
-          <th>Rate</th>
-          <th>Per</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1680 Arpan</td>
-          <td>Navy</td>
-          <td>Shades-2</td>
-          <td> 1,255.00 </td>
-          <td> 600.00 </td>
-          <td>Meter</td>
-          <td> 7,53,000.00 dr</td>
-        </tr>
-        <tr>
-          <td>1680 Arpan</td>
-          <td>Navy</td>
-          <td>Shades-2</td>
-          <td> 1,255.00 </td>
-          <td> 600.00 </td>
-          <td>Meter</td>
-          <td> 7,53,000.00 dr</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td> </td>
-          <td>Frieght & Transport</td>
-          <td>5000</td>
-        </tr>
-        
+    <div class="">
+      <table class="table table-striped table-hover table-responsive myTable">
+        <thead>
           <tr>
+            <th>Item Names</th>
+            <th>Colour</th>
+            <th>Shade</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Per</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1680 Arpan</td>
+            <td>Navy</td>
+            <td>Shades-2</td>
+            <td> 1,255.00 </td>
+            <td> 600.00 </td>
             <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td> </td>
-            <td>Gross Total</td>
-            <td>13,58,000.00</td>
+            <td></td>
           </tr>
           <tr>
+            <td>1680 Arpan</td>
+            <td>Navy</td>
+            <td>Shades-2</td>
+            <td>1,255.00</td>
+            <td>400.00</td>
             <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td> </td>
-            <td>GSt 12% </td>
-            <td> 1,62,960.00 dr</td>
-          </tr>
-          <tr>
             <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td> </td>
-            <td>Grand Total RS </td>
-            <td>15,20,960.00</td>
           </tr>
-          
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+      <div class="table-left">
+        <div class="d-flex mb-3">
+          <p>Frieght & Transport:</p>
+          <span id="transportValue" class="fw-bold px-2">5000</span>
+      </div>
+      <div class="d-flex mb-3">
+          <p>Gross Total: </p>
+          <span id="grossTotal" class="fw-bold px-2"></span>
+      </div>
+      <div class="d-flex mb-3">
+          <p>GSt 12%:</p>
+          <span id="gstAmount" class="fw-bold px-2"></span>
+      </div>
+      <div class="d-flex mb-3">
+          <p>Grand Total RS </p>
+          <span id="finalAmount" class="fw-bold px-2"></span>
+      </div>
+      
+      </div>
+      
+    </div>
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button>
+  </form>
   </div>
+ 
+  <script>
+    var tables = document.getElementsByClassName('myTable');
+    var transportValue = 5000;
+    var grossTotal = 0;
+    var gstAmount = 0;
+
+    for (var t = 0; t < tables.length; t++) {
+        var rows = tables[t].rows;
+
+        for (var i = 0; i < rows.length; i++) {
+            var quantity = rows[i].cells[3].innerText.trim().replace(',', ''); // Remove commas and trim whitespace
+            var rate = rows[i].cells[4].innerText.trim().replace(',', ''); // Remove commas and trim whitespace
+
+            // Check if quantity and rate are valid numbers
+            if (!isNaN(quantity) && !isNaN(rate)) {
+                var amount = parseFloat(quantity) * parseFloat(rate);
+                rows[i].cells[6].innerText = amount.toFixed(2); // Display amount with 2 decimal places
+                grossTotal += amount; // Add the amount to the total
+            }
+            if (rows[i].cells[5].innerText.trim() === 'Gross Total') {
+                grossTotal += parseFloat(rows[i].cells[6].innerText.trim().replace(',', ''));
+            }
+            if (rows[i].cells[5].innerText.trim() === 'GSt 12%') {
+                gstAmount += parseFloat(rows[i].cells[6].innerText.replace('dr', '').trim().replace(',', ''));
+            }
+        }
+    }
+
+    // Display the gross total and GST amount
+    document.getElementById('grossTotal').innerText = grossTotal.toFixed(2);
+    document.getElementById('gstAmount').innerText = gstAmount.toFixed(2);
+
+    // Calculate the final amount
+    var finalAmount = grossTotal + transportValue + gstAmount;
+
+    // Display the final amount
+    document.getElementById('finalAmount').innerText = finalAmount.toFixed(2);
+</script>
+
+
 
 {% endblock body %}

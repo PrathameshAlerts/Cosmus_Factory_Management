@@ -2,7 +2,7 @@ import cities_light
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpRequest, HttpResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -772,8 +772,44 @@ def godowndelete(request,str,pk):
 
 #__________________________stock transfer start__________________________
 
+
+
+
+
+# RawStockTransfer
+
+
 def stocktransfer(request):
-    return render(request,'misc/stock_transfer.html')
+
+    raw_godowns = Godown_raw_material.objects.all()
+
+
+    if request.method == 'POST':
+        voucher_no  = request.POST.get('voucher_no')
+        remarks = request.POST.get('remarks')
+        print(request.POST)
+        source_godown =request.POST.get('source_godown')
+        target_godown = request.POST.get('target_godown')
+        item_name_transfer = request.POST.get('item_name_transfer')
+        item_color_transfer = request.POST.get('item_color_transfer')
+        item_shade_transfer = request.POST.get('item_shade_transfer')
+        item_quantity_transfer = request.POST.get('item_quantity_transfer')
+        item_unit_transfer = request.POST.get('item_unit_transfer')
+        remarks = request.POST.get('remarks')
+
+        source_g = item_godown_quantity_through_table.objects.filter(godown_name=source_godown)
+
+        destination_g = item_godown_quantity_through_table.objects.filter(godown_name=target_godown)
+
+        source_g_shades = source_g.filter(Item_shade_name = item_shade_transfer)
+
+        for x in source_g_shades:
+            print(x)
+
+        
+
+    context = {'raw_godowns':raw_godowns}
+    return render(request,'misc/stock_transfer.html',context)
 
 
 #__________________________stock transfer end__________________________
@@ -786,8 +822,10 @@ def purchasevouchercreate(request):
     return render(request,'.html')
 
 
+
 def purchasevoucherupdate(request,pk):
     return render(request,'.html')
+
 
 
 def purchasevoucherlist(request):

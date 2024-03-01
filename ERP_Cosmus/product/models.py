@@ -433,49 +433,9 @@ class item_godown_quantity_through_table(models.Model):
         # godown.
 
     
-    # def save(self,*args, **kwargs):
-    #     existing_entry = item_godown_quantity_through_table.objects.filter(
-    #         godown_name = self.godown_name,
-    #         Item_shade_name  = self.Item_shade_name
-    #     ).first()
-    #     if existing_entry:
-    #         new_quantity = self.quantity + existing_entry.quantity
 
-    #         item_godown_quantity_through_table.objects.filter(
-    #         godown_name=self.godown_name,
-    #         Item_shade_name=self.Item_shade_name
-    #     ).update(quantity=new_quantity)
-    #     else:
-    #         # Create a new entry if it doesn't exist
-    #         # as a default behaviour 
-    #         super().save(*args, **kwargs)
-
-    # def __str__(self):
-    #     return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
-
-
-@receiver(pre_save, sender=item_godown_quantity_through_table)
-def update_quantity(sender, instance, **kwargs):
-     
-    existing_entry = item_godown_quantity_through_table.objects.filter(
-            godown_name = instance.godown_name,
-            Item_shade_name  = instance.Item_shade_name
-        ).first()
-     
-    if existing_entry:
-        new_quantity = new_quantity + existing_entry.quantity
-
-
-        existing_entry = item_godown_quantity_through_table.objects.filter(
-            godown_name = instance.godown_name,
-            Item_shade_name  = instance.Item_shade_name
-        ).update(quantity = new_quantity)
-        
-
-        # Set instance to None to prevent it from being saved again
-        instance.pk = None
-    else:
-        pass
+    def __str__(self):
+        return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
 
 
 class Godown_finished_goods(models.Model):
@@ -483,11 +443,14 @@ class Godown_finished_goods(models.Model):
 
 
 
-
-
-
-
-
+class RawStockTransfer(models.Model):
+    voucher_no = models.BigIntegerField()
+    item_name_transfer = models.CharField(max_length = 200)
+    item_color_transfer = models.CharField(max_length = 200)
+    item_shade_transfer = models.CharField(max_length = 200)
+    item_quantity_transfer = models.CharField(max_length = 200)
+    item_unit_transfer = models.CharField(max_length = 200)
+    remarks = models.CharField(max_length = 255)
 
 
 
