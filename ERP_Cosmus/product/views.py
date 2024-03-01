@@ -788,12 +788,22 @@ def stocktransfer(request):
 
     selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
     
-    for x in selected_source_godown_items:
-        print(x.Item_shade_name)
-        print(x.quantity)
+    for item_quantity in selected_source_godown_items:
+        item = item_quantity.Item_shade_name
+        print("Item:", item.items.item_name)
+        print("Shade:", item.item_shade_name)
+        print("Quantity:", item_quantity.quantity)
         
 
-    
+
+    # for shade in current_item.shades:
+    #     print(shade.item_name_rank)
+    #     print(shade.item_shade_name)
+    #     for items in shade.godown_shades:
+    #         print(items.godown_name)
+    #         print(items.Item_shade_name)
+    #         print(items.quantity)
+       
 
     if request.method == 'POST':
         voucher_no  = request.POST.get('voucher_no')
