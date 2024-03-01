@@ -72,8 +72,30 @@
           </table>
         </div>
         
+        
+        <div class=" d-flex mb-3">
     
-   
+          <select value="" class="item-select" name="item_list" required id="id_item_list">
+            {% for item in items %}
+            <option value="{{item.id}}">{{item.item_name}}</option>
+           {% endfor %}
+        
+          </select>
+
+          <select value="" class="item-color-select" name="item_color_list" required id="id_item_color_list">
+     
+            {% for item in items %}
+            <option value="{{item.Item_Color.id}}">{{item.Color_Name}}</option>
+           {% endfor %}
+        
+          </select> 
+          <select value="" class="item-units-select" name="item_units_list" required id="id_item_units_list">
+     
+            {% for item in items %}
+            <option value="{{item.unit_name_item.id}}">{{item.Unit_Name}}</option>
+           {% endfor %}
+        
+          </select> 
 
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
@@ -81,5 +103,5 @@
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button>
    </form>
   </div>
-</form>
+
 {% endblock body %}
