@@ -1,7 +1,7 @@
 import cities_light
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
@@ -777,41 +777,67 @@ def godowndelete(request,str,pk):
 
 
 # RawStockTransfer
-
-
 def stocktransfer(request):
     raw_godowns = Godown_raw_material.objects.all()
-    items = Item_Creation.objects.all()
+    if request.method == 'GET':
+        selected_source_godown_id = request.GET.get('selected_godown_id') 
+        selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
+ 
+        #godown - one to many - godownitems - many to one - item_shades - many to one - items
 
-    selected_source_godown_id = request.GET.get('selected_godown_id')
-    print(selected_source_godown_id)
-  
-    selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
-
-    """
-    godown - one to many - godownitems - many to one - item_shades - many to one - items
-
-    """
-
-    print(selected_source_godown_items)
-    for items in selected_source_godown_items:
-        item = items.Item_shade_name
-        print("Item:", item.items.item_name)
-        print("Color:", item.items.Item_Color.color_name)
-        print("per:", item.items.unit_name_item.unit_name)
-        print("Shade:", item.item_shade_name)
-        print("Quantity:", items.quantity)
+        items_in_godown = {}
+        for items in selected_source_godown_items:
+            item = items.Item_shade_name
+            item_name =  item.items.item_name
+            item_id = item.items.id
+            items_in_godown[item_id] = item_name
         
+        item_name_value = request.GET.get('item_value')
+        item_create_table = item_color_shade.objects.filter(items = item_name_value)
+        item_shades = {}
+        for x in item_create_table:
+            shade_name = x.item_shade_name
+            shade_id = x.id
+            item_shades[shade_id] = shade_name
+        
+        item_color = None
+        item_per = None
+
+        if item_name_value is not None:
+            item_name_value = int(item_name_value)
+            print('type:',type(item_name_value))
+            print('value:',item_name_value)
+            items = Item_Creation.objects.get(id = item_name_value)
+        
+            item_color = items.Item_Color.color_name
+            item_per = items.unit_name_item.unit_name
 
 
-    # for shade in current_item.shades:
-    #     print(shade.item_name_rank)
-    #     print(shade.item_shade_name)
-    #     for items in shade.godown_shades:
-    #         print(items.godown_name)
-    #         print(items.Item_shade_name)
-    #         print(items.quantity)
-       
+            # print("Color:", item.items.Item_Color.color_name)
+            # print("per:", item.items.unit_name_item.unit_name)
+            # print("Shade:", item.item_shade_name)
+            # print("Quantity:", items.quantity)
+        
+        shade_quantity = 0
+        selected_shade = request.GET.get('selected_shade_id')
+        selected_godown = request.GET.get('godown_id')
+        print('godowns:', selected_source_godown_id)
+        if selected_shade is not None and selected_godown is not None:
+            selected_shade = int(selected_shade)
+            selected_source_godown_id = int(selected_godown)
+            print('value godown',selected_godown)
+            print('value shade:',selected_shade)
+
+            quantity_get = item_godown_quantity_through_table.objects.filter(Item_shade_name = selected_shade, godown_name =selected_source_godown_id).first()
+            shade_quantity  = quantity_get.quantity
+
+
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
+                                'item_color':item_color,'item_per':item_per, 'shade_quantity':shade_quantity })
+        else:
+             return render(request,'misc/stock_transfer.html',{'raw_godowns':raw_godowns})
+
 
     if request.method == 'POST':
         voucher_no  = request.POST.get('voucher_no')
@@ -841,7 +867,6 @@ def stocktransfer(request):
             source_shade_name = source_g_shades.Item_shade_name
             destination_shade_name = destination_g_shades.Item_shade_name
             
-            
             try:
                 if source_shade_name == destination_shade_name:
 
@@ -854,7 +879,7 @@ def stocktransfer(request):
                     destination_g_shades.quantity = destination_g_shades.quantity + item_quantity_transfer
                     destination_g_shades.save()
                     
-
+                    return HttpResponse('success')
                 else:
                     print('source item shade and destination item shade does not match')
 
@@ -869,9 +894,6 @@ def stocktransfer(request):
             print('Invalid quantity provided')  #Handle the case when invalid quantity is provided
 
 
-
-    context = {'raw_godowns':raw_godowns ,'items' : items , 'selected_source_godown_items':selected_source_godown_items}
-    return render(request,'misc/stock_transfer.html',context)
 
 
 #__________________________stock transfer end__________________________

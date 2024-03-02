@@ -324,6 +324,7 @@ class item_color_shade(models.Model):
     def __str__(self) -> str:
         return self.item_shade_name
 
+
 #post_save signal for item_color_shade if Item_Creation instance is created 
 @receiver(post_save, sender=Item_Creation)
 def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
