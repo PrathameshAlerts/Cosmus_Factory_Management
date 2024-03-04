@@ -803,14 +803,6 @@ def stocktransfer(request):
         print("Quantity:", items.quantity)
         
 
-
-    # for shade in current_item.shades:
-    #     print(shade.item_name_rank)
-    #     print(shade.item_shade_name)
-    #     for items in shade.godown_shades:
-    #         print(items.godown_name)
-    #         print(items.Item_shade_name)
-    #         print(items.quantity)
        
 
     if request.method == 'POST':
@@ -870,7 +862,7 @@ def stocktransfer(request):
 
 
 
-    context = {'raw_godowns':raw_godowns ,'items' : items , 'selected_source_godown_items':selected_source_godown_items}
+    context = {'raw_godowns':raw_godowns ,'selected_source_godown_items':selected_source_godown_items}
     return render(request,'misc/stock_transfer.html',context)
 
 

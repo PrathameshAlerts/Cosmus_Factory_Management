@@ -62,37 +62,48 @@
         <tbody>
           <tr>
             <td>
-              <input list="name" class="item-select" id="nameInput">
+              <input list="name" class="item-select">
               <datalist id="name">
-               
+                {% for item in items %}
+                <option value="{{item.id}}">{{item.item_name}}</option>
+                {% endfor %}
               </datalist>
             </td>
             <td>
-              <input list="color" class="item-select" id="colorInput">
+              <input list="color" class="item-select">
               <datalist id="color">
-               
+                {% for item in items %}
+                <option value="{{item.Item_Color.id}}">{{item.Color_Name}}</option>
+                {% endfor %}
 
               </datalist>
             </td>
-           
             <td>
-              <input list="shades" class="item-select" id="shadesInput">
+              <input list="shades" class="item-select">
               <datalist id="shades">
-                
-                
+                <option value="Internet Explorer">
+                <option value="Firefox">
+                <option value="Chrome">
+                <option value="Opera">
+                <option value="">
               </datalist>
             </td>
             <td>
-              <input list="qty" class="item-select" id="qtyInput">
+              <input list="qty" class="item-select">
               <datalist id="qty">
-                
+                <option value="">
+                <option value="">
+                <option value="">
+                <option value="">
+                <option value="Saari">
               </datalist>
             </td>
-          
             <td>
-              <input list="per" class="item-select" id="perInput">
+              <input list="per" class="item-select">
               <datalist id="per">
-                
+                {% for item in items %}
+                <option value="{{item.unit_name_item.id}}">{{item.Unit_Name}}</option>
+                {% endfor %}
               </datalist>
             </td>
             <td>
@@ -106,50 +117,38 @@
 
 
 
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-    <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="">Return</a></button>
+
+      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+      <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="">Return</a></button>
   </form>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function () {
-    $('select').selectize({
-      sortField: 'text'
+    $('#id_source_godown').change(function () {
+      var selectedGodownId = $(this).val(); // Get the value of the selected option
+
+      // Send selectedGodownId to the backend using AJAX
+      $.ajax({
+        url: '/stocktransfer/',
+        method: 'GET',
+        data: {
+          'selected_godown_id': selectedGodownId
+        },
+        success: function (response) {
+          // Handle success response from the backend
+          console.log('Value sent to the backend successfully');
+        },
+        error: function (xhr, errmsg, err) {
+          // Handle error
+          console.log('Error sending value to the backend');
+        }
+      });
     });
   });
 </script>
- <script>
-        $(document).ready(function(){
-            // Function to fetch data via AJAX
-            function fetchData(url, dataListId) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        // Clear existing options
-                        $(dataListId).empty();
-                        // Append fetched data to datalist
-                        response.forEach(function(item) {
-                            $(dataListId).append('<option value="' + item.value + '">');
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
 
-            // Fetch data for name input
-            fetchData('/api/items/name', '#name');
-            // Fetch data for color input
-            fetchData('/api/items/color', '#color');
-            // Fetch data for shades input
-            fetchData('/api/items/shades', '#shades');
-            // Fetch data for qty input
-            fetchData('/api/items/qty', '#qty');
-            // Fetch data for per input
-            fetchData('/api/items/per', '#per');
-        });
-    </script>
 {% endblock body %}
