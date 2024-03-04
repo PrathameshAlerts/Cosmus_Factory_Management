@@ -9,27 +9,21 @@
     <div class="d-flex mb-3">
       <label for="" class="form-label px-2">Stock Voucher No:</label>
       <input type="number" class="item-select mx-3" value="" name="voucher_no" maxlength="50" required id="">
-
       <div class="ms-auto">
         <label for="" class="form-label px-2">Date:</label>
         <span>{{ current_date }}</span>
       </div>
     </div>
-
     <div class="d-flex mb-3">
       <div>
         <label for="" class="form-label px-2">Source Godown:</label>
         <p>(Transfer from)</p>
       </div>
-
       <div class=" d-flex mb-3">
-
         <select value="" class="item-select" name="source_godown" required id="id_source_godown">
-
           {% for godown in raw_godowns %}
           <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
           {% endfor %}
-
         </select>
       </div>
       <span class="pt-3 pe-3">To</span>
@@ -62,52 +56,24 @@
         <tbody>
           <tr>
             <td>
-              <input list="name" class="item-select">
-              <datalist id="name">
-                {% for item in items %}
-                <option value="{{item.id}}">{{item.item_name}}</option>
-                {% endfor %}
-              </datalist>
+              <select class="item-select" required id="name">
+              </select>
             </td>
             <td>
-              <input list="color" class="item-select">
-              <datalist id="color">
-                {% for item in items %}
-                <option value="{{item.Item_Color.id}}">{{item.Color_Name}}</option>
-                {% endfor %}
-
-              </datalist>
+              <input list="per" id="color" class="item-select" readonly>
             </td>
             <td>
-              <input list="shades" class="item-select">
-              <datalist id="shades">
-                <option value="Internet Explorer">
-                <option value="Firefox">
-                <option value="Chrome">
-                <option value="Opera">
-                <option value="">
-              </datalist>
+              <select class="item-select" required id="shades">
+              </select>
             </td>
             <td>
-              <input list="qty" class="item-select">
-              <datalist id="qty">
-                <option value="">
-                <option value="">
-                <option value="">
-                <option value="">
-                <option value="Saari">
-              </datalist>
+              <input list="qty" id="quantity" class="item-select">
             </td>
             <td>
-              <input list="per" class="item-select">
-              <datalist id="per">
-                {% for item in items %}
-                <option value="{{item.unit_name_item.id}}">{{item.Unit_Name}}</option>
-                {% endfor %}
-              </datalist>
+              <input list="per" id="per" class="item-select" readonly>
             </td>
             <td>
-              <span>used</span>
+              used
             </td>
           </tr>
         </tbody>
@@ -117,38 +83,59 @@
 
 
 
-
-      <input type="submit" class="create-btn mt-4" name="save" value="Save">
-      <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-      <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="">Return</a></button>
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+    <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="">Return</a></button>
   </form>
 </div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function () {
-    $('#id_source_godown').change(function () {
-      var selectedGodownId = $(this).val(); // Get the value of the selected option
 
-      // Send selectedGodownId to the backend using AJAX
-      $.ajax({
-        url: '/stocktransfer/',
-        method: 'GET',
-        data: {
-          'selected_godown_id': selectedGodownId
-        },
-        success: function (response) {
-          // Handle success response from the backend
-          console.log('Value sent to the backend successfully');
-        },
-        error: function (xhr, errmsg, err) {
-          // Handle error
-          console.log('Error sending value to the backend');
-        }
-      });
+
+<script>
+  
+  $(document).ready(function () {
+    $('#name').change(function () {
+        sendAjax('/stocktransfer/', 'GET', { 'item_value': $(this).val() }, function (response) {
+            $('#shades').empty();
+            $('#per').val(response.item_per);
+            $('#color').val(response.item_color);
+            $.each(response.item_shades, function (key, value) {
+                $('#shades').append('<option value="' + key + '">' + value + '</option>');
+            });
+        });
     });
-  });
+
+    $('#id_source_godown').change(function () {
+        sendAjax('/stocktransfer/', 'GET', { 'selected_godown_id': $(this).val() }, function (response) {
+            $('#name').empty();
+            $.each(response.items_in_godown, function (key, value) {
+                $('#name').append('<option value="' + key + '">' + value + '</option>');
+            });
+        });
+    });
+
+    $('#shades').change(function () {
+        var selectgodown = $('#id_source_godown').val();
+        sendAjax('/stocktransfer/', 'GET', { 'selected_shade_id': $(this).val(), 'godown_id': selectgodown }, function (response) {
+            $('#quantity').val(response.shade_quantity);
+        });
+    });
+
+    function sendAjax(url, method, data, successCallback, errorCallback) {
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            success: successCallback,
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+                if (errorCallback) errorCallback(xhr, errmsg, err);
+            }
+        });
+    }
+});
 </script>
 
 {% endblock body %}

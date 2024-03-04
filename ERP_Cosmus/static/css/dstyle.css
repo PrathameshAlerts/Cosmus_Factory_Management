@@ -253,7 +253,8 @@ body{
 }
    
 .side-bar .menu .item a:hover{
-    background: #b6b8b9;
+    background: #888;
+    color: #f1f1f1;
     transition: 0.2s ease;
 
 }
@@ -275,7 +276,7 @@ body{
 }
    
 .side-bar .menu .item .sub-menu a{
-    padding-left: 20px;
+    padding-left: 45px;
 }
    
 .rotate{
