@@ -20,19 +20,19 @@
         <p>(Transfer from)</p>
       </div>
       <div class=" d-flex mb-3">
-        <select value="" class="item-select" name="source_godown" required id="id_source_godown">
+        <select value="" class="item-select my-2" name="source_godown" required id="id_source_godown">
           {% for godown in raw_godowns %}
           <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
           {% endfor %}
         </select>
       </div>
-      <span class="pt-3 pe-3">To</span>
+      <span class="pt-3 pe-3 mx-2">To</span>
       <div>
-        <label for="" class="form-label">Target Godown:</label>
+        <label for="" class="form-label px-2">Target Godown:</label>
         <p>(Transfer to)</p>
       </div>
-      <div class=" d-flex mb-3">
-        <select value="" class="item-select" name="target_godown" required id="id_target_godown">
+      <div class="d-flex mb-3 mx-2">
+        <select value="" class="item-select my-2" name="target_godown" required id="id_target_godown">
 
           {% for godown in raw_godowns %}
           <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
@@ -56,7 +56,9 @@
         <tbody>
           <tr>
             <td>
-              <select class="item-select" required id="name">
+              <select class="item-select" placeholder="Select Item.." id="name">
+                <option value="">Select a item...</option>
+                <option value=""></option>
               </select>
             </td>
             <td>
@@ -64,6 +66,7 @@
             </td>
             <td>
               <select class="item-select" required id="shades">
+                <option value=""></option>
               </select>
             </td>
             <td>
@@ -92,7 +95,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
 <script>
   
   $(document).ready(function () {
@@ -113,10 +115,14 @@
             $.each(response.items_in_godown, function (key, value) {
                 $('#name').append('<option value="' + key + '">' + value + '</option>');
             });
+            $('#name').selectize({
+                 sortField: 'text',
+                  searchField: 'text'
+            });
         });
     });
 
-    $('#shades').change(function () {
+    $('#name').change(function () {
         var selectgodown = $('#id_source_godown').val();
         sendAjax('/stocktransfer/', 'GET', { 'selected_shade_id': $(this).val(), 'godown_id': selectgodown }, function (response) {
             $('#quantity').val(response.shade_quantity);

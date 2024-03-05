@@ -44,7 +44,7 @@
           <td>Navy</td>
           <td>Shades-2</td>
           <td> 1,255.00 </td>
-          <td> 600.00 </td>
+          <td></td>
           <td>Meter</td>
           <td> 7,53,000.00 dr</td>
         </tr>
@@ -52,7 +52,7 @@
       </tbody>
     </table>
 
-    <table class="table table-striped table-hover table-responsive">
+    <table id="product-table" class="table table-striped table-hover table-bordered table-responsive">
       <thead>
         <tr>
           <th>Model Name</th>
@@ -72,118 +72,135 @@
           <td>Navy</td>
           <td>544554</td>
           <td>10pc</td>
-          <td>3055</td>
+          <td>4055</td>
           <td>1599</td>
           <td>40% </td>
           <td>15%<td>
           <td></td>
         </tr>
-        
+        <tr>
+          <td>1680 Arpan</td>
+          <td>Navy</td>
+          <td>544554</td>
+          <td>25pc</td>
+          <td>455</td>
+          <td>100</td>
+          <td>40% </td>
+          <td>15%<td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1680 Arpan</td>
+          <td>Navy</td>
+          <td>544554</td>
+          <td>1pc</td>
+          <td>4550</td>
+          <td>3400</td>
+          <td>40% </td>
+          <td>15%<td>
+          <td></td>
+        </tr>
       </tbody>
     </table>
-    <div class="table-left">
-      <div class="d-flex mb-3  text-bold">
-        <p>Gross Total</p>
-        <span id="grossTotal" class="fw-bold px-2"></span>
-    </div>
-    <div class="d-flex mb-3 text-bold ">
+    <div class="table-leftside">
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Gross Total</p>
+        <span id="grossTotal" class="px-2"></span>
+      </div>
+    <div class="d-flex mb-3 ">
         <p>Spl Dic  3%</p>
-        <span id="splTotal" class="fw-bold px-2"></span>
+        <span id="splTotal" class="px-2"></span>
     </div>
-    <div class="table-left">
-      <div class="d-flex mb-3 text-bold">
-        <p>Grand Total</p>
+   
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Grand Total</p>
         <span id="grandValue" class="fw-bold px-2"></span>
-    </div>
-    <div class="table-left">
+      </div>
       <div class="d-flex mb-3">
         <p>Taxable Value</p>
-        <span id="taxableValue" class="fw-bold px-2"></span>
-    </div>
-    <div class="table-left">
+        <span id="taxableValue" class=" px-2"></span>
+      </div>
       <div class="d-flex mb-3">
         <p>CGST 9%</p>
       </p>
-        <span id="cgstValue" class="fw-bold px-2">1048.55</span>
-    </div>
-    <div class="table-left">
+        <span id="cgstValue" class=" px-2"></span>
+      </div>
       <div class="d-flex mb-3">
         <p>SGST 9%</p>
-        <span id="sgstValue" class="fw-bold px-2">1048.55</span>
-    </div>
-    <div class="table-left">
-      <div class="d-flex mb-3 text-bold">
-        <p>Net Total Rs</p>
+        <span id="sgstValue" class="px-2"></span>
+      </div>
+   
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Net Total Rs</p>
         <span id="netTotalValue" class="fw-bold px-2"></span>
-    </div>
-    <div class="table-left">
+      </div>
+    
       <div class="d-flex mb-3">
         <p>Add:- </p>
         <p>Frieght </p>
-        <span id="frieghtValue" class="fw-bold px-2">150.00</span>
-    </div>
-    <div class="table-left">
-      <div class="d-flex mb-3 text-bold">
-        <p>Net Payable Rs </p>
+        <span id="frieghtValue" class="px-2">150.00</span>
+      </div>
+        
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Net Payable Rs </p>
         <span id="netValue" class="fw-bold px-2"></span>
-    </div>
-
+       </div>
+      </div>
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button>
   </div>
+
   <script>
-    function calculateValues() {
-      var qty = parseInt(document.getElementById('qty').innerText); // Extracting Qty
-      var mrp = parseInt(document.getElementById('mrp').innerText); // Extracting MRP
-      var grossTotal = qty * mrp; // Calculating Gross Total
+  $(document).ready(function() {
+  calculateValues();
 
-      // Updating HTML elements with calculated values
-      document.getElementById('grossTotal').innerText = grossTotal;
-    }
-  </script>
-  <script>
-    // Extracting values from the table
-var MRP = 3055; // Example MRP
-var Qty = 10; // Example Quantity
-var traderDiscount = 0.40; // 40%
-var specialDealerDiscount = 0.15; // 15%
-var freight = 150; // Freight amount
+  // Function to calculate the values
+  function calculateValues() {
+    var grossTotal = 0;
+    var splDiscount = 0;
+    var grandTotal = 0;
+    var taxableValue = 0;
+    var cgstValue = 0;
+    var sgstValue = 0;
+    var netTotalValue = 0;
 
-// Calculating Total Price after Discounts
-var totalAfterDiscounts = MRP * (1 - traderDiscount) * (1 - specialDealerDiscount) * Qty;
+    // Iterate through each row in the table
+    $('#product-table tbody tr').each(function() {
+      var qty = parseFloat($(this).find('td:eq(3)').text());
+      var mrp = parseFloat($(this).find('td:eq(4)').text());
+      var cpPerUnit = parseFloat($(this).find('td:eq(5)').text());
+      var trederDiscount = parseFloat($(this).find('td:eq(6)').text().replace('%', '')) / 100;
+      var splDlrDiscount = parseFloat($(this).find('td:eq(7)').text().replace('%', '')) / 100;
 
-// Calculating Gross Total
-var grossTotal = totalAfterDiscounts;
+      var totalCost = qty * cpPerUnit;
+      var totalAfterTrederDiscount = totalCost * (1 - trederDiscount);
+      var netPrice = totalAfterTrederDiscount * (1 - splDlrDiscount);
 
-// Calculating Special Discount (3% of Gross Total)
-var specialDiscount = 0.03 * grossTotal;
+      // Update the Net Price column in the table
+      $(this).find('td:eq(8)').text(netPrice.toFixed(2));
 
-// Calculating Grand Total
-var grandTotal = grossTotal - specialDiscount;
+      grossTotal += netPrice;
+      splDiscount += netPrice* 0.03;
+      grandTotal += netPrice - (netPrice* 0.03);
+      taxableValue += ((netPrice - (netPrice* 0.03)) - (netPrice - (netPrice* 0.03)* 0.15));
+      console.log(grandTotal)
+      cgstValue += grandTotal* 0.09;
+      sgstValue += (netPrice - (netPrice* 0.03) )* 0.09;
+    });
 
-// Calculating Taxable Value (if available)
+    // Update the elements in the HTML
+    $('#grossTotal').text(grossTotal.toFixed(2));
+    $('#splTotal').text(splDiscount.toFixed(2));
+    $('#grandValue').text(grandTotal.toFixed(2));
+    $('#taxableValue').text(taxableValue.toFixed(2));
+    $('#cgstValue').text(cgstValue.toFixed(2));
+    $('#sgstValue').text(sgstValue.toFixed(2));
+    $('#netTotalValue').text((grandTotal).toFixed(2));
+    $('#netValue').text((grandTotal + 150).toFixed(2));
+  }
+});
 
-// Calculating CGST and SGST (assuming 9% each)
-var cgstValue = 0.09 * grandTotal;
-var sgstValue = 0.09 * grandTotal;
+</script>
 
-// Calculating Net Total
-var netTotal = grandTotal + cgstValue + sgstValue;
-
-// Calculating Net Payable
-var netPayable = netTotal + freight;
-
-// Assigning the calculated values to the corresponding HTML elements
-document.getElementById("grossTotal").innerText = grossTotal.toFixed(2);
-document.getElementById("splTotal").innerText = specialDiscount.toFixed(2);
-document.getElementById("grandValue").innerText = grandTotal.toFixed(2);
-document.getElementById("taxableValue").innerText = ""; // If available, calculate and assign the value here
-document.getElementById("cgstValue").innerText = cgstValue.toFixed(2);
-document.getElementById("sgstValue").innerText = sgstValue.toFixed(2);
-document.getElementById("netTotalValue").innerText = netTotal.toFixed(2);
-document.getElementById("frieghtValue").innerText = freight.toFixed(2);
-document.getElementById("netValue").innerText = netPayable.toFixed(2);
-
-  </script>
 {% endblock body %}

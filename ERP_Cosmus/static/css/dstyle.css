@@ -741,6 +741,9 @@ body{
 .table-left{
     padding-left: 900px;
 }
+.table-leftside{
+    padding-left: 950px;
+}
 
  @media screen and (max-width: 600px) {
         .side-bar {
