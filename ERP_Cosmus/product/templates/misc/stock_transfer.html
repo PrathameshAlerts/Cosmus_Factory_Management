@@ -25,7 +25,7 @@
         <div class=" d-flex mb-3">
 
           <select value="" class="item-select" name="source_godown" required id="id_source_godown">
-     
+            <option value=""></option>
             {% for godown in raw_godowns %}
             <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
            {% endfor %}
@@ -39,7 +39,7 @@
         </div>
         <div class=" d-flex mb-3">
           <select value="" class="item-select" name="target_godown" required id="id_target_godown">
-            
+            <option value=""></option>
             {% for godown in raw_godowns %}
              <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
             {% endfor %}
@@ -64,34 +64,25 @@
                 <td>
 
 
-      <select class="item-select" required id="name">
-
-        <option class="item-select" value=""></option>
+      <select name="name" class="item-select" required id="name">
+        
              </select>
-
                   </td>
                   <td>
-                    <input list="per" id="color" class="item-select" readonly>
+                    <input name="color" id="color" class="item-select" readonly>
                     </td>
                     <td>
+                          <select name = 'shades'  class="item-select" required id="shades">
 
-                          <select class="item-select" required id="shades">
-
-                            <option class="item-select" value=""></option>
-                          
                                  </select>
-
-
-
 
                       </td>
                       <td>
-                        <input list="qty" id="quantity" class="item-select">
-
+                        <input name = 'quantity' id="quantity" class="item-select">
                         </td>
                         <td>
-                          <input list="per" id="per" class="item-select" readonly>
-                          
+                          <input name = 'per' id="per" class="item-select" readonly>
+                
                           </td>
                           <td>
                             <span>used</span>
@@ -113,33 +104,85 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+
+
+  
   
 <script>
-
+ 
   $(document).ready(function() {
-    $('#name').change(function() {
-        var item_value = $(this).val(); // Get the value of the selected option
-
+    $('#id_source_godown').change(function() {
+        var selectedGodownId = $(this).val(); // Get the value of the selected option
+  
         // Send selectedGodownId to the backend using AJAX
         $.ajax({
             url: '/stocktransfer/',
             method: 'GET',
             data: {
-                'item_value': item_value
+                'selected_godown_id': selectedGodownId
+            },
+            success: function(response) {
+                // Handle success response from the backend
+                console.log('Value sent to the backend successfully');
+  
+                $('#name').empty();
+                $('#shades').empty();
+                $('#color').val('');
+                                
+                $('#quantity').val('');
+                $('#per').val('');
+
+                // Populate the dropdown with options from the response
+                var itemsInGodown = response.items_in_godown;
+                console.log('Items in Godown:', itemsInGodown);
+                
+                // Iterate over the itemsInGodown and append options to html
+                $.each(itemsInGodown, function(key, value) {
+                  $('#name').append('<option value="'+key+'">'+value+'</option>');
+              });
+  
+                
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle error
+                console.log('Error sending value to the backend');
+            }
+        });
+    });
+  });
+  
+  $(document).ready(function() {
+    $('#name').change(function() {
+        var item_value = $(this).val(); // Get the value of the selected option
+              // Get the select element by its ID
+        var selectgodown = document.getElementById('id_source_godown');
+
+        // Get the selected value of the select element
+        var selectedValueGodown = selectgodown.value;
+        // Send selectedGodownId to the backend using AJAX
+        $.ajax({
+            url: '/stocktransfer/',
+            method: 'GET',
+            data: {
+                'item_value': item_value,
+                'selectedValueGodown':selectedValueGodown
             },
             success: function(response) {
                 // Handle success response from the backend
                 console.log('Item Value sent to the backend successfully');
                 console.log('item_value:',item_value)
+                console.log('godown_value_shades:',selectedValueGodown)
+                
                 
                 $('#shades').empty();
+                $('#quantity').val('');
 
 
                 //Populate the dropdown with options from the response
                 var item_shades = response.item_shades;
                 var item_per = response.item_per;
                 var item_color = response.item_color;
-
                 var itemperinput = document.querySelector('#per');
                 var itemcolorinput = document.querySelector('#color');
                 // Set the value of the input field to the item_color
@@ -148,6 +191,7 @@
                 itemcolorinput.value = item_color
                 
                 // Iterate over the itemsInGodown and append options to html
+                
                 $.each(item_shades, function(key, value) {
                  $('#shades').append('<option value="'+key+'">'+value+'</option>');
               });
@@ -162,43 +206,6 @@
     });
 });
 
-
-
-
-$(document).ready(function() {
-  $('#id_source_godown').change(function() {
-      var selectedGodownId = $(this).val(); // Get the value of the selected option
-
-      // Send selectedGodownId to the backend using AJAX
-      $.ajax({
-          url: '/stocktransfer/',
-          method: 'GET',
-          data: {
-              'selected_godown_id': selectedGodownId
-          },
-          success: function(response) {
-              // Handle success response from the backend
-              console.log('Value sent to the backend successfully');
-
-              $('#name').empty();
-              // Populate the dropdown with options from the response
-              var itemsInGodown = response.items_in_godown;
-              console.log('Items in Godown:', itemsInGodown);
-              
-              // Iterate over the itemsInGodown and append options to html
-              $.each(itemsInGodown, function(key, value) {
-                $('#name').append('<option value="'+key+'">'+value+'</option>');
-            });
-
-              
-          },
-          error: function(xhr, errmsg, err) {
-              // Handle error
-              console.log('Error sending value to the backend');
-          }
-      });
-  });
-});
 
 
 
@@ -229,7 +236,7 @@ $(document).ready(function() {
               // Handle success response from the backend
               console.log('Value of shade sent to the backend successfully');
 
-              
+              $('#quantity').empty();
               //Populate the dropdown with options from the response
               var shade_quantity = response.shade_quantity;
               console.log('Items in Godown:', shade_quantity);
