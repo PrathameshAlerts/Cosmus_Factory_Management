@@ -183,19 +183,18 @@
       grossTotal += netPrice;
       splDiscount += netPrice* 0.03;
       grandTotal += netPrice - (netPrice* 0.03);
-      taxableValue += ((netPrice - (netPrice* 0.03)) - (netPrice - (netPrice* 0.03)* 0.15));
-      console.log(grandTotal)
-      cgstValue += grandTotal* 0.09;
-      sgstValue += (netPrice - (netPrice* 0.03) )* 0.09;
+      taxableValue +=  (netPrice - (netPrice* 0.03))* 0.18;
+      cgstValue += (netPrice - (netPrice* 0.03));
+      sgstValue += netPrice - (netPrice* 0.03);
     });
 
     // Update the elements in the HTML
     $('#grossTotal').text(grossTotal.toFixed(2));
     $('#splTotal').text(splDiscount.toFixed(2));
     $('#grandValue').text(grandTotal.toFixed(2));
-    $('#taxableValue').text(taxableValue.toFixed(2));
-    $('#cgstValue').text(cgstValue.toFixed(2));
-    $('#sgstValue').text(sgstValue.toFixed(2));
+    $('#taxableValue').text((grandTotal- taxableValue).toFixed(2));
+    $('#cgstValue').text((cgstValue * 0.09).toFixed(2));
+    $('#sgstValue').text((sgstValue* 0.09).toFixed(2));
     $('#netTotalValue').text((grandTotal).toFixed(2));
     $('#netValue').text((grandTotal + 150).toFixed(2));
   }
