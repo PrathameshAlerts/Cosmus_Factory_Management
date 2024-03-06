@@ -818,11 +818,6 @@ def stocktransfer(request):
             item_color = items.Item_Color.color_name
             item_per = items.unit_name_item.unit_name
 
-
-            # print("Color:", item.items.Item_Color.color_name)
-            # print("per:", item.items.unit_name_item.unit_name)
-            # print("Shade:", item.item_shade_name)
-            # print("Quantity:", items.quantity)
         
         shade_quantity = 0
         selected_shade = request.GET.get('selected_shade_id')
@@ -868,13 +863,16 @@ def stocktransfer(request):
             #get the shade from the godown source godown
             source_g_shades = source_g.get(Item_shade_name = item_shade_transfer)
 
-            #get the shade from the godown source godown
+            #get the shade from the godown destination godown
             destination_g_shades = destination_g.get(Item_shade_name = item_shade_transfer)
-
+            
             source_shade_name = source_g_shades.Item_shade_name
             destination_shade_name = destination_g_shades.Item_shade_name
             
             try:
+                # need to change this as if there is
+                # no shade in destination godown u need to add the shade 
+
                 if source_shade_name == destination_shade_name:
 
                     # Update the quantity
@@ -900,7 +898,7 @@ def stocktransfer(request):
         except ValueError:
             print('Invalid quantity provided')  #Handle the case when invalid quantity is provided
         
-        return render(request, 'misc/godown_list.html')
+        return render(request, 'misc/godown_list.html' )
     else:
         return HttpResponse('error')
 

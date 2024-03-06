@@ -3,40 +3,30 @@
 
 {% block body %}
 <div>
-      <h2>Sales Invoice List</h2>
-      <div class="">
-        
-          <div class="d-flex mb-3">
-            <div class="dropdown">
-              <a class="acc-btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Add Material Type
-              </a>
-            
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Raw Material</a></li>
-                <li><a class="dropdown-item" href="#">Finish Goods</a></li>
-               
-              </ul>
-            </div>
-            <div class="container-account"> 
-             <input class="" type="search" placeholder="Search" aria-label="Search" id="" name="" />
-               <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-            </div>
-           </div>
-          </div>  
+  <h2>Sales Invoice List</h2>
+  <div class="">
+    
+      <div class="d-flex mb-3">
+        <button class="acc-btn" onclick="">Add Invoice +</button>
+        <div class="container-account"> 
+         <input class="" type="search" placeholder="Search" aria-label="Search" id="" name="" />
+           <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+        </div>
+       </div>
+      </div>  
          
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-8">
             <table class="table table-striped table-hover table-responsive">
               <thead>
                 <tr>
                   <th scope="col" class="name_absolute">No</th>
-                  <th scope="col" class="name_absolute">Invoice No</th>
-                  <th scope="col" class="name_absolute">Types</th>
-                  <th scope="col" class="name_absolute">Description</th>
-                  <th scope="col" class="name_absolute">Color</th>
-                  <th scope="col" class="name_absolute">SKU</th>
-                  <th scope="col" class="name_absolute">OTY</th>
+                  <th scope="col" class="name_absolute">Date</th>
+                  <th scope="col" class="name_absolute">Party A/c Name</th>
+                  <th scope="col" class="name_absolute">Voucher Type</th>
+                  <th scope="col" class="name_absolute">Voucher No</th>
+                  <th scope="col" class="name_absolute">Debit Amount</th>
+                  <th scope="col" class="name_absolute">Credit Amount</th>
                   <th scope="col" class="name_absolute">Edit</th>
                   <th scope="col" class="name_absolute">Delete</th>
                  
@@ -44,16 +34,13 @@
               </thead>
               
               <tbody>
-               
-              </tr>
-              
               <tr>
                 <td>1</td>
-                <td>1245</td>
-                <td>Raw Material</td>
-                <td>LTB-1036-DARWIN DX</td>
-                <td>Black</td>
-                <td>40051811036‍O</td>
+                <td>01-01-2024</td>
+                <td>akash</td>
+                <td>Sales</td>
+                <td>9078097</td>
+                <td></td>
                 <td>10</td>
                 <td><a href=""><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
                 <td><a href=""><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
@@ -69,8 +56,6 @@
    
     </div>
     
-  <script>
-   
-    </script>
+    
 
 {% endblock body %}
