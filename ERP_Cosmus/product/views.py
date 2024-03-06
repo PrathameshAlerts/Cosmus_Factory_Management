@@ -851,6 +851,8 @@ def stocktransfer(request):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
                                 'item_color':item_color,'item_per':item_per, 'shade_quantity':shade_quantity })
+        
+
         else:
              return render(request,'misc/stock_transfer.html',{'raw_godowns':raw_godowns})
 
@@ -870,51 +872,49 @@ def stocktransfer(request):
 
         try:
             # filter the source godown
-            source_g = item_godown_quantity_through_table.objects.filter(godown_name=source_godown)
+            source_g = item_godown_quantity_through_table.objects.get(godown_name=source_godown, Item_shade_name=item_shade_transfer)
 
             #filter the destination godown
-            destination_g = item_godown_quantity_through_table.objects.filter(godown_name=target_godown)
+            destination_g = item_godown_quantity_through_table.objects.get(godown_name=target_godown, Item_shade_name=item_shade_transfer)
 
-            #get the shade from the godown source godown
-            source_g_shades = source_g.get(Item_shade_name = item_shade_transfer)
+            #substract the quantity from source 
+            source_g.quantity = source_g.quantity - item_quantity_transfer
+            source_g.save()
+            print('test')
 
-            #get the shade from the godown destination godown
-            destination_g_shades = destination_g.get(Item_shade_name = item_shade_transfer)
-
-            source_shade_name = source_g_shades.Item_shade_name
-            destination_shade_name = destination_g_shades.Item_shade_name
-            print('s_g=', source_shade_name)
-            print('d_g=',destination_shade_name)
-            try:
-                # need to change this as if there is
-                # no shade in destination godown u need to add the shade 
-
-                if source_shade_name == destination_shade_name:
-                
-                    # Update the quantity
-                    #subsitact the quantity from source 
-                    source_g_shades.quantity = source_g_shades.quantity - item_quantity_transfer
-                    source_g_shades.save()
-
-                    # add the quantity to the destiantion
-                    destination_g_shades.quantity = destination_g_shades.quantity + item_quantity_transfer
-                    destination_g_shades.save()
+            # add the quantity to the destiantion
+            destination_g.quantity = destination_g.quantity + item_quantity_transfer
+            destination_g.save()
                     
-                    return HttpResponse('success')
-                else:
-                    print('source item shade and destination item shade does not match')
+            return render(request, 'misc/godown_list.html' )
 
-            except Exception as e:
-                print(f'an exception occured{e}')
 
         except item_godown_quantity_through_table.DoesNotExist:
+
             print(f'Shade {item_shade_transfer} not found in the source godown')
-            # Handle the case when the shade is not found in the source godown
+            print(f'Shade {item_shade_transfer} added in {target_godown}')
+
+            #substract the quantity from source 
+            source_g.quantity = source_g.quantity - item_quantity_transfer
+            source_g.save()
+
+
+            # Retrieve the godown instances
+            target_godown_instance = Godown_raw_material.objects.get(id=target_godown)
+            item_shade_transfer_instance = item_color_shade.objects.get(id=item_shade_transfer)
+
+            # Create a new entry for the item shade in the destination godown
+            new_entry = item_godown_quantity_through_table.objects.create(
+                godown_name=target_godown_instance,
+                Item_shade_name=item_shade_transfer_instance,
+                quantity=item_quantity_transfer
+            )
+
+            return HttpResponse('New shade added in godown')
 
         except ValueError:
             print('Invalid quantity provided')  #Handle the case when invalid quantity is provided
         
-        return render(request, 'misc/godown_list.html' )
     else:
         return HttpResponse('error')
 
