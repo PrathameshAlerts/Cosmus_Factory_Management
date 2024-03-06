@@ -52,7 +52,7 @@ class PProductAddForm(forms.ModelForm):
 
 
 
-PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'))
+PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'),extra=1)
 
 
 # Customize the formset to make PProduct_SKU read-only

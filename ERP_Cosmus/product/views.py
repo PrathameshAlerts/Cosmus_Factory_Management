@@ -793,30 +793,31 @@ def stocktransfer(request):
             items_in_godown[item_id] = item_name
         
         item_name_value = request.GET.get('item_value')
-        item_create_table = item_color_shade.objects.filter(items = item_name_value)
+        item_color_godown = request.GET.get('selectedValueGodown')
+
+
+        item_create_table = item_color_shade.objects.filter(items=item_name_value)
         item_shades = {}
         for x in item_create_table:
-            shade_name = x.item_shade_name
-            shade_id = x.id
-            item_shades[shade_id] = shade_name
-        
+            test =  item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name=x.id)
+
+
+            for x in test:
+                shade_name = x.Item_shade_name.item_shade_name
+                shade_id = x.Item_shade_name.id
+                item_shades[shade_id] = shade_name
+
+
         item_color = None
         item_per = None
 
         if item_name_value is not None:
             item_name_value = int(item_name_value)
-            print('type:',type(item_name_value))
-            print('value:',item_name_value)
             items = Item_Creation.objects.get(id = item_name_value)
         
             item_color = items.Item_Color.color_name
             item_per = items.unit_name_item.unit_name
 
-
-            # print("Color:", item.items.Item_Color.color_name)
-            # print("per:", item.items.unit_name_item.unit_name)
-            # print("Shade:", item.item_shade_name)
-            # print("Quantity:", items.quantity)
         
         shade_quantity = 0
         selected_shade = request.GET.get('selected_shade_id')
@@ -840,16 +841,17 @@ def stocktransfer(request):
 
 
     if request.method == 'POST':
+
+        print('post request',request.POST)
         voucher_no  = request.POST.get('voucher_no')
-        print(request.POST)
         source_godown =request.POST.get('source_godown')
         target_godown = request.POST.get('target_godown')
-        item_name_transfer = request.POST.get('item_name_transfer')
-        item_color_transfer = request.POST.get('item_color_transfer')
-        item_shade_transfer = request.POST.get('item_shade_transfer')
-        item_quantity_transfer = int(request.POST.get('item_quantity_transfer'))
-        item_unit_transfer = request.POST.get('item_unit_transfer')
-        remarks = request.POST.get('remarks')
+        item_name_transfer = request.POST.get('name')
+        item_color_transfer = request.POST.get('color')
+        item_shade_transfer = request.POST.get('shades')
+        item_quantity_transfer = int(request.POST.get('quantity'))
+        item_unit_transfer = request.POST.get('per')
+        # remarks = request.POST.get('remarks')
 
         try:
             # filter the source godown
@@ -861,13 +863,16 @@ def stocktransfer(request):
             #get the shade from the godown source godown
             source_g_shades = source_g.get(Item_shade_name = item_shade_transfer)
 
-            #get the shade from the godown source godown
+            #get the shade from the godown destination godown
             destination_g_shades = destination_g.get(Item_shade_name = item_shade_transfer)
-
+            
             source_shade_name = source_g_shades.Item_shade_name
             destination_shade_name = destination_g_shades.Item_shade_name
             
             try:
+                # need to change this as if there is
+                # no shade in destination godown u need to add the shade 
+
                 if source_shade_name == destination_shade_name:
 
                     # Update the quantity
@@ -892,7 +897,10 @@ def stocktransfer(request):
 
         except ValueError:
             print('Invalid quantity provided')  #Handle the case when invalid quantity is provided
-
+        
+        return render(request, 'misc/godown_list.html' )
+    else:
+        return HttpResponse('error')
 
 
 
@@ -903,7 +911,7 @@ def stocktransfer(request):
 #__________________________purchase voucher start__________________________
 
 def purchasevouchercreate(request):
-    return render(request,'accounts/purchase_invoice.html')
+    return render(request,'.html')
 
 
 
@@ -928,7 +936,7 @@ def purchasevoucherdelete(request,pk):
 #__________________________salesvoucherstart__________________________
 
 def salesvouchercreate(request):
-    return render(request,'accounts/sales_invoice.html')
+    return render(request,'.html')
 
 
 def salesvoucherupdate(request,pk):
