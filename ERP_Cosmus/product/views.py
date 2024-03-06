@@ -779,12 +779,14 @@ def godowndelete(request,str,pk):
 # RawStockTransfer
 def stocktransfer(request):
     raw_godowns = Godown_raw_material.objects.all()
+
+    #godown - one to many - godownitems - many to one - item_shades - many to one - items
+
     if request.method == 'GET':
         selected_source_godown_id = request.GET.get('selected_godown_id') 
         selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
- 
-        #godown - one to many - godownitems - many to one - item_shades - many to one - items
 
+        # items in the selected godown 
         items_in_godown = {}
         for items in selected_source_godown_items:
             item = items.Item_shade_name
@@ -792,17 +794,29 @@ def stocktransfer(request):
             item_id = item.items.id
             items_in_godown[item_id] = item_name
         
+
+        # shades of the selected item from the godown 
+            
+        #get the selected item
         item_name_value = request.GET.get('item_value')
+
+        #selected godown
         item_color_godown = request.GET.get('selectedValueGodown')
 
-
+        # get the shade of the selected item
         item_create_table = item_color_shade.objects.filter(items=item_name_value)
+
         item_shades = {}
+
+        #loop in the throughtable with the selected shade of the selected item   
         for x in item_create_table:
-            test =  item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name=x.id)
 
+            # in the through table to with the selected shade of the selected item and selected godown
+            shades_of_item_in_selected_godown =  item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name=x.id)
 
-            for x in test:
+            # loop through the filtered queryset of shades in the godown and make 
+            # item_shade dict to send in front end 
+            for x in shades_of_item_in_selected_godown:
                 shade_name = x.Item_shade_name.item_shade_name
                 shade_id = x.Item_shade_name.id
                 item_shades[shade_id] = shade_name
@@ -813,6 +827,7 @@ def stocktransfer(request):
 
         if item_name_value is not None:
             item_name_value = int(item_name_value)
+            # get the item 
             items = Item_Creation.objects.get(id = item_name_value)
         
             item_color = items.Item_Color.color_name
@@ -865,16 +880,17 @@ def stocktransfer(request):
 
             #get the shade from the godown destination godown
             destination_g_shades = destination_g.get(Item_shade_name = item_shade_transfer)
-            
+
             source_shade_name = source_g_shades.Item_shade_name
             destination_shade_name = destination_g_shades.Item_shade_name
-            
+            print('s_g=', source_shade_name)
+            print('d_g=',destination_shade_name)
             try:
                 # need to change this as if there is
                 # no shade in destination godown u need to add the shade 
 
                 if source_shade_name == destination_shade_name:
-
+                
                     # Update the quantity
                     #subsitact the quantity from source 
                     source_g_shades.quantity = source_g_shades.quantity - item_quantity_transfer
