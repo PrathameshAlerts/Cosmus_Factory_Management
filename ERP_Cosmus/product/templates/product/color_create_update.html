@@ -3,10 +3,13 @@
 
 {% block body %} 
 <div>
-   <h2>{{title}}</h2>
-      <form class="mt-5" action="" method="POST">
-           {% csrf_token %}
-           {{ form.color_name.errors }}
+   
+      <form class="mb-5" action="" method="POST">
+        {% csrf_token %}
+        <div class="errorform">{{ form.color_name.errors }}</div>
+        <h2>{{title}}</h2>
+          
+           
        <div class="d-flex">
         <label for="id_color_name" class="form-label create_color_lable">Name:</label>
         <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
