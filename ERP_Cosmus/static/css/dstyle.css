@@ -5,10 +5,15 @@
     box-sizing: border-box;
     font-family: "Poppins", "Lato", sans-serif;
 }
-   
+ 
+#favicon {
+    width: 50px;
+    height: 50px;
+}
 body{
     min-height: 100vh;
     background-color:#f6f7fb;
+    
     color: #000;
     background-size: cover;
     background-position: center;
@@ -404,6 +409,7 @@ body{
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
     z-index: 0;
+ 
 }
 
 .container-flex {
@@ -744,7 +750,15 @@ body{
 .table-leftside{
     padding-left: 950px;
 }
-
+.errorform{
+    color: #fff;
+    background-color: #da4532;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 7px;
+    list-style-type: none;
+    opacity: 0.6;
+}
  @media screen and (max-width: 600px) {
         .side-bar {
             width: 0;
