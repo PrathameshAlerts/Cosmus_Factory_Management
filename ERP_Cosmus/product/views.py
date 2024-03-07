@@ -133,6 +133,7 @@ def pproduct_list(request):
 def pproduct_delete(request, pk):
     product = get_object_or_404(Product,Product_Refrence_ID=pk)
     product.delete()
+    messages.info(request,f'Product - {product.Product_Name} was deleted')
     return redirect('pproductlist')
 
 
@@ -275,6 +276,7 @@ def item_delete(request, pk):
     
     item_pk = get_object_or_404(Item_Creation,pk = pk)
     item_pk.delete()
+    messages.info(request,f'Item - {item_pk.item_name} was deleted')
     return redirect('item-list')
 
 
@@ -330,6 +332,7 @@ def color_create_update(request, pk=None):
 def color_delete(request, pk):
     product_color = get_object_or_404(Color,pk=pk)
     product_color.delete()
+    messages.info(request,f'Color - {product_color.color_name} was deleted')
     return redirect('simplecolorlistonly')
 
 
@@ -432,6 +435,8 @@ def item_fabric_group_update(request,pk):
 def item_fabric_group_delete(request,pk):
     item_fabric_pk = get_object_or_404(Fabric_Group_Model,pk=pk)
     item_fabric_pk.delete()
+    messages.info(request,f'Fabric group - {item_fabric_pk.fab_grp_name} was deleted')
+    
     return redirect('item-fabgroup-list')
 
 #_______________________fabric group end___________________________________
@@ -480,7 +485,7 @@ def unit_name_update(request,pk):
 def unit_name_delete(request,pk):
     unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
     unit_name_pk.delete()
-    print(unit_name_pk.unit_name)
+    messages.info(request,f'Unit name - {unit_name_pk.unit_name} was deleted')
     return redirect('unit_name-list')
 
 
@@ -540,6 +545,7 @@ def account_sub_group_list(request):
 def account_sub_group_delete(request, pk):
     group = get_object_or_404(AccountSubGroup ,pk=pk)
     group.delete()
+    messages.info(request,f'Group - {group.account_sub_group} was deleted')
     return redirect('account_sub_group-list')
 
 
@@ -921,7 +927,6 @@ def stocktransfer(request):
                                             item_shade_transfer=item_shade_transfer_raw,
                                             item_quantity_transfer=item_quantity_transfer,
                                             item_unit_transfer=item_unit_transfer, remarks=remarks)
-
 
                     return render(request,'misc/stock_transfer.html') #add message new item added in godown with quanitiy
             return HttpResponse('same source and desination godown')
