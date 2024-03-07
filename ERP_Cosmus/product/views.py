@@ -10,7 +10,7 @@ from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
@@ -131,9 +131,12 @@ def pproduct_list(request):
 
 
 def pproduct_delete(request, pk):
-    product = get_object_or_404(Product,Product_Refrence_ID=pk)
-    product.delete()
-    messages.info(request,f'Product - {product.Product_Name} was deleted')
+    try:
+        product = get_object_or_404(Product,Product_Refrence_ID=pk)
+        product.delete()
+        messages.success(request,f'Product - {product.Product_Name} was deleted')
+    except IntegrityError as e:
+        messages.error(request,f'Cannot delete-{product.Product_Name} because it is referenced by other objects.')
     return redirect('pproductlist')
 
 
@@ -274,9 +277,12 @@ def item_edit(request,pk):
 
 def item_delete(request, pk):
     
-    item_pk = get_object_or_404(Item_Creation,pk = pk)
-    item_pk.delete()
-    messages.info(request,f'Item - {item_pk.item_name} was deleted')
+    try:
+        item_pk = get_object_or_404(Item_Creation,pk = pk)
+        item_pk.delete()
+        messages.info(request,f'Item - {item_pk.item_name} was deleted')
+    except IntegrityError as e:
+        messages.error(request, f'Cannot delete {item_pk.item_name} because it is referenced by other objects.')
     return redirect('item-list')
 
 
@@ -330,9 +336,13 @@ def color_create_update(request, pk=None):
         
 
 def color_delete(request, pk):
-    product_color = get_object_or_404(Color,pk=pk)
-    product_color.delete()
-    messages.info(request,f'Color - {product_color.color_name} was deleted')
+
+    try:
+        product_color = get_object_or_404(Color,pk=pk)
+        product_color.delete()
+        messages.info(request,f'Color - {product_color.color_name} was deleted')
+    except IntegrityError as e:
+        messages.info(request,f'Cannot delete {product_color.color_name} because it is referenced by other objects.')
     return redirect('simplecolorlistonly')
 
 
@@ -601,6 +611,7 @@ def stock_item_list(request):
 def stock_item_delete(request, pk):
     stock = get_object_or_404(StockItem ,pk=pk)
     stock.delete()
+    messages.info(request,f'Stock Item - {stock.stock_item_name} was deleted')
     return redirect('stock_item-list')
 
 
@@ -685,6 +696,7 @@ def ledgerlist(request):
 def ledgerdelete(request, pk):
     Ledger_pk = get_object_or_404(Ledger ,pk=pk)
     Ledger_pk.delete()
+    messages.info(request,f'ledger of - {Ledger_pk.name} was deleted')
     return redirect('ledger-list')
 
 
@@ -764,12 +776,14 @@ def godowndelete(request,str,pk):
     if str == 'finished':
         finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
         finished_godown_pk.delete()
+        messages.info(request,f'Finished Goods Godown - {finished_godown_pk.godown_name_finished} was deleted')
 
     elif str == 'raw':
         raw_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
         raw_godown_pk.delete()
+        messages.info(request,f'Raw Material Godown - {raw_godown_pk.Godown_raw_material} was deleted')
     else:
-        print('issue with godown delete str')
+        messages.error(request, f'Error Deleting Godowns')
     return redirect('godown-list')
     
 
