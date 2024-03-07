@@ -777,6 +777,11 @@ body{
     border-radius: 10px;
     cursor: pointer;
 }
+
+.alertImg{
+    width: 25px;
+    height: 25px;
+}
  @media screen and (max-width: 600px) {
         .side-bar {
             width: 0;
