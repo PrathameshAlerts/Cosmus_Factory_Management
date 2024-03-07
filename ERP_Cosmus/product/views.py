@@ -131,7 +131,7 @@ def pproduct_list(request):
 
 
 def pproduct_delete(request, pk):
-    product = Product.objects.get(Product_Refrence_ID=pk)
+    product = get_object_or_404(Product,Product_Refrence_ID=pk)
     product.delete()
     return redirect('pproductlist')
 
@@ -236,7 +236,7 @@ def item_edit(request,pk):
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
-    item_pk = Item_Creation.objects.get(pk = pk)
+    item_pk = get_object_or_404(Item_Creation,pk = pk)
 
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
@@ -273,7 +273,7 @@ def item_edit(request,pk):
 
 def item_delete(request, pk):
     
-    item_pk = Item_Creation.objects.get(pk = pk)
+    item_pk = get_object_or_404(Item_Creation,pk = pk)
     item_pk.delete()
     return redirect('item-list')
 
@@ -285,7 +285,7 @@ def item_delete(request, pk):
 
 
 def color_create_update(request, pk=None):
-    print(request.GET)
+    
 
     if request.path == '/simple_colorcreate_list/':
         template_name = 'product/color_list.html'
@@ -328,7 +328,7 @@ def color_create_update(request, pk=None):
         
 
 def color_delete(request, pk):
-    product_color = Color.objects.get(pk=pk)
+    product_color = get_object_or_404(Color,pk=pk)
     product_color.delete()
     return redirect('simplecolorlistonly')
 
@@ -414,7 +414,7 @@ def item_fabric_group_list(request):
 
 
 def item_fabric_group_update(request,pk):
-    item_fabric_pk = Fabric_Group_Model.objects.get(pk=pk)
+    item_fabric_pk =  get_object_or_404(Fabric_Group_Model,pk=pk)
     form = ItemFabricGroup(instance = item_fabric_pk)
     if request.method == 'POST':
         form = ItemFabricGroup(request.POST,instance = item_fabric_pk)
@@ -430,7 +430,7 @@ def item_fabric_group_update(request,pk):
 
 
 def item_fabric_group_delete(request,pk):
-    item_fabric_pk = Fabric_Group_Model.objects.get(pk=pk)
+    item_fabric_pk = get_object_or_404(Fabric_Group_Model,pk=pk)
     item_fabric_pk.delete()
     return redirect('item-fabgroup-list')
 
@@ -462,7 +462,7 @@ def unit_name_list(request):
 
 
 def unit_name_update(request,pk):
-    unit_name_pk = Unit_Name_Create.objects.get(pk=pk)
+    unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
     form = UnitName(instance=unit_name_pk)
     if request.method == 'POST':
         form = UnitName(request.POST ,instance=unit_name_pk)
@@ -478,7 +478,7 @@ def unit_name_update(request,pk):
 
 
 def unit_name_delete(request,pk):
-    unit_name_pk = Unit_Name_Create.objects.get(pk=pk)
+    unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
     unit_name_pk.delete()
     print(unit_name_pk.unit_name)
     return redirect('unit_name-list')
@@ -514,7 +514,7 @@ def account_sub_group_create(request):
 
 def account_sub_group_update(request, pk):
     main_grp = AccountGroup.objects.all()
-    group = AccountSubGroup.objects.get(pk = pk)
+    group = get_object_or_404(AccountSubGroup ,pk=pk)
     form = account_sub_grp_form(instance = group)
     if request.method == 'POST':
         form = account_sub_grp_form(request.POST, instance = group)
@@ -538,7 +538,7 @@ def account_sub_group_list(request):
 
 
 def account_sub_group_delete(request, pk):
-    group = AccountSubGroup.objects.get(pk = pk)
+    group = get_object_or_404(AccountSubGroup ,pk=pk)
     group.delete()
     return redirect('account_sub_group-list')
 
@@ -569,7 +569,7 @@ def stock_item_create(request):
 def stock_item_update(request, pk):
 
     accsubgrps = AccountSubGroup.objects.all()
-    stock = StockItem.objects.get(pk = pk)
+    stock =get_object_or_404(StockItem ,pk=pk)
     form = StockItemForm(instance = stock)
     if request.method == 'POST':
         form = StockItemForm(request.POST, instance = stock)
@@ -593,7 +593,7 @@ def stock_item_list(request):
 
 
 def stock_item_delete(request, pk):
-    stock = StockItem.objects.get(pk = pk)
+    stock = get_object_or_404(StockItem ,pk=pk)
     stock.delete()
     return redirect('stock_item-list')
 
@@ -635,7 +635,7 @@ def ledgercreate(request):
 
 def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
-    Ledger_pk = Ledger.objects.get(pk = pk) 
+    Ledger_pk =  get_object_or_404(Ledger ,pk=pk)
     ledgers = Ledger_pk.transaction_entry.all() #get all the ledger objects of the instance
     Opening_ledger = ledgers.filter(voucher_type ='Ledger')
     form = LedgerForm(instance = Ledger_pk)
@@ -677,7 +677,7 @@ def ledgerlist(request):
 
 
 def ledgerdelete(request, pk):
-    Ledger_pk = Ledger.objects.get(pk=pk)
+    Ledger_pk = get_object_or_404(Ledger ,pk=pk)
     Ledger_pk.delete()
     return redirect('ledger-list')
 
@@ -774,13 +774,11 @@ def godowndelete(request,str,pk):
 
 
 
-
-
 # RawStockTransfer
 def stocktransfer(request):
     raw_godowns = Godown_raw_material.objects.all()
     rawstocktransferlist = RawStockTransfer.objects.all()
-    #godown - one to many - godownitems - many to one - item_shades - many to one - items
+    #godowns - one to many - godownitems - many to one - item_shades - many to one - items
     if request.method == 'GET':
         selected_source_godown_id = request.GET.get('selected_godown_id') 
         selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
@@ -810,7 +808,7 @@ def stocktransfer(request):
         for x in item_create_table:
 
             # in the through table to with the selected shade of the selected item and selected godown
-            shades_of_item_in_selected_godown =  item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name=x.id)
+            shades_of_item_in_selected_godown = item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name=x.id)
 
             # loop through the filtered queryset of shades in the godown and make 
             # item_shade dict to send in front end 
@@ -826,7 +824,7 @@ def stocktransfer(request):
         if item_name_value is not None:
             item_name_value = int(item_name_value)
             # get the item 
-            items = Item_Creation.objects.get(id = item_name_value)
+            items =  get_object_or_404(Item_Creation ,id = item_name_value)
         
             item_color = items.Item_Color.color_name
             item_per = items.unit_name_item.unit_name
@@ -835,14 +833,10 @@ def stocktransfer(request):
         shade_quantity = 0
         selected_shade = request.GET.get('selected_shade_id')
         selected_godown = request.GET.get('godown_id')
-        print('godowns:', selected_source_godown_id)
-
-
+       
         if selected_shade is not None and selected_godown is not None:
             selected_shade = int(selected_shade)
             selected_source_godown_id = int(selected_godown)
-            print('value godown',selected_godown)
-            print('value shade:',selected_shade)
 
             quantity_get = item_godown_quantity_through_table.objects.filter(Item_shade_name = selected_shade, godown_name =selected_source_godown_id).first()
             shade_quantity  = quantity_get.quantity
@@ -858,7 +852,7 @@ def stocktransfer(request):
 
 
     if request.method == 'POST':
-        print('post request',request.POST)
+        
         source_godown =request.POST.get('source_godown')
         target_godown = request.POST.get('target_godown')
         item_name_transfer = request.POST.get('name')
@@ -910,7 +904,6 @@ def stocktransfer(request):
                     source_g.quantity = source_g.quantity - item_quantity_transfer
                     source_g.save()
             
-
                     # Retrieve the godown instances
                     target_godown_instance = Godown_raw_material.objects.get(id=target_godown)
                     item_shade_transfer_instance = item_color_shade.objects.get(id=item_shade_transfer)
@@ -923,7 +916,6 @@ def stocktransfer(request):
                     quantity=item_quantity_transfer
                             )
             
-
                     RawStockTransfer.objects.create(source_godown=source_godown_raw,destination_godown=target_godown_raw,
                                             item_name_transfer=item_name_transfer_raw,item_color_transfer=item_color_transfer,
                                             item_shade_transfer=item_shade_transfer_raw,
@@ -938,11 +930,6 @@ def stocktransfer(request):
             print(f'exception occured {e}') 
     else:
         return HttpResponse('error from get request')
-
-
-
-
-
 
 
 #__________________________stock transfer end__________________________
