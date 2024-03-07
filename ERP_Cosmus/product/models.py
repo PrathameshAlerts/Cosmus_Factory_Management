@@ -315,13 +315,15 @@ class Item_Creation(models.Model):
     def Item_GST(self):
         return self.Item_Creation_GST.gst_percentage
 
+    def __str__(self) -> str:
+        return self.item_name
 class item_color_shade(models.Model):
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades')
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
-    
+
     def __str__(self) -> str:
         return self.item_shade_name
 
@@ -343,8 +345,12 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 
 
 
+
+
 class AccountGroup(models.Model):
     account_group = models.CharField(max_length = 50 , unique= True)
+
+
 
 
 class AccountSubGroup(models.Model):
@@ -355,6 +361,7 @@ class AccountSubGroup(models.Model):
         return self.acc_grp.account_group
 
 
+
 class StockItem(models.Model):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     stock_item_name = models.CharField(max_length= 150 ,unique= True)
@@ -362,6 +369,9 @@ class StockItem(models.Model):
     def account_sub_group(self):
         return self.acc_sub_grp.account_sub_group
     
+
+
+
 
 class Ledger(models.Model):
     MAINTAIN_BILLWISE = [
@@ -402,6 +412,11 @@ class Ledger(models.Model):
     def account_sub_group_ledger(self):
         return self.under_group.account_sub_group
 
+
+
+
+
+
 class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.PROTECT, blank = False, null = False, related_name = 'transaction_entry')
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
@@ -415,11 +430,16 @@ class account_credit_debit_master_table(models.Model):
 
 
 
+
+
+
 class Godown_raw_material(models.Model):
     godown_name_raw = models.CharField(max_length = 225)
 
     def __str__(self) -> str:
         return self.godown_name_raw      
+
+
 
 
 class item_godown_quantity_through_table(models.Model):
@@ -434,10 +454,11 @@ class item_godown_quantity_through_table(models.Model):
         # one more entry for the same item in godown u just need to update the quantity of the item in that
         # godown.
 
-    
-
     def __str__(self):
         return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
+
+
+
 
 
 class Godown_finished_goods(models.Model):
@@ -445,8 +466,11 @@ class Godown_finished_goods(models.Model):
 
 
 
+
 class RawStockTransfer(models.Model):
-    voucher_no = models.BigIntegerField()
+    voucher_no = models.AutoField(primary_key=True)
+    source_godown = models.CharField(max_length = 200)
+    destination_godown = models.CharField(max_length = 200)
     item_name_transfer = models.CharField(max_length = 200)
     item_color_transfer = models.CharField(max_length = 200)
     item_shade_transfer = models.CharField(max_length = 200)

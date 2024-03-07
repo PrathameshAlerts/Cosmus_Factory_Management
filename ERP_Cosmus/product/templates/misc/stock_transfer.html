@@ -7,8 +7,8 @@
   <form class="mt-5" action="" method="POST">
     {% csrf_token %}
     <div class="d-flex mb-3">
-      <label for="" class="form-label px-2">Stock Voucher No:</label>
-      <input type="number" class="item-select mx-3" value="" name="voucher_no" maxlength="50" required id="">
+      <label for="stock_voucher" class="form-label px-2">Stock Voucher No:</label>
+      <input  class="item-select mx-3" value="" placeholder="Auto Generated" readonly  id="stock_voucher">
       <div class="ms-auto">
         <label for="" class="form-label px-2">Date:</label>
         <span>{{ current_date }}</span>
@@ -83,7 +83,7 @@
 
             </td>
             <td>
-              <span>used</span>
+              <input class="item-select" type="text" id="remark" name="remark">
             </td>
           </tr>
         </tbody>
@@ -110,21 +110,28 @@
         <th>Color</th>
         <th>shades</th>
         <th>Qty</th>
+        <th>Units</th>
         <th>Remark</th>
        
       </tr>
     </thead>
     <tbody>
+
+      {% for log in transferlist %}
+
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{log.voucher_no}}</td>
+        <td>{{log.source_godown}}</td>
+        <td>{{log.destination_godown}}</td>
+        <td>{{log.item_name_transfer}}</td>
+        <td>{{log.item_color_transfer}}</td>
+        <td>{{log.item_shade_transfer}}</td>
+        <td>{{log.item_quantity_transfer}}</td>
+        <td>{{log.item_unit_transfer}}</td>
+        <td>{{log.remarks}}</td>
       </tr>
+
+      {% endfor %}
     </tbody>
   </table>
 </div>
