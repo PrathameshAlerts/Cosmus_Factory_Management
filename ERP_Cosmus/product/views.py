@@ -134,9 +134,9 @@ def pproduct_delete(request, pk):
     try:
         product = get_object_or_404(Product,Product_Refrence_ID=pk)
         product.delete()
-        messages.success(request,f'Product - {product.Product_Name} was deleted')
+        messages.success(request,f'Product {product.Product_Name} was deleted')
     except IntegrityError as e:
-        messages.error(request,f'Cannot delete-{product.Product_Name} because it is referenced by other objects.')
+        messages.error(request,f'Cannot delete {product.Product_Name} because it is referenced by other objects.')
     return redirect('pproductlist')
 
 
@@ -280,7 +280,7 @@ def item_delete(request, pk):
     try:
         item_pk = get_object_or_404(Item_Creation,pk = pk)
         item_pk.delete()
-        messages.info(request,f'Item - {item_pk.item_name} was deleted')
+        messages.info(request,f'Item {item_pk.item_name} was deleted')
     except IntegrityError as e:
         messages.error(request, f'Cannot delete {item_pk.item_name} because it is referenced by other objects.')
     return redirect('item-list')
@@ -340,9 +340,9 @@ def color_delete(request, pk):
     try:
         product_color = get_object_or_404(Color,pk=pk)
         product_color.delete()
-        messages.info(request,f'Color - {product_color.color_name} was deleted')
+        messages.info(request,f'Color {product_color.color_name} was deleted')
     except IntegrityError as e:
-        messages.info(request,f'Cannot delete {product_color.color_name} because it is referenced by other objects.')
+        messages.error(request,f'Cannot delete {product_color.color_name} because it is referenced by other objects.')
     return redirect('simplecolorlistonly')
 
 
@@ -443,9 +443,12 @@ def item_fabric_group_update(request,pk):
 
 
 def item_fabric_group_delete(request,pk):
-    item_fabric_pk = get_object_or_404(Fabric_Group_Model,pk=pk)
-    item_fabric_pk.delete()
-    messages.info(request,f'Fabric group - {item_fabric_pk.fab_grp_name} was deleted')
+    try:
+        item_fabric_pk = get_object_or_404(Fabric_Group_Model,pk=pk)
+        item_fabric_pk.delete()
+        messages.info(request,f'Fabric group {item_fabric_pk.fab_grp_name} was deleted')
+    except IntegrityError as e:
+        messages.error(request,f'Cannot delete {item_fabric_pk.fab_grp_name} because it is referenced by other objects.')
     
     return redirect('item-fabgroup-list')
 
@@ -493,9 +496,12 @@ def unit_name_update(request,pk):
 
 
 def unit_name_delete(request,pk):
-    unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
-    unit_name_pk.delete()
-    messages.info(request,f'Unit name - {unit_name_pk.unit_name} was deleted')
+    try:
+        unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
+        unit_name_pk.delete()
+        messages.info(request,f'Unit name {unit_name_pk.unit_name} was deleted.')
+    except IntegrityError as e:
+        messages.error(request,f'Cannot delete {unit_name_pk.unit_name} because it is referenced by other objects.')
     return redirect('unit_name-list')
 
 
@@ -553,9 +559,12 @@ def account_sub_group_list(request):
 
 
 def account_sub_group_delete(request, pk):
-    group = get_object_or_404(AccountSubGroup ,pk=pk)
-    group.delete()
-    messages.info(request,f'Group - {group.account_sub_group} was deleted')
+    try:
+        group = get_object_or_404(AccountSubGroup ,pk=pk)
+        group.delete()
+        messages.info(request,f'Account Sub Group {group.account_sub_group} was deleted')
+    except IntegrityError as e:
+        messages.error(request,f'Cannot delete {group.account_sub_group} because it is referenced by other objects.')
     return redirect('account_sub_group-list')
 
 
@@ -609,9 +618,12 @@ def stock_item_list(request):
 
 
 def stock_item_delete(request, pk):
-    stock = get_object_or_404(StockItem ,pk=pk)
-    stock.delete()
-    messages.info(request,f'Stock Item - {stock.stock_item_name} was deleted')
+    try:
+        stock = get_object_or_404(StockItem ,pk=pk)
+        stock.delete()
+        messages.info(request,f'Stock Item {stock.stock_item_name} was deleted')
+    except IntegrityError as e:
+        messages.error(request,f'Cannot delete {stock.stock_item_name} because it is referenced by other objects.')        
     return redirect('stock_item-list')
 
 
@@ -694,9 +706,12 @@ def ledgerlist(request):
 
 
 def ledgerdelete(request, pk):
-    Ledger_pk = get_object_or_404(Ledger ,pk=pk)
-    Ledger_pk.delete()
-    messages.info(request,f'ledger of - {Ledger_pk.name} was deleted')
+    try:
+        Ledger_pk = get_object_or_404(Ledger ,pk=pk)
+        Ledger_pk.delete()
+        messages.info(request,f'ledger of {Ledger_pk.name} was deleted')
+    except Exception as e:
+        messages.error(request,f'Cannot delete {Ledger_pk.name} because it is referenced by other objects.')
     return redirect('ledger-list')
 
 
@@ -772,16 +787,22 @@ def godownlist(request):
 
 
 def godowndelete(request,str,pk):
-
     if str == 'finished':
-        finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
-        finished_godown_pk.delete()
-        messages.info(request,f'Finished Goods Godown - {finished_godown_pk.godown_name_finished} was deleted')
+        try:
+            finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
+            finished_godown_pk.delete()
+            messages.info(request,f'Finished Goods Godown {finished_godown_pk.godown_name_finished} was deleted')
+        except Exception as e:
+            messages.info(request,f'Cannot delete {finished_godown_pk.godown_name_finished} because it is referenced by other objects. ')
+
 
     elif str == 'raw':
-        raw_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
-        raw_godown_pk.delete()
-        messages.info(request,f'Raw Material Godown - {raw_godown_pk.Godown_raw_material} was deleted')
+        try:
+            raw_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
+            raw_godown_pk.delete()
+            messages.info(request,f'Raw Material Godown - {raw_godown_pk.Godown_raw_material} was deleted')
+        except Exception as e:
+            messages.info(request,f'Cannot delete {raw_godown_pk.Godown_raw_material} because it is referenced by other objects. ')
     else:
         messages.error(request, f'Error Deleting Godowns')
     return redirect('godown-list')
