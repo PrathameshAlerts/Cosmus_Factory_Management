@@ -6,12 +6,11 @@
 
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  <button type="button" class="btn btn-primary w-50 my-2" onclick="productStatus()">Product Status<i class="fas fa-angle-right arrowBtn"></i></button>
+  <button type="button" class="edit_btn w-50 my-2" id="status_btn" > Status<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
 
   <div id="">
-    
-      
-      <div id="product_status">
+   
+      <div id="product_status" style="display: none;">
         <div class=" d-flex mb-3">
           <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
           <input type="text" class="item-select" value="{{form.instance.Model_Name}}" name="Model_Name" required
@@ -52,8 +51,8 @@
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-primary w-50 my-2" onclick="produtDetail()">Product Details<i class="fas fa-angle-right arrowBtn"></i></button>
-      <div id="product_details">
+      <button type="button" class="edit_btn w-50 mb-3" id="product_details_btn"> Details<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+      <div id="product_details" style="display: none;">
         <div class=" d-flex my-3">
           <label for="id_Product_Name" class="form-label item-form">Product Name:</label>
           <input type="text" class="item-select" value="{{form.instance.Product_Name}}" name="Product_Name" required
@@ -138,8 +137,8 @@
           </select>
         </div>
       </div>
-      <button type="button" class="btn btn-primary w-50 my-2" onclick="productPricing()">Pricing<i class="fas fa-angle-right arrowBtn "></i></button>
-      <div id="product_pricing">
+      <button type="button" class="edit_btn w-50 mb-3" id="product_pricing_btn"> Pricing<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+      <div id="product_pricing" style="display: none;">
         <div class="d-flex mb-3">
         <label for="id_Product_MRP" class="form-label item-form"> MRP:</label>
         <input type="number" class="item-select" value="{{form.instance.Product_MRP}}" name="Product_MRP"
@@ -200,9 +199,9 @@
         <input type="text" class="item-select" name="" value="12345678" id="">
       </div>
       </div>
-      <button type="button" class="btn btn-primary w-50   my-2" onclick="productInventory()">Inventory<i class="fas fa-angle-right arrowBtn"></i></button>
+      <button type="button" class="edit_btn w-50 mb-3" id="product_inventory_btn" > Inventory<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
       
-      <div id="product_inventory">
+      <div id="product_inventory" style="display: none;">
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">Mumbai Werhouse:</label>
           <input type="text" class="item-select" name="" value="12345678" id="">
@@ -217,9 +216,9 @@
         </div>
       </div>
       
-      <button type="button" class="btn btn-primary w-50   my-2" onclick="productImages()">Product Images<i class="fas fa-angle-right arrowBtn"></i></button> 
+      <button type="button" class="edit_btn w-50 mb-3" id="product_images_btn">Images<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button> 
 
-      <div id="product_images">
+      <div id="product_images" style="display: none;">
         {{ formset.management_form }}
         {% for form in formset %}
         <div class="card rounded-3 mb-3 p-2">
@@ -251,47 +250,92 @@
   <input type="submit" class="add_btn" value="submit">
 </form>
 <script>
-  function productStatus() {
-    var x = document.getElementById("product_status");
-    if (x.style.display === 'none') {
-      x.style.display = 'block';
-    } else {
-      x.style.display = 'none';
-    }
-  }
-  function produtDetail() {
-    var x = document.getElementById("product_details");
-    if (x.style.display === 'none') {
-      x.style.display = 'block';
-    } else {
-      x.style.display = 'none';
-    }
-  }
-  function productPricing() {
-    var x = document.getElementById("product_pricing");
-    if (x.style.display === 'none') {
-      x.style.display = 'block';
-    } else {
-      x.style.display = 'none';
-    }
-  }
-  function productInventory() {
-    var x = document.getElementById("product_inventory");
-    if (x.style.display === 'none') {
-      x.style.display = 'block';
-    } else {
-      x.style.display = 'none';
-    }
-  }
-  function productImages() {
-    var x = document.getElementById("product_images");
-    if (x.style.display === 'none') {
-      x.style.display = 'block';
-    } else {
-      x.style.display = 'none';
-    }
-  }
+  document.addEventListener("DOMContentLoaded", function() {
+    var toggleButton = document.getElementById("status_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_status");
+
+    toggleButton.addEventListener("click", function() {
+        // Toggle the visibility of the data container
+        if (dataContainer.style.display === "none") {
+            dataContainer.style.display = "block";
+            icon.classList.add("rotate"); // Add rotate class to the icon
+        } else {
+            dataContainer.style.display = "none";
+            icon.classList.remove("rotate"); // Remove rotate class from the icon
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var toggleButton = document.getElementById("product_details_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_details");
+
+    toggleButton.addEventListener("click", function() {
+        // Toggle the visibility of the data container
+        if (dataContainer.style.display === "none") {
+            dataContainer.style.display = "block";
+            icon.classList.add("rotate"); // Add rotate class to the icon
+        } else {
+            dataContainer.style.display = "none";
+            icon.classList.remove("rotate"); // Remove rotate class from the icon
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    var toggleButton = document.getElementById("product_pricing_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_pricing");
+
+    toggleButton.addEventListener("click", function() {
+        // Toggle the visibility of the data container
+        if (dataContainer.style.display === "none") {
+            dataContainer.style.display = "block";
+            icon.classList.add("rotate"); // Add rotate class to the icon
+        } else {
+            dataContainer.style.display = "none";
+            icon.classList.remove("rotate"); // Remove rotate class from the icon
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    var toggleButton = document.getElementById("product_inventory_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_inventory");
+
+    toggleButton.addEventListener("click", function() {
+        // Toggle the visibility of the data container
+        if (dataContainer.style.display === "none") {
+            dataContainer.style.display = "block";
+            icon.classList.add("rotate"); // Add rotate class to the icon
+        } else {
+            dataContainer.style.display = "none";
+            icon.classList.remove("rotate"); // Remove rotate class from the icon
+        }
+    });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    var toggleButton = document.getElementById("product_images_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_images");
+
+    toggleButton.addEventListener("click", function() {
+        // Toggle the visibility of the data container
+        if (dataContainer.style.display === "none") {
+            dataContainer.style.display = "block";
+            icon.classList.add("rotate"); // Add rotate class to the icon
+        } else {
+            dataContainer.style.display = "none";
+            icon.classList.remove("rotate"); // Remove rotate class from the icon
+        }
+    });
+});
 </script>
+
 <script>
   function previewFile(event, counter) {
     var preview = document.getElementById('previewImage_');

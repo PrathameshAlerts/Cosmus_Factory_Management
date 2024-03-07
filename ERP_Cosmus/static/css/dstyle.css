@@ -347,8 +347,8 @@ body{
 }
 
 .coder-navbar.header-blue{
-    background: -webkit-gradient(linear, left top, right top, from(#4099ff), to(#73b4ff));
-    background: linear-gradient(to right, #4099ff, #73b4ff);
+    background: -webkit-gradient(linear, left top, right top, from(#4998d1), to(#2fc2dc));
+    background: linear-gradient(45deg, #4998d1 70%, #2fc2dc 100%);
     color: rgba(255, 255, 255, 0.8);
 }
 
@@ -758,11 +758,24 @@ body{
     list-style-type: none;
 }
 .arrowBtn{
-    padding-left: 250px;
-    transition: 0.2s ease;
+    
+    transition: transform 0.2s ease;
 }
 .rotate{
     transform: rotate(90deg);
+}
+
+.span_padding{
+    padding-left: 360px;
+}
+.edit_btn{
+    background: linear-gradient(45deg, #4998d1, #2fc2dc);
+    color: white;
+    padding: 10px 15px;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
  @media screen and (max-width: 600px) {
         .side-bar {
