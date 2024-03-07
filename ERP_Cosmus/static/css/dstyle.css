@@ -750,14 +750,19 @@ body{
 .table-leftside{
     padding-left: 950px;
 }
-.errorform{
-    color: #fff;
-    background-color: #da4532;
-    padding: 5px;
+#errorform{
+    color: #ec4444;
+    padding: 3px;
     font-size: 15px;
-    border-radius: 7px;
+    border-radius: 10px;
     list-style-type: none;
-    opacity: 0.6;
+}
+.arrowBtn{
+    padding-left: 250px;
+    transition: 0.2s ease;
+}
+.rotate{
+    transform: rotate(90deg);
 }
  @media screen and (max-width: 600px) {
         .side-bar {
