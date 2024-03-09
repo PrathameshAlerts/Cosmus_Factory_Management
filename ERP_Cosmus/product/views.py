@@ -932,8 +932,8 @@ def stocktransfer(request):
                                             item_shade_transfer=item_shade_transfer_raw,
                                             item_quantity_transfer=item_quantity_transfer,
                                             item_unit_transfer=item_unit_transfer, remarks=remarks)
-            
-                    return render(request, 'misc/stock_transfer.html') #add message product updated in godown with quanitiy
+                    messages.success(request,f'')
+                    return redirect('stock-transfer') #add message product updated in godown with quanitiy
             else:   
                 return HttpResponse('same source and desination godown')
 
