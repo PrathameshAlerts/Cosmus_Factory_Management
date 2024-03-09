@@ -477,6 +477,7 @@ class RawStockTransfer(models.Model):
     item_quantity_transfer = models.CharField(max_length = 200)
     item_unit_transfer = models.CharField(max_length = 200)
     remarks = models.CharField(max_length = 255)
+    date_and_time = models.DateTimeField(auto_now = True)
 
 
 

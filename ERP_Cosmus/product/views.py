@@ -641,6 +641,7 @@ def ledgercreate(request):
             name_value = form.cleaned_data['name']
             debit_credit_value = form.cleaned_data['Debit_Credit']
             if debit_credit_value == 'Debit':
+
                 account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger' ,debit= open_bal_value)
             elif debit_credit_value == 'Credit':
                 account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger',credit= open_bal_value)
@@ -665,6 +666,7 @@ def ledgercreate(request):
 def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
     Ledger_pk =  get_object_or_404(Ledger ,pk=pk)
+
     ledgers = Ledger_pk.transaction_entry.all() #get all the ledger objects of the instance
     Opening_ledger = ledgers.filter(voucher_type ='Ledger')
     form = LedgerForm(instance = Ledger_pk)
@@ -674,6 +676,7 @@ def ledgerupdate(request,pk):
     if form.instance.Debit_Credit == 'Debit':
         opening_bal = Opening_ledger.first().debit
         opening_balance = opening_balance + opening_bal
+
     elif form.instance.Debit_Credit == 'Credit':
         opening_bal = Opening_ledger.first().credit
         opening_balance = opening_balance + opening_bal
@@ -817,6 +820,7 @@ def godowndelete(request,str,pk):
 
 # RawStockTransfer
 def stocktransfer(request):
+    current_date = now().date()
     raw_godowns = Godown_raw_material.objects.all()
     rawstocktransferlist = RawStockTransfer.objects.all()
     #godowns - one to many - godownitems - many to one - item_shades - many to one - items
@@ -889,7 +893,7 @@ def stocktransfer(request):
         
 
         else:
-             return render(request,'misc/stock_transfer.html',{'raw_godowns':raw_godowns,'transferlist':rawstocktransferlist})
+             return render(request,'misc/stock_transfer.html',{'raw_godowns':raw_godowns,'transferlist':rawstocktransferlist,'current_date':current_date})
 
 
     if request.method == 'POST':
@@ -901,15 +905,13 @@ def stocktransfer(request):
         item_quantity_transfer = int(request.POST.get('quantity'))
         item_unit_transfer = request.POST.get('per')
         remarks = request.POST.get('remark')
-        print(source_godown)
-        print(target_godown)
+
         if source_godown is not None and target_godown is not None and source_godown != target_godown :
             try:
                 source_godown_raw =  Godown_raw_material.objects.get(id=source_godown)
                 target_godown_raw = Godown_raw_material.objects.get(id=target_godown)
                 item_name_transfer_raw = Item_Creation.objects.get(id=item_name_transfer)
                 item_shade_transfer_raw = item_color_shade.objects.get(id=item_shade_transfer)
-
 
                 # filter the source godown
                 source_g = item_godown_quantity_through_table.objects.get(godown_name=source_godown, Item_shade_name=item_shade_transfer)
@@ -966,8 +968,7 @@ def stocktransfer(request):
             messages.error(request, 'Source and Target godown is same.')
             return redirect('stock-transfer')           
         
-    else:
-        return HttpResponse('Invalid Request Method')
+
 
 
 #__________________________stock transfer end__________________________

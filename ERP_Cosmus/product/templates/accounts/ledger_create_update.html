@@ -68,7 +68,8 @@
 
       <div class="d-flex mb-4 ms-3 me-1">
         <label for="id_opening_balance" class="form-label item-form ms-1">Openeing Balance:</label>
-       <input type="number" placeholder="Rs" class="item-select me-2" value="" name="opening_balance" required id="id_opening_balance">
+       <input type="number" placeholder="Rs" class="item-select me-2" value="{{from.instance.opening_balance}}" name="opening_balance" required id="id_opening_balance">
+
        <select class="item-select w-25" value="" name="Debit_Credit" id="id_Debit_Credit">
         <option value="Debit">Debit</option>
         <option value="Credit">Credit</option>

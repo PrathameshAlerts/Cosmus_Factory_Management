@@ -107,6 +107,7 @@
     <thead class="table-dark">
       <tr>
         <th>Voucher No</th>
+        <th>Date</th>
         <th>Source Godown</th>
         <th>Target Godown</th>
         <th>Item Name</th>
@@ -123,6 +124,7 @@
       {% for log in transferlist %}
       <tr>
         <td>{{log.voucher_no}}</td>
+        <td>{{log.date_and_time}}</td>
         <td>{{log.source_godown}}</td>
         <td>{{log.destination_godown}}</td>
         <td>{{log.item_name_transfer}}</td>
