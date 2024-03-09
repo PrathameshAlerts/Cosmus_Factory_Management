@@ -893,7 +893,6 @@ def stocktransfer(request):
 
 
     if request.method == 'POST':
-        
         source_godown =request.POST.get('source_godown')
         target_godown = request.POST.get('target_godown')
         item_name_transfer = request.POST.get('name')
@@ -902,21 +901,22 @@ def stocktransfer(request):
         item_quantity_transfer = int(request.POST.get('quantity'))
         item_unit_transfer = request.POST.get('per')
         remarks = request.POST.get('remark')
+        print(source_godown)
+        print(target_godown)
+        if source_godown is not None and target_godown is not None and source_godown != target_godown :
+            try:
+                source_godown_raw =  Godown_raw_material.objects.get(id=source_godown)
+                target_godown_raw = Godown_raw_material.objects.get(id=target_godown)
+                item_name_transfer_raw = Item_Creation.objects.get(id=item_name_transfer)
+                item_shade_transfer_raw = item_color_shade.objects.get(id=item_shade_transfer)
 
-        try:
-            source_godown_raw =  Godown_raw_material.objects.get(id=source_godown)
-            target_godown_raw = Godown_raw_material.objects.get(id=target_godown)
-            item_name_transfer_raw = Item_Creation.objects.get(id=item_name_transfer)
-            item_shade_transfer_raw = item_color_shade.objects.get(id=item_shade_transfer)
 
+                # filter the source godown
+                source_g = item_godown_quantity_through_table.objects.get(godown_name=source_godown, Item_shade_name=item_shade_transfer)
 
-            # filter the source godown
-            source_g = item_godown_quantity_through_table.objects.get(godown_name=source_godown, Item_shade_name=item_shade_transfer)
-
-            #filter the destination godown
-            destination_g = item_godown_quantity_through_table.objects.get(godown_name=target_godown, Item_shade_name=item_shade_transfer)
+                #filter the destination godown
+                destination_g = item_godown_quantity_through_table.objects.get(godown_name=target_godown, Item_shade_name=item_shade_transfer)
             
-            if source_g != destination_g:
                 with transaction.atomic():
                     #substract the quantity from source 
                     source_g.quantity = source_g.quantity - item_quantity_transfer  
@@ -932,14 +932,12 @@ def stocktransfer(request):
                                             item_shade_transfer=item_shade_transfer_raw,
                                             item_quantity_transfer=item_quantity_transfer,
                                             item_unit_transfer=item_unit_transfer, remarks=remarks)
-                    messages.success(request,f'')
-                    return redirect('stock-transfer') #add message product updated in godown with quanitiy
-            else:   
-                return HttpResponse('same source and desination godown')
-
-        except item_godown_quantity_through_table.DoesNotExist:
+                messages.success(request,f' Item {item_name_transfer_raw}(Quantity->{item_quantity_transfer}) transfered from {source_godown_raw} to {target_godown_raw}.')
+                return redirect('stock-transfer') 
+        
             
-            if source_g != destination_g:
+
+            except item_godown_quantity_through_table.DoesNotExist:
                 with transaction.atomic():
                     #substract the quantity from source 
                     source_g.quantity = source_g.quantity - item_quantity_transfer
@@ -954,22 +952,22 @@ def stocktransfer(request):
                     new_entry = item_godown_quantity_through_table.objects.create(
                     godown_name=target_godown_instance,
                     Item_shade_name=item_shade_transfer_instance,
-                    quantity=item_quantity_transfer
-                            )
+                    quantity=item_quantity_transfer)
             
                     RawStockTransfer.objects.create(source_godown=source_godown_raw,destination_godown=target_godown_raw,
                                             item_name_transfer=item_name_transfer_raw,item_color_transfer=item_color_transfer,
                                             item_shade_transfer=item_shade_transfer_raw,
                                             item_quantity_transfer=item_quantity_transfer,
                                             item_unit_transfer=item_unit_transfer, remarks=remarks)
-
-                    return render(request,'misc/stock_transfer.html') #add message new item added in godown with quanitiy
-            return HttpResponse('same source and desination godown')
+                    
+                    messages.success(request,f' Item {item_name_transfer_raw}(Quantity->{item_quantity_transfer}) created and transfered from {source_godown_raw} to {target_godown_raw}')
+                    return redirect('stock-transfer') #add message new item added in godown with quanitiy
+        else:
+            messages.error(request, 'Source and Target godown is same.')
+            return redirect('stock-transfer')           
         
-        except Exception as e :
-            print(f'exception occured {e}') 
     else:
-        return HttpResponse('error from get request')
+        return HttpResponse('Invalid Request Method')
 
 
 #__________________________stock transfer end__________________________
