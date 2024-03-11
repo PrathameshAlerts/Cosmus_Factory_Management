@@ -73,6 +73,16 @@
           <a href="" class="sub-item">Journal Entry</a>
         </div>
       </div>
+      <div class="item">
+        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Reports')"><i class="fa-solid fa-file-invoice"></i>Reports<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="" class="sub-item">Stock Transfer Report</a>
+          <a href="" class="sub-item">Purchase Report</a>
+          <a href="" class="sub-item">Sales Report</a>
+          <a href="" class="sub-item">Stock Report</a>
+          
+        </div>
+      </div>
     </div>
 </div>
 <nav class="navbar navbar-expand-lg coder-navbar navbar-light headerpos-fixed header-blue navbar-fixed-top ">
@@ -127,21 +137,21 @@
         </symbol>
       </svg>
       {% for message in messages %}
-      
+
     
     {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-     <div id="message-timer" class="alert alert-success d-flex align-items-center" role="alert">
+     <div id="message-timer" class="alert alert-success  align-items-center" role="alert">
       <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
          &nbsp; {{message}}
      </div>
 
      {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-     <div id="message-timer" class="alert alert-warning d-flex align-items-center" role="alert">
+     <div id="message-timer" class="alert alert-warning align-items-center" role="alert">
       <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> &nbsp; {{message}}
      </div> 
 
      {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-     <div id="message-timer" class="alert alert-danger d-flex align-items-center" role="alert">
+     <div id="message-timer" class="alert alert-danger align-items-center" role="alert">
       <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg> &nbsp; {{message}}
      </div>
 
@@ -158,12 +168,22 @@
 </section>
 
 <script>
-  var message_timeout = document.getElementById('message-timer')
+  function showAlertForDuration(duration) {
+        // Get the alert element
+        var alertElement = document.getElementById('message-timer');
+        
+        // Remove the 'hidden' class to show the alert
+        alertElement.classList.remove('hidden');
+        
+        // Set a timeout to hide the alert after the specified duration
+        setTimeout(function() {
+            // Add the 'hidden' class to hide the alert
+            alertElement.classList.add('hidden');
+        }, duration);
+    }
 
-  setTimeout(function(){
-      message_timeout.style.display = 'none';
-  }, 3000);
-
+    // Show the alert for 5 seconds (5000 milliseconds)
+    showAlertForDuration(3000);
 </script>
 
 <script>

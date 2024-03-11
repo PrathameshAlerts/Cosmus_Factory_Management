@@ -1,75 +1,97 @@
-{% extends 'product/base.html' %} 
-{% load static %} 
+{% extends 'product/base.html' %}
+{% load static %}
 
 {% block body %}
 
 {% if messages %}
 <ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
+  {% for message in messages %}
+  <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+  {% endfor %}
 </ul>
 {% endif %}
 
 
-        <div>
-            {{form.errors}}
-            <h2>Create Product</h2>
-            <div class="d-flex">
-                
-                <button class="card_btn" onclick="redirectToColorList()"><span>Add Color</span></button>
-                <button id="addButton" class="add_btn">Add +</button>
-           
-            </div>
-            <form class="mb-3" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-            <div class="d-flex my-4">
-                    <label for="id_Product_Refrence_ID" class="form-label">Refrence ID:</label>
-                    <input type="text" class="rounded-3" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
-                    <input type="submit" class="add_btn" value='Save'>
-            </div>
-            <div >
-                <div id="cardContainer">
-                    <div class="card card-clone" style="width: 15rem; display: none;">
-                      <img id="frame" src="..." class="card-img-top card-img p-1" alt="...">
-                      <div class="card-body card-input">
-                        <div class="mb-2 d-flex">
-                          <label for="id_PProduct_image_1" class="form-label">Image</label>
-                          <input class="px-2 rounded-3" name="PProduct_image_" type="file" id="formFile" onchange="preview()">
-                        </div>
-                        <div class="mb-2 d-flex">
-                          <label for="id_PProduct_color_" class="form-label pe-3">Color</label>
-                          <select name="PProduct_color_" required id="id_PProduct_color_" class="rounded-3 w-50 px-2">
-                            <option value="-" selected>---------</option>
-                            {%for c in color %}
-                            <option value="{{ c.id }}">{{c.color_name}}</option>
-                            {% endfor %}
-                          </select>
-                        </div>
-                        <div class="mb-2 d-flex">
-                          <label for="id_PProduct_SKU_" class="form-label pe-4">SKU</label>
-                          <input type="text" name="PProduct_SKU_" class="rounded-3 w-75 px-2">
-                        </div>
-                        <button type="button" value="cancel" class="card_btn cancel-btn">Cancel</button>
-                        
-                      </div>
-                    </div>
-                </div>
+<div>
+  {{form.errors}}
+  <h2>Create Product</h2>
+  <div class="d-flex">
 
-                </div>
-    
-             </div> 
-            </form>  
-      
-            <div>
-            
+    <button class="card_btn" onclick="openModal('modal1')"><span>Add Color</span></button>
+    <button id="addButton" class="add_btn">Add +</button>
+
+  </div>
+  <form class="mb-3" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="d-flex my-4">
+      <label for="id_Product_Refrence_ID" class="form-label">Refrence ID:</label>
+      <input type="text" class="rounded-3" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+      <input type="submit" class="add_btn" value='Save'>
+    </div>
+    <div>
+      <div id="cardContainer">
+        <div class="card card-clone" style="width: 15rem; display: none;">
+          <img id="frame" src="..." class="card-img-top card-img p-1" alt="...">
+          <div class="card-body card-input">
+            <div class="mb-2 d-flex">
+              <label for="id_PProduct_image_1" class="form-label">Image</label>
+              <input class="px-2 rounded-3" name="PProduct_image_" type="file" id="formFile" onchange="preview()">
             </div>
+            <div class="mb-2 d-flex">
+              <label for="id_PProduct_color_" class="form-label pe-3">Color</label>
+              <select name="PProduct_color_" required id="id_PProduct_color_" class="rounded-3 w-50 px-2">
+                <option value="-" selected>---------</option>
+                {%for c in color %}
+                <option value="{{ c.id }}">{{c.color_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-2 d-flex">
+              <label for="id_PProduct_SKU_" class="form-label pe-4">SKU</label>
+              <input type="text" name="PProduct_SKU_" class="rounded-3 w-75 px-2">
+            </div>
+            <button type="button" value="cancel" class="card_btn cancel-btn">Cancel</button>
+
+          </div>
         </div>
-        <script>
-        function redirectToColorList() {
-                // Change the URL to the desired destination
-                window.location.href = "{% url 'simplecolorlist' %}";
-            }   
-        </script>
+      </div>
+
+    </div>
+
+</div>
+</form>
+
+<div>
+
+</div>
+</div>
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h5>Create Color<span class="close" onclick="closeModal('modal1')">&times;</span></h5>
+    {{ form.color_name.errors }}
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class=" d-flex">
+        <label for="id_color_name" class="form-label create_color_lable">Color Name:</label>
+        <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255"
+          required id="id_color_name">
+      </div>
+      <input type="submit" class="create-btn" name="save" value="Save">
+      <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+    </form>
+  </div>
+</div>
+<script>
+  function openModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = 'block';
+  }
+
+  // Function to close a modal
+  function closeModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+  }
+</script>
 
 {% endblock body %}

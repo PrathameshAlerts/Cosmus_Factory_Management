@@ -2,7 +2,7 @@
 {% load static %} 
  {% block body %}
 
-
+<h2>Create Color</h2>
 <div id="modal1" class="modal">
         <div class="modal-content">
           <h5>Create Color<span class="close" onclick="closeModal('modal1')">&times;</span></h5>
@@ -51,6 +51,17 @@
           </div>
         </div>
       </div>
-    </div>
+    
+<script>
+  function openModal(modalId) {
+  var modal = document.getElementById(modalId);
+  modal.style.display = 'block';
+}
 
+// Function to close a modal
+function closeModal(modalId) {
+  var modal = document.getElementById(modalId);
+  modal.style.display = 'none';
+}
+</script>
 {% endblock body %} 
