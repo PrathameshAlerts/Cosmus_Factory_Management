@@ -1,224 +1,269 @@
-{% extends 'product/base.html' %} 
-{% load static %} 
- {% block body %}
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
 
-<div class="create_item_form">
-            <h2 class="px-5 py-3">{{title}}</h2>
-            <form method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class=" d-flex my-3">
-                <label for="id_item_name" class="form-label item-form">Name:</label>
-                <input type="text" class="item-select" value="{{form.instance.item_name}}" name="item_name" maxlength="255" required id="id_item_name">
-              </div>
+<h2 class="px-5 py-3">{{title}}</h2>
+<div class="row">
+<div class="col-lg-4">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class=" d-flex my-3">
+      <label for="id_item_name" class="form-label item-form">Name:</label>
+      <input type="text" class="item-select" value="{{form.instance.item_name}}" name="item_name" maxlength="255"
+        required id="id_item_name">
+    </div>
 
-              <!-- {{form.instance.fab_grp }} - from a function def fab_grp(self): return self.Fabric_Group.fab_grp_name -->
-              
-              <div class="d-flex my-3">
-                <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
-                <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
-                    
-                  {% if form.instance.id %}
-                  <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.fab_grp }}</option>
-                  {% for x in fab_grp %}
-                  <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
-              {% endfor %}
-                 {% elif not form.instance.id %}
-                 <option value=""></option>
-              {% for x in fab_grp %}
-                  <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
-              {% endfor %}
-              {% endif %}
-                </select>
-            </div>
+    <!-- {{form.instance.fab_grp }} - from a function def fab_grp(self): return self.Fabric_Group.fab_grp_name -->
 
-              <div class=" d-flex my-3">
-                <label for="id_Item_Color" class="form-label item-form">Color:</label>
-                <select class="item-select" name="Item_Color" required id="id_Item_Color">
+    <div class="d-flex my-3">
+      <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
+      <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
 
-                  <!-- form.instance.Color_Name got from (def Color_Name(self):) which returns Item_Color.color_name the actual color
+        {% if form.instance.id %}
+        <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.fab_grp }}</option>
+        {% for x in fab_grp %}
+        <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
+        {% endfor %}
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% for x in fab_grp %}
+        <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
+        {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+
+    <div class=" d-flex my-3">
+      <label for="id_Item_Color" class="form-label item-form">Color:</label>
+      <select class="item-select" name="Item_Color" required id="id_Item_Color">
+
+        <!-- form.instance.Color_Name got from (def Color_Name(self):) which returns Item_Color.color_name the actual color
                   When you access a foreign key field in Django templates, by default, it returns the related object, not just its ID.
                   To access the ID of the related object, you need to use the dot notation to access the ID attribute explicitly.
                   {{ form.instance.Item_Color.id }} -->
 
-                  {% if form.instance.id %}
-                  <option value="{{ form.instance.Item_Color.id}}">{{form.instance.Color_Name}}</option>
-                  {% for x in colors %}
-                 <option value="{{x.id}}">{{x.color_name}}</option>
-                  {% endfor %}
-                    {% elif not form.instance.id %}
-                    <option value=""></option>
-                    {% for x in colors %}
-                    <option value="{{x.id}}">{{x.color_name}}</option>
-                    {% endfor %}
-                    {% endif %}
-                </select>
-                <button class="add_btn" onclick="openModal('modal1')">+</button>
-              </div>
-              {% if form.instance.id %}
-<div class="d-flex mb-3">
-    <label for="id_Item_shades" class="form-label item-form">Shades:</label>
-    <!-- Render reverse related relationship fields dynamically using formset factory  -->
-    <div class="mb-3">
-        <table class="table table-striped table-hover table-responsive rounded-3">
-            <tr>
-                <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
-                <th><label for="{{ shade_form.prefix }}-item_shade_name">Name</label></th>
-                <th><label for="{{ shade_form.prefix }}-item_color_image">Color Image</label></th>
-                <th><label for="{{ shade_form.prefix }}-item_color_image">Delete</label></th>
-            </tr>
-            {{ formset.management_form }}
-            {% for shade_form in formset %}
-            <div class="shade-form">
-                {{ shade_form.id }}
-                <!-- Render each field manually -->
-                <tr>
-                    <td>
-                        {% if forloop.first %}
-                        <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
-                        {% else %}
-                        <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
-                        {% endif %}
-                    </td>
-                    {% if forloop.first %}
-                    <td>{{shade_form.item_shade_name}}</td> make this readonly
-                    {% else %}
-                    <td>{{shade_form.item_shade_name}}</td>
-                    {% endif %}
-                    <td><div>{{ shade_form.item_color_image }}</div></td>
-                    <td>{{ shade_form.DELETE }}</td>
-                  </tr>
-            </div>
-            {% endfor %}
-        </table>
+        {% if form.instance.id %}
+        <option value="{{ form.instance.Item_Color.id}}">{{form.instance.Color_Name}}</option>
+        {% for x in colors %}
+        <option value="{{x.id}}">{{x.color_name}}</option>
+        {% endfor %}
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% for x in colors %}
+        <option value="{{x.id}}">{{x.color_name}}</option>
+        {% endfor %}
+        {% endif %}
+      </select>
+
     </div>
-</div>
-{% endif %}
-
-              <div class=" d-flex my-3">
-                <label for="id_Material_code" class="form-label item-form">Material Code</label>
-                <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}" maxlength="255" required id="id_Material_code">
-              </div>
-              <div class=" d-flex my-3">
-                <label for="id_Packing" class="form-label item-form">Packing</label>
-                <select name="Packing" class="item-select"  required id="id_Packing">
-                  <option value="{{form.instance.Packing}}">{{form.instance.Packing}}</option>
-                  <option value="Roll">Roll</option>
-                  <option value="Bundle">Bundle</option>
-                </select>
-              </div>
-              <div class=" d-flex my-3">
-                <label for="id_unit_name_item" class="form-label item-form">Unit Name:</label>
-                <select name="unit_name_item" class="item-select" required id="id_unit_name_item">
-
-                    {% if form.instance.id %}
-                    <option value="{{ form.instance.unit_name_item.id }}">{{ form.instance.Unit_Name }}</option>
-                    {% for x in unit_name %}  
-                    <option value="{{x.id}}">{{x.unit_name}}</option>
-                    {% endfor %}
-                    {% elif not form.instance.id %}
-                  <option value=""></option>
-                    {% for x in unit_name %}  
-                    <option value="{{x.id}}">{{x.unit_name}}</option>
-                    {% endfor %}
-                    {% endif %}
-
-                </select>
-              </div>
-              <div class=" d-flex my-3">
-                <label for="id_Units" class="form-label item-form">Units:</label>
-                <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required id="id_Units">
-              </div>
-              <div class=" d-flex my-3">
-                <label for="id_Panha" class="form-label item-form">Panha:</label>
-                <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha}}" step="0.01" required id="id_Panha">
-              </div>
-              <div class=" d-flex my-3">
-                <label for="id_Fabric_nonfabric" class="form-label item-form">Fabric/Non Fabric:</label>
-                <select name="Fabric_nonfabric" class="item-select"  required id="id_Fabric_nonfabric">
-                  <option value="{{form.instance.Fabric_nonfabric}}">{{form.instance.Fabric_nonfabric}}</option>
-                  <option value="Fabric">Fabric</option>
-                  <option value="Non Fabric">Non Fabric</option>
-                </select>
-              </div>
-              <div class="d-flex my-3">
-                <label for="id_Fabric_Finishes" class="form-label item-form">Fabric Finishes:</label>
-                <select name="Fabric_Finishes" class="item-select" required id="id_Fabric_Finishes">
-                  <option value="{{form.instance.Fabric_Finishes}}">{{form.instance.Fabric_Finishes}}</option>
-                  <option value="PVC Coating">PVC Coating</option>
-                  <option value="PU Coating">PU Coating</option>
-                  <option value="Black Nickle">Black Nickle</option>
-                  <option value="polypropylene(PP)">polypropylene(PP)</option>
-                </select>
-              </div>
-              <div class="d-flex my-3">
-                <label for="id_GST" class="form-label item-form">GST:</label>
-                <select name="Item_Creation_GST"  class="item-select" required  id="id_Item_Creation_GST">
-
-                  {% if form.instance.id %}
-                  <option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.Item_GST}}</option>
-                  {% for gst in gsts %}
-                  <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
-                  {% endfor %}
-                  {% elif not form.instance.id %}
-                  <option value=""></option>  
-                  {% for gst in gsts %}
-                  <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
-                  {% endfor %}
-                  {% endif %}
-                </select>
-              </div>
-              <div class="d-flex my-3">
-                <label for="id_HSN_Code" class="form-label item-form">HSN Code:</label>
-                <input type="text" class="item-select" name="HSN_Code" value="{{form.instance.HSN_Code}}" required id="id_HSN_Code">
-              </div>
-              <div class="d-flex my-3">
-                <label for="id_status" class="form-label item-form">Status:</label>
-                <select name="status" class="item-select" required  id="id_status">
-                  <option value="{{form.instance.status}}">{{form.instance.status}}</option>
-                  <option value="Used">Used</option>
-                  <option value="Unused">Unused</option>
-                  <option value="Slow Moving">Slow Moving</option>
-                  <option value="Dead">Dead</option>
-                </select>
-              </div>
-              {% if not form.instance.id %}
-              <div class="d-flex my-3">
-                <label for="id_status" class="form-label item-form">Image:</label>
-                <input type="file" class="item-select px-2 py-1" name="item_shade_image" required id="">
-              </div>
-              <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
+    {% if form.instance.id %}
+    <div class="d-flex mb-3">
+      <label for="id_Item_shades" class="form-label item-form">Shades:</label>
+      <!-- Render reverse related relationship fields dynamically using formset factory  -->
+      <div class="mb-3">
+        <table class="table table-striped table-hover table-responsive rounded-3">
+          <tr>
+            <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
+            <th><label for="{{ shade_form.prefix }}-item_shade_name">Name</label></th>
+            <th><label for="{{ shade_form.prefix }}-item_color_image">Color Image</label></th>
+            <th><label for="{{ shade_form.prefix }}-item_color_image">Delete</label></th>
+          </tr>
+          {{ formset.management_form }}
+          {% for shade_form in formset %}
+          <div class="shade-form">
+            {{ shade_form.id }}
+            <!-- Render each field manually -->
+            <tr>
+              <td>
+                {% if forloop.first %}
+                <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
+                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
+                {% else %}
+                <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
+                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
+                {% endif %}
+              </td>
+              {% if forloop.first %}
+              <td>{{shade_form.item_shade_name}}</td> make this readonly
+              {% else %}
+              <td>{{shade_form.item_shade_name}}</td>
               {% endif %}
-              <input type="submit" class="form-button" name="save" value="Save">
-            </form>
+              <td>
+                <div>{{ shade_form.item_color_image }}</div>
+              </td>
+              <td>{{ shade_form.DELETE }}</td>
+            </tr>
           </div>
-        </div>
-        <div id="modal1" class="modal">
-          <div class="modal-content">
-            <h5>Create Color<span class="close" onclick="closeModal('modal1')">&times;</span></h5>
-            {{ form.color_name.errors }}
-            <form action="" method="POST">
-              {% csrf_token %}
-              <div class=" d-flex">
-                <label for="id_color_name" class="form-label create_color_lable">Color Name:</label>
-                <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255"
-                  required id="id_color_name">
-              </div>
-              <input type="submit" class="create-btn" name="save" value="Save">
-              <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-            </form>
-          </div>
-        </div>
-          <script>
-            function openModal(modalId) {
-              var modal = document.getElementById(modalId);
-              modal.style.display = 'block';
-            }
-          
-            // Function to close a modal
-            function closeModal(modalId) {
-              var modal = document.getElementById(modalId);
-              modal.style.display = 'none';
-            }
-          </script>
- {% endblock body %}
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    {% endif %}
 
+    <div class=" d-flex my-3">
+      <label for="id_Material_code" class="form-label item-form">Material Code</label>
+      <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}"
+        maxlength="255" required id="id_Material_code">
+    </div>
+    <div class=" d-flex my-3">
+      <label for="id_Packing" class="form-label item-form">Packing</label>
+      <select name="Packing" class="item-select" required id="id_Packing">
+        <option value="{{form.instance.Packing}}">{{form.instance.Packing}}</option>
+        <option value="Roll">Roll</option>
+        <option value="Bundle">Bundle</option>
+      </select>
+    </div>
+    <div class=" d-flex my-3">
+      <label for="id_unit_name_item" class="form-label item-form">Unit Name:</label>
+      <select name="unit_name_item" class="item-select" required id="id_unit_name_item">
+
+        {% if form.instance.id %}
+        <option value="{{ form.instance.unit_name_item.id }}">{{ form.instance.Unit_Name }}</option>
+        {% for x in unit_name %}
+        <option value="{{x.id}}">{{x.unit_name}}</option>
+        {% endfor %}
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% for x in unit_name %}
+        <option value="{{x.id}}">{{x.unit_name}}</option>
+        {% endfor %}
+        {% endif %}
+
+      </select>
+    </div>
+    <div class=" d-flex my-3">
+      <label for="id_Units" class="form-label item-form">Units:</label>
+      <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required
+        id="id_Units">
+    </div>
+    <div class=" d-flex my-3">
+      <label for="id_Panha" class="form-label item-form">Panha:</label>
+      <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha}}" step="0.01" required
+        id="id_Panha">
+    </div>
+    <div class=" d-flex my-3">
+      <label for="id_Fabric_nonfabric" class="form-label item-form">Fabric/Non Fabric:</label>
+      <select name="Fabric_nonfabric" class="item-select" required id="id_Fabric_nonfabric">
+        <option value="{{form.instance.Fabric_nonfabric}}">{{form.instance.Fabric_nonfabric}}</option>
+        <option value="Fabric">Fabric</option>
+        <option value="Non Fabric">Non Fabric</option>
+      </select>
+    </div>
+    <div class="d-flex my-3">
+      <label for="id_Fabric_Finishes" class="form-label item-form">Fabric Finishes:</label>
+      <select name="Fabric_Finishes" class="item-select" required id="id_Fabric_Finishes">
+        <option value="{{form.instance.Fabric_Finishes}}">{{form.instance.Fabric_Finishes}}</option>
+        <option value="PVC Coating">PVC Coating</option>
+        <option value="PU Coating">PU Coating</option>
+        <option value="Black Nickle">Black Nickle</option>
+        <option value="polypropylene(PP)">polypropylene(PP)</option>
+      </select>
+    </div>
+    <div class="d-flex my-3">
+      <label for="id_GST" class="form-label item-form">GST:</label>
+      <select name="Item_Creation_GST" class="item-select" required id="id_Item_Creation_GST">
+
+        {% if form.instance.id %}
+        <option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.Item_GST}}</option>
+        {% for gst in gsts %}
+        <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
+        {% endfor %}
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% for gst in gsts %}
+        <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
+        {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+    <div class="d-flex my-3">
+      <label for="id_HSN_Code" class="form-label item-form">HSN Code:</label>
+      <input type="text" class="item-select" name="HSN_Code" value="{{form.instance.HSN_Code}}" required
+        id="id_HSN_Code">
+    </div>
+    <div class="d-flex my-3">
+      <label for="id_status" class="form-label item-form">Status:</label>
+      <select name="status" class="item-select" required id="id_status">
+        <option value="{{form.instance.status}}">{{form.instance.status}}</option>
+        <option value="Used">Used</option>
+        <option value="Unused">Unused</option>
+        <option value="Slow Moving">Slow Moving</option>
+        <option value="Dead">Dead</option>
+      </select>
+    </div>
+    {% if not form.instance.id %}
+    <div class="d-flex my-3">
+      <label for="id_status" class="form-label item-form">Image:</label>
+      <input type="file" class="item-select px-2 py-1" name="item_shade_image" required id="">
+    </div>
+    <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
+    {% endif %}
+    <input type="submit" class="form-button" name="save" value="Save">
+  </form>
+</div>
+<div class="col-lg-1" style="padding-top: 110px;">
+  <button class="add_btn" onclick="openModal('modal1')">+</button>
+</div>
+
+</div>
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h5>Create Color<span class="close" onclick="closeModal('modal1')">&times;</span></h5>
+    
+    <form  action="" method="POST">
+      {% csrf_token %}
+      <div class=" d-flex">
+        <label for="id_color_name" class="form-label create_color_lable">Color Name:</label>
+        <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
+      </div>
+      <input type="submit" class="create-btn" name="save" value="Save">
+      <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+    </form>
+    
+    <div class="color_search"> 
+      <input class="search" type="search" placeholder="Search" aria-label="Search">
+      <span class="p-1"><i class="fa-solid fa-magnifying-glass"></i></span> 
+    </div>
+   
+    <div class="my-3 table-responsive">
+      
+      <table class="table table-striped table-hover">
+        <thread>
+          <tr class="color_table">
+            <th scope="col" class="" >No</th>
+            <th scope="col">Color Name
+            </th>
+            <th scope="col">Edit</th>
+            <th scope="col" class="">Delete</th>
+          </tr>
+        </thread>
+        <tbody>
+
+
+          {% for color in colors %}
+          <tr>
+          <td>{{forloop.counter}}</td>
+          <td>{{color.color_name}}</td>
+          <td><a href="{% url 'coloredit' color.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+          <td><a href="{% url 'colordelete' color.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  function openModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = 'block';
+  }
+
+  // Function to close a modal
+  function closeModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+  }
+</script>
+{% endblock body %}

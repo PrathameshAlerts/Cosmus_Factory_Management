@@ -833,6 +833,14 @@ body{
     max-height: 800px !important;
     overflow-y: auto;
 }
+.errorShow{
+    color: #9a0f0f;
+    list-style-type: none;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 5px 20px;
+    background-color: #dba6a6;
+}
  @media screen and (max-width: 600px) {
         .side-bar {
             width: 0;
