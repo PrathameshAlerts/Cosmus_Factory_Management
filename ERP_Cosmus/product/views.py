@@ -110,6 +110,7 @@ def product_color_sku(request):
     except Exception as e:
         print('Exception occured', str(e))
         messages.error(request,'Add a product first')
+        
     
     form = PProductCreateForm()
     return render(request, 'product/product_color_sku.html', {'form': form, 'color': color})
@@ -688,7 +689,7 @@ def ledgerupdate(request,pk):
     if request.method == 'POST':
         print(request.POST)
         form = LedgerForm(request.POST, instance = Ledger_pk)
-
+        name_for_message = request.POST['name']
         if form.is_valid():
             form.save()
             if request.POST['Debit_Credit'] == 'Debit':
@@ -701,7 +702,7 @@ def ledgerupdate(request,pk):
                 Opening_ledger.debit = 0
                 Opening_ledger.save()
             
-            messages.success(f'Ledger of {request.POST['name']} Updated')
+            messages.success(f'Ledger of {name_for_message} Updated')
             return redirect('ledger-list')
         else:
             messages.error(request,'Error while updating Ledger')

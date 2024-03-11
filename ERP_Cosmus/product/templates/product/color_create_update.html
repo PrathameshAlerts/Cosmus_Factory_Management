@@ -6,7 +6,7 @@
   <h2>{{title}}</h2>
       <form class="mb-5" action="" method="POST">
         {% csrf_token %}
-        <div id="errorform" >{{ form.color_name.errors }}</div>
+        
    
           
            
@@ -23,16 +23,7 @@
       </form>
 
 </div>
-<script>
-   window.onload = function() {
-            var errorMessage = document.getElementById('errorform');
-            if (errorMessage) {
-                setTimeout(function() {
-                    errorMessage.style.display = 'none';
-                }, 4000); // Hide the error message after 5 seconds (5000 milliseconds)
-            }
-        };
-</script>  
+
 {% endblock body %}
 
 
