@@ -14,19 +14,19 @@
     <div class="col-lg-6 ">
       <div class="d-flex mb-2">
         <label for="id_name" class="form-label item-form">Name:</label>
-        <input type="text" class="w-50 item-select" value="{{form.instance.name}}" name="name" maxlength="100" id="id_name">
+        <input type="text" class="item-select" value="{{form.instance.name}}" name="name" maxlength="100" id="id_name">
       </div>
       <div class=" d-flex mb-3"> 
         <label for="id_short_name" class="form-label item-form">Alias:</label>
-        <input type="text" class="item-select w-50" value="{{form.instance.short_name}}" name="short_name" maxlength="100" id="id_short_name">
+        <input type="text" class="item-select" value="{{form.instance.short_name}}" name="short_name" maxlength="100" id="id_short_name">
       </div>
       <div class="d-flex mb-3">
         <label for="id_vendor_code"  class="form-label item-form">Vendor code:</label>
-        <input type="text" class="item-select w-50" value="{{form.instance.vendor_code}}" name="vendor_code" maxlength="100" id="id_vendor_code">
+        <input type="text" class="item-select" value="{{form.instance.vendor_code}}" name="vendor_code" maxlength="100" id="id_vendor_code">
       </div>
       <div class=" d-flex mb-3">
         <label for="id_under_group" class="form-label item-form">Under:</label>
-        <select value="{{form.instance.under_group}}" class="item-select w-50"  name="under_group" required id="id_under_group">
+        <select value="{{form.instance.under_group}}" class="item-select" name="under_group" required id="id_under_group">
             {% if form.instance.id %}
             <option value="{{form.instance.under_group.id}}">{{form.instance.account_sub_group_ledger}}</option>
             {% elif not form.instance.id %}
@@ -39,7 +39,7 @@
       </div>
       <div class="d-flex mb-3">
         <label for="id_maintain_billwise" class="form-label item-form">Maintain billwise:</label>
-        <select class="item-select w-50" value="{{form.instance.maintain_billwise}}" name="maintain_billwise" id="id_maintain_billwise">
+        <select class="item-select" value="{{form.instance.maintain_billwise}}" name="maintain_billwise" id="id_maintain_billwise">
           <option value="{{form.instance.maintain_billwise}}">{{form.instance.maintain_billwise}}</option>
           <option value="Yes">Yes</option>
           <option value="No">No</option>
@@ -47,11 +47,11 @@
      </div>
       <div class="d-flex mb-3">
         <label for="id_default_credit_period" class="form-label item-form">Default credit period:</label>
-        <input type="text" class="item-select w-50" value="{{form.instance.default_credit_period}}" name="default_credit_period" maxlength="100" id="id_default_credit_period">
+        <input type="text" class="item-select" value="{{form.instance.default_credit_period}}" name="default_credit_period" maxlength="100" id="id_default_credit_period">
       </div>
       <div class="d-flex mb-3">
         <label for="id_types" class="form-label item-form">Types:</label>
-        <select class="item-select w-50" value="{{form.instance.types}}" name="types" id="id_types">
+        <select class="item-select" value="{{form.instance.types}}" name="types" id="id_types">
           <option value="{{form.instance.types}}">{{form.instance.types}}</option>
           <option value="Trader">Trader</option>
           <option value="Manufacture">Manufacture</option>
@@ -59,7 +59,7 @@
       </div>
       <div class="d-flex mb-3">
         <label for="id_Gst_no" class="form-label item-form">Gst no:</label>
-        <input type="text" class="item-select w-50" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no"> 
+        <input type="text" class="item-select" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no"> 
       </div>
       <div class="d-flex mb-3">
         <label for="id_name" class="form-label item-form">Current Date:</label> 
@@ -68,48 +68,51 @@
 
       <div class="d-flex mb-4 ms-3 me-1">
         <label for="id_opening_balance" class="form-label item-form ms-1">Openeing Balance:</label>
-       <input type="number" placeholder="Rs" class="item-select me-2" value="{{from.instance.opening_balance}}" name="opening_balance" required id="id_opening_balance">
 
-       <select class="item-select w-25" value="" name="Debit_Credit" id="id_Debit_Credit">
-        <option value="Debit">Debit</option>
-        <option value="Credit">Credit</option>
-     
-
+      {% if form.instance.id %}
+        <input type="number" placeholder="Rs" class="item-select me-2" value="{{ open_bal }}" name="opening_balance" required id="id_opening_balance">
+       {% elif not form.instance.id %}
+       <input type="number" placeholder="Rs" class="item-select me-2" value="" name="opening_balance" required id="id_opening_balance">
+       {% endif %}
+        <select class="item-select w-25" value="{{form.instance.Debit_Credit}}" name="Debit_Credit" id="id_Debit_Credit">
+      <option value="{{form.instance.Debit_Credit}}">{{form.instance.Debit_Credit}}</option>
+      <option value="Debit">Debit</option>
+      <option value="Credit">Credit</option>
     </select> 
     </div>
     </div>
     <div class="col-lg-6">
       <div class="d-flex mb-3">
         <label for="id_address" class="form-label item-form">Address:</label> <!--for textarea value = '' doesent work -->
-           <textarea name="address" class="item-select w-50" cols="35" rows="3" id="id_address">{{form.instance.address}}</textarea> 
+           <textarea name="address" class="item-select" cols="35" rows="3" id="id_address">{{form.instance.address}}</textarea> 
          </div>
          <div class="d-flex mb-3">
            <label for="id_state" class="form-label item-form">State:</label>
-           <input type="text"  class="item-select w-50" name="state" value ="{{form.instance.state}}" maxlength="255" id="id_state">
+           <input type="text"  class="item-select" name="state" value ="{{form.instance.state}}" maxlength="255" id="id_state">
          </div>
          <div class="d-flex mb-3">
                <label for="id_country" class="form-label item-form">Country:</label>
-               <input type="text" class="item-select w-50" value = "{{form.instance.country}}" name="country" maxlength="255" id="id_country"> 
+               <input type="text" class="item-select" value = "{{form.instance.country}}" name="country" maxlength="255" id="id_country"> 
          </div> 
          <div class="d-flex mb-3">
            <label for="id_city" class="form-label item-form">City:</label>
-           <input type="text" class="item-select w-50" value = "{{form.instance.city}}" name="city" maxlength="255" id="id_city">  
+           <input type="text" class="item-select" value = "{{form.instance.city}}" name="city" maxlength="255" id="id_city">  
          </div>
          <div class="d-flex mb-3">
            <label for="id_pincode" class="form-label item-form">Pincode:</label>
-           <input type="number" class="item-select w-50" value="{{form.instance.pincode}}" name="pincode" required id="id_pincode">    
+           <input type="number" class="item-select" value="{{form.instance.pincode}}" name="pincode" required id="id_pincode">    
          </div>
           <div class="d-flex mb-3">
            <label for="id_mobile_no" class="form-label item-form">Mobile no:</label>
-           <input type="number" class="item-select w-50" value="{{form.instance.mobile_no}}" name="mobile_no" required id="id_mobile_no">    
+           <input type="number" class="item-select" value="{{form.instance.mobile_no}}" name="mobile_no" required id="id_mobile_no">    
          </div>  
          <div class="d-flex mb-3">
            <label for="id_landline_no" class="form-label item-form">Landline no:</label>
-           <input type="number" class="item-select w-50" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no"> 
+           <input type="number" class="item-select" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no"> 
          </div>
          <div class="d-flex mb-3">
            <label for="id_bank_details" class="form-label item-form">Bank details:</label>
-           <textarea name="bank_details" class="item-select w-50" cols="25" rows="3" id="id_bank_details">{{form.instance.bank_details}}</textarea>  
+           <textarea name="bank_details" class="item-select" cols="25" rows="3" id="id_bank_details">{{form.instance.bank_details}}</textarea>  
          </div>
 
     </div>

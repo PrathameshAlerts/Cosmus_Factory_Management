@@ -1,7 +1,7 @@
 import cities_light
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, RawStockTransfer, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
@@ -630,6 +630,7 @@ def stock_item_delete(request, pk):
 
 def ledgercreate(request):
     print(request.POST)
+    current_date = now().date()
     under_groups = AccountSubGroup.objects.all()
     form = LedgerForm()
     if request.method == 'POST':
@@ -640,66 +641,73 @@ def ledgercreate(request):
             open_bal_value = form.cleaned_data['opening_balance']
             name_value = form.cleaned_data['name']
             debit_credit_value = form.cleaned_data['Debit_Credit']
-            if debit_credit_value == 'Debit':
 
+            if debit_credit_value == 'Debit':
                 account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger' ,debit= open_bal_value)
+
             elif debit_credit_value == 'Credit':
                 account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger',credit= open_bal_value)
             else:
                 print(form.errors)
+            messages.success(request,'Ledger Created')
             return redirect('ledger-list')
         
         else:
             print(form.errors)
-            return render(request,'accounts/ledger_create_update.html',{'form':form,
-                                                                        'under_groups':under_groups,
-                                                                        'title':'ledger Create'})
+            messages.error(request,'Error with form validation')
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
     
-    current_date = now().date()
-    return render(request,'accounts/ledger_create_update.html',{'form':form,
-                                                                'under_groups':under_groups,
-                                                                'title':'ledger Create',
-                                                                'current_date':current_date})
+
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
     
 
 
 def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
-    Ledger_pk =  get_object_or_404(Ledger ,pk=pk)
+    current_date = now().date()
+    Ledger_pk = get_object_or_404(Ledger,pk = pk)
+    ledgers = Ledger_pk.transaction_entry.all() #get all transactions related instances to the ledger
 
-    ledgers = Ledger_pk.transaction_entry.all() #get all the ledger objects of the instance
-    Opening_ledger = ledgers.filter(voucher_type ='Ledger')
+    Opening_ledger = ledgers.filter(voucher_type ='Ledger').first() # filter the first related instance for only ledger as voucher type
     form = LedgerForm(instance = Ledger_pk)
-
     opening_balance = 0
 
-    if form.instance.Debit_Credit == 'Debit':
-        opening_bal = Opening_ledger.first().debit
-        opening_balance = opening_balance + opening_bal
+    if form.instance.Debit_Credit == 'Debit':            # if form instance has Debit 
+        opening_bal = Opening_ledger.debit               # get the data from the debit side of transaction_entry
+        opening_balance = opening_balance + opening_bal  # and store it in opening_balance variable
 
-    elif form.instance.Debit_Credit == 'Credit':
-        opening_bal = Opening_ledger.first().credit
-        opening_balance = opening_balance + opening_bal
+    elif form.instance.Debit_Credit == 'Credit':         # if form instance has Credit
+        opening_bal = Opening_ledger.credit              # get the data from the credit side of transaction_entry
+        opening_balance = opening_balance + opening_bal  # and store it in opening_balance variable
+
     else:
-        print('ERROR IN OPENING BALANCE')
+        messages.error(request,' Error with Credit Debit ')
+    
 
     if request.method == 'POST':
+        print(request.POST)
         form = LedgerForm(request.POST, instance = Ledger_pk)
+
         if form.is_valid():
             form.save()
+            if request.POST['Debit_Credit'] == 'Debit':
+                Opening_ledger.debit = request.POST['opening_balance']
+                Opening_ledger.credit = 0
+                Opening_ledger.save()
+
+            if request.POST['Debit_Credit'] == 'Credit':
+                Opening_ledger.credit = request.POST['opening_balance']
+                Opening_ledger.debit = 0
+                Opening_ledger.save()
+            
+            messages.success(f'Ledger of {request.POST['name']} Updated')
             return redirect('ledger-list')
         else:
-            return render(request,'accounts/ledger_create_update.html',{'form':form,
-                                                                        'under_groups':under_groups,
-                                                                        'title':'ledger Update',
-                                                                        'current_date':current_date ,
-                                                                        'open_bal':opening_balance})
-    current_date = now().date()
-    return render(request,'accounts/ledger_create_update.html',{'form':form,
-                                                                'under_groups':under_groups,
-                                                                'title':'ledger Update',
-                                                                'current_date':current_date, 
-                                                                'open_bal':opening_balance})
+            messages.error(request,'Error while updating Ledger')
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date , 'open_bal':opening_balance})
+    
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date, 'open_bal':opening_balance})
+
 
 
 def ledgerlist(request):
@@ -750,7 +758,6 @@ def godowncreate(request):
     
 
 def godownupdate(request,str,pk):
-
     if str == 'finished':
         godown_type = 'Finished Goods'
         finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
@@ -760,6 +767,7 @@ def godownupdate(request,str,pk):
             finished_godown_pk.godown_name_finished = godown_name
             finished_godown_pk.save()
             return redirect('godown-list')
+        
     elif str == 'raw':
         godown_type = 'Raw Material'
         raw_godown_pk = get_object_or_404(Godown_raw_material , pk=pk)
@@ -795,20 +803,24 @@ def godowndelete(request,str,pk):
             finished_godown_pk = get_object_or_404(Godown_finished_goods, pk=pk)
             finished_godown_pk.delete()
             messages.success(request,f'Finished Goods Godown {finished_godown_pk.godown_name_finished} was deleted')
+            
         except Exception as e:
             messages.error(request,f'Cannot delete {finished_godown_pk.godown_name_finished} because it is referenced by other objects. ')
-
+            
 
     elif str == 'raw':
         try:
             raw_godown_pk = get_object_or_404(Godown_raw_material, pk=pk)
             raw_godown_pk.delete()
-            messages.success(request,f'Raw Material Godown - {raw_godown_pk.Godown_raw_material} was deleted')
+            messages.success(request,f'Raw Material Godown - {raw_godown_pk.godown_name_raw} was deleted')
+            
         except Exception as e:
-            messages.error(request,f'Cannot delete {raw_godown_pk.Godown_raw_material} because it is referenced by other objects. ')
+            messages.error(request,f'Cannot delete {raw_godown_pk.godown_name_raw} because it is referenced by other objects. ')
+            
     else:
         messages.error(request, f'Error Deleting Godowns')
     return redirect('godown-list')
+    
     
 
 
