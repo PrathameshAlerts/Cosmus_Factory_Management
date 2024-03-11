@@ -89,8 +89,8 @@ urlpatterns = [
     path('salesvoucherlist/', views.salesvoucherlist, name = 'sales-voucher-list'),
     path('salesvoucherdelete/', views.salesvoucherdelete, name = 'sales-voucher-delete'),
 
-
-
+    #reports
+    path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
 
     #common Routes
     path('', views.dashboard , name='dashboard-main'),

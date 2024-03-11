@@ -1,0 +1,45 @@
+{% extends 'product/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h2>Transfer Logs </h2>
+
+<div class="table-responsive">
+<table class="table table-striped table-bordered table-hover ">
+  <thead class="table-light">
+    <tr>
+      <th>Voucher No</th>
+      <th>Date</th>
+      <th>Source Godown</th>
+      <th>Target Godown</th>
+      <th>Item Name</th>
+      <th>Color</th>
+      <th>Shades</th>
+      <th>Qty</th>
+      <th>Units</th>
+      <th>Remark</th>
+     
+    </tr>
+  </thead>
+  <tbody style="height: 10px !important; overflow: scroll;">
+
+    {% for log in transferlist %}
+    <tr>
+      <td>{{log.voucher_no}}</td>
+      <td>{{log.date_and_time}}</td>
+      <td>{{log.source_godown}}</td>
+      <td>{{log.destination_godown}}</td>
+      <td>{{log.item_name_transfer}}</td>
+      <td>{{log.item_color_transfer}}</td>
+      <td>{{log.item_shade_transfer}}</td>
+      <td>{{log.item_quantity_transfer}}</td>
+      <td>{{log.item_unit_transfer}}</td>
+      <td>{{log.remarks}}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock body %}

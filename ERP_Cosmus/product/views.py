@@ -309,6 +309,7 @@ def color_create_update(request, pk=None):
 
     else:
         template_name = "product/create_color_modal.html"
+        title = 'Colors'
     
     color = Color.objects.all()
 
@@ -969,6 +970,9 @@ def stocktransfer(request):
             return redirect('stock-transfer')           
         
 
+def stocktransferreport(request):
+    rawstocktransferlist = RawStockTransfer.objects.all()
+    return render(request,'misc/stock_transfer_list.html',{'transferlist':rawstocktransferlist})
 
 
 #__________________________stock transfer end__________________________
