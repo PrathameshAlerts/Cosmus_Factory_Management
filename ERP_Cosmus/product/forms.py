@@ -174,14 +174,11 @@ class LedgerForm(forms.ModelForm):
 
 
 
-
-
-
-
-
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())
     password = forms.CharField(widget=PasswordInput())
+
+
 
 # Register a user
 class CreateUserForm(UserCreationForm):
