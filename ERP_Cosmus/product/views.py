@@ -1,5 +1,4 @@
-import cities_light
-from django.forms import inlineformset_factory
+
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, RawStockTransfer, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
@@ -48,16 +47,21 @@ def edit_production_product(request,pk):
 
 def product_color_sku(request):
     color = Color.objects.all()
+
+
     try:
         if request.method == 'POST':
             product_ref_id = request.POST.get('Product_Refrence_ID')
             request_dict = request.POST
             count = 0
+
             for x in request_dict.keys():
                 if x[0:12] == 'PProduct_SKU':
                     count = count + 1
+
             with transaction.atomic():
                 all_sets_valid = False
+
                 try:
                     for i in range(1, count): 
                         # Build field names dynamically 
@@ -92,24 +96,31 @@ def product_color_sku(request):
                             #any additional logic or modifications before finally saving it to the database.
                             pproduct.save()
                             all_sets_valid = True
+
                         else:
-                        
                             all_sets_valid = False
                             #explicitly set transaction to rollback on errors
                             transaction.set_rollback(True)
                             break
+
+
                 except Exception as e:
                     print('Exception occured:', str(e))
-            if all_sets_valid:
+                    messages.error(request, f'Exception occured - {e}')
 
+
+            if all_sets_valid:
+                messages.success(request, f'Products for Refrence ID {product_ref_id} created')
                 # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
                 return redirect(reverse('edit_production_product', args=[product_ref_id]))
+            
             else:
+
                 #Return a response with errors for invalid sets of fields
                 return render(request, 'product/product_color_sku.html', {'form':current_form,'color': color})
     except Exception as e:
         print('Exception occured', str(e))
-        messages.error(request,'Add a product first')
+        messages.error(request,'Add a product first for Reference ID')
         
     
     form = PProductCreateForm()
@@ -158,6 +169,7 @@ def item_create(request):
         
         if form.is_valid():
             form.save()
+            messages.success(request,'Item has been created')
             return redirect("item-list")
         else:
             print(form.errors)
@@ -166,9 +178,9 @@ def item_create(request):
                                                                       'unit_name':unit_name,
                                                                       'colors':colors,
                                                                       'title':title,'form':form})
-    else:
-        form = Itemform()
-        return render(request,'product/item_create_update.html',{'gsts':gsts,
+    
+    form = Itemform()
+    return render(request,'product/item_create_update.html',{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
                                                                  'unit_name':unit_name,
                                                                  'colors':colors,
@@ -255,6 +267,7 @@ def item_edit(request,pk):
             print(formset.cleaned_data)
             form.save()
             formset.save()
+            messages.success('Item updated successfully')
             return redirect('item-list')
         else:
 
@@ -324,11 +337,12 @@ def color_create_update(request, pk=None):
         form = ColorForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-
             if 'save_and_add_another' in request.POST:
+                messages.success(request, 'Color created successfully')
                 return redirect('simplecolorlist')
-            
-            return redirect('simplecolorlistonly')
+            elif 'save' in request.POST:
+                messages.success(request, 'Color created successfully')
+                return redirect('simplecolorlistonly')
         else:
             print(form.errors)
             return render(request, template_name,{'title': title,'form': form,'colors':color})
@@ -407,11 +421,14 @@ def item_fabric_group_create(request):
         form = ItemFabricGroup(request.POST)
         if form.is_valid():
             form.save()
-
             if 'save_and_add_another' in request.POST:
 
+                messages.success(request,'Fabric group created.')
                 return redirect('item-fabgroup-create')
-            return redirect('item-fabgroup-list')
+            
+            elif 'save' in request.POST:
+                messages.success(request,'Fabric group created.')
+                return redirect('item-fabgroup-list')
         else:
             print(form.errors)
             return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group',
@@ -435,8 +452,10 @@ def item_fabric_group_update(request,pk):
         form = ItemFabricGroup(request.POST,instance = item_fabric_pk)
         if form.is_valid():
             form.save()
+            messages.success(request,'Fabric group updated.')
             return redirect('item-fabgroup-list')
         else:
+            messages.success(request,'Fabric group updated.')
             return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group',
                                                                                   'form':form})
     else:
@@ -466,9 +485,12 @@ def unit_name_create(request):
             form.save()
 
             if 'save_and_add_another' in request.POST:
+                messages.success(request,'Unit created.')
                 return redirect('unit_name-create')
-            
-            return redirect('unit_name-list')
+            elif 'save' in request.POST:
+
+                messages.success(request,'Fabric group created.')
+                return redirect('unit_name-list')
         
         else:
             return render(request, "product/unit_name_create_update.html", {'title': 'Create Unit','form':form})
@@ -488,6 +510,7 @@ def unit_name_update(request,pk):
         form = UnitName(request.POST ,instance=unit_name_pk)
         if form.is_valid():
             form.save()
+            messages.success(request,'Unit updated.')
             return redirect('unit_name-list')
         else:
             return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,
