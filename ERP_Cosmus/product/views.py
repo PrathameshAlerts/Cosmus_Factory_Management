@@ -307,8 +307,6 @@ def item_delete(request, pk):
 
 
 def color_create_update(request, pk=None):
-    
-
     if request.path == '/simple_colorcreate_list/':
         template_name = 'product/color_list.html'
         title = 'Color List'
@@ -335,22 +333,26 @@ def color_create_update(request, pk=None):
     form = ColorForm(instance=instance)
     if request.method == 'POST':
         form = ColorForm(request.POST, instance=instance)
+
         if form.is_valid():
             form.save()
+            # need to add a verification if getting request from simple form or from modal for save redirection 
             if 'save_and_add_another' in request.POST:
-                messages.success(request, 'Color created successfully')
+                messages.success(request, 'Color created successfully.')
                 return redirect('simplecolorlist')
+            
             elif 'save' in request.POST:
-                messages.success(request, 'Color created successfully')
+                if instance:
+                    messages.success(request, 'Color updated successfully.')
+                else:
+                    messages.success(request, 'Color created successfully.')
                 return redirect('simplecolorlistonly')
         else:
             print(form.errors)
             return render(request, template_name,{'title': title,'form': form,'colors':color})
 
-
-    return render(request, template_name ,{'title': title, 'form': form, 'colors':color})
+    return render(request, template_name , {'title': title, 'form': form, 'colors':color})
         
-
 def color_delete(request, pk):
 
     try:
@@ -422,7 +424,6 @@ def item_fabric_group_create(request):
         if form.is_valid():
             form.save()
             if 'save_and_add_another' in request.POST:
-
                 messages.success(request,'Fabric group created.')
                 return redirect('item-fabgroup-create')
             
@@ -455,7 +456,7 @@ def item_fabric_group_update(request,pk):
             messages.success(request,'Fabric group updated.')
             return redirect('item-fabgroup-list')
         else:
-            messages.success(request,'Fabric group updated.')
+            
             return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group',
                                                                                   'form':form})
     else:
@@ -485,11 +486,11 @@ def unit_name_create(request):
             form.save()
 
             if 'save_and_add_another' in request.POST:
-                messages.success(request,'Unit created.')
+                messages.success(request,'Unit created sucessfully.')
                 return redirect('unit_name-create')
+            
             elif 'save' in request.POST:
-
-                messages.success(request,'Fabric group created.')
+                messages.success(request,'Fabric group created sucessfully.')
                 return redirect('unit_name-list')
         
         else:
@@ -547,6 +548,7 @@ def account_sub_group_create(request):
         form = account_sub_grp_form(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Account sub-group created sucessfully')
             return redirect('account_sub_group-list')
         else:
             print(form.errors)
@@ -566,6 +568,7 @@ def account_sub_group_update(request, pk):
         form = account_sub_grp_form(request.POST, instance = group)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Account sub-group updated sucessfully')
             return redirect('account_sub_group-list')
         else:
             print(form.errors)
@@ -602,6 +605,7 @@ def stock_item_create(request):
         form = StockItemForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Stock item created sucessfully')
             return redirect('stock_item-list')
         else:
             print(form.errors)
@@ -625,6 +629,7 @@ def stock_item_update(request, pk):
         form = StockItemForm(request.POST, instance = stock)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Stock item updated sucessfully')
             return redirect('stock_item-list')
         else:
             print(form.errors)
@@ -678,8 +683,7 @@ def ledgercreate(request):
             return redirect('ledger-list')
         
         else:
-            print(form.errors)
-            messages.error(request,'Error with form validation')
+            
             return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
     
 
@@ -728,7 +732,7 @@ def ledgerupdate(request,pk):
             messages.success(f'Ledger of {name_for_message} Updated')
             return redirect('ledger-list')
         else:
-            messages.error(request,'Error while updating Ledger')
+            
             return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date , 'open_bal':opening_balance})
     
     return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date, 'open_bal':opening_balance})
@@ -768,16 +772,18 @@ def godowncreate(request):
         if godown_type == 'Raw Material':
             godown_raw = Godown_raw_material(godown_name_raw=godown_name)
             godown_raw.save()
+            messages.success(request,'Raw material godown created.')
             return redirect('godown-list')
         
         elif godown_type == 'Finished Goods':
             godown_finished = Godown_finished_goods(godown_name_finished=godown_name)
             godown_finished.save()
+            messages.success(request,'Finished goods godown created.')
             return redirect('godown-list')
         else:
-            return HttpResponse('enter a valid godown type')
+            messages.error(request,'Error Selecting Godown.')
+            return redirect('godown-list')
             
-        
     return render(request,'misc/godown_create.html')
 
     
@@ -791,6 +797,7 @@ def godownupdate(request,str,pk):
             godown_name =  request.POST['godown_name']
             finished_godown_pk.godown_name_finished = godown_name
             finished_godown_pk.save()
+            messages.success(request,'Finished goods godown updated.')
             return redirect('godown-list')
         
     elif str == 'raw':
@@ -801,9 +808,10 @@ def godownupdate(request,str,pk):
             godown_name =  request.POST['godown_name']
             raw_godown_pk.godown_name_raw = godown_name
             raw_godown_pk.save()
+            messages.success(request,'Raw material godown updated.')
             return redirect('godown-list')
     else:
-        print('error in godownupdate str variable')
+        messages.error(request,'error in godownupdate str variable')
     
     context = {
         'instance_data': instance_data,
