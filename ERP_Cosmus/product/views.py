@@ -712,7 +712,6 @@ def ledgerupdate(request,pk):
     else:
         messages.error(request,' Error with Credit Debit ')
     
-
     if request.method == 'POST':
         print(request.POST)
         form = LedgerForm(request.POST, instance = Ledger_pk)
@@ -729,7 +728,7 @@ def ledgerupdate(request,pk):
                 Opening_ledger.debit = 0
                 Opening_ledger.save()
             
-            messages.success(f'Ledger of {name_for_message} Updated')
+            messages.success(request, f'Ledger of {name_for_message} Updated')
             return redirect('ledger-list')
         else:
             
@@ -740,7 +739,7 @@ def ledgerupdate(request,pk):
 
 
 def ledgerlist(request):
-    ledgers = Ledger.objects.all()
+    ledgers = Ledger.objects.select_related('under_group').all()
     return render(request, 'accounts/ledger_list.html', {'ledgers':ledgers})
 
 
