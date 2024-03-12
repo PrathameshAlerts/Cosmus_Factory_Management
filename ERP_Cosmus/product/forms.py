@@ -9,25 +9,27 @@ from django.forms.widgets import PasswordInput, TextInput
 
 
 
-class ProductForm(forms.ModelForm):
+# class ProductForm(forms.ModelForm):
 
-    widgets = {
-            'Product_Channel': forms.CheckboxSelectMultiple,
-            }
+#     widgets = {
+#             'Product_Channel': forms.CheckboxSelectMultiple,
+#             }
          
-    class Meta:
-        model = Product
-        fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
-                  'Product_Brand', 'Product_HSNCode', 'Product_GST', 
-                  'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
-                  'Product_BulkPrice', 'Product_Cost_price']
+#     class Meta:
+#         model = Product
+#         fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
+#                   'Product_Brand', 'Product_HSNCode', 'Product_GST', 
+#                   'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
+#                   'Product_BulkPrice', 'Product_Cost_price']
 
 
 class PProductCreateForm(forms.ModelForm):
     Product_Refrence_ID = forms.IntegerField(label='Product_Refrence_ID')
     class Meta:
         model = PProduct_Creation
-        fields = ['PProduct_image','PProduct_color','PProduct_SKU', 'Product_Refrence_ID']
+        fields = ['PProduct_image','PProduct_color','PProduct_SKU', 'Product_Refrence_ID',
+                  'Product_EANCode','product_Video_URL','Product_Rating','Amazon_Link','Flipkart_Link',
+                  'Cosmus_link']
 
 
     def clean_PProduct_SKU(self):
@@ -42,17 +44,30 @@ class PProductCreateForm(forms.ModelForm):
 
 class PProductAddForm(forms.ModelForm):
 
+    widgets = {
+            'Product_Channel': forms.CheckboxSelectMultiple,
+            }
     class Meta:
         model = Product
-        fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
-                  'Product_Brand','Product_HSNCode', 'Product_GST', 
-                  'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
-                  'Product_BulkPrice', 'Product_Cost_price', 'Product_Refrence_ID']
+        fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel','Product_Brand',
+                  'Product_HSNCode', 'Product_GST','Product_WarrantyTime', 'Product_MRP',
+                  'Product_SalePrice_CustomerPrice','Product_BulkPrice', 'Product_Cost_price',
+                  'Product_ShortName','Product_Refrence_ID',
+                  'Product_Compartments','Product_UOM','Product_Accessory_Compartments','Product_CapacityLtrs',
+                  'Product_BulletPoint2','Product_BulletPoint1','Product_Material','Product_BulletPoint3',
+                  'Product_BulletPoint4',
+                  'Product_BulletPoint5','Product_ShortDescription','Product_LongDescription','Product_Dimensions_WP_Length',
+                  'Product_Dimensions_WP_Width','Product_Dimensions_WP_Height','Product_Dimensions_WP_Weight',
+                  'Product_Dimensions_WOP_Length',
+                  'Product_Dimensions_WOP_Width','Product_Dimensions_WOP_Height','Product_Dimensions_WOP_Weight',
+                  'Product_WRP','Product_CashCounterPrice','Product_IndiaMartPrice','Product_Retailer_dealer_Price',
+                  'Product_Wholesaler_DistributorPrice','Product_Gender',
+                  'Product_QtyPerBox']
+        
+        
 
-
-
-
-PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU'),extra=1)
+PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',
+                                                                               'Amazon_Link','Flipkart_Link','Cosmus_link'),extra=1)
 
 
 # Customize the formset to make PProduct_SKU read-only

@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, RawStockTransfer, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
-from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, ProductForm ,PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
+from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -28,7 +28,7 @@ def edit_production_product(request,pk):
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
 
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance = pproduct) 
+        form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
         
         if form.is_valid() and formset.is_valid():
@@ -47,7 +47,6 @@ def edit_production_product(request,pk):
 
 def product_color_sku(request):
     color = Color.objects.all()
-
 
     try:
         if request.method == 'POST':
@@ -267,7 +266,7 @@ def item_edit(request,pk):
             print(formset.cleaned_data)
             form.save()
             formset.save()
-            messages.success('Item updated successfully')
+            messages.success(request,'Item updated successfully')
             return redirect('item-list')
         else:
 
