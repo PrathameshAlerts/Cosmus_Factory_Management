@@ -6,334 +6,403 @@
 
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  <button type="button" class="edit_btn w-50 my-2" id="status_btn" > Status<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
 
-  <div id="">
-   
-      <div id="product_status" style="display: none;">
-        <div class=" d-flex mb-3">
-          <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
-          <input type="text" class="item-select" value="{{form.instance.Model_Name}}" name="Model_Name" required
-            id="id_Model_Name">
-        </div>
-        <div class="d-flex mb-3">
-          <label for="id_Product_Refrence_ID" class="form-label item-form">Refrence ID:</label>
-          <input type="number" readonly class="item-select" value={{form.instance.Product_Refrence_ID}}
-            name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
-        </div>
-        <div class=" d-flex mb-3">
-          <label for="id_Product_Status" class="form-label item-form">Status:</label>
-          <select name="Product_Status" class="item-select" id="id_Product_Status">
-            {% if form.instance.id %}
-            <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status}}</option>
-            {% elif not form.instance.id %}
-            <option value="" selected></option>
-            {% endif %}
-            <option value="Preproduction">Preproduction</option>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-            <option value="Discontinued">Discontinued</option>
-          </select>
-        </div>
-        <div class="d-flex mb-3">
-          <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
-          <div class="row">
-            <div class="col-lg-6 ms-5">
-              {% for choice in form.Product_Channel.field.choices %}
-              <label for="id_Product_Channel_{{ forloop.counter0 }}" class="px-2">
-                <input type="checkbox" class="mx-1" name="Product_Channel" value="{{ choice.0 }}"
-                  id="id_Product_Channel_{{ forloop.counter0 }}" {% if choice.0 in form.Product_Channel.value %} checked
-                  {% endif %}>
-                {{ choice.1 }}
-              </label>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-      <button type="button" class="edit_btn w-50 mb-3" id="product_details_btn"> Details<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
-      <div id="product_details" style="display: none;">
-        <div class=" d-flex my-3">
-          <label for="id_Product_Name" class="form-label item-form">Product Name:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Name}}" name="Product_Name" required
-            id="id_Product_Name">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Catagory:</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
-        <div class=" d-flex mb-3">
-          <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
-          <select name="Product_Brand" class="item-select" id="id_Product_Brand">
-            {% if form.instance.id %}
-            <option value="{{form.instance.Product_Brand}}">{{form.instance.Product_Brand}}</option>
-            {% elif not form.instance.id %}
-            <option value=""></option>
-            {% endif %}
-            <option value="Cosmus">Cosmus</option>
-            <option value="Killer">Killer</option>
-            <option value="Tuffgear">Tuffgear</option>
-            <option value="BeeArmour">BeeArmour</option>
-            <option value="INIT">INIT</option>
-            <option value="OEM">OEM</option>
-          </select>
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Compartment:</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Acc Compartment:</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Capacity:</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Material:</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Width(In):</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Height(In):</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Weight(Gm):</label>
-          <input type="text" class="item-select" value="" name="" required
-            id="">
-        </div>
+  <div class="d-flex m-3">
+    <label for="id_Product_Refrence_ID" class="form-label item-form">Refrence ID:</label>
+    <input type="number" readonly class="item-select" value={{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+  </div>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_details_btn">Details<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+
+  <div id="product_details" style="display: none;">
+    {{ formset.management_form }}
+    {% for form in formset %}
+    <div class="card rounded-3 mb-3 p-2">
+      <div class=" d-flex mb-3">
+        <label class="mx-2">Color:</label>
+        <span class="mx-2">{{form.PProduct_color}}</span>
         
+              
+        <div class=" d-flex mb-3">
+          <label class="mx-3">Image:</label>
+          <span class="mx-1" onchange="previewFile(event)">{{form.PProduct_image}}</span>
+        </div>
+      </div>
+      <div class=" d-flex mb-3">
+        <label class="mx-2">SKU:</label>
+        <span class="ms-1">{{form.PProduct_SKU}}</span>
+        <button type="button" class="add_btn" id="edit_color">Add +</button>
+        <button type="button" class="add_btn" id="edit_color">Youtube Link Add +</button>
+      </div>
+      <div class="mb-2 d-flex">
+        <label for="" class="form-label pe-4">ENVCode</label>
+        <input type="text" name="Product_EANCode" class="rounded-3  px-2">
+        <label for="" class="form-label pe-4">Rating</label>
+        <input type="text" name="Product_Rating" class="rounded-3  px-2">
+      </div>
      
-        <div class="d-flex mb-3">
-          <label for="id_Product_WarrantyTime" class="form-label item-form">WarrantyTime:</label>
-          <select name="Product_WarrantyTime" class="item-select" id="id_Product_WarrantyTime">
-            {% if form.instance.id %}
-            <option value="{{form.instance.Product_WarrantyTime}}">{{form.instance.Product_WarrantyTime}}</option>
-            {% elif not form.instance.id %}
-            <option value=""></option>
-            {% endif %}
-            <option value="6 Months">6 Months</option>
-            <option value="12 Months">12 Months</option>
-            <option value="18 Months">18 Months</option>
-            <option value="24 Months">24 Months</option>
-            <option value="30 Months">30 Months</option>
-            <option value="36 Months">36 Months</option>
-            <option value="42 Months">42 Months</option>
-            <option value="48 Months">48 Months</option>
-            <option value="54 Months">54 Months</option>
-            <option value="60 Months">60 Months</option>
-          </select>
-        </div>
+      <label for="" class="form-label fw-bold ps-2">Links</label>
+      <div class="d-flex">
+        <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo">
+        <input type="text" name="Amazon_Link" class="rounded-3  px-2 m-1">
+        <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo">
+        <input type="text" name="Flipkart_Link" class="rounded-3  px-2 m-1">
+        <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo">
+        <input type="text" name="Cosmus_link" class="rounded-3 px-2 m-1">
+        <label class="mx-2 text-danger">Delete:</label>
+        <span class="">{{form.DELETE}}</span>
       </div>
-      <button type="button" class="edit_btn w-50 mb-3" id="product_pricing_btn"> Pricing<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
-      <div id="product_pricing" style="display: none;">
-        <div class="d-flex mb-3">
-        <label for="id_Product_MRP" class="form-label item-form"> MRP:</label>
-        <input type="number" class="item-select" value="{{form.instance.Product_MRP}}" name="Product_MRP"
-          id="id_Product_MRP">
+      <div class="d-flex">
+        
       </div>
-      <div class="d-flex mb-3">
-        <label for="id_Product_SalePrice_CustomerPrice" class="form-label item-form">Sale Price</label>
-        <input type="number" class="item-select" name="Product_SalePrice_CustomerPrice"
-          value="{{form.instance.Product_SalePrice_CustomerPrice}}" id="id_Product_SalePrice_CustomerPrice">
+      <div class="d-flex">
+        
       </div>
-      <div class="d-flex mb-3">
-        <label for="id_Product_BulkPrice" class="form-label item-form">BulkPrice:</label>
-        <input type="number" class="item-select" value="{{form.instance.Product_BulkPrice}}" name="Product_BulkPrice"
-          id="id_Product_BulkPrice">
-      </div>
-      <div class="d-flex mb-3">
-        <label for="id_Product_Cost_price" class="form-label item-form">Cost price:</label>
-        <input type="number" class="item-select" value="{{form.instance.Product_Cost_price}}" name="Product_Cost_price"
-          id="id_Product_Cost_price">
-      </div>
-      <div class=" d-flex mb-3">
-        <label for="" class="form-label item-form">Retailer/Delar:</label>
-        <input type="text" class="item-select" name="" value="12345678" id="">
-      </div>
-      <div class=" d-flex mb-3">
-        <label for="" class="form-label item-form">Distributor:</label>
-        <input type="text" class="item-select" name="" value="12345678" id="">
-      </div>
-      <div class=" d-flex mb-3">
-        <label for="" class="form-label item-form">IndiaMart:</label>
-        <input type="text" class="item-select" name="" value="12345678" id="">
-      </div>
-      <div class=" d-flex mb-3">
-        <label for="" class="form-label item-form">UOM:</label>
-        <input type="text" class="item-select" name="" value="12345678" id="">
-      </div>
-      <div class="d-flex mb-3">
-        <label for="id_GST" class="form-label item-form">GST:</label>
-        <select name="Product_GST" class="item-select" required id="id_GST">
-          {% if form.instance.Product_GST.id %}
-          <!-- checks if form.instance.Product_GST.id is true as form.instance.P_GST does not exists right now -->
-          <option value="{{ form.instance.Product_GST.id }}">{{form.instance.P_GST}}</option>
-          <h2>{{ form.instance.P_GST}}</h2>
-          {% elif not form.instance.id %}
-          <option value=""></option>
-          {% endif %}
-          {% for gst in gsts %}
-          <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
+
+      <!--<img id="previewImage_" src="#" class="card-img card-img p-1" alt="Preview Image">-->
+    </div>
+    {% endfor %}
+  </div>
+  <button type="button" class="edit_btn w-50 mb-3" id="aditional_details_btn">Aditional Details<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+
+
+  <div id="aditional_details" style="display: none;">
+    <div class=" d-flex my-3">
+      <label for="id_Product_Name" class="form-label item-form">Name:</label>
+      <input type="text" class="item-select" value="{{form.instance.Product_Name}}" name="Product_Name" required
+        id="id_Product_Name">
+    </div>
+    <div class=" d-flex my-3">
+      <label for="" class="form-label item-form">ShortName:</label>
+      <input type="text" class="item-select" value="" name="Product_ShortName" required id="">
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
+      <input type="text" class="item-select" value="{{form.instance.Model_Name}}" name="Model_Name" required
+        id="id_Model_Name">
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
+      <select name="Product_Brand" class="item-select" id="id_Product_Brand">
+        {% if form.instance.id %}
+        <option value="{{form.instance.Product_Brand}}">{{form.instance.Product_Brand}}</option>
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% endif %}
+        <option value="Cosmus">Cosmus</option>
+        <option value="Killer">Killer</option>
+        <option value="Tuffgear">Tuffgear</option>
+        <option value="BeeArmour">BeeArmour</option>
+        <option value="INIT">INIT</option>
+        <option value="OEM">OEM</option>
+      </select>
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="id_Product_Status" class="form-label item-form">Status:</label>
+      <select name="Product_Status" class="item-select" id="id_Product_Status">
+        {% if form.instance.id %}
+        <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status}}</option>
+        {% elif not form.instance.id %}
+        <option value="" selected></option>
+        {% endif %}
+        <option value="Preproduction">Preproduction</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option value="Discontinued">Discontinued</option>
+      </select>
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
+      <div class="row">
+        <div class="col-lg-6 ms-5">
+          {% for choice in form.Product_Channel.field.choices %}
+          <label for="id_Product_Channel_{{ forloop.counter0 }}" class="px-2">
+            <input type="checkbox" class="mx-1" name="Product_Channel" value="{{ choice.0 }}"
+              id="id_Product_Channel_{{ forloop.counter0 }}" {% if choice.0 in form.Product_Channel.value %} checked {% endif %}>
+            {{ choice.1 }}
+          </label>
           {% endfor %}
-        </select>
-      </div>
-      <div class=" d-flex mb-3">
-        <label for="id_Product_HSNCode" class="form-label item-form">HSN Code:</label>
-        <input type="text" class="item-select" name="Product_HSNCode" value="12345678" id="id_Product_HSNCode">
-      </div>
-      <div class=" d-flex mb-3">
-        <label for="" class="form-label item-form">Qty Per Box:</label>
-        <input type="text" class="item-select" name="" value="12345678" id="">
-      </div>
-      </div>
-      <button type="button" class="edit_btn w-50 mb-3" id="product_inventory_btn" > Inventory<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
-      
-      <div id="product_inventory" style="display: none;">
-        <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">Mumbai Werhouse:</label>
-          <input type="text" class="item-select" name="" value="12345678" id="">
-        </div>
-        <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">Andheri:</label>
-          <input type="text" class="item-select" name="" value="12345678" id="">
-        </div>
-        <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">Dharavi:</label>
-          <input type="text" class="item-select" name="" value="12345678" id="">
         </div>
       </div>
-      
-      <button type="button" class="edit_btn w-50 mb-3" id="product_images_btn">Images<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button> 
-
-      <div id="product_images" style="display: none;">
-        {{ formset.management_form }}
-        {% for form in formset %}
-        <div class="card rounded-3 mb-3 p-2">
-          <!--<img id="previewImage_" src="#" class="card-img card-img p-1" alt="Preview Image">-->
-          <div class=" d-flex mb-3">
-            <label class="mx-3">Image:</label>
-            <span class="mx-1" onchange="previewFile(event)">{{form.PProduct_image}}</span>
-          </div>
-          <div class=" d-flex mb-3">
-            <label class="mx-2">Color:</label>
-            <div class="mx-2">{{form.PProduct_color}}</div>
-            <label class="mx-2">SKU:</label>
-            <span class="ms-1">{{form.PProduct_SKU}}</span>
-            <label class="mx-2 text-danger">Delete:</label>
-            <span class="">{{form.DELETE}}</span>
-          </div>
-          <div class="d-flex mb-3">
-
-          </div>
-          <div class="d-flex mb-2">
-
-          </div>
-        </div>
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_Product_WarrantyTime" class="form-label item-form">WarrantyTime:</label>
+      <select name="Product_WarrantyTime" class="item-select" id="id_Product_WarrantyTime">
+        {% if form.instance.id %}
+        <option value="{{form.instance.Product_WarrantyTime}}">{{form.instance.Product_WarrantyTime}}</option>
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% endif %}
+        <option value="6 Months">6 Months</option>
+        <option value="12 Months">12 Months</option>
+        <option value="18 Months">18 Months</option>
+        <option value="24 Months">24 Months</option>
+        <option value="30 Months">30 Months</option>
+        <option value="36 Months">36 Months</option>
+        <option value="42 Months">42 Months</option>
+        <option value="48 Months">48 Months</option>
+        <option value="54 Months">54 Months</option>
+        <option value="60 Months">60 Months</option>
+      </select>
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Gender</label>
+      <input type="text" class="item-select" value="" name="Product_Gender" required id="">
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_GST" class="form-label item-form">GST:</label>
+      <select name="Product_GST" class="item-select" required id="id_GST">
+        {% if form.instance.Product_GST.id %}
+        <!-- checks if form.instance.Product_GST.id is true as form.instance.P_GST does not exists right now -->
+        <option value="{{ form.instance.Product_GST.id }}">{{form.instance.P_GST}}</option>
+        <h2>{{ form.instance.P_GST}}</h2>
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% endif %}
+        {% for gst in gsts %}
+        <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
         {% endfor %}
-      </div>
- 
+      </select>
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="id_Product_HSNCode" class="form-label item-form">HSN Code:</label>
+      <input type="text" class="item-select" name="Product_HSNCode" value="12345678" id="id_Product_HSNCode">
+    </div>
+  </div>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_capacity_btn">Capacity<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <div id="product_capacity" style="display: none;">
+
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Catagory:</label>
+      <input type="text" class="item-select" value="" name="" required id="">
+    </div>
+
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Compartment:</label>
+      <input type="text" class="item-select" value="" name="Product_Compartments" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Acc Compartment:</label>
+      <input type="text" class="item-select" value="" name="Product_Accessory_Compartments" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Capacity:</label>
+      <input type="text" class="item-select" value="" name="Product_CapacityLtrs" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Material:</label>
+      <input type="text" class="item-select" value="" name="Product_Material" required id="">
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="" class="form-label item-form">UOM:</label>
+      <input type="text" class="item-select" name="Product_UOM" value="" id="">
+    </div>
+
+    <div class=" d-flex mb-3">
+      <label for="" class="form-label item-form">Qty Per Box:</label>
+      <input type="text" class="item-select" name="Product_QtyPerBox" value="" id="">
+    </div>
     
+
+
+
+  </div>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_description_btn">Description<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <div id="product_description" style="display: none;">
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">BulletPoint1:</label>
+      <input type="text" class="item-select" value="" name="Product_BulletPoint1" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">BulletPoint2:</label>
+      <input type="text" class="item-select" value="" name="Product_BulletPoint2" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">BulletPoint3:</label>
+      <input type="text" class="item-select" value="" name="Product_BulletPoint3" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">BulletPoint4:</label>
+      <input type="text" class="item-select" value="" name="Product_BulletPoint4" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">BulletPoint5:</label>
+      <input type="text" class="item-select" value="" name="Product_BulletPoint5" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">ShortDescription:</label>
+      <input type="text" class="item-select" value="" name="Product_ShortDescription" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">LongDescription:</label>
+      <input type="text" class="item-select" value="" name="Product_LongDescription" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Length(cm):</label>
+      <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Length" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Width(In):</label>
+      <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Width" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Height(In):</label>
+      <input type="text" class="item-select" value="" name=" Product_Dimensions_WP_Height" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Weight(Gm):</label>
+      <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Weight" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Length(cm):</label>
+      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Length" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Width(In):</label>
+      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Width" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Height(In):</label>
+      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Height" required id="">
+    </div>
+    <div class="d-flex my-3">
+      <label for="" class="form-label item-form">Weight(Gm):</label>
+      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Weight" required id="">
+    </div>
+    
+  </div>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+
+  <div id="product_pricing" style="display: none;">
+    <div class="d-flex mb-3">
+      <label for="id_Product_Cost_price" class="form-label item-form">Cost price:</label>
+      <input type="number" class="item-select" value="{{form.instance.Product_Cost_price}}" name="Product_Cost_price"
+        id="id_Product_Cost_price">
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_Product_MRP" class="form-label item-form"> MRP:</label>
+      <input type="number" class="item-select" value="{{form.instance.Product_MRP}}" name="Product_MRP"
+        id="id_Product_MRP">
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_Product_SalePrice_CustomerPrice" class="form-label item-form">Sale Price</label>
+      <input type="number" class="item-select" name="Product_SalePrice_CustomerPrice"
+        value="{{form.instance.Product_SalePrice_CustomerPrice}}" id="id_Product_SalePrice_CustomerPrice">
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_Product_BulkPrice" class="form-label item-form">BulkPrice:</label>
+      <input type="number" class="item-select" value="{{form.instance.Product_BulkPrice}}" name="Product_BulkPrice"
+        id="id_Product_BulkPrice">
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="" class="form-label item-form">WRP</label>
+      <input type="text" class="item-select" name="Product_WRP" value="" id="">
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="" class="form-label item-form">CounterPrice:</label>
+      <input type="text" class="item-select" name="Product_CashCounterPrice" value="" id="">
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="" class="form-label item-form">IndiaMart:</label>
+      <input type="text" class="item-select" name="Product_IndiaMartPrice" value="" id="">
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="" class="form-label item-form">Retailer/Delar:</label>
+      <input type="text" class="item-select" name="Product_Retailer_dealer_Price" value="" id="">
+    </div>
+    <div class=" d-flex mb-3">
+      <label for="" class="form-label item-form">Distributor:</label>
+      <input type="text" class="item-select" name="Product_Wholesaler_DistributorPrice" value="" id="">
+    </div>
+    
+  </div>
   </div>
   <input type="submit" class="add_btn" value="submit">
 </form>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var toggleButton = document.getElementById("status_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_status");
-
-    toggleButton.addEventListener("click", function() {
-        // Toggle the visibility of the data container
-        if (dataContainer.style.display === "none") {
-            dataContainer.style.display = "block";
-            icon.classList.add("rotate"); // Add rotate class to the icon
-        } else {
-            dataContainer.style.display = "none";
-            icon.classList.remove("rotate"); // Remove rotate class from the icon
-        }
-    });
-});
-
-
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     var toggleButton = document.getElementById("product_details_btn");
     var icon = toggleButton.querySelector(".arrowBtn");
     var dataContainer = document.getElementById("product_details");
 
-    toggleButton.addEventListener("click", function() {
-        // Toggle the visibility of the data container
-        if (dataContainer.style.display === "none") {
-            dataContainer.style.display = "block";
-            icon.classList.add("rotate"); // Add rotate class to the icon
-        } else {
-            dataContainer.style.display = "none";
-            icon.classList.remove("rotate"); // Remove rotate class from the icon
-        }
+    toggleButton.addEventListener("click", function () {
+      // Toggle the visibility of the data container
+      if (dataContainer.style.display === "none") {
+        dataContainer.style.display = "block";
+        icon.classList.add("rotate"); // Add rotate class to the icon
+      } else {
+        dataContainer.style.display = "none";
+        icon.classList.remove("rotate"); // Remove rotate class from the icon
+      }
     });
-});
+  });
 
-document.addEventListener("DOMContentLoaded", function() {
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var toggleButton = document.getElementById("aditional_details_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("aditional_details");
+
+    toggleButton.addEventListener("click", function () {
+      // Toggle the visibility of the data container
+      if (dataContainer.style.display === "none") {
+        dataContainer.style.display = "block";
+        icon.classList.add("rotate"); // Add rotate class to the icon
+      } else {
+        dataContainer.style.display = "none";
+        icon.classList.remove("rotate"); // Remove rotate class from the icon
+      }
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var toggleButton = document.getElementById("product_capacity_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_capacity");
+
+    toggleButton.addEventListener("click", function () {
+      // Toggle the visibility of the data container
+      if (dataContainer.style.display === "none") {
+        dataContainer.style.display = "block";
+        icon.classList.add("rotate"); // Add rotate class to the icon
+      } else {
+        dataContainer.style.display = "none";
+        icon.classList.remove("rotate"); // Remove rotate class from the icon
+      }
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var toggleButton = document.getElementById("product_description_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_description");
+
+    toggleButton.addEventListener("click", function () {
+      // Toggle the visibility of the data container
+      if (dataContainer.style.display === "none") {
+        dataContainer.style.display = "block";
+        icon.classList.add("rotate"); // Add rotate class to the icon
+      } else {
+        dataContainer.style.display = "none";
+        icon.classList.remove("rotate"); // Remove rotate class from the icon
+      }
+    });
+  });
+  document.addEventListener("DOMContentLoaded", function () {
     var toggleButton = document.getElementById("product_pricing_btn");
     var icon = toggleButton.querySelector(".arrowBtn");
     var dataContainer = document.getElementById("product_pricing");
 
-    toggleButton.addEventListener("click", function() {
-        // Toggle the visibility of the data container
-        if (dataContainer.style.display === "none") {
-            dataContainer.style.display = "block";
-            icon.classList.add("rotate"); // Add rotate class to the icon
-        } else {
-            dataContainer.style.display = "none";
-            icon.classList.remove("rotate"); // Remove rotate class from the icon
-        }
+    toggleButton.addEventListener("click", function () {
+      // Toggle the visibility of the data container
+      if (dataContainer.style.display === "none") {
+        dataContainer.style.display = "block";
+        icon.classList.add("rotate"); // Add rotate class to the icon
+      } else {
+        dataContainer.style.display = "none";
+        icon.classList.remove("rotate"); // Remove rotate class from the icon
+      }
     });
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    var toggleButton = document.getElementById("product_inventory_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_inventory");
-
-    toggleButton.addEventListener("click", function() {
-        // Toggle the visibility of the data container
-        if (dataContainer.style.display === "none") {
-            dataContainer.style.display = "block";
-            icon.classList.add("rotate"); // Add rotate class to the icon
-        } else {
-            dataContainer.style.display = "none";
-            icon.classList.remove("rotate"); // Remove rotate class from the icon
-        }
-    });
-});
-document.addEventListener("DOMContentLoaded", function() {
-    var toggleButton = document.getElementById("product_images_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_images");
-
-    toggleButton.addEventListener("click", function() {
-        // Toggle the visibility of the data container
-        if (dataContainer.style.display === "none") {
-            dataContainer.style.display = "block";
-            icon.classList.add("rotate"); // Add rotate class to the icon
-        } else {
-            dataContainer.style.display = "none";
-            icon.classList.remove("rotate"); // Remove rotate class from the icon
-        }
-    });
-});
+  });
 </script>
 
 <script>

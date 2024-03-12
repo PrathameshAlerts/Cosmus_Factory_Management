@@ -1,10 +1,10 @@
-{% extends 'product/base.html' %} 
+
 {% load static %} 
  {% block body %}
 
-<h2>Create Color</h2>
-<div id="modal1" class="modal">
-        <div class="modal-content">
+
+<div id="modal1" class="modal-color">
+        <div class="modal-content-color">
           <h5>Create Color<span class="close" onclick="closeModal('modal1')">&times;</span></h5>
           
           <form  action="" method="POST">
@@ -16,52 +16,32 @@
             <input type="submit" class="create-btn" name="save" value="Save">
             <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
           </form>
-          
-          <div class="color_search"> 
-            <input class="search" type="search" placeholder="Search" aria-label="Search">
-            <span class="p-1"><i class="fa-solid fa-magnifying-glass"></i></span> 
-          </div>
-         
           <div class="my-3 table-responsive">
-            
             <table class="table table-striped table-hover">
-              <thread>
+              <thead>
                 <tr class="color_table">
-                  <th scope="col" class="" >No</th>
-                  <th scope="col">Color Name
-                  </th>
-                  <th scope="col">Edit</th>
-                  <th scope="col" class="">Delete</th>
-                </tr>
-              </thread>
+                  <th scope="col">No</th>
+                  <th scope="col">Color Name</th>                
+                </tr> 
+              </thead>
               <tbody>
-
-
                 {% for color in colors %}
                 <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{color.color_name}}</td>
-                <td><a href="{% url 'coloredit' color.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-                <td><a href="{% url 'colordelete' color.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
                 </tr>
-
                 {% endfor %}
               </tbody>
             </table>
           </div>
         </div>
-      </div>
-    
-<script>
-  function openModal(modalId) {
-  var modal = document.getElementById(modalId);
-  modal.style.display = 'block';
-}
-
-// Function to close a modal
-function closeModal(modalId) {
-  var modal = document.getElementById(modalId);
-  modal.style.display = 'none';
-}
-</script>
+      </div>    
+      <script>
+        function closeModal(modalId) {
+          var modal = document.getElementById(modalId);
+          if (modal) {
+            modal.style.display = 'none';
+          }
+        }
+      </script>
 {% endblock body %} 

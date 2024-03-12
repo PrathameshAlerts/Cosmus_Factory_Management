@@ -9,18 +9,18 @@ from django.forms.widgets import PasswordInput, TextInput
 
 
 
-class ProductForm(forms.ModelForm):
+# class ProductForm(forms.ModelForm):
 
-    widgets = {
-            'Product_Channel': forms.CheckboxSelectMultiple,
-            }
+#     widgets = {
+#             'Product_Channel': forms.CheckboxSelectMultiple,
+#             }
          
-    class Meta:
-        model = Product
-        fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
-                  'Product_Brand', 'Product_HSNCode', 'Product_GST', 
-                  'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
-                  'Product_BulkPrice', 'Product_Cost_price']
+#     class Meta:
+#         model = Product
+#         fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
+#                   'Product_Brand', 'Product_HSNCode', 'Product_GST', 
+#                   'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
+#                   'Product_BulkPrice', 'Product_Cost_price']
 
 
 class PProductCreateForm(forms.ModelForm):
@@ -41,7 +41,9 @@ class PProductCreateForm(forms.ModelForm):
 
 
 class PProductAddForm(forms.ModelForm):
-
+    widgets = {
+            'Product_Channel': forms.CheckboxSelectMultiple,
+            }
     class Meta:
         model = Product
         fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
