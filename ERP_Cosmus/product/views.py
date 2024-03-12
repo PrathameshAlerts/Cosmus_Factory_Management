@@ -47,7 +47,7 @@ def edit_production_product(request,pk):
 
 def product_color_sku(request):
     color = Color.objects.all()
-
+    print(request.POST)
     try:
         if request.method == 'POST':
             product_ref_id = request.POST.get('Product_Refrence_ID')
