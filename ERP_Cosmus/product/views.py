@@ -48,7 +48,6 @@ def edit_production_product(request,pk):
 def product_color_sku(request):
     color = Color.objects.all()
     print(request.POST)
-    
     try:
         if request.method == 'POST':
             product_ref_id = request.POST.get('Product_Refrence_ID')
@@ -68,11 +67,21 @@ def product_color_sku(request):
                         image_field_name = f'PProduct_image_{i}'
                         color_field_name = f'PProduct_color_{i}'
                         sku_field_name = f'PProduct_SKU_{i}'
+                        Ean_field_name = f'Product_EANCode_{i}'
+                        rating_field_name = f'Product_Rating_{i}'
+                        amazon_link_field_name = f'Amazon_Link_{i}'
+                        flipkart_link_field_name = f'Flipkart_Link_{i}'
+                        cosmus_link_field_name = f'Cosmus_link_{i}'
 
                         # Create a dictionary with the dynamic field names
                         data = {
                             'PProduct_color': request.POST.get(color_field_name),
                             'PProduct_SKU': request.POST.get(sku_field_name),
+                            'Product_EANCode': request.POST.get(Ean_field_name),
+                            'Product_Rating' :request.POST.get(rating_field_name),
+                            'Amazon_Link' :request.POST.get(amazon_link_field_name),
+                            'Flipkart_Link' :request.POST.get(flipkart_link_field_name),
+                            'Cosmus_link' :request.POST.get(cosmus_link_field_name),
                             'Product_Refrence_ID': product_ref_id
                         }
                         files = {

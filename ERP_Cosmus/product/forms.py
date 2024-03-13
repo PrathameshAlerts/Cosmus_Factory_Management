@@ -32,6 +32,10 @@ class PProductCreateForm(forms.ModelForm):
                   'Cosmus_link']
 
 
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['Color'].widget.attrs['data-popup'] = True
+
     def clean_PProduct_SKU(self):
         sku = self.cleaned_data['PProduct_SKU']
 
@@ -43,13 +47,11 @@ class PProductCreateForm(forms.ModelForm):
 
 
 class PProductAddForm(forms.ModelForm):
-    widgets = {
-            'Product_Channel': forms.CheckboxSelectMultiple,
-            }
 
     widgets = {
             'Product_Channel': forms.CheckboxSelectMultiple,
             }
+    
     class Meta:
         model = Product
         fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel','Product_Brand',
@@ -67,7 +69,6 @@ class PProductAddForm(forms.ModelForm):
                   'Product_Wholesaler_DistributorPrice','Product_Gender',
                   'Product_QtyPerBox']
         
-        
 
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',
                                                                                'Amazon_Link','Flipkart_Link','Cosmus_link'),extra=1)
@@ -75,6 +76,8 @@ PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('
 
 # Customize the formset to make PProduct_SKU read-only
 class CustomPProductaddFormSet(PProductaddFormSet):
+
+
     def __init__(self, *args, **kwargs):
         super(CustomPProductaddFormSet, self).__init__(*args, **kwargs)
 
