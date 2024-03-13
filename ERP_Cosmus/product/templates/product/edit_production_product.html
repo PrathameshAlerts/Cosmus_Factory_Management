@@ -30,11 +30,11 @@
       <div class=" d-flex mb-3">
         <label class="mx-2">SKU:</label>
         <span class="ms-1">{{form.PProduct_SKU}}</span>
-        <button type="button" class="add_btn" id="edit_color">Add +</button>
+        <button type="button" class="add_btn" id="edit_color" onclick="navigateToNewPage()">Add +</button>
         <button type="button" class="add_btn" id="edit_color">Youtube Link Add +</button>
       </div>
       <div class="mb-2 d-flex">
-        <label for="" class="form-label pe-4">ENVCode</label>
+        <label for="" class="form-label pe-4">EANCode</label>
         <input type="text" name="Product_EANCode" class="rounded-3  px-2">
         <label for="" class="form-label pe-4">Rating</label>
         <input type="text" name="Product_Rating" class="rounded-3  px-2">
@@ -318,6 +318,12 @@
   </div>
   <input type="submit" class="add_btn" value="submit">
 </form>
+<script>
+  function navigateToNewPage() {
+    // Navigate to the new page where users can add images
+    window.location.href = "product/add_image_url.html";
+  }
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var toggleButton = document.getElementById("product_details_btn");
