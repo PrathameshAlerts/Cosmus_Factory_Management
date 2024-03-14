@@ -10,6 +10,13 @@
                 {{ form.as_p }}
                 {% endfor %}
 
-        <input type="submit" class="add_btn">
+        <input type="submit" id="saveButton" class="add_btn">
     </form>
+    <script>
+        // When the Save button is clicked
+        document.getElementById("saveButton").addEventListener("click", function() {
+          // Close the current window
+          window.close();
+        });
+      </script>
  {% endblock body %}
