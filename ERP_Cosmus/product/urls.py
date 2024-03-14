@@ -43,12 +43,13 @@ urlpatterns = [
     path('itemfabricgroupupdate/<int:pk>',views.item_fabric_group_update , name= 'item-fabgroup-update'),
     path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
     path('itemfabricgroupdelete/<int:pk>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
-
+    path('fabric_popup/',views.fabricpopup, name='fabric-popup'),
     #unitname
     path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),
     path('unitnameupdate/<int:pk>',views.unit_name_update , name= 'unit_name-update'),
     path('unitnamelist/',views.unit_name_list , name= 'unit_name-list'),
     path('unitnamedelete/<int:pk>',views.unit_name_delete , name= 'unit_name-delete'),
+    path('units_popup/',views.unitnamepopup, name='unit-name-popup'),
 
     #accountsubgrp
     path('accsubgrpcreate/',views.account_sub_group_create , name= 'account_sub_group-create'),
