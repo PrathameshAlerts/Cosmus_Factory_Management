@@ -39,24 +39,6 @@ class gst(models.Model):
     gst_percentage = models.CharField(max_length = 50)
 
 
-class ProductImage(models.Model):
-
-    IMAGE_TYPE = [
-        ("Main Image","Main Image"),
-        ("White Background", 'White Background'),
-        ("Model Image", 'Model Image'),
-        ("Catalogue Image","Catalogue Image"),
-    ]
-    
-    Product = models.ForeignKey('PProduct_Creation', on_delete = models.CASCADE, null=True , related_name='productimages')
-    Image = models.ImageField(upload_to ='product/images', null=True , blank=True)
-    Image_type = models.CharField(max_length = 100,choices = IMAGE_TYPE, null=True, blank=True)
-    Order_by = models.IntegerField(null = True, blank=True)
-    Image_Uploaded_at = models.DateTimeField(auto_now=True)
-    Image_Modified_at = models.DateTimeField(auto_now_add=True)
-
-
-
 
 class Product(models.Model):
     BRAND_CHOICES = [
@@ -200,13 +182,11 @@ class Product(models.Model):
 
 
 class PProduct_Creation(models.Model):
-    
     Product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name='productdetails')  
     PProduct_image = models.ImageField(upload_to = 'pproduct/images', null=True, blank=True)
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, null=True, related_name='production_primary_color')
     PProduct_SKU = models.BigIntegerField(primary_key = True)
     Product_EANCode = models.CharField(max_length=100,  null=True, blank = True)
-    product_Video_URL = models.URLField(max_length = 200, null=True, blank = True)
     Product_Rating = models.FloatField(null=True, blank = True)
     Amazon_Link = models.URLField(max_length = 200, null=True, blank = True)
     Flipkart_Link = models.URLField(max_length = 200, null=True, blank = True) 
@@ -216,6 +196,30 @@ class PProduct_Creation(models.Model):
     def product_color_name(self):
         return self.PProduct_color.color_name
      
+
+class ProductImage(models.Model):
+
+    IMAGE_TYPE = [
+        ("Main Image","Main Image"),
+        ("White Background", 'White Background'),
+        ("Model Image", 'Model Image'),
+        ("Catalogue Image","Catalogue Image"),
+    ]
+    
+    Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, null=True , related_name='productimages')
+    Image = models.ImageField(upload_to ='product/images', null=True , blank=True)
+    Image_type = models.CharField(max_length = 100, choices = IMAGE_TYPE, null=True, blank=True)
+    Order_by = models.IntegerField(null = True, blank=True)
+    Image_Uploaded_at = models.DateTimeField(auto_now=True)
+    Image_Modified_at = models.DateTimeField(auto_now_add=True)
+
+
+class ProductVideoUrls(models.Model):
+    Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, null=True , related_name='productvideourls')
+    product_video_url =  models.URLField(max_length = 255, null=True, blank = True)
+    Image_Uploaded_at = models.DateTimeField(auto_now=True)
+    Image_Modified_at = models.DateTimeField(auto_now_add=True)
+
 
 
 class Fabric_Group_Model(models.Model):
