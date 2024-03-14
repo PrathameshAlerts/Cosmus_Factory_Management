@@ -9,9 +9,11 @@
 
   <div class="d-flex m-3">
     <label for="id_Product_Refrence_ID" class="form-label item-form">Refrence ID:</label>
-    <input type="number" readonly class="item-select" value={{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+    <input type="number" readonly class="item-select" value={{form.instance.Product_Refrence_ID}}
+      name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
   </div>
-  <button type="button" class="edit_btn w-50 mb-3" id="product_details_btn">Details<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_details_btn">Details<span class="span_padding"><i
+        class="fas fa-angle-right arrowBtn"></i></span></button>
 
   <div id="product_details" style="display: none;">
     {{ formset.management_form }}
@@ -20,7 +22,7 @@
       <div class=" d-flex mb-3">
         <label class="mx-2">Color:</label>
         <span class="mx-2" id="color_id_id">{{form.PProduct_color}}</span>
-            
+
         <div class=" d-flex mb-3">
           <label class="mx-3">Image:</label>
           <span class="mx-1" onchange="previewFile(event)">{{form.PProduct_image}}</span>
@@ -29,11 +31,13 @@
       <div class=" d-flex mb-3">
         <label class="mx-2">SKU:</label>
         <span class="ms-1">{{form.PProduct_SKU}}</span>
-      
-        
-       <button type="button" class="add_btn" id="edit_images"><a href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>
 
-        <button type="button" class="add_btn" id="edit_video_url"> <a href="{% url 'add-product-video-url' form.PProduct_SKU.value %}">Youtube Link</a></button>
+
+        <button type="button" class="add_btn" id="edit_images"><a
+            href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>
+
+        <button type="button" class="add_btn" id="edit_video_url"> <a
+            href="{% url 'add-product-video-url' form.PProduct_SKU.value %}">Youtube Link</a></button>
       </div>
       <div class="mb-2 d-flex">
         <label for="" class="form-label pe-4">EANCode</label>
@@ -41,7 +45,7 @@
         <label for="" class="form-label pe-4">Rating</label>
         <span>{{form.Product_Rating}}</span>
       </div>
-     
+
       <label for="" class="form-label fw-bold ps-2">Links</label>
       <div class="d-flex">
         <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo">
@@ -56,14 +60,13 @@
         <label class="mx-2 text-dan ger">Delete:</label>
         <span class="">{{form.DELETE}}</span>
       </div>
-   
-     
 
       <!--<img id="previewImage_" src="#" class="card-img card-img p-1" alt="Preview Image">-->
     </div>
     {% endfor %}
   </div>
-  <button type="button" class="edit_btn w-50 mb-3" id="aditional_details_btn">Aditional Details<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-50 mb-3" id="aditional_details_btn">Aditional Details<span
+      class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
 
 
   <div id="aditional_details" style="display: none;">
@@ -74,7 +77,7 @@
     </div>
     <div class=" d-flex my-3">
       <label for="" class="form-label item-form">ShortName:</label>
-      <input type="text" class="item-select" value="" name="Product_ShortName" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_ShortName}}" name="Product_ShortName" required id="">
     </div>
     <div class="d-flex mb-3">
       <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
@@ -147,7 +150,17 @@
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Gender</label>
-      <input type="text" class="item-select" value="" name="Product_Gender" required id="">
+      <select name="Product_Gender" class="item-select" required id="id_Gender">
+        {% if form.instance.id %}
+
+        <option value="{{form.instance.Product_Gender}}">{{form.instance.Product_Gender}}</option>
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% endif %}
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Unisex">Unisex</option>
+      </select>
     </div>
     <div class="d-flex mb-3">
       <label for="id_GST" class="form-label item-form">GST:</label>
@@ -169,7 +182,8 @@
       <input type="text" class="item-select" name="Product_HSNCode" value="12345678" id="id_Product_HSNCode">
     </div>
   </div>
-  <button type="button" class="edit_btn w-50 mb-3" id="product_capacity_btn">Capacity<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_capacity_btn">Capacity<span class="span_padding"><i
+        class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_capacity" style="display: none;">
 
     <div class="d-flex my-3">
@@ -179,101 +193,104 @@
 
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Compartment:</label>
-      <input type="text" class="item-select" value="" name="Product_Compartments" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Compartments}}" name="Product_Compartments" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Acc Compartment:</label>
-      <input type="text" class="item-select" value="" name="Product_Accessory_Compartments" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Accessory_Compartments}}" name="Product_Accessory_Compartments" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Capacity:</label>
-      <input type="text" class="item-select" value="" name="Product_CapacityLtrs" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_CapacityLtrs}}" name="Product_CapacityLtrs" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Material:</label>
-      <input type="text" class="item-select" value="" name="Product_Material" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Material}}" name="Product_Material" required id="">
     </div>
     <div class=" d-flex mb-3">
       <label for="" class="form-label item-form">UOM:</label>
-      <input type="text" class="item-select" name="Product_UOM" value="" id="">
+      <input type="text" class="item-select" name="Product_UOM" value="{{form.instance.Product_UOM}}" id="">
     </div>
 
     <div class=" d-flex mb-3">
       <label for="" class="form-label item-form">Qty Per Box:</label>
-      <input type="text" class="item-select" name="Product_QtyPerBox" value="" id="">
+      <input type="text" class="item-select" name="Product_QtyPerBox" value="{{form.instance.Product_QtyPerBox}}" id="">
     </div>
-    
-
 
 
   </div>
-  <button type="button" class="edit_btn w-50 mb-3" id="product_description_btn">Description<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_description_btn">Description<span class="span_padding"><i
+        class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_description" style="display: none;">
+
+
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">BulletPoint1:</label>
-      <input type="text" class="item-select" value="" name="Product_BulletPoint1" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint1}}" name="Product_BulletPoint1" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">BulletPoint2:</label>
-      <input type="text" class="item-select" value="" name="Product_BulletPoint2" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint2}}" name="Product_BulletPoint2" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">BulletPoint3:</label>
-      <input type="text" class="item-select" value="" name="Product_BulletPoint3" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint3}}" name="Product_BulletPoint3" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">BulletPoint4:</label>
-      <input type="text" class="item-select" value="" name="Product_BulletPoint4" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint4}}" name="Product_BulletPoint4" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">BulletPoint5:</label>
-      <input type="text" class="item-select" value="" name="Product_BulletPoint5" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint5}}" name="Product_BulletPoint5" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">ShortDescription:</label>
-      <input type="text" class="item-select" value="" name="Product_ShortDescription" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_ShortDescription}}" name="Product_ShortDescription" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">LongDescription:</label>
-      <input type="text" class="item-select" value="" name="Product_LongDescription" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_LongDescription}}" name="Product_LongDescription" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WP Length(cm):</label>
-      <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Length" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Length}}" name="Product_Dimensions_WP_Length" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WP Width(In):</label>
-      <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Width" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Width}}" name="Product_Dimensions_WP_Width" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WP Height(In):</label>
-      <input type="text" class="item-select" value="" name=" Product_Dimensions_WP_Height" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Height}}" name="Product_Dimensions_WP_Height" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WP Weight(Gm):</label>
-      <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Weight" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Weight}}" name="Product_Dimensions_WP_Weight" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WOP Length(cm):</label>
-      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Length" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Length}}" name="Product_Dimensions_WOP_Length" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WOP Width(In):</label>
-      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Width" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Width}}" name="Product_Dimensions_WOP_Width" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WOP Height(In):</label>
-      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Height" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Height}}" name="Product_Dimensions_WOP_Height" required id="">
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">WOP Weight(Gm):</label>
-      <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Weight" required id="">
+      <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Weight}}" name="Product_Dimensions_WOP_Weight" required id="">
     </div>
-    
+
   </div>
-  <button type="button" class="edit_btn w-50 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-50 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i 
+    class="fas fa-angle-right arrowBtn"></i></span></button>
 
   <div id="product_pricing" style="display: none;">
+
     <div class="d-flex mb-3">
       <label for="id_Product_Cost_price" class="form-label item-form">Cost price:</label>
       <input type="number" class="item-select" value="{{form.instance.Product_Cost_price}}" name="Product_Cost_price"
@@ -285,7 +302,7 @@
         id="id_Product_MRP">
     </div>
     <div class="d-flex mb-3">
-      <label for="id_Product_SalePrice_CustomerPrice" class="form-label item-form">Sale Price</label>
+      <label for="id_Product_SalePrice_CustomerPrice" class="form-label item-form">Sale & Customer Price</label>
       <input type="number" class="item-select" name="Product_SalePrice_CustomerPrice"
         value="{{form.instance.Product_SalePrice_CustomerPrice}}" id="id_Product_SalePrice_CustomerPrice">
     </div>
@@ -296,25 +313,25 @@
     </div>
     <div class=" d-flex mb-3">
       <label for="" class="form-label item-form">WRP</label>
-      <input type="text" class="item-select" name="Product_WRP" value="" id="">
+      <input type="text" class="item-select" name="Product_WRP" value="{{form.instance.Product_WRP}}" id="">
     </div>
     <div class=" d-flex mb-3">
       <label for="" class="form-label item-form">CounterPrice:</label>
-      <input type="text" class="item-select" name="Product_CashCounterPrice" value="" id="">
+      <input type="text" class="item-select" name="Product_CashCounterPrice" value="{{form.instance.Product_CashCounterPrice}}" id="">
     </div>
     <div class=" d-flex mb-3">
       <label for="" class="form-label item-form">IndiaMart:</label>
-      <input type="text" class="item-select" name="Product_IndiaMartPrice" value="" id="">
+      <input type="text" class="item-select" name="Product_IndiaMartPrice" value="{{form.instance.Product_IndiaMartPrice}}" id="">
     </div>
     <div class=" d-flex mb-3">
-      <label for="" class="form-label item-form">Retailer/Delar:</label>
-      <input type="text" class="item-select" name="Product_Retailer_dealer_Price" value="" id="">
+      <label for="" class="form-label item-form">Retailer/Dealer:</label>
+      <input type="text" class="item-select" name="Product_Retailer_dealer_Price" value="{{form.instance.Product_Retailer_dealer_Price}}" id="">
     </div>
     <div class=" d-flex mb-3">
-      <label for="" class="form-label item-form">Distributor:</label>
-      <input type="text" class="item-select" name="Product_Wholesaler_DistributorPrice" value="" id="">
+      <label for="" class="form-label item-form">Wholesaler/Distributor:</label>
+      <input type="text" class="item-select" name="Product_Wholesaler_DistributorPrice" value="{{form.instance.Product_Wholesaler_DistributorPrice}}" id="">
     </div>
-    
+
   </div>
   </div>
   <input type="submit" class="add_btn" value="submit">
@@ -322,7 +339,7 @@
 
 <script>
 
-  
+
   var product_color = document.getElementById('id_productdetails-0-PProduct_color');
   product_color.setAttribute('disabled', true);
 
@@ -333,7 +350,7 @@
 <script>
   const stars = document.querySelectorAll('.rating input');
 
-  stars.forEach(star => star.addEventListener('click', function() {
+  stars.forEach(star => star.addEventListener('click', function () {
     // Get the value of the clicked star
     const rating = this.value;
 
@@ -351,13 +368,13 @@
 
   function sendRatingToBackend(rating) {
     // Assuming you're using AJAX to send data to the backend
-   // const xhr = new XMLHttpRequest();
+    // const xhr = new XMLHttpRequest();
     //xhr.open('POST', 'backend_endpoint_url', true);
     //xhr.setRequestHeader('Content-Type', 'application/json');
-   // xhr.onload = function () {
-      // Handle response from the backend if needed
+    // xhr.onload = function () {
+    // Handle response from the backend if needed
     //  console.log(xhr.responseText);
-   // };
+    // };
     //xhr.send(JSON.stringify({ rating: rating }));
     console.log(rating)
   }

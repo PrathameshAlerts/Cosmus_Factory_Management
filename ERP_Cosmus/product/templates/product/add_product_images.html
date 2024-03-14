@@ -1,15 +1,15 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-    <h1>Add Product Images</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ formset.management_form }}
+<h1>Add Product Images</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ formset.management_form }}
 
-                {% for form in formset %}
-                {{ form.as_p }}
-                {% endfor %}
+    {% for form in formset %}
+    {{ form.as_p }}
+    {% endfor %}
 
-        <input type="submit" class="add_btn">
-    </form>
- {% endblock body %}
+    <input type="submit" class="add_btn">
+</form>
+{% endblock body %}
