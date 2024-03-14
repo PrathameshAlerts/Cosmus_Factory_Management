@@ -841,7 +841,27 @@ body{
     padding: 5px 20px;
     background-color: #dba6a6;
 }
+#dynamic-page {
+    display: none;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    height:100vh;
+    width:100%;
+    overflow-y: auto;
+}
 
+#newPage{
+    display: none;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    height:50px;
+    width:100px;
+    
+}
 /*===product cart rating===*/
 .rating {
     unicode-bidi: bidi-override;

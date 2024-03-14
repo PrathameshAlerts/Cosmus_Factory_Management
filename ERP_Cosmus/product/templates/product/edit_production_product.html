@@ -30,7 +30,7 @@
       <div class=" d-flex mb-3">
         <label class="mx-2">SKU:</label>
         <span class="ms-1">{{form.PProduct_SKU}}</span>
-        <button type="button" class="add_btn" id="edit_color" onclick="navigateToNewPage()">Add +</button>
+        <button type="button" class="add_btn" id="edit_color">Add +</button>
         <button type="button" class="add_btn" id="edit_color">Youtube Link Add +</button>
       </div>
       <div class="mb-2 d-flex">
@@ -51,12 +51,8 @@
         <label class="mx-2 text-danger">Delete:</label>
         <span class="">{{form.DELETE}}</span>
       </div>
-      <div class="d-flex">
-        
-      </div>
-      <div class="d-flex">
-        
-      </div>
+   
+     
 
       <!--<img id="previewImage_" src="#" class="card-img card-img p-1" alt="Preview Image">-->
     </div>
@@ -237,35 +233,35 @@
       <input type="text" class="item-select" value="" name="Product_LongDescription" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Length(cm):</label>
+      <label for="" class="form-label item-form">WP Length(cm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Length" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Width(In):</label>
+      <label for="" class="form-label item-form">WP Width(In):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Width" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Height(In):</label>
+      <label for="" class="form-label item-form">WP Height(In):</label>
       <input type="text" class="item-select" value="" name=" Product_Dimensions_WP_Height" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Weight(Gm):</label>
+      <label for="" class="form-label item-form">WP Weight(Gm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Weight" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Length(cm):</label>
+      <label for="" class="form-label item-form">WOP Length(cm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Length" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Width(In):</label>
+      <label for="" class="form-label item-form">WOP Width(In):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Width" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Height(In):</label>
+      <label for="" class="form-label item-form">WOP Height(In):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Height" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Weight(Gm):</label>
+      <label for="" class="form-label item-form">WOP Weight(Gm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Weight" required id="">
     </div>
     
@@ -318,12 +314,8 @@
   </div>
   <input type="submit" class="add_btn" value="submit">
 </form>
-<script>
-  function navigateToNewPage() {
-    // Navigate to the new page where users can add images
-    window.location.href = "product/add_image_url.html";
-  }
-</script>
+
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var toggleButton = document.getElementById("product_details_btn");
