@@ -307,7 +307,6 @@ def item_edit(request,pk):
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
         if form.is_valid() and formset.is_valid():
-            
             form.save()
             formset.save()
             messages.success(request,'Item updated successfully')
