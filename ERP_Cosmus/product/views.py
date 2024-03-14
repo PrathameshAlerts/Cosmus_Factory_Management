@@ -501,6 +501,9 @@ def item_fabric_group_delete(request,pk):
     
     return redirect('item-fabgroup-list')
 
+
+def fabricpopup(request):
+    return render(request,'product/fabric_popup.html')
 #_______________________fabric group end___________________________________
 
 #_______________________Unit Name Start____________________________________
@@ -558,7 +561,8 @@ def unit_name_delete(request,pk):
     return redirect('unit_name-list')
 
 
-
+def unitnamepopup(request):
+    return render(request,'product/units_popup.html')
 #________________________Unit Name End_______________________________________
 
 
