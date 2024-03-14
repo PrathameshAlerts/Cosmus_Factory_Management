@@ -23,7 +23,7 @@ urlpatterns = [
     path('colordelete/<int:pk>',views.color_delete,name='colordelete'),
     path('colorcreate_update/',views.color_create_update, name='colorlist'),
     path('colorcreate_update/<int:pk>',views.color_create_update, name='coloredit'),
-
+    path('color_popup/',views.colorpopup, name='color-popup'),
 
     path('simple_colorcreate_update/',views.color_create_update, name='simplecolorlist'),
     path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlist'),

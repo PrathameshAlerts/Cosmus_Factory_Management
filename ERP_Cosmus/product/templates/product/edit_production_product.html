@@ -32,18 +32,30 @@
         <span class="ms-1">{{form.PProduct_SKU}}</span>
       
         {% if form.PProduct_SKU.value %}
-       <button type="button" class="add_btn" id="edit_color"><a href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>
+       <button type="button" class="image_btn"><a style="text-decoration: none; color: #fff;" href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>
         {% else %}
         <a href="#">test</a>
         {% endif %}
-        <button type="button" onclick="add_images()" class="add_btn" id="edit_color">Add Images</button>
         <button type="button" class="add_btn" id="edit_color">Youtube Link Add +</button>
       </div>
       <div class="mb-2 d-flex">
         <label for="" class="form-label pe-4">EANCode</label>
         <input type="text" name="Product_EANCode" class="rounded-3  px-2">
-        <label for="" class="form-label pe-4">Rating</label>
-        <input type="text" name="Product_Rating" class="rounded-3  px-2">
+        <div class="rating mb-2 d-flex">
+          <div class="">
+            <input type="radio" id="star5" name="rating_" value="5" />
+            <label for="star5" class="star">&#9733;</label>
+            <input type="radio" id="star4" name="rating_" value="4" />
+            <label for="star4" class="star">&#9733;</label>
+            <input type="radio" id="star3" name="rating_" value="3" />
+            <label for="star3" class="star">&#9733;</label>
+            <input type="radio" id="star2" name="rating_" value="2" />
+            <label for="star2" class="star">&#9733;</label>
+            <input type="radio" id="star1" name="rating_" value="1" />
+            <label for="star1" class="star">&#9733;</label>
+          </div>
+          <p for="" class="form-label">Rating</p>
+        </div>
       </div>
      
       <label for="" class="form-label fw-bold ps-2">Links</label>
@@ -321,11 +333,36 @@
   <input type="submit" class="add_btn" value="submit">
 </form>
 
-
 <script>
-  function navigateToNewPage() {
-    // Navigate to the new page where users can add images
-    window.location.href = "product/add_image_url.html";
+  const stars = document.querySelectorAll('.rating input');
+
+  stars.forEach(star => star.addEventListener('click', function() {
+    // Get the value of the clicked star
+    const rating = this.value;
+
+    // Remove the 'star-selected' class from all stars
+    document.querySelectorAll('.rating label').forEach(label => {
+      label.classList.remove('star-selected');
+    });
+
+    // Add the 'star-selected' class to the clicked star
+    this.previousElementSibling.classList.add('star-selected');
+
+    // Send the rating to the backend
+    sendRatingToBackend(rating);
+  }));
+
+  function sendRatingToBackend(rating) {
+    // Assuming you're using AJAX to send data to the backend
+   // const xhr = new XMLHttpRequest();
+    //xhr.open('POST', 'backend_endpoint_url', true);
+    //xhr.setRequestHeader('Content-Type', 'application/json');
+   // xhr.onload = function () {
+      // Handle response from the backend if needed
+    //  console.log(xhr.responseText);
+   // };
+    //xhr.send(JSON.stringify({ rating: rating }));
+    console.log(rating)
   }
 </script>
 <script>

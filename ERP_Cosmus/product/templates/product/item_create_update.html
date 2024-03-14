@@ -1,7 +1,7 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-{% include  'product/create_color_modal.html' %}
+
 <h2 class="px-5 py-3">{{title}}</h2>
 <div class="row">
 <div class="col-lg-4">
@@ -202,7 +202,7 @@
   </form>
 </div>
 <div class="col-lg-1" style="padding-top: 110px;">
-  <button class="add_btn" id="buttonClick">+</button>
+  <button class="add_btn" onclick="openNewPage()">+</button>
 </div>
 <div id="newPage">
   <form class="mb-5" action="" method="POST">
@@ -237,19 +237,19 @@
 </div>
 
 <script>
-  function newPageOpen() {
-    var page = document.getElementById('newPage');
-    if (page.style.display=== 'block') {
-      page.style.display = 'none';
-    }else{
-      page.style.display = 'block';
+  function openNewPage() {
+      // Specify minimum height and width
+      var minWidth = 800; // minimum width
+      var minHeight = 600; // minimum height
+      
+      // Open new page with specified dimensions
+      window.open('http://127.0.0.1:8000/color_popup/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
+      // Set focus on new window
+      
+  
     }
-    
-  }
-
-  document.getElementById('buttonClick').addEventListener('click', newPageOpen);
-</script>
+  </script>
 
 
 

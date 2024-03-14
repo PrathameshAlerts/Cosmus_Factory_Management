@@ -389,7 +389,8 @@ def color_delete(request, pk):
         messages.error(request,f'Cannot delete {product_color.color_name} because it is referenced by other objects.')
     return redirect('simplecolorlistonly')
 
-
+def colorpopup(request):
+    return render(request,'product/color_popup.html')
 
 # def color_create(request):
 #     if request.method == 'POST':
