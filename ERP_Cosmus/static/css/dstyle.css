@@ -841,6 +841,16 @@ body{
     padding: 5px 20px;
     background-color: #dba6a6;
 }
+.image_btn{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 13px;
+    margin-left: 10px;
+    height:35px;
+    background: linear-gradient(45deg, #49e4b6, #69e490);
+    cursor: pointer;
+}
 
 /*===product cart rating===*/
 .rating {

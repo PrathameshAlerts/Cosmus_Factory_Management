@@ -11,7 +11,7 @@
         <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
        </div>
 
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" id="saveButton" class="create-btn mt-4" name="save" value="Save">
     {% if not form.instance.id %}
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
     {% endif %}
@@ -19,28 +19,12 @@
       </form>
 
 </div>
-
+<script>
+    // When the Save button is clicked
+    document.getElementById("saveButton").addEventListener("click", function() {
+      // Close the current window
+      window.close();
+    });
+  </script>
 
 {% endblock body %}
-
-
-
-
-
- 
-<!-- to check if form. instance exists
-{% if form.instance %}
-<p>form.instance exists: {{ form.instance }}</p>
-{% else %}
-<p>form.instance does not exist</p>
-{% endif %} -->
-
-<!-- You can also inspect the entire context available in your template to see what variables are 
-being passed from your view. You can use the {{ request }} template tag to display the request
-object, which includes the context.
-
-For example:
-
-html
-Copy code
-<pre>{{ request }}</pre> -->

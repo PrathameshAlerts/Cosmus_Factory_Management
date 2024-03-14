@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'tax',
     'bootstrap5',
     'cities_light',
-    'popup_field',
+    
 
 ]
 

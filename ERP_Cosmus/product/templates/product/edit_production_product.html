@@ -56,12 +56,8 @@
         <label class="mx-2 text-dan ger">Delete:</label>
         <span class="">{{form.DELETE}}</span>
       </div>
-      <div class="d-flex">
-        
-      </div>
-      <div class="d-flex">
-        
-      </div>
+   
+     
 
       <!--<img id="previewImage_" src="#" class="card-img card-img p-1" alt="Preview Image">-->
     </div>
@@ -242,35 +238,35 @@
       <input type="text" class="item-select" value="" name="Product_LongDescription" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Length(cm):</label>
+      <label for="" class="form-label item-form">WP Length(cm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Length" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Width(In):</label>
+      <label for="" class="form-label item-form">WP Width(In):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Width" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Height(In):</label>
+      <label for="" class="form-label item-form">WP Height(In):</label>
       <input type="text" class="item-select" value="" name=" Product_Dimensions_WP_Height" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Weight(Gm):</label>
+      <label for="" class="form-label item-form">WP Weight(Gm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WP_Weight" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Length(cm):</label>
+      <label for="" class="form-label item-form">WOP Length(cm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Length" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Width(In):</label>
+      <label for="" class="form-label item-form">WOP Width(In):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Width" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Height(In):</label>
+      <label for="" class="form-label item-form">WOP Height(In):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Height" required id="">
     </div>
     <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Weight(Gm):</label>
+      <label for="" class="form-label item-form">WOP Weight(Gm):</label>
       <input type="text" class="item-select" value="" name="Product_Dimensions_WOP_Weight" required id="">
     </div>
     
@@ -335,9 +331,35 @@
 
 
 <script>
-  function navigateToNewPage() {
-    // Navigate to the new page where users can add images
-    window.location.href = "product/add_image_url.html";
+  const stars = document.querySelectorAll('.rating input');
+
+  stars.forEach(star => star.addEventListener('click', function() {
+    // Get the value of the clicked star
+    const rating = this.value;
+
+    // Remove the 'star-selected' class from all stars
+    document.querySelectorAll('.rating label').forEach(label => {
+      label.classList.remove('star-selected');
+    });
+
+    // Add the 'star-selected' class to the clicked star
+    this.previousElementSibling.classList.add('star-selected');
+
+    // Send the rating to the backend
+    sendRatingToBackend(rating);
+  }));
+
+  function sendRatingToBackend(rating) {
+    // Assuming you're using AJAX to send data to the backend
+   // const xhr = new XMLHttpRequest();
+    //xhr.open('POST', 'backend_endpoint_url', true);
+    //xhr.setRequestHeader('Content-Type', 'application/json');
+   // xhr.onload = function () {
+      // Handle response from the backend if needed
+    //  console.log(xhr.responseText);
+   // };
+    //xhr.send(JSON.stringify({ rating: rating }));
+    console.log(rating)
   }
 </script>
 <script>
