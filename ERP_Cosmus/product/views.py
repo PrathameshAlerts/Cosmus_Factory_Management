@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, RawStockTransfer, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
-from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet
+from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -42,6 +42,7 @@ def edit_production_product(request,pk):
                                                                             'formset':formset})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
+    print(formset)
     return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset})
 
 
@@ -159,6 +160,22 @@ def pproduct_delete(request, pk):
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {product.Product_Name} because it is referenced by other objects.')
     return redirect('pproductlist')
+
+
+def add_product_images(request, pk):
+    product = PProduct_Creation.objects.get(pk=pk)
+    if request.method == 'POST':
+        print(request.POST)
+        formset = ProductImagesFormSet(request.POST, request.FILES, instance=product)
+        if formset.is_valid():
+            formset.save()
+            print('Product_REF',product.Product.Product_Refrence_ID)
+            return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+        else:
+            print(formset.errors)
+    else:
+        formset = ProductImagesFormSet(instance=product)
+    return render(request, 'product/add_product_images.html', {'formset': formset, 'product': product})
 
 
 #____________________________Product-View-End__________________________________

@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade , ProductVideoUrls,ProductImage
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -8,27 +8,12 @@ from django.forms.widgets import PasswordInput, TextInput
 
 
 
-
-# class ProductForm(forms.ModelForm):
-
-#     widgets = {
-#             'Product_Channel': forms.CheckboxSelectMultiple,
-#             }
-         
-#     class Meta:
-#         model = Product
-#         fields = ['Product_Name', 'Model_Name', 'Product_Status', 'Product_Channel', 
-#                   'Product_Brand', 'Product_HSNCode', 'Product_GST', 
-#                   'Product_WarrantyTime', 'Product_MRP', 'Product_SalePrice_CustomerPrice',
-#                   'Product_BulkPrice', 'Product_Cost_price']
-
-
 class PProductCreateForm(forms.ModelForm):
     Product_Refrence_ID = forms.IntegerField(label='Product_Refrence_ID')
     class Meta:
         model = PProduct_Creation
         fields = ['PProduct_image','PProduct_color','PProduct_SKU', 'Product_Refrence_ID',
-                  'Product_EANCode','product_Video_URL','Product_Rating','Amazon_Link','Flipkart_Link',
+                  'Product_EANCode','Product_Rating','Amazon_Link','Flipkart_Link',
                   'Cosmus_link']
 
 
@@ -44,6 +29,11 @@ class PProductCreateForm(forms.ModelForm):
             raise forms.ValidationError('Product SKU already exists in the database')
 
         return sku
+
+ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
+
+
+ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
 
 
 class PProductAddForm(forms.ModelForm):
@@ -83,8 +73,13 @@ class CustomPProductaddFormSet(PProductaddFormSet):
 
         # Loop through the forms in the formset
         for form in self.forms:
+
             # Set PProduct_SKU field as read-only
             form.fields['PProduct_SKU'].widget.attrs['readonly'] = True
+
+
+
+
 
 """
     Initialization: The __init__ method is used to set up initial values, 

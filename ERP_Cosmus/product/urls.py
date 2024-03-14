@@ -15,6 +15,9 @@ urlpatterns = [
     path('pproductlist/',views.pproduct_list ,name= 'pproductlist'),
     path('pproductdelete/<int:pk>',views.pproduct_delete, name= 'pproductdelete'),
 
+    #productImages
+    path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
+
     #color routes
     # path('colorlist/',views.color_list, name= 'colorlist'),
     path('colordelete/<int:pk>',views.color_delete,name='colordelete'),
