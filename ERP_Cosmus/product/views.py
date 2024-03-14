@@ -42,7 +42,7 @@ def edit_production_product(request,pk):
                                                                             'formset':formset})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
-    print(formset)
+    
     return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset})
 
 
@@ -162,22 +162,39 @@ def pproduct_delete(request, pk):
     return redirect('pproductlist')
 
 
+
+# used formsets to add related objects on a diffrent page
 def add_product_images(request, pk):
-    product = PProduct_Creation.objects.get(pk=pk)
+    product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
+    formset = ProductImagesFormSet(instance=product)  # pass the instance to the formset
+
     if request.method == 'POST':
-        print(request.POST)
         formset = ProductImagesFormSet(request.POST, request.FILES, instance=product)
         if formset.is_valid():
             formset.save()
-            print('Product_REF',product.Product.Product_Refrence_ID)
+            messages.success(request,'Product images sucessfully added.')
             return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
         else:
-            print(formset.errors)
-    else:
-        formset = ProductImagesFormSet(instance=product)
+            return render(request, 'product/add_product_images.html', {'formset': formset, 'product': product})
+
     return render(request, 'product/add_product_images.html', {'formset': formset, 'product': product})
 
 
+def add_product_video_url(request,pk):
+    product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
+    formset = ProductVideoFormSet(instance=product)  # pass the instance to the formset
+    if request.method == 'POST':
+        formset = ProductVideoFormSet(request.POST, instance=product)
+        if formset.is_valid():
+            formset.save()
+            messages.success(request,'Product url sucessfully added.')
+            return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+    else:
+            return render(request, 'product/add_product_videourl.html', {'formset': formset, 'product': product})
+
+    return render(request, 'product/add_product_videourl.html', {'formset': formset, 'product': product})
+
+        
 #____________________________Product-View-End__________________________________
 
 #_____________________Item-Views-start_______________________
@@ -290,7 +307,7 @@ def item_edit(request,pk):
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
         if form.is_valid() and formset.is_valid():
-            print(formset.cleaned_data)
+            
             form.save()
             formset.save()
             messages.success(request,'Item updated successfully')
@@ -379,6 +396,7 @@ def color_create_update(request, pk=None):
 
     return render(request, template_name , {'title': title, 'form': form, 'colors':color})
         
+
 def color_delete(request, pk):
 
     try:

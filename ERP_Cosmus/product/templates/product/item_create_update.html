@@ -2,6 +2,7 @@
 {% load static %}
 {% block body %}
 
+
 <h2 class="px-5 py-3">{{title}}</h2>
 <div class="row">
 <div class="col-lg-4">
@@ -43,7 +44,7 @@
                   {{ form.instance.Item_Color.id }} -->
 
         {% if form.instance.id %}
-        <option value="{{ form.instance.Item_Color.id}}" readonly>{{form.instance.Color_Name}}</option>
+        <option value="{{ form.instance.Item_Color.id}}">{{form.instance.Color_Name}}</option>
         {% for x in colors %}
         <option value="{{x.id}}">{{x.color_name}}</option>
         {% endfor %}
@@ -84,9 +85,9 @@
                 {% endif %}
               </td>
               {% if forloop.first %}
-              <td>{{shade_form.item_shade_name}}</td> 
-              {% else %}
               <td>{{shade_form.item_shade_name}}</td>
+              {% else %}
+              <td>{{shade_form.item_shade_name}}< /td>
               {% endif %}
               <td>
                 <div>{{ shade_form.item_color_image }}</div>
@@ -215,6 +216,13 @@
     </div>
 </div>
 </div>
+
+<script>
+
+var shade_id_0 = document.getElementById('id_shades-0-item_shade_name');
+shade_id_0.setAttribute('readonly', true);
+</script>
+
 
 <script>
   function openFabPopup() {
