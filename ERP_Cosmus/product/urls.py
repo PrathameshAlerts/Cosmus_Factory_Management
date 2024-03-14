@@ -17,6 +17,9 @@ urlpatterns = [
 
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
+    #productVideourl
+    path('product/<int:pk>/add_video_url/', views.add_product_video_url, name='add-product-video-url'),
+
 
     #color routes
     # path('colorlist/',views.color_list, name= 'colorlist'),

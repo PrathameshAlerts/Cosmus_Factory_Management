@@ -19,9 +19,8 @@
     <div class="card rounded-3 mb-3 p-2">
       <div class=" d-flex mb-3">
         <label class="mx-2">Color:</label>
-        <span class="mx-2">{{form.PProduct_color}}</span>
-        
-              
+        <span class="mx-2" id="color_id_id">{{form.PProduct_color}}</span>
+            
         <div class=" d-flex mb-3">
           <label class="mx-3">Image:</label>
           <span class="mx-1" onchange="previewFile(event)">{{form.PProduct_image}}</span>
@@ -31,30 +30,30 @@
         <label class="mx-2">SKU:</label>
         <span class="ms-1">{{form.PProduct_SKU}}</span>
       
-        {% if form.PProduct_SKU.value %}
-       <button type="button" class="add_btn" id="edit_color"><a href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>
-        {% else %}
-        <a href="#">test</a>
-        {% endif %}
-        <button type="button" onclick="add_images()" class="add_btn" id="edit_color">Add Images</button>
-        <button type="button" class="add_btn" id="edit_color">Youtube Link Add +</button>
+        
+       <button type="button" class="add_btn" id="edit_images"><a href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>
+
+        <button type="button" class="add_btn" id="edit_video_url"> <a href="{% url 'add-product-video-url' form.PProduct_SKU.value %}">Youtube Link</a></button>
       </div>
       <div class="mb-2 d-flex">
         <label for="" class="form-label pe-4">EANCode</label>
-        <input type="text" name="Product_EANCode" class="rounded-3  px-2">
+        <span>{{form.Product_EANCode}}</span>
         <label for="" class="form-label pe-4">Rating</label>
-        <input type="text" name="Product_Rating" class="rounded-3  px-2">
+        <span>{{form.Product_Rating}}</span>
       </div>
      
       <label for="" class="form-label fw-bold ps-2">Links</label>
       <div class="d-flex">
         <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo">
-        <input type="text" name="Amazon_Link" class="rounded-3  px-2 m-1">
+        <span>{{form.Amazon_Link}}</span>
+
         <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo">
-        <input type="text" name="Flipkart_Link" class="rounded-3  px-2 m-1">
+        <span>{{form.Flipkart_Link}}</span>
+
         <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo">
-        <input type="text" name="Cosmus_link" class="rounded-3 px-2 m-1">
-        <label class="mx-2 text-danger">Delete:</label>
+        <span>{{form.Cosmus_link}}</span>
+
+        <label class="mx-2 text-dan ger">Delete:</label>
         <span class="">{{form.DELETE}}</span>
       </div>
       <div class="d-flex">
@@ -324,6 +323,15 @@
   </div>
   <input type="submit" class="add_btn" value="submit">
 </form>
+
+<script>
+
+  
+  var product_color = document.getElementById('id_productdetails-0-PProduct_color');
+  product_color.setAttribute('disabled', true);
+
+
+</script>
 
 
 <script>
