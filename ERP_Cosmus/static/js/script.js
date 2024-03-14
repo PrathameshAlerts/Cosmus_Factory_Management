@@ -57,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function() {
     newCard.querySelector('input[name="PProduct_SKU_"]').value = '';
     newCard.querySelector('select[name="PProduct_color_"]').selectedIndex = 0;
     newCard.querySelector('input[name="Product_EANCode_"]').value = '';
-    newCard.querySelector('input[name="Product_Rating_"]').value = '';
+    newCard.querySelector('input[name="rating_"]').value = '';
     newCard.querySelector('input[name="Amazon_Link_"]').value = '';
     newCard.querySelector('input[name="Flipkart_Link_"]').value = '';
-    newCard.querySelector('input[name="Cosmus_link_"]').value = '';
+    newCard.querySelector('input[name="Product_EANCode_"]').value = '';
 
     // Update input names with dynamic counters
     newCard.querySelectorAll('input, select').forEach(function(element) {

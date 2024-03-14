@@ -841,6 +841,39 @@ body{
     padding: 5px 20px;
     background-color: #dba6a6;
 }
+
+/*===product cart rating===*/
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+  }
+
+  .rating input {
+    display: none;
+  }
+
+  .rating label {
+    display: inline-block;
+    padding: 4px;
+    font-size: 24px;
+    color: #aaa;
+    cursor: pointer;
+  }
+
+  .rating label:hover,
+  .rating label:hover ~ label,
+  .rating input:checked ~ label {
+    color: #ffcc00;
+  }
+
+  /* New style for selected star */
+  .rating .star-selected {
+    font-weight: bold;
+  }
+
+
+/*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {
             width: 0;
