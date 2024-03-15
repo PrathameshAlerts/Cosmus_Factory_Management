@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 <h1>Add Product Images</h1>
-<form method="post" enctype="multipart/form-data">
+<form id="myForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ formset.management_form }}
 
@@ -17,6 +17,9 @@
         document.getElementById("saveButton").addEventListener("click", function() {
           // Close the current window
           window.close();
+          document.getElementById("myForm").submit();
+    // Prevent the default form submission behavior
+           event.preventDefault();
         });
       </script>
  {% endblock body %}
