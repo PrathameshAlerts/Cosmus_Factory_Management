@@ -42,6 +42,7 @@
       <div class="mb-2 d-flex">
         <label for="" class="form-label pe-4">EANCode</label>
         <span>{{form.Product_EANCode}}</span>
+        
         <label for="" class="form-label pe-4">Rating</label>
         <span>{{form.Product_Rating}}</span>
       </div>
@@ -73,9 +74,11 @@
     <div class="row">
       <div class="col-lg-4">
         <div class=" d-flex my-3">
+          
           <label for="id_Product_Name" class="form-label item-form">Name:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Name}}" name="Product_Name" required
-            id="id_Product_Name">
+
+            <input type="text" class="item-select" value="{% if form.instance.Product_Name %}{{ form.instance.Product_Name }}{% endif %}" name="Product_Name" required id="id_Product_Name">
+
         </div>
         <div class=" d-flex my-3">
           <label for="" class="form-label item-form">ShortName:</label>
@@ -202,11 +205,49 @@
 
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Compartment:</label>
-      <input type="text" class="item-select" value="{{form.instance.Product_Compartments}}" name="Product_Compartments" required id="">
+      <select name="Product_Compartments" required id="" class="item-select">
+        {% if form.instance.id %}
+        <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments}}</option>
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% endif %}
+        <option value="One">One</option>
+        <option value="Two">Two</option>
+        <option value="Three">Three</option>
+        <option value="Four">Four</option>
+        <option value="Five">Five</option>
+        <option value="Six">Six</option>
+        <option value="Seven">Seven</option>
+        <option value="Eight">Eight</option>
+        <option value="Nine">Nine</option>
+        <option value="Ten">Ten</option>
+      </select>
     </div>
     <div class="d-flex my-3">
+
+
       <label for="" class="form-label item-form">Acc Compartment:</label>
-      <input type="text" class="item-select" value="{{form.instance.Product_Accessory_Compartments}}" name="Product_Accessory_Compartments" required id="">
+      <select class="item-select" name="Product_Accessory_Compartments" required id="">
+
+        {% if form.instance.id %}
+        <option value="{{form.instance.Product_Accessory_Compartments}}">{{form.instance.Product_Accessory_Compartments}}</option>
+        {% elif not form.instance.id %}
+        <option value="{{form.instance.Product_Accessory_Compartments}}">{{form.instance.Product_Accessory_Compartments}}</option>
+        {% endif %}
+        <option value="One">One</option>
+        <option value="Two">Two</option>
+        <option value="Three">Three</option>
+        <option value="Four">Four</option>
+        <option value="Five">Five</option>
+        <option value="Six">Six</option>
+        <option value="Seven">Seven</option>
+        <option value="Eight">Eight</option>
+        <option value="Nine">Nine</option>
+        <option value="Ten">Ten</option>
+      </select>
+
+
+
     </div>
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Capacity:</label>
@@ -216,11 +257,37 @@
   <div class="col-lg-4">
     <div class="d-flex my-3">
       <label for="" class="form-label item-form">Material:</label>
-      <input type="text" class="item-select" value="{{form.instance.Product_Material}}" name="Product_Material" required id="">
+      <select class="item-select" name="Product_Material" required id="">
+        {% if form.instance.id %}
+        <option value="{{form.instance.Product_Material}}">{{form.instance.Product_Material}}</option>
+        {% elif not form.instance.id %}
+        <option value="{{form.instance.Product_Material}}">{{form.instance.Product_Material}}</option>
+        {% endif %}
+        <option value="PU Coated Polyester">PU Coated Polyester</option>
+        <option value="PU Coated Nylon">PU Coated Nylon</option>
+        <option value="Vegan Leather">Vegan Leather</option>
+        <option value="Polycarbonate">Polycarbonate</option>
+        <option value="Eva Shell">Eva Shell</option>
+        <option value="Cotton">Cotton</option>
+        <option value="Jute">Jute</option>
+      </select>
+
     </div>
     <div class=" d-flex mb-3">
       <label for="" class="form-label item-form">UOM:</label>
-      <input type="text" class="item-select" name="Product_UOM" value="{{form.instance.Product_UOM}}" id="">
+
+      <select class="item-select" name="Product_UOM" id="">
+
+        {% if form.instance.id %}
+        <option value="{{form.instance.Product_UOM}}">{{form.instance.Product_UOM}}</option>
+        {% elif not form.instance.id %}
+        <option value="{{form.instance.Product_UOM}}">{{form.instance.Product_UOM}}</option>
+        {% endif %}
+        <option value="Pcs">Pcs</option>
+        <option value="Set of 3">Set of 3</option>
+      </select>
+
+
     </div>
 
     <div class=" d-flex mb-3">
@@ -368,12 +435,12 @@
   <input type="submit" class="add_btn" value="submit">
 </form>
 
-<script>
+<!-- <script>
 
   var product_color = document.getElementById('id_productdetails-0-PProduct_color');
   product_color.setAttribute('disabled', true);
 
-</script>
+</script> -->
 <script>
   
     function editImages(id){

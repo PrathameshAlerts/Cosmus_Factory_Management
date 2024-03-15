@@ -26,7 +26,7 @@ def dashboard(request):
 def edit_production_product(request,pk):
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
-
+    print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
@@ -37,6 +37,7 @@ def edit_production_product(request,pk):
             return redirect('pproductlist')
         else:
             print(form.errors)
+            print(formset.errors)
             return render(request, 'product/edit_production_product.html', {'gsts':gsts,
                                                                             'form':form,
                                                                             'formset':formset})

@@ -60,6 +60,8 @@ class PProductAddForm(forms.ModelForm):
                   'Product_QtyPerBox']
         
 
+
+
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',
                                                                                'Amazon_Link','Flipkart_Link','Cosmus_link'),extra=0)
 

@@ -132,7 +132,7 @@ class Product(models.Model):
         ]
 
 
-    Product_Name = models.CharField(max_length=255, blank = True)
+    Product_Name = models.CharField(max_length=255, blank = True, null = True)
     Model_Name = models.CharField(max_length=255, blank = True,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, default = "Cosmus")
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, default = "Active")
