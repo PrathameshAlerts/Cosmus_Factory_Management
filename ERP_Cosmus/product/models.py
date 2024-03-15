@@ -276,6 +276,8 @@ class Item_Creation(models.Model):
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
+    
+
 
 
 # these functions are used to show related attributes instead of PK id in listview
@@ -299,10 +301,11 @@ class Item_Creation(models.Model):
     
 
 class item_color_shade(models.Model):
+
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades')
-    item_name_rank = models.PositiveIntegerField(blank = True)
-    item_shade_name =  models.CharField(max_length=100, blank = True)
-    item_color_image = models.ImageField(upload_to ='rawmaterial/images', blank=True)
+    item_name_rank = models.PositiveIntegerField(blank = True, null = True)
+    item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
+    item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
 
 
     def __str__(self) -> str:

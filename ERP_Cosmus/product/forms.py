@@ -144,24 +144,9 @@ class Itemform(forms.ModelForm):
         fields = ['item_name','Material_code','Item_Color','Packing',
                  'unit_name_item','Units','Panha', 'Fabric_nonfabric','Fabric_Finishes','Fabric_Group',
                  'Item_Creation_GST','HSN_Code','status','item_shade_image']
+        
 
-
-
-class YourShadeFormSet(forms.BaseInlineFormSet):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for form in self.forms:
-            for field_name, field in form.fields.items():
-                # Check if the field has an initial value and handle both None and empty string cases
-                initial_value = form.initial.get(field_name, None)
-                if initial_value is None:
-                    form.initial[field_name] = ''
-                elif initial_value == '':
-                    form.initial[field_name] = initial_value
-
-ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade,formset=YourShadeFormSet, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
-
-
+ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
 
 
 

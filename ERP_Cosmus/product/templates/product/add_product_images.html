@@ -7,19 +7,14 @@
     {{ formset.management_form }}
 
     {% for form in formset %}
-    {{ form.as_p }}
+    {{ form.id }}
+    {{form.Image}}
+    {{form.Image_type}}
+    {{form.Order_by}}
+    <td>{{ form.DELETE }}</td>
     {% endfor %}
 
-    <input type="submit" id="saveButton" class="add_btn">
+    <input type="submit" class="add_btn">
     </form>
-    <script>
-        // When the Save button is clicked
-        document.getElementById("saveButton").addEventListener("click", function() {
-          // Close the current window
-          window.close();
-          document.getElementById("myForm").submit();
-    // Prevent the default form submission behavior
-           event.preventDefault();
-        });
-      </script>
+
  {% endblock body %}

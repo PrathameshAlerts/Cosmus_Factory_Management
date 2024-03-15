@@ -168,13 +168,23 @@ def pproduct_delete(request, pk):
 def add_product_images(request, pk):
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductImagesFormSet(instance=product)  # pass the instance to the formset
-
+    print(request.POST)
     if request.method == 'POST':
         formset = ProductImagesFormSet(request.POST, request.FILES, instance=product)
         if formset.is_valid():
             formset.save()
             messages.success(request,'Product images sucessfully added.')
-            return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+            # return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+
+            # JavaScript to close the popup window
+            close_window_script = """
+            <script>
+            window.opener.location.reload(true);  // Reload parent window if needed
+            window.close();  // Close current window
+            </script>
+            """
+
+            return HttpResponse(close_window_script)
         else:
             return render(request, 'product/add_product_images.html', {'formset': formset, 'product': product})
 
@@ -189,7 +199,18 @@ def add_product_video_url(request,pk):
         if formset.is_valid():
             formset.save()
             messages.success(request,'Product url sucessfully added.')
-            return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+            # return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+            close_window_script = """
+            <script>
+            window.opener.location.reload(true);  // Reload parent window if needed
+            window.close();  // Close current window
+            </script>
+            """
+
+            return HttpResponse(close_window_script)
+
+
+
     else:
             return render(request, 'product/add_product_videourl.html', {'formset': formset, 'product': product})
 
@@ -308,6 +329,7 @@ def item_edit(request,pk):
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
         if form.is_valid() and formset.is_valid():
+            print(formset.cleaned_data)
             form.save()
             formset.save()
             messages.success(request,'Item updated successfully')

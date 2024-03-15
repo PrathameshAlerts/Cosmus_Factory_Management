@@ -81,7 +81,7 @@
                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
                 {% else %}
                 <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
-                  id="{{ shade_form.prefix }}-item_name_rank" value="{% if form.instance.item_name_rank %} {{ shade_form.instance.item_name_rank }} {% endif %}">
+                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
                 {% endif %}
 
               </td>

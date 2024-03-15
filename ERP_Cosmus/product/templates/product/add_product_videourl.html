@@ -6,18 +6,14 @@
         {% csrf_token %}
         {{ formset.management_form }}
                 {% for form in formset %}
-                {{form.as_p}}
+                {{ form.id }}
+                {{form.product_video_url}}
+                {{ form.DELETE }}
                 {% endfor %}
             </tbody>
         </table>
-        <input type="submit" class="add_btn" id="saveButton">
+        <input type="submit" id="saveButton">
     </form>
 
-    <script>
-        // When the Save button is clicked
-        document.getElementById("saveButton").addEventListener("click", function() {
-          // Close the current window
-          window.close();
-        });
-      </script>
+
     {% endblock body %}
