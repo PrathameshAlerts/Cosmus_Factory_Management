@@ -44,34 +44,7 @@
             <label for="" class="form-label pe-4">EANCode</label>
             <input type="text" name="Product_EANCode_" class="rounded-3 w-75 px-2">
           </div>
-          <div class="rating mb-2 d-flex">
-            <div class="">
-              <input type="radio" id="star5" name="rating_" value="5" />
-              <label for="star5" class="star">&#9733;</label>
-              <input type="radio" id="star4" name="rating_" value="4" />
-              <label for="star4" class="star">&#9733;</label>
-              <input type="radio" id="star3" name="rating_" value="3" />
-              <label for="star3" class="star">&#9733;</label>
-              <input type="radio" id="star2" name="rating_" value="2" />
-              <label for="star2" class="star">&#9733;</label>
-              <input type="radio" id="star1" name="rating_" value="1" />
-              <label for="star1" class="star">&#9733;</label>
-            </div>
-            <p for="" class="form-label">Rating</p>
-          </div>
-          <label for="" class="form-label fw-bold ps-2">Links</label>
-          <div class="d-flex">
-            <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo">
-            <input type="text" name="Amazon_Link_" class="rounded-3 w-75 px-2 m-1">
-          </div>
-          <div class="d-flex">
-           <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo">
-            <input type="text" name="Flipkart_Link_" class="rounded-3 w-75 px-2 m-1">
-          </div>
-          <div class="d-flex">
-            <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo">
-            <input type="text" name="Cosmus_link_" class="rounded-3 w-75 px-2 m-1">
-          </div>
+ 
           <button type="button" value="cancel" class="card_btn cancel-btn">Cancel</button>
 
         </div>
@@ -89,37 +62,6 @@
     window.location.href = "{% url 'simplecolorlistonly' %}";
   } 
   </script>  
-<script>
-  const stars = document.querySelectorAll('.rating input');
 
-  stars.forEach(star => star.addEventListener('click', function() {
-    // Get the value of the clicked star
-    const rating = this.value;
-
-    // Remove the 'star-selected' class from all stars
-    document.querySelectorAll('.rating label').forEach(label => {
-      label.classList.remove('star-selected');
-    });
-
-    // Add the 'star-selected' class to the clicked star
-    this.previousElementSibling.classList.add('star-selected');
-
-    // Send the rating to the backend
-    sendRatingToBackend(rating);
-  }));
-
-  function sendRatingToBackend(rating) {
-    // Assuming you're using AJAX to send data to the backend
-   // const xhr = new XMLHttpRequest();
-    //xhr.open('POST', 'backend_endpoint_url', true);
-    //xhr.setRequestHeader('Content-Type', 'application/json');
-   // xhr.onload = function () {
-      // Handle response from the backend if needed
-    //  console.log(xhr.responseText);
-   // };
-    //xhr.send(JSON.stringify({ rating: rating }));
-    console.log(rating)
-  }
-</script>
 
 {% endblock body %}
