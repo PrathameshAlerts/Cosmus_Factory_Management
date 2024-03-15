@@ -61,7 +61,7 @@
     <div class="d-flex mb-3">
       <label for="id_Item_shades" class="form-label item-form">Shades:</label>
       <!-- Render reverse related relationship fields dynamically using formset factory  -->
-      <div class="mb-3">
+      <div class="mx-3 mb-3">
         <table class="table table-striped table-hover table-responsive rounded-3">
           <tr>
             <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
@@ -71,7 +71,7 @@
           </tr>
           {{ formset.management_form }}
           {% for shade_form in formset %}
-          <div class="shade-form">
+          <div>
             {{ shade_form.id }}
             <!-- Render each field manually -->
             <tr>
@@ -81,7 +81,7 @@
                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
                 {% else %}
                 <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
-                  id="{{ shade_form.prefix }}-item_name_rank" value="{% if form.instance.item_name_rank %} {{ shade_form.instance.item_name_rank }} {% endif %}">
+                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
                 {% endif %}
 
               </td>
