@@ -915,6 +915,13 @@ body{
     font-weight: bold;
   }
 
+  /*===popup page ===*/
+  .popup_page{
+    margin: 10px;
+    padding-top: 70px;
+    display: block;
+    width: 100%;
+  } 
 
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
