@@ -32,12 +32,12 @@
         <label class="mx-2">SKU:</label>
        <input type="number" name="productdetails-0-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly id="id_productdetails-0-PProduct_SKU">
       
-       <button type="button" class="add_btn" id="edit_images" onclick="editImages()">Add Image</button>
+       <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
 
         
-       <button type="button" class="add_btn" id="edit_images"><a style="text-decoration: none; color: white;" href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>
-
-        <button type="button" class="add_btn" id="edit_video_url" onclick="edit_video_url()"> <a style="text-decoration: none; color: white;" href="{% url 'add-product-video-url' form.PProduct_SKU.value %}">Youtube Link</a></button>
+       <!--<button type="button" class="add_btn" id="edit_images"><a style="text-decoration: none; color: white;" href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>-->
+       <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
+        <!--<button type="button" class="add_btn" id="edit_video_url" onclick="edit_video_url()"> <a style="text-decoration: none; color: white;" href="{% url 'add-product-video-url' form.PProduct_SKU.value %}">Youtube Link</a></button>-->
       </div>
       <div class="mb-2 d-flex">
         <label for="" class="form-label pe-4">EANCode</label>
@@ -302,7 +302,6 @@
   <button type="button" class="edit_btn w-50 mb-3" id="product_description_btn">Description<span class="span_padding"><i
         class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_description" style="display: none;">
-
     <div class="row">
       <div class="col-lg-4">
         <div class="d-flex my-3">
@@ -373,8 +372,6 @@
 
 
     </div>
-
-   
   </div>
   <button type="button" class="edit_btn w-50 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i 
     class="fas fa-angle-right arrowBtn"></i></span></button>
@@ -442,25 +439,50 @@
 
 </script> -->
 <script>
+  function editImages(button) {
+      // Traverse up the DOM to find the card container
+      var card = button.closest('.card');
+      if (card) {
+          // Within the card, find the input with name containing "PProduct_SKU_"
+          var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+          if (productSkuInput) {
+              var productSku = productSkuInput.value;
   
-    function editImages(id){
-      var productSku = document.getElementById('skuValue').innerText.trim();
-      var minWidth = 800; // minimum width
-      var minHeight = 600; 
-      console.log(skuValue.innerText);
-      window.open('http://127.0.0.1:8000/product/' + productSku + '/add_images/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-    
-      console.log(productSku)
-    }
-   
-    function edit_video_url(){
-
-   var minHeight=600;
-   var minWidth=800;
-
-window.open('http://127.0.0.1:8000/edit_images/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-}
+              var minWidth = 800; // minimum width
+              var minHeight = 600; 
+  
+              window.open('http://127.0.0.1:8000/product/' + productSku + '/add_images/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+          } else {
+              console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
+          }
+      } else {
+          console.error('Parent card container not found.');
+      }
+  }
+ 
   </script>
+  <script>
+     function editVideoUrl(button) {
+      // Traverse up the DOM to find the card container
+      var card = button.closest('.card');
+      if (card) {
+          // Within the card, find the input with name containing "PProduct_SKU_"
+          var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+          if (productSkuInput) {
+              var productSku = productSkuInput.value;
+  
+              var minWidth = 800; // minimum width
+              var minHeight = 600; 
+  
+              window.open('http://127.0.0.1:8000/product/' + productSku + '/add_video_url/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+          } else {
+              console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
+          }
+      } else {
+          console.error('Parent card container not found.');
+      }
+  }
+    </script>
 
 <script>
   const stars = document.querySelectorAll('.rating input');

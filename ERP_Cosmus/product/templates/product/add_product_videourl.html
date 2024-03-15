@@ -1,4 +1,4 @@
-{% extends 'product/base.html' %}
+{% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
     <h1>Add Product Video Urls</h1>
@@ -10,7 +10,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <button type="submit" id="saveButton">Submit</button>
+        <input type="submit" class="add_btn" id="saveButton">
     </form>
 
     <script>

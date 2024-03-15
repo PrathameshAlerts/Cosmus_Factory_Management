@@ -1,4 +1,4 @@
-{% extends 'product/base.html' %}
+{% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
 <h1>Add Product Images</h1>
@@ -10,7 +10,7 @@
     {{ form.as_p }}
     {% endfor %}
 
-        <input type="submit" id="saveButton" class="add_btn">
+    <input type="submit" id="saveButton" class="add_btn">
     </form>
     <script>
         // When the Save button is clicked
