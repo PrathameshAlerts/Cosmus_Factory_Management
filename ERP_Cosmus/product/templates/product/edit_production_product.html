@@ -21,8 +21,14 @@
     <div class="card rounded-3 mb-3 p-2">
       <div class=" d-flex mb-3">
         <label class="mx-2">Color:</label>
+        {% if forloop.first %}
+       
+        <input type="text" name="{{form.prefix}}-PProduct_color" value="{{form.instance.PProduct_color}}" readonly id="{{form.prefix}}-PProduct_color">
         <span class="mx-2" id="color_id_id">{{form.PProduct_color}}</span>
-
+        {% else %}
+        <input type="text" name="{{form.prefix}}-PProduct_color" value="{{form.instance.PProduct_color}}" readonly id="{{ form.prefix}}-PProduct_color">
+        <span class="mx-2" id="color_id_id">{{form.PProduct_color}}</span>
+        {% endif %}
         <div class=" d-flex mb-3">
           <label class="mx-3">Image:</label>
           <span class="mx-1">{{form.PProduct_image}}</span>
@@ -35,9 +41,9 @@
        <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
 
         
-       <!--<button type="button" class="add_btn" id="edit_images"><a style="text-decoration: none; color: white;" href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>-->
+       
        <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
-        <!--<button type="button" class="add_btn" id="edit_video_url" onclick="edit_video_url()"> <a style="text-decoration: none; color: white;" href="{% url 'add-product-video-url' form.PProduct_SKU.value %}">Youtube Link</a></button>-->
+
       </div>
       <div class="mb-2 d-flex">
         <label for="" class="form-label pe-4">EANCode</label>
