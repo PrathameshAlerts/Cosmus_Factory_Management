@@ -482,23 +482,6 @@ class RawStockTransfer(models.Model):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # @receiver(pre_save, sender=Item_Creation)
 # def update_combined_field(sender, instance, **kwargs):
 #     # Combine the values of field1 and field2 and save it to combined_field

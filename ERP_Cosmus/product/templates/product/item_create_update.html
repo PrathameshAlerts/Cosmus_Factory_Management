@@ -76,6 +76,7 @@
             <!-- Render each field manually -->
             <tr>
               <td>
+                <!-- item_name_rank -->
                 {% if forloop.first %}
                 <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
@@ -88,6 +89,7 @@
 
               </td>
               <td>
+                <!-- item_shade_name -->
               {% if forloop.first %}
               <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_shade_name"
                 id="{{ shade_form.prefix }}-item_shade_name" value="{{ shade_form.instance.item_shade_name }}" readonly>
@@ -97,17 +99,24 @@
               {% endif %}
             </td>
             <td>
-            <div>Currently: <a href="/Media/rawmaterial/images/courjault-maxime-GKs808WwcW0-unsplash.jpg"></a>
-              <input type="checkbox" name="{{ shade_form.prefix }}-item_color_image-clear" id="{{ shade_form.prefix }}-item_color_image-clear_id">
-              <label for="{{ shade_form.prefix }}-item_color_image-clear_id">Clear</label><br>
-              Change:
-              <input type="file" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
-            </div>
-                        
-            </td>
+              <!-- item_shade_image -->
               <td>
-                <div>{{ shade_form.item_color_image }}</div>
+                <input type="file" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
               </td>
+              <!-- Render the hidden input field for image deletion -->
+              <td>
+                <input type="checkbox" name="{{ shade_form.prefix }}-item_color_image-clear" id="{{ shade_form.prefix }}-item_color_image-clear_id">
+                <label for="{{ shade_form.prefix }}-item_color_image-clear_id">Clear</label>
+              </td>
+            </tr>
+            <!-- Render the image preview if available -->
+            <tr>
+              <td>
+                {% if shade_form.instance.item_color_image %}
+                  <img src="{{ shade_form.instance.item_color_image.url }}" alt="Image Preview" style="max-width: 200px;">
+                {% endif %}
+              </td>
+
               <td>{{ shade_form.DELETE }}</td>
             </tr>
           </div>
