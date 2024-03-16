@@ -24,7 +24,21 @@
         <div class="col-lg-9">
           <div class=" d-flex mb-3">
             <label class="mx-2">Color:</label>
-            {{form.PProduct_color}}
+          
+            <label class="mx-2">Color:</label>
+            <select name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
+              
+              {% if form.instance.PProduct_color.id %}
+              <option value="{{form.instance.PProduct_color.id}}">{{form.instance.PProduct_color}}</option>
+              {%elif not form.instance %}
+              <option value=""></option>
+              {% endif %}
+              {% for color in colors %}
+              <option value="{{color.id}}">{{color.color_name}}</option>
+              {% endfor %}
+
+          </select>
+
             <div class=" d-flex mb-3">
               <label class="mx-3">Image:</label>
               <input type="file" name="{{ form.prefix }}-PProduct_image" accept="image/*" id="{{ form.prefix }}-PProduct_image">

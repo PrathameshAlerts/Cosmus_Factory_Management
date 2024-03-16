@@ -26,6 +26,7 @@ def dashboard(request):
 def edit_production_product(request,pk):
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
+    colors = Color.objects.all()
     print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
@@ -40,11 +41,11 @@ def edit_production_product(request,pk):
             print(formset.errors)
             return render(request, 'product/edit_production_product.html', {'gsts':gsts,
                                                                             'form':form,
-                                                                            'formset':formset})
+                                                                            'formset':formset,'colors':colors})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
     
-    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset})
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors})
 
 
 def product_color_sku(request):
@@ -145,7 +146,6 @@ def pproduct_list(request):
     return render(request,'product/pproduct_list.html',context=context)
 
 
-
 def pproduct_delete(request, pk):
     try:
         product = get_object_or_404(Product,Product_Refrence_ID=pk)
@@ -154,7 +154,6 @@ def pproduct_delete(request, pk):
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {product.Product_Name} because it is referenced by other objects.')
     return redirect('pproductlist')
-
 
 
 # used formsets to add related objects on a diffrent page

@@ -190,15 +190,13 @@
 
         {% if form.instance.id %}
         <option value="{{ form.instance.Item_Creation_GST.id }}">{{ form.instance.Item_GST}}</option>
-        {% for gst in gsts %}
-        <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
-        {% endfor %}
         {% elif not form.instance.id %}
         <option value=""></option>
+        {% endif %}
         {% for gst in gsts %}
         <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
         {% endfor %}
-        {% endif %}
+      
       </select>
     </div>
     <div class="d-flex my-3">
@@ -226,6 +224,8 @@
     <input type="submit" class="form-button" name="save" value="Save">
   </form>
 </div>
+
+{% if not form.instance.id %}
 <div class="col-lg-1">
   
     <div class="">
@@ -239,7 +239,11 @@
       <button class="unit_btn"  onclick="openunitPopup()">+</button>
     </div>
 </div>
+
+{% endif %}
 </div>
+
+
 
 <script>
 
