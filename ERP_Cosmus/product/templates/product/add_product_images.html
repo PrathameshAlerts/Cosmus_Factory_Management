@@ -5,14 +5,24 @@
 <form id="myForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ formset.management_form }}
+  <div>
+    <table class="table table-responsive table-striped">
+      <tbody>
+        {% for form in formset %}
+        {{ form.id }}
+        <tr>
+          <td>{{form.Image}}</td>
+        <td>{{form.Image_type}}</td>
+        <td>{{form.Order_by}}</td>
+        <td>{{form.DELETE}}</td>
+        </tr>
+        {% endfor %}
 
-    {% for form in formset %}
-    {{ form.id }}
-    {{form.Image}}
-    {{form.Image_type}}
-    {{form.Order_by}}
-    <td>{{ form.DELETE }}</td>
-    {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+    
 
     <input type="submit" class="add_btn">
     </form>
