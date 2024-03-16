@@ -214,6 +214,26 @@ class ProductImage(models.Model):
     Image_Modified_at = models.DateTimeField(auto_now_add=True)
 
 
+class Product_A_plus_content(models.Model):
+
+    DIMENSIONS = [
+
+        ('200 * 200','200 * 200'),
+        ('1260 * 200','1260 * 200'),
+        ('1080 * 720','1080 * 720'),
+       
+    ]
+
+
+    Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productaplus')
+    heading = models.CharField(max_length = 255)
+    details = models.TextField()
+    orderby = models.IntegerField()
+    images = models.ImageField(upload_to = 'pproduct/images',  blank=True)
+    dimensions = models.CharField(max_length = 70, choices = DIMENSIONS)
+
+
+
 class ProductVideoUrls(models.Model):
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productvideourls')
     product_video_url =  models.URLField(max_length = 255, blank = True)
@@ -277,9 +297,6 @@ class Item_Creation(models.Model):
     status= models.CharField(max_length=50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
     
-
-
-
 # these functions are used to show related attributes instead of PK id in listview
    
     def Color_Name(self):
@@ -326,7 +343,6 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
                                                             item_color_image = instance.item_shade_image)
         # Save the newly created item_color_shade object
         primary_color_shade.save()
-
 
 
 

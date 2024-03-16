@@ -78,10 +78,12 @@
               <td>
                 {% if forloop.first %}
                 <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
-                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}" readonly>
-                {% else %}
-                <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
+                  <!-- <td>{{shade_form.item_name_rank}}</td> -->
+                {% else %}
+                 <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
+                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}">
+                  <!-- <td>{{shade_form.item_name_rank}}</td> -->
                 {% endif %}
 
               </td>
