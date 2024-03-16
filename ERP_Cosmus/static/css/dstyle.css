@@ -847,6 +847,16 @@ body{
 .span_padding{
     padding-left: 360px;
 }
+
+.additnal-padding{
+    padding-left: 285px;
+}
+.capacity-padding{
+    padding-left: 341px;
+}
+.discription-padding{
+    padding-left: 327px;
+}
 .edit_btn{
     background: linear-gradient(45deg, #4998d1, #2fc2dc);
     color: white;

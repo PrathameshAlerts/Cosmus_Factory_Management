@@ -4,7 +4,7 @@
 {% block body %} 
   <div>
         <h2>Create Units</h2>
-      <form class="mt-5" action="" method="POST">
+      <form  id ="myForm" class="mt-5" action="" method="POST">
            {% csrf_token %}
            
        <div class="d-flex">
@@ -24,6 +24,9 @@
     document.getElementById("saveButton").addEventListener("click", function() {
       // Close the current window
       window.close();
+      document.getElementById("myForm").submit();
+    // Prevent the default form submission behavior
+    event.preventDefault();
     });
   </script>
 {% endblock body %}
