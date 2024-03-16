@@ -105,17 +105,19 @@
                 <!--<label for="{{ shade_form.prefix }}-item_color_image-clear_id">Clear</label>
                 <input type="checkbox" name="{{ shade_form.prefix }}-item_color_image-clear" id="{{ shade_form.prefix }}-item_color_image-clear_id">-->
               </td>
+              <td>
+                {% if shade_form.instance.item_color_image %}
+                  <img src="{{ shade_form.instance.item_color_image.url }}" alt="Image Preview" style="max-width: 150px; max-height: 150px;">
+                {% endif %}
+              </td>
+              <td>{{ shade_form.DELETE }}</td>
             </tr>
 
             <!-- Render the image preview if available -->
             <tr>
-              <td>
-                {% if shade_form.instance.item_color_image %}
-                  <img src="{{ shade_form.instance.item_color_image.url }}" alt="Image Preview" style="max-width: 100px;">
-                {% endif %}
-              </td>
               
-              <td>{{ shade_form.DELETE }}</td>
+              
+              
             </tr>
             <!-- Render the image preview if available -->
           </div>

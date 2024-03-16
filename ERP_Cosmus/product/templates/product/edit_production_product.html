@@ -26,7 +26,7 @@
             <label class="mx-2">Color:</label>
           
             <label class="mx-2">Color:</label>
-            <select name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
+            <select class="item-select" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
               
               {% if form.instance.PProduct_color.id %}
               <option value="{{form.instance.PProduct_color.id}}">{{form.instance.PProduct_color}}</option>
@@ -74,17 +74,12 @@
             <label class="mx-2 text-dan ger">Delete:</label>
             <span class="">{{form.DELETE}}</span>
           </div>
-    
         </div>
         <div class="col-lg-2">
-       
             {% if form.instance.PProduct_image %}
             <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 150px;">
-          {% endif %}
-          
+          {% endif %}       
         </div>
-        
-      
      </div>
         </div>
 
