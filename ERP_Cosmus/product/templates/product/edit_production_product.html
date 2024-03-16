@@ -19,51 +19,62 @@
     {{ formset.management_form }}
     {% for form in formset %}
     <div class="card rounded-3 mb-3 p-2">
-      <div class=" d-flex mb-3">
-        <label class="mx-2">Color:</label>
-        <span class="mx-2" id="color_id_id">{{form.PProduct_color}}</span>
-
-        <div class=" d-flex mb-3">
-          <label class="mx-3">Image:</label>
-          <span class="mx-1">{{form.PProduct_image}}</span>
+     
+      <div class="row">
+        <div class="col-lg-9">
+          <div class=" d-flex mb-3">
+            <label class="mx-2">Color:</label>
+            {{form.PProduct_color}}
+            <div class=" d-flex mb-3">
+              <label class="mx-3">Image:</label>
+              <input type="file" name="{{ form.prefix }}-PProduct_image" accept="image/*" id="{{ form.prefix }}-PProduct_image">
+             <!-- <span>{{form.PProduct_image}}</span>-->
+            </div>
+          </div>
+          <div class=" d-flex mb-3">
+            <label class="mx-2">SKU:</label>
+            <input type="text" class="item-select" name="{{form.prefix}}-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly id="{{form.prefix}}-PProduct_SKU">
+           
+           <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
+           <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
+    
+          </div>
+          <div class="mb-2 d-flex">
+            <label for="" class="form-label pe-3">EANCode :</label>
+            <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode" value="{{form.instance.Product_EANCode}}" class="rounded-3 w-75 px-2">
+            <label for="" class="form-label ms-2 pe-4">Rating :</label>
+            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating" value="{{form.instance.Product_Rating}}" min="0" max="5" class="rounded-3 w-75 px-2">
+          </div>
+    
+          <label for="" class="form-label fw-bold ps-2">Links</label>
+          <div class="d-flex">
+            <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo mx-2">
+            <span>{{form.Amazon_Link}}</span>
+    
+            <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo mx-2">
+            <span>{{form.Flipkart_Link}}</span>
+    
+            <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo mx-2">
+            <span>{{form.Cosmus_link}}</span>
+    
+            <label class="mx-2 text-dan ger">Delete:</label>
+            <span class="">{{form.DELETE}}</span>
+          </div>
+    
         </div>
-      </div>
-      <div class=" d-flex mb-3">
-        <label class="mx-2">SKU:</label>
-       <input type="number" name="productdetails-0-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly id="id_productdetails-0-PProduct_SKU">
+        <div class="col-lg-2">
+       
+            {% if form.instance.PProduct_image %}
+            <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 150px;">
+          {% endif %}
+          
+        </div>
+        
       
-       <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
+     </div>
+        </div>
 
-        
-       <!--<button type="button" class="add_btn" id="edit_images"><a style="text-decoration: none; color: white;" href="{% url 'add-product-images' form.PProduct_SKU.value %}">Add Image</a></button>-->
-       <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
-        <!--<button type="button" class="add_btn" id="edit_video_url" onclick="edit_video_url()"> <a style="text-decoration: none; color: white;" href="{% url 'add-product-video-url' form.PProduct_SKU.value %}">Youtube Link</a></button>-->
-      </div>
-      <div class="mb-2 d-flex">
-        <label for="" class="form-label pe-4">EANCode</label>
-        <span>{{form.Product_EANCode}}</span>
-        
-        <label for="" class="form-label pe-4">Rating</label>
-        <span>{{form.Product_Rating}}</span>
-      </div>
-
-      <label for="" class="form-label fw-bold ps-2">Links</label>
-      <div class="d-flex">
-        <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo">
-        <span>{{form.Amazon_Link}}</span>
-
-        <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo">
-        <span>{{form.Flipkart_Link}}</span>
-
-        <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo">
-        <span>{{form.Cosmus_link}}</span>
-
-        <label class="mx-2 text-dan ger">Delete:</label>
-        <span class="">{{form.DELETE}}</span>
-      </div>
-
-       <img id="frame" src="..." class="card-img-top card-img p-1" alt="...">
-    </div>
+     
     {% endfor %}
   </div>
   <button type="button" class="edit_btn w-50 mb-3" id="aditional_details_btn">Aditional Details<span
