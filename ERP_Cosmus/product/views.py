@@ -376,9 +376,13 @@ def color_create_update(request, pk=None):
         template_name = 'product/color_create_update.html'
         title = 'Update Color'
 
-    else:
+    elif request.path == '/colorcreate_update/':
         template_name = "product/create_color_modal.html"
         title = 'Colors'
+
+    elif request.path == '/color_popup/':
+        template_name = "product/color_popup.html"
+        title = 'Create Colors'
     
     color = Color.objects.all()
 
@@ -398,12 +402,16 @@ def color_create_update(request, pk=None):
                 messages.success(request, 'Color created successfully.')
                 return redirect('simplecolorlist')
             
-            elif 'save' in request.POST:
+            elif 'save' in request.POST and request.path == '/simple_colorcreate_list/':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
                 else:
                     messages.success(request, 'Color created successfully.')
                 return redirect('simplecolorlistonly')
+            
+            elif 'save' in request.POST and template_name == "product/color_popup.html":
+                messages.success(request, 'Color created successfully.')
+                return HttpResponse('<script>window.close();</script>') 
         else:
             print(form.errors)
             return render(request, template_name,{'title': title,'form': form,'colors':color})
@@ -477,25 +485,38 @@ def colorpopup(request):
 
 def item_fabric_group_create(request):
     form = ItemFabricGroup()
-    print(request.POST)
+    
+    if request.path == '/itemfabricgroupcreate/':
+        template_name = 'product/item_fabric_group_create_update.html'
+
+    elif request.path == '/fabric_popup/':
+        template_name = 'product/fabric_popup.html'
+
+
     if request.method == 'POST':
         form = ItemFabricGroup(request.POST)
         if form.is_valid():
             form.save()
-            if 'save_and_add_another' in request.POST:
-                messages.success(request,'Fabric group created.')
+            messages.success(request,'Fabric group created.')
+            if 'save_and_add_another' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
+                
                 return redirect('item-fabgroup-create')
             
-            elif 'save' in request.POST:
-                messages.success(request,'Fabric group created.')
+            elif 'save' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
+
                 return redirect('item-fabgroup-list')
+
+            elif 'save' in request.POST and template_name == 'product/fabric_popup.html':
+                
+                return HttpResponse('<script>window.close();</script>')
+
         else:
             print(form.errors)
-            return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group',
+            return render(request,template_name,{'title': 'Create Fabric Group',
                                                                                   'form':form})
 
 
-    return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group',
+    return render(request,template_name,{'title': 'Create Fabric Group',
                                                                           'form':form})
 
 
@@ -528,6 +549,7 @@ def item_fabric_group_delete(request,pk):
         item_fabric_pk = get_object_or_404(Fabric_Group_Model,pk=pk)
         item_fabric_pk.delete()
         messages.success(request,f'Fabric group {item_fabric_pk.fab_grp_name} was deleted')
+
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {item_fabric_pk.fab_grp_name} because it is referenced by other objects.')
     
@@ -541,24 +563,37 @@ def fabricpopup(request):
 #_______________________Unit Name Start____________________________________
 
 def unit_name_create(request):
+    print(request.POST)
     form = UnitName()
+    if request.path == '/unitnamecreate/':
+        template_name = 'product/unit_name_create_update.html'
+
+    elif request.path == '/units_popup/':
+        template_name = 'product/units_popup.html'
+
     if request.method == 'POST':
         form = UnitName(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Unit created sucessfully.')
 
-            if 'save_and_add_another' in request.POST:
-                messages.success(request,'Unit created sucessfully.')
+            if 'save_and_add_another' in request.POST and template_name == 'product/unit_name_create_update.html':
+        
                 return redirect('unit_name-create')
             
-            elif 'save' in request.POST:
-                messages.success(request,'Fabric group created sucessfully.')
+            elif 'save' in request.POST and template_name == 'product/unit_name_create_update.html':
+
                 return redirect('unit_name-list')
-        
+
+            elif 'save' in request.POST and template_name == 'product/units_popup.html':
+                return HttpResponse('<script>window.close();</script>')
+
         else:
-            return render(request, "product/unit_name_create_update.html", {'title': 'Create Unit','form':form})
+            print(form.errors)
+            return render(request, template_name, {'title': 'Create Unit','form':form})
+        
     else:
-        return render(request, "product/unit_name_create_update.html", {'title':'Create Unit','form':form})
+        return render(request, template_name, {'title':'Create Unit','form':form})
 
 
 def unit_name_list(request):

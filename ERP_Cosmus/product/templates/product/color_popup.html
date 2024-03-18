@@ -12,15 +12,7 @@
        </div>
 
     <input type="submit" id="saveButton" class="create-btn mt-4" name="save" value="Save">
-      <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="{% url 'simplecolorlistonly' %}">Return</a></button>
       </form>
 </div>
-<script>
-    // When the Save button is clicked
-    document.getElementById("saveButton").addEventListener("click", function() {
-      // Close the current window
-      window.close();
-    });
-  </script>
 
 {% endblock body %}
