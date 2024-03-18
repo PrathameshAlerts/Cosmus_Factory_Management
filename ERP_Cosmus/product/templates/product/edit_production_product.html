@@ -173,7 +173,7 @@
 
           {% if form.instance.id %}
           <!-- checks if form.instance.Product_GST.id is true as form.instance.P_GST does not exists right now -->
-          <option value="{{ form.instance.Product_GST.id }}">{{form.instance.Product_GST.gst_percentage | default_if_none:''}}</option>
+          <option value="{{ form.instance.Product_GST.id }}">{{form.instance.P_GST | default_if_none:''}}</option>
           
           {% elif not form.instance.id %}
           

@@ -176,7 +176,10 @@ class Product(models.Model):
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
 
     def P_GST(self):
-        return self.Product_GST.gst_percentage
+        if self.Product_GST is not None:
+            return self.Product_GST.gst_percentage
+        else:
+            return None  # or any default value you prefer
 
 
 class PProduct_Creation(models.Model):
