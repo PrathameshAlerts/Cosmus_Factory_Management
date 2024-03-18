@@ -5,15 +5,75 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ formset.management_form }}
-                {% for form in formset %}
-                {{ form.id }}
-                {{form.product_video_url}}
-                {{ form.DELETE }}
-                {% endfor %}
-            </tbody>
-        </table>
-        <input type="submit" id="saveButton">
+       <div class="row">
+        <div class="col-lg-5">
+            <table class="table table-striped table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Video Url</th>
+                        <th>URL</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in formset %}
+                    {{ form.id }}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><span >{{form.instance.product_video_url}}</span></td>
+                        <td>
+                            <input type="url" class="item-select me-3" name="{{form.prefix}}-product_video_url" value="{{form.instance.product_video_url}}"  maxlength="255" id="{{form.prefix}}-product_video_url">
+                        </td>
+                        <td>
+                            <input type="checkbox" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+           
+        </div>
+       </div>
+                
+                <button type="button" id="addForm">Add Url</button>  
+               
+         
+        <input type="submit" class="add_btn" >
     </form>
-
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addFormButton = document.getElementById("addForm");
+            const tableBody = document.querySelector("#myTable tbody");
+            
+            if (addFormButton && tableBody) {
+                addFormButton.addEventListener("click", function() {
+                    const formCountInput = document.getElementById("id_productvideourls-TOTAL_FORMS");
+                    const formCount = parseInt(formCountInput.value);
+                    const lastRow = tableBody.lastElementChild.cloneNode(true);
+                    const formIndex = formCount;
+                    
+                    lastRow.querySelectorAll("*").forEach(function(element) {
+                        if (element.id) {
+                            element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                        }
+                        if(element.name){
+                            element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                        }
+                    });
+    
+                    const urlInput = lastRow.querySelector('input[type="url"]');
+                
+                    const urlValue = urlInput.value;
+                    urlInput.value = "";
+                    formCountInput.value = formCount + 1;
+    
+                    tableBody.appendChild(lastRow);
+                });
+            } else {
+                console.error("Could not find addFormButton or table body element.");
+            }
+        });
+    </script>
+    
     {% endblock body %}

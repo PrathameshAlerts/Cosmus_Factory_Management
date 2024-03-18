@@ -455,19 +455,35 @@
 
 </script> -->
 <script>
+  var popupWindow = null;
+
   function editImages(button) {
-      // Traverse up the DOM to find the card container
+      if (popupWindow === null || popupWindow.closed) {
+          openPopup(button, '/add_images/');
+      } else {
+          popupWindow.focus();
+      }
+  }
+
+  function editVideoUrl(button) {
+      if (popupWindow === null || popupWindow.closed) {
+          openPopup(button, '/add_video_url/');
+      } else {
+          popupWindow.focus();
+      }
+  }
+
+  function openPopup(button, path) {
       var card = button.closest('.card');
       if (card) {
-          // Within the card, find the input with name containing "PProduct_SKU_"
           var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
           if (productSkuInput) {
               var productSku = productSkuInput.value;
-  
               var minWidth = 800; // minimum width
               var minHeight = 600; 
-  
-              window.open('http://127.0.0.1:8000/product/' + productSku + '/add_images/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+              
+              // Open popup window
+              popupWindow = window.open('http://127.0.0.1:8000/product/' + productSku + path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           } else {
               console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
           }
@@ -475,30 +491,8 @@
           console.error('Parent card container not found.');
       }
   }
- 
-  </script>
-  <script>
-     function editVideoUrl(button) {
-      // Traverse up the DOM to find the card container
-      var card = button.closest('.card');
-      if (card) {
-          // Within the card, find the input with name containing "PProduct_SKU_"
-          var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
-          if (productSkuInput) {
-              var productSku = productSkuInput.value;
-  
-              var minWidth = 800; // minimum width
-              var minHeight = 600; 
-  
-              window.open('http://127.0.0.1:8000/product/' + productSku + '/add_video_url/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-          } else {
-              console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
-          }
-      } else {
-          console.error('Parent card container not found.');
-      }
-  }
-    </script>
+</script>
+
 
 <script>
   const stars = document.querySelectorAll('.rating input');
