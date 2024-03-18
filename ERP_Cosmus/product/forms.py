@@ -30,7 +30,7 @@ class PProductCreateForm(forms.ModelForm):
 
         return sku
 
-ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
+ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =0)
 
 
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
@@ -61,7 +61,6 @@ class PProductAddForm(forms.ModelForm):
         
 
 
-
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',
                                                                                'Amazon_Link','Flipkart_Link','Cosmus_link'),extra=0)
 
@@ -69,13 +68,11 @@ PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('
 # Customize the formset to make PProduct_SKU read-only
 class CustomPProductaddFormSet(PProductaddFormSet):
 
-
     def __init__(self, *args, **kwargs):
         super(CustomPProductaddFormSet, self).__init__(*args, **kwargs)
 
         # Loop through the forms in the formset
         for form in self.forms:
-
             # Set PProduct_SKU field as read-only
             form.fields['PProduct_SKU'].widget.attrs['readonly'] = True
 
@@ -136,7 +133,6 @@ class ColorForm(forms.ModelForm):
         
 
 
-
 class Itemform(forms.ModelForm):
     
     class Meta:
@@ -146,7 +142,7 @@ class Itemform(forms.ModelForm):
                  'Item_Creation_GST','HSN_Code','status','item_shade_image']
         
 
-ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=0)
+ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
 
 
 
