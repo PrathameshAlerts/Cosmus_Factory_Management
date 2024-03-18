@@ -134,17 +134,17 @@ class Product(models.Model):
 
     Product_Name = models.CharField(max_length=255, blank = True, null = True)
     Model_Name = models.CharField(max_length=255, blank = True,null =True)
-    Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, default = "Cosmus")
-    Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, default = "Active")
-    Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True )
+    Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
+    Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
+    Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True)
     Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False,null =True)
-    Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=2, blank = True, default = 0)
-    Product_MRP = models.DecimalField(max_digits=10, decimal_places=2, blank = True, default = 0)
-    Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=2, blank = True, default = 0)
-    Product_BulkPrice=models.DecimalField( max_digits=10, decimal_places=2, blank = True, default = 0)
-    Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, default = '0 Months')
-    Product_HSNCode = models.BigIntegerField(default = '12345678', blank = True,null =True)
-    Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, default = 1)
+    Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_MRP = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_BulkPrice=models.DecimalField( max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, null = True)
+    Product_HSNCode = models.BigIntegerField(blank = True,null =True)
+    Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, null = True)
     Product_ShortName = models.CharField(max_length=200, blank = True,null =True)
     Product_Compartments=  models.CharField(max_length=50, choices= PRODUCT_COMPARTMENTS,  blank = True,null =True)
     Product_UOM = models.CharField(max_length=50, choices =PRODUCT_UCOM ,  blank = True,null =True)
@@ -172,13 +172,11 @@ class Product(models.Model):
     Product_Retailer_dealer_Price=models.DecimalField(max_digits=10, decimal_places=2,  blank = True,null =True)
     Product_Wholesaler_DistributorPrice=models.DecimalField(max_digits=10, decimal_places=2,  blank = True,null =True)
     Product_Create_Date=models.DateField(auto_now=True)
-    Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank = True, default = 'Unisex')
+    Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank = True, null = True)
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
-
 
     def P_GST(self):
         return self.Product_GST.gst_percentage
-
 
 
 class PProduct_Creation(models.Model):
@@ -223,7 +221,6 @@ class Product_A_plus_content(models.Model):
         ('1080 * 720','1080 * 720'),
        
     ]
-
 
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productaplus')
     heading = models.CharField(max_length = 255)
@@ -414,9 +411,6 @@ class Ledger(models.Model):
 
 
 
-
-
-
 class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.PROTECT, blank = False, null = False, related_name = 'transaction_entry')
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
@@ -427,8 +421,6 @@ class account_credit_debit_master_table(models.Model):
     particulars = models.CharField(max_length = 100)
     date = models.DateField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
-
-
 
 
 
@@ -459,11 +451,8 @@ class item_godown_quantity_through_table(models.Model):
 
 
 
-
-
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225)
-
 
 
 
