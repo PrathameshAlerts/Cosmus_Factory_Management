@@ -17,14 +17,48 @@
         <td>{{form.DELETE}}</td>
         </tr>
         {% endfor %}
-
+        
       </tbody>
-
+      <button type="button" id="addForm">Add Another Form</button>
     </table>
   </div>
     
 
     <input type="submit" class="add_btn">
     </form>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addFormButton = document.getElementById("addForm");
+            const formset = document.getElementById("myForm");
+    
+            addFormButton.addEventListener("click", function() {
+                const formCountInput = document.getElementById("id_form-TOTAL_FORMS");
+                const formCount = parseInt(formCountInput.value);
+    
+                // Clone the last form in the formset and update its fields
+                const lastForm = formset.lastElementChild.cloneNode(true);
+                const formIndex = formCount;
+                lastForm.querySelectorAll("*").forEach(function(element) {
+                    element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                    element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                    if (element.tagName === "LABEL") {
+                        element.htmlFor = element.htmlFor.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                    }
+                    if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
+                        element.value = "";
+                    }
+                });
+    
+                // Update the total forms count
+                formCountInput.value = formCount + 1;
+    
+                // Append the new form to the formset
+                formset.appendChild(lastForm);
+            });
+        });
+    </script>
 
  {% endblock body %}

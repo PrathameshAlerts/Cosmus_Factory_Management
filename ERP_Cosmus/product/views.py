@@ -477,25 +477,38 @@ def colorpopup(request):
 
 def item_fabric_group_create(request):
     form = ItemFabricGroup()
-    print(request.POST)
+    
+    if request.path == '/itemfabricgroupcreate/':
+        template_name = 'product/item_fabric_group_create_update.html'
+
+    elif request.path == '/fabric_popup/':
+        template_name = 'product/fabric_popup.html'
+
+
     if request.method == 'POST':
         form = ItemFabricGroup(request.POST)
         if form.is_valid():
             form.save()
-            if 'save_and_add_another' in request.POST:
-                messages.success(request,'Fabric group created.')
+            messages.success(request,'Fabric group created.')
+            if 'save_and_add_another' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
+                
                 return redirect('item-fabgroup-create')
             
-            elif 'save' in request.POST:
-                messages.success(request,'Fabric group created.')
+            elif 'save' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
+
                 return redirect('item-fabgroup-list')
+            
+            elif 'save' in request.POST and template_name == 'product/fabric_popup.html':
+                
+                return HttpResponse('<script>window.close();</script>')
+
         else:
             print(form.errors)
-            return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group',
+            return render(request,template_name,{'title': 'Create Fabric Group',
                                                                                   'form':form})
 
 
-    return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group',
+    return render(request,template_name,{'title': 'Create Fabric Group',
                                                                           'form':form})
 
 

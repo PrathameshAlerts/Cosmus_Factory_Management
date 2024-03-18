@@ -17,6 +17,7 @@ urlpatterns = [
 
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
+
     #productVideourl
     path('product/<int:pk>/add_video_url/', views.add_product_video_url, name='add-product-video-url'),
 
@@ -43,7 +44,9 @@ urlpatterns = [
     path('itemfabricgroupupdate/<int:pk>',views.item_fabric_group_update , name= 'item-fabgroup-update'),
     path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
     path('itemfabricgroupdelete/<int:pk>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
-    path('fabric_popup/',views.fabricpopup, name='fabric-popup'),
+    path('fabric_popup/',views.item_fabric_group_create, name='fabric-popup'),
+
+
     #unitname
     path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),
     path('unitnameupdate/<int:pk>',views.unit_name_update , name= 'unit_name-update'),
