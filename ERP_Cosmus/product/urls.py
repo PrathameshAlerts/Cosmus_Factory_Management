@@ -23,15 +23,19 @@ urlpatterns = [
 
 
     #color routes
+    #color modal routes
     # path('colorlist/',views.color_list, name= 'colorlist'),
     path('colordelete/<int:pk>',views.color_delete,name='colordelete'),
     path('colorcreate_update/',views.color_create_update, name='colorlist'),
     path('colorcreate_update/<int:pk>',views.color_create_update, name='coloredit'),
-    path('color_popup/',views.colorpopup, name='color-popup'),
 
+    # color in page
     path('simple_colorcreate_update/',views.color_create_update, name='simplecolorlist'),
     path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlist'),
     path('simple_colorcreate_list/',views.color_create_update, name='simplecolorlistonly'),
+
+    #color popup
+    path('color_popup/',views.color_create_update, name='color-popup'),
 
     #item_routes
     path('itemedit/<int:pk>',views.item_edit , name= 'item-edit'),
@@ -44,6 +48,7 @@ urlpatterns = [
     path('itemfabricgroupupdate/<int:pk>',views.item_fabric_group_update , name= 'item-fabgroup-update'),
     path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
     path('itemfabricgroupdelete/<int:pk>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
+    #popup
     path('fabric_popup/',views.item_fabric_group_create, name='fabric-popup'),
 
 
@@ -52,7 +57,8 @@ urlpatterns = [
     path('unitnameupdate/<int:pk>',views.unit_name_update , name= 'unit_name-update'),
     path('unitnamelist/',views.unit_name_list , name= 'unit_name-list'),
     path('unitnamedelete/<int:pk>',views.unit_name_delete , name= 'unit_name-delete'),
-    path('units_popup/',views.unitnamepopup, name='unit-name-popup'),
+    #popup
+    path('units_popup/',views.unit_name_create, name='unit-name-popup'),
 
     #accountsubgrp
     path('accsubgrpcreate/',views.account_sub_group_create , name= 'account_sub_group-create'),
