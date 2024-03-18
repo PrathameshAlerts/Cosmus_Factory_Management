@@ -11,6 +11,7 @@
       <table class="table table-responsive table-striped" id="myTable" >
         <thead>
           <tr>
+            <th>No</th>
             <th>Image Preview</th>
             <th>Image Type</th>
             <th>Order By</th>
@@ -21,8 +22,9 @@
           {% for form in formset %}
           {{ form.id }}
           <tr>
+            <td>{{forloop.counter}}</td>
           <td>
-            <div class="py-2"> <input type="file" name="{{form.prefix}}-Image" accept="image/*" id="{{form.prefix}}-Image"></div>
+            <div class="py-2"><input type="file" class="item-select" name="{{form.prefix}}-Image" accept="image/*" id="{{form.prefix}}-Image"></div>
             <div>
               {% if form.instance.Image %}
               <img src="{{ form.instance.Image.url }}" alt="Image Preview" style="max-width: 150px;">
@@ -30,7 +32,7 @@
             </div>
           </td>
           <td>
-            <select name="{{form.prefix}}-Image_type" id="{{form.prefix}}-Image_type">
+            <select name="{{form.prefix}}-Image_type" id="{{form.prefix}}-Image_type" class="item-select">
               <option value="{{form.instance.Image_type}}">{{form.instance.Image_type}}</option>
           
             <option value="Main Image">Main Image</option>
@@ -43,7 +45,7 @@
           
           </select></td>
           <td>
-            <input type="number" name="{{form.prefix}}-Order_by" value="{{form.instance.Order_by}}" id="{{form.prefix}}-Order_by">
+            <input type="number" class="item-select" name="{{form.prefix}}-Order_by" value="{{form.instance.Order_by}}" id="{{form.prefix}}-Order_by">
           </td>
           
           <td><input type="checkbox" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" class=""></td>
@@ -54,7 +56,7 @@
       </table>
 
     
-      <button type="button" id="addForm">Add Another Form</button>
+      <button type="button" id="addForm">Add Image</button>
 
     <input type="submit" class="add_btn">
     </form>
