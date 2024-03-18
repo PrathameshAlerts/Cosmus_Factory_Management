@@ -2,63 +2,106 @@
 {% load static %}
 {% block body %}
 <h1>Add Product Images</h1>
-<form id="myForm" method="post" enctype="multipart/form-data">
+<div class="row">
+  <div class="col-lg-3">
+<form id="myForm" method="post" enctype="multipart/form-data" >
     {% csrf_token %}
     {{ formset.management_form }}
-  <div>
-    <table class="table table-responsive table-striped">
-      <tbody>
-        {% for form in formset %}
-        {{ form.id }}
-        <tr>
-          <td>{{form.Image}}</td>
-        <td>{{form.Image_type}}</td>
-        <td>{{form.Order_by}}</td>
-        <td>{{form.DELETE}}</td>
-        </tr>
-        {% endfor %}
-        
-      </tbody>
-      <button type="button" id="addForm">Add Another Form</button>
-    </table>
-  </div>
     
+      <table class="table table-responsive table-striped" id="myTable" >
+        <thead>
+          <tr>
+            <th>Image Preview</th>
+            <th>Image Type</th>
+            <th>Order By</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for form in formset %}
+          {{ form.id }}
+          <tr>
+          <td>
+            <div class="py-2"> <input type="file" name="{{form.prefix}}-Image" accept="image/*" id="{{form.prefix}}-Image"></div>
+            <div>
+              {% if form.instance.Image %}
+              <img src="{{ form.instance.Image.url }}" alt="Image Preview" style="max-width: 150px;">
+               {% endif %}
+            </div>
+          </td>
+          <td>
+            <select name="{{form.prefix}}-Image_type" id="{{form.prefix}}-Image_type">
+              <option value="{{form.instance.Image_type}}">{{form.instance.Image_type}}</option>
+          
+            <option value="Main Image">Main Image</option>
+          
+            <option value="White Background">White Background</option>
+          
+            <option value="Model Image">Model Image</option>
+          
+            <option value="Catalogue Image">Catalogue Image</option>
+          
+          </select></td>
+          <td>
+            <input type="number" name="{{form.prefix}}-Order_by" value="{{form.instance.Order_by}}" id="{{form.prefix}}-Order_by">
+          </td>
+          
+          <td><input type="checkbox" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" class=""></td>
+          </tr>
+          {% endfor %}
+  
+        </tbody>
+      </table>
+
+    
+      <button type="button" id="addForm">Add Another Form</button>
 
     <input type="submit" class="add_btn">
     </form>
-
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const addFormButton = document.getElementById("addForm");
-            const formset = document.getElementById("myForm");
-    
-            addFormButton.addEventListener("click", function() {
-                const formCountInput = document.getElementById("id_form-TOTAL_FORMS");
-                const formCount = parseInt(formCountInput.value);
-    
-                // Clone the last form in the formset and update its fields
-                const lastForm = formset.lastElementChild.cloneNode(true);
-                const formIndex = formCount;
-                lastForm.querySelectorAll("*").forEach(function(element) {
-                    element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                    element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                    if (element.tagName === "LABEL") {
-                        element.htmlFor = element.htmlFor.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                    }
-                    if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
-                        element.value = "";
-                    }
-                });
-    
-                // Update the total forms count
-                formCountInput.value = formCount + 1;
-    
-                // Append the new form to the formset
-                formset.appendChild(lastForm);
-            });
-        });
-    </script>
-
+  </div>
+ 
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const addFormButton = document.getElementById("addForm");
+      const tableBody = document.querySelector("#myTable tbody");
+  
+      if (addFormButton && tableBody) {
+          addFormButton.addEventListener("click", function() {
+              const formCountInput = document.getElementById("id_productimages-TOTAL_FORMS");
+              const formCount = parseInt(formCountInput.value);
+            console.log(formCountInput);
+              // Clone the last row in the table
+              const lastRow = tableBody.lastElementChild.cloneNode(true);
+              const formIndex = formCount;
+  
+              // Iterate over elements in the cloned row
+              lastRow.querySelectorAll("*").forEach(function(element) {
+                  // Check and update IDs and names of elements
+                  if (element.id) {
+                      element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                  }
+                  if (element.name) {
+                      element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                  }
+                  
+                  // Hide the file input initially
+                  if (element.tagName === "INPUT" && element.type === "file") {
+                      element.style.display = "block";
+                  }
+              });
+  
+              // Update the total forms count
+              formCountInput.value = formCount + 1;
+  
+              // Append the new row to the table
+              tableBody.appendChild(lastRow);
+  
+              // Add event listener for delete button in the new row
+          });
+      } else {
+          console.error("Could not find addFormButton or table body element.");
+      }
+  });
+  </script>
  {% endblock body %}
