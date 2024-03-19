@@ -208,8 +208,8 @@
             {% for product in products %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ product.Product_Name }}</td>
-                <td>{{ product.Model_Name }}</td>
+                <td>{{ product.Product_Name | default_if_none:''}}</td>
+                <td>{{ product.Model_Name | default_if_none:''}}</td>
                 <td>Laptop Bags</td>
                 <td>{{ product.Product_Refrence_ID }}</td>
                 <td>
@@ -222,16 +222,16 @@
                         {{ pproduct.PProduct_SKU }}<br>
                     {% endfor %}
                 </td>
-                <td>{{ product.Product_Channel }}</td>
-                <td>{{ product.Product_Brand }}</td>
-                <td>{{ product.Product_SalePrice_CustomerPrice }}</td>
-                <td>{{ product.Product_MRP }}</td>
-                <td>{{ product.Product_BulkPrice }}</td>
-                <td>{{ product.Product_Cost_price }}</td>
-                <td>{{ product.P_GST }}</td>
-                <td>{{ product.Product_HSNCode }}</td>
-                <td>{{ product.Product_WarrantyTime }}</td>
-                <td>{{ product.Product_Status }}</td>
+                <td>{{ product.Product_Channel | default_if_none:''}}</td>
+                <td>{{ product.Product_Brand | default_if_none:''}}</td>
+                <td>{{ product.Product_SalePrice_CustomerPrice | default_if_none:''}}</td>
+                <td>{{ product.Product_MRP | default_if_none:''}}</td>
+                <td>{{ product.Product_BulkPrice | default_if_none:''}}</td>
+                <td>{{ product.Product_Cost_price | default_if_none:''}}</td>
+                <td>{{ product.P_GST | default_if_none:''}}</td>
+                <td>{{ product.Product_HSNCode | default_if_none:''}}</td>
+                <td>{{ product.Product_WarrantyTime | default_if_none:''}}</td>
+                <td>{{ product.Product_Status| default_if_none:'' }}</td>
                 <td><a href="{% url 'edit_production_product' product.Product_Refrence_ID %}"><i class="fa-solid fa-pen-to-square px-2"></i></a>
                 </td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ product.Product_Refrence_ID }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
