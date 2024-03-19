@@ -247,47 +247,53 @@
 
 
 
-
 <script>
-
   var popUpWindow = null;
 
-  function openFabPopup(button){
-    if(popUpWindow === null || popUpWindow.closed){
-      newPopUpwindow(button ,/fabric_popup/)
-    }else{
+  function openFabPopup(button) {
+    if (popUpWindow === null || popUpWindow.closed) {
+      newPopUpwindow(button, '/fabric_popup/');
+    } else {
       popUpWindow.focus();
     }
   }
 
- 
-  function opencolorPopup(button){
-    if(popUpWindow === null || popUpWindow.closed){
-      newPopUpwindow(button ,/color_popup/)
-    }else{
+  function opencolorPopup(button) {
+    if (popUpWindow === null || popUpWindow.closed) {
+      newPopUpwindow(button, '/color_popup/');
+    } else {
       popUpWindow.focus();
     }
   }
-  function openunitPopup(button){
-    if(popUpWindow === null || popUpWindow.closed){
-      newPopUpwindow(button ,/units_popup/)
-    }else{
-      popUpWindow.focus();
-    }
-  }
-  function newPopUpwindow( button, path) {
-      // Specify minimum height and width
-      var minWidth = 800; // minimum width
-      var minHeight = 600; // minimum height
-      
-      // Open new page with specified dimensions
-      window.open('http://127.0.0.1:8000' +path , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
-      popUpWindow.onunload = function() {
-        window.location.href = 'http://127.0.0.1:8000/itemcreate/';
-    };
+  function openunitPopup(button) {
+    if (popUpWindow === null || popUpWindow.closed) {
+      newPopUpwindow(button, '/units_popup/');
+    } else {
+      popUpWindow.focus();
+    }
   }
-  </script>
+
+  function newPopUpwindow(button, path) {
+    // Specify minimum height and width
+    var minWidth = 800; // minimum width
+    var minHeight = 600; // minimum height
+
+    // Open new page with specified dimensions
+    popUpWindow = window.open('http://127.0.0.1:8000' + path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+
+    // Listen for messages from the popup window
+    window.addEventListener('message', function (event) {
+      if (event.data === 'popupClosed'|| event.data === 'submit') {
+        // Close the popup window
+    
+        // Reload parent page when popup window is closed
+        location.reload();
+      }
+    });
+  }
+</script>
+
 
 
 
