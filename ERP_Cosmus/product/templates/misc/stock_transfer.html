@@ -46,7 +46,7 @@
         </select>
       </div>
     </div>
-
+    <button type="button" class="create-btn" id="addRowButton">Add +</button>
     <div class="">
       <table class="table table-striped table-hover table-responsive">
         <thead>
@@ -56,45 +56,33 @@
             <th>Shades</th>
             <th>Qty</th>
             <th>Units</th>
-            <th>Remark</th>
+            <th>Remark</th> 
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-
-
-              <select name="name" class="item-select" placeholder="Item Name" required id="name">
-
-              </select>
+              <select name="name" class="item-select" placeholder="Item Name" required id="name"></select>
             </td>
             <td>
               <input name="color" id="color" class="item-select" readonly>
             </td>
             <td>
-              <select name='shades' class="item-select" required id="shades">
-                
-              </select>
-
+              <select name='shades' class="item-select" required id="shades"></select>
             </td>
             <td>
               <input name='quantity' id="quantity" class="item-select">
             </td>
             <td>
               <input name='per' id="per" class="item-select" readonly>
-
             </td>
             <td>
               <input class="item-select" type="text" id="remark" name="remark">
-            </td>
+            </td>           
           </tr>
         </tbody>
       </table>
     </div>
-
-
-
-
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
     <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="">Return</a></button>
@@ -103,6 +91,12 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+  document.getElementById('addRowButton').addEventListener('click', function () {
+    var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
+    document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
+  });
+</script>
 <script>
 
   $(document).ready(function () {
