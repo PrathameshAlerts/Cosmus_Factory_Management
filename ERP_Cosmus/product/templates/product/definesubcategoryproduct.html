@@ -24,6 +24,28 @@
       </div>
       
 
+      <div class="d-flex mb-3">
+
+        <ul>
+
+          {% for main_cat in main_categories %}
+          <li>
+           <span>{{main_cat.product_category_name}}</span>
+
+            {% for sub_cat in main_cat.subcategories.all %}
+            <ul>
+              <li>{{sub_cat.product_sub_category_name}}</li>
+            </ul>
+            {% endfor %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    <!-- for main_cat in main_categories:
+        for sub_cat in main_cat.subcategories.all():
+            print(sub_cat.product_sub_category_name)
+        print( main_cat.product_category_name) -->
+
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
 </form>
 
