@@ -15,6 +15,8 @@ urlpatterns = [
     path('pproductlist/',views.pproduct_list ,name= 'pproductlist'),
     path('pproductdelete/<int:pk>',views.pproduct_delete, name= 'pproductdelete'),
 
+    #productandcategory
+    path('definecategoryproduct/',views.definecategoryproduct, name= 'define-category-product'),
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
 

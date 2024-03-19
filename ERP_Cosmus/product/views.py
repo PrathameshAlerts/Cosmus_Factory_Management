@@ -208,7 +208,13 @@ def add_product_video_url(request,pk):
 
     return render(request, 'product/add_product_videourl.html', {'formset': formset, 'product': product})
 
-        
+
+def definecategoryproduct(request):
+    return render(request,'product/definecategoryproduct.html')
+
+
+
+
 #____________________________Product-View-End__________________________________
 
 #_____________________Item-Views-start_______________________

@@ -254,42 +254,44 @@ shade_id_0.setAttribute('readonly', true);
 
 
 <script>
-  function openFabPopup() {
+
+  var popUpWindow = null;
+
+  function openFabPopup(button){
+    if(popUpWindow === null || popUpWindow.closed){
+      newPopUpwindow(button ,/fabric_popup/)
+    }else{
+      popUpWindow.focus();
+    }
+  }
+
+ 
+  function opencolorPopup(button){
+    if(popUpWindow === null || popUpWindow.closed){
+      newPopUpwindow(button ,/color_popup/)
+    }else{
+      popUpWindow.focus();
+    }
+  }
+  function openunitPopup(button){
+    if(popUpWindow === null || popUpWindow.closed){
+      newPopUpwindow(button ,/units_popup/)
+    }else{
+      popUpWindow.focus();
+    }
+  }
+  function newPopUpwindow(button , path) {
       // Specify minimum height and width
       var minWidth = 800; // minimum width
       var minHeight = 600; // minimum height
       
       // Open new page with specified dimensions
-      window.open('http://127.0.0.1:8000/fabric_popup/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+      window.open('http://127.0.0.1:8000' +path , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
-      // Set focus on new window
-      
-  
+      popUpWindow.onunload = function () {
+      location.reload();
     }
-    function opencolorPopup() {
-      // Specify minimum height and width
-      var minWidth = 800; // minimum width
-      var minHeight = 600; // minimum height
-      
-      // Open new page with specified dimensions
-      window.open('http://127.0.0.1:8000/color_popup/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-
-      // Set focus on new window
-      
-  
-    }
-    function openunitPopup() {
-      // Specify minimum height and width
-      var minWidth = 800; // minimum width
-      var minHeight = 600; // minimum height
-      
-      // Open new page with specified dimensions
-      window.open('http://127.0.0.1:8000/units_popup/', '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-
-      // Set focus on new window
-      
-  
-    }
+  }
   </script>
 
 
