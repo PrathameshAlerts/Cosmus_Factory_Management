@@ -1,7 +1,7 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, PProduct_Creation, Product , ProductImage, RawStockTransfer, StockItem, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -209,10 +209,34 @@ def add_product_video_url(request,pk):
     return render(request, 'product/add_product_videourl.html', {'formset': formset, 'product': product})
 
 
-def definecategoryproduct(request):
-    return render(request,'product/definecategoryproduct.html')
+def definemaincategoryproduct(request):
+
+    if request.method == 'POST':
+        m_category_name = request.POST.get('main_category_name')
+
+        MainCategory.objects.create(product_category_name = m_category_name )
+        return HttpResponse('Main cat created sucessfully')
+    
+    return render(request,'product/definemaincategoryproduct.html')
 
 
+def definesubcategoryproduct(request):
+    main_categories = MainCategory.objects.all()
+
+    if request.method == 'POST':
+
+        m_category_name = request.POST.get('main_category_name')
+        s_category_name = request.POST.get('sub_category_name')
+            
+        get_m_category_name = get_object_or_404(MainCategory,product_category_name = m_category_name)
+        SubCategory.objects.create(product_sub_category_name=s_category_name,product_main_category=get_m_category_name)
+
+        return HttpResponse('Sub cat created sucessfully')
+    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories})
+
+
+def product2subcategory(request):
+    return render(request,'product/product2subcategory.html')
 
 
 #____________________________Product-View-End__________________________________
@@ -822,6 +846,7 @@ def ledgerupdate(request,pk):
         name_for_message = request.POST['name']
         if form.is_valid():
             form.save()
+
             if request.POST['Debit_Credit'] == 'Debit':
                 Opening_ledger.debit = request.POST['opening_balance']
                 Opening_ledger.credit = 0
@@ -873,14 +898,14 @@ def godowncreate(request):
         godown_name =  request.POST['godown_name']
         godown_type = request.POST['Godown_types']
         if godown_type == 'Raw Material':
-            godown_raw = Godown_raw_material(godown_name_raw=godown_name)
-            godown_raw.save()
+            godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
+            godown_raw.save()  #save the instance to db 
             messages.success(request,'Raw material godown created.')
             return redirect('godown-list')
         
         elif godown_type == 'Finished Goods':
-            godown_finished = Godown_finished_goods(godown_name_finished=godown_name)
-            godown_finished.save()
+            godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
+            godown_finished.save() #save the instance to db 
             messages.success(request,'Finished goods godown created.')
             return redirect('godown-list')
         else:

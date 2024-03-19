@@ -15,5 +15,29 @@
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
   </div>
 
+  <script>
+
+
+    $.ajax({
+        url: "{% url 'item-create' %}",
+        type: 'POST',
+        method: POST,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            // Handle success response
+    
+            // Trigger page refresh in the parent window
+            if (window.opener && !window.opener.closed) {
+                window.opener.location.reload(true);
+            }
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle error
+            console.log('Error submitting form');
+        }
+    });
+    </script>
 
 {% endblock body %}

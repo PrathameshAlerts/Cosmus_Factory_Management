@@ -14,10 +14,11 @@ urlpatterns = [
     path('pproduct_creation/',views.product_color_sku , name= 'pproduct_creation'),
     path('pproductlist/',views.pproduct_list ,name= 'pproductlist'),
     path('pproductdelete/<int:pk>',views.pproduct_delete, name= 'pproductdelete'),
-
     #productandcategory
     path('definemaincategoryproduct/',views.definemaincategoryproduct, name= 'define-main-category-product'),
     path('definesubcategoryproduct/',views.definesubcategoryproduct, name= 'define-sub-category-product'),
+    path('product2subcategory/',views.product2subcategory, name= 'product-2-subcategory'),
+
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
 
