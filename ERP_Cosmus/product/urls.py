@@ -17,6 +17,10 @@ urlpatterns = [
 
     #productandcategory
     path('definecategoryproduct/',views.definecategoryproduct, name= 'define-category-product'),
+
+    path('definesubcategoryproduct/',views.definesubcategoryproduct, name= 'define-sub-category-product'),
+    path('defineproduct/',views.defineproduct, name= 'define-product'),
+
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
 

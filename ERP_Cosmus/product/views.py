@@ -214,7 +214,11 @@ def definecategoryproduct(request):
 
 
 
+def definesubcategoryproduct(request):
+    return render(request,'product/definesubcategoryproduct.html')
 
+def defineproduct(request):
+    return render(request,'product/defineproduct.html')
 #____________________________Product-View-End__________________________________
 
 #_____________________Item-Views-start_______________________
