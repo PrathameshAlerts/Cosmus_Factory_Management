@@ -275,7 +275,7 @@
       popUpWindow.focus();
     }
   }
-  function newPopUpwindow(button , path) {
+  function newPopUpwindow( button, path) {
       // Specify minimum height and width
       var minWidth = 800; // minimum width
       var minHeight = 600; // minimum height
@@ -283,9 +283,9 @@
       // Open new page with specified dimensions
       window.open('http://127.0.0.1:8000' +path , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
-      popUpWindow.onunload = function () {
-      location.reload();
-    }
+      popUpWindow.onunload = function() {
+        window.location.href = 'http://127.0.0.1:8000/itemcreate/';
+    };
   }
   </script>
 

@@ -219,7 +219,7 @@ body{
     left:0px;
     margin: 5px 0px;
     z-index: 1;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .side-bar::-webkit-scrollbar {
@@ -242,7 +242,7 @@ body{
 
 .side-bar .menu{
     width: 100%;
-    margin-top: 30px;
+    margin-top: 5px;
 }
    
 .side-bar .menu .item{
@@ -252,11 +252,11 @@ body{
    
 .side-bar .menu .item a{
     color: #666;
-    font-size: 14px;
+    font-size: 15px;
     text-decoration: none;
     display: block;
     padding: 3px 25px;
-    line-height: 60px;
+    line-height: 55px;
     background-color: #fff;
 }
    
