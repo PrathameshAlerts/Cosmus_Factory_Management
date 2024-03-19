@@ -1,7 +1,7 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -230,18 +230,27 @@ def definesubcategoryproduct(request):
             
         get_m_category_name = get_object_or_404(MainCategory,product_category_name = m_category_name)
         SubCategory.objects.create(product_sub_category_name=s_category_name,product_main_category=get_m_category_name)
-        return HttpResponse('Sub cat created sucessfully')
+        return redirect('define-sub-category-product')
     
-    for main_cat in main_categories:
-        for sub_cat in main_cat.subcategories.all():
-            print(sub_cat.product_sub_category_name)
-        print( main_cat.product_category_name)
 
     return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category})
 
 
 def product2subcategory(request):
-    return render(request,'product/product2subcategory.html')
+
+    products = Product.objects.all()
+    sub_category = SubCategory.objects.all()
+
+    if request.method == 'POST':
+        product_id_get = request.POST.get('')
+        sub_category_get = request.POST.get('')
+                
+        p_id = get_object_or_404(Product,id=product_id_get)
+        s_c_id =  get_object_or_404(SubCategory,id = sub_category_get )
+
+        Product2SubCategory.objects.create(Product_id=,SubCategory_id=)
+
+    return render(request,'product/product2subcategory.html',{'products':products,'sub_category':sub_category})
 
 
 #____________________________Product-View-End__________________________________
