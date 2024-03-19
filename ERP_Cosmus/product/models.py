@@ -14,20 +14,26 @@ class Customer(models.Model):
 
 
 class MainCategory(models.Model):
-    category_name = models.CharField(max_length = 250)
-    parent = models.IntegerField() 
+    product_category_name = models.CharField(max_length = 250)
 
     def __str__(self):
-        return self.category_name   
+        return self.product_category_name   
 
+class SubCategory(models.Model):
+    sub_product_category_name = models.CharField(max_length = 250)
+    product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE)
 
-class Product2Category(models.Model):
+    def __str__(self):
+        return self.sub_product_category_name  
+
+class Product2SubCategory(models.Model):
     Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-    Category_id = models.ForeignKey(MainCategory, on_delete=models.CASCADE)
+    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f'{self.Category_id.category_name} --- {self.Product_id.Product_Name}'
+        return f'{self.SubCategory_id.sub_product_category_name} --- {self.Product_id.Product_Name}'
     
+
 
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
@@ -198,6 +204,7 @@ class PProduct_Creation(models.Model):
         return self.PProduct_color.color_name
      
 
+
 class ProductImage(models.Model):
 
     IMAGE_TYPE = [
@@ -248,7 +255,6 @@ class Fabric_Group_Model(models.Model):
 
 class Unit_Name_Create(models.Model):
     unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
-
 
 
 class Item_Creation(models.Model):
@@ -346,10 +352,8 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 
 
 
-
 class AccountGroup(models.Model):
     account_group = models.CharField(max_length = 50 , unique= True)
-
 
 
 
@@ -361,7 +365,6 @@ class AccountSubGroup(models.Model):
         return self.acc_grp.account_group
 
 
-
 class StockItem(models.Model):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     stock_item_name = models.CharField(max_length= 150 ,unique= True)
@@ -369,7 +372,6 @@ class StockItem(models.Model):
     def account_sub_group(self):
         return self.acc_sub_grp.account_sub_group
     
-
 
 
 
@@ -427,13 +429,11 @@ class account_credit_debit_master_table(models.Model):
 
 
 
-
 class Godown_raw_material(models.Model):
     godown_name_raw = models.CharField(max_length = 225)
 
     def __str__(self) -> str:
         return self.godown_name_raw      
-
 
 
 

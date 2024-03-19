@@ -402,7 +402,7 @@ def color_create_update(request, pk=None):
                 messages.success(request, 'Color created successfully.')
                 return redirect('simplecolorlist')
             
-            elif 'save' in request.POST and request.path == '/simple_colorcreate_list/':
+            elif 'save' in request.POST and request.path == '/simple_colorcreate_update/':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
                 else:
