@@ -16,7 +16,8 @@ urlpatterns = [
     path('pproductdelete/<int:pk>',views.pproduct_delete, name= 'pproductdelete'),
 
     #productandcategory
-    path('definecategoryproduct/',views.definecategoryproduct, name= 'define-category-product'),
+    path('definemaincategoryproduct/',views.definemaincategoryproduct, name= 'define-main-category-product'),
+    path('definesubcategoryproduct/',views.definesubcategoryproduct, name= 'define-sub-category-product'),
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
 

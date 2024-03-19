@@ -20,7 +20,7 @@ class MainCategory(models.Model):
         return self.product_category_name   
 
 class SubCategory(models.Model):
-    sub_product_category_name = models.CharField(max_length = 250)
+    product_sub_category_name = models.CharField(max_length = 250)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE)
 
     def __str__(self):
