@@ -222,7 +222,7 @@ def definemaincategoryproduct(request):
 
 def definesubcategoryproduct(request):
     main_categories = MainCategory.objects.all()
-
+    sub_category = SubCategory.objects.all()
     if request.method == 'POST':
 
         m_category_name = request.POST.get('main_category_name')
@@ -230,9 +230,14 @@ def definesubcategoryproduct(request):
             
         get_m_category_name = get_object_or_404(MainCategory,product_category_name = m_category_name)
         SubCategory.objects.create(product_sub_category_name=s_category_name,product_main_category=get_m_category_name)
-
         return HttpResponse('Sub cat created sucessfully')
-    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories})
+    
+    for main_cat in main_categories:
+        for sub_cat in main_cat.subcategories.all():
+            print(sub_cat.product_sub_category_name)
+        print( main_cat.product_category_name)
+
+    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category})
 
 
 def product2subcategory(request):
