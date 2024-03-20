@@ -10,43 +10,40 @@
         <label for="" class="form-label px-2">Sub Category Name:</label>
         <input type="text" class="item-select" value="" name="sub_category_name" maxlength="255" required id="">
       </div>
-
     <div class="d-flex mb-3">
         <label for="" class="form-label px-2">Main Category:</label>
-        <select class="item-select" name="main_category_name" >
-          
-          <option value=""></option>
-          {% for m_cat in main_categories %}
-          <option value="{{m_cat.product_category_name}}">{{m_cat.product_category_name}}</option>
-          {% endfor %}
-       
-        </select>
+        <p class="px-2" id="mainCategory" ></p>
+        <input type="hidden" id="hiddenInput" value = "" name="main_category_name">
       </div>
-      
-
       <div class="d-flex mb-3">
-
-        <ul>
-
+        <ul class="">
           {% for main_cat in main_categories %}
-          <li>
-           <span>{{main_cat.product_category_name}}</span>
-
-            {% for sub_cat in main_cat.subcategories.all %}
-            <ul>
-              <li>{{sub_cat.product_sub_category_name}}</li>
-            </ul>
-            {% endfor %}
+          <li class=" mx-3 p-2 my-2">
+            <button type ="button" class="border-0 bg-transparent" onclick="setMainCategory('{{ main_cat.product_category_name }}')" value="{{main_cat.product_category_name}}">{{main_cat.product_category_name}}</button>
+            <ul class=''>
+              {% for sub_cat in main_cat.subcategories.all %}
+              <li class="mx-2">
+                {{sub_cat.product_sub_category_name}}
+                </li>
+              {% endfor %}
+            </ul>        
           </li>
           {% endfor %}
         </ul>
       </div>
-    <!-- for main_cat in main_categories:
-        for sub_cat in main_cat.subcategories.all():
-            print(sub_cat.product_sub_category_name)
-        print( main_cat.product_category_name) -->
-
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
 </form>
 
+<script>
+
+
+  // Function to set the main category value and submit the form
+  function setMainCategory(category) {
+    var value_main_name =  document.getElementById('mainCategory').textContent = category;
+    document.getElementById('hiddenInput').value = value_main_name;
+    
+  }
+  
+
+</script>
 {% endblock body %}
