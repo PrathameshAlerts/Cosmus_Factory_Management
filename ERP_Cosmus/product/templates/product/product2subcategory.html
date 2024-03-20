@@ -27,6 +27,23 @@
       
         </select>
       </div>
+      <div class="d-flex mb-3">
+        <ul class="">
+        
+          <li class=" mx-3 p-2 my-2">
+            
+            <ul class=''>
+              {% for sub_cat in sub_category %}
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" id="Checkbox">
+                <label class="form-check-label" for="Checkbox">{{sub_cat.product_sub_category_name}}</label>
+              </li>
+              {% endfor %}
+            </ul>        
+          </li>
+         
+        </ul>
+      </div>
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
 </form>
