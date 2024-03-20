@@ -22,7 +22,9 @@
        
         </select>
       </div>
+      <input type="submit" class="create-btn mt-4" name="save" value="Save">
 
+    </form>
       <div class="d-flex mb-3">
 
         <ul>
@@ -40,12 +42,7 @@
           {% endfor %}
         </ul>
       </div>
-    <!-- for main_cat in main_categories:
-        for sub_cat in main_cat.subcategories.all():
-            print(sub_cat.product_sub_category_name)
-        print( main_cat.product_category_name) -->
 
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
-</form>
+
 
 {% endblock body %}

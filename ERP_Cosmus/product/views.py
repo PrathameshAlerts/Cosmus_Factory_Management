@@ -224,14 +224,18 @@ def definesubcategoryproduct(request):
     main_categories = MainCategory.objects.all()
     sub_category = SubCategory.objects.all()
     if request.method == 'POST':
+        try:
+            m_category_name = request.POST.get('main_category_name')
+            s_category_name = request.POST.get('sub_category_name')
 
-        m_category_name = request.POST.get('main_category_name')
-        s_category_name = request.POST.get('sub_category_name')
+            get_m_category_name = get_object_or_404(MainCategory,product_category_name = m_category_name)
             
-        get_m_category_name = get_object_or_404(MainCategory,product_category_name = m_category_name)
-        SubCategory.objects.create(product_sub_category_name=s_category_name,product_main_category=get_m_category_name)
-        return redirect('define-sub-category-product')
-    
+            SubCategory.objects.create(product_sub_category_name=s_category_name,product_main_category=get_m_category_name)
+            messages.success(request, 'Sub-category created sucessfully')
+            return redirect('define-sub-category-product')
+        
+        except Exception as e:
+            messages.error(request,f'An Exception occoured - {e}')
 
     return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category})
 
@@ -242,13 +246,17 @@ def product2subcategory(request):
     sub_category = SubCategory.objects.all()
 
     if request.method == 'POST':
-        product_id_get = request.POST.get('')
-        sub_category_get = request.POST.get('')
+        try:
+            product_id_get = request.POST.get('product_name')
+            sub_category_get = request.POST.get('sub_category_name')
                 
-        p_id = get_object_or_404(Product,id=product_id_get)
-        s_c_id =  get_object_or_404(SubCategory,id = sub_category_get )
+            p_id = get_object_or_404(Product, id= product_id_get)
+            s_c_id =  get_object_or_404(SubCategory,id = sub_category_get)
 
-        Product2SubCategory.objects.create(Product_id=,SubCategory_id=)
+            Product2SubCategory.objects.create(Product_id=p_id,SubCategory_id=s_c_id)
+            messages.success(request,f'Product sucessfully added to {s_c_id.product_sub_category_name}')
+        except Exception as e:
+            messages.error(request,f'An Exception occoured - {e}')
 
     return render(request,'product/product2subcategory.html',{'products':products,'sub_category':sub_category})
 
@@ -292,7 +300,7 @@ def item_create(request):
 # which has ?namevaraible = data data from the querystring
 
 # in request.POST u can access data sent to server with name varaible which has data from the
-# value= atribite in the form
+# name= as a key and value=  which has the value from the form
     
 def item_list(request):
     g_search = request.GET.get('item_search')
