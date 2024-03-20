@@ -245,6 +245,7 @@ def product2subcategory(request):
 
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
+    main_categories = MainCategory.objects.all()
     
     if request.method == 'POST':
         try:
@@ -259,7 +260,7 @@ def product2subcategory(request):
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
 
-    return render(request,'product/product2subcategory.html',{'products':products,'sub_category':sub_category})
+    return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
 
 
 #____________________________Product-View-End__________________________________
@@ -273,7 +274,7 @@ def item_create(request):
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
 
-    print(request.POST, request.FILES)
+    
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
         
