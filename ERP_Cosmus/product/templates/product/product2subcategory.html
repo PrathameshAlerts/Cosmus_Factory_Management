@@ -18,32 +18,27 @@
         </select>
       </div>
       <div class="d-flex mb-3">
-        <label for="" class="form-label px-2">Sub Category:</label>
-        <select class="item-select" name="sub_category_name" id="">
-          <option value=""></option>
-          {% for sub_cat in sub_category %}
-          <option value="{{sub_cat.id}}">{{sub_cat.product_sub_category_name}}</option>
-          {% endfor %}
-      
-        </select>
-      </div>
-      <div class="d-flex mb-3">
-        <ul class="">
+        <label for="" class="form-label">Sub Category :</label>
+        <ul style="list-style: none;">
           {% for main_cat in main_categories %}
-          <li class=" mx-3 p-2 my-2">
-            <button type ="button" class="border-0 bg-transparent"  value="{{main_cat.product_category_name}}">{{main_cat.product_category_name}}</button>
-            <ul class=''>
+          <li class="my-1">
+            <p class="product2_btn mb-2">{{main_cat.product_category_name}}</p>
+            <ul style="list-style: none;">
               {% for sub_cat in main_cat.subcategories.all %}
-              <li class="mx-2">
-                {{sub_cat.product_sub_category_name}}
-                </li>
+              <li>
+                <input type="checkbox" id="{{ sub_cat.id }}" name="sub_categor[]" value="{{ sub_cat.id }}">
+                <label for="{{ sub_cat.id }}">{{ sub_cat.product_sub_category_name }}</label>
+              </li>
               {% endfor %}
-            </ul>        
+            </ul>           
           </li>
           {% endfor %}
         </ul>
       </div>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+     
+    <input type="submit" class="product2create-btn" name="save" value="Save">
 </form>
+
+
 
 {% endblock body %}

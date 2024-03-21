@@ -418,13 +418,13 @@
           <input type="number" class="item-select" value="{{form.instance.Product_BulkPrice | default_if_none:''}}" name="Product_BulkPrice"
             id="id_Product_BulkPrice">
         </div>
+        
+      </div>
+      <div class="col-lg-4">
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">WRP</label>
           <input type="text" class="item-select" name="Product_WRP" value="{{form.instance.Product_WRP | default_if_none:''}}" id="">
         </div>
-      </div>
-      <div class="col-lg-4">
-        
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">CounterPrice:</label>
           <input type="text" class="item-select" name="Product_CashCounterPrice" value="{{form.instance.Product_CashCounterPrice | default_if_none:''}}" id="">
@@ -438,7 +438,7 @@
           <input type="text" class="item-select" name="Product_Retailer_dealer_Price" value="{{form.instance.Product_Retailer_dealer_Price | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">Wholesaler/Distributor:</label>
+          <label for="" class="form-label ">Wholesaler/Distributor: </label>
           <input type="text" class="item-select" name="Product_Wholesaler_DistributorPrice" value="{{form.instance.Product_Wholesaler_DistributorPrice | default_if_none:''}}" id="">
         </div>
     

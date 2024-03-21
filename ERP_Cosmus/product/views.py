@@ -246,7 +246,7 @@ def product2subcategory(request):
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
-    
+    print(request.POST)
     if request.method == 'POST':
         try:
             product_id_get = request.POST.get('product_name')
