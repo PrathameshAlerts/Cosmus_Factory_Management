@@ -41,14 +41,14 @@
         </thead>
         <tbody>
           <tr>
-            <td><select name="name" class="item-select" placeholder="Item Name" required id="name"></select></td>
-            <td><select name="name" class="item-select" placeholder="Item Color" required id="name"></select></td>
-            <td><select name="name" class="item-select" placeholder="Item Shades" required id="name"></select></td>
-            <td><input type="number" name="name" class="item-select" placeholder="Quantity" required id="name"></td>
-            <td><input type="number" name="name" class="item-select" placeholder="Rate" required id="name"></td>
+            <td><select name="item_name" class="item-select" placeholder="Item Name" value="" ></select></td>
+            <td><select name="item_color" class="item-select" placeholder="Item Color" value="" ></select></td>
+            <td><select name="item_shades" class="item-select" placeholder="Item Shades" value="" ></select></td>
+            <td><input type="number" name="quantity" class="item-select" value="" placeholder="Quantity" required></td>
+            <td><input type="number" name="rate" class="item-select" value="" placeholder="Rate" required></td>
             <td>meter</td>
-            <td></td>
-          </tr>
+            <td class="total-amount"></td>
+        </tr>
          
         </tbody>
       </table>
@@ -78,47 +78,58 @@
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button> -->
   </form>
   </div>
+ 
+
   <script>
-    document.getElementById('addRowButton').addEventListener('click', function () {
-      var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
-      document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
-    });
-  </script>
-<script>
-    var tables = document.getElementsByClassName('myTable');
-    var transportValue = 5000;
-    var grossTotal = 0;
-    var gstAmount = 0;
-
-    for (var t = 0; t < tables.length; t++) {
-        var rows = tables[t].rows;
-
-        for (var i = 0; i < rows.length; i++) {
-            var quantity = rows[i].cells[3].innerText.trim().replace(',', ''); // Remove commas and trim whitespace
-            var rate = rows[i].cells[4].innerText.trim().replace(',', ''); // Remove commas and trim whitespace
-
-            // Check if quantity and rate are valid numbers
-            if (!isNaN(quantity) && !isNaN(rate)) {
-                var amount = parseFloat(quantity) * parseFloat(rate);
-                rows[i].cells[6].innerText = amount.toFixed(2); // Display amount with 2 decimal places
-                grossTotal += amount; // Add the amount to the total
-            }
-        } 
+    function calculateTotalAmount() {
+        var totalAmount = 0;
+        var rows = document.querySelectorAll('table tbody tr');
+        rows.forEach(function(row) {
+            var quantity = parseFloat(row.querySelector('[name="quantity"]').value);
+            var rate = parseFloat(row.querySelector('[name="rate"]').value);
+            var total = quantity * rate;
+            row.querySelector('.total-amount').innerText = total.toFixed(2); // Display total amount in two decimal places
+            totalAmount += total;
+        });
+        
+        // Update gross total
+        var grossTotalElement = document.getElementById('grossTotal');
+        if (grossTotalElement) {
+            grossTotalElement.innerText = totalAmount.toFixed(2);
+        }
+        // Calculate GST
+        var gstAmount = totalAmount * 0.12; // Assuming GST rate is 12%
+        var gstAmountElement = document.getElementById('gstAmount');
+        if (gstAmountElement) {
+            gstAmountElement.innerText = gstAmount.toFixed(2);
+        }
+        // Update final amount (grand total)
+        var finalAmount = totalAmount + gstAmount + 5000; // Adding freight and transport
+        var finalAmountElement = document.getElementById('finalAmount');
+        if (finalAmountElement) {
+            finalAmountElement.innerText = finalAmount.toFixed(2);
+        }
     }
-
-    // Calculate GST 12%
-    gstAmount = grossTotal * 0.12; // Assuming GST is 12%
-
-    // Display the gross total and GST amount
-    document.getElementById('grossTotal').innerText = grossTotal.toFixed(2);
-    document.getElementById('gstAmount').innerText = gstAmount.toFixed(2);
-
-    // Calculate the final amount
-    var finalAmount = grossTotal + transportValue + gstAmount;
-
-    // Display the final amount
-    document.getElementById('finalAmount').innerText = finalAmount.toFixed(2);
-</script>
+  
+    // Event listener for the add row button
+    document.getElementById('addRowButton').addEventListener('click', function () {
+        var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
+        // Clear the quantity and rate fields in the new row
+        newRow.querySelector('[name="quantity"]').value = "";
+        newRow.querySelector('[name="rate"]').value = "";
+        document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
+        // Attach event listeners to the new row inputs
+        newRow.querySelectorAll('input[type="number"]').forEach(function(input) {
+            input.addEventListener('input', function() {
+                calculateTotalAmount();
+            });
+        });
+        calculateTotalAmount(); // Calculate total amount for the new row
+    });
+  
+    // Call calculateTotalAmount initially to calculate total on page load
+    calculateTotalAmount();
+  </script>
 
 
 
