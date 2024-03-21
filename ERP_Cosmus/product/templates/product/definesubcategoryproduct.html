@@ -17,14 +17,12 @@
         <input type="hidden" id="hiddenInput" value = "" name="main_category_name">
         
       </div>
-
-      <input type="submit" class="create-btn mt-4" name="save" value="Save">
-
-      <div class="d-flex mb-3">
-        <ul class="">
+      <div class="d-flex mb-2">
+        <lable class="form-label">List Of Sub-Category:</lable>
+        <ul style="list-style: none;">
           {% for main_cat in main_categories %}
-          <li class=" mx-3 p-2 my-2">
-            <button type ="button" class="border-0 bg-transparent" onclick="setMainCategory('{{ main_cat.product_category_name }}')" value="{{main_cat.product_category_name}}">{{main_cat.product_category_name}}</button>
+          <li class=" mx-3 my-1">
+            <button type ="button" class="product2_btn my-2" onclick="setMainCategory('{{ main_cat.product_category_name }}')" value="{{main_cat.product_category_name}}">{{main_cat.product_category_name}}</button>
             <ul class=''>
               {% for sub_cat in main_cat.subcategories.all %}
               <li class="mx-2">
@@ -36,7 +34,7 @@
           {% endfor %}
         </ul>
       </div>
-  
+    <input type="submit" class="product2create-btn" name="save" value="Save">
 </form>
 
 <script>

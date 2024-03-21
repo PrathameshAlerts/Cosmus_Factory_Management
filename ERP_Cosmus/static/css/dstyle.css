@@ -931,6 +931,25 @@ body{
     width: 100%;
   } 
 
+  .product2_btn{
+    background: linear-gradient(45deg, #4998d1, #2fc2dc);
+    color: white;
+    padding: 4px 8px;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.product2create-btn{
+    background-color: #3498db;
+    color: white;
+    padding: 7px 30px;
+    font-size: 14px;
+    border: none;
+    border-radius: 10px;
+    margin: 0px 100px;
+  }
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {
