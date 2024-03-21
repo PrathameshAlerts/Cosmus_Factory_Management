@@ -925,20 +925,28 @@ def ledgerdelete(request, pk):
 
 def godowncreate(request):
     if request.method == 'POST':
-        print(request.POST)
+
         godown_name =  request.POST['godown_name']
         godown_type = request.POST['Godown_types']
         if godown_type == 'Raw Material':
             godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
             godown_raw.save()  #save the instance to db 
             messages.success(request,'Raw material godown created.')
-            return redirect('godown-list')
+
+            if 'save' in request.POST:
+                return redirect('godown-list')
+            elif 'save_and_add_another' in request.POST:
+                return redirect('godown-create')
         
         elif godown_type == 'Finished Goods':
             godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
             godown_finished.save() #save the instance to db 
             messages.success(request,'Finished goods godown created.')
-            return redirect('godown-list')
+
+            if 'save' in request.POST:
+                return redirect('godown-list')
+            elif 'save_and_add_another' in request.POST:
+                return redirect('godown-create')
         else:
             messages.error(request,'Error Selecting Godown.')
             return redirect('godown-list')
