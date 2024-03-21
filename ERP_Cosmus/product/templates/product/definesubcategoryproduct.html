@@ -13,8 +13,13 @@
     <div class="d-flex mb-3">
         <label for="" class="form-label px-2">Main Category:</label>
         <p class="px-2" id="mainCategory" ></p>
+
         <input type="hidden" id="hiddenInput" value = "" name="main_category_name">
+        
       </div>
+
+      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+
       <div class="d-flex mb-3">
         <ul class="">
           {% for main_cat in main_categories %}
@@ -31,7 +36,7 @@
           {% endfor %}
         </ul>
       </div>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+  
 </form>
 
 <script>
