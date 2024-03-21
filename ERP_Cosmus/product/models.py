@@ -30,7 +30,7 @@ class Product2SubCategory(models.Model):
     Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     
-    def __str__(self):
+    def __str__(self):  
         return f'{self.SubCategory_id.sub_product_category_name} --- {self.Product_id.Product_Name}'
     
 

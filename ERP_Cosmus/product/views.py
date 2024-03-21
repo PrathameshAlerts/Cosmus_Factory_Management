@@ -246,16 +246,23 @@ def product2subcategory(request):
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
+    
     print(request.POST)
     if request.method == 'POST':
+
         try:
             product_id_get = request.POST.get('product_name')
-            sub_category_get = request.POST.get('sub_category_name')
-                
-            p_id = get_object_or_404(Product, id= product_id_get)
-            s_c_id =  get_object_or_404(SubCategory,id = sub_category_get)
 
-            Product2SubCategory.objects.create(Product_id=p_id,SubCategory_id=s_c_id)
+            # Get the list of sub_category_name values 
+            sub_category_names = request.POST.getlist('sub_category_name')
+
+            p_id = get_object_or_404(Product, id = product_id_get)
+
+            for sub_cat in sub_category_names:
+                s_c_id =  get_object_or_404(SubCategory, id = sub_cat)
+
+                Product2SubCategory.objects.create(Product_id=p_id,SubCategory_id=s_c_id)
+
             messages.success(request,f'Product sucessfully added to {s_c_id.product_sub_category_name}')
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
@@ -1178,7 +1185,7 @@ def stocktransferreport(request):
 #__________________________purchase voucher start__________________________
 
 def purchasevouchercreate(request):
-    return render(request,'.html')
+    return render(request,'accounts/purchase_invoice.html')
 
 
 

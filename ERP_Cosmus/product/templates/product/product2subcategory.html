@@ -26,7 +26,8 @@
             <ul style="list-style: none;">
               {% for sub_cat in main_cat.subcategories.all %}
               <li>
-                <input type="checkbox" id="{{ sub_cat.id }}" name="sub_category" value="{{ sub_cat.id }}">
+                <!-- sends multiple values with the name  -->
+                <input type="checkbox" id="{{ sub_cat.id }}" name="sub_category_name" value="{{ sub_cat.id }}">
                 <label for="{{ sub_cat.id }}">{{ sub_cat.product_sub_category_name }}</label>
               </li>
               {% endfor %}
