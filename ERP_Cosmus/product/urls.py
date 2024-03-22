@@ -102,8 +102,9 @@ urlpatterns = [
     path('purchasevoucherdelete/', views.purchasevoucherdelete, name = 'purchase-voucher-delete'),
 
 
-    #Purchasepopup
     path('purchasevoucherpopup/<int:shade_id>', views.purchasevoucherpopup, name='purchase-voucher-popup'),
+
+    path('purchasevouchercreatepopupajax/',views.purchasevouchercreatepopupajax,name = 'purchasevoucher-createpopup-ajax'),
 
     #SalesVoucher
     path('salesvouchercreate/', views.salesvouchercreate, name = 'sales-voucher-create'),

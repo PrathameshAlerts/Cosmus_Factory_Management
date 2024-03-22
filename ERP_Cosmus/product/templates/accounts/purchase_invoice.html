@@ -55,15 +55,23 @@
               <input type="text" name="color" class="item-select" placeholder="Item Color" required id="color" readonly >
             </td>
             <td>
-            <select name="shades" class="item-select" placeholder="Item Shades" required id="shades">   
-
+            <select name="shades" class="item-select" placeholder="Item Shades" required id="shades">
+              
+              
             </select>
           </td>
-          <td><input type="number" name="quantity" class="item-select" placeholder="Quantity" required id="quantity"></td>
-          <td><input type="number" name="rate" class="item-select" placeholder="Rate" required id="rate"></td>
-          <td>meter</td>
-          <td class="total-amount"></td>
-        </tr> 
+            <td>
+              <input type="number" name="quantity" class="item-select" placeholder="Quantity" required id="quantity">
+            </td>
+            <td>
+              <input type="number" name="rate" class="item-select" placeholder="Rate" required id="rate">
+            </td>
+            <td>
+              <input type="text" name="units" class="item-select" id="units" readonly>
+            </td>
+            <td class="total-amount"></td>
+        </tr>
+         
         </tbody>
       </table>
       <div class="table-left">
@@ -111,39 +119,61 @@
                     console.log('Data sent successfully')
                     $('#shades').empty().append('<option value="">Select Shade</option>');
 
-                    var shadesinput = document
                     var itemcolorinput = document.querySelector('#color');
                     var item_color = response.item_color;
                     var item_shade = response.item_shade;
 
                     itemcolorinput.value = item_color
 
-                    //iterate over the item_shade and create an option for the select
                     $.each(item_shade, function (key, value) {
                         $('#shades').append('<option value="' + key + '">' + value + '</option>');
                     });
                 },
                 error: function (xhr, errmsg, err) {
-                    // Handle error
                     console.log('Error sending value to the backend');
                 }
             });
         });
-
-        // Open popup when shade value is clicked
-        $('#shades').change(function () {
-            var selectedShade = $(this).val();
-            if (selectedShade !== "") {
-              var minWidth = 800; // minimum width
-              var minHeight = 600;
-                // Open popup window here
-               
-                window.open("{% url 'purchase-voucher-popup' 1 %}" , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-            }
-        });
+         // Open popup when shade value is clicked
+          $('#shades').change(function () {
+              var selectedShade = $(this).val();
+              if (selectedShade !== "") {
+                  var minWidth = 500;
+                  var minHeight = 500;
+                  $.ajax({
+                      // Use Django URL name to fetch the URL dynamically
+                      url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                      method: 'GET',
+                      data:{
+                        'selected_shade':selectedShade 
+                      },
+                      success: function (response) {
+                          // Open the dynamic URL received from the server
+                          window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                      },
+                      error: function (xhr, errmsg, err) {
+                          console.log('Error getting popup URL');
+                      }
+                  });
+              }
+          });
+      
+    
     });
 </script>
 
+
+
+
+
+
+
+
+
+
+
+
+  
   <script>
     function calculateTotalAmount() {
         var totalAmount = 0;
