@@ -16,18 +16,23 @@
       </div>
     <div class="d-flex mb-3">
       <label for="" class="form-label px-2">Purchase Ledger: </label>
-      <input type="text" class="item-select mx-3" value="Purchase" name="Purchase" maxlength="50" required id="" readonly>
+      <p>Purchase</p>
     </div>
     <div class="d-flex mb-3">
       <label for="" class="form-label px-2">Party A/C Name: </label>
-      <input type="text" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+      <select class="item-select" name="" id="">
+        <option value=""></option>
+        {% for partyname in party_names %}
+        <option value="{{partyname.name}}">{{partyname.name}}</option>
+        {% endfor %}
+      </select>
     </div>
-
+    <button type="button" class="create-btn" id="addRowButton">Add +</button>
     <div class="">
       <table class="table table-striped table-hover table-responsive myTable">
         <thead>
           <tr>
-            <th>Item Names</th>
+            <th>Item Name</th>
             <th>Colour</th>
             <th>Shade</th>
             <th>Quantity</th>
@@ -38,32 +43,32 @@
         </thead>
         <tbody>
           <tr>
-            <td>1680 Arpan</td>
-            <td>Navy</td>
-            <td>Shades-2</td>
-            <td> 1,255.00 </td>
-            <td> 600.00 </td>
-            <td></td>
+            <td>
+              <select name="name" class="item-select" placeholder="Item Name" required id="name">
+                <option value=""></option>
+                {% for item in items %}
+                <option value="{{item.id}}">{{item.item_name}}</option>
+                {% endfor %}
+              </select>
+
+            </td>
+            <td>
+              <input type="text" name="color" class="item-select" placeholder="Item Color" required id="color" readonly >
+            </td>
+
+
+            <td>
+            <select name="shades" class="item-select" placeholder="Item Shades" required id="shades">
+              
+              </select>
+            </select>
+          </td>
+            <td><input type="number" name="quantity" class="item-select" placeholder="Quantity" required id="quantity"></td>
+            <td><input type="number" name="rate" class="item-select" placeholder="Rate" required id="rate"></td>
+            <td>meter</td>
             <td></td>
           </tr>
-          <tr>
-            <td>1680 Arpan</td>
-            <td>Navy</td>
-            <td>Shades-2</td>
-            <td>1,255.00</td>
-            <td>400.00</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>1680 Arpan</td>
-            <td>yellow</td>
-            <td>Shades-3</td>
-            <td>1,33335.00</td>
-            <td>400.00</td>
-            <td></td>
-            <td></td>
-          </tr>
+         
         </tbody>
       </table>
       <div class="table-left">
@@ -92,7 +97,66 @@
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button> -->
   </form>
   </div>
- 
+
+<script>
+
+  $(document).ready(function () {
+    $('#name').change(function () {
+      var item_value = $(this).val(); 
+      $.ajax({
+        url: '/purchasevouchercreate/',
+        method: 'GET',
+        data: {
+
+          'item_value': item_value,
+
+        },
+        success: function (response) {
+          console.log('Data sent successfully')
+
+          $('#shades').empty().append('<option value="">Select Shade</option>');
+          
+          var shadesinput = document
+          var itemcolorinput = document.querySelector('#color');
+          var item_color = response.item_color;
+          var item_shade = response.item_shade;
+
+          itemcolorinput.value = item_color
+          
+          //iterate over the item_shade and create an option for the select
+          
+          $.each(item_shade, function (key, value) {
+            $('#shades').append('<option value="' + key + '">' + value + '</option>');
+          });
+
+        },
+        error: function (xhr, errmsg, err) {
+          // Handle error
+          console.log('Error sending value to the backend');
+        }
+      });
+    });
+  });
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+  
+  <script>
+    document.getElementById('addRowButton').addEventListener('click', function () {
+      var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
+      document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
+    });
+  </script>
 <script>
     var tables = document.getElementsByClassName('myTable');
     var transportValue = 5000;
