@@ -50,13 +50,10 @@
                 <option value="{{item.id}}">{{item.item_name}}</option>
                 {% endfor %}
               </select>
-
             </td>
             <td>
               <input type="text" name="color" class="item-select" placeholder="Item Color" required id="color" readonly >
             </td>
-
-
             <td>
             <select name="shades" class="item-select" placeholder="Item Shades" required id="shades">
               
@@ -98,11 +95,15 @@
       </div>
       
     </div>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    
+    <input type="submit" class="product2_btn" name="save" value="Save">
     <!-- <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button> -->
   </form>
   </div>
+ 
+  
+
 
   <script>
     $(document).ready(function () {
@@ -204,22 +205,28 @@
         }
     }
   
-    // Event listener for the add row button
-    document.getElementById('addRowButton').addEventListener('click', function () {
-        var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
-        // Clear the quantity and rate fields in the new row
-        newRow.querySelector('[name="quantity"]').value = "";
-        newRow.querySelector('[name="rate"]').value = "";
-        document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
-        // Attach event listeners to the new row inputs
-        newRow.querySelectorAll('input[type="number"]').forEach(function(input) {
+    // Function to add event listeners to quantity and rate inputs
+    function addEventListenersToInputs() {
+        var inputs = document.querySelectorAll('table tbody tr input[type="number"]');
+        inputs.forEach(function(input) {
             input.addEventListener('input', function() {
                 calculateTotalAmount();
             });
         });
+    }
+  
+    // Event listener for the add row button
+    document.getElementById('addRowButton').addEventListener('click', function () {
+        var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
+        newRow.querySelector('[name="quantity"]').value = ""; // Clear quantity field
+        newRow.querySelector('[name="rate"]').value = ""; // Clear rate field
+        document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
+        addEventListenersToInputs(); // Add event listeners to the new row inputs
         calculateTotalAmount(); // Calculate total amount for the new row
     });
   
+    // Call function to add event listeners to existing rows' inputs
+    addEventListenersToInputs();
     // Call calculateTotalAmount initially to calculate total on page load
     calculateTotalAmount();
   </script>
