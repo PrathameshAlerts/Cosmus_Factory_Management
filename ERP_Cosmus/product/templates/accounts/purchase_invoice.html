@@ -137,8 +137,8 @@
           $('#shades').change(function () {
               var selectedShade = $(this).val();
               if (selectedShade !== "") {
-                  var minWidth = 500;
-                  var minHeight = 500;
+                  var minWidth = 800;
+                  var minHeight = 600;
                   $.ajax({
                       // Use Django URL name to fetch the URL dynamically
                       url: '{% url "purchasevoucher-createpopup-ajax" %}',
