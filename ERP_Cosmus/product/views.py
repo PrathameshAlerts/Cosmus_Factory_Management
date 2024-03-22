@@ -1233,6 +1233,8 @@ def purchasevouchercreate(request):
     
     return render(request,'accounts/purchase_invoice.html',{'party_names':party_names,'items':items})
 
+
+
 def purchasevoucherpopup(request,shade_id):
     return render(request,'accounts/purchase_popup.html')
 
