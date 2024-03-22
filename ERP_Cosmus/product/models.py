@@ -204,7 +204,6 @@ class PProduct_Creation(models.Model):
         return self.PProduct_color.color_name
      
 
-
 class ProductImage(models.Model):
 
     IMAGE_TYPE = [
@@ -441,7 +440,7 @@ class item_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
     quantity = models.IntegerField(default = 0)
-
+    
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
         # godown and items unique together as

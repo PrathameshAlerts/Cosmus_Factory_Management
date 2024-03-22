@@ -22,7 +22,9 @@
       <label for="" class="form-label px-2">Party A/C Name: </label>
       <select class="item-select" name="" id="">
         <option value=""></option>
-        <option value=""></option>
+        {% for partyname in party_names %}
+        <option value="{{partyname.name}}">{{partyname.name}}</option>
+        {% endfor %}
       </select>
     </div>
     <button type="button" class="create-btn" id="addRowButton">Add +</button>
@@ -30,13 +32,9 @@
       <table class="table table-striped table-hover table-responsive myTable">
         <thead>
           <tr>
-            <th>Item Names</th>
+            <th>Item Name</th>
             <th>Colour</th>
             <th>Shade</th>
-            <th class="godown">Godown</th>
-            <th class="Qty">Qty</th>
-            <th class="Rate">Rate</th>
-            <th class="Total">Total</th>
             <th>Quantity</th>
             <th>Rate</th>
             <th>Per</th>
@@ -45,29 +43,27 @@
         </thead>
         <tbody>
           <tr>
-            <td><select name="item_name" class="item-select" placeholder="Item Name" value="" ></select></td>
-            <td><input name="color" id="color" class="item-select" readonly></td>
             <td>
-              <select name="item_shades" class="item-select" placeholder="Item Shades" value="">
-                <option value="">Select Shade</option>
-                <option value="shade1">Shade 1</option>
-                <option value="shade2">Shade 2</option>
+              <select name="name" class="item-select" placeholder="Item Name" required id="name">
+                <option value=""></option>
+                {% for item in items %}
+                <option value="{{item.id}}">{{item.item_name}}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input type="text" name="color" class="item-select" placeholder="Item Color" required id="color" readonly >
+            </td>
+            <td>
+            <select name="shades" class="item-select" placeholder="Item Shades" required id="shades">   
+
             </select>
           </td>
-            <td class="godown hidden"> <!-- Initially hidden -->
-              <select type="text" name="godown" class="item-select" value="" placeholder="Godown">
-            </td>
-           
-            <td class="Qty hideen"><input type="number" name="quantity" class="item-select" value="" placeholder="Quantity" required></td>
-            <td class="Rate hideen"><input type="number" name="rate" class="item-select" value="" placeholder="Rate" required></td>
-            <td class="Total hideen">amount</td>
-            
-            <td><input type="number" name="quantity" class="item-select" value="" placeholder="Quantity" required></td>
-            <td><input type="number" name="rate" class="item-select" value="" placeholder="Rate" required></td>
-            <td>meter</td>
-            <td class="total-amount"></td>
-        </tr>
-         
+          <td><input type="number" name="quantity" class="item-select" placeholder="Quantity" required id="quantity"></td>
+          <td><input type="number" name="rate" class="item-select" placeholder="Rate" required id="rate"></td>
+          <td>meter</td>
+          <td class="total-amount"></td>
+        </tr> 
         </tbody>
       </table>
       <div class="table-left">
@@ -91,38 +87,61 @@
       </div>
       
     </div>
+    
     <input type="submit" class="product2_btn" name="save" value="Save">
     <!-- <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button> -->
   </form>
   </div>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-  $(document).ready(function() {
-    // Hide Godown field initially
-    $(".godown").hide();
-    $(".Qty").hide();
-    $(".Rate").hide();
-    $(".Total").hide();
-    
-    // Listen for changes in the Item Shades dropdown
-    $("select[name='item_shades']").change(function() {
-      // If Shade 1 is selected, show Godown field, otherwise hide it
-      if ($(this).val() === "shade1") {
-        $(".godown").show();
-        $(".Qty").show();
-        $(".Rate").show();
-        $(".Total").show();
-        
-      } else {
-        $(".godown").hide();
-        $(".Qty").hide();
-        $(".Rate").hide();
-        $(".Total").hide();
+ 
+  
 
-      }
+
+  <script>
+    $(document).ready(function () {
+        $('#name').change(function () {
+            var item_value = $(this).val();
+            $.ajax({
+                url: '/purchasevouchercreate/',
+                method: 'GET',
+                data: {
+                    'item_value': item_value,
+                },
+                success: function (response) {
+                    console.log('Data sent successfully')
+                    $('#shades').empty().append('<option value="">Select Shade</option>');
+
+                    var shadesinput = document
+                    var itemcolorinput = document.querySelector('#color');
+                    var item_color = response.item_color;
+                    var item_shade = response.item_shade;
+
+                    itemcolorinput.value = item_color
+
+                    //iterate over the item_shade and create an option for the select
+                    $.each(item_shade, function (key, value) {
+                        $('#shades').append('<option value="' + key + '">' + value + '</option>');
+                    });
+                },
+                error: function (xhr, errmsg, err) {
+                    // Handle error
+                    console.log('Error sending value to the backend');
+                }
+            });
+        });
+
+        // Open popup when shade value is clicked
+        $('#shades').change(function () {
+            var selectedShade = $(this).val();
+            if (selectedShade !== "") {
+              var minWidth = 800; // minimum width
+              var minHeight = 600;
+                // Open popup window here
+               
+                window.open("{% url 'purchase-voucher-popup' 1 %}" , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+            }
+        });
     });
-  });
 </script>
 
   <script>

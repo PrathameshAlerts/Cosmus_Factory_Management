@@ -1,0 +1,45 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %} 
+
+{% block body %} 
+    <h4>Item Allocation For:</h4>
+    <div class="item_godown">
+        <table class="table table-striped table-hover table-responsive">
+          <thead>
+            <tr>
+              <th>Godown</th>
+              <th>Qty</th>
+              <th>Rate</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="godown"> 
+                <input type="text" name="godown" class="item-select" value="" placeholder="Godown" id="godown">
+              </td>
+              <td class="Qty"> 
+                <input type="text" name="Qty" class="item-select" value="" placeholder="Qty" id="Qty">
+              </td>
+              <td class="Rate"> 
+                <input type="text" name="Rate" class="item-select" value="" placeholder="Rate" id="Rate">
+              </td>
+              <td class="Total"></td>
+            </tr> 
+          </tbody>
+        </table>
+      </div>
+      <script>
+        $(document).ready(function(){
+            $(".item-select").on('input', function(){
+                var qty = parseFloat($("#Qty").val());
+                var rate = parseFloat($("#Rate").val());
+                if(!isNaN(qty) && !isNaN(rate)){
+                    var total = qty * rate;
+                    $(".Total").text(total.toFixed(2)); // Assuming you want to display the total with 2 decimal places
+                }
+            });
+        });
+    </script>
+
+      {% endblock body %}

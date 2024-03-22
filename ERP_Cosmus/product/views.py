@@ -708,7 +708,10 @@ def account_sub_group_create(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Account sub-group created sucessfully')
-            return redirect('account_sub_group-list')
+            if 'save' in request.POST:
+                return redirect('account_sub_group-list')
+            elif 'save_and_add_another' in request.POST:
+                return redirect('account_sub_group-create')
         else:
             print(form.errors)
             return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
@@ -765,7 +768,10 @@ def stock_item_create(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Stock item created sucessfully')
-            return redirect('stock_item-list')
+            if 'save' in request.POST:
+                return redirect('stock_item-list')
+            elif 'save_and_add_another' in request.POST:
+                return redirect('stock-item-create')
         else:
             print(form.errors)
             return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
@@ -1080,6 +1086,7 @@ def stocktransfer(request):
 
         if item_name_value is not None:
             item_name_value = int(item_name_value)
+
             # get the item 
             items =  get_object_or_404(Item_Creation ,id = item_name_value)
         
@@ -1193,7 +1200,34 @@ def stocktransferreport(request):
 #__________________________purchase voucher start__________________________
 
 def purchasevouchercreate(request):
-    return render(request,'accounts/purchase_invoice.html')
+    account_sub_grp = AccountSubGroup.objects.get(account_sub_group__icontains='Sundray Creditor(we buy)')
+    print(account_sub_grp)
+    party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+    
+    items = Item_Creation.objects.all()
+
+    item_value = request.GET.get('item_value')
+    if item_value is not None: 
+        item_value = int(item_value)
+        item = Item_Creation.objects.get(id = item_value)
+        item_color = item.Item_Color.color_name
+        print(item_color)
+
+        # item shades
+    item_shades = item_color_shade.objects.filter(items = item_value)
+    
+    item_shades_dict = {}
+
+    for shade in item_shades:
+        item_shades_dict[shade.id] = shade.item_shade_name
+    
+
+
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return JsonResponse({'item_color': item_color , 'item_shade': item_shades_dict
+                                 })
+    
+    return render(request,'accounts/purchase_invoice.html',{'party_names':party_names,'items':items})
 
 
 
@@ -1210,6 +1244,10 @@ def purchasevoucherdelete(request,pk):
     pass
 
 
+
+
+def purchasevoucherpopup(request,shade_id):
+    return render(request,'accounts/purchase_popup.html')
 
 #__________________________purchase voucher end__________________________
 
