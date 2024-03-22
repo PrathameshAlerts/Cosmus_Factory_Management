@@ -1080,7 +1080,6 @@ def stocktransfer(request):
                 shade_id = x.Item_shade_name.id
                 item_shades[shade_id] = shade_name
 
-
         item_color = None
         item_per = None
 
@@ -1200,33 +1199,51 @@ def stocktransferreport(request):
 #__________________________purchase voucher start__________________________
 
 def purchasevouchercreate(request):
-    account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
-    party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+
+    try:
+        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
+        party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+        print(account_sub_grp.id)
+        items = Item_Creation.objects.all()
+
+        #item values
+        item_value = request.GET.get('item_value')
+        if item_value is not None: 
+            item_value = int(item_value)
+            item = Item_Creation.objects.get(id = item_value)
+            item_color = item.Item_Color.color_name
+            item_per = item.unit_name_item.unit_name
+        
+        
+
     
-    items = Item_Creation.objects.all()
-
-    item_value = request.GET.get('item_value')
-    if item_value is not None: 
-        item_value = int(item_value)
-        item = Item_Creation.objects.get(id = item_value)
-        item_color = item.Item_Color.color_name
-        print(item_color)
-
         # item shades
-    item_shades = item_color_shade.objects.filter(items = item_value)
+        item_shades = item_color_shade.objects.filter(items = item_value)
     
-    item_shades_dict = {}
-
-    for shade in item_shades:
-        item_shades_dict[shade.id] = shade.item_shade_name
-    
+        item_shades_dict = {}
+        for shade in item_shades:
+            item_shades_dict[shade.id] = shade.item_shade_name
+    except Exception as e:
+        print(f'exception occoured {e}')
 
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            return JsonResponse({'item_color': item_color , 'item_shade': item_shades_dict
-                                 })
+            return JsonResponse({'item_color': item_color , 'item_shade': item_shades_dict,
+                                 "item_per":item_per})
     
     return render(request,'accounts/purchase_invoice.html',{'party_names':party_names,'items':items})
+
+def purchasevoucherpopup(request,shade_id):
+    return render(request,'accounts/purchase_popup.html')
+
+
+
+
+def purchasevouchercreatepopupajax(request):
+    shade_id = request.GET.get('selected_shade')
+    popup_url = reverse('purchase-voucher-popup', args=[shade_id])
+    print('popup',shade_id)
+    return JsonResponse({'popup_url':popup_url})
 
 
 
