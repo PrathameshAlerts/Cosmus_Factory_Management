@@ -33,6 +33,10 @@
             <th>Item Names</th>
             <th>Colour</th>
             <th>Shade</th>
+            <th class="godown">Godown</th>
+            <th class="Qty">Qty</th>
+            <th class="Rate">Rate</th>
+            <th class="Total">Total</th>
             <th>Quantity</th>
             <th>Rate</th>
             <th>Per</th>
@@ -42,8 +46,22 @@
         <tbody>
           <tr>
             <td><select name="item_name" class="item-select" placeholder="Item Name" value="" ></select></td>
-            <td><select name="item_color" class="item-select" placeholder="Item Color" value="" ></select></td>
-            <td><select name="item_shades" class="item-select" placeholder="Item Shades" value="" ></select></td>
+            <td><input name="color" id="color" class="item-select" readonly></td>
+            <td>
+              <select name="item_shades" class="item-select" placeholder="Item Shades" value="">
+                <option value="">Select Shade</option>
+                <option value="shade1">Shade 1</option>
+                <option value="shade2">Shade 2</option>
+            </select>
+          </td>
+            <td class="godown hidden"> <!-- Initially hidden -->
+              <select type="text" name="godown" class="item-select" value="" placeholder="Godown">
+            </td>
+           
+            <td class="Qty hideen"><input type="number" name="quantity" class="item-select" value="" placeholder="Quantity" required></td>
+            <td class="Rate hideen"><input type="number" name="rate" class="item-select" value="" placeholder="Rate" required></td>
+            <td class="Total hideen">amount</td>
+            
             <td><input type="number" name="quantity" class="item-select" value="" placeholder="Quantity" required></td>
             <td><input type="number" name="rate" class="item-select" value="" placeholder="Rate" required></td>
             <td>meter</td>
@@ -73,12 +91,39 @@
       </div>
       
     </div>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" class="product2_btn" name="save" value="Save">
     <!-- <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
    <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button> -->
   </form>
   </div>
- 
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Hide Godown field initially
+    $(".godown").hide();
+    $(".Qty").hide();
+    $(".Rate").hide();
+    $(".Total").hide();
+    
+    // Listen for changes in the Item Shades dropdown
+    $("select[name='item_shades']").change(function() {
+      // If Shade 1 is selected, show Godown field, otherwise hide it
+      if ($(this).val() === "shade1") {
+        $(".godown").show();
+        $(".Qty").show();
+        $(".Rate").show();
+        $(".Total").show();
+        
+      } else {
+        $(".godown").hide();
+        $(".Qty").hide();
+        $(".Rate").hide();
+        $(".Total").hide();
+
+      }
+    });
+  });
+</script>
 
   <script>
     function calculateTotalAmount() {
@@ -111,22 +156,28 @@
         }
     }
   
-    // Event listener for the add row button
-    document.getElementById('addRowButton').addEventListener('click', function () {
-        var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
-        // Clear the quantity and rate fields in the new row
-        newRow.querySelector('[name="quantity"]').value = "";
-        newRow.querySelector('[name="rate"]').value = "";
-        document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
-        // Attach event listeners to the new row inputs
-        newRow.querySelectorAll('input[type="number"]').forEach(function(input) {
+    // Function to add event listeners to quantity and rate inputs
+    function addEventListenersToInputs() {
+        var inputs = document.querySelectorAll('table tbody tr input[type="number"]');
+        inputs.forEach(function(input) {
             input.addEventListener('input', function() {
                 calculateTotalAmount();
             });
         });
+    }
+  
+    // Event listener for the add row button
+    document.getElementById('addRowButton').addEventListener('click', function () {
+        var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
+        newRow.querySelector('[name="quantity"]').value = ""; // Clear quantity field
+        newRow.querySelector('[name="rate"]').value = ""; // Clear rate field
+        document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
+        addEventListenersToInputs(); // Add event listeners to the new row inputs
         calculateTotalAmount(); // Calculate total amount for the new row
     });
   
+    // Call function to add event listeners to existing rows' inputs
+    addEventListenersToInputs();
     // Call calculateTotalAmount initially to calculate total on page load
     calculateTotalAmount();
   </script>
