@@ -1235,11 +1235,14 @@ def purchasevouchercreate(request):
 
 
 def purchasevoucherpopup(request,shade_id):
-    godowns = Godown_raw_material.objects.all()
-    item = Item_Creation.objects.get(shades__id = shade_id) 
-    item_shade = item_color_shade.objects.get(id = shade_id)
-    print(item)
-    print(item_shade)
+    try:
+        godowns = Godown_raw_material.objects.all()
+        item = Item_Creation.objects.get(shades__id = shade_id) 
+        item_shade = item_color_shade.objects.get(id = shade_id)
+        print(item)
+        print(item_shade)
+    except Exception as e:
+        messages.error(request,'Error with Shades')
     return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
 
 
