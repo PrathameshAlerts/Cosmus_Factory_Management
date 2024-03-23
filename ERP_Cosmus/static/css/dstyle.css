@@ -950,6 +950,13 @@ body{
     border-radius: 10px;
     margin: 0px 100px;
   }
+
+ .input_units{
+    width: 100px;
+    border: 1px solid #666;
+    border-radius: 7px;
+    padding-left: 5px;
+ } 
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {

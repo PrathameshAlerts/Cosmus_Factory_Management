@@ -16,32 +16,50 @@
           <tbody>
             {% for godown in godowns %}
             <tr>
-              <td class="godown"> 
-                <input type="text" name="godown" class="item-select" value="{{godown.godown_name_raw}}" placeholder="Godown" id="godown">
-              </td>
-              <td class="Qty"> 
-                <input type="number" name="Qty" class="item-select" value="" placeholder="Qty" id="Qty">
-              </td>
-              <td class="Rate"> 
-                <input type="number" name="Rate" class="item-select" value="" placeholder="Rate" id="Rate">
-              </td>
-              <td class="Total"></td>
+                <td class="godown"> 
+                    <input type="text" name="godown" class="godown-input item-select" value="{{godown.godown_name_raw}}" placeholder="Godown" readonly>
+                </td>
+                <td class="Qty"> 
+                    <input type="number" name="Qty" class="qty-input item-select" value="" placeholder="Qty">
+                </td>
+                <td class="Rate"> 
+                    <input type="number" name="Rate" class="rate-input item-select" value="" placeholder="Rate">
+                </td>
+                <td class="Total"></td>
+               
             </tr> 
             {% endfor %}
-          </tbody>
+        </tbody>
         </table>
+        <div class="d-flex">
+            <div class=" mb-3">
+              <span id="totalQty" class="fw-bold px-2"></span>
+          </div>
+          <div class=" mb-3">
+              <span id="totalAmount" class="fw-bold px-2"></span>
+          </div>
+        </div>
+        <div>
+            <input type="submit" class="product2create-btn" name="save" value="Save">
+        </div>
       </div>
-      <script>
+    <script>
         $(document).ready(function(){
-            $(".item-select").on('input', function(){
-                var qty = parseFloat($("#Qty").val());
-                var rate = parseFloat($("#Rate").val());
-                if(!isNaN(qty) && !isNaN(rate)){
+            $(".item_godown").on('input', '.qty-input, .rate-input', function(){
+                var totalQty = 0;
+                var totalAmount = 0;
+                $(".item_godown tbody tr").each(function(){
+                    var qty = parseFloat($(this).find('.qty-input').val()) || 0;
+                    var rate = parseFloat($(this).find('.rate-input').val()) || 0;
                     var total = qty * rate;
-                    $(".Total").text(total.toFixed(2)); // Assuming you want to display the total with 2 decimal places
-                }
+                    $(this).find('.Total').text(total.toFixed(2));
+                    totalQty += qty;
+                    totalAmount += total;
+                });
+                $('#totalQty').text(totalQty.toFixed(2));
+                $('#totalAmount').text(totalAmount.toFixed(2));
             });
         });
-    </script>
+        </script>
 
       {% endblock body %}
