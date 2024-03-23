@@ -14,24 +14,20 @@
             </tr>
           </thead>
           <tbody>
+            {% for godown in godowns %}
             <tr>
               <td class="godown"> 
-                <select name="godown" class="item-select" id="godown">
-                  <option value=""></option>
-                  {% for godown in godowns %}
-                  <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-                  {% endfor %}
-
-                </select>
+                <input type="text" name="godown" class="item-select" value="{{godown.godown_name_raw}}" placeholder="Godown" id="godown">
               </td>
               <td class="Qty"> 
-                <input type="text" name="Qty" class="item-select" value="" placeholder="Qty" id="Qty">
+                <input type="number" name="Qty" class="item-select" value="" placeholder="Qty" id="Qty">
               </td>
               <td class="Rate"> 
-                <input type="text" name="Rate" class="item-select" value="" placeholder="Rate" id="Rate">
+                <input type="number" name="Rate" class="item-select" value="" placeholder="Rate" id="Rate">
               </td>
               <td class="Total"></td>
             </tr> 
+            {% endfor %}
           </tbody>
         </table>
       </div>

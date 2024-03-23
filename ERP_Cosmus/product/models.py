@@ -427,7 +427,7 @@ class account_credit_debit_master_table(models.Model):
 
 
 class Godown_raw_material(models.Model):
-    godown_name_raw = models.CharField(max_length = 225)
+    godown_name_raw = models.CharField(max_length = 225, unique= True)
 
     def __str__(self) -> str:
         return self.godown_name_raw      
@@ -452,7 +452,7 @@ class item_godown_quantity_through_table(models.Model):
 
 
 class Godown_finished_goods(models.Model):
-    godown_name_finished = models.CharField(max_length = 225)
+    godown_name_finished = models.CharField(max_length = 225, unique= True)
 
 
 
