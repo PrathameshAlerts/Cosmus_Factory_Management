@@ -1221,6 +1221,7 @@ def purchasevouchercreate(request):
         item_shades_dict = {}
         for shade in item_shades:
             item_shades_dict[shade.id] = shade.item_shade_name
+
     except Exception as e:
         print(f'exception occoured {e}')
 
@@ -1235,9 +1236,11 @@ def purchasevouchercreate(request):
 
 def purchasevoucherpopup(request,shade_id):
     godowns = Godown_raw_material.objects.all()
-    print('godown',godowns)
-    print('test')
-    return render(request,'accounts/purchase_popup.html',{'godowns':godowns})
+    item = Item_Creation.objects.get(shades__id = shade_id) 
+    item_shade = item_color_shade.objects.get(id = shade_id)
+    print(item)
+    print(item_shade)
+    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
 
 
 
