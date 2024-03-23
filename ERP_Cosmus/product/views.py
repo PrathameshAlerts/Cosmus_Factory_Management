@@ -1265,8 +1265,7 @@ def purchasevoucherdelete(request,pk):
 
 
 
-def purchasevoucherpopup(request,shade_id):
-    return render(request,'accounts/purchase_popup.html')
+
 
 #__________________________purchase voucher end__________________________
 
