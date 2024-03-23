@@ -134,46 +134,38 @@
                 }
             });
         });
-         // Open popup when shade value is clicked
-          $('#shades').change(function () {
-              var selectedShade = $(this).val();
-              if (selectedShade !== "") {
-                  var minWidth = 800;
-                  var minHeight = 600;
-                  $.ajax({
-                      // Use Django URL name to fetch the URL dynamically
-                      url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                      method: 'GET',
-                      data:{
-                        'selected_shade':selectedShade 
-                      },
-                      success: function (response) {
-                          // Open the dynamic URL received from the server
-                          window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-                      },
-                      error: function (xhr, errmsg, err) {
-                          console.log('Error getting popup URL');
-                      }
-                  });
-              }
-          });
-      
-    
+        var popupWindow = null; // Variable to hold the reference to the popup window
+
+        $('#shades').change(function () {
+            var selectedShade = $(this).val();
+            if (selectedShade !== "") {
+                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                    var minWidth = 800;
+                    var minHeight = 600;
+                    $.ajax({
+                        // Use Django URL name to fetch the URL dynamically
+                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                        method: 'GET',
+                        data: {
+                            'selected_shade': selectedShade
+                        },
+                        success: function (response) {
+                            // Open the dynamic URL received from the server
+                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.log('Error getting popup URL');
+                        }
+                    });
+                } else {
+                    // If a popup window is already open, notify the user or take appropriate action
+                    console.log('A popup window is already open');
+                }
+            }
+        });
     });
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-  
+ 
   <script>
     function calculateTotalAmount() {
         var totalAmount = 0;
