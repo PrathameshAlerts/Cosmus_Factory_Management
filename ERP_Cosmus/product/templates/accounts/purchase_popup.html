@@ -16,7 +16,13 @@
           <tbody>
             <tr>
               <td class="godown"> 
-                <input type="text" name="godown" class="item-select" value="" placeholder="Godown" id="godown">
+                <select name="godown" class="item-select" id="godown">
+                  <option value=""></option>
+                  {% for godown in godowns %}
+                  <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                  {% endfor %}
+
+                </select>
               </td>
               <td class="Qty"> 
                 <input type="text" name="Qty" class="item-select" value="" placeholder="Qty" id="Qty">

@@ -275,7 +275,6 @@ class Item_Creation(models.Model):
 
         ("Fabric","Fabric"),
         ("Non Fabric","Non Fabric"),
-
         ]
     
     FINISHES = [
@@ -323,7 +322,6 @@ class Item_Creation(models.Model):
     
 
 class item_color_shade(models.Model):
-
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades')
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
@@ -440,7 +438,7 @@ class item_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
     quantity = models.IntegerField(default = 0)
-    
+
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
         # godown and items unique together as

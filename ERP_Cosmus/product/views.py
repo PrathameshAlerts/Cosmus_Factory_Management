@@ -1205,7 +1205,7 @@ def purchasevouchercreate(request):
         party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
         print(account_sub_grp.id)
         items = Item_Creation.objects.all()
-
+        
         #item values
         item_value = request.GET.get('item_value')
         if item_value is not None: 
@@ -1215,8 +1215,6 @@ def purchasevouchercreate(request):
             item_per = item.unit_name_item.unit_name
         
         
-
-    
         # item shades
         item_shades = item_color_shade.objects.filter(items = item_value)
     
@@ -1236,7 +1234,10 @@ def purchasevouchercreate(request):
 
 
 def purchasevoucherpopup(request,shade_id):
-    return render(request,'accounts/purchase_popup.html')
+    godowns = Godown_raw_material.objects.all()
+    print('godown',godowns)
+    print('test')
+    return render(request,'accounts/purchase_popup.html',{'godowns':godowns})
 
 
 
