@@ -6,26 +6,30 @@
 
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-<div class="row">
-  <div class="col-lg-5">
-    <div class="d-flex">
-      <label for="id_Product_Refrence_ID" class="fw-bold">Refrence ID:</label>
-      <span readonly class="mx-2" value={{form.instance.Product_Refrence_ID}}
-        name="Product_Refrence_ID" required id="id_Product_Refrence_ID">{{form.instance.Product_Refrence_ID}}</span>
-        <label for="id_Model_Name" class="fw-bold ms-2">Model Name:</label>
-        <span  class="mx-2" value="{{form.instance.Model_Name  | default_if_none:''}}" name="Model_Name" required id="id_Model_Name">{{form.instance.Model_Name  | default_if_none:''}}</span>
-        <label for="" class="fw-bold ms-2">Color Count:</label>
-        <span class="mx-2">5</span>
-    </div>
-  </div>
-  <div class="col-lg-6">
-    <div class="d-flex">
-    <label for="" class="">Imgs:</label>
-    <img src="" id="imagePreview" alt="Image Preview" style="width: 70px;"> 
-    </div>  
-  </div>
+<div class="d-flex mb-3">
+  <label for="id_Product_Refrence_ID" class="fs-5 fw-bold">Refrence ID:</label>
+  <input type="number" readonly class="product_items fs-5" value={{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+  <label for="id_Model_Name" class="fw-bold ms-2 fs-5">Model Name:</label>
+  <span type="text"  class="product_items fs-5" value="" name="" readonly id="">{{form.instance.Model_Name  | default_if_none:''}}</span>  
+  <label for="" class="fw-bold ms-2 fs-5">Color Count:</label>
+  <span class="mx-2 fs-5">5</span>
 </div>
-  
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="d-flex mb-2">
+       <label for="" class="fw-bold">Imgs:</label>
+        <div class="mx-2">
+        {{ formset.management_form }}
+        {% for form in formset %}
+        {% if form.instance.PProduct_image %}
+        <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 70px;"> 
+        {% endif %}
+        {% endfor %} 
+      </div> 
+      </div>
+      </div>
+      
+  </div>
   <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Details<span class="span_padding"><i
         class="fas fa-angle-right arrowBtn"></i></span></button>
 
