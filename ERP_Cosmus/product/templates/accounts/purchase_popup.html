@@ -51,6 +51,7 @@
                 $(".item_godown tbody tr").each(function(){
                     var qty = parseFloat($(this).find('.qty-input').val()) || 0;
                     var rate = parseFloat($(this).find('.rate-input').val()) || 0;
+                    console.log(qty,rate)
                     var total = qty * rate;
                     $(this).find('.Total').text(total.toFixed(2));
                     totalQty += qty;

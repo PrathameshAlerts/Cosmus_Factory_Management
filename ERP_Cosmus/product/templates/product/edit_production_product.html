@@ -6,12 +6,26 @@
 
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-
-  <div class="d-flex m-3">
-    <label for="id_Product_Refrence_ID" class="form-label item-form">Refrence ID:</label>
-    <input type="number" readonly class="item-select" value={{form.instance.Product_Refrence_ID}}
-      name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+<div class="row">
+  <div class="col-lg-5">
+    <div class="d-flex">
+      <label for="id_Product_Refrence_ID" class="fw-bold">Refrence ID:</label>
+      <span readonly class="mx-2" value={{form.instance.Product_Refrence_ID}}
+        name="Product_Refrence_ID" required id="id_Product_Refrence_ID">{{form.instance.Product_Refrence_ID}}</span>
+        <label for="id_Model_Name" class="fw-bold ms-2">Model Name:</label>
+        <span  class="mx-2" value="{{form.instance.Model_Name  | default_if_none:''}}" name="Model_Name" required id="id_Model_Name">{{form.instance.Model_Name  | default_if_none:''}}</span>
+        <label for="" class="fw-bold ms-2">Color Count:</label>
+        <span class="mx-2">5</span>
+    </div>
   </div>
+  <div class="col-lg-6">
+    <div class="d-flex">
+    <label for="" class="">Imgs:</label>
+    <img src="" id="imagePreview" alt="Image Preview" style="width: 70px;"> 
+    </div>  
+  </div>
+</div>
+  
   <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Details<span class="span_padding"><i
         class="fas fa-angle-right arrowBtn"></i></span></button>
 
@@ -24,8 +38,7 @@
         <div class="col-lg-9">
           <div class=" d-flex mb-3">
             <label class="mx-2">Color:</label>
-            <select class="item-select" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
-              
+            <select class="item-selects" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color"> 
               {% if form.instance.PProduct_color.id %}
               <option value="{{form.instance.PProduct_color.id}}">{{form.instance.PProduct_color}}</option>
               {%elif not form.instance %}
@@ -34,13 +47,12 @@
               {% for color in colors %}
               <option value="{{color.id}}">{{color.color_name}}</option>
               {% endfor %}
-
           </select>
 
             <div class=" d-flex mb-3">
-              <label class="mx-3">Image:</label>
-              <input type="file" name="{{ form.prefix }}-PProduct_image" accept="image/*" id="{{ form.prefix }}-PProduct_image">
-             <!-- <span>{{form.PProduct_image}}</span>-->
+              <label for="{{ form.prefix }}-PProduct_image" class="mx-3">Image:</label>
+             <input type="file" class="my-files" name="{{ form.prefix }}-PProduct_image" accept="image/*" id="{{ form.prefix }}-PProduct_image">
+              <!-- <span>{{form.PProduct_image}}</span>-->
             </div>
           </div>
           <div class=" d-flex mb-3">
@@ -91,22 +103,22 @@
   <div id="aditional_details" style="display: none;">
     <div class="row">
       <div class="col-lg-4">
+        <div class="d-flex mb-3">
+          <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
+          <input type="text" class="item-select" value="{{form.instance.Model_Name  | default_if_none:''}}" name="Model_Name" required
+            id="id_Model_Name">
+        </div>
         <div class=" d-flex my-3">
           <label for="id_Product_Name" class="form-label item-form">Name:</label>
             <input type="text" class="item-select" value="{{ form.instance.Product_Name  | default_if_none:''}}" name="Product_Name" required id="id_Product_Name">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Catagory:</label>
-          <input type="text" class="item-select" value="" name="" required id="">
         </div>
         <div class=" d-flex my-3">
           <label for="" class="form-label item-form">ShortName:</label>
           <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}" name="Product_ShortName" required id="">
         </div>
-        <div class="d-flex mb-3">
-          <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
-          <input type="text" class="item-select" value="{{form.instance.Model_Name  | default_if_none:''}}" name="Model_Name" required
-            id="id_Model_Name">
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">Catagory:</label>
+          <input type="text" class="item-select" value="" name="" required id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
@@ -157,6 +169,9 @@
       <div class="d-flex mb-3">
         <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
           <div class=" ms-5">
+            <label for="id_Product_Channel_All" class="px-2">All</label>
+            <input type="checkbox" class="mx-1" name="Product_Channel_All" value="All" id="id_Product_Channel_All" onclick="checkAll(this)">
+            
             {% for choice in form.Product_Channel.field.choices %}
             <label for="id_Product_Channel_{{ forloop.counter0 }}" class="px-2">
               <input type="checkbox" class="mx-1" name="Product_Channel" value="{{ choice.0 }}"
@@ -354,22 +369,6 @@
       </div>
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Length(cm):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Length | default_if_none:''}}" name="Product_Dimensions_WP_Length" required id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Width(In):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Width | default_if_none:''}}" name="Product_Dimensions_WP_Width" required id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Height(In):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Height | default_if_none:''}}" name="Product_Dimensions_WP_Height" required id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Weight(Gm):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Weight | default_if_none:''}}" name="Product_Dimensions_WP_Weight" required id="">
-        </div>
-        <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Length(cm):</label>
           <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Length | default_if_none:''}}" name="Product_Dimensions_WOP_Length" required id="">
         </div>
@@ -385,11 +384,23 @@
           <label for="" class="form-label item-form">WOP Weight(Gm):</label>
           <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Weight | default_if_none:''}}" name="Product_Dimensions_WOP_Weight" required id="">
         </div>
-    
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Length(cm):</label>
+          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Length | default_if_none:''}}" name="Product_Dimensions_WP_Length" required id="">
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Width(In):</label>
+          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Width | default_if_none:''}}" name="Product_Dimensions_WP_Width" required id="">
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Height(In):</label>
+          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Height | default_if_none:''}}" name="Product_Dimensions_WP_Height" required id="">
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Weight(Gm):</label>
+          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Weight | default_if_none:''}}" name="Product_Dimensions_WP_Weight" required id="">
+        </div>
       </div>
-      
-
-
     </div>
   </div>
   <button type="button" class="edit_btn w-75 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i 
@@ -450,13 +461,30 @@
   </div>
   <input type="submit" class="item-btn mx-5" value="submit">
 </form>
+<script>
+  function previewImage(event) {
+      var input = event.target;
+      var reader = new FileReader();
 
-<!-- <script>
+      reader.onload = function() {
+          var dataURL = reader.result;
+          var imagePreview = document.getElementById('imagePreview');
+          imagePreview.innerHTML = '<img src="' + dataURL + '" style="max-width: 50px; max-height: 50px;">';
+      };
 
-  var product_color = document.getElementById('id_productdetails-0-PProduct_color');
-  product_color.setAttribute('disabled', true);
+      reader.readAsDataURL(input.files[0]);
+  }
+</script>
+ <script>
 
-</script> -->
+    function checkAll(source) {
+        var checkboxes = document.querySelectorAll('input[name="Product_Channel"]');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
+
 <script>
   var popupWindow = null;
 
