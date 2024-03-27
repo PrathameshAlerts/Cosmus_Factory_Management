@@ -849,7 +849,7 @@ body{
     padding-left: 50px;
 }
 .table-left{
-    padding-left: 900px;
+    padding-left: 850px;
 }
 .table-leftside{
     padding-left: 950px;
@@ -1003,6 +1003,14 @@ body{
     margin-left: 204px;
     text-decoration: none;
  }
+
+.purchase-input{
+    width: 110px;
+    border: 1px solid #666;
+    border-radius: 7px;
+    padding-left: 5px; 
+}
+
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {
