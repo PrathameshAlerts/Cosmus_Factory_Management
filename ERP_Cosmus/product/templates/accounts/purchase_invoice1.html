@@ -17,7 +17,7 @@
         </div>
         <div class="d-flex mb-3">
             <label for="id_ledger_type" class="item-form" >ledger Type</label>
-            <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{form.instance.ledger_type}}" maxlength="50" default = 'Purchase' readonly required placeholder="Purchase" >
+            <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{form.instance.ledger_type}}" maxlength="50" default='Purchase' readonly required placeholder="Purchase" >
         </div>
         <div class="d-flex mb-3">
             <label for="id_party_name" class="item-form" >Party A/C Name</label>
@@ -76,16 +76,16 @@
                 
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-quantity_total" class="purchase-input" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total}}">
+                        <input type="text" id="{{forms.prefix}}-quantity_total" class="purchase-input" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}">
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate}}">
+                        <input type="text" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
                     </td>
                     <td>
                         <input type="text" name="item_unit" id="item_unit" class="purchase-input">
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount}}" style="border: none;">
+                        <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">
                     </td>
                     <td>
                         <button type="button" class="delete-btn" id="{{forms.prefix}}-delete">{{ shade_form.DELETE }}</button>
@@ -130,6 +130,105 @@
 </div>
 
  </form>
+
+ <script>
+    $(document).ready(function () {
+        $('#item_name').change(function () {
+            var item_value = $(this).val();
+            var prefix = $(this).closest('tr').find('.prefix').val();
+            var itemShadeSelect = $('#' + prefix + '-item_shade');
+            var itemShadeValue = itemShadeSelect.val();
+            console.log('prefix',prefix)
+            $.ajax({
+                url: '/purchasevouchercreate/',
+                method: 'GET',
+                data: {
+                    'item_value': item_value,
+                },
+                success: function (response) {
+                    console.log('Data sent successfully')
+                
+                    $(itemShadeValue).empty().append('<option value="">Select Shade</option>');
+
+                    var itemcolorinput = document.querySelector('#item_color');
+                    var item_color = response.item_color;
+                    var item_shade_response = response.item_shade; 
+                    console.log(item_shade_response)
+                    var itemperinput = document.querySelector('#item_unit')
+                    var itemperinput_response = response.item_per;
+            
+                    itemcolorinput.value = item_color;
+                    itemperinput.value = itemperinput_response;
+
+                    $.each(item_shade, function (key, value) {
+                        $(itemShadeValue).append('<option value="' + key + '">' + value + '</option>');
+                    });
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log('Error sending value to the backend');
+                }
+            });
+        });
+        var popupWindow = null; // Variable to hold the reference to the popup window
+
+        $('#shades').change(function () {
+            var selectedShade = $(this).val();
+            if (selectedShade !== "") {
+                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                    var minWidth = 800;
+                    var minHeight = 600;
+                    $.ajax({
+                        // Use Django URL name to fetch the URL dynamically
+                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                        method: 'GET',
+                        data: {
+                            'selected_shade': selectedShade
+                        },
+                         success: function (response) {
+                            // Open the dynamic URL received from the server
+                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.log('Error getting popup URL');
+                        }
+                    });
+                } else {
+                    // If a popup window is already open, notify the user or take appropriate action
+                    console.log('A popup window is already open');
+                }
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  <script>
     function calculateTotalAmount() {
         var totalAmount = 0;

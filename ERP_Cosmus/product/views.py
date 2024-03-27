@@ -1275,6 +1275,48 @@ def purchasevouchercreate(request):
     Purchase_gst = gst.objects.all()
     form = item_purchase_voucher_master_form()
     formset = purchase_voucher_items_formset()
+    print(request.GET)
+    try:
+        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
+        party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+        print(account_sub_grp.id)
+        items = Item_Creation.objects.all()
+
+
+        
+        #item values
+        item_color_out = ''
+        item_per_out = ''
+        item_value = request.GET.get('item_value')
+        if item_value is not None: 
+            item_value = int(item_value)
+            item = Item_Creation.objects.get(id = item_value)
+            item_color = item.Item_Color.color_name
+            item_color_out =  item_color_out + item_color
+            item_per = item.unit_name_item.unit_name
+            item_per_out = item_per_out + item_per
+        
+        # item shades
+        item_shades = item_color_shade.objects.filter(items = item_value)
+    
+        item_shades_dict = {}
+        for shade in item_shades:
+            item_shades_dict[shade.id] = shade.item_shade_name
+
+    except Exception as e:
+        print(f'exception occoured {e}')
+    print(item_shades_dict)
+    
+
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+             return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
+                                  "item_per":item_per_out})
+
+
+
+
+
+
     
     return render(request,'accounts/purchase_invoice1.html',{'form':form,'party_names':party_names,'items':items, 'formset':formset, 'Purchase_gst':Purchase_gst})
 
