@@ -489,7 +489,7 @@ class RawStockTransfer(models.Model):
 class item_purchase_voucher_master(models.Model):
     purchase_number = models.IntegerField()
     supplier_invoice_number = models.IntegerField()
-    ledger_type = models.CharField(max_length = 150)
+    ledger_type = models.CharField(max_length = 20, default = 'purchase')
     party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
     fright_transport = models.DecimalField(max_digits=9, decimal_places=2)
     gross_total = models.DecimalField(max_digits=9, decimal_places=2)
