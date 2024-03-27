@@ -6,12 +6,29 @@
 
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-
-  <div class="d-flex m-3">
-    <label for="id_Product_Refrence_ID" class="form-label item-form">Refrence ID:</label>
-    <input type="number" readonly class="item-select" value={{form.instance.Product_Refrence_ID}}
+  <div class="d-flex mb-3">
+    <label for="id_Product_Refrence_ID" class="fs-5 fw-bold">Refrence ID:</label>
+    <input type="number" readonly class="product_items fs-5" value={{form.instance.Product_Refrence_ID}}
       name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
+    <label for="id_Model_Name" class="fw-bold ms-2 fs-5">Model Name:</label>
+    <span type="text" class="product_items fs-5" value="" name="" readonly id="">{{form.instance.Model_Name |
+      default_if_none:''}}</span>
+    <label for="" class="fw-bold ms-2 fs-5">Color Count:</label>
+    <span class="mx-2 fs-5">5</span>
   </div>
+
+  <div class="d-flex mb-2">
+    <label for="" class="fw-bold">Imgs:</label>
+    <div class="mx-2">
+      {{ formset.management_form }}
+      {% for form in formset %}
+      {% if form.instance.PProduct_image %}
+      <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 70px;">
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
   <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Details<span class="span_padding"><i
         class="fas fa-angle-right arrowBtn"></i></span></button>
 
@@ -19,13 +36,12 @@
     {{ formset.management_form }}
     {% for form in formset %}
     <div class="card rounded-3 mb-3 p-2">
-     
+
       <div class="row">
         <div class="col-lg-9">
           <div class=" d-flex mb-3">
             <label class="mx-2">Color:</label>
-            <select class="item-select" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
-              
+            <select class="item-selects" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
               {% if form.instance.PProduct_color.id %}
               <option value="{{form.instance.PProduct_color.id}}">{{form.instance.PProduct_color}}</option>
               {%elif not form.instance %}
@@ -34,54 +50,58 @@
               {% for color in colors %}
               <option value="{{color.id}}">{{color.color_name}}</option>
               {% endfor %}
-
-          </select>
+            </select>
 
             <div class=" d-flex mb-3">
-              <label class="mx-3">Image:</label>
-              <input type="file" name="{{ form.prefix }}-PProduct_image" accept="image/*" id="{{ form.prefix }}-PProduct_image">
-             <!-- <span>{{form.PProduct_image}}</span>-->
+              <label for="{{ form.prefix }}-PProduct_image" class="mx-3">Image:</label>
+              <input type="file" class="my-files" name="{{ form.prefix }}-PProduct_image" accept="image/*"
+                id="{{ form.prefix }}-PProduct_image">
+              <!-- <span>{{form.PProduct_image}}</span>-->
             </div>
           </div>
           <div class=" d-flex mb-3">
             <label class="mx-2">SKU:</label>
-            <input type="text" class="item-select" name="{{form.prefix}}-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly id="{{form.prefix}}-PProduct_SKU">
-           
-           <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
-           <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
-    
+            <input type="text" class="item-select" name="{{form.prefix}}-PProduct_SKU"
+              value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly
+              id="{{form.prefix}}-PProduct_SKU">
+
+            <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
+            <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
+
           </div>
           <div class="mb-2 d-flex">
             <label for="" class="form-label pe-3">EANCode :</label>
-            <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode" value="{{form.instance.Product_EANCode}}" class="rounded-3 w-75 px-2">
+            <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode"
+              value="{{form.instance.Product_EANCode}}" class="rounded-3 w-75 px-2">
             <label for="" class="form-label ms-2 pe-4">Rating :</label>
-            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating" value="{{form.instance.Product_Rating}}" min="0" max="5" class="rounded-3 w-75 px-2">
+            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating"
+              value="{{form.instance.Product_Rating}}" min="0" max="5" class="rounded-3 w-75 px-2">
           </div>
-    
+
           <label for="" class="form-label fw-bold ps-2">Links</label>
           <div class="d-flex">
             <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo mx-2">
             <span>{{form.Amazon_Link}}</span>
-    
+
             <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo mx-2">
             <span>{{form.Flipkart_Link}}</span>
-    
+
             <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo mx-2">
             <span>{{form.Cosmus_link}}</span>
-    
+
             <label class="mx-2 text-dan ger">Delete:</label>
             <span class="">{{form.DELETE}}</span>
           </div>
         </div>
         <div class="col-lg-2">
-            {% if form.instance.PProduct_image %}
-            <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 150px;">
-          {% endif %}       
+          {% if form.instance.PProduct_image %}
+          <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 150px;">
+          {% endif %}
         </div>
-     </div>
-        </div>
+      </div>
+    </div>
 
-     
+
     {% endfor %}
   </div>
   <button type="button" class="edit_btn w-75 mb-3" id="aditional_details_btn">Aditional Details<span
@@ -91,29 +111,32 @@
   <div id="aditional_details" style="display: none;">
     <div class="row">
       <div class="col-lg-4">
+        <div class="d-flex mb-3">
+          <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
+          <input type="text" class="item-select" value="{{form.instance.Model_Name  | default_if_none:''}}"
+            name="Model_Name" required id="id_Model_Name">
+        </div>
         <div class=" d-flex my-3">
           <label for="id_Product_Name" class="form-label item-form">Name:</label>
-            <input type="text" class="item-select" value="{{ form.instance.Product_Name  | default_if_none:''}}" name="Product_Name" required id="id_Product_Name">
+          <input type="text" class="item-select" value="{{ form.instance.Product_Name  | default_if_none:''}}"
+            name="Product_Name" required id="id_Product_Name">
+        </div>
+        <div class=" d-flex my-3">
+          <label for="" class="form-label item-form">ShortName:</label>
+          <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}"
+            name="Product_ShortName" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">Catagory:</label>
           <input type="text" class="item-select" value="" name="" required id="">
         </div>
-        <div class=" d-flex my-3">
-          <label for="" class="form-label item-form">ShortName:</label>
-          <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}" name="Product_ShortName" required id="">
-        </div>
-        <div class="d-flex mb-3">
-          <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
-          <input type="text" class="item-select" value="{{form.instance.Model_Name  | default_if_none:''}}" name="Model_Name" required
-            id="id_Model_Name">
-        </div>
         <div class=" d-flex mb-3">
           <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
           <select name="Product_Brand" class="item-select" id="id_Product_Brand">
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_Brand}}">{{form.instance.Product_Brand | default_if_none:''}}</option>
-            {% elif not form.instance.id %} 
+            <option value="{{form.instance.Product_Brand}}">{{form.instance.Product_Brand | default_if_none:''}}
+            </option>
+            {% elif not form.instance.id %}
             <option value=""></option>
             {% endif %}
             <option value="Cosmus">Cosmus</option>
@@ -128,7 +151,8 @@
           <label for="id_Product_Status" class="form-label item-form">Status:</label>
           <select name="Product_Status" class="item-select" id="id_Product_Status">
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status | default_if_none:''}}</option>
+            <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status |
+              default_if_none:''}}</option>
             {% elif not form.instance.id %}
             <option value="" selected></option>
             {% endif %}
@@ -139,360 +163,402 @@
           </select>
         </div>
       </div>
-    <div class="col-lg-4">
-      <div class="d-flex my-3">
-        <label for="" class="form-label item-form">Gender</label>
-        <select name="Product_Gender" class="item-select" required id="id_Gender">
-          {% if form.instance.id %}
-  
-          <option value="{{form.instance.Product_Gender}}">{{form.instance.Product_Gender | default_if_none:''}}</option>
-          {% elif not form.instance.id %}
-          <option value=""></option>
-          {% endif %}
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Unisex">Unisex</option>
-        </select>
-      </div>
-      <div class="d-flex mb-3">
-        <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
+      <div class="col-lg-4">
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">Gender</label>
+          <select name="Product_Gender" class="item-select" required id="id_Gender">
+            {% if form.instance.id %}
+
+            <option value="{{form.instance.Product_Gender}}">{{form.instance.Product_Gender | default_if_none:''}}
+            </option>
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Unisex">Unisex</option>
+          </select>
+        </div>
+        <div class="d-flex mb-3">
+          <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
           <div class=" ms-5">
+            <label for="id_Product_Channel_All" class="px-2">All</label>
+            <input type="checkbox" class="mx-1" name="Product_Channel_All" value="All" id="id_Product_Channel_All"
+              onclick="checkAll(this)">
+
             {% for choice in form.Product_Channel.field.choices %}
             <label for="id_Product_Channel_{{ forloop.counter0 }}" class="px-2">
               <input type="checkbox" class="mx-1" name="Product_Channel" value="{{ choice.0 }}"
-                id="id_Product_Channel_{{ forloop.counter0 }}" {% if choice.0 in form.Product_Channel.value %} checked {% endif %}>
+                id="id_Product_Channel_{{ forloop.counter0 }}" {% if choice.0 in form.Product_Channel.value %} checked
+                {% endif %}>
               {{ choice.1 }}
             </label>
             {% endfor %}
           </div>
-      </div>
-      <div class="d-flex mb-3">
-        <label for="id_GST" class="form-label item-form">GST:</label>
-        <select name="Product_GST" class="item-select" required id="id_GST">
+        </div>
+        <div class="d-flex mb-3">
+          <label for="id_GST" class="form-label item-form">GST:</label>
+          <select name="Product_GST" class="item-select" required id="id_GST">
 
 
-          {% if form.instance.id %}
-          <!-- checks if form.instance.Product_GST.id is true as form.instance.P_GST does not exists right now -->
-          <option value="{{ form.instance.Product_GST.id }}">{{form.instance.P_GST | default_if_none:''}}</option>
-          
-          {% elif not form.instance.id %}
-          
-          <option value=""></option>
-          {% endif %}
+            {% if form.instance.id %}
+            <!-- checks if form.instance.Product_GST.id is true as form.instance.P_GST does not exists right now -->
+            <option value="{{ form.instance.Product_GST.id }}">{{form.instance.P_GST | default_if_none:''}}</option>
+
+            {% elif not form.instance.id %}
+
+            <option value=""></option>
+            {% endif %}
 
 
-          {% for gst in gsts %}
-          <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class=" d-flex mb-3">
-        <label for="id_Product_HSNCode" class="form-label item-form">HSN Code:</label>
-        <input type="text" class="item-select" name="Product_HSNCode" value="{{form.instance.Product_HSNCode  | default_if_none:''}}" id="id_Product_HSNCode">
-      </div>
-      <div class="d-flex mb-3">
-        <label for="id_Product_WarrantyTime" class="form-label item-form">WarrantyTime:</label>
-        <select name="Product_WarrantyTime" class="item-select" id="id_Product_WarrantyTime">
-          {% if form.instance.id %}
-          <option value="{{form.instance.Product_WarrantyTime}}">{{form.instance.Product_WarrantyTime| default_if_none:''}}</option>
-          {% elif not form.instance.id %}
-          <option value=""></option>
-          {% endif %}
-          <option value="6 Months">6 Months</option>
-          <option value="12 Months">12 Months</option>
-          <option value="18 Months">18 Months</option>
-          <option value="24 Months">24 Months</option>
-          <option value="30 Months">30 Months</option>
-          <option value="36 Months">36 Months</option>
-          <option value="42 Months">42 Months</option>
-          <option value="48 Months">48 Months</option>
-          <option value="54 Months">54 Months</option>
-          <option value="60 Months">60 Months</option>
-        </select>
+            {% for gst in gsts %}
+            <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class=" d-flex mb-3">
+          <label for="id_Product_HSNCode" class="form-label item-form">HSN Code:</label>
+          <input type="text" class="item-select" name="Product_HSNCode"
+            value="{{form.instance.Product_HSNCode  | default_if_none:''}}" id="id_Product_HSNCode">
+        </div>
+        <div class="d-flex mb-3">
+          <label for="id_Product_WarrantyTime" class="form-label item-form">WarrantyTime:</label>
+          <select name="Product_WarrantyTime" class="item-select" id="id_Product_WarrantyTime">
+            {% if form.instance.id %}
+            <option value="{{form.instance.Product_WarrantyTime}}">{{form.instance.Product_WarrantyTime|
+              default_if_none:''}}</option>
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            <option value="6 Months">6 Months</option>
+            <option value="12 Months">12 Months</option>
+            <option value="18 Months">18 Months</option>
+            <option value="24 Months">24 Months</option>
+            <option value="30 Months">30 Months</option>
+            <option value="36 Months">36 Months</option>
+            <option value="42 Months">42 Months</option>
+            <option value="48 Months">48 Months</option>
+            <option value="54 Months">54 Months</option>
+            <option value="60 Months">60 Months</option>
+          </select>
+        </div>
       </div>
     </div>
-  </div>
-    
-    
+
+
   </div>
   <button type="button" class="edit_btn w-75 mb-3" id="product_capacity_btn">Capacity<span class="capacity-padding"><i
         class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_capacity" style="display: none;">
-<div class="row">
-  <div class="col-lg-4">
-    
+    <div class="row">
+      <div class="col-lg-4">
 
-    <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Compartment:</label>
-      <select name="Product_Compartments" required id="" class="item-select">
-        {% if form.instance.id %}
-        <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments| default_if_none:''}}</option>
-        {% elif not form.instance.id %}
-        <option value=""></option>
-        {% endif %}
-        <option value="One">One</option>
-        <option value="Two">Two</option>
-        <option value="Three">Three</option>
-        <option value="Four">Four</option>
-        <option value="Five">Five</option>
-        <option value="Six">Six</option>
-        <option value="Seven">Seven</option>
-        <option value="Eight">Eight</option>
-        <option value="Nine">Nine</option>
-        <option value="Ten">Ten</option>
-      </select>
+
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">Compartment:</label>
+          <select name="Product_Compartments" required id="" class="item-select">
+            {% if form.instance.id %}
+            <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments|
+              default_if_none:''}}</option>
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            <option value="One">One</option>
+            <option value="Two">Two</option>
+            <option value="Three">Three</option>
+            <option value="Four">Four</option>
+            <option value="Five">Five</option>
+            <option value="Six">Six</option>
+            <option value="Seven">Seven</option>
+            <option value="Eight">Eight</option>
+            <option value="Nine">Nine</option>
+            <option value="Ten">Ten</option>
+          </select>
+        </div>
+        <div class="d-flex my-3">
+
+
+          <label for="" class="form-label item-form">Acc Compartment:</label>
+          <select class="item-select" name="Product_Accessory_Compartments" required id="">
+
+            {% if form.instance.id %}
+            <option value="{{form.instance.Product_Accessory_Compartments}}">
+              {{form.instance.Product_Accessory_Compartments| default_if_none:''}}</option>
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            <option value="One">One</option>
+            <option value="Two">Two</option>
+            <option value="Three">Three</option>
+            <option value="Four">Four</option>
+            <option value="Five">Five</option>
+            <option value="Six">Six</option>
+            <option value="Seven">Seven</option>
+            <option value="Eight">Eight</option>
+            <option value="Nine">Nine</option>
+            <option value="Ten">Ten</option>
+          </select>
+
+
+
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">Capacity:</label>
+          <input type="text" class="item-select" value="{{form.instance.Product_CapacityLtrs |default_if_none:'' }}"
+            name="Product_CapacityLtrs" required id="">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">Material:</label>
+          <select class="item-select" name="Product_Material" required id="">
+            {% if form.instance.id %}
+            <option value="{{form.instance.Product_Material}}">{{form.instance.Product_Material | default_if_none:''}}
+            </option>
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            <option value="PU Coated Polyester">PU Coated Polyester</option>
+            <option value="PU Coated Nylon">PU Coated Nylon</option>
+            <option value="Vegan Leather">Vegan Leather</option>
+            <option value="Polycarbonate">Polycarbonate</option>
+            <option value="Eva Shell">Eva Shell</option>
+            <option value="Cotton">Cotton</option>
+            <option value="Jute">Jute</option>
+          </select>
+
+        </div>
+        <div class=" d-flex mb-3">
+          <label for="" class="form-label item-form">UOM:</label>
+
+          <select class="item-select" name="Product_UOM" id="">
+
+            {% if form.instance.id %}
+            <option value="{{form.instance.Product_UOM}}">{{form.instance.Product_UOM| default_if_none:''}}</option>
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            <option value="Pcs">Pcs</option>
+            <option value="Set of 3">Set of 3</option>
+          </select>
+
+
+        </div>
+
+        <div class=" d-flex mb-3">
+          <label for="" class="form-label item-form">Qty Per Box:</label>
+          <input type="text" class="item-select" name="Product_QtyPerBox"
+            value="{{form.instance.Product_QtyPerBox  | default_if_none:''}}" id="">
+        </div>
+
+      </div>
     </div>
-    <div class="d-flex my-3">
 
-
-      <label for="" class="form-label item-form">Acc Compartment:</label>
-      <select class="item-select" name="Product_Accessory_Compartments" required id="">
-
-        {% if form.instance.id %}
-        <option value="{{form.instance.Product_Accessory_Compartments}}">{{form.instance.Product_Accessory_Compartments| default_if_none:''}}</option>
-        {% elif not form.instance.id %}
-        <option value=""></option>
-        {% endif %}
-        <option value="One">One</option>
-        <option value="Two">Two</option>
-        <option value="Three">Three</option>
-        <option value="Four">Four</option>
-        <option value="Five">Five</option>
-        <option value="Six">Six</option>
-        <option value="Seven">Seven</option>
-        <option value="Eight">Eight</option>
-        <option value="Nine">Nine</option>
-        <option value="Ten">Ten</option>
-      </select>
-
-
-
-    </div>
-    <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Capacity:</label>
-      <input type="text" class="item-select" value="{{form.instance.Product_CapacityLtrs |default_if_none:'' }}" name="Product_CapacityLtrs" required id="">
-    </div>
   </div>
-  <div class="col-lg-4">
-    <div class="d-flex my-3">
-      <label for="" class="form-label item-form">Material:</label>
-      <select class="item-select" name="Product_Material" required id="">
-        {% if form.instance.id %}
-        <option value="{{form.instance.Product_Material}}">{{form.instance.Product_Material | default_if_none:''}}</option>
-        {% elif not form.instance.id %}
-        <option value=""></option>
-        {% endif %}
-        <option value="PU Coated Polyester">PU Coated Polyester</option>
-        <option value="PU Coated Nylon">PU Coated Nylon</option>
-        <option value="Vegan Leather">Vegan Leather</option>
-        <option value="Polycarbonate">Polycarbonate</option>
-        <option value="Eva Shell">Eva Shell</option>
-        <option value="Cotton">Cotton</option>
-        <option value="Jute">Jute</option>
-      </select>
-
-    </div>
-    <div class=" d-flex mb-3">
-      <label for="" class="form-label item-form">UOM:</label>
-
-      <select class="item-select" name="Product_UOM" id="">
-
-        {% if form.instance.id %}
-        <option value="{{form.instance.Product_UOM}}">{{form.instance.Product_UOM| default_if_none:''}}</option>
-        {% elif not form.instance.id %}
-        <option value=""></option>
-        {% endif %}
-        <option value="Pcs">Pcs</option>
-        <option value="Set of 3">Set of 3</option>
-      </select>
-
-
-    </div>
-
-    <div class=" d-flex mb-3">
-      <label for="" class="form-label item-form">Qty Per Box:</label>
-      <input type="text" class="item-select" name="Product_QtyPerBox" value="{{form.instance.Product_QtyPerBox  | default_if_none:''}}" id="">
-    </div>
-
-  </div>
-</div>
-  
-  </div>
-  <button type="button" class="edit_btn w-75 mb-3" id="product_description_btn">Description<span class="discription-padding"><i
-        class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-3" id="product_description_btn">Description<span
+      class="discription-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_description" style="display: none;">
     <div class="row">
       <div class="col-lg-4">
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint1:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint1  | default_if_none:''}}" name="Product_BulletPoint1" required id="">
+          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint1  | default_if_none:''}}"
+            name="Product_BulletPoint1" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint2:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint2  | default_if_none:''}}" name="Product_BulletPoint2" required id="">
+          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint2  | default_if_none:''}}"
+            name="Product_BulletPoint2" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint3:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint3  | default_if_none:''}}" name="Product_BulletPoint3" required id="">
+          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint3  | default_if_none:''}}"
+            name="Product_BulletPoint3" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint4:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint4  | default_if_none:''}}" name="Product_BulletPoint4" required id="">
+          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint4  | default_if_none:''}}"
+            name="Product_BulletPoint4" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint5:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint5  | default_if_none:''}}" name="Product_BulletPoint5" required id="">
+          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint5  | default_if_none:''}}"
+            name="Product_BulletPoint5" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">ShortDescription:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_ShortDescription | default_if_none:''}}" name="Product_ShortDescription" required id="">
+          <input type="text" class="item-select" value="{{form.instance.Product_ShortDescription | default_if_none:''}}"
+            name="Product_ShortDescription" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">LongDescription:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_LongDescription | default_if_none:''}}" name="Product_LongDescription" required id="">
+          <input type="text" class="item-select" value="{{form.instance.Product_LongDescription | default_if_none:''}}"
+            name="Product_LongDescription" required id="">
         </div>
       </div>
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Length(cm):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Length | default_if_none:''}}" name="Product_Dimensions_WP_Length" required id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Width(In):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Width | default_if_none:''}}" name="Product_Dimensions_WP_Width" required id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Height(In):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Height | default_if_none:''}}" name="Product_Dimensions_WP_Height" required id="">
-        </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Weight(Gm):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WP_Weight | default_if_none:''}}" name="Product_Dimensions_WP_Weight" required id="">
-        </div>
-        <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Length(cm):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Length | default_if_none:''}}" name="Product_Dimensions_WOP_Length" required id="">
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WOP_Length | default_if_none:''}}"
+            name="Product_Dimensions_WOP_Length" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Width(In):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Width | default_if_none:''}}" name="Product_Dimensions_WOP_Width" required id="">
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WOP_Width | default_if_none:''}}"
+            name="Product_Dimensions_WOP_Width" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Height(In):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Height | default_if_none:''}}" name="Product_Dimensions_WOP_Height" required id="">
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WOP_Height | default_if_none:''}}"
+            name="Product_Dimensions_WOP_Height" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Weight(Gm):</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_Dimensions_WOP_Weight | default_if_none:''}}" name="Product_Dimensions_WOP_Weight" required id="">
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WOP_Weight | default_if_none:''}}"
+            name="Product_Dimensions_WOP_Weight" required id="">
         </div>
-    
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Length(cm):</label>
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WP_Length | default_if_none:''}}"
+            name="Product_Dimensions_WP_Length" required id="">
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Width(In):</label>
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WP_Width | default_if_none:''}}"
+            name="Product_Dimensions_WP_Width" required id="">
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Height(In):</label>
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WP_Height | default_if_none:''}}"
+            name="Product_Dimensions_WP_Height" required id="">
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">WP Weight(Gm):</label>
+          <input type="text" class="item-select"
+            value="{{form.instance.Product_Dimensions_WP_Weight | default_if_none:''}}"
+            name="Product_Dimensions_WP_Weight" required id="">
+        </div>
       </div>
-      
-
-
     </div>
   </div>
-  <button type="button" class="edit_btn w-75 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i 
-    class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i
+        class="fas fa-angle-right arrowBtn"></i></span></button>
 
   <div id="product_pricing" style="display: none;">
     <div class="row">
       <div class="col-lg-4">
         <div class="d-flex mb-3">
           <label for="id_Product_Cost_price" class="form-label item-form">Cost price:</label>
-          <input type="number" class="item-select" value="{{form.instance.Product_Cost_price  | default_if_none:''}}" name="Product_Cost_price"
-            id="id_Product_Cost_price">
+          <input type="number" class="item-select" value="{{form.instance.Product_Cost_price  | default_if_none:''}}"
+            name="Product_Cost_price" id="id_Product_Cost_price">
         </div>
         <div class="d-flex mb-3">
           <label for="id_Product_MRP" class="form-label item-form"> MRP:</label>
-          <input type="number" class="item-select" value="{{form.instance.Product_MRP | default_if_none:''}}" name="Product_MRP"
-            id="id_Product_MRP">
+          <input type="number" class="item-select" value="{{form.instance.Product_MRP | default_if_none:''}}"
+            name="Product_MRP" id="id_Product_MRP">
         </div>
         <div class="d-flex mb-3">
           <label for="id_Product_SalePrice_CustomerPrice" class="form-label item-form">Sale & Customer Price</label>
           <input type="number" class="item-select" name="Product_SalePrice_CustomerPrice"
-            value="{{form.instance.Product_SalePrice_CustomerPrice  | default_if_none:''}}" id="id_Product_SalePrice_CustomerPrice">
+            value="{{form.instance.Product_SalePrice_CustomerPrice  | default_if_none:''}}"
+            id="id_Product_SalePrice_CustomerPrice">
         </div>
         <div class="d-flex mb-3">
           <label for="id_Product_BulkPrice" class="form-label item-form">BulkPrice:</label>
-          <input type="number" class="item-select" value="{{form.instance.Product_BulkPrice | default_if_none:''}}" name="Product_BulkPrice"
-            id="id_Product_BulkPrice">
+          <input type="number" class="item-select" value="{{form.instance.Product_BulkPrice | default_if_none:''}}"
+            name="Product_BulkPrice" id="id_Product_BulkPrice">
         </div>
-        
+
       </div>
       <div class="col-lg-4">
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">WRP</label>
-          <input type="text" class="item-select" name="Product_WRP" value="{{form.instance.Product_WRP | default_if_none:''}}" id="">
+          <input type="text" class="item-select" name="Product_WRP"
+            value="{{form.instance.Product_WRP | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">CounterPrice:</label>
-          <input type="text" class="item-select" name="Product_CashCounterPrice" value="{{form.instance.Product_CashCounterPrice | default_if_none:''}}" id="">
+          <input type="text" class="item-select" name="Product_CashCounterPrice"
+            value="{{form.instance.Product_CashCounterPrice | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">IndiaMart:</label>
-          <input type="text" class="item-select" name="Product_IndiaMartPrice" value="{{form.instance.Product_IndiaMartPrice | default_if_none:''}}" id="">
+          <input type="text" class="item-select" name="Product_IndiaMartPrice"
+            value="{{form.instance.Product_IndiaMartPrice | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">Retailer/Dealer:</label>
-          <input type="text" class="item-select" name="Product_Retailer_dealer_Price" value="{{form.instance.Product_Retailer_dealer_Price | default_if_none:''}}" id="">
+          <input type="text" class="item-select" name="Product_Retailer_dealer_Price"
+            value="{{form.instance.Product_Retailer_dealer_Price | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label ">Wholesaler/Distributor: </label>
-          <input type="text" class="item-select" name="Product_Wholesaler_DistributorPrice" value="{{form.instance.Product_Wholesaler_DistributorPrice | default_if_none:''}}" id="">
+          <input type="text" class="item-select" name="Product_Wholesaler_DistributorPrice"
+            value="{{form.instance.Product_Wholesaler_DistributorPrice | default_if_none:''}}" id="">
         </div>
-    
+
       </div>
     </div>
-    
-    
+
+
   </div>
   </div>
   <input type="submit" class="item-btn mx-5" value="submit">
 </form>
 
-<!-- <script>
+<script>
 
-  var product_color = document.getElementById('id_productdetails-0-PProduct_color');
-  product_color.setAttribute('disabled', true);
+  function checkAll(source) {
+    var checkboxes = document.querySelectorAll('input[name="Product_Channel"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = source.checked;
+    }
+  }
+</script>
 
-</script> -->
 <script>
   var popupWindow = null;
 
   function editImages(button) {
-      if (popupWindow === null || popupWindow.closed) {
-          openPopup(button, '/add_images/');
-      } else {
-          popupWindow.focus();
-      }
+    if (popupWindow === null || popupWindow.closed) {
+      openPopup(button, '/add_images/');
+    } else {
+      popupWindow.focus();
+    }
   }
 
   function editVideoUrl(button) {
-      if (popupWindow === null || popupWindow.closed) {
-          openPopup(button, '/add_video_url/');
-      } else {
-          popupWindow.focus();
-      }
+    if (popupWindow === null || popupWindow.closed) {
+      openPopup(button, '/add_video_url/');
+    } else {
+      popupWindow.focus();
+    }
   }
 
   function openPopup(button, path) {
-      var card = button.closest('.card');
-      if (card) {
-          var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
-          if (productSkuInput) {
-              var productSku = productSkuInput.value;
-              var minWidth = 800; // minimum width
-              var minHeight = 600; 
-              
-              // Open popup window
-              popupWindow = window.open('http://127.0.0.1:8000/product/' + productSku + path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-          } else {
-              console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
-          }
+    var card = button.closest('.card');
+    if (card) {
+      var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+      if (productSkuInput) {
+        var productSku = productSkuInput.value;
+        var minWidth = 800; // minimum width
+        var minHeight = 600;
+
+        // Open popup window
+        popupWindow = window.open('http://127.0.0.1:8000/product/' + productSku + path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
       } else {
-          console.error('Parent card container not found.');
+        console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
       }
+    } else {
+      console.error('Parent card container not found.');
+    }
   }
 </script>
 

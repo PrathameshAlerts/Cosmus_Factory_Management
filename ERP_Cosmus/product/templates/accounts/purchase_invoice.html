@@ -102,7 +102,7 @@
   </div>
  
   
-
+ 
 
   <script>
     $(document).ready(function () {
@@ -148,7 +148,7 @@
                         data: {
                             'selected_shade': selectedShade
                         },
-                        success: function (response) {
+                         success: function (response) {
                             // Open the dynamic URL received from the server
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                         },
