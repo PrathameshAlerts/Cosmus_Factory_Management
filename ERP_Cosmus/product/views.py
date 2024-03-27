@@ -1318,7 +1318,7 @@ def purchasevouchercreate(request):
 
 
     
-    return render(request,'accounts/purchase_invoice.html',{'form':form,'party_names':party_names,'items':items, 'formset':formset, 'Purchase_gst':Purchase_gst})
+    return render(request,'accounts/purchase_invoice1.html',{'form':form,'party_names':party_names,'items':items, 'formset':formset, 'Purchase_gst':Purchase_gst})
 
 
 

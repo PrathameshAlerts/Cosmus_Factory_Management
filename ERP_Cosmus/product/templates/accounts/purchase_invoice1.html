@@ -56,10 +56,11 @@
                 {{formset.management_form}}
                 {% for forms in formset %}
                 {{ shade_form.id }}
+                
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td> 
-                        <select name="item_name" class="item-select" placeholder="Item Name" required id="item_name">
+                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" required id="item_name_{{forloop.counter0}}">
                             <option value=""></option>
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
@@ -67,7 +68,7 @@
                           </select>
                     </td>
                     <td>
-                        <input type="text" name="item_color" id="item_color" class="item-select readonly">
+                        <input type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select readonly">
                     </td>
                     <td>
                         <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
@@ -80,7 +81,7 @@
                         <input type="text" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
                     </td>
                     <td>
-                        <input type="text" name="item_unit" id="item_unit" class="purchase-input">
+                        <input type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="purchase-input">
                     </td>
                     <td>
                         <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">
@@ -129,23 +130,16 @@
  </form>
 
  <script>
-    $(document).ready(function () { 
+    $(document).ready(function () {
+        var itemName;
+        $('select[name^="item_name"]').click(function () {
+            itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set"]').attr('name');
+            console.log(itemName)
+        });
+
         $('#item_name').change(function () {
             var item_value = $(this).val();
-            var formSet = $('#id_purchase_voucher_items_set-TOTAL_FORMS');
-            var totalForms = parseInt(formSet.val());
-            var nextForm = 0;
-            
-            for (var i = 0; i < totalForms; i++) {
-            var itemShadeSelect = $('#purchase_voucher_items_set-' + i + '-item_shade');
-            if (itemShadeSelect.length >= 0) {
-                nextForm = i;
-                console.log(nextForm) ;
-                break;
-            }
-        }
-
-                
+           
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -155,20 +149,21 @@
                 success: function (response) {
                     console.log('Data sent successfully')
                 
-                    $(itemShadeSelect).empty().append('<option value="">Select Shade</option>');
-
+                    $('#' + itemName).empty().append('<option value="">Select Shade</option>');
+                    console.log(itemName)
                     var itemcolorinput = document.querySelector('#item_color');
                     var item_color = response.item_color;
                     var item_shade_response = response.item_shade; 
-                
+                    
                     var itemperinput = document.querySelector('#item_unit')
                     var itemperinput_response = response.item_per;
-            
+                    console.log(item_shade_response)
                     itemcolorinput.value = item_color;
                     itemperinput.value = itemperinput_response;
-                   
+
                     $.each(item_shade_response, function (key, value) {
-                        $(itemShadeSelect).append('<option value="' + key + '">' + value + '</option>');
+                        console.log(item_shade_response)
+                        $('#'+itemName).append('<option value="' + key + '">' + value + '</option>');
                     });
                     
                 },
