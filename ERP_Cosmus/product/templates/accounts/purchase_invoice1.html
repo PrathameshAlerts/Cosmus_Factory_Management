@@ -1,0 +1,112 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+
+{% block body %} 
+<div>
+        <h2>Purchase invoice</h2>
+        <form class="mt-5" action="" method="POST">
+        <label for="id_purchase_number"  class="item-form">Purchase No</label>
+        <input type="number" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{form.instance.purchase_number}}" maxlength="255" required >
+        
+        <label for="id_supplier_invoice_number" class="item-form" >Supplier Invoice No</label>
+        <input type="number" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{form.instance.supplier_invoice_number}}" maxlength="255" required >
+        
+        <label for="id_ledger_type" class="item-form" >ledger Type</label>
+        <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{form.instance.ledger_type}}" maxlength="50" default = 'Purchase' readonly required placeholder="Purchase" >
+        
+    
+        <label for="id_party_name" class="item-form" >Party A/C Name</label>
+        <select class="item-select" name="party_name" required id="id_party_name">
+        {% if form.instance.id %}
+        {% for x in party_names %}
+        <option value="{{x.id}}">{{x.name}}</option>
+        {% endfor %}
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% endif %}
+        {% for x in party_names %}
+        <option value="{{x.id}}">{{x.name}}</option>
+        {% endfor %}
+
+        </select>
+        
+        <br>
+        <br>
+        <br>
+        <br>
+
+
+        {{formset.management_form}}
+        {% for forms in formset %}
+
+        {{ shade_form.id }}
+
+        
+        <label for="item_name">Item Name</label>
+        <input type="text" name="item_name" id="item_name"> 
+
+        <label for="item_color">Item Color</label>
+        <input type="text" name="item_color" id="item_color">
+
+        <label for="{{forms.prefix}}-item_shade">Item shade:</label>
+        <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
+              
+        </select>
+
+
+        <label for="{{forms.prefix}}-quantity_total">Quantity</label>
+        <input type="text" id="{{forms.prefix}}-quantity_total" class="item-select" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total}}">
+
+
+        <label for="{{forms.prefix}}-rate">Rate</label>
+        <input type="text" id="{{forms.prefix}}-rate" class="item-select" name="{{forms.prefix}}-rate" value="{{forms.instance.rate}}">
+
+        
+        <label for="item_unit">Units</label>
+        <input type="text" name="item_unit" id="item_unit">
+
+
+
+        <label for="{{forms.prefix}}-amount">Amount</label>
+        <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount}}">
+
+         'item_shade'
+
+         {{ shade_form.DELETE }}
+        {% endfor %}
+
+
+        <br>
+        <br>
+
+        <label for="id_fright_transport" class="item-form" >Fright & Transport</label>
+        <input type="number" class="item-select" name="fright_transport" id ="id_fright_transport" value="{{form.instance.fright_transport}}" maxlength="50" required >
+
+
+        <label for="id_gross_total" class="item-form" >Gross total</label>
+        <input type="number" class="item-select" name="gross_total" id ="id_gross_total" value="{{form.instance.gross_total}}" maxlength="50" required >
+
+        <label for="id_gst_rate" class="item-form" >GST</label>
+        <select class="item-select" name="gst_rate" required id="id_gst_rate">
+            {% if form.instance.id %}
+            {% for x in Purchase_gst %}
+            <option value="{{x.id}}">{{x.gst_percentage}}</option>
+            {% endfor %}
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            {% for x in Purchase_gst %}
+            <option value="{{x.id}}">{{x.gst_percentage}}</option>
+            {% endfor %}
+
+            </select>
+
+
+
+
+
+        </form>
+
+
+
+{% endblock body %}

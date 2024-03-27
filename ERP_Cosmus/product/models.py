@@ -256,23 +256,22 @@ class Unit_Name_Create(models.Model):
     unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
 
 
+
 class Item_Creation(models.Model):
     STATUS =  [
-
         ("Unused","Unused"),
         ("Used","Used"),
         ("Slow Moving","Slow Moving"),
         ("Dead","Dead"),
         ]
-    
+
     PACKING = [
 
         ("Roll","Roll"),
-        ("Bundle","Bundle")]
-    
+        ("Bundle","Bundle")
+        ]
     
     FandNFB = [
-
         ("Fabric","Fabric"),
         ("Non Fabric","Non Fabric"),
         ]
@@ -309,7 +308,6 @@ class Item_Creation(models.Model):
     def fab_grp(self):
         return self.Fabric_Group.fab_grp_name
     
-
     def Unit_Name(self):
         return self.unit_name_item.unit_name
 
@@ -451,6 +449,25 @@ class item_godown_quantity_through_table(models.Model):
 
 
 
+class item_shades_godown_report(models.Model):  
+
+    inward_outward = [
+        ('inward', 'inward'),
+        ("outward", 'outward'),
+    ]
+
+    item_shade_name = models.ForeignKey(item_color_shade, on_delete =models.PROTECT)
+    create_date = models.DateField(auto_now = True)
+    modified_date = models.DateField(auto_now_add = True)
+    particulars = models.CharField(max_length = 150) 
+    voucher_type = models.CharField(max_length = 150)
+    voucher_no = models.IntegerField()
+    inward_outward = models.CharField(max_length = 50, choices = inward_outward)
+    Quantity = models.IntegerField()
+
+
+
+
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225, unique= True)
 
@@ -467,6 +484,32 @@ class RawStockTransfer(models.Model):
     item_unit_transfer = models.CharField(max_length = 200)
     remarks = models.CharField(max_length = 255)
     date_and_time = models.DateTimeField(auto_now = True)
+
+
+class item_purchase_voucher_master(models.Model):
+    purchase_number = models.IntegerField()
+    supplier_invoice_number = models.IntegerField()
+    ledger_type = models.CharField(max_length = 150)
+    party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
+    fright_transport = models.DecimalField(max_digits=9, decimal_places=2)
+    gross_total = models.DecimalField(max_digits=9, decimal_places=2)
+    gst_rate = models.ForeignKey(gst, on_delete = models.PROTECT)
+    grand_total = models.DecimalField(max_digits=9, decimal_places=2)
+
+
+class purchase_voucher_items(models.Model):
+    item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
+    item_shade = models.ForeignKey(item_color_shade, on_delete = models.PROTECT)
+    quantity_total = models.IntegerField()
+    rate = models.DecimalField(max_digits=9, decimal_places=2)
+    amount = models.DecimalField(max_digits=9, decimal_places=2)
+
+
+class shade_godown_items(models.Model):
+    godown_select = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
+    quantity = models.IntegerField()
+    rate = models.DecimalField(max_digits=9, decimal_places=2)
+    amount = models.DecimalField(max_digits=9, decimal_places=2)
 
 
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade , ProductVideoUrls,ProductImage
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, purchase_voucher_items
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -181,6 +181,21 @@ class LedgerForm(forms.ModelForm):
                   'default_credit_period','types','Gst_no','address','state',
                   'country','city','pincode','mobile_no','landline_no','bank_details',
                   'Debit_Credit']
+
+class item_purchase_voucher_master_form(forms.ModelForm):
+    class Meta:
+        model = item_purchase_voucher_master
+        fields = [
+            'purchase_number','supplier_invoice_number','ledger_type',
+            'party_name','fright_transport','gross_total', 'gst_rate','grand_total'
+        ]
+
+
+purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=1)
+
+
+
+
 
 
 
