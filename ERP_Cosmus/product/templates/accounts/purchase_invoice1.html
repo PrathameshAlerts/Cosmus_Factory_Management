@@ -17,8 +17,8 @@
         </div>
         <div class="d-flex mb-3">
             <label for="id_ledger_type" class="item-form" >ledger Type</label>
-            <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{form.instance.ledger_type}}" maxlength="50" default = 'Purchase' readonly required placeholder="Purchase" >
-        </div>
+            <p>Purchase</p>       
+         </div>
         <div class="d-flex mb-3">
             <label for="id_party_name" class="item-form" >Party A/C Name</label>
             <select class="item-select" name="party_name" required id="id_party_name">
@@ -71,9 +71,7 @@
                     </td>
                     <td>
                         <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
-              
                         </select>
-                
                     </td>
                     <td>
                         <input type="text" id="{{forms.prefix}}-quantity_total" class="purchase-input" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total}}">
@@ -88,13 +86,14 @@
                         <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount}}" style="border: none;">
                     </td>
                     <td>
-                        <button type="button" class="delete-btn" id="{{forms.prefix}}-delete">{{ shade_form.DELETE }}</button>
+                    {{ shade_form.DELETE }}
                     </td>
                  </tr>   
             </tbody>
+            {% endfor %}
         </table>
     </div>
-        {% endfor %}
+        
 
 <div class="table-left">
     <div class="d-flex mb-3">
@@ -130,62 +129,5 @@
 </div>
 
  </form>
- <script>
-    function calculateTotalAmount() {
-        var totalAmount = 0;
-        var rows = document.querySelectorAll('table tbody tr');
-        rows.forEach(function(row) {
-            var quantity = parseFloat(row.querySelector('[name="quantity"]').value);
-            var rate = parseFloat(row.querySelector('[name="rate"]').value);
-            var total = quantity * rate;
-            row.querySelector('.total-amount').innerText = total.toFixed(2); // Display total amount in two decimal places
-            totalAmount += total;
-        });
-        
-        // Update gross total
-        var grossTotalElement = document.getElementById('grossTotal');
-        if (grossTotalElement) {
-            grossTotalElement.innerText = totalAmount.toFixed(2);
-        }
-        // Calculate GST
-        var gstAmount = totalAmount * 0.12; // Assuming GST rate is 12%
-        var gstAmountElement = document.getElementById('gstAmount');
-        if (gstAmountElement) {
-            gstAmountElement.innerText = gstAmount.toFixed(2);
-        }
-        // Update final amount (grand total)
-        var finalAmount = totalAmount + gstAmount + 5000; // Adding freight and transport
-        var finalAmountElement = document.getElementById('finalAmount');
-        if (finalAmountElement) {
-            finalAmountElement.innerText = finalAmount.toFixed(2);
-        }
-    }
-  
-    // Function to add event listeners to quantity and rate inputs
-    function addEventListenersToInputs() {
-        var inputs = document.querySelectorAll('table tbody tr input[type="number"]');
-        inputs.forEach(function(input) {
-            input.addEventListener('input', function() {
-                calculateTotalAmount();
-            });
-        });
-    }
-  
-    // Event listener for the add row button
-    document.getElementById('addRowButton').addEventListener('click', function () {
-        var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
-        newRow.querySelector('[name="quantity"]').value = ""; // Clear quantity field
-        newRow.querySelector('[name="rate"]').value = ""; // Clear rate field
-        document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
-        addEventListenersToInputs(); // Add event listeners to the new row inputs
-        calculateTotalAmount(); // Calculate total amount for the new row
-    });
-  
-    // Call function to add event listeners to existing rows' inputs
-    addEventListenersToInputs();
-    // Call calculateTotalAmount initially to calculate total on page load
-    calculateTotalAmount();
-  </script>
-
-
+ 
 {% endblock body %}
