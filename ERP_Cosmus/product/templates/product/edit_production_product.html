@@ -218,8 +218,7 @@
           <label for="id_Product_WarrantyTime" class="form-label item-form">WarrantyTime:</label>
           <select name="Product_WarrantyTime" class="item-select" id="id_Product_WarrantyTime">
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_WarrantyTime}}">{{form.instance.Product_WarrantyTime|
-              default_if_none:''}}</option>
+            <option value="{{form.instance.Product_WarrantyTime}}">{{form.instance.Product_WarrantyTime|default_if_none:''}}</option>
             {% elif not form.instance.id %}
             <option value=""></option>
             {% endif %}

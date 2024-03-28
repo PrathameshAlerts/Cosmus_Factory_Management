@@ -68,7 +68,7 @@
                           </select>
                     </td>
                     <td>
-                        <input type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select readonly">
+                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" class="item-select readonly">
                     </td>
                     <td>
                         <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
@@ -81,7 +81,7 @@
                         <input type="text" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
                     </td>
                     <td>
-                        <input type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="purchase-input">
+                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" class="purchase-input">
                     </td>
                     <td>
                         <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">

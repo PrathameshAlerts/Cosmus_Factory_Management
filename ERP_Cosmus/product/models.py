@@ -506,6 +506,7 @@ class purchase_voucher_items(models.Model):
 
 
 class shade_godown_items(models.Model):
+    purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items, on_delete = models.CASCADE)
     godown_select = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
     quantity = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)

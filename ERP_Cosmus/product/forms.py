@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, purchase_voucher_items
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, purchase_voucher_items, shade_godown_items
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -192,8 +192,7 @@ class item_purchase_voucher_master_form(forms.ModelForm):
 
 
 purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=4)
-
-
+purchase_voucher_items_godown_formset = inlineformset_factory(purchase_voucher_items,shade_godown_items, fields = ('godown_select','quantity','rate','amount'))
 
 
 
