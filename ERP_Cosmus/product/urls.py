@@ -96,7 +96,7 @@ urlpatterns = [
 
 
     #PurchaseVoucher
-    path('purchasevouchercreateupdate/', views.purchasevouchercreateupdate, name = 'purchase-voucher-create'),
+    path('purchasevouchercreate/', views.purchasevouchercreateupdate, name = 'purchase-voucher-create'),
     path('purchasevoucherupdate/<int:pk>', views.purchasevouchercreateupdate, name = 'purchase-voucher-update'),
     path('purchasevoucherlist/', views.purchasevoucherlist, name = 'purchase-voucher-list'),
     path('purchasevoucherdelete/', views.purchasevoucherdelete, name = 'purchase-voucher-delete'),

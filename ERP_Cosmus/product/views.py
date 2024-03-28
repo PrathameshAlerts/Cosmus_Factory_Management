@@ -284,7 +284,7 @@ def item_create(request):
     
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
-        
+        print(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request,'Item has been created')
@@ -372,7 +372,7 @@ def item_edit(request,pk):
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
     item_pk = get_object_or_404(Item_Creation,pk = pk)
-
+    print(request.POST)
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
 
@@ -381,6 +381,7 @@ def item_edit(request,pk):
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
+        
         if form.is_valid() and formset.is_valid():
             
             form.save()
@@ -1237,16 +1238,20 @@ def purchasevoucherdelete(request,pk):
 
 
 
-def purchasevouchercreateupdate(request,pk):
+def purchasevouchercreateupdate(request, pk=None):
 
     #get the purchase invoice for updating the form
-    purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk = pk)
+    if pk:
+        purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk = pk)
+    else:
+        purchase_invoice_instance = None
 
     Purchase_gst = gst.objects.all()
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = purchase_voucher_items_formset(instance=purchase_invoice_instance)
     godown_items_formset = purchase_voucher_items_godown_formset()
     print(request.GET)
+
     try:
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
         party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
@@ -1286,7 +1291,7 @@ def purchasevouchercreateupdate(request,pk):
     if request.method == 'POST':
         #create a form instance for main form
         master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
-
+        print(request.POST)
         #create a formset instance for form items in invoice
         items_formset = purchase_voucher_items_formset(request.POST)
 
@@ -1304,7 +1309,7 @@ def purchasevouchercreateupdate(request,pk):
                     items_instance = form.save(commit=False)
                     items_instance.item_purchase_master = master_instance
                     items_instance.save()
-
+                    
                     #Saving godown items formset with item instance
                     for godown_form in godown_items_formset:
                         if godown_form.is_valid():
