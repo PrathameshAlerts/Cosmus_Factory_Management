@@ -68,7 +68,7 @@
                           </select>
                     </td>
                     <td>
-                        <input type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select readonly">
+                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" class="item-select readonly">
                     </td>
                     <td>
                         <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
@@ -81,7 +81,7 @@
                         <input type="text" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
                     </td>
                     <td>
-                        <input type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="purchase-input">
+                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" class="purchase-input">
                     </td>
                     <td>
                         <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">
@@ -132,14 +132,16 @@
  <script>
     $(document).ready(function () {
         var itemName;
-        $('select[name^="item_name"]').click(function () {
+   
+        $('select[name^="item_name_"]').click(function () {
             itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set"]').attr('name');
-            console.log(itemName)
+         
+     
         });
-
-        $('#item_name').change(function () {
+        $('select[name^="item_name_"]').change(function () {
             var item_value = $(this).val();
-           
+        
+            console.log(item_value);
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -148,24 +150,31 @@
                 },
                 success: function (response) {
                     console.log('Data sent successfully')
-                
+                    itemrownameid = itemName.split('-')[1];
+                    console.log(itemrownameid);
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>');
-                    console.log(itemName)
-                    var itemcolorinput = document.querySelector('#item_color');
-                    var item_color = response.item_color;
-                    var item_shade_response = response.item_shade; 
                     
-                    var itemperinput = document.querySelector('#item_unit')
+
+                    var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
+                    var item_color = response.item_color;
+                 
+                    
+                    var itemperinput = document.querySelector('#item_per_' +itemrownameid);
                     var itemperinput_response = response.item_per;
-                    console.log(item_shade_response)
+                    
                     itemcolorinput.value = item_color;
                     itemperinput.value = itemperinput_response;
 
-                    $.each(item_shade_response, function (key, value) {
-                        console.log(item_shade_response)
-                        $('#'+itemName).append('<option value="' + key + '">' + value + '</option>');
-                    });
+
+
+                    var item_shade_response = response.item_shade;
                     
+
+                    $.each(item_shade_response, function (key, value) {
+                        $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
+                     
+                    });
+                  
                 },
                 
                 error: function (xhr, errmsg, err) {
@@ -174,12 +183,10 @@
                
             });
             
-            }
-            
-        );
+        });
         var popupWindow = null; // Variable to hold the reference to the popup window
 
-        $('#shades').change(function () {
+        $('select[name^="purchase_voucher_items_set-'+ itemrownameid +'-item_shade]"').change(function () {
             var selectedShade = $(this).val();
             if (selectedShade !== "") {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
@@ -208,32 +215,6 @@
         });
     });
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
