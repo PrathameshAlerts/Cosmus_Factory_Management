@@ -26,6 +26,7 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.sub_product_category_name  
 
+
 class Product2SubCategory(models.Model):
     Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)

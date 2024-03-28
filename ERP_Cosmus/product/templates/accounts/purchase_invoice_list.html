@@ -1,0 +1,41 @@
+{% extends "product/base.html" %}
+
+{% load static %}
+
+
+{% block body %}
+  
+<button class="dropbtn mx-3" onclick="redirectVoucherCreate()"><span>Create Invoice +</span></button>
+
+<table class="table table-striped table-hover table-responsive">
+    <tr>
+      <th>Purchase No</th>
+      <th>Supplier Inovice No</th>
+      <th>Party Name</th>
+      <th>Grand Total</th>
+      <td>View</td>
+      <td>Edit</td>
+      <td>Delete</td>
+    </tr>
+    {% for invoice in purchase_invoice_list %}
+    <tr>
+      <td>{{invoice.purchase_number}}</td>
+      <td>{{invoice.supplier_invoice_number}}</td>
+      <td>{{invoice.party_name.name}}</td>
+      <td>{{invoice.grand_total}}</td>
+      <td>View</td>
+      <td><a href="{% url 'purchase-voucher-update' invoice.id %}">Edit</a></td>
+      <td><a href="{% url 'purchase-voucher-delete' invoice.id %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+
+  </table>
+
+
+  <script>
+  function redirectVoucherCreate(){
+    window.location.href = "{% url 'purchase-voucher-create' %}"
+  }
+</script>
+
+{% endblock body %}
