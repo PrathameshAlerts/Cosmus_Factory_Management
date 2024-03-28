@@ -1200,55 +1200,19 @@ def stocktransferreport(request):
 #__________________________purchase voucher start__________________________
 
 
-
-def purchasevoucherpopup(request,shade_id):
-
-    formset = purchase_voucher_items_godown_formset()
-    
-    try:
-        godowns = Godown_raw_material.objects.all()
-        item = Item_Creation.objects.get(shades__id = shade_id) 
-        item_shade = item_color_shade.objects.get(id = shade_id)
-        print(item)
-        print(item_shade)
-    except Exception as e:
-        messages.error(request,'Error with Shades')
-    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
-
-
-
-def purchasevouchercreatepopupajax(request):
-    shade_id = request.GET.get('selected_shade')
-    popup_url = reverse('purchase-voucher-popup', args=[shade_id])
-    return JsonResponse({'popup_url':popup_url})
-
-
-
-def purchasevoucherupdate(request,pk):
-    return render(request,'.html')
-
-
-
-def purchasevoucherlist(request):
-    return render(request,'.html')
-
-
-def purchasevoucherdelete(request,pk):
-    pass
-
-
-
 def purchasevouchercreateupdate(request, pk=None):
 
     #get the purchase invoice for updating the form
     if pk:
         purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk = pk)
+        
     else:
         purchase_invoice_instance = None
 
     Purchase_gst = gst.objects.all()
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = purchase_voucher_items_formset(instance=purchase_invoice_instance)
+    
     godown_items_formset = purchase_voucher_items_godown_formset()
     print(request.GET)
 
@@ -1279,7 +1243,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
     except Exception as e:
         print(f'exception occoured {e}')
-    print(item_shades_dict)
+    
     
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
@@ -1293,7 +1257,7 @@ def purchasevouchercreateupdate(request, pk=None):
         master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
         print(request.POST)
         #create a formset instance for form items in invoice
-        items_formset = purchase_voucher_items_formset(request.POST)
+        items_formset = purchase_voucher_items_formset(request.POST,instance=purchase_invoice_instance)
 
         #create a formset instance for godowns in form items
         godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
@@ -1331,14 +1295,49 @@ def purchasevouchercreateupdate(request, pk=None):
                'items':items,
                'items_formset':items_formset,
                'Purchase_gst':Purchase_gst,
-               'godown_formsets':godown_items_formset}
+               'godown_formsets':godown_items_formset,
+               }
 
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
 
+def purchasevoucherpopup(request,shade_id):
+
+    formset = purchase_voucher_items_godown_formset()
+    
+    try:
+        godowns = Godown_raw_material.objects.all()
+        item = Item_Creation.objects.get(shades__id = shade_id) 
+        item_shade = item_color_shade.objects.get(id = shade_id)
+        print(item)
+        print(item_shade)
+    except Exception as e:
+        messages.error(request,'Error with Shades')
+    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
 
 
+
+def purchasevouchercreatepopupajax(request):
+    shade_id = request.GET.get('selected_shade')
+    popup_url = reverse('purchase-voucher-popup', args=[shade_id])
+    return JsonResponse({'popup_url':popup_url})
+
+
+
+
+def purchasevoucherlist(request):
+    purchase_invoice_list = item_purchase_voucher_master.objects.all()
+
+
+    return render(request,'accounts/purchase_invoice_list.html',{'purchase_invoice_list':purchase_invoice_list})
+
+
+def purchasevoucherdelete(request,pk):
+    purchase_invoice_pk = get_object_or_404(item_purchase_voucher_master,pk=pk)
+    purchase_invoice_pk.delete()
+    return redirect('purchase-voucher-list')
+                    
 
 
 
