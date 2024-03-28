@@ -129,7 +129,7 @@
     </div>
     <div class="d-flex mb-3">
         <label for="id_grand_total" class="item-form" >Grand total</label>
-          <input type="text" class="item-select" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" > readonly
+          <input type="text" class="item-select" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" > readonly
     </div>
 </div>
 
