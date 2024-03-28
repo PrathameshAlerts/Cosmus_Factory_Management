@@ -133,15 +133,13 @@
     $(document).ready(function () {
         var itemName;
    
-        $('select[name^="item_name_"]').click(function () {
-            itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set"]').attr('name');
-         
-     
-        });
-        $('select[name^="item_name_"]').change(function () {
+        $(document).on('click', 'select[name^="item_name_"]', function () {
+        itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+        console.log(itemName);
+    });
+     $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();
-        
-            console.log(item_value);
+           
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -183,35 +181,6 @@
                
             });
             
-        });
-        var popupWindow = null; // Variable to hold the reference to the popup window
-
-        $('select[name^="purchase_voucher_items_set-'+ itemrownameid +'-item_shade]"').change(function () {
-            var selectedShade = $(this).val();
-            if (selectedShade !== "") {
-                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
-                    var minWidth = 800;
-                    var minHeight = 600;
-                    $.ajax({
-                        // Use Django URL name to fetch the URL dynamically
-                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                        method: 'GET',
-                        data: {
-                            'selected_shade': selectedShade
-                        },
-                         success: function (response) {
-                            // Open the dynamic URL received from the server
-                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-                        },
-                        error: function (xhr, errmsg, err) {
-                            console.log('Error getting popup URL');
-                        }
-                    });
-                } else {
-                    // If a popup window is already open, notify the user or take appropriate action
-                    console.log('A popup window is already open');
-                }
-            }
         });
     });
 </script>
@@ -259,15 +228,50 @@
         });
     }
   
-    // Event listener for the add row button
     document.getElementById('addRowButton').addEventListener('click', function () {
-        var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
-        newRow.querySelector('[name="quantity"]').value = ""; // Clear quantity field
-        newRow.querySelector('[name="rate"]').value = ""; // Clear rate field
-        document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
-        addEventListenersToInputs(); // Add event listeners to the new row inputs
-        calculateTotalAmount(); // Calculate total amount for the new row
-    });
+    var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
+
+    // Update dynamic parts of name and ID attributes
+    var currentIndex = document.querySelectorAll('table tbody tr').length; // Get the current number of rows
+    var dynamicPart = currentIndex.toString(); // Convert the current index to string
+    
+    // Update name and ID attributes of inputs and select elements in the cloned row
+    newRow.querySelector('[name="item_name_0"]').setAttribute('name', 'item_name_' + dynamicPart);
+    newRow.querySelector('[id="item_name_0"]').setAttribute('id', 'item_name_' + dynamicPart);
+
+    newRow.querySelector('[name="item_color_0"]').setAttribute('name', 'item_color_' + dynamicPart);
+    newRow.querySelector('[id="item_color_0"]').setAttribute('id', 'item_color_' + dynamicPart);
+
+    newRow.querySelector('[name="purchase_voucher_items_set-0-item_shade"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-item_shade');
+    newRow.querySelector('[id="purchase_voucher_items_set-0-item_shade"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-item_shade');
+
+    newRow.querySelector('[name="purchase_voucher_items_set-0-quantity_total"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-quantity_total');
+    newRow.querySelector('[id="purchase_voucher_items_set-0-quantity_total"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-quantity_total');
+    newRow.querySelector('[name="purchase_voucher_items_set-0-rate"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-rate');
+    newRow.querySelector('[id="purchase_voucher_items_set-0-rate"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-rate');
+    newRow.querySelector('[name="item_per_0"]').setAttribute('name', 'item_per_' + dynamicPart);
+    newRow.querySelector('[id="item_per_0"]').setAttribute('id', 'item_per_' + dynamicPart);
+    newRow.querySelector('[name="purchase_voucher_items_set-0-amount"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-amount');
+    newRow.querySelector('[id="purchase_voucher_items_set-0-amount"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-amount');
+
+    // Clear input fields
+    
+    newRow.querySelector('[name="item_name_' + dynamicPart + '"]').value = "";
+    newRow.querySelector('[name="item_color_' + dynamicPart + '"]').value = "";
+    var selectShade = newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-item_shade"]');
+    while (selectShade.firstChild) {
+        selectShade.removeChild(selectShade.firstChild);
+    }
+    newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-quantity_total"]').value = "";
+    newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-rate"]').value = "";
+    newRow.querySelector('[name="item_per_' + dynamicPart + '"]').value = "";
+    newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-amount"]').value = "";
+
+    document.querySelector('table tbody').appendChild(newRow); 
+	addEventListenersToInputs(); // Add event listeners to the new row inputs
+
+});
+
   
     // Call function to add event listeners to existing rows' inputs
     addEventListenersToInputs();
