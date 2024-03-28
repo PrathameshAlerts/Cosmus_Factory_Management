@@ -1,7 +1,7 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, item_purchase_voucher_master_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -1203,6 +1203,7 @@ def stocktransferreport(request):
 def purchasevoucherpopup(request,shade_id):
 
     formset = purchase_voucher_items_godown_formset()
+    
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -1235,16 +1236,16 @@ def purchasevoucherdelete(request,pk):
     pass
 
 
-#testing purchase voucher 
 
-def purchasevouchercreate(request):
+def purchasevouchercreateupdate(request,pk):
 
-    account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
-    party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
-    items = Item_Creation.objects.all()
+    #get the purchase invoice for updating the form
+    purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk = pk)
+
     Purchase_gst = gst.objects.all()
-    form = item_purchase_voucher_master_form()
-    formset = purchase_voucher_items_formset()
+    master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
+    items_formset = purchase_voucher_items_formset(instance=purchase_invoice_instance)
+    godown_items_formset = purchase_voucher_items_godown_formset()
     print(request.GET)
     try:
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
@@ -1252,8 +1253,6 @@ def purchasevouchercreate(request):
         print(account_sub_grp.id)
         items = Item_Creation.objects.all()
 
-
-        
         #item values
         item_color_out = ''
         item_per_out = ''
@@ -1284,11 +1283,52 @@ def purchasevouchercreate(request):
 
 
 
+    if request.method == 'POST':
+        #create a form instance for main form
+        master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
+
+        #create a formset instance for form items in invoice
+        items_formset = purchase_voucher_items_formset(request.POST)
+
+        #create a formset instance for godowns in form items
+        godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
+
+        if master_form.is_valid() and items_formset.is_valid():
+            # Save the master form
+            master_instance = master_form.save()
+         
+
+            # Save items formset with master instance
+            for form in items_formset:
+                if form.is_valid():
+                    items_instance = form.save(commit=False)
+                    items_instance.item_purchase_master = master_instance
+                    items_instance.save()
+
+                    #Saving godown items formset with item instance
+                    for godown_form in godown_items_formset:
+                        if godown_form.is_valid():
+                            godown_instance = godown_form.save(commit = False)
+                            godown_instance.purchase_voucher_godown_item = items_instance
+                            godown_instance.save()
+                            return HttpResponse('form saved successfully')
+                        else:
+                            print('godown',godown_form.error)
+
+                else:
+                    print('invoiceitems',form.errors)
+        else:
+            print('invoice',master_form.errors)
 
 
+    context = {'master_form':master_form,
+               'party_names':party_names,
+               'items':items,
+               'items_formset':items_formset,
+               'Purchase_gst':Purchase_gst,
+               'godown_formsets':godown_items_formset}
 
-    
-    return render(request,'accounts/purchase_invoice1.html',{'form':form,'party_names':party_names,'items':items, 'formset':formset, 'Purchase_gst':Purchase_gst})
+    return render(request,'accounts/purchase_invoice.html',context=context)
 
 
 
