@@ -4,110 +4,156 @@
 {% block body %} 
 <div>
         <h2>Purchase invoice</h2>
-      <form class="mt-5" action="" method="POST">
-           {% csrf_token %}
-       <div class="d-flex mb-3">
-      <label for="" class="form-label px-2">Purchase No:</label>
-      <input type="number" class="item-select mx-3" value="" name="" maxlength="50" required id="">
-    </div>
-    <div class="d-flex mb-3">
-        <label for="" class="form-label px-2">Supplier invoice No:</label>
-        <input type="number" class="item-select mx-3" value="" name="" maxlength="50" required id="">
-      </div>
-    <div class="d-flex mb-3">
-      <label for="" class="form-label px-2">Purchase Ledger: </label>
-      <p>Purchase</p>
-    </div>
-    <div class="d-flex mb-3">
-      <label for="" class="form-label px-2">Party A/C Name: </label>
-      <select class="item-select" name="" id="">
-        <option value=""></option>
-        {% for partyname in party_names %}
-        <option value="{{partyname.name}}">{{partyname.name}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <button type="button" class="create-btn" id="addRowButton">Add +</button>
-    <div class="">
-      <table class="table table-striped table-hover table-responsive myTable">
-        <thead>
-          <tr>
-            <th>Item Name</th>
-            <th>Colour</th>
-            <th>Shade</th>
-            <th>Quantity</th>
-            <th>Rate</th>
-            <th>Per</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <select name="name" class="item-select" placeholder="Item Name" required id="name">
-                <option value=""></option>
-                {% for item in items %}
-                <option value="{{item.id}}">{{item.item_name}}</option>
-                {% endfor %}
-              </select>
-            </td>
-            <td>
-              <input type="text" name="color" class="item-select" placeholder="Item Color" required id="color" readonly >
-            </td>
-            <td>
-            <select name="shades" class="item-select" placeholder="Item Shades" required id="shades">
-              
-            </select>
-          </td>
-            <td>
-              <input type="number" name="quantity" class="item-select" placeholder="Quantity" required id="quantity">
-            </td>
-            <td>
-              <input type="number" name="rate" class="item-select" placeholder="Rate" required id="rate">
-            </td>
-            <td>
-              <input type="text" name="units" class="input_units" id="units" readonly>
-            </td>
-            <td class="total-amount"></td>
-        </tr>
-         
-        </tbody>
-      </table>
-      <div class="table-left">
+        <form class="mt-5" action="" method="POST">
+            {% csrf_token %}
+       
         <div class="d-flex mb-3">
-          <p>Frieght & Transport:</p>
-          <span id="transportValue" class="fw-bold px-2">5000</span>
-      </div>
-      <div class="d-flex mb-3">
-          <p>Gross Total: </p>
-          <span id="grossTotal" class="fw-bold px-2"></span>
-      </div>
-      <div class="d-flex mb-3">
-          <p>GSt 12%:</p>
-          <span id="gstAmount" class="fw-bold px-2"></span>
-      </div>
-      <div class="d-flex mb-3">
-          <p>Grand Total RS </p>
-          <span id="finalAmount" class="fw-bold px-2"></span>
-      </div>
-      
-      </div>
-      
-    </div>
+            <label for="id_purchase_number"  class="item-form">Purchase No</label>
+            <input type="number" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required >
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_supplier_invoice_number" class="item-form" >Supplier Invoice No</label>
+            <input type="number" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{master_form.instance.supplier_invoice_number}}" maxlength="255" required >
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_ledger_type" class="item-form" >ledger Type</label>
+            <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{master_form.instance.ledger_type}}" maxlength="50" default='Purchase' readonly required placeholder="Purchase" >
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_party_name" class="item-form" >Party A/C Name</label>
+            <select class="item-select" name="party_name" required id="id_party_name">
+            {% if master_form.instance.id %}
+            {% for x in party_names %}
+            <option value="{{x.id}}">{{x.name}}</option>
+            {% endfor %}
+            {% elif not master_form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            {% for x in party_names %}
+            <option value="{{x.id}}">{{x.name}}</option>
+            {% endfor %}
     
-    <input type="submit" class="product2_btn" name="save" value="Save">
-    <!-- <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-   <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button> -->
-  </form>
-  </div>
- 
-  
- 
+            </select>
+        </div>
+        
+        <button type="button" class="create-btn" id="addRowButton">Add +</button>
+    <div class="">
+        <table class="table table-striped table-hover table-responsive myTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Item Name</th>
+                    <th>Colour</th>
+                    <th>Shade</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Per</th>
+                    <th>Amount</th>
+                    <th>DELETE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{items_formset.management_form}}
+                {% for forms in items_formset %}
+                {{ forms.id }}
+                
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td> 
+                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" required id="item_name_{{forloop.counter0}}">
+                            <option value=""></option>
+                            {% for item in items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %}
+                          </select>
+                    </td>
+                    <td>
+                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" class="item-select readonly">
+                    </td>
+                    <td>
+                        <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" id="{{forms.prefix}}-quantity_total" class="purchase-input" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}">
+                    </td>
+                    <td>
+                        <input type="text" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
+                    </td>
+                    <td>
+                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" class="purchase-input">
+                    </td>
+                    <td>
+                        <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">
+                    </td>
+                    <td>{{ forms.DELETE }}</td>
+                 </tr>   
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+        
 
-  <script>
+<div class="table-left">
+    <div class="d-flex mb-3">
+        <label for="id_fright_transport" class="item-form" >Fright & Transport</label>
+        <input type="number" class="item-select" name="fright_transport" id ="id_fright_transport" value="{{form.instance.fright_transport}}" maxlength="50" required >
+
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_gross_total" class="item-form" >Gross total</label>
+        <input type="number" class="item-select" name="gross_total" id ="id_gross_total" value="{{form.instance.gross_total}}" maxlength="50" required > 
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_gst_rate" class="item-form" >GST
+            <select class="" name="gst_rate" required id="id_gst_rate">
+                {% if form.instance.id %}
+                {% for x in Purchase_gst %}
+                <option value="{{x.id}}">{{x.gst_percentage}}</option>
+                {% endfor %}
+                {% elif not form.instance.id %}
+                <option value=""></option>
+                {% endif %}
+                {% for x in Purchase_gst %}
+                <option value="{{x.id}}">{{x.gst_percentage}}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <input type="number" class="item-select" name="" value="" id="id_gst" > readonly
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_grand_total" class="item-form" >Grand total</label>
+          <input type="text" class="item-select" name="grand_total" value="{{form.instance.grand_total}}" id="id_grand_total" > readonly
+    </div>
+</div>
+
+
+<div>
+    {{godown_formsets.management_form}}
+
+    {% for godown_form in godown_formsets %}
+    {{godown_form.as_p}}
+    {% endfor %}
+
+</div>
+
+
+<input type="submit">
+ </form>
+
+ <script>
     $(document).ready(function () {
-        $('#name').change(function () {
+        var itemName;
+   
+        $('select[name^="item_name_"]').click(function () {
+            itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set"]').attr('name');
+         
+     
+        });
+        $('select[name^="item_name_"]').change(function () {
             var item_value = $(this).val();
+        
+            console.log(item_value);
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -116,26 +162,43 @@
                 },
                 success: function (response) {
                     console.log('Data sent successfully')
-                    $('#shades').empty().append('<option value="">Select Shade</option>');
+                    itemrownameid = itemName.split('-')[1];
+                    console.log(itemrownameid);
+                    $('#' + itemName).empty().append('<option value="">Select Shade</option>');
+                    
 
-                    var itemcolorinput = document.querySelector('#color');
+                    var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
                     var item_color = response.item_color;
-                    var item_shade = response.item_shade;
+                 
+                    
+                    var itemperinput = document.querySelector('#item_per_' +itemrownameid);
+                    var itemperinput_response = response.item_per;
+                    
+                    itemcolorinput.value = item_color;
+                    itemperinput.value = itemperinput_response;
 
-                    itemcolorinput.value = item_color
 
-                    $.each(item_shade, function (key, value) {
-                        $('#shades').append('<option value="' + key + '">' + value + '</option>');
+
+                    var item_shade_response = response.item_shade;
+                    
+
+                    $.each(item_shade_response, function (key, value) {
+                        $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
+                     
                     });
+                  
                 },
+                
                 error: function (xhr, errmsg, err) {
                     console.log('Error sending value to the backend');
                 }
+               
             });
+            
         });
         var popupWindow = null; // Variable to hold the reference to the popup window
 
-        $('#shades').change(function () {
+        $('select[name^="purchase_voucher_items_set-'+ itemrownameid +'-item_shade]"').change(function () {
             var selectedShade = $(this).val();
             if (selectedShade !== "") {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
@@ -164,8 +227,10 @@
         });
     });
 </script>
- 
-  <script>
+
+
+
+ <script>
     function calculateTotalAmount() {
         var totalAmount = 0;
         var rows = document.querySelectorAll('table tbody tr');
@@ -221,8 +286,6 @@
     // Call calculateTotalAmount initially to calculate total on page load
     calculateTotalAmount();
   </script>
-
-
 
 
 {% endblock body %}
