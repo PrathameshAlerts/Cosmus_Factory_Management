@@ -849,7 +849,7 @@ body{
     padding-left: 50px;
 }
 .table-left{
-    padding-left: 850px;
+    padding-left: 790px;
 }
 .table-leftside{
     padding-left: 950px;
@@ -1011,6 +1011,26 @@ body{
     padding-left: 5px; 
 }
 
+.purchase-amount{
+    width: 138px;
+    border: 1px solid #666;
+    border-radius: 7px;
+    padding-left: 5px;  
+}
+
+.ledger-input{
+    width: 270px;
+    border: 1px solid #666;
+    border-radius: 7px;
+    padding-left: 5px;  
+}
+
+.item-inputs{
+    width: 200px;
+    border: 1px solid #666;
+    border-radius: 7px;
+    padding-left: 5px; 
+}
 
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
