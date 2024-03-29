@@ -382,6 +382,7 @@ def item_edit(request,pk):
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
         
+
         if form.is_valid() and formset.is_valid():
             
             form.save()
@@ -1256,9 +1257,9 @@ def purchasevouchercreateupdate(request, pk=None):
             #create a formset instance for godowns in form items
             godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
            
-            #filter out only the forms which are changed 
+            #filter out only the forms which are changed as shade is givin null error on extra field
             items_formset.forms = [form for form in items_formset.forms if form.has_changed()]
-            
+
             if master_form.is_valid() and items_formset.is_valid():
                 
                 # Save the master form
