@@ -75,26 +75,23 @@
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
-
-                             {% elif not forms.instance.id %}
-                             <option value=""></option>
                              {% endif %}
 
                         </select>
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-quantity_total" class="purchase-input" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}">
+                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}">
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
+                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
                     </td>
                     <td>
                         <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">
+                        <input type="number" id="{{forms.prefix}}-amount" class="item-select total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">
                     </td>
-                    <td> <span>{{ forms.DELETE }}</span></td>
+                    <td>{{ forms.DELETE }}</td>
                  </tr>   
             </tbody>
             {% endfor %}
@@ -134,39 +131,35 @@
 
 <div class="table-left">
     <div class="d-flex mb-3">
-        <label for="id_fright_transport" class="item-form" >Fright & Transport</label>
+        <label for="id_fright_transport" class="item-form fw-bold" >Fright & Transport</label>
         <input type="number" class="item-select" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" required >
 
     </div>
     <div class="d-flex mb-3">
-        <label for="id_gross_total" class="item-form" >Gross total</label>
+        <label for="id_gross_total" class="item-form fw-bold" >Gross total</label>
         <input type="number" class="item-select" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required > 
     </div>
     <div class="d-flex mb-3">
         <label for="id_gst_rate" class="item-form fw-bold" >GST
             <select class="" name="gst_rate" required id="id_gst_rate">
                 {% if master_form.instance.id %}
-                <option value="{{master_form.instance.gst_rate.id}}">{{master_form.instance.gst_rate.gst_percentage}}</option>
-
                 {% for x in Purchase_gst %}
+                <option value="{{master_form.instance.gst_rate.id}}">{{master_form.instance.gst_rate.gst_percentage}}</option>
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
-
                 {% elif not master_form.instance.id %}
                 <option value=""></option>
-                
-
+                {% endif %}
                 {% for x in Purchase_gst %}
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
-                {% endif %}
             </select>
         </label>
-        <input type="number" class="item-select" name="" value="" id="id_gst" > readonly
+        <input type="number" class="item-select" name="" value="" id="id_gst" readonly > 
     </div>
     <div class="d-flex mb-3">
-        <label for="id_grand_total" class="item-form" >Grand total</label>
-          <input type="text" class="item-select" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" > readonly
+        <label for="id_grand_total" class="item-form fw-bold" >Grand total</label>
+          <input type="text" class="item-select" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" readonly > 
     </div>
 </div>
 
@@ -181,7 +174,7 @@
 </div>
 
 
-<input type="submit">
+<input type="submit" class="add_btn">
  </form>
 
 
@@ -254,41 +247,65 @@
     });
 </script>
 
-
-
-
-
 <script>
-    function calculateTotalAmount() {
-        var totalAmount = 0;
+   function calculateTotalAmount() {
         var rows = document.querySelectorAll('table tbody tr');
-        rows.forEach(function(row) {
-            var quantity = parseFloat(row.querySelector('[name="quantity"]').value);
-            var rate = parseFloat(row.querySelector('[name="rate"]').value);
-            var total = quantity * rate;
-            row.querySelector('.total-amount').innerText = total.toFixed(2); // Display total amount in two decimal places
-            totalAmount += total;
-        });
+        var totalAmount = 0;
         
-        // Update gross total
-        var grossTotalElement = document.getElementById('grossTotal');
-        if (grossTotalElement) {
-            grossTotalElement.innerText = totalAmount.toFixed(2);
-        }
-        // Calculate GST
-        var gstAmount = totalAmount * 0.12; // Assuming GST rate is 12%
-        var gstAmountElement = document.getElementById('gstAmount');
-        if (gstAmountElement) {
-            gstAmountElement.innerText = gstAmount.toFixed(2);
-        }
-        // Update final amount (grand total)
-        var finalAmount = totalAmount + gstAmount + 5000; // Adding freight and transport
-        var finalAmountElement = document.getElementById('finalAmount');
-        if (finalAmountElement) {
-            finalAmountElement.innerText = finalAmount.toFixed(2);
-        }
+        // Iterate through each row
+        rows.forEach(function(row) {
+            // Find the quantity, rate, and amount input fields for the current row
+            var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
+            var rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
+            var amountInput = row.querySelector('.item-select.total-amount');
+
+            // Get the values of quantity and rate
+            var quantity = parseFloat(quantityInput.value) || 0;
+            var rate = parseFloat(rateInput.value) || 0;
+
+            // Calculate the amount for the current row
+            var amount = quantity * rate;
+
+            // Set the calculated amount value to the amount input field
+            amountInput.value = isNaN(amount) ? '' : amount.toFixed(2);
+
+            // Add the amount to the total
+            totalAmount += amount;
+        });
+
+        // Get the value of the fright & transport
+        var frightTransport = parseFloat(document.getElementById('id_fright_transport').value) || 0;
+
+        // Calculate the gross total by adding the total amount and the fright & transport
+        var grossTotal = totalAmount + frightTransport;
+
+        // Set the calculated gross total value to the gross total input field
+        document.getElementById('id_gross_total').value = grossTotal.toFixed(2);
+
+        // Get the value of GST rate
+        var gstRate = parseFloat(document.getElementById('id_gst_rate').value) || 0;
+
+        // Calculate GST amount
+        var gstAmount = (grossTotal * gstRate) / 100;
+
+        // Set the calculated GST value to the GST input field
+        document.getElementById('id_gst').value = gstAmount.toFixed(2);
+
+        // Calculate grand total by adding gross total and GST amount
+        var grandTotal = grossTotal + gstAmount;
+
+        // Set the calculated grand total value to the grand total input field
+        document.getElementById('id_grand_total').value = grandTotal.toFixed(2);
     }
-  
+
+    // Call the function initially to calculate total amount, GST, and grand total on page load
+    calculateTotalAmount();
+
+    // Add onchange event handler to id_fright_transport
+    document.getElementById('id_fright_transport').addEventListener('input', calculateTotalAmount);
+
+    // Add onchange event handler to id_gst_rate
+    document.getElementById('id_gst_rate').addEventListener('change', calculateTotalAmount);
     // Function to add event listeners to quantity and rate inputs
     function addEventListenersToInputs() {
         var inputs = document.querySelectorAll('table tbody tr input[type="number"]');
@@ -341,7 +358,7 @@
 
     document.querySelector('table tbody').appendChild(newRow); 
 	addEventListenersToInputs(); // Add event listeners to the new row inputs
-
+    calculateTotalAmount();
 });
 
   

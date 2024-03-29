@@ -1253,41 +1253,55 @@ def purchasevouchercreateupdate(request, pk=None):
 
 
     if request.method == 'POST':
-        #create a form instance for main form
-        master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
-        print(request.POST)
-        #create a formset instance for form items in invoice
-        items_formset = purchase_voucher_items_formset(request.POST,instance=purchase_invoice_instance)
 
-        #create a formset instance for godowns in form items
-        godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
+        try:
+            #create a form instance for main form
+            master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
+            print(request.POST)
+            #create a formset instance for form items in invoice
+            items_formset = purchase_voucher_items_formset(request.POST,instance=purchase_invoice_instance)
 
-        if master_form.is_valid() and items_formset.is_valid():
-            # Save the master form
-            master_instance = master_form.save()
-            
-            # Save items formset with master instance
-            for form in items_formset:
-                if form.is_valid():
-                    items_instance = form.save(commit=False)
-                    items_instance.item_purchase_master = master_instance
-                    items_instance.save()
-                    return HttpResponse('formset1 saved successfully')
-                    #Saving godown items formset with item instance
-                    for godown_form in godown_items_formset:
-                        if godown_form.is_valid():
-                            godown_instance = godown_form.save(commit = False)
-                            godown_instance.purchase_voucher_godown_item = items_instance
-                            godown_instance.save()
-                            return HttpResponse('formset2 saved successfully')
-                        else:
-                            print('godown',godown_form.error)
+            #create a formset instance for godowns in form items
+            godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
 
-                else:
-                    print('invoiceitems',form.errors)
-        else:
-            print('invoice',master_form.errors)
+            if master_form.is_valid() and items_formset.is_valid():
+                # Save the master form
+                master_instance = master_form.save()
 
+                # loop through each form in formset to attach the instance of master_instance with each form in the formset
+                for form in items_formset:
+                    if form.is_valid():
+                        #check if the form has changed to avoid blank and extra forms getting saved 
+                        if form.has_changed():
+                            items_instance = form.save(commit=False)
+                            items_instance.item_purchase_master = master_instance
+                            items_instance.save()
+                
+                # Check for items marked for deletion and delete them 
+                # delete wont work after defaulty cos we are not saving items_formset instead we are saving  in the formsets individually
+                # items_formset.deleted_forms has the forms marked for deletion
+                # print(items_formset.deleted_forms)
+                for form in items_formset.deleted_forms:
+                    if form.instance.pk:
+                        form.instance.delete()
+
+                
+                        #Saving godown items formset with item instance
+                        for godown_form in godown_items_formset:
+                            if godown_form.is_valid():
+                                godown_instance = godown_form.save(commit = False)
+                                godown_instance.purchase_voucher_godown_item = items_instance
+                                godown_instance.save()
+                                return HttpResponse('formset2 saved successfully')
+                            else:
+                                print('godown',godown_form.error)
+
+                    else:
+                        print('invoiceitems',form.errors)
+            else:
+                print('invoice',master_form.errors)
+        except Exception as e:
+            print('an error occoured-', e)
 
     context = {'master_form':master_form,
                'party_names':party_names,
