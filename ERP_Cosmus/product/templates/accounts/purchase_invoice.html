@@ -60,11 +60,19 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td> 
-                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" required id="item_name_{{forloop.counter0}}">
+                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
+
+                            {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
                             {% endfor %}
+                            {% elif not forms.instance.id %}
+                            <option value=""></option>
+                            {% for item in items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %}
+                            {% endif %}
                           </select>
                     </td>
                     <td>
@@ -75,6 +83,9 @@
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
+
+                             {% elif not forms.instance.id %}
+                             <option value=""></option>
                              {% endif %}
 
                         </select>
@@ -154,12 +165,12 @@
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
             </select>
-        </span>
-        <input type="number" class="purchase-amount" name="" value="" id="id_gst" step=".01" readonly > 
+        </label>
+        <input type="number" step="0.01" class="item-select" name="" value="" id="id_gst" > 
     </div>
     <div class="d-flex mb-3">
-        <span class="item-form fw-bold" >Grand total</span>
-          <input type="number" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" step=".01" readonly > 
+        <label for="id_grand_total" class="item-form fw-bold" >Grand total</label>
+          <input type="text" class="item-select" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total"  > 
     </div>
 </div>
 
@@ -253,7 +264,7 @@
             // Get the values of quantity and rate
             var quantity = parseFloat(quantityInput.value);
             var rate = parseFloat(rateInput.value);
-            
+
             // Calculate the amount for the current row
 
            var amount = quantity * rate;
