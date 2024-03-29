@@ -61,10 +61,18 @@
                     <td>{{forloop.counter}}</td>
                     <td> 
                         <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
+
+                            {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
                             {% endfor %}
+                            {% elif not forms.instance.id %}
+                            <option value=""></option>
+                            {% for item in items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %}
+                            {% endif %}
                           </select>
                     </td>
                     <td>
@@ -75,6 +83,9 @@
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
+
+                             {% elif not forms.instance.id %}
+                             <option value=""></option>
                              {% endif %}
 
                         </select>
@@ -155,11 +166,11 @@
                 {% endfor %}
             </select>
         </label>
-        <input type="number" class="item-select" name="" value="" id="id_gst" readonly > 
+        <input type="number" step="0.01" class="item-select" name="" value="" id="id_gst" > 
     </div>
     <div class="d-flex mb-3">
         <label for="id_grand_total" class="item-form fw-bold" >Grand total</label>
-          <input type="text" class="item-select" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" readonly > 
+          <input type="text" class="item-select" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total"  > 
     </div>
 </div>
 
@@ -260,8 +271,8 @@
             var amountInput = row.querySelector('.item-select.total-amount');
 
             // Get the values of quantity and rate
-            var quantity = parseFloat(quantityInput.value) || 0;
-            var rate = parseFloat(rateInput.value) || 0;
+            var quantity = parseFloat(quantityInput.value);
+            var rate = parseFloat(rateInput.value);
 
             // Calculate the amount for the current row
             var amount = quantity * rate;

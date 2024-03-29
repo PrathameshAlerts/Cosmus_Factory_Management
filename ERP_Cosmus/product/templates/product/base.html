@@ -145,6 +145,8 @@
         </symbol>
       </svg>
 
+
+
       <div>
         {% if form.errors %}
         <div>
@@ -159,6 +161,111 @@
       {% endif %}
       </div>
 
+            <!-- non_form errors for formsets -->
+            {% if formset.non_form_errors %}
+            <ul id="errorform">
+              {% for error in formset.non_form_errors.values %}
+                <li class="errorShow">{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+
+      <div>
+
+        {% for form in master_form %}
+        {% if form.errors %}
+    <ul class="errorlist">
+      {% for field, error_list in form.errors.items %}
+        {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+              {{ error }}
+            {% else %}
+              {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% endfor %}
+      </div>
+
+
+
+      <div>
+        
+        {% for form in items_formset %}
+        {% if form.errors %}
+    <ul class="errorlist">
+      {% for field, error_list in form.errors.items %}
+        {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+              {{ error }}
+            {% else %}
+              {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% endfor %}
+
+
+
+      </div>
+
+
+      <div>
+
+      {% for form in formset %}
+      {% if form.errors %}
+  <ul class="errorlist">
+    {% for field, error_list in form.errors.items %}
+      {% for error in error_list %}
+        <li class="errorShow">
+          {% if field == "__all__" %}
+            {{ error }}
+          {% else %}
+            {{ field|title }}: {{ error }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endfor %}
+
+      </div>
+
+      <div>
+
+        {% for form in godown_form %}
+        {% if form.errors %}
+    <ul class="errorlist">
+      {% for field, error_list in form.errors.items %}
+        {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+              {{ error }}
+            {% else %}
+              {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% endfor %}
+
+
+      </div>
+
+
+
       {% for message in messages %}
 
     {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
@@ -169,12 +276,14 @@
 
      {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
      <div id="message-timer" class="alert alert-warning align-items-center" role="alert">
-      <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> &nbsp; {{message}}
+      <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> 
+      &nbsp; {{message}}
      </div> 
 
      {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
      <div id="message-timer" class="alert alert-danger align-items-center" role="alert">
-      <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg> &nbsp; {{message}}
+      <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+       &nbsp; {{message}}
      </div>
 
      {% endif %}
