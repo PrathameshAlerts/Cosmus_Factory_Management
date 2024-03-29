@@ -249,8 +249,7 @@
           <label for="" class="form-label item-form">Compartment:</label>
           <select name="Product_Compartments" required id="" class="item-select">
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments|
-              default_if_none:''}}</option>
+            <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments| default_if_none:''}}</option>
             {% elif not form.instance.id %}
             <option value=""></option>
             {% endif %}

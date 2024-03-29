@@ -60,7 +60,7 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td> 
-                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" required id="item_name_{{forloop.counter0}}">
+                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
@@ -71,7 +71,7 @@
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="item-select"readonly>
                     </td>
                     <td>
-                        <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
+                        <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" id="{{forms.prefix}}-item_shade">
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
