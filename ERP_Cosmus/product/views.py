@@ -1265,22 +1265,21 @@ def purchasevouchercreateupdate(request, pk=None):
         if master_form.is_valid() and items_formset.is_valid():
             # Save the master form
             master_instance = master_form.save()
-         
-
+            
             # Save items formset with master instance
             for form in items_formset:
                 if form.is_valid():
                     items_instance = form.save(commit=False)
                     items_instance.item_purchase_master = master_instance
                     items_instance.save()
-                    
+                    return HttpResponse('formset1 saved successfully')
                     #Saving godown items formset with item instance
                     for godown_form in godown_items_formset:
                         if godown_form.is_valid():
                             godown_instance = godown_form.save(commit = False)
                             godown_instance.purchase_voucher_godown_item = items_instance
                             godown_instance.save()
-                            return HttpResponse('form saved successfully')
+                            return HttpResponse('formset2 saved successfully')
                         else:
                             print('godown',godown_form.error)
 

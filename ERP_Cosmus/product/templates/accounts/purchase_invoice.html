@@ -60,7 +60,7 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td> 
-                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" required id="item_name_{{forloop.counter0}}">
+                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
@@ -71,10 +71,13 @@
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="item-select"readonly>
                     </td>
                     <td>
-                        <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
+                        <select name="{{forms.prefix}}-item_shade" class="item-select" placeholder="Item Shades" id="{{forms.prefix}}-item_shade">
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
+
+                             {% elif not forms.instance.id %}
+                             <option value=""></option>
                              {% endif %}
 
                         </select>
@@ -91,7 +94,7 @@
                     <td>
                         <input type="text" id="{{forms.prefix}}-amount" class="item-select" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" style="border: none;">
                     </td>
-                    <td>{{ forms.DELETE }}</td>
+                    <td> <span>{{ forms.DELETE }}</span></td>
                  </tr>   
             </tbody>
             {% endfor %}
@@ -143,16 +146,20 @@
         <label for="id_gst_rate" class="item-form fw-bold" >GST
             <select class="" name="gst_rate" required id="id_gst_rate">
                 {% if master_form.instance.id %}
-                {% for x in Purchase_gst %}
                 <option value="{{master_form.instance.gst_rate.id}}">{{master_form.instance.gst_rate.gst_percentage}}</option>
+
+                {% for x in Purchase_gst %}
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
+
                 {% elif not master_form.instance.id %}
                 <option value=""></option>
-                {% endif %}
+                
+
                 {% for x in Purchase_gst %}
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
+                {% endif %}
             </select>
         </label>
         <input type="number" class="item-select" name="" value="" id="id_gst" > readonly
