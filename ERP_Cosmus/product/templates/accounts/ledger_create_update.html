@@ -18,7 +18,7 @@
       </div>
       <div class=" d-flex mb-3"> 
         <label for="id_short_name" class="form-label item-form">Alias:</label>
-        <input type="text" class="item-select" value="{{form.instance.short_name}}" name="short_name" maxlength="100" id="id_short_name">
+        <input type="text" class="ledger-input" value="{{form.instance.short_name}}" name="short_name" maxlength="100" id="id_short_name">
       </div>
       <div class="d-flex mb-3">
         <label for="id_vendor_code"  class="form-label item-form">Vendor code:</label>
@@ -26,7 +26,7 @@
       </div>
       <div class=" d-flex mb-3">
         <label for="id_under_group" class="form-label item-form">Under:</label>
-        <select value="{{form.instance.under_group}}" class="item-select" name="under_group" required id="id_under_group">
+        <select value="{{form.instance.under_group}}" class="ledger-input" name="under_group" required id="id_under_group">
             {% if form.instance.id %}
             <option value="{{form.instance.under_group.id}}">{{form.instance.account_sub_group_ledger}}</option>
             {% elif not form.instance.id %}
@@ -59,7 +59,7 @@
       </div>
       <div class="d-flex mb-3">
         <label for="id_Gst_no" class="form-label item-form">Gst no:</label>
-        <input type="text" class="item-select" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no"> 
+        <input type="text" class="ledger-input" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no"> 
       </div>
       <div class="d-flex mb-3">
         <label for="id_name" class="form-label item-form">Current Date:</label> 
@@ -84,7 +84,7 @@
     <div class="col-lg-6">
       <div class="d-flex mb-3">
         <label for="id_address" class="form-label item-form">Address:</label> <!--for textarea value = '' doesent work -->
-           <textarea name="address" class="item-select" cols="35" rows="3" id="id_address">{{form.instance.address}}</textarea> 
+           <textarea name="address" class="ledger-input" cols="35" rows="3" id="id_address">{{form.instance.address}}</textarea> 
          </div>
          <div class="d-flex mb-3">
            <label for="id_state" class="form-label item-form">State:</label>
@@ -108,11 +108,11 @@
          </div>  
          <div class="d-flex mb-3">
            <label for="id_landline_no" class="form-label item-form">Landline no:</label>
-           <input type="number" class="item-select" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no"> 
+           <input type="number" class="ledger-input" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no"> 
          </div>
          <div class="d-flex mb-3">
            <label for="id_bank_details" class="form-label item-form">Bank details:</label>
-           <textarea name="bank_details" class="item-select" cols="25" rows="3" id="id_bank_details">{{form.instance.bank_details}}</textarea>  
+           <textarea name="bank_details" class="ledger-input" cols="25" rows="3" id="id_bank_details">{{form.instance.bank_details}}</textarea>  
          </div>
 
     </div>

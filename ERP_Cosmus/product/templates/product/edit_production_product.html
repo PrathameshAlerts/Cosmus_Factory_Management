@@ -351,38 +351,37 @@
       <div class="col-lg-4">
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint1:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint1  | default_if_none:''}}"
+          <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint1  | default_if_none:''}}"
             name="Product_BulletPoint1" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint2:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint2  | default_if_none:''}}"
+          <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint2  | default_if_none:''}}"
             name="Product_BulletPoint2" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint3:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint3  | default_if_none:''}}"
+          <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint3  | default_if_none:''}}"
             name="Product_BulletPoint3" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint4:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint4  | default_if_none:''}}"
+          <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint4  | default_if_none:''}}"
             name="Product_BulletPoint4" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">BulletPoint5:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_BulletPoint5  | default_if_none:''}}"
+          <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint5  | default_if_none:''}}"
             name="Product_BulletPoint5" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">ShortDescription:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_ShortDescription | default_if_none:''}}"
-            name="Product_ShortDescription" required id="">
+          <textarea type="text" class="item-inputs" value="{{form.instance.Product_ShortDescription | default_if_none:''}}"
+            name="Product_ShortDescription" required id="">{{form.instance.Product_ShortDescription | default_if_none:''}}</textarea>
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">LongDescription:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_LongDescription | default_if_none:''}}"
-            name="Product_LongDescription" required id="">
+          <textarea  class="item-inputs" value="{{form.instance.Product_LongDescription | default_if_none:''}}" name="Product_LongDescription" required id="">{{form.instance.Product_LongDescription | default_if_none:''}}</textarea>
         </div>
       </div>
       <div class="col-lg-4">
@@ -551,7 +550,7 @@
 </script>
 
 
-<script>
+<!--<script>
   const stars = document.querySelectorAll('.rating input');
 
   stars.forEach(star => star.addEventListener('click', function () {
@@ -582,7 +581,7 @@
     //xhr.send(JSON.stringify({ rating: rating }));
     console.log(rating)
   }
-</script>
+</script>-->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var toggleButton = document.getElementById("product_details_btn");
