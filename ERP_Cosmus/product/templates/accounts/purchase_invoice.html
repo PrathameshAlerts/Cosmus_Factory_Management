@@ -79,7 +79,7 @@
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
                     </td>
                     <td>
-                        <select name="{{forms.prefix}}-item_shade" class="purchase-amount" placeholder="Item Shades" required id="{{forms.prefix}}-item_shade">
+                        <select name="{{forms.prefix}}-item_shade" class="purchase-amount" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
@@ -148,29 +148,29 @@
     </div>
     <div class="d-flex mb-3">
         <span  class="item-form fw-bold" >Gross total</span>
-        <input type="number" class="purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required > 
+        <input type="number" class="purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required > <span>{{master_form.instance.gross_total}}</span>
     </div>
     <div class="d-flex mb-3">
         <label for="id_gst_rate" class="item-form fw-bold" >GST
             <select class="rounded-1" name="gst_rate" required id="id_gst_rate">
                 {% if master_form.instance.id %}
-                {% for x in Purchase_gst %}
                 <option value="{{master_form.instance.gst_rate.id}}">{{master_form.instance.gst_rate.gst_percentage}}</option>
+                {% for x in Purchase_gst %}
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
                 {% elif not master_form.instance.id %}
                 <option value=""></option>
-                {% endif %}
                 {% for x in Purchase_gst %}
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
+                {% endif %}
             </select>
         </label>
         <input type="number" step="0.01" class="purchase-amount" name="" value="" id="id_gst" > 
     </div>
     <div class="d-flex mb-3">
         <label for="id_grand_total" class="item-form fw-bold" >Grand total</label>
-          <input type="text" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total"  > 
+          <input type="text" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total"> <span>{{master_form.instance.grand_total}}</span>
     </div>
 </div>
 

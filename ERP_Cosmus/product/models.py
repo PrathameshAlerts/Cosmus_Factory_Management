@@ -488,8 +488,8 @@ class RawStockTransfer(models.Model):
 
 
 class item_purchase_voucher_master(models.Model):
-    purchase_number = models.IntegerField()
-    supplier_invoice_number = models.IntegerField()
+    purchase_number = models.CharField(max_length = 100,unique = True, null = False, blank = False)
+    supplier_invoice_number = models.CharField(max_length = 100)
     ledger_type = models.CharField(max_length = 20, default = 'purchase')
     party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
     fright_transport = models.DecimalField(max_digits=9, decimal_places=2)
@@ -504,6 +504,8 @@ class purchase_voucher_items(models.Model):
     quantity_total = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
+
+
 
 
 class shade_godown_items(models.Model):

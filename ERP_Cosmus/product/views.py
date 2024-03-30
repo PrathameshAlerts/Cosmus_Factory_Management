@@ -1,7 +1,7 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, purchase_voucher_items
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, item_purchase_voucher_master_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -26,6 +26,8 @@ def dashboard(request):
 def edit_production_product(request,pk):
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
+    products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
+    
     colors = Color.objects.all()
     print(request.POST)
     if request.method == 'POST':
@@ -41,11 +43,11 @@ def edit_production_product(request,pk):
             print(formset.errors)
             return render(request, 'product/edit_production_product.html', {'gsts':gsts,
                                                                             'form':form,
-                                                                            'formset':formset,'colors':colors})
+                                                                            'formset':formset,'colors':colors,'products_sku_counts':products_sku_counts})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
-    
-    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors})
+
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors,'products_sku_counts':products_sku_counts})
 
 
 def product_color_sku(request):
@@ -1206,7 +1208,11 @@ def purchasevouchercreateupdate(request, pk=None):
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = purchase_voucher_items_formset(instance=purchase_invoice_instance)
     
-    godown_items_formset = purchase_voucher_items_godown_formset()
+
+    for forms in items_formset.forms:
+        godown_items_formset = purchase_voucher_items_godown_formset()
+
+
     print(request.GET)
 
     try:
@@ -1256,12 +1262,12 @@ def purchasevouchercreateupdate(request, pk=None):
 
             #create a formset instance for godowns in form items
             godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
-           
+
+    
             #filter out only the forms which are changed as shade is givin null error on extra field
             items_formset.forms = [form for form in items_formset.forms if form.has_changed()]
-
+    
             if master_form.is_valid() and items_formset.is_valid():
-                
                 # Save the master form
                 master_instance = master_form.save()
 
@@ -1273,16 +1279,11 @@ def purchasevouchercreateupdate(request, pk=None):
                         items_instance = form.save(commit=False)
                         items_instance.item_purchase_master = master_instance
                         items_instance.save()
-                            
-                
-                # Check for items marked for deletion and delete them 
-                # delete wont work after defaulty cos we are not saving items_formset instead we are saving  in the formsets individually
-                # items_formset.deleted_forms has the forms marked for deletion
-                # print(items_formset.deleted_forms)
-                for form in items_formset.deleted_forms:
-                    if form.instance.pk:
-                        form.instance.delete()
 
+
+                        # inoice_items = purchase_voucher_items.objects.get(id =form.instance.id)
+                        # #create a formset instance for godowns in form items
+                        # godown_items_formset = purchase_voucher_items_godown_formset(request.POST, instance = inoice_items)
                         #Saving godown items formset with item instance
                         for godown_form in godown_items_formset:
                             if godown_form.is_valid():
@@ -1294,20 +1295,28 @@ def purchasevouchercreateupdate(request, pk=None):
                                 print('godown',godown_form.error)
                 
                     else:
+                        print(form.errors)
                         return redirect('purchase-voucher-list')
-
+                    
+                # Check for items marked for deletion and delete them 
+                # delete wont work after defaulty cos we are not saving items_formset instead we are saving  in the formsets individually
+                # items_formset.deleted_forms has the forms marked for deletion
+                for form in items_formset.deleted_forms:
+                    if form.instance.pk:
+                        form.instance.delete()
+                    
                 return redirect('purchase-voucher-list')
-            else:
-                print('invoice',master_form.errors)
-                print('invoice1',items_formset.errors)
-                context = {'master_form':master_form,
+            
+            # items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
+
+            context = {'master_form':master_form,
                'party_names':party_names,
                'items':items,
-               'items_formset':items_formset,
+               'items_formset': items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
                }
-                return render(request,'accounts/purchase_invoice.html',context=context)
+            return render(request,'accounts/purchase_invoice.html',context=context)
 
         except Exception as e:
             print('an error occoured-', e)
