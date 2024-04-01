@@ -1265,12 +1265,12 @@ def purchasevouchercreateupdate(request, pk=None):
 
     
             #filter out only the forms which are changed as shade is givin null error on extra field
-            items_formset.forms = [form for form in items_formset.forms if form.has_changed()]
+            items_formset.forms = [form for form in items_formset.forms if form.has_changed()] ########### and not form in items_formset.deleted_forms
     
             if master_form.is_valid() and items_formset.is_valid():
                 # Save the master form
                 master_instance = master_form.save()
-
+                print(items_formset.forms)
                 # loop through each form in formset to attach the instance of master_instance with each form in the formset
                 for form in items_formset:
                     if form.is_valid():
