@@ -264,8 +264,6 @@ def product2subcategory(request):
             
             existing_instances =  Product2SubCategory.objects.filter(Product_id=p_id)
 
-
-            print('ext',existing_instances)
             
             updated_instances_front = []
             
@@ -275,11 +273,11 @@ def product2subcategory(request):
                 updated_instances_front.append(p_2_c_instance)
 
             existing_instances_pks = set(obj.pk for obj in updated_instances_front)
-            instances_to_delete = [obj for obj in existing_instances_pks if obj.pk not in existing_instances_pks]
+            instances_to_delete = [obj for obj in existing_instances if obj.pk not in existing_instances_pks]
             for obj in instances_to_delete:
                 obj.delete()
 
-            print('ext1',updated_instances_front)
+            
             for sub_cat in sub_category_names:
                 s_c_id =  get_object_or_404(SubCategory, id = sub_cat)
 
