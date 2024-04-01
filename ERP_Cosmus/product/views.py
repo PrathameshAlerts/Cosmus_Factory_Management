@@ -245,6 +245,7 @@ def definesubcategoryproduct(request):
 
 def product2subcategory(request):
 
+
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
@@ -254,23 +255,66 @@ def product2subcategory(request):
 
         try:
             product_id_get = request.POST.get('product_name')
-
+            
             # Get the list of sub_category_name values 
             sub_category_names = request.POST.getlist('sub_category_name')
-
+            
             p_id = get_object_or_404(Product, id = product_id_get)
 
+            
+            existing_instances =  Product2SubCategory.objects.filter(Product_id=p_id)
+
+
+            print('ext',existing_instances)
+            
+            updated_instances_front = []
+            
+            for instance in sub_category_names:
+                s_c_id =  get_object_or_404(SubCategory, id = instance)
+                p_2_c_instance = Product2SubCategory.objects.get(Product_id=p_id, SubCategory_id=s_c_id)
+                updated_instances_front.append(p_2_c_instance)
+
+            existing_instances_pks = set(obj.pk for obj in updated_instances_front)
+            instances_to_delete = [obj for obj in existing_instances_pks if obj.pk not in existing_instances_pks]
+            for obj in instances_to_delete:
+                obj.delete()
+
+            print('ext1',updated_instances_front)
             for sub_cat in sub_category_names:
                 s_c_id =  get_object_or_404(SubCategory, id = sub_cat)
 
-                Product2SubCategory.objects.create(Product_id=p_id,SubCategory_id=s_c_id)
+                p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=s_c_id)
 
             messages.success(request,f'Product sucessfully added to {s_c_id.product_sub_category_name}')
+        
+        except IntegrityError:
+            messages.error(request, 'Product already present in Subcategory')
+
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
 
+
     return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
 
+
+
+def product2subcategoryajax(request):
+
+    productid = request.GET.get('selected_product_id')
+    categoryforselectedproduct = Product2SubCategory.objects.filter(Product_id = productid)
+
+
+    p2c_id = categoryforselectedproduct.first()
+    print(p2c_id.id)
+    dict_result = {}
+    print(categoryforselectedproduct)
+    for obj in categoryforselectedproduct:
+        dict_result[obj.SubCategory_id.id] = obj.SubCategory_id.product_sub_category_name
+    
+    print(dict_result)
+
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return JsonResponse({'dict_result':dict_result})
 
 #____________________________Product-View-End__________________________________
 
@@ -1252,7 +1296,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
 
     if request.method == 'POST':
-
+        print(request.POST)
         try:
             #create a form instance for main form
             master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
