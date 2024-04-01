@@ -36,7 +36,7 @@
             </select>
         </div>
         
-        <button type="button" class="create-btn" id="addRowButton">Add +</button>
+
     <div class="">
         <table id="myTable" class="table table-striped table-hover table-responsive">
             <thead>
@@ -107,6 +107,7 @@
             </tbody>
             {% endfor %}
         </table>
+        <button type="button" class="create-btn" id="addRowButton">Add +</button>
     </div>
    <!-- <div id="shadeTable" style="display:none;">
         <form method="post" id="" enctype="multipart/form-data">
@@ -158,12 +159,14 @@
                 <option value="{{master_form.instance.gst_rate.id}}">{{master_form.instance.gst_rate.gst_percentage}}</option>
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
+                
                 {% elif not master_form.instance.id %}
                 <option value=""></option>
-                {% endif %}
+               
                 {% for x in Purchase_gst %}
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
+                {% endif %}
             </select>
         </label>
         <input type="number" step="0.01" class="purchase-amount" name="" value="" id="id_gst" > 
@@ -255,14 +258,16 @@
         // Iterate through each row
         rows.forEach(function(row) {
             // Find the quantity, rate, and amount input fields for the current row
+            
             var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
             var rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
             var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
-         
+            
+            console.log(quantityInput)
             // Get the values of quantity and rate
             var quantity = parseFloat(quantityInput.value);
             var rate = parseFloat(rateInput.value);
-
+            console.log(rate);
             // Calculate the amount for the current row
 
            var amount = quantity * rate;
@@ -272,6 +277,8 @@
 
             // Add the amount to the total
             totalAmount += amount;
+            
+            
         });
 
         // Get the value of the fright & transport
@@ -311,7 +318,7 @@
     function addEventListenersToInputs() {
         var inputs = document.querySelectorAll('table tbody tr input');
         inputs.forEach(function(input) {
-            input.addEventListener('input', function() {
+            input.addEventListener('change', function() {
                 calculateTotalAmount();
             });
         });
@@ -359,12 +366,12 @@
             selectElementShade.name = `purchase_voucher_items_set-${formIndex}-item_shade`;
             selectElementShade.value='null';
 
-            const qunatityInputElement = lastRow.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
+            const qunatityInputElement = lastRow.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"]');
             qunatityInputElement.id = `purchase_voucher_items_set-${formIndex}-quantity_total`;
             qunatityInputElement.name = `purchase_voucher_items_set-${formIndex}-quantity_total`;
             qunatityInputElement.value="";
 
-            const rateInputElement = lastRow.querySelector('.purchase-rate[name^="purchase_voucher_items_set-"][name$="-rate"]');
+            const rateInputElement = lastRow.querySelector('.purchase-rate[name^="purchase_voucher_items_set-"]');
             rateInputElement.id = `purchase_voucher_items_set-${formIndex}-rate`;
             rateInputElement.name = `purchase_voucher_items_set-${formIndex}-rate`;
             rateInputElement.value="";
