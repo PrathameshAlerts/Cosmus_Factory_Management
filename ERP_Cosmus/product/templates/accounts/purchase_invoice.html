@@ -38,7 +38,7 @@
         
         <button type="button" class="create-btn" id="addRowButton">Add +</button>
     <div class="">
-        <table class="table table-striped table-hover table-responsive myTable">
+        <table id="myTable" class="table table-striped table-hover table-responsive">
             <thead>
                 <tr>
                     <th>No</th>
@@ -60,7 +60,7 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td> 
-                        <select name="item_name_{{forloop.counter0}}" class="item-select" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
+                        <select name="item_name_{{forloop.counter0}}" class="item-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
 
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
@@ -79,7 +79,7 @@
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
                     </td>
                     <td>
-                        <select name="{{forms.prefix}}-item_shade" class="purchase-amount" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
+                        <select name="{{forms.prefix}}-item_shade" class="purchase-amount item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
@@ -91,16 +91,16 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" step=".01">
+                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" >
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" step=".01">
+                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" >
                     </td>
                     <td>
                         <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" step=".01" style="border: none;">
+                        <input type="text" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}"  style="border: none;">
                     </td>
                     <td>{{ forms.DELETE }}</td>
                  </tr>   
@@ -189,9 +189,7 @@
         console.log(itemName);
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
-            var item_value = $(this).val();
-            
-           
+            var item_value = $(this).val();          
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -259,7 +257,7 @@
             // Find the quantity, rate, and amount input fields for the current row
             var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
             var rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
-            var amountInput = row.querySelector('.total-amount');
+            var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
          
             // Get the values of quantity and rate
             var quantity = parseFloat(quantityInput.value);
@@ -306,7 +304,7 @@
 
     // Add onchange event handler to id_fright_transport
     document.getElementById('id_fright_transport').addEventListener('input', calculateTotalAmount);
-
+   
     // Add onchange event handler to id_gst_rate
     document.getElementById('id_gst_rate').addEventListener('change', calculateTotalAmount);
     // Function to add event listeners to quantity and rate inputs
@@ -320,47 +318,79 @@
     }
   
     // Event listener for the add row button
-    document.getElementById('addRowButton').addEventListener('click', function () {
-    var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
-
-    // Update dynamic parts of name and ID attributes
-    var currentIndex = document.querySelectorAll('table tbody tr').length; // Get the current number of rows
-    var dynamicPart = currentIndex.toString(); // Convert the current index to string
+    document.addEventListener('DOMContentLoaded', function () {
+    const addButton= document.getElementById('addRowButton');
+    const tableBody = document.querySelector('#myTable tbody'); // Clone the first row of the table
     
-    // Update name and ID attributes of inputs and select elements in the cloned row
-    newRow.querySelector('[name="item_name_0"]').setAttribute('name', 'item_name_' + dynamicPart);
-    newRow.querySelector('[id="item_name_0"]').setAttribute('id', 'item_name_' + dynamicPart);
+    if(addButton && tableBody){
+        addButton.addEventListener('click', function() {
+            const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
+            const formCount = parseInt(formCountInput.value);
+            console.log(formCount);
+            const lastRow = tableBody.lastElementChild.cloneNode(true);
+            const formIndex = formCount;
+            lastRow.querySelectorAll("input, select").forEach(function(element) {
+                element.value = null; 
+            });
 
-    newRow.querySelector('[name="item_color_0"]').setAttribute('name', 'item_color_' + dynamicPart);
-    newRow.querySelector('[id="item_color_0"]').setAttribute('id', 'item_color_' + dynamicPart);
 
-    newRow.querySelector('[name="purchase_voucher_items_set-0-item_shade"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-item_shade');
-    newRow.querySelector('[id="purchase_voucher_items_set-0-item_shade"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-item_shade');
+            lastRow.querySelectorAll("*").forEach(function(element) {
+                        if (element.id) {
+                            element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                        }
+                        if(element.name){
+                            element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                        }
+                    });
+                    
+            const selectElement = lastRow.querySelector('.item-name');
+            selectElement.id = `item_name_${formIndex}`;
+            selectElement.name = `item_name_${formIndex}`;
+            selectElement.value="";
 
-    newRow.querySelector('[name="purchase_voucher_items_set-0-quantity_total"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-quantity_total');
-    newRow.querySelector('[id="purchase_voucher_items_set-0-quantity_total"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-quantity_total');
-    newRow.querySelector('[name="purchase_voucher_items_set-0-rate"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-rate');
-    newRow.querySelector('[id="purchase_voucher_items_set-0-rate"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-rate');
-    newRow.querySelector('[name="item_per_0"]').setAttribute('name', 'item_per_' + dynamicPart);
-    newRow.querySelector('[id="item_per_0"]').setAttribute('id', 'item_per_' + dynamicPart);
-    newRow.querySelector('[name="purchase_voucher_items_set-0-amount"]').setAttribute('name', 'purchase_voucher_items_set-' + dynamicPart + '-amount');
-    newRow.querySelector('[id="purchase_voucher_items_set-0-amount"]').setAttribute('id', 'purchase_voucher_items_set-' + dynamicPart + '-amount');
+            // Update input name and id
+            const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
+            colorInputElement.id = `item_color_${formIndex}`;
+            colorInputElement.name = `item_color_${formIndex}`;
+            colorInputElement.value="";
 
-    // Clear input fields
-    
-    newRow.querySelector('[name="item_name_' + dynamicPart + '"]').value = "";
-    newRow.querySelector('[name="item_color_' + dynamicPart + '"]').value = "";
-    var selectShade = newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-item_shade"]');
-    while (selectShade.firstChild) {
-        selectShade.removeChild(selectShade.firstChild);
+            const selectElementShade = lastRow.querySelector('.item-shade');
+            selectElementShade.id = `purchase_voucher_items_set-${formIndex}-item_shade`;
+            selectElementShade.name = `purchase_voucher_items_set-${formIndex}-item_shade`;
+            selectElementShade.value='null';
+
+            const qunatityInputElement = lastRow.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
+            qunatityInputElement.id = `purchase_voucher_items_set-${formIndex}-quantity_total`;
+            qunatityInputElement.name = `purchase_voucher_items_set-${formIndex}-quantity_total`;
+            qunatityInputElement.value="";
+
+            const rateInputElement = lastRow.querySelector('.purchase-rate[name^="purchase_voucher_items_set-"][name$="-rate"]');
+            rateInputElement.id = `purchase_voucher_items_set-${formIndex}-rate`;
+            rateInputElement.name = `purchase_voucher_items_set-${formIndex}-rate`;
+            rateInputElement.value="";
+
+            const perInputElement = lastRow.querySelector('.purchase-input[name^="item_per"]');
+            perInputElement.id = `item_per_${formIndex}`;
+            perInputElement.name = `item_per_${formIndex}`;
+            perInputElement.value="";
+
+            const amountInputElement = lastRow.querySelector('.total-amount');
+            amountInputElement.id = `purchase_voucher_items_set-${formIndex}-amount`;
+            amountInputElement.name = `purchase_voucher_items_set-${formIndex}-amount`;
+            amountInputElement.value="";
+
+
+            tableBody.appendChild(lastRow);
+           
+            addEventListenersToInputs(lastRow);
+            calculateTotalAmount();  
+            formCountInput.value = formCount + 1;    
+        });
+        
+    }else{
+        console.error("Could not find addFormButton or table body element.");
+
     }
-    newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-quantity_total"]').value = "";
-    newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-rate"]').value = "";
-    newRow.querySelector('[name="item_per_' + dynamicPart + '"]').value = "";
-    newRow.querySelector('[name="purchase_voucher_items_set-' + dynamicPart + '-amount"]').value = "";
-
-   document.querySelector('table tbody tr:last-child').after(newRow);
-    
 	addEventListenersToInputs(); // Add event listeners to the new row inputs
     calculateTotalAmount();
 });
