@@ -27,7 +27,7 @@
     <td>{{invoice.supplier_invoice_number}}</td>
     <td>{{invoice.party_name.name}}</td>
     <td>{{invoice.grand_total}}</td>
-    <td><a href="{% url 'purchase-voucher-update' invoice.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+    <td><a  href="{% url 'purchase-voucher-update' invoice.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
     <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ invoice.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
     <td><a href="#"><i class="fa-solid fa-eye"></i></a></td>
     </tr>
@@ -79,5 +79,8 @@
     window.location.href = "{% url 'purchase-voucher-create' %}"
   }
 </script>
+
+
+
 
 {% endblock body %}

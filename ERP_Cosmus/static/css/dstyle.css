@@ -1018,6 +1018,12 @@ body{
     padding-left: 5px;  
 }
 
+.purchase-itemName{
+    width: 158px;
+    border: 1px solid #666;
+    border-radius: 7px;
+    padding-left: 5px;  
+}
 .ledger-input{
     width: 270px;
     border: 1px solid #666;

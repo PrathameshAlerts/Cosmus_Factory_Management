@@ -9,17 +9,17 @@
 
  
   <div>
-    <button class="add_btn" onclick="openNewColor()">Add Color +</button>
+    <button class="add_btn ms-5" onclick="openNewColor()">Add Color +</button>
   </div>
  
 
 </div>
 <form class="mb-3" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  <div class="d-flex my-2">
+  <div class="d-flex mt-4 mb-4">
     <label for="id_Product_Refrence_ID" class="form-label">Refrence ID : </label>
     <input type="text" class="item-select px-2 mx-2" name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
-    <button type="button" id="addButton"  class="add_btn">Add +</button>
+    
     
   </div>
   <div>
@@ -58,11 +58,12 @@
         </div>
       </div>
     </div>
+    <button type="button" id="addButton"  class="add_btn" style="margin-top: 100px; margin-left: 15px;">Add +</button>
   </div>
 
   <div>
     <div>
-      <input type="submit" class="newProductCreateBtn" name="save" value='Save'>
+      <input type="submit" class="newProductCreateBtn mt-5" name="save" value='Save'>
     </div>
     
   </div>

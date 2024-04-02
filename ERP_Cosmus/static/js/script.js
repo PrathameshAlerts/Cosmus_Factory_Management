@@ -115,7 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
         field4Input.value = newValue; // Update the value of field4Input
     }
 }
-
-
 });
+// purchase create and update item form
+
+
 
