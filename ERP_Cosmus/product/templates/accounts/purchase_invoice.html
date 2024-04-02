@@ -74,6 +74,7 @@
                             {% endfor %}
                             {% endif %}
                           </select>
+                        
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
@@ -106,6 +107,8 @@
                  </tr>   
             </tbody>
             {% endfor %}
+
+
         </table>
     </div>
    <!-- <div id="shadeTable" style="display:none;">
