@@ -110,7 +110,6 @@ def product_color_sku(request):
                             transaction.set_rollback(True)
                             break
 
-
                 except Exception as e:
                     print('Exception occured:', str(e))
                     messages.error(request, f'Exception occured - {e}')
@@ -203,8 +202,6 @@ def add_product_video_url(request,pk):
 
             return HttpResponse(close_window_script)
 
-
-
     else:
             return render(request, 'product/add_product_videourl.html', {'formset': formset, 'product': product})
 
@@ -245,6 +242,7 @@ def definesubcategoryproduct(request):
 
 def product2subcategory(request):
 
+
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
@@ -253,24 +251,77 @@ def product2subcategory(request):
     if request.method == 'POST':
 
         try:
+            #get the product id  from POST request
             product_id_get = request.POST.get('product_name')
-
+            
             # Get the list of sub_category_name values 
-            sub_category_names = request.POST.getlist('sub_category_name')
-
+            sub_category_ids = request.POST.getlist('sub_category_name')
+            
+            # get the product instance from the id of post request
             p_id = get_object_or_404(Product, id = product_id_get)
 
-            for sub_cat in sub_category_names:
-                s_c_id =  get_object_or_404(SubCategory, id = sub_cat)
+            # filter p2c table with the selected product instance 
+            existing_instances =  Product2SubCategory.objects.filter(Product_id=p_id)
 
-                Product2SubCategory.objects.create(Product_id=p_id,SubCategory_id=s_c_id)
+            
+            updated_instances_front = []
+            
+            # loop in the sub_cat selected in the frontend 
+            for sub_cat_id in sub_category_ids:
+                #get the instance of of the id from subcat table
+                s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
+                #filter the p2c table with the p_id instance and sub cat instance and append to the list 
+                p_2_c_instance = Product2SubCategory.objects.filter(Product_id=p_id, SubCategory_id=s_c_id).first() 
+                updated_instances_front.append(p_2_c_instance)
 
+            
+            # get the pk of all the instances from the POST request
+            updated_instance_pk = set(obj.pk for obj in updated_instances_front if obj is not None)
+            # loop through instance in the table if check if pk of  instance in table is not in updated instance
+            instances_to_delete = [obj for obj in existing_instances if obj.pk not in updated_instance_pk]
+            
+            # delete the instances_to_delete which obj which are in DB but not sent from POST 
+            for obj in instances_to_delete:
+                obj.delete()
+
+            # the ids which were not sent from POST but are in DB are deleted  above.
+                
+            # ex:[11,12,13,18] sent from POST, [11,12,13,14] in DB #14 is deleted and the 
+            # remaining are updated or created like: 18 is created as its extra in POST, 14 is deleted from DB and 11,12,13 are updated or created.  
+            for sub_cat_id in sub_category_ids:
+
+                # now for saving sub_cat_id has the ids from POST to get saved or updated in DB 
+                s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
+
+                p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=s_c_id)
             messages.success(request,f'Product sucessfully added to {s_c_id.product_sub_category_name}')
+        
+        except IntegrityError:
+            messages.error(request, 'Product already present in Subcategory')
+
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
 
+
     return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
 
+
+
+def product2subcategoryajax(request):
+
+    productid = request.GET.get('selected_product_id')
+    categoryforselectedproduct = Product2SubCategory.objects.filter(Product_id = productid)
+
+
+    dict_result = {}
+    print(categoryforselectedproduct)
+    for obj in categoryforselectedproduct:
+        dict_result[obj.SubCategory_id.id] = obj.SubCategory_id.product_sub_category_name
+    
+    print(dict_result)
+
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return JsonResponse({'dict_result':dict_result})
 
 #____________________________Product-View-End__________________________________
 
@@ -1212,7 +1263,6 @@ def purchasevouchercreateupdate(request, pk=None):
     for forms in items_formset.forms:
         godown_items_formset = purchase_voucher_items_godown_formset()
 
-
     print(request.GET)
 
     try:
@@ -1252,7 +1302,7 @@ def purchasevouchercreateupdate(request, pk=None):
     print(request.POST)
 
     if request.method == 'POST':
-
+        print(request.POST)
         try:
             #create a form instance for main form
             master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
@@ -1327,9 +1377,12 @@ def purchasevouchercreateupdate(request, pk=None):
                'items':items,
                'items_formset':items_formset,
                'Purchase_gst':Purchase_gst,
-               
-               } #'godown_formsets':godown_items_formset,
-
+               'godown_formsets':godown_items_formset,
+               }
+    
+    for form in items_formset:
+        print(form)
+        print(items_formset.management_form)
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
@@ -1360,8 +1413,6 @@ def purchasevouchercreatepopupajax(request):
 
 def purchasevoucherlist(request):
     purchase_invoice_list = item_purchase_voucher_master.objects.all()
-
-
     return render(request,'accounts/purchase_invoice_list.html',{'purchase_invoice_list':purchase_invoice_list})
 
 

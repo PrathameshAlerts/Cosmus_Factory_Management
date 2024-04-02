@@ -24,15 +24,18 @@ class SubCategory(models.Model):
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE, related_name = 'subcategories')
 
     def __str__(self):
-        return self.sub_product_category_name  
+        return self.product_sub_category_name 
 
 
 class Product2SubCategory(models.Model):
     Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = [['Product_id','SubCategory_id']]
     
     def __str__(self):  
-        return f'{self.SubCategory_id.sub_product_category_name} --- {self.Product_id.Product_Name}'
+        return f'{self.SubCategory_id.product_sub_category_name} --- {self.Product_id.Product_Name}'
     
 
 

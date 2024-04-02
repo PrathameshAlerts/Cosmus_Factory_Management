@@ -53,15 +53,35 @@
             </thead>
             <tbody id="tbody">
                 {{items_formset.management_form}}
-                {% for forms in items_formset %}
                 
-            {{form.as_p}}
-   
-            {% endfor %}   
-            </tbody>
+                <div id="formset-container">
+                    {% for forms in items_formset %}
+                        <div class="formset-form">
+                            {% if forms.instance.pk %}
+                                <!-- For existing instances (update) -->
+                                {% for field in form %}
+                                    <p>{{ field.label_tag }} {{ field }}</p>
+
+                                {% endfor %}
+                            {% else %}
+                                <!-- For new instances (create) -->
+                                <!-- Render the fields as you normally would for a new instance -->
+                                <p> {{ form.item_name }}</p>
+                                <p> {{ form.item_color}}</p>
+                            {% endif %}
+                        </div>
             
+                </div>
+                {% endfor %} 
+            
+            
+            
+            </tbody>
+           
+
+
         </table>
-        <button type="button" class="create-btn" id="addRowButton">Add +</button>
+        <button type="button" class="create-btn" id="add-form">Add +</button>
     </div>
 
            
@@ -326,7 +346,34 @@
 });
 
  </script> 
- 
+ <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-form').addEventListener('click', function() {
+            var formsetContainer = document.getElementById('formset-container');
+            var totalFormsField = document.getElementById('id_form-TOTAL_FORMS');
+            var totalForms = parseInt(totalFormsField.value);
+            var newFormIndex = totalForms;
+
+            // Construct the HTML for the new form fields
+            var newFormHTML = `
+                <div class="formset-form">
+                   
+		 <select  name="form-${newFormIndex}-item_name" id="id_form-${newFormIndex}-item_name"></p>
+
+                    
+		<input type="text" name="form-${newFormIndex}-item_color" id="id_form-${newFormIndex}-item_color"></p>
+                </div>
+            `;
+
+            // Append the new form HTML to the formset container
+            formsetContainer.insertAdjacentHTML('beforeend', newFormHTML);
+
+            // Increment the total forms count
+            totalFormsField.value = totalForms + 1;
+        });
+    });
+</script>
+
 
 
 
