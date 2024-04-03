@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, purchase_voucher_items
-from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, item_purchase_voucher_master_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset
+from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, item_purchase_voucher_master_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -1248,16 +1248,17 @@ def stocktransferreport(request):
 
 def purchasevouchercreateupdate(request, pk=None):
 
-    #get the purchase invoice for updating the form
+    #get the purchase invoice for updating the form 
     if pk:
         purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk = pk)
-        
+        item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
     else:
         purchase_invoice_instance = None
+        item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
 
     Purchase_gst = gst.objects.all()
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
-    items_formset = purchase_voucher_items_formset(instance=purchase_invoice_instance)
+    items_formset = item_formsets_change
     
 
     for forms in items_formset.forms:
@@ -1308,7 +1309,7 @@ def purchasevouchercreateupdate(request, pk=None):
             master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
             
             #create a formset instance for form items in invoice
-            items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
+            items_formset = item_formsets_change
 
             #create a formset instance for godowns in form items
             godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
@@ -1394,8 +1395,7 @@ def purchasevoucherpopup(request,shade_id):
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
         item_shade = item_color_shade.objects.get(id = shade_id)
-        print(item)
-        print(item_shade)
+
     except Exception as e:
         messages.error(request,'Error with Shades')
     return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
