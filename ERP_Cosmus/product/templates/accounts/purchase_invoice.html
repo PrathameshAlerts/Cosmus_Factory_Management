@@ -36,7 +36,7 @@
             </select>
         </div>
         
-        
+        <button type="button" class="create-btn" id="addRowButton">Add +</button>
     <div class="">
         <table id="myTable" class="table table-striped table-hover table-responsive">
             <thead>
@@ -111,7 +111,6 @@
 
 
         </table>
-        <button type="button" class="create-btn" id="addRowButton">Add +</button>
     </div>
    <!-- <div id="shadeTable" style="display:none;">
         <form method="post" id="" enctype="multipart/form-data">
@@ -147,13 +146,17 @@
 
 <div class="table-left">
     <div class="d-flex mb-3">
+
+        <input type="hidden" class="purchase-amount" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01"  >
+    </div>
+    <div class="d-flex mb-3">
         <span class="item-form fw-bold">Fright & Transport</span>
         <input type="number" class="purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" required >
 
     </div>
     <div class="d-flex mb-3">
         <span  class="item-form fw-bold" >Gross total</span>
-        <input type="number" class="purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required><span>{{master_form.instance.gross_total}}</span>
+        <input type="number" class="purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required >
     </div>
     <div class="d-flex mb-3">
         <label for="id_gst_rate" class="item-form fw-bold" >GST
@@ -175,7 +178,7 @@
     </div>
     <div class="d-flex mb-3">
         <label for="id_grand_total" class="item-form fw-bold" >Grand total</label>
-          <input type="number" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" required step="0.01"><span>{{master_form.instance.grand_total}}</span>
+          <input type="text" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total"> <span>{{master_form.instance.grand_total}}</span>
     </div>
 </div>
 
@@ -183,7 +186,7 @@
 
 <input type="submit" class="add_btn">
  </form>
-</div>
+
 
  <script>
     $(document).ready(function () {
@@ -191,7 +194,7 @@
         var lastSelectedItem = '';
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-     
+        console.log(itemName);
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();          
@@ -204,7 +207,7 @@
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
-                   
+                    console.log(itemrownameid);
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>');
                     
 
@@ -252,11 +255,11 @@
 </script>
 
 <script>
-function calculateTotalAmount() {
-        var rows = document.querySelectorAll('table tbody tr');
-   
+   function calculateTotalAmount() {
+        var rows = document.querySelectorAll('#myTable tbody tr');
         var total = 0;
-      
+        
+       
         // Iterate through each row
         rows.forEach(function(row) {
             // Find the quantity, rate, and amount input fields for the current row
@@ -267,8 +270,7 @@ function calculateTotalAmount() {
             // Get the values of quantity and rate
             var quantity = parseFloat(quantityInput.value);
             var rate = parseFloat(rateInput.value);
-            console.log(quantity);
-            console.log(rate);
+
             // Calculate the amount for the current row
 
            var amount = quantity * rate;
@@ -277,18 +279,26 @@ function calculateTotalAmount() {
             amountInput.value = isNaN(amount) ? '' : amount.toFixed(2);
 
             // Add the amount to the total
+            total= total + amount;
             
-            total = total + amount;
-            var totalAmount = total + amount;
+           console.log("ta",total) 
+           document.getElementById('id_grand_amount').value = total.toFixed(2);
         });
-       
+        console.log("total",total)
         
+    }
+       
+        // Set the calculated total value to the total input field
         // Get the value of the fright & transport
+        function calculateOtherTotal(total) {
+         
+         var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
+        
         var frightTransport = parseFloat(document.getElementById('id_fright_transport').value) ;
-
+           
         // Calculate the gross total by adding the total amount and the fright & transport
-        var grossTotal = totalAmount + frightTransport;
-
+        var grossTotal = grandTotal + frightTransport;
+        
         // Set the calculated gross total value to the gross total input field
         document.getElementById('id_gross_total').value = grossTotal.toFixed(2);
 
@@ -310,21 +320,27 @@ function calculateTotalAmount() {
 
     // Call the function initially to calculate total amount, GST, and grand total on page load
     calculateTotalAmount();
-
+   
+    
     // Add onchange event handler to id_fright_transport
-    document.getElementById('id_fright_transport').addEventListener('input', calculateTotalAmount);
+    document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
+   
    
     // Add onchange event handler to id_gst_rate
-    document.getElementById('id_gst_rate').addEventListener('change', calculateTotalAmount);
+    document.getElementById('id_gst_rate').addEventListener('change', calculateOtherTotal);
     // Function to add event listeners to quantity and rate inputs
     function addEventListenersToInputs() {
-        var inputs = document.querySelectorAll('table tbody tr input');
+        var inputs = document.querySelectorAll('#myTable tbody tr input');
         inputs.forEach(function(input) {
             input.addEventListener('input', function() {
                 calculateTotalAmount();
+                calculateOtherTotal();
+                
             });
         });
+       
     }
+  
     // Event listener for the add row button
     document.addEventListener('DOMContentLoaded', function () {
     const addButton= document.getElementById('addRowButton');
@@ -334,7 +350,7 @@ function calculateTotalAmount() {
         addButton.addEventListener('click', function() {
             const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
             const formCount = parseInt(formCountInput.value);
-           
+            console.log(formCount);
             const lastRow = tableBody.lastElementChild.cloneNode(true);
             const formIndex = formCount;
             lastRow.querySelectorAll("input, select").forEach(function(element) {
@@ -392,6 +408,7 @@ function calculateTotalAmount() {
            
             addEventListenersToInputs(lastRow);
             calculateTotalAmount();  
+            
             formCountInput.value = formCount + 1;    
         });
         
@@ -399,8 +416,9 @@ function calculateTotalAmount() {
         console.error("Could not find addFormButton or table body element.");
 
     }
-    addEventListenersToInputs();
+	addEventListenersToInputs(); // Add event listeners to the new row inputs
     calculateTotalAmount();
+    calculateOtherTotal();
 });
 
   
@@ -408,6 +426,8 @@ function calculateTotalAmount() {
     addEventListenersToInputs();
     // Call calculateTotalAmount initially to calculate total on page load
     calculateTotalAmount();
+
+    calculateOtherTotal();
   </script>
 
 
