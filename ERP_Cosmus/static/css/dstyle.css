@@ -1038,6 +1038,12 @@ body{
     padding-left: 5px; 
 }
 
+.acc-subInput{
+    width: 230px;
+    border: 1px solid #666;
+    border-radius: 7px;
+    padding-left: 5px;
+}
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {

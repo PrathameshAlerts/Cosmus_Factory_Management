@@ -36,6 +36,7 @@
             </select>
         </div>
         
+        
     <div class="">
         <table id="myTable" class="table table-striped table-hover table-responsive">
             <thead>
@@ -51,39 +52,97 @@
                     <th>DELETE</th>
                 </tr>
             </thead>
-            <tbody id="tbody">
+            <tbody>
                 {{items_formset.management_form}}
+                {% for forms in items_formset %}
+                {{ forms.id }}
                 
-                <div id="formset-container">
-                    {% for forms in items_formset %}
-                        <div class="formset-form">
-                            {% if forms.instance.pk %}
-                                <!-- For existing instances (update) -->
-                                {% for field in form %}
-                                    <p>{{ field.label_tag }} {{ field }}</p>
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td> 
+                        <select name="item_name_{{forloop.counter0}}" class="item-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
 
-                                {% endfor %}
-                            {% else %}
-                                <!-- For new instances (create) -->
-                                <!-- Render the fields as you normally would for a new instance -->
-                                <p> {{ form.item_name }}</p>
-                                <p> {{ form.item_color}}</p>
+                            {% if forms.instance.id %}
+                            <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
+                            {% for item in items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %}
+                            {% elif not forms.instance.id %}
+                            <option value=""></option>
+                            {% for item in items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %}
                             {% endif %}
-                        </div>
+                          </select>
+                        
+                    </td>
+                    <td>
+                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
+                    </td>
+                    <td>
+                        <select name="{{forms.prefix}}-item_shade" class="purchase-amount item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
+
+                             {% if forms.instance.id %} 
+                             <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
+
+                             {% elif not forms.instance.id %}
+                             <option value=""></option>
+                             {% endif %}
+
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" >
+                    </td>
+                    <td>
+                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" >
+                    </td>
+                    <td>
+                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
+                    </td>
+                    <td>
+                        <input type="text" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}"  style="border: none;">
+                    </td>
+                    <td>{{ forms.DELETE }}</td>
+                 </tr>   
             
-                </div>
-                {% endfor %} 
-            
-            
-            
-            </tbody>
-           
+            {% endfor %}
+        </tbody>
 
 
         </table>
-        <button type="button" class="create-btn" id="add-form">Add +</button>
+        <button type="button" class="create-btn" id="addRowButton">Add +</button>
     </div>
-
+   <!-- <div id="shadeTable" style="display:none;">
+        <form method="post" id="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Godown Select</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Amount</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{godown_formsets.management_form}}
+                    {% for forms in godown_formsets %}
+                    <tr>
+                        <td>{{forms.godown_select}}</td>
+                        <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity"></td>
+                        <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate">
+                        </td>
+                        <td><input type="number" name="shade_godown_items_set-0-amount" step="0.01" id="id_shade_godown_items_set-0-amount">
+                        </td>
+                        <td>{{ forms.DELETE }}</td>
+                    </tr>
+                    {% endfor %}
+            </table>
+        </form>
+        
+    </div>-->
            
 
 <div class="table-left">
@@ -94,7 +153,7 @@
     </div>
     <div class="d-flex mb-3">
         <span  class="item-form fw-bold" >Gross total</span>
-        <input type="number" class="purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" >
+        <input type="number" class="purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required><span>{{master_form.instance.gross_total}}</span>
     </div>
     <div class="d-flex mb-3">
         <label for="id_gst_rate" class="item-form fw-bold" >GST
@@ -104,7 +163,6 @@
                 {% for x in Purchase_gst %}
                 <option value="{{x.id}}">{{x.gst_percentage}}</option>
                 {% endfor %}
-                
                 {% elif not master_form.instance.id %}
                 <option value=""></option>
                 {% for x in Purchase_gst %}
@@ -117,7 +175,7 @@
     </div>
     <div class="d-flex mb-3">
         <label for="id_grand_total" class="item-form fw-bold" >Grand total</label>
-          <input type="text" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
+          <input type="number" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" required step="0.01"><span>{{master_form.instance.grand_total}}</span>
     </div>
 </div>
 
@@ -125,16 +183,15 @@
 
 <input type="submit" class="add_btn">
  </form>
-
+</div>
 
  <script>
-    
     $(document).ready(function () {
         var itemName;
         var lastSelectedItem = '';
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-      
+     
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();          
@@ -147,7 +204,7 @@
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
-                 
+                   
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>');
                     
 
@@ -171,7 +228,6 @@
                      
                     });
                     
-                
                 },
                 
                 error: function (xhr, errmsg, err) {
@@ -193,107 +249,26 @@
             }
         });
     });
- </script>
- <script>
-     document.addEventListener('DOMContentLoaded', function () {
-    const addButton = document.getElementById('addRowButton');
-    const tableBody = document.querySelector('#myTable tbody');
-    let totalForms = tableBody.children.length;
-    
-    if(addButton && tableBody) {
-    addButton.addEventListener('click', function () {
-        const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
-        const formCount = parseInt(formCountInput.value);
-        console.log(formCount);
-        
-        const newRow = document.createElement('tr');
-       
-        newRow.innerHTML = `
-           
-            <td>${totalForms - 3}</td>
-            <td>
-                <select name="item_name_${totalForms - 4}" class="item-select item-name"  id="item_name_${totalForms - 4}">
-                
-                   {% if forms.instance.id %}
-                            <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
-                            
-                            {% elif not forms.instance.id %}
-                            <option value=""></option>
-                            {% endif %}
-                            {% for item in items %}
-                            <option value="{{item.id}}">{{item.item_name}}</option>
-                            {% endfor %}
-                    
+</script>
 
-                </select>
-            </td>
-            <td>
-                <input type="text" name="item_color_${totalForms - 4}" class="purchase-input" readonly value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" id="item_color_${totalForms - 4}" id="item_color_${totalForms - 4}">
-            </td>
-            <td>
-                <select name="purchase_voucher_items_set-${totalForms - 4}-item_shade" class="item-select item-shade" id="purchase_voucher_items_set-${totalForms - 4}-item_shade">
-                   
-                    {% if forms.instance.id %} 
-                             <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
-
-                             {% elif not forms.instance.id %}
-                             <option value=""></option>
-                             {% endif %}
-
-                </select>
-            </td>
-            <td>
-                <input type="number" name="purchase_voucher_items_set-${totalForms - 4}-quantity_total" class="purchase-input purchase-qunatity" value="{{forms.instance.quantity_total | default_if_none:'' }}" id="purchase_voucher_items_set-${totalForms - 4}-quantity_total">
-            </td>
-            <td>
-                <input type="number" name="purchase_voucher_items_set-${totalForms - 4}-rate" class="purchase-input purchase-rate" value="{{forms.instance.rate | default_if_none:''}}" id="purchase_voucher_items_set-${totalForms - 4}-rate">
-            </td>
-            <td>
-                <input type="text" name="item_per_${totalForms - 4}" class="purchase-input" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" id="item_per_${totalForms - 4}" readonly>
-            </td>
-            <td>
-                <input type="number" name="purchase_voucher_items_set-${totalForms - 4}-amount" class="total-amount purchase-amount" readonly value="{{forms.instance.amount | default_if_none:''}}" id="purchase_voucher_items_set-${totalForms - 4}-amount" style="border: none">
-            </td>
-            <td>delete</td>
-            <td><input type="hidden" name="purchase_voucher_items_set-${totalForms - 4}-id" value="{{forms.instance.id}}" id="id_purchase_voucher_items_set-${totalForms - 4}-id"></td>
-         
-        `;
-        tableBody.appendChild(newRow);
-        
-        totalForms++;
-        addEventListenersToInputs(newRow);
-        calculateTotalAmount();
-    });
-    
-};
-
-    function addEventListenersToInputs() {
-        var inputs = document.querySelectorAll('table tbody tr input');
-        inputs.forEach(function(input) {
-            input.addEventListener('change', function() {
-                calculateTotalAmount();
-            });
-        });
-    }
-      
-
-    function calculateTotalAmount() {
+<script>
+function calculateTotalAmount() {
         var rows = document.querySelectorAll('table tbody tr');
-        var totalAmount = 0;
-        
+   
+        var total = 0;
+      
         // Iterate through each row
         rows.forEach(function(row) {
             // Find the quantity, rate, and amount input fields for the current row
-            
-            var quantityInput = row.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"]');
-            var rateInput = row.querySelector('.purchase-rate[name^="purchase_voucher_items_set-"]');
-            var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"]');
-            
-    
+            var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
+            var rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
+            var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
+         
             // Get the values of quantity and rate
             var quantity = parseFloat(quantityInput.value);
             var rate = parseFloat(rateInput.value);
-         
+            console.log(quantity);
+            console.log(rate);
             // Calculate the amount for the current row
 
            var amount = quantity * rate;
@@ -302,11 +277,12 @@
             amountInput.value = isNaN(amount) ? '' : amount.toFixed(2);
 
             // Add the amount to the total
-            totalAmount += amount;
             
-            
+            total = total + amount;
+            var totalAmount = total + amount;
         });
-
+       
+        
         // Get the value of the fright & transport
         var frightTransport = parseFloat(document.getElementById('id_fright_transport').value) ;
 
@@ -341,40 +317,98 @@
     // Add onchange event handler to id_gst_rate
     document.getElementById('id_gst_rate').addEventListener('change', calculateTotalAmount);
     // Function to add event listeners to quantity and rate inputs
-   
+    function addEventListenersToInputs() {
+        var inputs = document.querySelectorAll('table tbody tr input');
+        inputs.forEach(function(input) {
+            input.addEventListener('input', function() {
+                calculateTotalAmount();
+            });
+        });
+    }
+    // Event listener for the add row button
+    document.addEventListener('DOMContentLoaded', function () {
+    const addButton= document.getElementById('addRowButton');
+    const tableBody = document.querySelector('#myTable tbody'); // Clone the first row of the table
     
+    if(addButton && tableBody){
+        addButton.addEventListener('click', function() {
+            const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
+            const formCount = parseInt(formCountInput.value);
+           
+            const lastRow = tableBody.lastElementChild.cloneNode(true);
+            const formIndex = formCount;
+            lastRow.querySelectorAll("input, select").forEach(function(element) {
+                element.value = null; 
+            });
+
+
+            lastRow.querySelectorAll("*").forEach(function(element) {
+                        if (element.id) {
+                            element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                        }
+                        if(element.name){
+                            element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                        }
+                    });
+                    
+            const selectElement = lastRow.querySelector('.item-name');
+            selectElement.id = `item_name_${formIndex}`;
+            selectElement.name = `item_name_${formIndex}`;
+            selectElement.value="";
+
+            // Update input name and id
+            const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
+            colorInputElement.id = `item_color_${formIndex}`;
+            colorInputElement.name = `item_color_${formIndex}`;
+            colorInputElement.value="";
+
+            const selectElementShade = lastRow.querySelector('.item-shade');
+            selectElementShade.id = `purchase_voucher_items_set-${formIndex}-item_shade`;
+            selectElementShade.name = `purchase_voucher_items_set-${formIndex}-item_shade`;
+            selectElementShade.value='null';
+
+            const qunatityInputElement = lastRow.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
+            qunatityInputElement.id = `purchase_voucher_items_set-${formIndex}-quantity_total`;
+            qunatityInputElement.name = `purchase_voucher_items_set-${formIndex}-quantity_total`;
+            qunatityInputElement.value="";
+
+            const rateInputElement = lastRow.querySelector('.purchase-rate[name^="purchase_voucher_items_set-"][name$="-rate"]');
+            rateInputElement.id = `purchase_voucher_items_set-${formIndex}-rate`;
+            rateInputElement.name = `purchase_voucher_items_set-${formIndex}-rate`;
+            rateInputElement.value="";
+
+            const perInputElement = lastRow.querySelector('.purchase-input[name^="item_per"]');
+            perInputElement.id = `item_per_${formIndex}`;
+            perInputElement.name = `item_per_${formIndex}`;
+            perInputElement.value="";
+
+            const amountInputElement = lastRow.querySelector('.total-amount');
+            amountInputElement.id = `purchase_voucher_items_set-${formIndex}-amount`;
+            amountInputElement.name = `purchase_voucher_items_set-${formIndex}-amount`;
+            amountInputElement.value="";
+
+
+            tableBody.appendChild(lastRow);
+           
+            addEventListenersToInputs(lastRow);
+            calculateTotalAmount();  
+            formCountInput.value = formCount + 1;    
+        });
+        
+    }else{
+        console.error("Could not find addFormButton or table body element.");
+
+    }
+    addEventListenersToInputs();
+    calculateTotalAmount();
 });
 
- </script> 
- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('add-form').addEventListener('click', function() {
-            var formsetContainer = document.getElementById('formset-container');
-            var totalFormsField = document.getElementById('id_form-TOTAL_FORMS');
-            var totalForms = parseInt(totalFormsField.value);
-            var newFormIndex = totalForms;
-
-            // Construct the HTML for the new form fields
-            var newFormHTML = `
-                <div class="formset-form">
-                   
-		 <select  name="form-${newFormIndex}-item_name" id="id_form-${newFormIndex}-item_name"></p>
-
-                    
-		<input type="text" name="form-${newFormIndex}-item_color" id="id_form-${newFormIndex}-item_color"></p>
-                </div>
-            `;
-
-            // Append the new form HTML to the formset container
-            formsetContainer.insertAdjacentHTML('beforeend', newFormHTML);
-
-            // Increment the total forms count
-            totalFormsField.value = totalForms + 1;
-        });
-    });
-</script>
-
-
+  
+    // Call function to add event listeners to existing rows' inputs
+    addEventListenersToInputs();
+    // Call calculateTotalAmount initially to calculate total on page load
+    calculateTotalAmount();
+  </script>
 
 
 
