@@ -1380,9 +1380,8 @@ def purchasevouchercreateupdate(request, pk=None):
                'godown_formsets':godown_items_formset,
                }
     
-    for form in items_formset:
-        print(form)
-        print(items_formset.management_form)
+    
+    print(items_formset.management_form)
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
