@@ -36,7 +36,7 @@
             </select>
         </div>
         
-        <button type="button" class="create-btn" id="addRowButton">Add +</button>
+       
     <div class="">
         <table id="myTable" class="table table-striped table-hover table-responsive">
             <thead>
@@ -111,37 +111,55 @@
 
 
         </table>
+        <button type="button" class="create-btn" id="addRowButton">Add +</button>
     </div>
-   <!-- <div id="shadeTable" style="display:none;">
-        <form method="post" id="" enctype="multipart/form-data">
-            {% csrf_token %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Godown Select</th>
-                        <th>Quantity</th>
-                        <th>Rate</th>
-                        <th>Amount</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{godown_formsets.management_form}}
-                    {% for forms in godown_formsets %}
-                    <tr>
-                        <td>{{forms.godown_select}}</td>
-                        <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity"></td>
-                        <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate">
-                        </td>
-                        <td><input type="number" name="shade_godown_items_set-0-amount" step="0.01" id="id_shade_godown_items_set-0-amount">
-                        </td>
-                        <td>{{ forms.DELETE }}</td>
-                    </tr>
-                    {% endfor %}
-            </table>
-        </form>
-        
-    </div>-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-scrollable modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="exampleModalLabel">Item Name: </h3> 
+              <h3 class="modal-title" id="exampleModalLabel">shade Name:</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table class="table table-striped table-hover" id="newTable">
+                        <thead>
+                            <tr>
+                                <th>Godowns</th>
+                                <th>Quantity</th>
+                                <th>Rate</th>
+                                <th>Amount</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                            <tr>
+                                <td><select name="shade_godown_items_set-0-shade_godown" id="id_shade_godown_items_set-0-shade_godown" class="purchase-input">
+                                    <option value="mahim">mahim</option>
+                                </select></td>
+                                <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity" class="purchase-input"></td>
+                                <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate" class="purchase-input">
+                                </td>
+                                <td><input type="number" name="shade_godown_items_set-0-amount" step="0.01" id="id_shade_godown_items_set-0-amount" class="purchase-input">
+                                </td>
+                                <td>Delete</td>
+                            </tr>
+                          
+                    </table>
+                    <button type="button" class="create-btn" id="addModalRowButton">Add +</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+              <button type="button" class="modal-btn" id="confirmSaveButton">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
            
 
 <div class="table-left">
@@ -186,7 +204,39 @@
 
 <input type="submit" class="add_btn">
  </form>
+ <script>
+    document.body.appendChild(document.getElementById('exampleModal'));
+    
+    $(document).ready(function(){
+   
+        $('.item-shade').change(function(){
+            var selectValue = $(this).val();
+            console.log(selectValue);
+           
+            if(selectValue !== ''){
+            $('#confirmSaveButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+            $('#exampleModal').modal('show');
 
+
+            }
+           
+        });
+         
+        
+        $('#addModalRowButton').click(function(){
+            var tableClone = $('#exampleModal').find('#newTable tbody').clone(true);
+            $('#exampleModal').find('#newTable').append(tableClone);
+        })
+       
+    
+        // Confirm delete button click event
+        $('#confirmSaveButton').click(function(){
+            var itemId = $(this).data('item-id');
+            // Redirect to delete view
+            window.location.href = '/purchasevoucherupdate/' + itemId;
+        });
+    });
+</script>
 
  <script>
     $(document).ready(function () {
