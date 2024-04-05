@@ -241,8 +241,6 @@ def definesubcategoryproduct(request):
 
 
 def product2subcategory(request):
-
-
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
@@ -1271,8 +1269,6 @@ def purchasevouchercreateupdate(request, pk=None):
     for forms in items_formset.forms:
         godown_items_formset = purchase_voucher_items_godown_formset()
 
-    print(request.GET)
-
     try:
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
         party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
@@ -1291,12 +1287,22 @@ def purchasevouchercreateupdate(request, pk=None):
             item_per = item.unit_name_item.unit_name
             item_per_out = item_per_out + item_per
         
-        # item shades
+        # filter out item shades
         item_shades = item_color_shade.objects.filter(items = item_value)
-    
+
         item_shades_dict = {}
+        item_shades_total_quantity_dict = {}
+        
         for shade in item_shades:
             item_shades_dict[shade.id] = shade.item_shade_name
+            
+            godown_shade_quantity = 0
+            shade_godowns =  item_godown_quantity_through_table.objects.filter(Item_shade_name = shade)
+            for godown in shade_godowns:
+                godown_shade_quantity = godown_shade_quantity + godown.quantity
+
+            item_shades_total_quantity_dict[shade.id] = godown_shade_quantity
+        
 
     except Exception as e:
         print(f'exception occoured {e}')
@@ -1305,7 +1311,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
-                                  "item_per":item_per_out})
+                                  "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict})
 
 
     if request.method == 'POST':

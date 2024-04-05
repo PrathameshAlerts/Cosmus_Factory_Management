@@ -22,7 +22,9 @@ class MainCategory(models.Model):
 class SubCategory(models.Model):
     product_sub_category_name = models.CharField(max_length = 250, unique = True)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE, related_name = 'subcategories')
+    Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
 
+    
     def __str__(self):
         return self.product_sub_category_name 
 
