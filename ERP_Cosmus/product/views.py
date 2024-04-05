@@ -528,7 +528,7 @@ def color_create_update(request, pk=None):
         
 
 def color_delete(request, pk):
-
+    
     try:
         product_color = get_object_or_404(Color,pk=pk)
         product_color.delete()
@@ -626,7 +626,6 @@ def item_fabric_group_create(request):
 
     return render(request,template_name,{'title': 'Create Fabric Group',
                                                                           'form':form})
-
 
 
 def item_fabric_group_list(request):
@@ -1100,7 +1099,6 @@ def stocktransfer(request):
             item_name =  item.items.item_name
             item_id = item.items.id
             items_in_godown[item_id] = item_name
-        
 
         # shades of the selected item from the godown 
             
@@ -1111,11 +1109,13 @@ def stocktransfer(request):
         item_color_godown = request.GET.get('selectedValueGodown')
 
         # get the shade of the selected item
-        item_create_table = item_color_shade.objects.filter(items=item_name_value)
+        item_shades_of_selected_item = item_color_shade.objects.filter(items=item_name_value)
 
         item_shades = {}
-        #loop in the throughtable with the selected shade of the selected item   
-        for x in item_create_table:
+        items_shade_quantity_in_godown = {}
+
+        #loop through the itemshade of item   
+        for x in item_shades_of_selected_item:
 
             # in the through table to with the selected shade of the selected item and selected godown
             shades_of_item_in_selected_godown = item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name=x.id)
@@ -1126,6 +1126,13 @@ def stocktransfer(request):
                 shade_name = x.Item_shade_name.item_shade_name
                 shade_id = x.Item_shade_name.id
                 item_shades[shade_id] = shade_name
+
+                #quantity of shade in godown
+                item_id = x.Item_shade_name.id
+                items_shade_quantity_in_godown[item_id] = x.quantity
+        print(items_shade_quantity_in_godown)
+        print(item_shades)
+
 
         item_color = None
         item_per = None
@@ -1154,7 +1161,7 @@ def stocktransfer(request):
 
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
-                                'item_color':item_color,'item_per':item_per, 'shade_quantity':shade_quantity })
+                                'item_color':item_color,'item_per':item_per, 'shade_quantity':shade_quantity,'items_shade_quantity_in_godown':items_shade_quantity_in_godown })
         
 
         else:
@@ -1313,6 +1320,12 @@ def purchasevouchercreateupdate(request, pk=None):
             #create a formset instance for godowns in form items
             godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
 
+            # print('i_formset',items_formset)
+            # print('i_formset.forms',items_formset.forms)
+            # print('i_formset.changedforms',items_formset.has_changed()) - returns a bool
+            # print('i_formset_deleted_forms', items_formset.deleted_forms)
+
+            
             #filter out only the forms which are changed as shade is givin null error on extra field
             items_formset.forms = [form for form in items_formset.forms if form.has_changed()]  
             

@@ -568,15 +568,16 @@ body{
   }
 .item-select{
     width: 180px;
-    border: 1px solid #666;
-    border-radius: 7px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
     padding-left: 5px;
+    height: 33px;
 }
 
 .item-selects{
     width: 180px;
-    border: 1px solid #666;
-    border-radius: 7px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
     padding-left: 5px;
     height: 40px; 
 }
@@ -1006,43 +1007,70 @@ body{
 
 .purchase-input{
     width: 110px;
-    border: 1px solid #666;
-    border-radius: 7px;
+    border: none;
+    border-top: 1px solid  #cecdcd ;
+    border-bottom: 1px solid  #cecdcd ;
+    border-radius: 2px;
     padding-left: 5px; 
+    height: 33px;
 }
 
 .purchase-amount{
     width: 138px;
-    border: 1px solid #666;
-    border-radius: 7px;
-    padding-left: 5px;  
+    border: none;
+    border-top: 1px solid  #cecdcd ;
+    border-bottom: 1px solid  #cecdcd ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;  
 }
 
 .purchase-itemName{
     width: 158px;
-    border: 1px solid #666;
-    border-radius: 7px;
-    padding-left: 5px;  
+    border: none;
+    border-top: 1px solid  #cecdcd ;
+    border-bottom: 1px solid  #cecdcd ;
+    border-radius: 3px;
+    padding-left: 5px; 
+    height: 33px; 
 }
 .ledger-input{
     width: 270px;
-    border: 1px solid #666;
-    border-radius: 7px;
-    padding-left: 5px;  
+    border: none;
+    border-top: 1px solid  #cecdcd ;
+    border-bottom: 1px solid  #cecdcd ;
+    border-radius: 3px;
+    padding-left: 5px; 
+    height: 33px; 
 }
 
 .item-inputs{
     width: 200px;
-    border: 1px solid #666;
-    border-radius: 7px;
-    padding-left: 5px; 
+    border: none;
+    border-top: 1px solid  #cecdcd ;
+    border-bottom: 1px solid  #cecdcd ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px; 
 }
 
 .acc-subInput{
     width: 230px;
-    border: 1px solid #666;
-    border-radius: 7px;
+    border: none;
+    border-top: 1px solid  #cecdcd ;
+    border-bottom: 1px solid  #cecdcd ;
+    border-radius: 3px;
     padding-left: 5px;
+    height: 33px;
+}
+.stock_input{
+    width: 200px;
+    border: none;
+    border-top: 1px solid  #cecdcd ;
+    border-bottom: 1px solid  #cecdcd ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
 }
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {

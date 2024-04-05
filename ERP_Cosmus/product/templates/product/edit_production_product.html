@@ -239,6 +239,25 @@
 
 
   </div>
+  <button type="button" class="edit_btn w-75 mb-3" id="product_category_btn">Product Catagory<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <div id="product_category" style="display: none;">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">Main Catagory:</label>
+          <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
+            <option>laptop bags</option>
+            </select>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="d-flex my-3">
+          <label for="" class="form-label item-form">Sub Catagory:</label>
+          <input type="checkbox" class="" name="Product_Sub_catagory" value="" id="id_Product_subCatagory">
+    
+        </div>
+    </div>
+  </div>
   <button type="button" class="edit_btn w-75 mb-3" id="product_capacity_btn">Capacity<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_capacity" style="display: none;">
     <div class="row">
@@ -605,6 +624,23 @@
     var toggleButton = document.getElementById("aditional_details_btn");
     var icon = toggleButton.querySelector(".arrowBtn");
     var dataContainer = document.getElementById("aditional_details");
+
+    toggleButton.addEventListener("click", function () {
+      // Toggle the visibility of the data container
+      if (dataContainer.style.display === "none") {
+        dataContainer.style.display = "block";
+        icon.classList.add("rotate"); // Add rotate class to the icon
+      } else {
+        dataContainer.style.display = "none";
+        icon.classList.remove("rotate"); // Remove rotate class from the icon
+      }
+    });
+  });
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    var toggleButton = document.getElementById("product_category_btn");
+    var icon = toggleButton.querySelector(".arrowBtn");
+    var dataContainer = document.getElementById("product_category");
 
     toggleButton.addEventListener("click", function () {
       // Toggle the visibility of the data container

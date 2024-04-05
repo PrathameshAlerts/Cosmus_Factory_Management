@@ -61,12 +61,21 @@
         <label for="id_Gst_no" class="form-label item-form">Gst no:</label>
         <input type="text" class="ledger-input" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no"> 
       </div>
-      <div class="d-flex mb-3">
-        <label for="id_name" class="form-label item-form">Current Date:</label> 
-        <span>{{ current_date }}</span>
+      <div class="mt-4">
+        {% if form.instance.id %}
+        <p class="ms-1">Created Date: <span class="form-label ms-5 fw-bold">{{ form.instance.created_date }}</span></p> 
+
+        {% if form.instance.modified_date_time %}
+        <p class="ms-1">Modified Date: <span class="form-label ms-5 fw-bold">{{ form.instance.modified_date_time }}</span></p>
+        {% endif %} 
+        
+        {% elif not form.instance.id %}
+        <p></p>
+        {% endif%}
+        <!-- <input type="text" placeholder="YYYY-MM-DD" name="date" value="{{form.instance.date | default_if_none:''}}" required id="id_date"> -->
       </div>
 
-      <div class="d-flex mb-4 ms-3 me-1">
+      <div class="d-flex mb-4 ms-5 me-1">
         <label for="id_opening_balance" class="form-label item-form ms-1">Openeing Balance:</label>
 
       {% if form.instance.id %}

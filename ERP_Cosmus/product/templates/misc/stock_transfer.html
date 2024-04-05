@@ -62,13 +62,13 @@
         <tbody>
           <tr>
             <td>
-              <select name="name" class="item-select" placeholder="Item Name" required id="name"></select>
+              <select name="name" class="stock_input" placeholder="Item Name" required id="name"></select>
             </td>
             <td>
               <input name="color" id="color" class="purchase-amount" readonly>
             </td>
             <td>
-              <select name='shades' class="purchase-amount" required id="shades"></select>
+              <select name='shades' class="stock_input" required id="shades"></select>
             </td>
             <td>
               <input name='quantity' id="quantity" class="purchase-amount">
@@ -170,6 +170,7 @@
 
 
           $('#shades').empty().append('<option value="">Select Shade</option>');
+
           $('#quantity').val('');
 
 
@@ -177,8 +178,13 @@
           var item_shades = response.item_shades;
           var item_per = response.item_per;
           var item_color = response.item_color;
+          var item_shade_quantity = response.items_shade_quantity_in_godown;
+          
+          console.log(item_shade_quantity)
+
           var itemperinput = document.querySelector('#per');
           var itemcolorinput = document.querySelector('#color');
+
           // Set the value of the input field to the item_color
           itemperinput.value = item_per;
 
@@ -187,7 +193,12 @@
           // Iterate over the itemsInGodown and append options to html
 
           $.each(item_shades, function (key, value) {
-            $('#shades').append('<option value="' + key + '">' + value + '</option>');
+              $.each(item_shade_quantity, function (key, value) { });
+              if (key == key) {
+                
+                $('#shades').append('<option value="' + key + '">' + value +  ' -  '  + item_shade_quantity[key]+ '</option>');
+              }
+            
           });
         },
         error: function (xhr, errmsg, err) {

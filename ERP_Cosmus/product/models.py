@@ -184,6 +184,8 @@ class Product(models.Model):
     Product_Create_Date=models.DateField(auto_now=True)
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank = True, null = True)
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
     def P_GST(self):
         if self.Product_GST is not None:
@@ -202,7 +204,8 @@ class PProduct_Creation(models.Model):
     Amazon_Link = models.URLField(max_length = 200,  blank = True)
     Flipkart_Link = models.URLField(max_length = 200,  blank = True) 
     Cosmus_link = models.URLField(max_length = 200, blank = True) 
-
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
     def product_color_name(self):
         return self.PProduct_color.color_name
@@ -241,7 +244,8 @@ class Product_A_plus_content(models.Model):
     orderby = models.IntegerField()
     images = models.ImageField(upload_to = 'pproduct/images',  blank=True)
     dimensions = models.CharField(max_length = 70, choices = DIMENSIONS)
-
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
 
 class ProductVideoUrls(models.Model):
@@ -249,16 +253,19 @@ class ProductVideoUrls(models.Model):
     product_video_url =  models.URLField(max_length = 255, blank = True)
     Image_Uploaded_at = models.DateTimeField(auto_now=True)
     Image_Modified_at = models.DateTimeField(auto_now_add=True)
-
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
 
 class Fabric_Group_Model(models.Model):
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
-
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
 class Unit_Name_Create(models.Model):
     unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
-
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
 
 class Item_Creation(models.Model):
@@ -303,6 +310,8 @@ class Item_Creation(models.Model):
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status= models.CharField(max_length=50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
     
 # these functions are used to show related attributes instead of PK id in listview
    
@@ -328,7 +337,8 @@ class item_color_shade(models.Model):
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
-
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
     def __str__(self) -> str:
         return self.item_shade_name
@@ -367,11 +377,12 @@ class AccountSubGroup(models.Model):
 class StockItem(models.Model):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     stock_item_name = models.CharField(max_length= 150 ,unique= True)
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
     def account_sub_group(self):
         return self.acc_sub_grp.account_sub_group
     
-
 
 
 class Ledger(models.Model):
@@ -398,7 +409,7 @@ class Ledger(models.Model):
     default_credit_period = models.CharField(max_length = 100, blank = True)
     types = models.CharField(choices = TYPES , max_length = 30, blank = True)
     Gst_no = models.CharField(max_length = 100, blank = True)
-    date = models.DateField(auto_now=True)
+    modified_date = models.DateTimeField(auto_now_add= True)
     address = models.TextField(blank = True)
     state = models.CharField(max_length = 255, blank = True)
     country = models.CharField(max_length = 255,  blank=True) 
@@ -408,6 +419,8 @@ class Ledger(models.Model):
     landline_no = models.BigIntegerField()
     bank_details =  models.TextField(blank = True)
     Debit_Credit =  models.CharField( choices = DEBIT_CREDIT ,max_length = 255, blank = True)
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
 
     def account_sub_group_ledger(self):
@@ -423,7 +436,7 @@ class account_credit_debit_master_table(models.Model):
     voucher_no = models.IntegerField(null = True, blank= True)
     voucher_type = models.CharField(max_length = 100)
     particulars = models.CharField(max_length = 100)
-    date = models.DateField(auto_now= True)
+    create_date = models.DateField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
 
@@ -435,11 +448,12 @@ class Godown_raw_material(models.Model):
         return self.godown_name_raw      
 
 
-
 class item_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
     quantity = models.IntegerField(default = 0)
+    item_rate = models.IntegerField(default = 0)
+
 
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
@@ -499,7 +513,8 @@ class item_purchase_voucher_master(models.Model):
     gross_total = models.DecimalField(max_digits=9, decimal_places=2)
     gst_rate = models.ForeignKey(gst, on_delete = models.PROTECT)
     grand_total = models.DecimalField(max_digits=9, decimal_places=2)
-
+    created_date = models.DateTimeField(auto_now= True)
+    modified_date_time = models.DateTimeField(auto_now_add= True)
 
 class purchase_voucher_items(models.Model):
     item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
@@ -518,6 +533,14 @@ class shade_godown_items(models.Model):
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
 
+
+class shade_godown_items_temporary_table(models.Model):
+    unique_id = models.IntegerField()
+    godown_id = models.IntegerField()
+    quantity = models.IntegerField()
+    rate = models.DecimalField(max_digits=9, decimal_places=2)
+    amount = models.DecimalField(max_digits=9, decimal_places=2)
+    
 
 
 
