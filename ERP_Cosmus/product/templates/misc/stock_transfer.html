@@ -170,6 +170,7 @@
 
 
           $('#shades').empty().append('<option value="">Select Shade</option>');
+
           $('#quantity').val('');
 
 
@@ -177,8 +178,13 @@
           var item_shades = response.item_shades;
           var item_per = response.item_per;
           var item_color = response.item_color;
+          var item_shade_quantity = response.items_shade_quantity_in_godown;
+          
+          console.log(item_shade_quantity)
+
           var itemperinput = document.querySelector('#per');
           var itemcolorinput = document.querySelector('#color');
+
           // Set the value of the input field to the item_color
           itemperinput.value = item_per;
 

@@ -351,7 +351,7 @@
         addButton.addEventListener('click', function() {
             const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
             const formCount = parseInt(formCountInput.value);
-            console.log(formCount);
+            
             const lastRow = tableBody.lastElementChild.cloneNode(true);
             const formIndex = formCount;
             lastRow.querySelectorAll("input, select").forEach(function(element) {
