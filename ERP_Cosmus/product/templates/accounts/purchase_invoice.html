@@ -104,6 +104,7 @@
                         <input type="text" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}"  style="border: none;">
                     </td>
                     <td>{{ forms.DELETE }}</td>
+                    
                  </tr>   
             
             {% endfor %}
@@ -112,6 +113,7 @@
 
         </table>
         <button type="button" class="create-btn" id="addRowButton">Add +</button>
+    
     </div>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog  modal-dialog-scrollable modal-lg">
@@ -136,21 +138,43 @@
                         </thead>
                         <tbody>
                           
+                            {{godown_formsets.management_form}}
+                            {% for g_forms in godown_formsets %}
+                    
+
                             <tr>
-                                <td><select name="shade_godown_items_set-0-shade_godown" id="id_shade_godown_items_set-0-shade_godown" class="purchase-input">
-                                    <option value="mahim">mahim</option>
+                                <td><select name="{{g_forms.prefix}}-godown_select" id="{{g_forms.prefix}}-godown_select" class="purchase-input godown-select" value="">
+                                    {% if g_forms.instance.id %}
+                                    <option value="{{g_forms.instance.godown_select.id}}">{{g_forms.instance.godown_select.godown_name_raw}}</option>
+
+                                    {% for godown in item_godowns_raw %}
+                                    <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                                    {% endfor %}
+
+
+                                    {% elif not g_forms.instance.id %}
+                                    <option value=""></option>
+                                    {% for godown in item_godowns_raw %}
+                                    <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                                    {% endfor %}
+                                   {% endif %}
+
                                 </select></td>
-                                <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity" class="purchase-input"></td>
-                                <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate" class="purchase-input">
+                                <td><input type="number" name="{{g_forms.prefix}}-quantity" id="{{g_forms.prefix}}-quantity" class="purchase-input godown-quantity" value=""></td>
+                                <td><input type="number" name="{{g_forms.prefix}}-rate"  id="{{g_forms.prefix}}-rate" class="purchase-input godown-rate" value="">
                                 </td>
-                                <td><input type="number" name="shade_godown_items_set-0-amount" step="0.01" id="id_shade_godown_items_set-0-amount" class="purchase-input">
+                                <td><input type="number" name="{{g_forms.prefix}}-amount"  id="{{g_forms.prefix}}-amount" class="purchase-input godown-amount" value="" readonly>
                                 </td>
-                                <td>Delete</td>
-                            </tr>
-                          
+                                <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                                <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01"  >
+                  
+                                <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
+                                </tr>
+                            {% endfor %}
                     </table>
-                    <button type="button" class="create-btn" id="addModalRowButton">Add +</button>
+                   <button type="button" class="create-btn" id="addModalButton">Add +</button>
                 </form>
+                
             </div>
             <div class="modal-footer">
               <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
@@ -208,33 +232,113 @@
     document.body.appendChild(document.getElementById('exampleModal'));
     
     $(document).ready(function(){
-   
-        $('.item-shade').change(function(){
-            var selectValue = $(this).val();
-            console.log(selectValue);
+     
+        $(document).on('change','.item-shade',function(){
            
+            var selectValue = $(this).val();
+            var itemId = $(this).data('item-id');
+            console.log(selectValue);
             if(selectValue !== ''){
-            $('#confirmSaveButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+            
             $('#exampleModal').modal('show');
-
-
+           
             }
            
         });
-         
-        
-        $('#addModalRowButton').click(function(){
-            var tableClone = $('#exampleModal').find('#newTable tbody').clone(true);
-            $('#exampleModal').find('#newTable').append(tableClone);
+
+        $(document).on('change', '.godown-quantity' &&' .godown-rate', function() {
+            calculateGodownAmount();
         })
+        
+
+        $(document).on('click', '#addModalButton', function() {
+        var newTableValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
+        var formsValue = parseInt(newTableValue.value);
+        
+        var tableClone = $('#exampleModal').find('#newTable tbody tr').last().clone(true);
+
+        const newGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-godown_select"]');
+        newGodownItem.attr('name', 'shade_godown_items_set-' + formsValue + '-godown_select');
+        newGodownItem.attr('id', 'id_shade_godown_items_set-' + formsValue + '-godown_select');
+        newGodownItem.val('');
+      
+
+        const newQuantity = tableClone.find('input[name^="shade_godown_items_set-"][name$="-quantity"]');
+        newQuantity.attr('name', 'shade_godown_items_set-' + formsValue + '-quantity');
+        newQuantity.attr('id', 'id_shade_godown_items_set-' + formsValue + '-quantity');
+        newQuantity.val('');
        
-    
-        // Confirm delete button click event
-        $('#confirmSaveButton').click(function(){
-            var itemId = $(this).data('item-id');
-            // Redirect to delete view
-            window.location.href = '/purchasevoucherupdate/' + itemId;
+
+        const newRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]');
+        newRate.attr('name', 'shade_godown_items_set-' + formsValue + '-rate');
+        newRate.attr('id', 'id_shade_godown_items_set-' + formsValue + '-rate');
+        newRate.val('');
+       
+
+        const newAmount = tableClone.find('input[name^="shade_godown_items_set-"][name$="-amount"]');
+        newAmount.attr('name', 'shade_godown_items_set-' + formsValue + '-amount');
+        newAmount.attr('id', 'id_shade_godown_items_set-' + formsValue + '-amount');
+        newAmount.val('');
+
+        $('#newTable tbody').append(tableClone);
+
+        newTableValue.value = formsValue + 1;
+
+       
+        
+    });
+
+    function calculateNewRow(row) {
+        var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        var inputQtyValue = parseInt(inputQty);
+        var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        var inputRateValue = parseInt(inputRate);
+        var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
+        console.log( "qty",inputQtyValue);
+        console.log( "rate",inputRateValue);
+
+   
+        // Calculate and set the amount for this row
+        var amount = inputQtyValue * inputRateValue;
+        
+        totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
+        row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val(totalAmount);
+        return amount;
+       
+    }
+
+    function calculateQty(row) {
+        var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        var inputQtyValue = parseInt(inputQty);
+        return inputQtyValue;
+        console.log("QTY",inputQtyValue);
+    }
+    // Function to calculate total amount
+    function calculateGodownAmount() {
+        var total = 0;
+        var totalQty = 0;
+        // Iterate over each row in the table body
+        $('#newTable tbody tr').each(function() {
+        var newAmount = calculateNewRow($(this));
+        var newQty = calculateQty($(this));
+        totalQty += newQty;
+        total += newAmount;
+        console.log("total",total);
+        console.log("totalQty",totalQty);
         });
+
+
+        // Update the total amount field
+        $('#grand_godown_amount').val(total);
+        $('#grand_godown_quantity').val(totalQty);
+    }
+     
+    // Delete row from delete button
+       $(document).on('click', '.delete-btn', function(){
+           $(this).closest('tr').remove();
+       });
+    
+        
     });
 </script>
 
@@ -244,7 +348,7 @@
         var lastSelectedItem = '';
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-        console.log(itemName);
+        console.log('itename',itemName);
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();          
@@ -290,17 +394,7 @@
             });
             
         });
-        $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-            var selectedItem = $(this).val();
-            
-            // Toggle the visibility of the shade table
-            if (selectedItem === lastSelectedItem) {
-                $('#shadeTable').toggle();
-            } else {
-                $('#shadeTable').show();
-                lastSelectedItem = selectedItem; // Update the last selected item
-            }
-        });
+        
     });
 </script>
 
@@ -400,7 +494,6 @@
         addButton.addEventListener('click', function() {
             const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
             const formCount = parseInt(formCountInput.value);
-            console.log(formCount);
             const lastRow = tableBody.lastElementChild.cloneNode(true);
             const formIndex = formCount;
             lastRow.querySelectorAll("input, select").forEach(function(element) {
