@@ -378,7 +378,7 @@
 
 
                     var item_shade_response = response.item_shade;
-                    
+                    var item_shade__quantity = response.item_shades_total_quantity_dict;
 
                     $.each(item_shade_response, function (key, value) {
                         $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
@@ -416,7 +416,6 @@
             var rate = parseFloat(rateInput.value);
 
             // Calculate the amount for the current row
-
            var amount = quantity * rate;
         
             // Set the calculated amount value to the amount input field
