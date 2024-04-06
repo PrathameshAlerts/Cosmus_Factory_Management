@@ -4,6 +4,7 @@ from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save , post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
 
 
@@ -50,6 +51,7 @@ class Color(models.Model):
 class gst(models.Model):
     gst_percentage = models.IntegerField()
     ordering = ["gst_percentage"]
+
 
 class Product(models.Model):
     BRAND_CHOICES = [
@@ -409,8 +411,7 @@ class Ledger(models.Model):
     maintain_billwise = models.CharField(choices = MAINTAIN_BILLWISE, max_length = 30, blank = True)
     default_credit_period = models.CharField(max_length = 100, blank = True)
     types = models.CharField(choices = TYPES , max_length = 30, blank = True)
-    Gst_no = models.CharField(max_length = 100, blank = True)
-    modified_date = models.DateTimeField(auto_now_add= True)
+    Gst_no = models.CharField(max_length = 100,validators = [MinLengthValidator(15), MaxLengthValidator(15)])
     address = models.TextField(blank = True)
     state = models.CharField(max_length = 255, blank = True)
     country = models.CharField(max_length = 255,  blank=True) 
