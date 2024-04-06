@@ -49,6 +49,9 @@
                     <th>Rate</th>
                     <th>Units</th>
                     <th>Amount</th>
+                    <th>CGST</th>
+                    <th>SGST/IGST</th>
+                    <th>Total Amount</th>
                     <th>DELETE</th>
                 </tr>
             </thead>
@@ -102,6 +105,15 @@
                     </td>
                     <td>
                         <input type="text" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}"  style="border: none;">
+                    </td>
+                    <td>
+                        <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst" name="{{forms.prefix}}-cgst" value="{{forms.instance.cgst | default_if_none:''}}" >
+                    </td>
+                    <td>
+                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value="{{forms.instance.sgst | default_if_none:''}}" >
+                    </td>
+                    <td>
+                        <input type="text" id="{{forms.prefix}}-total" class="purchase-input purchase-total" name="{{forms.prefix}}-total" value="{{forms.instance.total | default_if_none:''}}" >
                     </td>
                     <td>{{ forms.DELETE }}</td>
                     

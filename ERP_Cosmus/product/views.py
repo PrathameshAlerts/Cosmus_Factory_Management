@@ -1491,7 +1491,7 @@ def gst_create_update(request, pk = None):
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
-            return redirect('gst_list')
+            return redirect('gst-list')
 
     return render(request,'accounts/gst_create_update.html',{'form' : form})
 
@@ -1503,7 +1503,7 @@ def gst_list(request):
 def gst_delete(request,pk):
     gst_pk = gst.objects.get(pk=pk)
     gst_pk.delete()
-    return redirect('gst_list')
+    return redirect('gst-list')
 
 
 
