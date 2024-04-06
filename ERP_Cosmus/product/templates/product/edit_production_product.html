@@ -124,10 +124,7 @@
           <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}"
             name="Product_ShortName" required id="">
         </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Catagory:</label>
-          <input type="text" class="item-select" value="" name="" required id="">
-        </div>
+
         <div class=" d-flex mb-3">
           <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
           <select name="Product_Brand" class="item-select" id="id_Product_Brand">
@@ -159,8 +156,6 @@
             <option value="Discontinued">Discontinued</option>
           </select>
         </div>
-      </div>
-      <div class="col-lg-4">
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">Gender</label>
           <select name="Product_Gender" class="item-select" required id="id_Gender">
@@ -176,6 +171,9 @@
             <option value="Unisex">Unisex</option>
           </select>
         </div>
+      </div>
+      <div class="col-lg-4">
+        
         <div class="d-flex mb-3">
           <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
           <div class=" ms-5">
@@ -239,12 +237,12 @@
 
 
   </div>
-  <button type="button" class="edit_btn w-75 mb-3" id="product_category_btn">Product Catagory<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-3" id="product_category_btn">Product Category<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_category" style="display: none;">
     <div class="row">
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Main Catagory:</label>
+          <label for="" class="form-label item-form">Main Category:</label>
           <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
             <option>laptop bags</option>
             </select>
@@ -252,10 +250,11 @@
       </div>
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Sub Catagory:</label>
+          <label for="" class="form-label item-form">Sub Category:</label>
           <input type="checkbox" class="" name="Product_Sub_catagory" value="" id="id_Product_subCatagory">
         </div>
     </div>
+  </div>
   </div>
   <button type="button" class="edit_btn w-75 mb-3" id="product_capacity_btn">Capacity<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_capacity" style="display: none;">
@@ -312,7 +311,7 @@
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">Capacity:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_CapacityLtrs |default_if_none:'' }}"
+          <input type="number" class="item-select" value="{{form.instance.Product_CapacityLtrs |default_if_none:'' }}"
             name="Product_CapacityLtrs" required id="">
         </div>
       </div>
@@ -355,7 +354,7 @@
 
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">Qty Per Box:</label>
-          <input type="text" class="item-select" name="Product_QtyPerBox"
+          <input type="number" class="item-select" name="Product_QtyPerBox"
             value="{{form.instance.Product_QtyPerBox  | default_if_none:''}}" id="">
         </div>
 
