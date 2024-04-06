@@ -1262,7 +1262,6 @@ def purchasevouchercreateupdate(request, pk=None):
         item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
 
     Purchase_gst = gst.objects.all()
-    item_godowns_raw = Godown_raw_material.objects.all()
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = item_formsets_change
     
@@ -1308,8 +1307,6 @@ def purchasevouchercreateupdate(request, pk=None):
     except Exception as e:
         print(f'exception occoured {e}')
     
-    
-
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict})
@@ -1359,18 +1356,18 @@ def purchasevouchercreateupdate(request, pk=None):
                             items_instance.item_purchase_master = master_instance
                             items_instance.save()
 
-                        inoice_items = purchase_voucher_items.objects.get(id =form.instance.id)
-                        #create a formset instance for godowns in form items
-                        godown_items_formset = purchase_voucher_items_godown_formset(request.POST, instance = inoice_items)
-                        # Saving godown items formset with item instance
-                        for godown_form in godown_items_formset:
-                            if godown_form.is_valid():
-                                godown_instance = godown_form.save(commit = False)
-                                godown_instance.purchase_voucher_godown_item = items_instance
-                                godown_instance.save()
-                                return HttpResponse('formset2 saved successfully')
-                            else:
-                                print('godown',godown_form.error)
+                        # inoice_items = purchase_voucher_items.objects.get(id =form.instance.id)
+                        # #create a formset instance for godowns in form items
+                        # godown_items_formset = purchase_voucher_items_godown_formset(request.POST, instance = inoice_items)
+                        #Saving godown items formset with item instance
+                        # for godown_form in godown_items_formset:
+                        #     if godown_form.is_valid():
+                        #         godown_instance = godown_form.save(commit = False)
+                        #         godown_instance.purchase_voucher_godown_item = items_instance
+                        #         godown_instance.save()
+                        #         return HttpResponse('formset2 saved successfully')
+                        #     else:
+                        #         print('godown',godown_form.error)
                 
                     else:
                         print('1',form.errors)
@@ -1389,7 +1386,6 @@ def purchasevouchercreateupdate(request, pk=None):
                'items_formset': items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
-               'item_godowns_raw':item_godowns_raw
                }
             return redirect(reverse('purchase-voucher-update', args=[master_instance.pk]))
         
@@ -1403,7 +1399,6 @@ def purchasevouchercreateupdate(request, pk=None):
                'items_formset':items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
-               'item_godowns_raw':item_godowns_raw
                }
     
     

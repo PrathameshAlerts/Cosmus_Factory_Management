@@ -24,7 +24,7 @@ class SubCategory(models.Model):
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE, related_name = 'subcategories')
     Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
 
-    
+
     def __str__(self):
         return self.product_sub_category_name 
 
@@ -48,9 +48,8 @@ class Color(models.Model):
         return self.color_name
     
 class gst(models.Model):
-    gst_percentage = models.CharField(max_length = 50)
-
-
+    gst_percentage = models.IntegerField()
+    ordering = ["gst_percentage"]
 
 class Product(models.Model):
     BRAND_CHOICES = [

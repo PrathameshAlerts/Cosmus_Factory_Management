@@ -197,19 +197,18 @@ the input field will be pre-filled with that value when the page is loaded. -->
                       <th class="px-2 ">Shade</th>
                       <th class="px-2">Godown<span class="ps-5">Qty</span></th>              
                     </tr>
+                    {% for shade in item.shades.all %}
                     <tr style="border-bottom: 1px solid gray;">
-                        {% for shade in item.shades.all %}
+                       
                       <td class="px-2">{{shade.item_shade_name}}</td>
                       <td  class="px-2 ms-5">
                         {% for shade_q in shade.godown_shades.all %}
                         <table>
-                            <tr >
-                              
+                            <tr>
                               <td class="px-3">{{shade_q.godown_name}}</td>
                               <td class="ps-5">{{shade_q.quantity}}</td>
                              
                           </tr>
-                          
                         </table>
                         {% endfor %}
                       </td>

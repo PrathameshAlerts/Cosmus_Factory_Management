@@ -16,8 +16,15 @@
     <span class="mx-2 fs-5 text-danger">{{products_sku_counts}}</span>
   </div>
 
-  <div class="d-flex mb-2">
-    <label for="" class="fw-bold">Imges:</label>
+ 
+    <div class="d-flex mb-2">
+    <div>
+      <label for="" class="fw-bold">Images:</label>
+      <div>
+        <button type="button" class="create-btn" onclick="redirectPproduct()">Return</button>
+      </div>
+    </div>
+    
     <div class="mx-2">
       {{ formset.management_form }}
       {% for form in formset %}
@@ -26,7 +33,10 @@
       {% endif %}
       {% endfor %}
     </div>
+   
   </div>
+  
+  
 
   <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Details<span class="span_padding"><i
         class="fas fa-angle-right arrowBtn"></i></span></button>
@@ -124,10 +134,7 @@
           <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}"
             name="Product_ShortName" required id="">
         </div>
-        <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Catagory:</label>
-          <input type="text" class="item-select" value="" name="" required id="">
-        </div>
+
         <div class=" d-flex mb-3">
           <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
           <select name="Product_Brand" class="item-select" id="id_Product_Brand">
@@ -159,8 +166,6 @@
             <option value="Discontinued">Discontinued</option>
           </select>
         </div>
-      </div>
-      <div class="col-lg-4">
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">Gender</label>
           <select name="Product_Gender" class="item-select" required id="id_Gender">
@@ -176,6 +181,9 @@
             <option value="Unisex">Unisex</option>
           </select>
         </div>
+      </div>
+      <div class="col-lg-4">
+        
         <div class="d-flex mb-3">
           <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
           <div class=" ms-5">
@@ -239,12 +247,12 @@
 
 
   </div>
-  <button type="button" class="edit_btn w-75 mb-3" id="product_category_btn">Product Catagory<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-3" id="product_category_btn">Product Category<span class="category-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_category" style="display: none;">
     <div class="row">
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Main Catagory:</label>
+          <label for="" class="form-label item-form">Main Category:</label>
           <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
             <option>laptop bags</option>
             </select>
@@ -252,7 +260,7 @@
       </div>
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Sub Catagory:</label>
+          <label for="" class="form-label item-form">Sub Category:</label>
           <input type="checkbox" class="" name="Product_Sub_catagory" value="" id="id_Product_subCatagory">
         </div>
     </div>
@@ -313,7 +321,7 @@
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">Capacity:</label>
-          <input type="text" class="item-select" value="{{form.instance.Product_CapacityLtrs |default_if_none:'' }}"
+          <input type="number" class="item-select" value="{{form.instance.Product_CapacityLtrs |default_if_none:'' }}"
             name="Product_CapacityLtrs" required id="">
         </div>
       </div>
@@ -356,7 +364,7 @@
 
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">Qty Per Box:</label>
-          <input type="text" class="item-select" name="Product_QtyPerBox"
+          <input type="number" class="item-select" name="Product_QtyPerBox"
             value="{{form.instance.Product_QtyPerBox  | default_if_none:''}}" id="">
         </div>
 
@@ -406,49 +414,49 @@
       <div class="col-lg-4">
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Length(cm):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Length | default_if_none:''}}"
             name="Product_Dimensions_WOP_Length" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Width(In):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Width | default_if_none:''}}"
             name="Product_Dimensions_WOP_Width" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Height(In):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Height | default_if_none:''}}"
             name="Product_Dimensions_WOP_Height" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WOP Weight(Gm):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Weight | default_if_none:''}}"
             name="Product_Dimensions_WOP_Weight" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WP Length(cm):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Length | default_if_none:''}}"
             name="Product_Dimensions_WP_Length" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WP Width(In):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Width | default_if_none:''}}"
             name="Product_Dimensions_WP_Width" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WP Height(In):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Height | default_if_none:''}}"
             name="Product_Dimensions_WP_Height" required id="">
         </div>
         <div class="d-flex my-3">
           <label for="" class="form-label item-form">WP Weight(Gm):</label>
-          <input type="text" class="item-select"
+          <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Weight | default_if_none:''}}"
             name="Product_Dimensions_WP_Weight" required id="">
         </div>
@@ -486,27 +494,27 @@
       <div class="col-lg-4">
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">WRP</label>
-          <input type="text" class="item-select" name="Product_WRP"
+          <input type="number" class="item-select" name="Product_WRP"
             value="{{form.instance.Product_WRP | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">CounterPrice:</label>
-          <input type="text" class="item-select" name="Product_CashCounterPrice"
+          <input type="number" class="item-select" name="Product_CashCounterPrice"
             value="{{form.instance.Product_CashCounterPrice | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">IndiaMart:</label>
-          <input type="text" class="item-select" name="Product_IndiaMartPrice"
+          <input type="number" class="item-select" name="Product_IndiaMartPrice"
             value="{{form.instance.Product_IndiaMartPrice | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label item-form">Retailer/Dealer:</label>
-          <input type="text" class="item-select" name="Product_Retailer_dealer_Price"
+          <input type="number" class="item-select" name="Product_Retailer_dealer_Price"
             value="{{form.instance.Product_Retailer_dealer_Price | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
           <label for="" class="form-label ">Wholesaler/Distributor: </label>
-          <input type="text" class="item-select" name="Product_Wholesaler_DistributorPrice"
+          <input type="number" class="item-select" name="Product_Wholesaler_DistributorPrice"
             value="{{form.instance.Product_Wholesaler_DistributorPrice | default_if_none:''}}" id="">
         </div>
 
@@ -525,6 +533,26 @@
     var checkboxes = document.querySelectorAll('input[name="Product_Channel"]');
     for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = source.checked;
+    }
+  }
+
+  function redirectPproduct(){
+    window.location.href = '/pproduct_creation/';
+  }
+
+  function previewFile(event, counter) {
+    var preview = document.getElementById('previewImage_');
+    var file = event.target.files[0];
+    var reader = new FileReader();
+
+    reader.onloadend = function () {
+      preview.src = reader.result;
+    }
+
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = "";
     }
   }
 </script>
@@ -602,12 +630,13 @@
   }
 </script>-->
 <script>
+  // create a function to toggle the visibility of the data container when the button is clicked to show the data container
   document.addEventListener("DOMContentLoaded", function () {
-    var toggleButton = document.getElementById("product_details_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_details");
-
-    toggleButton.addEventListener("click", function () {
+    function toggleVisible (toggleButtonId , dataContainerId) {
+  var toggleButton = document.getElementById(toggleButtonId);
+  var icon = toggleButton.querySelector(".arrowBtn");
+  var dataContainer = document.getElementById(dataContainerId); 
+  toggleButton.addEventListener("click", function () {
       // Toggle the visibility of the data container
       if (dataContainer.style.display === "none") {
         dataContainer.style.display = "block";
@@ -617,111 +646,17 @@
         icon.classList.remove("rotate"); // Remove rotate class from the icon
       }
     });
-  });
-
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var toggleButton = document.getElementById("aditional_details_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("aditional_details");
-
-    toggleButton.addEventListener("click", function () {
-      // Toggle the visibility of the data container
-      if (dataContainer.style.display === "none") {
-        dataContainer.style.display = "block";
-        icon.classList.add("rotate"); // Add rotate class to the icon
-      } else {
-        dataContainer.style.display = "none";
-        icon.classList.remove("rotate"); // Remove rotate class from the icon
-      }
-    });
-  });
-  
-  document.addEventListener("DOMContentLoaded", function () {
-    var toggleButton = document.getElementById("product_category_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_category");
-
-    toggleButton.addEventListener("click", function () {
-      // Toggle the visibility of the data container
-      if (dataContainer.style.display === "none") {
-        dataContainer.style.display = "block";
-        icon.classList.add("rotate"); // Add rotate class to the icon
-      } else {
-        dataContainer.style.display = "none";
-        icon.classList.remove("rotate"); // Remove rotate class from the icon
-      }
-    });
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var toggleButton = document.getElementById("product_capacity_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_capacity");
-
-    toggleButton.addEventListener("click", function () {
-      // Toggle the visibility of the data container
-      if (dataContainer.style.display === "none") {
-        dataContainer.style.display = "block";
-        icon.classList.add("rotate"); // Add rotate class to the icon
-      } else {
-        dataContainer.style.display = "none";
-        icon.classList.remove("rotate"); // Remove rotate class from the icon
-      }
-    });
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var toggleButton = document.getElementById("product_description_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_description");
-
-    toggleButton.addEventListener("click", function () {
-      // Toggle the visibility of the data container
-      if (dataContainer.style.display === "none") {
-        dataContainer.style.display = "block";
-        icon.classList.add("rotate"); // Add rotate class to the icon
-      } else {
-        dataContainer.style.display = "none";
-        icon.classList.remove("rotate"); // Remove rotate class from the icon
-      }
-    });
-  });
-  document.addEventListener("DOMContentLoaded", function () {
-    var toggleButton = document.getElementById("product_pricing_btn");
-    var icon = toggleButton.querySelector(".arrowBtn");
-    var dataContainer = document.getElementById("product_pricing");
-
-    toggleButton.addEventListener("click", function () {
-      // Toggle the visibility of the data container
-      if (dataContainer.style.display === "none") {
-        dataContainer.style.display = "block";
-        icon.classList.add("rotate"); // Add rotate class to the icon
-      } else {
-        dataContainer.style.display = "none";
-        icon.classList.remove("rotate"); // Remove rotate class from the icon
-      }
-    });
-  });
-</script>
-
-<script>
-  function previewFile(event, counter) {
-    var preview = document.getElementById('previewImage_');
-    var file = event.target.files[0];
-    var reader = new FileReader();
-
-    reader.onloadend = function () {
-      preview.src = reader.result;
-    }
-
-    if (file) {
-      reader.readAsDataURL(file);
-    } else {
-      preview.src = "";
-    }
   }
+    toggleVisible("product_details_btn", "product_details");
+    toggleVisible("aditional_details_btn", "aditional_details");
+    toggleVisible("product_category_btn", "product_category");
+    toggleVisible("product_capacity_btn", "product_capacity");
+    toggleVisible("product_description_btn", "product_description");
+    toggleVisible("product_pricing_btn", "product_pricing");
+
+});
 </script>
+
 
 
 {% endblock body %}
