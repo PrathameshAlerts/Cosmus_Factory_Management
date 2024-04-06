@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, purchase_voucher_items, shade_godown_items
+from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, purchase_voucher_items, shade_godown_items
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -193,10 +193,14 @@ class item_purchase_voucher_master_form(forms.ModelForm):
 
 purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=1)
 purchase_voucher_items_formset_update = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=0)
-
 purchase_voucher_items_godown_formset = inlineformset_factory(purchase_voucher_items,shade_godown_items, fields = ('godown_select','quantity','rate','amount'),extra=1)
 
 
+
+class gst_form(forms.ModelForm):
+    class Meta:
+        model = gst
+        fields = ['gst_percentage']
 
 
 

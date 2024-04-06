@@ -1,0 +1,11 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+
+<table>
+    {% for gst in gsts %}
+    {{gst.gst_percentage}}
+    {% endfor %}
+</table>
+
+ {% endblock body %}
