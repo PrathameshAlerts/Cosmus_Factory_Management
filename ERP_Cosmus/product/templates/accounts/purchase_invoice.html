@@ -446,6 +446,7 @@
          var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
         
         var frightTransport = parseFloat(document.getElementById('id_fright_transport').value) ;
+        console.log("ft",frightTransport)
            
         // Calculate the gross total by adding the total amount and the fright & transport
         var grossTotal = grandTotal + frightTransport;
@@ -455,6 +456,7 @@
 
         // Get the value of GST rate
         var gstRate = parseFloat(document.getElementById('id_gst_rate').value);
+        console.log("gst",gstRate)
 
         // Calculate GST amount
         var gstAmount = (grossTotal * gstRate) / 100;
