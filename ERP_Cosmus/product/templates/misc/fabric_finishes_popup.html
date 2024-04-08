@@ -1,0 +1,20 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %} 
+
+{% block body %} 
+  <div>
+        <h2>Create Fabric Finishes</h2>
+      <form  id ="myForm" class="mt-5" action="" method="POST">
+           {% csrf_token %}
+           
+       <div class="d-flex">
+      <label for="id_fabric_finish" class="form-label px-2">Fabric Finishes</label>
+      <input type="text" class="item-select" value="{{ form.instance.fabric_finish }}" name="fabric_finish" maxlength="255" required id="id_fabric_finish">
+    </div>
+
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+   
+  </div>
+
+
+{% endblock body %}

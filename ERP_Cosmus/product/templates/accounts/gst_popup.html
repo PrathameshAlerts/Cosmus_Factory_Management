@@ -1,0 +1,21 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %} 
+
+{% csrf_token %}
+
+{% block body %}
+
+
+<h2>GST</h2>
+<form  id ="myForm" class="mt-5" action="" method="POST">
+    {% csrf_token %}
+ <div class="d-flex my-4">
+     <label for="id_gst_percentage" class="item-form">Gst percentage :</label>
+     <input type="number" name="gst_percentage" class="item-select" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}">    
+ </div>
+
+ <input type="submit" class="create-btn mt-4" name="save" value="Save">
+
+</form>
+
+{% endblock body %}

@@ -278,7 +278,7 @@ class FabricFinishes(models.Model):
 
 class packaging(models.Model):
     packing_material = models.CharField(max_length = 100)
-
+    
 class Item_Creation(models.Model):
     STATUS =  [
         ("Unused","Unused"),
@@ -324,6 +324,13 @@ class Item_Creation(models.Model):
 
     def Item_GST(self):
         return self.Item_Creation_GST.gst_percentage
+    
+
+    def Fab_Finishes(self):
+        return self.Item_Fabric_Finishes.fabric_finish
+    
+    def Packaging_Material(self):
+        return self.Item_Packing.packing_material
 
     def __str__(self) -> str:
         return self.item_name

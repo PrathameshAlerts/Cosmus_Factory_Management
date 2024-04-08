@@ -120,17 +120,23 @@ urlpatterns = [
     # path('gstupdate/<int:pk>', views.gst_create_update, name = 'gst-update'),
     path('gstlist/', views.gst_list, name = 'gst-list'),
     path('gstdelete/<int:pk>', views.gst_delete, name = 'gst-delete'),
+    path('gstpopup/',views.gst_create_update, name = 'gst-popup'),
+
 
     path('fabricfinishesscreate/', views.fabric_finishes_create_update, name = 'fabric-finishes-create'),
     # path('fabricfinishesupdate/<int:pk>', views.fabric_finishes_create_update, name = 'fabric-finishes-update'),
     path('fabricfinisheslist/', views.fabric_finishes_list, name = 'fabric-finishes-list'),
     path('fabricfinishesdelete/<int:pk>', views.fabric_finishes_delete, name = 'fabric-finishes-delete'),
 
+    path('fabricfinishespopup/', views.fabric_finishes_create_update, name = 'fabric-finishes-popup'),
+
+
     path('packaging_create/', views.packaging_create_update, name = 'packaging-create'),
     # path('packagingupdate/<int:pk>', views.packaging_create_update, name = 'packaging-update'),
     path('packaginglist/', views.packaging_list, name = 'packaging-list'),
     path('packagingdelete/<int:pk>', views.packaging_delete, name = 'packaging-delete'),
-
+    
+    path('packagingpop/',views.packaging_create_update, name = 'packaging-popup'),
 
 
     #reports
