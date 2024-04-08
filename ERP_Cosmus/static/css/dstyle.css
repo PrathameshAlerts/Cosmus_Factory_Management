@@ -855,11 +855,10 @@ body{
     padding-left: 50px;
 }
 .table-left{
-    padding-left: 790px;
+    padding-left: 1243px;
+    padding-top: 30px;
 }
-.table-leftside{
-    padding-left: 950px;
-}
+
 #errorform{
     color: #ec4444;
     padding: 3px;
@@ -1015,9 +1014,7 @@ body{
 
 .purchase-input{
     width: 110px;
-    border: none;
-    border-top: 1px solid  #cecdcd ;
-    border-bottom: 1px solid  #cecdcd ;
+    border: 1px solid #cecdcd ;
     border-radius: 2px;
     padding-left: 5px; 
     height: 33px;
@@ -1025,9 +1022,7 @@ body{
 
 .purchase-amount{
     width: 138px;
-    border: none;
-    border-top: 1px solid  #cecdcd ;
-    border-bottom: 1px solid  #cecdcd ;
+    border: 1px solid #cecdcd ;
     border-radius: 3px;
     padding-left: 5px;
     height: 33px;  
@@ -1080,6 +1075,29 @@ body{
     padding-left: 5px;
     height: 33px;
 }
+.total-Final{
+    padding-left: 560px;
+}
+.total-final-rate{
+    padding-left: 22px;
+}
+
+.total-final-taxamount{
+padding-left: 143px;
+
+}
+.total-final-tax{
+    padding-left: 18px;
+}
+
+.purchaseTableLabel{
+    margin-left: 30px;
+}
+.purchaseTableLabel-total{
+    margin-left: 62px;
+
+}
+
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {

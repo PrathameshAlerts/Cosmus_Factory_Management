@@ -48,7 +48,7 @@
                     <th>Quantity</th>
                     <th>Rate</th>
                     <th>Units</th>
-                    <th>Amount</th>
+                    <th>Taxable Value</th>
                     <th>CGST</th>
                     <th>SGST/IGST</th>
                     <th>Total Amount</th>
@@ -113,7 +113,7 @@
                         <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value="{{forms.instance.sgst | default_if_none:''}}" >
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-total" class="purchase-input purchase-total" name="{{forms.prefix}}-total" value="{{forms.instance.total | default_if_none:''}}" >
+                        <input type="text" id="{{forms.prefix}}-total" class="purchase-amount purchase-total" name="{{forms.prefix}}-total" value="{{forms.instance.total | default_if_none:''}}" >
                     </td>
                     <td>{{ forms.DELETE }}</td>
                     
@@ -196,24 +196,40 @@
         </div>
       </div>
   
-           
+      <div class="total-Final d-flex mb-3">
+        <div>
+            <input type="number" class="purchase-input" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
+        </div>
+        <div class="total-final-rate">
+            <input type="number" class="purchase-input" name="grand_rate" id ="id_grand_rate" value="" maxlength="50" step=".01"  >
+        </div>
+       <div class="total-final-taxamount">
+        <input type="number" class="purchase-amount" name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01"  >
+       </div>
+        <div class="total-final-tax">
+            <input type="number" class="purchase-input" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" > 
+        </div>
+        <div class="total-final-tax">
+            <input type="number" class="purchase-input" name="grand_Sgst" id ="id_grand_Sgst" value="" maxlength="50" step=".01" > 
+        </div>
+       <div class="total-final-tax">
+        <input type="number" class="purchase-amount" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" >
+       </div>
+      
+    </div>      
 
-<div class="table-left">
+<div class="table-left mb-4">
     <div class="d-flex mb-3">
+        <lable class="fw-bold">Fright & Transport</lable>
+        <input type="number" class="purchase-amount purchaseTableLabel" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" required >
 
-        <input type="hidden" class="purchase-amount" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01"  >
     </div>
     <div class="d-flex mb-3">
-        <span class="item-form fw-bold">Fright & Transport</span>
-        <input type="number" class="purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" required >
-
+        <lable  class=" fw-bold" >Gross total</lable>
+        <input type="number" class="purchaseTableLabel-total purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required >
     </div>
-    <div class="d-flex mb-3">
-        <span  class="item-form fw-bold" >Gross total</span>
-        <input type="number" class="purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required >
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_gst_rate" class="item-form fw-bold" >GST
+   <!----<div class="d-flex mb-3">
+        <label for="id_gst_rate" class=" fw-bold" >GST
             <select class="rounded-1" name="gst_rate" required id="id_gst_rate">
                 {% if master_form.instance.id %}
                 <option value="{{master_form.instance.gst_rate.id}}">{{master_form.instance.gst_rate.gst_percentage}}</option>
@@ -229,10 +245,10 @@
             </select>
         </label>
         <input type="number" step="0.01" class="purchase-amount" name="" value="" id="id_gst" > 
-    </div>
+    </div>-->
     <div class="d-flex mb-3">
-        <label for="id_grand_total" class="item-form fw-bold" >Grand total</label>
-          <input type="text" class="purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
+        <label for="id_grand_total" class="fw-bold" >Grand total</label>
+          <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
     </div>
 </div>
 
@@ -439,16 +455,27 @@
             var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
             var rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
             var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
+           // var totalAmountInput = row.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-total_amount"]');
+           // var cgstValue= row.querySelector('.purchase-cgst[name^="purchase_voucher_items_set-"][name$="-cgst"]');
+           // var sgstValue= row.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
          
             // Get the values of quantity and rate
             var quantity = parseFloat(quantityInput.value);
             var rate = parseFloat(rateInput.value);
+            var Cgst = parseFloat(cgstValue.value);
+            var Sgst = parseFloat(sgstValue.value);
+            console.log(Cgst,Sgst);
+            console.log(quantity,rate);
 
             // Calculate the amount for the current row
            var amount = quantity * rate;
+
+           var totalAmount = amount + Cgst + Sgst;
         
             // Set the calculated amount value to the amount input field
             amountInput.value = isNaN(amount) ? '' : amount.toFixed(2);
+
+            totalAmountInput.value = isNaN(totalAmount) ? '' : totalAmount.toFixed(2);
 
             // Add the amount to the total
             total= total + amount;
