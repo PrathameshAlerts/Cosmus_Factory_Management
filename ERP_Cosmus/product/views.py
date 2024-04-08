@@ -620,7 +620,7 @@ def item_fabric_group_create(request):
                 return redirect('item-fabgroup-list')
 
             elif 'save' in request.POST and template_name == 'product/fabric_popup.html':
-                
+
                 return HttpResponse('<script>window.close();</script>')
 
         else:
@@ -1494,24 +1494,47 @@ def gst_create_update(request, pk = None):
         instance = None
         title = 'Create'
 
+    print(request.path)
+    if request.path == '/gstpopup/':
+        template_name = 'accounts/gst_popup.html'
+    
+    
+    elif request.path == '/gstcreate/':
+        template_name = 'accounts/gst_create_update.html'
+
+    
     form = gst_form(instance = instance)
     if request.method == 'POST':
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
-            return redirect('gst_list')
+            messages.success(request,'GST created successfully')
+            if 'save_and_add_another' in request.POST and template_name == 'accounts/gst_create_update.html':
+                
+                return redirect('gst-create')
+            
+            elif 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
 
-    return render(request,'accounts/gst_create_update.html',{'form' : form, 'title':title})
+                return redirect('gst-list')
+
+            elif 'save' in request.POST and template_name == 'product/gst_popup.html':
+                
+                return HttpResponse('<script>window.close();</script>')
+        else:
+            messages.success(request,'An error occured')
+    return render(request,template_name,{'form' : form, 'title':title})
 
 
 def gst_list(request):
     gsts =  gst.objects.all()
     return render(request,'accounts/gst_list.html',{'gsts':gsts})
 
+
+
 def gst_delete(request,pk):
     gst_pk = gst.objects.get(pk=pk)
     gst_pk.delete()
-    return redirect('gst_list')
+    return redirect('gst-list')
 
 
 
@@ -1523,15 +1546,36 @@ def fabric_finishes_create_update(request, pk = None):
         fabric_finishes_instance = None
         title = 'Create'
 
+    if request.path == '/fabricfinishespopup/':
+        template_name = 'misc/fabric_finishes_popup.html'
+
+    elif request.path == '/fabricfinishesscreate/':
+        template_name = 'misc/fabric_finishes_create_update.html'
+
     form = FabricFinishes_form(instance = fabric_finishes_instance)
 
     if request.method == 'POST':
         form = FabricFinishes_form(request.POST,instance = fabric_finishes_instance)
         if form.is_valid():
             form.save()
-            return redirect('fabric-finishes-list')
+            messages.success(request,'fabric finish created')
+            if 'save_and_add_another' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
+                
+                return redirect('fabric-finishes-create')
+            
+            elif 'save' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
 
-    return render(request,'misc/fabric_finishes_create_update.html',{'form':form,'title':title})
+                return redirect('fabric-finishes-list')
+
+            elif 'save' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
+                
+                return HttpResponse('<script>window.close();</script>')
+
+
+        else:
+            messages.error(request,'An error occured')
+
+    return render(request,template_name,{'form':form,'title':title})
 
 
 
@@ -1557,15 +1601,32 @@ def packaging_create_update(request, pk = None):
         packaging_instance = None
         title = 'Create'
 
+    if request.path == '/packagingpop/':
+        template_name = 'misc/packaging_popup.html'
+
+    elif request.path == '/packaging_create/':
+        template_name = 'misc/packaging_create_update.html'
+
     form = packaging_form(instance = packaging_instance)
 
     if request.method == 'POST':
         form = packaging_form(request.POST,instance = packaging_instance)
         if form.is_valid():
             form.save()
-            return redirect('packaging-list')
+            messages.success(request,'packing created')
 
-    return render(request,'misc/packaging_create_update.html',{'form':form,'title':title})
+            if 'save_and_add_another' in request.POST and template_name == 'misc/packaging_create_update.html':
+                return redirect('packaging-create')
+            
+            elif 'save' in request.POST and template_name == 'misc/packaging_create_update.html':
+                return redirect('packaging-list')
+
+            elif 'save' in request.POST and template_name == 'misc/packaging_popup.html':
+                return HttpResponse('<script>window.close();</script>')
+        else:
+            messages.error(request, 'An error accoured')  
+
+    return render(request, template_name ,{'form':form,'title':title})
 
 
 
