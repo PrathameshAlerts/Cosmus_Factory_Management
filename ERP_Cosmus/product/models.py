@@ -50,6 +50,7 @@ class Color(models.Model):
     
 class gst(models.Model):
     gst_percentage = models.IntegerField()
+
     ordering = ["gst_percentage"]
 
 
@@ -271,6 +272,13 @@ class Unit_Name_Create(models.Model):
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
 
+
+class FabricFinishes(models.Model):
+    fabric_finish =  models.CharField(max_length = 100)
+
+class packaging(models.Model):
+    packing_material = models.CharField(max_length = 100)
+
 class Item_Creation(models.Model):
     STATUS =  [
         ("Unused","Unused"),
@@ -279,35 +287,21 @@ class Item_Creation(models.Model):
         ("Dead","Dead"),
         ]
 
-    PACKING = [
-
-        ("Roll","Roll"),
-        ("Bundle","Bundle")
-        ]
-    
     FandNFB = [
         ("Fabric","Fabric"),
         ("Non Fabric","Non Fabric"),
         ]
-    
-    FINISHES = [
-        ("PVC Coating","PVC Coating"),
-        ("PU Coating","PU Coating"),
-        ("Black Nickle","Black Nickle"),
-        ("polypropylene(PP)","polypropylene(PP)"),
-    ]
-
 
     #need to add many to many field to vendor 
     item_name = models.CharField(unique= True, null=False, max_length = 255)
     Material_code = models.CharField(max_length = 255)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
-    Packing = models.CharField(max_length = 255, choices = PACKING)
+    Item_Packing = models.ForeignKey(packaging, on_delete=models.PROTECT)
     unit_name_item = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False) 
     Units = models.DecimalField(max_digits=10, decimal_places=2)
     Panha = models.DecimalField(max_digits=10, decimal_places=2)
     Fabric_nonfabric = models.CharField(max_length = 255, choices = FandNFB)
-    Fabric_Finishes =  models.CharField(max_length = 255, choices = FINISHES)
+    Item_Fabric_Finishes = models.ForeignKey(FabricFinishes, on_delete = models.PROTECT)
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     Item_Creation_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
     HSN_Code = models.CharField(max_length = 100, blank = True)

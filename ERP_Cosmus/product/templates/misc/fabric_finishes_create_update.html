@@ -1,0 +1,17 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+
+<form action="" method="POST">
+
+    {% csrf_token %}
+   <h2>Fabric Finishes {{title}}</h2>
+    <div class="d-flex my-4">
+        <label for="id_fabric_finish" class="item-form">Fabric Finishes :</label>
+        <input type="text" name="fabric_finish" class="item-select" required id="id_fabric_finish" value="{{form.instance.fabric_finish}}">    
+    </div>
+
+    <input type="submit" class="add_btn">
+</form>
+
+ {% endblock body %}
