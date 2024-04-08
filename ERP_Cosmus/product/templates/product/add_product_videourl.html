@@ -36,7 +36,7 @@
         </div>
        </div>
                 
-    <button type="button" class="add_btn" id="addForm">Add Url</button>  
+    <button type="button" class="add_btn" id="addForm">Add</button>  
     <input type="submit" class="add_btn" >
     </form>
     <script>
@@ -50,6 +50,9 @@
                     const formCount = parseInt(formCountInput.value);
                     const lastRow = tableBody.lastElementChild.cloneNode(true);
                     const formIndex = formCount;
+                    lastRow.querySelectorAll("input").forEach(function(element) {
+                        element.value = "";
+                    });
                     
                     lastRow.querySelectorAll("*").forEach(function(element) {
                         if (element.id) {

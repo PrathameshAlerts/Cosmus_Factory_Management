@@ -35,6 +35,10 @@
     
             </select>
         </div>
+        <div class="d-flex mb-3">
+            <label for="id_GST_type" class="item-form" >Gst No : </label>
+            <input type="text" class="item-select" name="GST_type" id ="id_GST_type" value="{{master_form.instance.GST_type}}" maxlength="50" required >
+        </div>
         
        
     <div class="">
@@ -104,16 +108,18 @@
                         <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
                     </td>
                     <td>
-                        <input type="text" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}"  style="border: none;">
+                        <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
+                    </td>
+                 <td>
+                        <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value="" >
+                        <input type="number" id="{{forms.prefix}}-cgst_amount" class="purchase-input purchase-cgstamount" name="{{forms.prefix}}-cgst_amount" value="" >
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst" name="{{forms.prefix}}-cgst" value="" >
+                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst mb-2" name="{{forms.prefix}}-sgst" value="" >
+                        <input type="number" id="{{forms.prefix}}-sgst_amount" class="purchase-input purchase-sgstamount" name="{{forms.prefix}}-sgst_amount" value="" >
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value="" >
-                    </td>
-                    <td>
-                        <input type="text" id="{{forms.prefix}}-totalAmount" class="purchase-amount purchase-total" name="{{forms.prefix}}-totalAmount" value="" >
+                        <input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly>
                     </td>
                     <td>{{ forms.DELETE }}</td>
                     
@@ -198,19 +204,19 @@
   
       <div class="total-Final d-flex mb-3">
         <div>
-            <input type="number" class="purchase-input" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
+            <input type="number" class="purchase-input" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly>
         </div>
        <div class="total-final-taxamount">
-        <input type="number" class="purchase-amount" name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01"  >
+        <input type="number" class="purchase-amount" name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly >
        </div>
         <div class="total-final-tax">
-            <input type="number" class="purchase-input" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" > 
+            <input type="number" class="purchase-input" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly> 
         </div>
         <div class="total-final-tax">
-            <input type="number" class="purchase-input" name="grand_Sgst" id ="id_grand_Sgst" value="" maxlength="50" step=".01" > 
+            <input type="number" class="purchase-input" name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > 
         </div>
        <div class="total-final-tax">
-        <input type="number" class="purchase-amount" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" >
+        <input type="number" class="purchase-amount" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly>
        </div>
       
     </div>      
@@ -218,14 +224,14 @@
 <div class="table-left mb-4">
     <div class="d-flex mb-3">
         <lable class="fw-bold">Fright & Transport</lable>
-        <input type="number" class="purchase-amount purchaseTableLabel" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" required >
+        <input type="number" class="purchase-amount purchaseTableLabel" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" >
 
     </div>
     <div class="d-flex mb-3">
         <lable  class=" fw-bold" >Gross total</lable>
-        <input type="number" class="purchaseTableLabel-total purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" required >
+        <input type="number" class="purchaseTableLabel-total purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50"  >
     </div>
-   <!----<div class="d-flex mb-3">
+  <!--<div class="d-flex mb-3">
         <label for="id_gst_rate" class=" fw-bold" >GST
             <select class="rounded-1" name="gst_rate" required id="id_gst_rate">
                 {% if master_form.instance.id %}
@@ -438,9 +444,16 @@
 
 <!--This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
 <script>
-   function calculateTotalAmount(rows) {
+   function calculateTotalAmount() {
         var rows = document.querySelectorAll('#myTable tbody tr');
         var total = 0; 
+        var totalQty = 0;
+        var newCgst = 0;
+        var totalCgst =0;
+        var newSgst = 0;
+        var totalSgst =0;
+        var grandTotal = 0;
+        var grandTotalAmount = 0;
         // Iterate through each row
         rows.forEach(function(row) {
             // Find the quantity, rate, and amount input fields for the current row
@@ -449,86 +462,58 @@
             var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
             var cgstValue= row.querySelector('.purchase-cgst[name^="purchase_voucher_items_set-"][name$="-cgst"]');
             var sgstValue= row.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
-            var totalAmountInput = row.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-totalAmount"]');
+            var cgstInputValue = row.querySelector('.purchase-cgstamount[name^="purchase_voucher_items_set-"][name$="-cgst_amount"]');
+            var sgstInputValue = row.querySelector('.purchase-sgstamount[name^="purchase_voucher_items_set-"][name$="-sgst_amount"]');
+            var totalAmountInput = row.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-total_amount"]');
          
             // Get the values of quantity and rate
             var quantity = parseFloat(quantityInput.value);
             var rate = parseFloat(rateInput.value);
-            var cGst = parseFloat(cgstValue.value);
-            var sGst = parseFloat(sgstValue.value);
-            console.log(Cgst,Sgst);
-            console.log(quantity,rate);
-
-            var newCgst = (amount * cGst)/100;
-            var newSgst = (amount * sGst)/100;
-
+            var cgst = parseFloat(cgstValue.value);
+            var sgst = parseFloat(sgstValue.value);
+           
+           
             // Calculate the amount for the current row
            var amount = quantity * rate;
+           totalQty = quantity  +  totalQty;
+           
+            newCgst = (amount * cgst)/100;
 
-           var totalAmount = amount + newCgst + newSgst;
+            newSgst = (amount * sgst)/100;
+           
+
+            cgstInputValue.value = isNaN(newCgst) ? '' : newCgst.toFixed(2);
+           sgstInputValue.value = isNaN(newSgst) ? '' : newSgst.toFixed(2);
+            totalCgst = totalCgst + newCgst;
+            totalSgst = totalSgst + newSgst;
+          
+             
             // Set the calculated amount value to the amount input field
             amountInput.value = isNaN(amount) ? '' : amount.toFixed(2);
 
             // Set the calculated total amount value to the total amount input field
 
-            totalAmountInput.value = isNaN(totalAmount) ? '' : totalAmount.toFixed(2);
-
-            // Add the amount to the total
-            total= total + totalAmount;
-                      
-           document.getElementById('id_grand_amount').value = total.toFixed(2);
+            total= total + amount;
+            
+            grandTotal = total + newCgst + newSgst;
+        
+           totalAmountInput.value = isNaN(grandTotal) ? '' : grandTotal.toFixed(2); 
+           grandTotalAmount = grandTotalAmount + grandTotal; 
+           document.getElementById('id_grand_taxableAmount').value = total.toFixed(2);
+           document.getElementById('id_grand_quantity').value = totalQty.toFixed(2);
+           document.getElementById('id_grand_cgst').value = totalCgst.toFixed(2);
+           document.getElementById('id_grand_sgst').value = totalSgst.toFixed(2);
+          
+           document.getElementById('id_grand_amount').value = grandTotalAmount.toFixed(2);
         });   
         
     }
-    function calculateTotalQty(row){
-        var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
-        var quantity = parseFloat(quantityInput.value);
-        return quantity;
-    }
-
-    function calculateTotalTaxableValue(row) {
-        var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
-        var amount = parseFloat(amountInput.value);
-        return amount;
-    }
-
-    function calculateTotalCgst(row){
-        var cgstValue= row.querySelector('.purchase-cgst[name^="purchase_voucher_items_set-"][name$="-cgst"]');
-        var cGst = parseFloat(cgstValue.value);
-        return cGst;
-    }
-
-    function calculateTotalSgst(row){
-        var sgstValue= row.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
-        var sGst = parseFloat(sgstValue.value);
-        return sGst;
-    }
-
-    function calculateAllGrandValues() {
-        var rows = document.querySelectorAll('#myTable tbody tr');
-        rows.forEach(function(row) {
-            var quantity = calculateTotalQty(row);
-            var amount = calculateTotalTaxableValue(row);
-            var cGst = calculateTotalCgst(row);
-            var sGst = calculateTotalSgst(row);
-            newQty += quantity;
-            newAmount += amount;
-            newRate += cGst;
-            newRate += sGst;
-        });
-
-        // Set the calculated total value to the total input field
-        document.getElementById('id_grand_quantity').value = newQty;
-        document.getElementById('id_grand_cgst').value = newRate;
-        document.getElementById('id_grand_sgst').value = newRate;
-        document.getElementById('id_grand_taxableAmount').value = newAmount.toFixed(2);
-
-    }
-       
+   
         // Set the calculated total value to the total input field
         // Get the value of the fright & transport
         function calculateOtherTotal(total) { 
-                 
+          
+     
          var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
         
         var frightTransport = parseFloat(document.getElementById('id_fright_transport').value);
@@ -542,7 +527,7 @@
         // Get the value of GST rate
         //var gstRate = document.getElementById('id_gst_rate');
        
-        //var newGstRate = gstRate.options[gstRate.selectedIndex].text;
+       // var newGstRate = gstRate.options[gstRate.selectedIndex].text;
        
        
         // Calculate GST amount
@@ -561,7 +546,7 @@
     // Call the function initially to calculate total amount, GST, and grand total on page load
     calculateTotalAmount();
    
-    
+  
     // Add onchange event handler to id_fright_transport
     document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
    
@@ -575,7 +560,7 @@
             input.addEventListener('input', function() {
                 calculateTotalAmount();
                 calculateOtherTotal();
-                calculateAllGrandValues();
+             
                 
             });
         });
@@ -594,7 +579,7 @@
             const lastRow = tableBody.lastElementChild.cloneNode(true); // clone the last row of the table
             const formIndex = formCount;
             lastRow.querySelectorAll("input, select").forEach(function(element) { 
-                element.value = null; 
+                element.value = ""; 
             });
             // update the input name,id and value of the last row      
             const selectElement = lastRow.querySelector('.item-name');
@@ -633,6 +618,22 @@
             amountInputElement.name = `purchase_voucher_items_set-${formIndex}-amount`;
             amountInputElement.value="";
 
+            const cgstElement = lastRow.querySelector('.purchase-cgst[name^="purchase_voucher_items_set-"][name$="-cgst"]');
+            cgstElement.id = `purchase_voucher_items_set-${formIndex}-cgst`;
+            cgstElement.name = `purchase_voucher_items_set-${formIndex}-cgst`;
+            cgstElement.value="";
+
+            const sgstElement = lastRow.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
+            sgstElement.id = `purchase_voucher_items_set-${formIndex}-sgst`;
+            sgstElement.name = `purchase_voucher_items_set-${formIndex}-sgst`; 
+            sgstElement.value="";
+
+            const TotalAmountElement = lastRow.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-total_amount"]');
+            TotalAmountElement.id = `purchase_voucher_items_set-${formIndex}-total_amount`;
+            TotalAmountElement.name = `purchase_voucher_items_set-${formIndex}-total_amount`;
+            TotalAmountElement.value="";
+            
+        
 
             tableBody.appendChild(lastRow);
            
@@ -649,7 +650,7 @@
 	addEventListenersToInputs(); // Add event listeners to the new row inputs
     calculateTotalAmount();
     calculateOtherTotal();
-    calculateAllGrandValues();
+ 
 });
 
     // Call function to add event listeners to existing rows' inputs
@@ -658,7 +659,7 @@
     calculateTotalAmount();
 
     calculateOtherTotal();
-    calculateAllGrandValues();
+
   </script>
 
 

@@ -57,7 +57,7 @@
       </table>
 
     
-      <button type="button" class="add_btn" id="addForm">Add Image</button>
+      <button type="button" class="add_btn" id="addForm">Add</button>
 
     <input type="submit" class="add_btn">
     </form>
@@ -77,6 +77,9 @@
               // Clone the last row in the table
               const lastRow = tableBody.lastElementChild.cloneNode(true);
               const formIndex = formCount;
+              lastRow.querySelectorAll("input").forEach(function(ele) {
+                ele.value= "";
+              });
   
               // Iterate over elements in the cloned row
               lastRow.querySelectorAll("*").forEach(function(element) {
