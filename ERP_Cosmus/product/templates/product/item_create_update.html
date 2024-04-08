@@ -253,10 +253,20 @@
     <div class="">
       <button class="col_btn"  onclick="opencolorPopup()">+</button>
     </div>
-
+    <div class="">
+      <button class="package_btn"  onclick="openPackagePopup()">+</button>
+    </div>
     <div class="">
       <button class="unit_btn"  onclick="openunitPopup()">+</button>
     </div>
+    <div class="">
+      <button class="finish_btn"  onclick="openFabricFinishPopup()">+</button>
+    </div>
+    <div class="">
+      <button class="gst_btn"  onclick="openGstPopup()">+</button>
+    </div>
+   
+    
 </div>
 
 {% endif %}
@@ -287,6 +297,27 @@
   function openunitPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
       newPopUpwindow(button, '/units_popup/');
+    } else {
+      popUpWindow.focus();
+    }
+  }
+  function openGstPopup(button) {
+    if (popUpWindow === null || popUpWindow.closed) {
+      newPopUpwindow(button, '/gstpopup/');
+    } else {
+      popUpWindow.focus();
+    }
+  }
+  function openPackagePopup(button) {
+    if (popUpWindow === null || popUpWindow.closed) {
+      newPopUpwindow(button, '/packagingpop/');
+    } else {
+      popUpWindow.focus();
+    }
+  }
+  function openFabricFinishPopup(button) {
+    if (popUpWindow === null || popUpWindow.closed) {
+      newPopUpwindow(button, '/fabricfinishespopup/');
     } else {
       popUpWindow.focus();
     }
