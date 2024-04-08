@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, purchase_voucher_items, shade_godown_items
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -201,6 +201,18 @@ class gst_form(forms.ModelForm):
     class Meta:
         model = gst
         fields = ['gst_percentage']
+
+
+class packaging_form(forms.ModelForm):
+    class Meta:
+        model = packaging
+        fields = ['packing_material']
+
+
+class FabricFinishes_form(forms.ModelForm):
+    class Meta:
+        model = FabricFinishes
+        fields = ['fabric_finish']
 
 
 

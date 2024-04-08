@@ -135,7 +135,7 @@
     <div class=" d-flex my-3">
       <label for="id_Packing" class="form-label item-form">Packing</label>
       <select name="Packing" class="item-select" required id="id_Packing">
-        <option value="{{form.instance.Packing}}">{{form.instance.Packing}}</option>
+        <option value="{{form.instance.Packing}}">{{form.instance.Item_Packing}}</option>
         <option value="Roll">Roll</option>
         <option value="Bundle">Bundle</option>
       </select>
@@ -218,16 +218,8 @@
     </div>
     {% if not form.instance.id %}
     <div class="d-flex my-3">
-      <diV>
-        <label for="id_status" class="form-label item-form">Image:</label>
-      </diV>
-      
-      <div class="">
-        <img id="iFrame" src="..." class="py-1" alt="..." style="width: 10rem; height: 10rem;">
-        <input type="file" class=" " name="item_shade_image" required id="item_shade_image" onchange="preview()">
-      </div>
-      
-      
+      <label for="id_status" class="form-label item-form">Image:</label>
+      <input type="file" class=" px-2 py-1" name="item_shade_image" required id="">
     </div>
     <input type="submit" class="form-button" name="save_and_add_another" value="Save and Add Another">
     {% endif %}
@@ -300,20 +292,6 @@
       }
     });
   }
-
-  document.querySelector('input[type="file"]').addEventListener('change', function(event) {
-      var imgPreview = document.getElementById('iFrame');
-      var file = event.target.files[0];
-      var reader = new FileReader();
-
-      reader.onload = function() {
-        imgPreview.src = reader.result;
-      }
-
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    });
 </script>
 
 

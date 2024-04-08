@@ -5,7 +5,7 @@
 <form action="" method="POST">
 
     {% csrf_token %}
-   <h2>Create Gst</h2>
+   <h2>GST - {{title}}</h2>
     <div class="d-flex my-4">
         <label for="id_gst_percentage" class="item-form">Gst percentage :</label>
         <input type="number" name="gst_percentage" class="item-select" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}">    

@@ -1,8 +1,8 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, purchase_voucher_items
-from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, packaging, purchase_voucher_items
+from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, packaging_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -1480,20 +1480,21 @@ def salesvoucherdelete(request,pk):
 
 
 def gst_create_update(request, pk = None):
-    
     if pk:
         instance = gst.objects.get(pk=pk)
+        title = 'Update'
     else:
         instance = None
+        title = 'Create'
 
     form = gst_form(instance = instance)
     if request.method == 'POST':
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
-            return redirect('gst-list')
+            return redirect('gst_list')
 
-    return render(request,'accounts/gst_create_update.html',{'form' : form})
+    return render(request,'accounts/gst_create_update.html',{'form' : form, 'title':title})
 
 
 def gst_list(request):
@@ -1503,22 +1504,75 @@ def gst_list(request):
 def gst_delete(request,pk):
     gst_pk = gst.objects.get(pk=pk)
     gst_pk.delete()
-    return redirect('gst-list')
+    return redirect('gst_list')
+
+
+
+def fabric_finishes_create_update(request, pk = None):
+    if pk:
+        fabric_finishes_instance = FabricFinishes.objects.get(pk=pk)
+        title = 'Update'
+    else:
+        fabric_finishes_instance = None
+        title = 'Create'
+
+    form = FabricFinishes_form(instance = fabric_finishes_instance)
+
+    if request.method == 'POST':
+        form = FabricFinishes_form(request.POST,instance = fabric_finishes_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('fabric-finishes-list')
+
+    return render(request,'misc/fabric_finishes_create_update.html',{'form':form,'title':title})
 
 
 
 
+def fabric_finishes_list(request):
+    fabricfinishes =  FabricFinishes.objects.all()
+    return render(request,'misc/fabric_finishes_list.html',{'fabricfinishes':fabricfinishes})
+
+
+
+def fabric_finishes_delete(request,pk):
+    fabric_finish =  FabricFinishes.objects.get(pk=pk)
+    fabric_finish.delete()
+    return redirect('fabric-finishes-list')
+
+
+
+def packaging_create_update(request, pk = None):
+    if pk:
+        packaging_instance = packaging.objects.get(pk=pk)
+        title = 'Update'
+    else:
+        packaging_instance = None
+        title = 'Create'
+
+    form = packaging_form(instance = packaging_instance)
+
+    if request.method == 'POST':
+        form = packaging_form(request.POST,instance = packaging_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('packaging-list')
+
+    return render(request,'misc/packaging_create_update.html',{'form':form,'title':title})
 
 
 
 
+def packaging_list(request):
+    packaging_all =  packaging.objects.all()
+    return render(request,'misc/packaging_list.html',{'packaging_all':packaging_all})
 
 
 
-
-
-
-
+def packaging_delete(request,pk):
+    packaging_pk =  packaging.objects.get(pk=pk)
+    packaging_pk.delete()
+    return redirect('packaging-list')
 
 
 

@@ -1,0 +1,17 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+ {% block body %}
+
+<form action="" method="POST">
+
+    {% csrf_token %}
+   <h2>Packaging - {{title}}</h2>
+    <div class="d-flex my-4">
+        <label for="id_packing_material" class="item-form">Packaging :</label>
+        <input type="text" name="packing_material" class="item-select" required id="id_packing_material" value="{{form.instance.packing_material}}">    
+    </div>
+
+    <input type="submit" class="add_btn">
+</form>
+
+ {% endblock body %}
