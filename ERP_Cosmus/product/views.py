@@ -330,6 +330,9 @@ def item_create(request):
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()
+    packaging_material_all = packaging.objects.all()
+    fab_finishes = FabricFinishes.objects.all()
+
     colors = Color.objects.all()
 
     
@@ -346,6 +349,8 @@ def item_create(request):
                                                                       'fab_grp':fab_grp,
                                                                       'unit_name':unit_name,
                                                                       'colors':colors,
+                                                                      'packaging_material_all':packaging_material_all,
+                                                                      'fab_finishes':fab_finishes,
                                                                       'title':title,'form':form})
     
     form = Itemform()
@@ -354,6 +359,8 @@ def item_create(request):
                                                                  'unit_name':unit_name,
                                                                  'colors':colors,
                                                                  'title':title,
+                                                                 'packaging_material_all':packaging_material_all,
+                                                                'fab_finishes':fab_finishes,
                                                                  'form':form})
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
