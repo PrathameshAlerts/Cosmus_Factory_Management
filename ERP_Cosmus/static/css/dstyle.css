@@ -371,6 +371,10 @@ body{
     width: 50px;
     margin: 5px;
 }
+.brand_image{
+    height: 50px;
+    width: 50px;
+}
 .notifiaction{
     font-size: 20px;
     margin-top: 13px;
@@ -620,6 +624,7 @@ body{
     border-radius: 40px;
     cursor: pointer;
   }
+
   /*=========create color form=======*/
 
 
@@ -877,8 +882,11 @@ body{
 .additnal-padding{
     padding-left: 485px;
 }
+.category-padding{
+    padding-left: 475px;
+}
 .capacity-padding{
-    padding-left: 541px;
+    padding-left: 543px;
 }
 .discription-padding{
     padding-left: 527px;

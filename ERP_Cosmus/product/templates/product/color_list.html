@@ -86,10 +86,10 @@ $(document).ready(function(){
         window.location.href = '/colordelete/' + itemId;
     });
 });
-</script>
-<script>
-  function redirectColorList(){
+
+function redirectColorList(){
     window.location.href = "{% url 'simplecolorlist' %}"
   }
 </script>
+
 {% endblock body %}

@@ -49,6 +49,9 @@
                     <th>Rate</th>
                     <th>Units</th>
                     <th>Amount</th>
+                    <th>CGST</th>
+                    <th>SGST/IGST</th>
+                    <th>Total Amount</th>
                     <th>DELETE</th>
                 </tr>
             </thead>
@@ -102,6 +105,15 @@
                     </td>
                     <td>
                         <input type="text" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}"  style="border: none;">
+                    </td>
+                    <td>
+                        <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst" name="{{forms.prefix}}-cgst" value="{{forms.instance.cgst | default_if_none:''}}" >
+                    </td>
+                    <td>
+                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value="{{forms.instance.sgst | default_if_none:''}}" >
+                    </td>
+                    <td>
+                        <input type="text" id="{{forms.prefix}}-total" class="purchase-input purchase-total" name="{{forms.prefix}}-total" value="{{forms.instance.total | default_if_none:''}}" >
                     </td>
                     <td>{{ forms.DELETE }}</td>
                     
@@ -229,34 +241,36 @@
 <input type="submit" class="add_btn">
  </form>
  <script>
+    // This is for the modal open and crate a new table row
     document.body.appendChild(document.getElementById('exampleModal'));
     
     $(document).ready(function(){
      
-        $(document).on('change','.item-shade',function(){
+        $(document).on('change','.item-shade',function(){ // change event on the select element 
            
             var selectValue = $(this).val();
             var itemId = $(this).data('item-id');
             console.log(selectValue);
             if(selectValue !== ''){
             
-            $('#exampleModal').modal('show');
+            $('#exampleModal').modal('show');  // open the modal on change the shades select element
            
             }
            
         });
 
-        $(document).on('change', '.godown-quantity' &&' .godown-rate', function() {
+        $(document).on('input', '.godown-quantity' &&' .godown-rate', function() {
+            //call the calculation function when qunatity and rate is changed   
             calculateGodownAmount();
         })
         
-
+        // create a new row when add button is clicked with the changes with name ,id and value attributes
         $(document).on('click', '#addModalButton', function() {
         var newTableValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
         var formsValue = parseInt(newTableValue.value);
         
         var tableClone = $('#exampleModal').find('#newTable tbody tr').last().clone(true);
-
+            //update the input name and id for the new row
         const newGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-godown_select"]');
         newGodownItem.attr('name', 'shade_godown_items_set-' + formsValue + '-godown_select');
         newGodownItem.attr('id', 'id_shade_godown_items_set-' + formsValue + '-godown_select');
@@ -287,17 +301,14 @@
        
         
     });
-
+   // This funcion calculate the amount for each row then set the total amount and total quantity
     function calculateNewRow(row) {
         var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
         var inputQtyValue = parseInt(inputQty);
         var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
         var inputRateValue = parseInt(inputRate);
         var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
-        console.log( "qty",inputQtyValue);
-        console.log( "rate",inputRateValue);
-
-   
+    
         // Calculate and set the amount for this row
         var amount = inputQtyValue * inputRateValue;
         
@@ -306,12 +317,12 @@
         return amount;
        
     }
-
+    // calculate the total quantity
     function calculateQty(row) {
         var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
         var inputQtyValue = parseInt(inputQty);
         return inputQtyValue;
-        console.log("QTY",inputQtyValue);
+      
     }
     // Function to calculate total amount
     function calculateGodownAmount() {
@@ -323,8 +334,7 @@
         var newQty = calculateQty($(this));
         totalQty += newQty;
         total += newAmount;
-        console.log("total",total);
-        console.log("totalQty",totalQty);
+  
         });
 
 
@@ -335,14 +345,23 @@
      
     // Delete row from delete button
        $(document).on('click', '.delete-btn', function(){
-           $(this).closest('tr').remove();
-       });
+        var tableRows = $('#newTable tbody tr');
+          if (tableRows.length == 1) { // Check if the table has only one row
+        // If table is empty, append a new row
+        $('#addModalButton').trigger('click');
+    } else {
+        $(this).closest('tr').remove();
+    }
+          
+        });
     
         
     });
 </script>
 
  <script>
+    //This ajax call is to populate the shade and color based on the selected item once retrive the value
+    // When click the item name then append the shades with the color, per 
     $(document).ready(function () {
         var itemName;
         var lastSelectedItem = '';
@@ -362,7 +381,7 @@
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
                     console.log(itemrownameid);
-                    $('#' + itemName).empty().append('<option value="">Select Shade</option>');
+                    $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
                     
 
                     var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
@@ -379,10 +398,11 @@
 
                     var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
-                    console.log(item_shade__quantity)
-
-                    $.each(item_shade_response, function (key, value) {
-                        console.log(key,value)
+                    
+                 //once we get the response then we need to append it to the select box as a option with check the key and value
+                    // if it is equal to key then append it to the select box else append it to the select box
+                    $.each(item_shade_response, function (key, value) { 
+                  
                         $.each(item_shade__quantity, function (key, value) { });
                         if (key == key) {
                             $('#' + itemName).append('<option value="' + key + '">' + value +  ' -  '  + item_shade__quantity[key]+ '</option>');
@@ -406,6 +426,7 @@
     });
 </script>
 
+<!--This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
 <script>
    function calculateTotalAmount() {
         var rows = document.querySelectorAll('#myTable tbody tr');
@@ -432,10 +453,10 @@
             // Add the amount to the total
             total= total + amount;
             
-           console.log("ta",total) 
+          
            document.getElementById('id_grand_amount').value = total.toFixed(2);
         });
-        console.log("total",total)
+      
         
     }
        
@@ -445,7 +466,8 @@
          
          var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
         
-        var frightTransport = parseFloat(document.getElementById('id_fright_transport').value) ;
+        var frightTransport = parseFloat(document.getElementById('id_fright_transport').value);
+        
            
         // Calculate the gross total by adding the total amount and the fright & transport
         var grossTotal = grandTotal + frightTransport;
@@ -454,10 +476,13 @@
         document.getElementById('id_gross_total').value = grossTotal.toFixed(2);
 
         // Get the value of GST rate
-        var gstRate = parseFloat(document.getElementById('id_gst_rate').value);
-        console.log('gst',gstRate)
+        var gstRate = document.getElementById('id_gst_rate');
+       
+        var newGstRate = gstRate.options[gstRate.selectedIndex].text;
+       
+       
         // Calculate GST amount
-        var gstAmount = (grossTotal * gstRate) / 100;
+        var gstAmount = (grossTotal * newGstRate) / 100;
 
         // Set the calculated GST value to the GST input field
         document.getElementById('id_gst').value = gstAmount.toFixed(2);
@@ -501,22 +526,12 @@
         addButton.addEventListener('click', function() {
             const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
             const formCount = parseInt(formCountInput.value);
-            const lastRow = tableBody.lastElementChild.cloneNode(true);
+            const lastRow = tableBody.lastElementChild.cloneNode(true); // clone the last row of the table
             const formIndex = formCount;
-            lastRow.querySelectorAll("input, select").forEach(function(element) {
+            lastRow.querySelectorAll("input, select").forEach(function(element) { 
                 element.value = null; 
             });
-
-
-            lastRow.querySelectorAll("*").forEach(function(element) {
-                        if (element.id) {
-                            element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                        }
-                        if(element.name){
-                            element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                        }
-                    });
-                    
+            // update the input name,id and value of the last row      
             const selectElement = lastRow.querySelector('.item-name');
             selectElement.id = `item_name_${formIndex}`;
             selectElement.name = `item_name_${formIndex}`;

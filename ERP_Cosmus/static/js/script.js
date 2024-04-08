@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 // //create and update item form
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
   const field3Input = document.querySelector('#id_Item_Color');
   const field4Input = document.querySelector('#id_item_name');
   const colorOptions = Array.from(field3Input.options); // Convert options NodeList to Array
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         field4Input.value = newValue; // Update the value of field4Input
     }
 }
-});
+});*/
 // purchase create and update item form
 
 

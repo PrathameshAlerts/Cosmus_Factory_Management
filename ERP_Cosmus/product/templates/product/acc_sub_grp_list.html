@@ -84,6 +84,8 @@
   
   
   <script>
+  
+
     document.body.appendChild(document.getElementById('exampleModal'));
   
     $(document).ready(function(){
@@ -100,12 +102,12 @@
             window.location.href = '/accsubgrpdelete/' + itemId;
         });
     });
-  </script>  
-    
-  <script>
+
     function redirectaccsubgrp(){
       window.location.href = "{% url 'account_sub_group-create' %}"
     }
-    </script>
+  </script>  
+    
+
 
 {% endblock body %}

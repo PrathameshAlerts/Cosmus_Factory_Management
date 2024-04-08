@@ -131,6 +131,11 @@
   </div>
 </div>
 <script>
+  // this function is used to redirect to add ledger page
+    function reversAddLedger(){
+    window.location.href = "{% url 'ledger-create' %}"
+  }
+  // create a modal for confirm delete button click
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function(){
@@ -148,9 +153,4 @@
       });
   });
 </script>  
-<script>
-  function reversAddLedger(){
-    window.location.href = "{% url 'ledger-create' %}"
-  }
-</script>
 {% endblock body %}
