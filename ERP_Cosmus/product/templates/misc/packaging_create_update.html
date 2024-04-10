@@ -11,7 +11,12 @@
         <input type="text" name="packing_material" class="item-select" required id="id_packing_material" value="{{form.instance.packing_material}}">    
     </div>
 
-    <input type="submit" class="add_btn">
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    {% if not form.instance.id %}
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+    {% endif %}
+   <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'packaging-list' %}">Return</a></button>
+
 </form>
 
  {% endblock body %}

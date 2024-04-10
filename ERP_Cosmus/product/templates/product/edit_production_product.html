@@ -8,7 +8,7 @@
   {% csrf_token %}
   <div class="d-flex mb-3">
     <label for="id_Product_Refrence_ID" class="fs-5 fw-bold">Refrence ID :</label>
-    <input type="number" readonly class="product_items fs-5 text-danger" value={{form.instance.Product_Refrence_ID}}
+    <input type="number" readonly class="product_items fs-5 id text-danger" value={{form.instance.Product_Refrence_ID}}
       name="Product_Refrence_ID" required id="id_Product_Refrence_ID">
     <label for="id_Model_Name" class="fw-bold ms-2 fs-5 ">Model Name :</label>
     <span type="text" class="product_items fs-5 text-danger" value="" name="" readonly id="">{{form.instance.Model_Name |default_if_none:''}}</span>
@@ -36,8 +36,6 @@
    
   </div>
   
-  
-
   <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Details<span class="span_padding"><i
         class="fas fa-angle-right arrowBtn"></i></span></button>
 
@@ -252,9 +250,19 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="d-flex my-3">
+          
           <label for="" class="form-label item-form">Main Category:</label>
           <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
-            <option>laptop bags</option>
+
+
+            {% if form.instance.id %}
+            <option value=""></option>
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+            {% for main_cat in main_categories %}
+            <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
+            {% endfor %}
             </select>
         </div>
       </div>
@@ -527,6 +535,43 @@
   <input type="submit" class="item-btn mx-5" value="submit">
 </form>
 
+
+<script>
+
+
+  $(document).ready(function () {
+    $('#id_Product_MainCatagory').change(function () {
+      var p_main_cat = $(this).val(); // Get the value of the selected option
+
+      // Send selectedmaincat to the backend using AJAX
+      $.ajax({
+        url: '/product2subcategoryajax/',
+        method: 'GET',
+        data: {
+            'p_main_cat': p_main_cat
+        },
+        success: function (response) {
+            // Handle success response from the backend
+            console.log('Value sent to the backend successfully');
+
+            sub_cats_of_maincat = response.sub_cat_dict
+            console.log(sub_cats_of_maincat)
+
+        },
+        error: function (xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText); // Log any errors
+        }
+    });
+    
+    });
+  });
+
+</script>
+
+
+
+
+
 <script>
 
   function checkAll(source) {
@@ -537,7 +582,9 @@
   }
 
   function redirectPproduct(){
-    window.location.href = '/pproduct_creation/';
+    var ref_id_value = document.getElementById('id_Product_Refrence_ID').value
+    console.log(ref_id_value)
+    window.location.href = '/pproduct_creation_ref_id/'+ ref_id_value; 
   }
 
   function previewFile(event, counter) {

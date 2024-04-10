@@ -1,7 +1,7 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory , ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, packaging, purchase_voucher_items
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,  ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, packaging, purchase_voucher_items
 from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, packaging_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
@@ -27,8 +27,9 @@ def edit_production_product(request,pk):
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
-    
+
     colors = Color.objects.all()
+    main_categories = MainCategory.objects.all()
     print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
@@ -43,16 +44,19 @@ def edit_production_product(request,pk):
             print(formset.errors)
             return render(request, 'product/edit_production_product.html', {'gsts':gsts,
                                                                             'form':form,
-                                                                            'formset':formset,'colors':colors,'products_sku_counts':products_sku_counts})
+                                                                            'formset':formset,
+                                                                            'colors':colors,
+                                                                            'products_sku_counts':products_sku_counts,
+                                                                            'main_categories':main_categories})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
 
-    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors,'products_sku_counts':products_sku_counts})
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors,'products_sku_counts':products_sku_counts,'main_categories':main_categories})
 
 
-def product_color_sku(request):
+def product_color_sku(request,ref_id = None):
     color = Color.objects.all()
-    print(request.POST)
+
     try:
         if request.method == 'POST':
             product_ref_id = request.POST.get('Product_Refrence_ID')
@@ -130,10 +134,13 @@ def product_color_sku(request):
         
     
     form = PProductCreateForm()
-    return render(request, 'product/product_color_sku.html', {'form': form, 'color': color})
+    return render(request, 'product/product_color_sku.html', {'form': form, 'color': color,'ref_id': ref_id})
+
+
 
 
 def pproduct_list(request):
+    
     queryset = Product.objects.select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color').all()
     product_search = request.GET.get('product_search')
 
@@ -240,86 +247,106 @@ def definesubcategoryproduct(request):
     return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category})
 
 
-def product2subcategory(request):
-    products = Product.objects.all()
-    sub_category = SubCategory.objects.all()
-    main_categories = MainCategory.objects.all()
+# def product2subcategory(request):
+#     products = Product.objects.all()
+#     sub_category = SubCategory.objects.all()
+#     main_categories = MainCategory.objects.all()
     
-    print(request.POST)
-    if request.method == 'POST':
+#     print(request.POST)
+#     if request.method == 'POST':
 
-        try:
-            #get the product id  from POST request
-            product_id_get = request.POST.get('product_name')
+#         try:
+#             #get the product id  from POST request
+#             product_id_get = request.POST.get('product_name')
             
-            # Get the list of sub_category_name values 
-            sub_category_ids = request.POST.getlist('sub_category_name')
+#             # Get the list of sub_category_name values 
+#             sub_category_ids = request.POST.getlist('sub_category_name')
             
-            # get the product instance from the id of post request
-            p_id = get_object_or_404(Product, id = product_id_get)
+#             # get the product instance from the id of post request
+#             p_id = get_object_or_404(Product, id = product_id_get)
 
-            # filter p2c table with the selected product instance 
-            existing_instances =  Product2SubCategory.objects.filter(Product_id=p_id)
-
-            
-            updated_instances_front = []
-            
-            # loop in the sub_cat selected in the frontend 
-            for sub_cat_id in sub_category_ids:
-                #get the instance of of the id from subcat table
-                s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
-                #filter the p2c table with the p_id instance and sub cat instance and append to the list 
-                p_2_c_instance = Product2SubCategory.objects.filter(Product_id=p_id, SubCategory_id=s_c_id).first() 
-                updated_instances_front.append(p_2_c_instance)
+#             # filter p2c table with the selected product instance 
+#             existing_instances =  Product2SubCategory.objects.filter(Product_id=p_id)
 
             
-            # get the pk of all the instances from the POST request
-            updated_instance_pk = set(obj.pk for obj in updated_instances_front if obj is not None)
-            # loop through instance in the table if check if pk of  instance in table is not in updated instance
-            instances_to_delete = [obj for obj in existing_instances if obj.pk not in updated_instance_pk]
+#             updated_instances_front = []
             
-            # delete the instances_to_delete which obj which are in DB but not sent from POST 
-            for obj in instances_to_delete:
-                obj.delete()
+#             # loop in the sub_cat selected in the frontend 
+#             for sub_cat_id in sub_category_ids:
+#                 #get the instance of of the id from subcat table
+#                 s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
+#                 #filter the p2c table with the p_id instance and sub cat instance and append to the list 
+#                 p_2_c_instance = Product2SubCategory.objects.filter(Product_id=p_id, SubCategory_id=s_c_id).first() 
+#                 updated_instances_front.append(p_2_c_instance)
 
-            # the ids which were not sent from POST but are in DB are deleted  above.
+            
+#             # get the pk of all the instances from the POST request
+#             updated_instance_pk = set(obj.pk for obj in updated_instances_front if obj is not None)
+#             # loop through instance in the table if check if pk of  instance in table is not in updated instance
+#             instances_to_delete = [obj for obj in existing_instances if obj.pk not in updated_instance_pk]
+            
+#             # delete the instances_to_delete which obj which are in DB but not sent from POST 
+#             for obj in instances_to_delete:
+#                 obj.delete()
+
+#             # the ids which were not sent from POST but are in DB are deleted  above.
                 
-            # ex:[11,12,13,18] sent from POST, [11,12,13,14] in DB #14 is deleted and the 
-            # remaining are updated or created like: 18 is created as its extra in POST, 14 is deleted from DB and 11,12,13 are updated or created.  
-            for sub_cat_id in sub_category_ids:
+#             # ex:[11,12,13,18] sent from POST, [11,12,13,14] in DB #14 is deleted and the 
+#             # remaining are updated or created like: 18 is created as its extra in POST, 14 is deleted from DB and 11,12,13 are updated or created.  
+#             for sub_cat_id in sub_category_ids:
 
-                # now for saving sub_cat_id has the ids from POST to get saved or updated in DB 
-                s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
+#                 # now for saving sub_cat_id has the ids from POST to get saved or updated in DB 
+#                 s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
 
-                p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=s_c_id)
-            messages.success(request,f'Product sucessfully added to {s_c_id.product_sub_category_name}')
+#                 p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=s_c_id)
+#             messages.success(request,f'Product sucessfully added to {s_c_id.product_sub_category_name}')
         
-        except IntegrityError:
-            messages.error(request, 'Product already present in Subcategory')
+#         except IntegrityError:
+#             messages.error(request, 'Product already present in Subcategory')
 
-        except Exception as e:
-            messages.error(request,f'An Exception occoured - {e}')
-
-
-    return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
+#         except Exception as e:
+#             messages.error(request,f'An Exception occoured - {e}')
 
 
-
-def product2subcategoryajax(request):
-
-    productid = request.GET.get('selected_product_id')
-    categoryforselectedproduct = Product2SubCategory.objects.filter(Product_id = productid)
+#     return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
 
 
-    dict_result = {}
-    print(categoryforselectedproduct)
-    for obj in categoryforselectedproduct:
-        dict_result[obj.SubCategory_id.id] = obj.SubCategory_id.product_sub_category_name
+
+# def product2subcategoryajax(request):
+
+#     productid = request.GET.get('selected_product_id')
+#     categoryforselectedproduct = Product2SubCategory.objects.filter(Product_id = productid)
+
+
+#     dict_result = {}
+#     print(categoryforselectedproduct)
+#     for obj in categoryforselectedproduct:
+#         dict_result[obj.SubCategory_id.id] = obj.SubCategory_id.product_sub_category_name
     
-    print(dict_result)
+#     print(dict_result)
 
+#     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+#             return JsonResponse({'dict_result':dict_result})
+    
+
+
+    
+def product2subcategoryajax(request):
+    selected_main_cat = request.GET.get('p_main_cat')
+    sub_cats = SubCategory.objects.filter(product_main_category = selected_main_cat)
+    
+    sub_cat_dict = {}
+
+    for sub_cat in sub_cats:
+        sub_cat_dict[sub_cat.id] = sub_cat.product_sub_category_name 
+
+
+   
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            return JsonResponse({'dict_result':dict_result})
+        return JsonResponse({'sub_cat_dict':sub_cat_dict})
+
+
+
 
 #____________________________Product-View-End__________________________________
 
@@ -360,7 +387,7 @@ def item_create(request):
                                                                  'colors':colors,
                                                                  'title':title,
                                                                  'packaging_material_all':packaging_material_all,
-                                                                'fab_finishes':fab_finishes,
+                                                                    'fab_finishes':fab_finishes,
                                                                  'form':form})
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
@@ -429,8 +456,10 @@ def item_edit(request,pk):
     fab_grp = Fabric_Group_Model.objects.all()
     unit_name = Unit_Name_Create.objects.all()
     colors = Color.objects.all()
+    packaging_material_all = packaging.objects.all()
+    fab_finishes = FabricFinishes.objects.all()
     item_pk = get_object_or_404(Item_Creation,pk = pk)
-    print(request.POST)
+
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
 
@@ -440,9 +469,7 @@ def item_edit(request,pk):
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
         
-
         if form.is_valid() and formset.is_valid():
-            
             form.save()
             formset.save()
             messages.success(request,'Item updated successfully')
@@ -454,6 +481,8 @@ def item_edit(request,pk):
                                                                  'unit_name':unit_name,
                                                                  'colors':colors,
                                                                  'title':title,
+                                                                 'packaging_material_all':packaging_material_all,
+                                                                 'fab_finishes':fab_finishes,
                                                                  'form':form,
                                                                  'formset': formset})
 
@@ -1508,7 +1537,7 @@ def gst_create_update(request, pk = None):
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
-            messages.success(request,'GST created successfully')
+            messages.success(request,'GST created successfully.')
             if 'save_and_add_another' in request.POST and template_name == 'accounts/gst_create_update.html':
                 
                 return redirect('gst-create')
@@ -1521,7 +1550,7 @@ def gst_create_update(request, pk = None):
                 
                 return HttpResponse('<script>window.close();</script>')
         else:
-            messages.success(request,'An error occured')
+            messages.success(request,'An error occured.')
     return render(request,template_name,{'form' : form, 'title':title})
 
 
@@ -1534,6 +1563,7 @@ def gst_list(request):
 def gst_delete(request,pk):
     gst_pk = gst.objects.get(pk=pk)
     gst_pk.delete()
+    messages.success(request,'GST deleted')
     return redirect('gst-list')
 
 
@@ -1573,7 +1603,7 @@ def fabric_finishes_create_update(request, pk = None):
 
 
         else:
-            messages.error(request,'An error occured')
+            messages.error(request,'An error occured.')
 
     return render(request,template_name,{'form':form,'title':title})
 
@@ -1589,6 +1619,7 @@ def fabric_finishes_list(request):
 def fabric_finishes_delete(request,pk):
     fabric_finish =  FabricFinishes.objects.get(pk=pk)
     fabric_finish.delete()
+    messages.success(request,'fabric finish deleted.')
     return redirect('fabric-finishes-list')
 
 
@@ -1613,7 +1644,7 @@ def packaging_create_update(request, pk = None):
         form = packaging_form(request.POST,instance = packaging_instance)
         if form.is_valid():
             form.save()
-            messages.success(request,'packing created')
+            messages.success(request,'packing created.')
 
             if 'save_and_add_another' in request.POST and template_name == 'misc/packaging_create_update.html':
                 return redirect('packaging-create')
@@ -1624,7 +1655,7 @@ def packaging_create_update(request, pk = None):
             elif 'save' in request.POST and template_name == 'misc/packaging_popup.html':
                 return HttpResponse('<script>window.close();</script>')
         else:
-            messages.error(request, 'An error accoured')  
+            messages.error(request, 'An error accoured.')  
 
     return render(request, template_name ,{'form':form,'title':title})
 
@@ -1640,6 +1671,7 @@ def packaging_list(request):
 def packaging_delete(request,pk):
     packaging_pk =  packaging.objects.get(pk=pk)
     packaging_pk.delete()
+    messages.success(request,'Packing deleted.')
     return redirect('packaging-list')
 
 

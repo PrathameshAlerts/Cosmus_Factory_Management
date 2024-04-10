@@ -11,17 +11,18 @@ urlpatterns = [
     #factoryroutes
     #product_routes
     path('editpproduct/<int:pk>',views.edit_production_product , name= 'edit_production_product'),
-    path('pproduct_creation/',views.product_color_sku , name= 'pproduct_creation'),
+    path('pproduct_creation/',views.product_color_sku , name='pproduct_creation'),
+    path('pproduct_creation_ref_id/<int:ref_id>',views.product_color_sku , name= 'pproduct-creation-with-ref-id'),
     path('pproductlist/',views.pproduct_list ,name= 'pproductlist'),
     path('pproductdelete/<int:pk>',views.pproduct_delete, name= 'pproductdelete'),
 
     #productandcategory
     path('definemaincategoryproduct/',views.definemaincategoryproduct, name= 'define-main-category-product'),
     path('definesubcategoryproduct/',views.definesubcategoryproduct, name= 'define-sub-category-product'),
-    path('product2subcategoryupdate/<int:pk>',views.product2subcategory, name= 'product-2-subcategory-update'),
-    path('product2subcategory/',views.product2subcategory, name= 'product-2-subcategory'),
-    path('product2subcategoryajax/',views.product2subcategoryajax, name = 'product2subcategory-ajax'),
-
+    # path('product2subcategoryupdate/<int:pk>',views.product2subcategory, name= 'product-2-subcategory-update'),
+    # path('product2subcategory/',views.product2subcategory, name= 'product-2-subcategory'),
+    # path('product2subcategoryajax/',views.product2subcategoryajax, name = 'product2subcategory-ajax'),
+    path('product2subcategoryajax/', views.product2subcategoryajax, name = 'product2subcategoryajax'),
 
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
