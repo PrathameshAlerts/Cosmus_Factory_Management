@@ -138,12 +138,15 @@
 
         {% if form.instance.id %}
         <option value="{{form.instance.Item_Packing.id}}">{{form.instance.Packaging_Material}}</option>
+        
         {% elif not form.instance.id %}
         <option value=""></option>
         {% endif %}
+
         {% for package_m in packaging_material_all  %}
         <option value="{{package_m.id}}">{{package_m.packing_material}}</option>
         {% endfor %}
+
       </select>
     </div>
     <div class=" d-flex my-3">
@@ -194,6 +197,7 @@
         {% for fab_finish in fab_finishes %}
         <option value="{{fab_finish.id}}">{{fab_finish.fabric_finish}}</option>
         {% endfor %}
+
       </select>
     </div>
     <div class="d-flex my-3">

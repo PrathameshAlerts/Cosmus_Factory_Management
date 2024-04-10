@@ -21,24 +21,26 @@ class MainCategory(models.Model):
         return self.product_category_name   
 
 class SubCategory(models.Model):
-    product_sub_category_name = models.CharField(max_length = 250, unique = True)
+    product_sub_category_name = models.CharField(max_length = 250)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE, related_name = 'subcategories')
-    Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
+    Product_id = models.ForeignKey('Product', on_delete = models.CASCADE, null = True, blank = True, related_name = 'productsubcategories')
 
+    class Meta:
+        unique_together = [['id','product_main_category']]
 
     def __str__(self):
         return self.product_sub_category_name 
 
 
-class Product2SubCategory(models.Model):
-    Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+# class Product2SubCategory(models.Model):
+#     Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
+#     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = [['Product_id','SubCategory_id']]
+#     class Meta:
+#         unique_together = [['Product_id','SubCategory_id']]
     
-    def __str__(self):  
-        return f'{self.SubCategory_id.product_sub_category_name} --- {self.Product_id.Product_Name}'
+#     def __str__(self):  
+#         return f'{self.SubCategory_id.product_sub_category_name} --- {self.Product_id.Product_Name}'
     
 
 
