@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.forms import ValidationError
 from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save , post_save
 from django.dispatch import receiver
@@ -23,26 +24,34 @@ class MainCategory(models.Model):
 class SubCategory(models.Model):
     product_sub_category_name = models.CharField(max_length = 250)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE, related_name = 'subcategories')
-    Product_id = models.ForeignKey('Product', on_delete = models.CASCADE, null = True, blank = True, related_name = 'productsubcategories')
 
     class Meta:
-        unique_together = [['id','product_main_category']]
+        unique_together = [['product_sub_category_name','product_main_category']]
 
     def __str__(self):
         return self.product_sub_category_name 
 
 
-# class Product2SubCategory(models.Model):
-#     Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-#     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+class Product2SubCategory(models.Model):
+    Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
+    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
 
-#     class Meta:
-#         unique_together = [['Product_id','SubCategory_id']]
-    
-#     def __str__(self):  
-#         return f'{self.SubCategory_id.product_sub_category_name} --- {self.Product_id.Product_Name}'
-    
+    # def validate_unique(self, exclude=None):
+    #     if self.Product_id and self.SubCategory_id:
+    #         queryset = Product2SubCategory.objects.filter(
+    #             Product_id = self.Product_id,
+    #             SubCategory_id__product_main_category=self.SubCategory_id.product_main_category)
+    #         if queryset.exists() and not self.pk:
+    #             raise ValidationError(
+    #                 {'Product_id': 'This combination already exists for the same main category.'}
+    #             )
 
+    class Meta:
+        unique_together = [['Product_id','SubCategory_id']]
+    
+    def __str__(self):  
+        return f'{self.SubCategory_id.product_sub_category_name} --- {self.Product_id.Product_Name}'
+    
 
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
@@ -52,7 +61,6 @@ class Color(models.Model):
     
 class gst(models.Model):
     gst_percentage = models.IntegerField()
-
     ordering = ["gst_percentage"]
 
 

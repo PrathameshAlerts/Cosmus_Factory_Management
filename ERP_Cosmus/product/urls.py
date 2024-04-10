@@ -19,10 +19,10 @@ urlpatterns = [
     #productandcategory
     path('definemaincategoryproduct/',views.definemaincategoryproduct, name= 'define-main-category-product'),
     path('definesubcategoryproduct/',views.definesubcategoryproduct, name= 'define-sub-category-product'),
-    # path('product2subcategoryupdate/<int:pk>',views.product2subcategory, name= 'product-2-subcategory-update'),
-    # path('product2subcategory/',views.product2subcategory, name= 'product-2-subcategory'),
-    # path('product2subcategoryajax/',views.product2subcategoryajax, name = 'product2subcategory-ajax'),
-    path('product2subcategoryajax/', views.product2subcategoryajax, name = 'product2subcategoryajax'),
+    path('product2subcategoryupdate/<int:pk>',views.product2subcategory, name= 'product-2-subcategory-update'),
+    path('product2subcategory/',views.product2subcategory, name= 'product-2-subcategory'),
+    path('product2subcategoryajax/',views.product2subcategoryajax, name = 'product2subcategory-ajax'),
+    # path('product2subcategoryajax/', views.product2subcategoryajax, name = 'product2subcategoryajax'),
 
     #productImages
     path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),

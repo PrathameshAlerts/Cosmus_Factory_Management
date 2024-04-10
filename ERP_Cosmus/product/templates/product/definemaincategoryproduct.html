@@ -16,4 +16,25 @@
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
 </form>
 
+<div>
+
+  <table>
+
+    <tr>
+      <th>No</th>
+      <th>Categories</th>
+    </tr>
+    {% for cat in main_cats %}
+    <tr>
+      <td>
+        {{forloop.counter}}
+      </td>
+      <td>{{cat}}</td>
+      
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
 {% endblock body %}
