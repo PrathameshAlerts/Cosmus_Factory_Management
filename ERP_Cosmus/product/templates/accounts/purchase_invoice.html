@@ -632,6 +632,16 @@
             TotalAmountElement.id = `purchase_voucher_items_set-${formIndex}-total_amount`;
             TotalAmountElement.name = `purchase_voucher_items_set-${formIndex}-total_amount`;
             TotalAmountElement.value="";
+
+            const cgstAmountElement = lastRow.querySelector('.purchase-cgstamount[name^="purchase_voucher_items_set-"][name$="-cgst_amount"]');
+            cgstAmountElement.id = `purchase_voucher_items_set-${formIndex}-cgst_amount`;
+            cgstAmountElement.name = `purchase_voucher_items_set-${formIndex}-cgst_amount`;
+            cgstAmountElement.value="";
+
+            const sgstAmountElement = lastRow.querySelector('.purchase-sgstamount[name^="purchase_voucher_items_set-"][name$="-sgst_amount"]'); 
+            sgstAmountElement.id = `purchase_voucher_items_set-${formIndex}-sgst_amount`;
+            sgstAmountElement.name = `purchase_voucher_items_set-${formIndex}-sgst_amount`;
+            sgstAmountElement.value="";
             
         
 
