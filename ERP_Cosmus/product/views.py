@@ -29,16 +29,44 @@ def edit_production_product(request,pk):
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
 
+    Prod2Cat = Product2SubCategory.objects.filter(Product_id= pproduct.id)
+    prod_main_cat_name = ''
+    prod_main_cat_id = ''
+    if Prod2Cat.exists():
+        prodmaincat = Prod2Cat.first()
+        prod_main_cat_name = prodmaincat.SubCategory_id.product_main_category.product_category_name
+        prod_main_cat_id = prodmaincat.SubCategory_id.product_main_category.id
+
+
+        prod_sub_cat_dict = {}
+        for subcat in Prod2Cat:
+            prod_sub_cat_dict[subcat.SubCategory_id.id] = subcat.SubCategory_id.product_sub_category_name
+
+    
+
+        print(prod_sub_cat_dict)
     colors = Color.objects.all()
     main_categories = MainCategory.objects.all()
+    sub_categories = SubCategory.objects.all()
+    
     print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
-        
+
         if form.is_valid() and formset.is_valid():
-            form.save()
+            form.save(commit=False)
             formset.save()
+            sub_category_ids = request.POST.getlist('Product_Sub_catagory')
+            main_category_id = request.POST['Product_Main_catagory']
+            p_id = form.instance
+
+            for sub_cat_id in sub_category_ids:
+                sub_cat = SubCategory.objects.get(id = sub_cat_id)
+                p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
+            
+
+            form.save()
             return redirect('pproductlist')
         else:
             print(form.errors)
@@ -48,11 +76,40 @@ def edit_production_product(request,pk):
                                                                             'formset':formset,
                                                                             'colors':colors,
                                                                             'products_sku_counts':products_sku_counts,
-                                                                            'main_categories':main_categories})
+                                                                            'main_categories':main_categories,
+                                                                            'prod_main_cat_name':prod_main_cat_name,
+                                                                            'prod_main_cat_id':prod_main_cat_id,
+                                                                            'prod_sub_cat_dict':prod_sub_cat_dict,
+                                                                            'sub_categories':sub_categories})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
 
-    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors,'products_sku_counts':products_sku_counts,'main_categories':main_categories})
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors,
+                                                                   'products_sku_counts':products_sku_counts,
+                                                                   'main_categories':main_categories,
+                                                                   'prod_main_cat_name':prod_main_cat_name,
+                                                                    'prod_main_cat_id':prod_main_cat_id,
+                                                                    'prod_sub_cat_dict':prod_sub_cat_dict,
+                                                                    'sub_categories':sub_categories})
+
+
+
+def product2subcategoryproductajax(request):
+    selected_main_cat = request.GET.get('p_main_cat')
+    sub_cats = SubCategory.objects.filter(product_main_category = selected_main_cat)
+    
+    sub_cat_dict = {}
+
+    for sub_cat in sub_cats:
+        sub_cat_dict[sub_cat.id] = sub_cat.product_sub_category_name 
+
+
+
+   
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        return JsonResponse({'sub_cat_dict':sub_cat_dict})
+
+
 
 
 def product_color_sku(request,ref_id = None):
@@ -337,20 +394,6 @@ def product2subcategoryajax(request):
     
 
 
-    
-# def product2subcategoryajax(request):
-#     selected_main_cat = request.GET.get('p_main_cat')
-#     sub_cats = SubCategory.objects.filter(product_main_category = selected_main_cat)
-    
-#     sub_cat_dict = {}
-
-#     for sub_cat in sub_cats:
-#         sub_cat_dict[sub_cat.id] = sub_cat.product_sub_category_name 
-
-
-   
-#     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-#         return JsonResponse({'sub_cat_dict':sub_cat_dict})
 
 
 

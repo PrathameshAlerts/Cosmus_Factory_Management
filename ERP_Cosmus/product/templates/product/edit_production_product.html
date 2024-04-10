@@ -255,7 +255,7 @@
           <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
 
             {% if form.instance.id %}
-            <option value=""></option>
+            <option value="{{prod_main_cat_id}}">{{prod_main_cat_name}}</option>
             {% elif not form.instance.id %}
             <option value=""></option>
             {% endif %}
@@ -547,8 +547,8 @@
 
       // Send selectedmaincat to the backend using AJAX
       $.ajax({
-        url: '/product2subcategoryajax/',
-        method: 'GET',
+        url: '/product2subcategoryproductajax/',
+        method: 'GET',  
         data: {
             'p_main_cat': p_main_cat
         },
