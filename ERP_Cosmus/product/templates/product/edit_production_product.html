@@ -270,6 +270,12 @@
           <label for="" class=" item-form">Sub Category:</label>
           <div class="d-flex " id="id_Product_subCatagory">
             
+            {% if form.instance.id %}
+             {{ form.instance.prod_sub_cat_dict }}
+            <input type="checkbox" class="mx-1" name="Product_Sub_catagory" value="{{ form.instance.prod_sub_cat_dict }}" id="id_Product_SubCatagory(key)" checked>
+            <label for="id_Product_SubCatagory" class="px-2">
+            {% endif %}
+            
           </div>
           
         </div>
@@ -562,7 +568,7 @@
             $('#id_Product_subCatagory').empty(); //clear the checkbox and labels
             // Add the new checkboxes and labels with the data received from the backend and loop through them add a new checkbox and label
             $.each(sub_cats_of_maincat, function (key, value) {
-              $('#id_Product_subCatagory').append(`<input type="checkbox" class="p-1" name="Product_Sub_catagory" value="${key}" id="id_Product_subCatagory_${key}">`);
+              $('#id_Product_subCatagory').append(`<input type="checkbox" class="p-1" name="Product_Sub_catagory" value="${key}" id="id_Product_subCatagory_${key}" >`);
               $('#id_Product_subCatagory').append(`<label class="me-3 p-1" for="id_Product_subCatagory_${key}">${value}</label>`);
               console.log(key,value)
             });

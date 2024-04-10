@@ -32,23 +32,21 @@ def edit_production_product(request,pk):
     Prod2Cat = Product2SubCategory.objects.filter(Product_id= pproduct.id)
     prod_main_cat_name = ''
     prod_main_cat_id = ''
+    prod_sub_cat_dict = {}
     if Prod2Cat.exists():
         prodmaincat = Prod2Cat.first()
         prod_main_cat_name = prodmaincat.SubCategory_id.product_main_category.product_category_name
         prod_main_cat_id = prodmaincat.SubCategory_id.product_main_category.id
 
-
-        prod_sub_cat_dict = {}
         for subcat in Prod2Cat:
             prod_sub_cat_dict[subcat.SubCategory_id.id] = subcat.SubCategory_id.product_sub_category_name
 
     
-
-        print(prod_sub_cat_dict)
     colors = Color.objects.all()
     main_categories = MainCategory.objects.all()
     sub_categories = SubCategory.objects.all()
-    
+    print('t1',sub_categories)
+    print('t2',prod_sub_cat_dict)
     print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
