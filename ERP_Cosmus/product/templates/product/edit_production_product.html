@@ -269,13 +269,17 @@
         <div class="d-flex my-3">
           <label for="" class=" item-form">Sub Category:</label>
           <div class="d-flex " id="id_Product_subCatagory">
-            
+          
             {% if form.instance.id %}
-             {{ form.instance.prod_sub_cat_dict }}
-            <input type="checkbox" class="mx-1" name="Product_Sub_catagory" value="{{ form.instance.prod_sub_cat_dict }}" id="id_Product_SubCatagory(key)" checked>
-            <label for="id_Product_SubCatagory" class="px-2">
-            {% endif %}
-            
+            {% for key, value in prod_sub_cat_dict_all.items %}
+              {% if key in prod_sub_cat_dict %}
+                <input type="checkbox" class="mx-1" name="Product_Sub_catagory" value="{{ key }}" id="id_Product_SubCatagory_{{ key }}" checked>
+              {% else %}
+                <input type="checkbox" class="mx-1" name="Product_Sub_catagory" value="{{ key }}" id="id_Product_SubCatagory_{{ key }}">
+              {% endif %}
+              <label for="id_Product_SubCatagory_{{ key }}" class="px-2">{{ value }}</label>
+            {% endfor %}
+          {% endif %}
           </div>
           
         </div>
