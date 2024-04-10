@@ -210,7 +210,16 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ product.Product_Name | default_if_none:''}}</td>
                 <td>{{ product.Model_Name | default_if_none:''}}</td>
-                <td>Laptop Bags</td>
+                <td><ul>
+                    <li>laptop bags
+                      <ul>
+                        <li>laptop bag</li>
+                        <li>laptop bag</li>
+                        <li>laptop bag</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </td>
                 <td>{{ product.Product_Refrence_ID }}</td>
                 <td>
                     {% for pproduct in product.productdetails.all %}

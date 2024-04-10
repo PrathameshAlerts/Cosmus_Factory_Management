@@ -105,10 +105,18 @@ body{
   }
   .dropdown{
    list-style: none;
+  
   }
 
   .dropdown .dropdown-menu{
    display: none;
+   
+  }
+
+  .dropdown-menu-right .navText{
+    text-decoration: none;
+    color: #000;
+  
   }
   .dropdown:hover > .dropdown-menu ,.dropend:hover > .dropdown-menu{
    display: block;
@@ -191,7 +199,9 @@ body{
   .dropdown-menu-right {
     right: 0;
     left: auto;
+    text-decoration: none;
 }
+
 .float-right {
     font-size: 10px;
     float: left !important;
@@ -391,6 +401,7 @@ body{
 .pro-head{
     color: #fff;
     background: #4099ff;
+    line-height: 30px;
 }
 .dropdown-menu .dropdown-menu-right li:hover{
     background: red;

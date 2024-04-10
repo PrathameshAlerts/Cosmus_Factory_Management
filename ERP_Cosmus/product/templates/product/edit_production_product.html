@@ -254,7 +254,6 @@
           <label for="" class="form-label item-form">Main Category:</label>
           <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
 
-
             {% if form.instance.id %}
             <option value=""></option>
             {% elif not form.instance.id %}
@@ -266,13 +265,16 @@
             </select>
         </div>
       </div>
-      <div class="col-lg-4">
+    </div> 
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Sub Category:</label>
-          <input type="checkbox" class="" name="Product_Sub_catagory" value="" id="id_Product_subCatagory">
+          <label for="" class=" item-form">Sub Category:</label>
+          <div class="d-flex " id="id_Product_subCatagory">
+            
+          </div>
+          
         </div>
-    </div>
-  </div>
+   
+
   </div>
   <button type="button" class="edit_btn w-75 mb-3" id="product_capacity_btn">Capacity<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_capacity" style="display: none;">
@@ -556,7 +558,16 @@
 
             sub_cats_of_maincat = response.sub_cat_dict
             console.log(sub_cats_of_maincat)
-
+            
+            $('#id_Product_subCatagory').empty(); //clear the checkbox and labels
+            // Add the new checkboxes and labels with the data received from the backend and loop through them add a new checkbox and label
+            $.each(sub_cats_of_maincat, function (key, value) {
+              $('#id_Product_subCatagory').append(`<input type="checkbox" class="p-1" name="Product_Sub_catagory" value="${key}" id="id_Product_subCatagory_${key}">`);
+              $('#id_Product_subCatagory').append(`<label class="me-3 p-1" for="id_Product_subCatagory_${key}">${value}</label>`);
+              console.log(key,value)
+            });
+            
+           
         },
         error: function (xhr, errmsg, err) {
             console.log(xhr.status + ": " + xhr.responseText); // Log any errors
