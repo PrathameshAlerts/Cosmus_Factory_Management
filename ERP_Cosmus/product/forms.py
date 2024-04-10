@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -38,6 +38,7 @@ ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, 
 
 class PProductAddForm(forms.ModelForm):
 
+
     widgets = {
             'Product_Channel': forms.CheckboxSelectMultiple,
             }
@@ -59,7 +60,6 @@ class PProductAddForm(forms.ModelForm):
                   'Product_Wholesaler_DistributorPrice','Product_Gender',
                   'Product_QtyPerBox']
         
-
 
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',
                                                                                'Amazon_Link','Flipkart_Link','Cosmus_link'),extra=0)
