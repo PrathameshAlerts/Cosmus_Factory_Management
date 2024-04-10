@@ -32,22 +32,27 @@ def edit_production_product(request,pk):
     Prod2Cat = Product2SubCategory.objects.filter(Product_id= pproduct.id)
     prod_main_cat_name = ''
     prod_main_cat_id = ''
+    prod_sub_cat_dict = {}
+    prod_sub_cat_dict_all = {}
     if Prod2Cat.exists():
         prodmaincat = Prod2Cat.first()
         prod_main_cat_name = prodmaincat.SubCategory_id.product_main_category.product_category_name
         prod_main_cat_id = prodmaincat.SubCategory_id.product_main_category.id
 
-
-        prod_sub_cat_dict = {}
         for subcat in Prod2Cat:
             prod_sub_cat_dict[subcat.SubCategory_id.id] = subcat.SubCategory_id.product_sub_category_name
 
-    
+        sub_categories = SubCategory.objects.filter(product_main_category = prod_main_cat_id)
+        
+        for sub_cat_all in sub_categories:
+            prod_sub_cat_dict_all[sub_cat_all.id] = sub_cat_all.product_sub_category_name
 
-        print(prod_sub_cat_dict)
+
+    print(prod_sub_cat_dict)
+    print(prod_sub_cat_dict_all)
     colors = Color.objects.all()
     main_categories = MainCategory.objects.all()
-    sub_categories = SubCategory.objects.all()
+
     
     print(request.POST)
     if request.method == 'POST':
@@ -64,8 +69,7 @@ def edit_production_product(request,pk):
             for sub_cat_id in sub_category_ids:
                 sub_cat = SubCategory.objects.get(id = sub_cat_id)
                 p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
-            
-
+        
             form.save()
             return redirect('pproductlist')
         else:
@@ -80,7 +84,7 @@ def edit_production_product(request,pk):
                                                                             'prod_main_cat_name':prod_main_cat_name,
                                                                             'prod_main_cat_id':prod_main_cat_id,
                                                                             'prod_sub_cat_dict':prod_sub_cat_dict,
-                                                                            'sub_categories':sub_categories})
+                                                                            'prod_sub_cat_dict_all':prod_sub_cat_dict_all})
     form = PProductAddForm(instance=pproduct)
     formset = CustomPProductaddFormSet(instance=pproduct)
 
@@ -90,7 +94,7 @@ def edit_production_product(request,pk):
                                                                    'prod_main_cat_name':prod_main_cat_name,
                                                                     'prod_main_cat_id':prod_main_cat_id,
                                                                     'prod_sub_cat_dict':prod_sub_cat_dict,
-                                                                    'sub_categories':sub_categories})
+                                                                    'prod_sub_cat_dict_all':prod_sub_cat_dict_all})
 
 
 
