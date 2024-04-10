@@ -108,13 +108,28 @@
           <a class="nav-link text-white" href="{% url 'dashboard-main' %}" role="button">Dashboard </a>
         </li>
         <li class="nav-item mt-3 dropdown">
-         <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="true">Main Category</span> 
+         <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Category</span> 
          <ul class="dropdown-menu dropdown-menu-right">
-          <li class="pro-head"><a href="{% url 'pproductlist' %}" class="navText">Product</a></li>
-          <li class="pro-head"> <a href="{% url 'item-list' %}" class="navText">Raw Material</a></li>
-           <li class="pro-head"> <a href="{% url 'godown-list' %}" class="navText">Godown</a></li>
-        </ul>
-          
+          <li class="pro-head">
+            <span  onclick="showThePopUp('category 1')">Main Category</span>  
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li class="pro-head"><a href="{% url 'pproductlist' %}" class="navText">Product</a></li>
+              <li class="pro-head"> <a href="{% url 'item-list' %}" class="navText">Raw Material</a></li>
+              <li class="pro-head"> <a href="{% url 'godown-list' %}" class="navText">Godown</a></li>
+            </ul>
+          </li>
+            <li class="pro-head">
+              <span onclick="showThePopUp('category 2')">Sub Category</span>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li class="pro-head"><a href="{% url 'simplecolorlistonly' %}" class="navText">Colors</a></li> 
+                <li class="pro-head"><a href="{% url 'item-fabgroup-list' %}" class="navText">Fabrics Groups</a></li>
+                <li class="pro-head"><a href="{% url 'unit_name-list' %}" class="navText">Units</a></li> 
+                <li class="pro-head"><a href="{% url 'gst-list' %}" class="navText">GST</a></li> 
+                <li class="pro-head"><a href="{% url 'fabric-finishes-list' %}" class="navText">Fabric Finshes</a></li>
+                <li class="pro-head"><a href="{% url 'packaging-list' %}" class="navText">Packaging List</a></li> 
+              </ul> 
+            </li>
+         </ul>  
         </li>
         <li class="nav-item mt-3 dropdown">
           <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Sub Category</span> 
@@ -125,9 +140,27 @@
            <li class="pro-head"><a href="{% url 'gst-list' %}" class="navText">GST</a></li> 
            <li class="pro-head"><a href="{% url 'fabric-finishes-list' %}" class="navText">Fabric Finshes</a></li>
            <li class="pro-head"><a href="{% url 'packaging-list' %}" class="navText">Packaging List</a></li> 
-         </ul>
-           
+         </ul>  
          </li>
+         <li class="nav-item mt-3 dropdown">
+          <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Accounts</span> 
+          <ul class="dropdown-menu dropdown-menu-right">
+           <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Groups</a></li> 
+           <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
+           <li class="pro-head"><a href="{% url 'stock_item-list' %}" class="navText">Stock Item</a></li> 
+           
+         </ul>  
+         </li>
+         <li class="nav-item mt-3 dropdown">
+          <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Vouchers</span> 
+          <ul class="dropdown-menu dropdown-menu-right">
+           <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Groups</a></li> 
+           <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
+           <li class="pro-head"><a href="{% url 'stock_item-list' %}" class="navText">Stock Item</a></li> 
+           
+         </ul>  
+         </li>
+
           <li class="nav-item dropdown notifiaction">
               <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="fs-5"><i class="fa-regular fa-bell"></i></span>
@@ -156,6 +189,10 @@
     </div>
   </div>
 </nav>
+<div class="subfields" id="subfieldsContainer">
+ 
+</div>
+
 <button class="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 <section> 
   <div class="pcoded-main-container">

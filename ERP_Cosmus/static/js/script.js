@@ -29,7 +29,17 @@ $(document).ready(function(){
 });
 
   //search in using sort option
-//create color form
+//navbar dropdown function
+function showThePopUp(category){
+  var showPopup = document.getElementById("subfieldsContainer");
+  showPopup.style.display = "block";
+  showPopup.innerHTML = "<h3>" + category + "</h3>";
+
+  function hideThePopUp(){
+    showPopup.style.display = "none";
+  }
+  setTimeout(hideThePopUp, 5000);
+}
 
 //add card in form 
 
