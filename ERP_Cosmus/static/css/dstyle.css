@@ -750,11 +750,9 @@ body{
 .fab_btn{
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 16px;
+    border-radius: 6px;
+    padding: 3px 10px;
     margin-top: 65px;
-    height:30px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Color group item======*/
@@ -767,11 +765,9 @@ body{
 .col_btn{
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 16px;
-    margin-top: 18px;
-    height:30px;
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-top: 20px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Unit group item======*/
@@ -782,15 +778,41 @@ body{
 }
 
 .unit_btn{
-    color:#fff;
+    color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 16px;
-    margin-top: 110px;
-    height:30px;
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-top: 21px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
+/*=======Package group item======*/
+.package_btn{
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-top: 69px;
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+/*=======Finish group item======*/
+.finish_btn{
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-top: 166px;
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+/*=======GST group item======*/
+.gst_btn{
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-top: 18px;
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+/*=======Account group item======*/
 .account-group-input{
     width: 200px;
     border: 1px solid #666;
@@ -1078,10 +1100,6 @@ body{
 .total-Final{
     padding-left: 560px;
 }
-.total-final-rate{
-    padding-left: 22px;
-}
-
 .total-final-taxamount{
 padding-left: 143px;
 
