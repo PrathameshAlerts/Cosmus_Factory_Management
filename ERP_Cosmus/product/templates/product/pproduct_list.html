@@ -210,15 +210,17 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ product.Product_Name | default_if_none:''}}</td>
                 <td>{{ product.Model_Name | default_if_none:''}}</td>
-                <td><ul>
-                    <li>laptop bags
+                <td>
+                  {% if product.product_cats.all %}
+                  {{ product.product_cats.all.0.SubCategory_id.product_main_category.product_category_name }}
+                  {% endif %}
+
                       <ul>
-                        <li>laptop bag</li>
-                        <li>laptop bag</li>
-                        <li>laptop bag</li>
+                        {% for categories in product.product_cats.all %}
+                        <li>{{categories.SubCategory_id.product_sub_category_name}}</li>
+                        {% endfor %}
                       </ul>
-                    </li>
-                  </ul>
+
                 </td>
                 <td>{{ product.Product_Refrence_ID }}</td>
                 <td>
