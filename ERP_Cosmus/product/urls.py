@@ -18,6 +18,11 @@ urlpatterns = [
 
     #productandcategory
     path('definemaincategoryproduct/',views.definemaincategoryproduct, name= 'define-main-category-product'),
+    path('definemaincategoryupdateproduct/<int:pk>',views.definemaincategoryproduct, name= 'define-main-category-update-product'),
+    path('definemaincategoryproductdelete/<int:pk>',views.definemaincategoryproductdelete, name= 'define-main-category-delete-product'),
+
+
+
     path('definesubcategoryproduct/',views.definesubcategoryproduct, name= 'define-sub-category-product'),
     path('product2subcategoryupdate/<int:pk>',views.product2subcategory, name= 'product-2-subcategory-update'),
     path('product2subcategory/',views.product2subcategory, name= 'product-2-subcategory'),
@@ -104,8 +109,6 @@ urlpatterns = [
     path('purchasevoucherupdate/<int:pk>', views.purchasevouchercreateupdate, name = 'purchase-voucher-update'),
     path('purchasevoucherlist/', views.purchasevoucherlist, name = 'purchase-voucher-list'),
     path('purchasevoucherdelete/<int:pk>', views.purchasevoucherdelete, name = 'purchase-voucher-delete'),
-
-
     path('purchasevoucherpopup/<int:shade_id>', views.purchasevoucherpopup, name='purchase-voucher-popup'),
 
     path('purchasevouchercreatepopupajax/',views.purchasevouchercreatepopupajax,name = 'purchasevoucher-createpopup-ajax'),
