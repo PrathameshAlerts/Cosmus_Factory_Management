@@ -228,13 +228,13 @@ def pproduct_list(request):
     
     queryset = Product.objects.select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color').all()
     product_search = request.GET.get('product_search')
-
+  
     if product_search != '' and product_search is not None:
         queryset = Product.objects.filter(Q(Product_Name__icontains=product_search)|
                                             Q(Model_Name__icontains=product_search)|
                                             Q(Product_Refrence_ID__icontains=product_search)|
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
-    
+   
     context = {'products': queryset}
     return render(request,'product/pproduct_list.html',context=context)
 
