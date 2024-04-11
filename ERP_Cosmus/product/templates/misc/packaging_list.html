@@ -12,6 +12,7 @@
                 <tr>
                     <th>No</th>
                     <th>Material</th>
+                    <th>Update</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -20,6 +21,7 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                    <td>{{package.packing_material}}</td>  
+                   <td><a href="{% url 'packaging-update' package.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
                    <td><a href="{% url 'packaging-delete' package.id %}"><i class="fa-solid fa-trash text-danger px-2"></a></td>
                 </tr>
                 {% endfor %}

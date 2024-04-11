@@ -12,6 +12,7 @@
                 <tr>
                     <th>No</th>
                     <th>Fabrics</th>
+                    <th>Update</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -20,6 +21,7 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                    <td>{{fabricfinish.fabric_finish}}</td>  
+                   <td><a href="{% url 'fabric-finishes-update' fabricfinish.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
                    <td><a href="{% url 'fabric-finishes-delete' fabricfinish.id %}"><i class="fa-solid fa-trash text-danger px-2"></a></td>
                 </tr>
                 {% endfor %}

@@ -125,7 +125,7 @@ urlpatterns = [
 
 
     path('fabricfinishesscreate/', views.fabric_finishes_create_update, name = 'fabric-finishes-create'),
-    # path('fabricfinishesupdate/<int:pk>', views.fabric_finishes_create_update, name = 'fabric-finishes-update'),
+    path('fabricfinishesupdate/<int:pk>', views.fabric_finishes_create_update, name = 'fabric-finishes-update'),
     path('fabricfinisheslist/', views.fabric_finishes_list, name = 'fabric-finishes-list'),
     path('fabricfinishesdelete/<int:pk>', views.fabric_finishes_delete, name = 'fabric-finishes-delete'),
 
@@ -133,7 +133,7 @@ urlpatterns = [
 
 
     path('packaging_create/', views.packaging_create_update, name = 'packaging-create'),
-    # path('packagingupdate/<int:pk>', views.packaging_create_update, name = 'packaging-update'),
+    path('packagingupdate/<int:pk>', views.packaging_create_update, name = 'packaging-update'),
     path('packaginglist/', views.packaging_list, name = 'packaging-list'),
     path('packagingdelete/<int:pk>', views.packaging_delete, name = 'packaging-delete'),
     
