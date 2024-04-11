@@ -23,7 +23,7 @@ class MainCategory(models.Model):
 
 class SubCategory(models.Model):
     product_sub_category_name = models.CharField(max_length = 250)
-    product_main_category = models.ForeignKey(MainCategory, on_delete = models.CASCADE, related_name = 'subcategories')
+    product_main_category = models.ForeignKey(MainCategory, on_delete = models.PROTECT, related_name = 'subcategories')
 
     class Meta:
         unique_together = [['product_sub_category_name','product_main_category']]
@@ -33,8 +33,8 @@ class SubCategory(models.Model):
 
 
 class Product2SubCategory(models.Model):
-    Product_id = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='product_cats')
-    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='subcategories')
+    Product_id = models.ForeignKey('Product', on_delete=models.PROTECT, related_name='product_cats')
+    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='subcategories')
 
     # def validate_unique(self, exclude=None):
     #     if self.Product_id and self.SubCategory_id:

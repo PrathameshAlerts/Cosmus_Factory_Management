@@ -7,38 +7,41 @@
 <form class="mt-5" action="" method="POST">
     {% csrf_token %}
 
-
     <div class="d-flex mb-3">
-        <label for="" class="form-label px-2">Main Category Name:</label>
-        <input type="text" class="item-select" value="" name="main_category_name" maxlength="255" required id="">
+        <label for="id_product_category_name" class="form-label px-2">Main Category Name:</label>
+        <input type="text" class="item-select" value="{{form.instance.product_category_name}}" name="product_category_name" maxlength="255" required id="id_product_category_name">
       </div>
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
 </form>
 
-<div>
+<div class="col-lg-6">
 
-  <table class="table table-striped table-hover table-responsive">
-<thead>
-  <tr>
-    <th>No</th>
-    <th>Categories</th>
-    <th>Edit</th>
-    <th>Delete</th>
-  </tr>
-</thead>
-   <tbody class="mainTableList">
-    {% for cat in main_cats %}
-    <tr>
-      <td>
-        {{forloop.counter}}
-      </td>
-      <td>{{cat}}</td>
-      <td><a href="{% url 'maincategory-update' cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-      <td><a href="{%  url 'maincategory-delete' cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
-      
-    </tr>
-    {% endfor %}
+  <table class="table table-striped table-bordered table-hover">
+    <thead> 
+      <tr>
+        <th>No</th>
+        <th>Categories</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody class="mainTableList">
+
+      {% for cat in main_cats %}
+      <tr>
+        <td>
+          {{forloop.counter}}
+        </td>
+        <td>{{cat}}</td>
+        <td><a href="{% url 'define-main-category-update-product' cat.id %}"><i
+          class="fa-solid fa-pen-to-square px-1"></i></a></td>
+        <td><a href="{% url 'define-main-category-delete-product' cat.id %}"><i
+          class="fa-solid fa-trash text-danger px-2"></i></a></td>
+        
+      </tr>
+      {% endfor %}
+    
    </tbody> 
     
   </table>

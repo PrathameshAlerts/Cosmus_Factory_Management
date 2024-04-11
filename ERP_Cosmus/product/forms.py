@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -214,6 +214,11 @@ class FabricFinishes_form(forms.ModelForm):
         model = FabricFinishes
         fields = ['fabric_finish']
 
+
+class product_main_category_form(forms.ModelForm):
+    class Meta:
+        model = MainCategory
+        fields = ['product_category_name']
 
 
 class LoginForm(AuthenticationForm):
