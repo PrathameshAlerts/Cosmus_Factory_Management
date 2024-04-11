@@ -23,37 +23,41 @@ def dashboard(request):
     return render(request,'misc/dashboard.html')
 
 
-
+#NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
 def edit_production_product(request,pk):
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
 
-    Prod2Cat = Product2SubCategory.objects.filter(Product_id= pproduct.id)
+    #filter all product2cat instances 
+    prod2cat_instance = Product2SubCategory.objects.filter(Product_id= pproduct.id)
     prod_main_cat_name = ''
     prod_main_cat_id = ''
     prod_sub_cat_dict = {}
     prod_sub_cat_dict_all = {}
-    if Prod2Cat.exists():
-        prodmaincat = Prod2Cat.first()
+
+    #product instances exists
+    if prod2cat_instance.exists():
+        prodmaincat = prod2cat_instance.first()
+        #get the product maincat name and id 
         prod_main_cat_name = prodmaincat.SubCategory_id.product_main_category.product_category_name
         prod_main_cat_id = prodmaincat.SubCategory_id.product_main_category.id
 
-        for subcat in Prod2Cat:
+
+        # create a dict of subcategories of the saved subcategory for the main category
+        for subcat in prod2cat_instance:
             prod_sub_cat_dict[subcat.SubCategory_id.id] = subcat.SubCategory_id.product_sub_category_name
 
+
+        # create a dict of all subcats of the products main category
         sub_categories = SubCategory.objects.filter(product_main_category = prod_main_cat_id)
-        
         for sub_cat_all in sub_categories:
             prod_sub_cat_dict_all[sub_cat_all.id] = sub_cat_all.product_sub_category_name
 
 
-    print(prod_sub_cat_dict)
-    print(prod_sub_cat_dict_all)
     colors = Color.objects.all()
     main_categories = MainCategory.objects.all()
 
-    
     print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
@@ -62,16 +66,35 @@ def edit_production_product(request,pk):
         if form.is_valid() and formset.is_valid():
             form.save(commit=False)
             formset.save()
-            sub_category_ids = request.POST.getlist('Product_Sub_catagory')
-            main_category_id = request.POST['Product_Main_catagory']
+            
+            #p_id has the id of the product
             p_id = form.instance
+            print(p_id)
+            #get the ids of subcats selected from the frontend 
+            sub_category_ids = request.POST.getlist('Product_Sub_catagory')
+            
+            #filter only all the subcats from table sent from the frontend with respect to pid
+            sub_cat_front_listcomp = [Product2SubCategory.objects.filter(Product_id=p_id,SubCategory_id=sub_cat_id).first() for sub_cat_id in sub_category_ids]
+            
+            #filter all the subcats from table of the product
+            sub_cat_backend = [x for x in Product2SubCategory.objects.filter(Product_id=p_id)]
 
+            #delete the subcats from DB if subcat in the db is not sent from the frontend
+            objects_to_delete = [obj for obj in sub_cat_backend if obj not in sub_cat_front_listcomp]
+            
+            for obj in objects_to_delete:
+                obj.delete()
+
+
+            #loop through the sub cats sent from the front end and get or create new subcats for the product
             for sub_cat_id in sub_category_ids:
                 sub_cat = SubCategory.objects.get(id = sub_cat_id)
                 p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
-        
+
+
             form.save()
             return redirect('pproductlist')
+        
         else:
             print(form.errors)
             print(formset.errors)
@@ -97,7 +120,7 @@ def edit_production_product(request,pk):
                                                                     'prod_sub_cat_dict_all':prod_sub_cat_dict_all})
 
 
-
+#NOTE: this ajax function belongs to product-edit form
 def product2subcategoryproductajax(request):
     selected_main_cat = request.GET.get('p_main_cat')
     sub_cats = SubCategory.objects.filter(product_main_category = selected_main_cat)
@@ -311,7 +334,7 @@ def definesubcategoryproduct(request):
 
     return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category})
 
-
+# NOTE : in this form one product can be in multiple main-category and multiple sub-categories - CURRENTLY NOT USING THIS LOGIC
 def product2subcategory(request):
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
@@ -333,7 +356,6 @@ def product2subcategory(request):
             # filter p2c table with the selected product instance 
             existing_instances =  Product2SubCategory.objects.filter(Product_id=p_id)
 
-            
             updated_instances_front = []
             
             # loop in the sub_cat selected in the frontend 
@@ -368,18 +390,12 @@ def product2subcategory(request):
         
         except IntegrityError:
             messages.error(request, 'Product already present in Subcategory')
-
-            
-
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
-
-
-
     return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
 
 
-
+#NOTE: this ajax function belongs to product2category function
 def product2subcategoryajax(request):
 
     productid = request.GET.get('selected_product_id')
@@ -1633,7 +1649,7 @@ def fabric_finishes_create_update(request, pk = None):
     if request.path == '/fabricfinishespopup/':
         template_name = 'misc/fabric_finishes_popup.html'
 
-    elif request.path == '/fabricfinishesscreate/':
+    elif request.path == '/fabricfinishesscreate/' or f'/fabricfinishesupdate/{pk}':
         template_name = 'misc/fabric_finishes_create_update.html'
 
     form = FabricFinishes_form(instance = fabric_finishes_instance)
@@ -1677,7 +1693,6 @@ def fabric_finishes_delete(request,pk):
     return redirect('fabric-finishes-list')
 
 
-
 def packaging_create_update(request, pk = None):
     if pk:
         packaging_instance = packaging.objects.get(pk=pk)
@@ -1689,7 +1704,7 @@ def packaging_create_update(request, pk = None):
     if request.path == '/packagingpop/':
         template_name = 'misc/packaging_popup.html'
 
-    elif request.path == '/packaging_create/':
+    elif request.path == '/packaging_create/' or f'/packagingupdate/{pk}':
         template_name = 'misc/packaging_create_update.html'
 
     form = packaging_form(instance = packaging_instance)
