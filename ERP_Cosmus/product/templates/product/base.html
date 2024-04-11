@@ -104,7 +104,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item mt-3 ">
+        <li class="nav-item my-3 ">
           <a class="nav-link text-white" href="{% url 'dashboard-main' %}" role="button">Dashboard </a>
         </li>
         <li class="nav-item mt-3 dropdown">
@@ -112,11 +112,11 @@
          <ul class="dropdown-menu dropdown-menu-right">
           <li class="nav-item mt-3 dropdown">
             <span class="nav-link ms-2"  onclick="showThePopUp('Main Category')">Main Category</span>  
-            <!--<ul class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu dropdown-menu-right">
               <li class="pro-head"><a href="{% url 'pproductlist' %}" class="navText">Product</a></li>
               <li class="pro-head"> <a href="{% url 'item-list' %}" class="navText">Raw Material</a></li>
               <li class="pro-head"> <a href="{% url 'godown-list' %}" class="navText">Godown</a></li>
-            </ul>-->
+            </ul>
           </li>
             <li class="nav-item mt-3 dropdown">
               <span class="nav-link ms-2" onclick="showThePopUp('Sub Category')">Sub Category</span>
@@ -151,7 +151,7 @@
          </ul>  
          </li>
          <li class="nav-item mt-3 dropdown">
-          <span class="nav-link text-white"  onclick="showThePopUp('Accounts')">Accounts</span> 
+          <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Accounts')">Accounts</span> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Groups</a></li> 
            <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
@@ -160,7 +160,7 @@
          </ul>  
          </li>
          <li class="nav-item mt-3 dropdown">
-          <span class="nav-link text-white"  onclick="showThePopUp('Vouchers')">Vouchers</span> 
+          <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Vouchers')">Vouchers</span> 
           <ul class="dropdown-menu dropdown-menu-right">
           <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice</a></li> 
           <li class="pro-head"><a href="" class="navText">Sales Invoice</a></li>  
@@ -173,7 +173,7 @@
          </ul>  
          </li>
          <li class="nav-item mt-3 dropdown">
-          <span class="nav-link text-white"  onclick="showThePopUp('Reports')">Reports</span> 
+          <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Reports')">Reports</span> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Stock Transfer Report</a></li> 
            <li class="pro-head"><a href="#" class="navText">Purchase Report</a></li>
@@ -187,32 +187,33 @@
            <li class="pro-head"><a href="{% url 'define-sub-category-product' %}" class="navText">Sub Cat Create</a></li>
            <li class="pro-head"><a href="{% url 'product-2-subcategory' %}" class="navText">Product 2 Catagory</a></li>   
          </ul>  
-         </li>
-          <li class="nav-item dropdown notifiaction">
-              <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <span class="fs-5"><i class="fa-regular fa-bell"></i></span>
-              </a>
-              
-            </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img alt="user-profile" src="../../../static/images/logo.jpg" class="rounded-circle image-h">
-          </a>
-          
-          <ul class="dropdown-menu dropdown-menu-right">
-              <div class="pro-head">
-                  <img src="../../../static/images/logo.jpg" class="rounded-circle image-h" alt="User-Profile-Image">
-                  <span>John Doe</span>
-                  <a href="auth-signin.html" class="dud-logout" title="Logout">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                  </a>
-                </div>
-                <li><a href="user-profile.html" class="dropdown-item "><i class="fa-regular fa-user"></i> Profile</a></li>
-                <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
-                <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
-          </ul>
-        </li>
+         </li> 
       </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown notifiaction">
+          <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="fs-5"><i class="fa-regular fa-bell"></i></span>
+          </a>
+        </li>
+     <li class="nav-item dropdown">
+      <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img alt="user-profile" src="../../../static/images/logo.jpg" class="rounded-circle image-h">
+      </a>
+      
+      <ul class="dropdown-menu dropdown-menu-right">
+          <div class="pro-head">
+              <img src="../../../static/images/logo.jpg" class="rounded-circle image-h" alt="User-Profile-Image">
+              <span>John Doe</span>
+              <a href="auth-signin.html" class="dud-logout" title="Logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </a>
+            </div>
+            <li><a href="user-profile.html" class="dropdown-item "><i class="fa-regular fa-user"></i> Profile</a></li>
+            <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
+            <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
+      </ul>
+     </li>
+       </ul>
     </div>
   </div>
 </nav>

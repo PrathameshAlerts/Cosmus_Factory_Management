@@ -22,7 +22,7 @@
         <tr>
           <th scope="col" class="name_absolute">No</th>
               <th scope="col" class="name_absolute">Name
-                <div class="nav-item dropdown name_icons">
+                <!-- <div class="nav-item dropdown name_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
                     <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
@@ -38,10 +38,10 @@
                       </ul>
                     </li>
                   </ul>
-                </div>
+                </div> -->
               </th>
               <th scope="col" class="name_absolute">Alias
-                <div class="nav-item dropdown name_icons">
+                <!-- <div class="nav-item dropdown name_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
                     <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
@@ -57,10 +57,10 @@
                       </ul>
                     </li>
                   </ul>
-                </div>
+                </div> -->
               </th>
               <th scope="col" class="name_absolute">Vendor Code
-                <div class="nav-item dropdown name_icons">
+                <!-- <div class="nav-item dropdown name_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
                     <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
@@ -76,17 +76,17 @@
                       </ul>
                     </li>
                   </ul>
-                </div>
+                </div> -->
               </th>
               <th scope="col" class="name_absolute">Sub Group
-                <div class="nav-item dropdown name_icons">
+                <!-- <div class="nav-item dropdown name_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
                     <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
                     <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
                     <li><hr class="dropdown-divider"/></li>
                   </ul>
-                </div>
+                </div> -->
               </th>
               <th scope="col" class="name_absolute">Type</th>
               <th scope="col" class="name_absolute">GST No</th>
@@ -95,7 +95,8 @@
               <th scope="col" class="name_absolute">View</th>
           
         </tr>
-
+        <tbody class="mainTableList">
+          
         {% for ledger in ledgers %}
 
         <tr>
@@ -111,6 +112,7 @@
           
         </tr>
         {% endfor %}
+        </tbody>
       </table>
  </div>
  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
