@@ -60,7 +60,7 @@ class Color(models.Model):
         return self.color_name
     
 class gst(models.Model):
-    gst_percentage = models.IntegerField()
+    gst_percentage = models.IntegerField(unique=True)
     ordering = ["gst_percentage"]
 
 
@@ -156,7 +156,7 @@ class Product(models.Model):
         ]
 
 
-    Product_Name = models.CharField(max_length=255, blank = True, null = True)
+    Product_Name = models.CharField(max_length=255, blank = True, null = True, unique=True)
     Model_Name = models.CharField(max_length=255, blank = True,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
@@ -284,10 +284,10 @@ class Unit_Name_Create(models.Model):
 
 
 class FabricFinishes(models.Model):
-    fabric_finish =  models.CharField(max_length = 100)
+    fabric_finish =  models.CharField(max_length = 100, unique=True)
 
 class packaging(models.Model):
-    packing_material = models.CharField(max_length = 100)
+    packing_material = models.CharField(max_length = 100, unique=True)
     
 class Item_Creation(models.Model):
     STATUS =  [
@@ -415,7 +415,7 @@ class Ledger(models.Model):
         ("Credit", 'Credit'),
     ]
 
-    name = models.CharField(max_length = 100, blank = True)
+    name = models.CharField(max_length = 100, blank = True, unique=True)
     short_name = models.CharField(max_length = 100, blank = True)
     vendor_code = models.CharField(max_length = 100, blank = True)
     under_group  = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
