@@ -18,21 +18,29 @@
 
 <div>
 
-  <table>
-
-    <tr>
-      <th>No</th>
-      <th>Categories</th>
-    </tr>
+  <table class="table table-striped table-hover table-responsive">
+<thead>
+  <tr>
+    <th>No</th>
+    <th>Categories</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+</thead>
+   <tbody class="mainTableList">
     {% for cat in main_cats %}
     <tr>
       <td>
         {{forloop.counter}}
       </td>
       <td>{{cat}}</td>
+      <td><a href="{% url 'maincategory-update' cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+      <td><a href="{%  url 'maincategory-delete' cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
       
     </tr>
     {% endfor %}
+   </tbody> 
+    
   </table>
 
 </div>

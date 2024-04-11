@@ -150,7 +150,7 @@ body{
   }
   .mainTableList{
     font-size: 13px;
-    font-family: "Lato", sans-serif;
+    font-family: "poppins", sans-serif;
   }
   .name_icons{
     position: absolute;
@@ -406,11 +406,11 @@ body{
 }
 .pro-head{
     color: #666;
-    font-size: 15px;
+    font-size: 14px;
     text-decoration: none;
     display: block;
     padding: 0px 5px;
-    line-height: 55px; 
+    line-height: 45px; 
 }
 .pro-head:hover{
     background: #888;
@@ -442,7 +442,7 @@ body{
 @media (min-width: 992px){
 .navbar-expand-lg .navbar-nav .dropdown-menu {
     position: absolute;
-    width: 250px;
+    width: 190px;
     left: 0;
     cursor: pointer;
 }

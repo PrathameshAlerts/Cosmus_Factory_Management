@@ -98,49 +98,54 @@
 </div> 
 <nav class="navbar navbar-expand-lg coder-navbar navbar-light headerpos-fixed header-blue navbar-fixed-top ">
   <div class="container">
-    <a class="navbar-brand text-white" href="#" ><img src="../../../static/images/CosmusTechLogo_White-p-1600.png" class="brand_image">Cosmus</a>
+    <a class="navbar-brand text-white" href="{% url 'dashboard-main' %}" ><img src="../../../static/images/CosmusTechLogo_White-p-1600.png" class="brand_image">Cosmus</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item my-3 ">
-          <a class="nav-link text-white" href="{% url 'dashboard-main' %}" role="button">Dashboard </a>
-        </li>
-        <li class="nav-item mt-3 dropdown">
-         <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Category</span> 
+        <li class="nav-item my-3 mx-2  dropdown">
+         <span class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Category</span> 
          <ul class="dropdown-menu dropdown-menu-right">
-          <li class="nav-item mt-3 dropdown">
-            <span class="nav-link ms-2"  onclick="showThePopUp('Main Category')">Main Category</span>  
+          <li class="nav-item my-2 dropdown">
+            <span class="nav-link ms-2" style="cursor: pointer;" onclick="showThePopUp('Main Category')" >Main Category</span>  
             <ul class="dropdown-menu dropdown-menu-right">
               <li class="pro-head"><a href="{% url 'pproductlist' %}" class="navText">Product</a></li>
               <li class="pro-head"> <a href="{% url 'item-list' %}" class="navText">Raw Material</a></li>
               <li class="pro-head"> <a href="{% url 'godown-list' %}" class="navText">Godown</a></li>
             </ul>
           </li>
-            <li class="nav-item mt-3 dropdown">
-              <span class="nav-link ms-2" onclick="showThePopUp('Sub Category')">Sub Category</span>
-              <!--<ul class="dropdown-menu dropdown-menu-right">
+            <li class="nav-item dropdown">
+              <span class="nav-link ms-2" style="cursor: pointer;"   onclick="showThePopUp('Sub Category')">Sub Category</span>
+              <ul class="dropdown-menu dropdown-menu-right">
                 <li class="pro-head"><a href="{% url 'simplecolorlistonly' %}" class="navText">Colors</a></li> 
                 <li class="pro-head"><a href="{% url 'item-fabgroup-list' %}" class="navText">Fabrics Groups</a></li>
                 <li class="pro-head"><a href="{% url 'unit_name-list' %}" class="navText">Units</a></li> 
                 <li class="pro-head"><a href="{% url 'gst-list' %}" class="navText">GST</a></li> 
                 <li class="pro-head"><a href="{% url 'fabric-finishes-list' %}" class="navText">Fabric Finshes</a></li>
                 <li class="pro-head"><a href="{% url 'packaging-list' %}" class="navText">Packaging List</a></li> 
-              </ul> -->
+              </ul>
             </li>
-            <li class="nav-item mt-3 dropdown">
-              <span class="nav-link ms-2" onclick="showThePopUp('Product Defination')">Product Defination</span> 
-              <!--<ul class="dropdown-menu dropdown-menu-right">
+            <li class="nav-item dropdown">
+              <span class="nav-link ms-2" style="cursor: pointer;" onclick="showThePopUp('Product Defination')">Product Defination</span> 
+              <ul class="dropdown-menu dropdown-menu-right">
                <li class="pro-head"><a href="{% url 'define-main-category-product' %}" class="navText">Main Cat Create</a></li> 
                <li class="pro-head"><a href="{% url 'define-sub-category-product' %}" class="navText">Sub Cat Create</a></li>
                <li class="pro-head"><a href="{% url 'product-2-subcategory' %}" class="navText">Product 2 Catagory</a></li>   
-             </ul> --> 
+             </ul> 
              </li>
          </ul>  
         </li>
-        <li class="nav-item mt-3 dropdown">
-          <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Sub Category</span> 
+        <li class="nav-item my-3 mx-2  dropdown">
+          <span class="nav-link text-white" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">Main Category</span>  
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li class="pro-head"><a href="{% url 'pproductlist' %}" class="navText">Product</a></li>
+            <li class="pro-head"> <a href="{% url 'item-list' %}" class="navText">Raw Material</a></li>
+            <li class="pro-head"> <a href="{% url 'godown-list' %}" class="navText">Godown</a></li>
+          </ul>
+        </li>
+        <li class="nav-item my-3 mx-2  dropdown">
+          <span class="nav-link text-white" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">Sub Category</span> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'simplecolorlistonly' %}" class="navText">Colors</a></li> 
            <li class="pro-head"><a href="{% url 'item-fabgroup-list' %}" class="navText">Fabrics Groups</a></li>
@@ -150,16 +155,15 @@
            <li class="pro-head"><a href="{% url 'packaging-list' %}" class="navText">Packaging List</a></li> 
          </ul>  
          </li>
-         <li class="nav-item mt-3 dropdown">
+         <li class="nav-item my-3 mx-2  dropdown">
           <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Accounts')">Accounts</span> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Groups</a></li> 
            <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
            <li class="pro-head"><a href="{% url 'stock_item-list' %}" class="navText">Stock Item</a></li> 
-           
          </ul>  
          </li>
-         <li class="nav-item mt-3 dropdown">
+         <li class="nav-item my-3 mx-2  dropdown">
           <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Vouchers')">Vouchers</span> 
           <ul class="dropdown-menu dropdown-menu-right">
           <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice</a></li> 
@@ -172,7 +176,7 @@
           <li class="pro-head"><a href="" class="navText">Journal Entry</a></li>   
          </ul>  
          </li>
-         <li class="nav-item mt-3 dropdown">
+         <li class="nav-item my-3 mx-2 dropdown">
           <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Reports')">Reports</span> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Stock Transfer Report</a></li> 
@@ -180,7 +184,7 @@
            <li class="pro-head"><a href="#" class="navText">Sales Report</a></li>   
          </ul>  
          </li>
-         <li class="nav-item mt-3 dropdown">
+         <li class="nav-item my-3 mx-2  dropdown">
           <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Product Defination</span> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'define-main-category-product' %}" class="navText">Main Cat Create</a></li> 
