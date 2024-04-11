@@ -33,8 +33,8 @@ class SubCategory(models.Model):
 
 
 class Product2SubCategory(models.Model):
-    Product_id = models.ForeignKey('Product', on_delete=models.CASCADE)
-    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    Product_id = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='product_cats')
+    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='subcategories')
 
     # def validate_unique(self, exclude=None):
     #     if self.Product_id and self.SubCategory_id:

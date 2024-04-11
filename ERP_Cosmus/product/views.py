@@ -226,6 +226,7 @@ def product_color_sku(request,ref_id = None):
 
 def pproduct_list(request):
     
+    
     queryset = Product.objects.select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color').all()
     product_search = request.GET.get('product_search')
   
@@ -236,6 +237,17 @@ def pproduct_list(request):
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
    
     context = {'products': queryset}
+
+    for products in queryset:
+        for categories in products.product_cats.all():
+            print(categories.SubCategory_id.product_main_category)
+    
+        # for categories in products.product_cats.all():
+        #         print(categories.SubCategory_id)
+
+        print('_____')
+
+
     return render(request,'product/pproduct_list.html',context=context)
 
 
