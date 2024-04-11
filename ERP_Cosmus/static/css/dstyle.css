@@ -113,9 +113,12 @@ body{
    
   }
 
-  .dropdown-menu-right .navText{
+   .navText{
     text-decoration: none;
     color: #000;
+    font-size: 20px;
+    padding-left: 20px;
+    font-family: "Lato", sans-serif;
   
   }
   .dropdown:hover > .dropdown-menu ,.dropend:hover > .dropdown-menu{
@@ -400,14 +403,16 @@ body{
 }
 .pro-head{
     color: #666;
-   font-size: 15px;
-    line-height: 40px;
-    padding-left: 20px;
-    font-weight: 400;
+    font-size: 15px;
+    text-decoration: none;
+    display: block;
+    padding: 0px 5px;
+    line-height: 55px; 
 }
 .pro-head:hover{
-    background-color: #666;
-    color: #fff;
+    background: #888;
+    color: #f1f1f1;
+    transition: 0.2s ease;
 }
 .dropdown-menu .dropdown-menu-right li:hover{
     background: red;
@@ -417,19 +422,24 @@ body{
 .subfields {
     position: fixed;
     left: 0;
-    top: 10;
-    color: #fff;
-    background-color: #666;
-    padding: 20px;
-    width: 230px;
+    top: 60px;
+    background:#fff;
+    color: #666;
+    backdrop-filter: blur(15px);
+    padding: 5px 10px;
+    width: 240px;
     height: 100%;
     display: none;
   }
 
+.mainList{
+    color: #666;
+}
+
 @media (min-width: 992px){
 .navbar-expand-lg .navbar-nav .dropdown-menu {
     position: absolute;
-    width: 150px;
+    width: 250px;
     left: 0;
     cursor: pointer;
 }
@@ -1143,6 +1153,9 @@ padding-left: 276px;
 .purchaseTableLabel-total{
     margin-left: 62px;
 
+}
+.totalpurchase-cgst{
+    margin-left: 138px;
 }
 
 /*===product cart rating===*/
