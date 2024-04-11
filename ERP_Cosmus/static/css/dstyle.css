@@ -116,9 +116,8 @@ body{
    .navText{
     text-decoration: none;
     color: #000;
-    font-size: 20px;
-    padding-left: 20px;
-    font-family: "Lato", sans-serif;
+    font-size: 15px;
+    padding-left: 15px;
   
   }
   .dropdown:hover > .dropdown-menu ,.dropend:hover > .dropdown-menu{
@@ -145,9 +144,13 @@ body{
   }
   .name_absolute{
    position: relative;
-   font-size: 13px;
+   font-size: 14px;
    font-family: "Lato", sans-serif;
    width: 400px;
+  }
+  .mainTableList{
+    font-size: 13px;
+    font-family: "Lato", sans-serif;
   }
   .name_icons{
     position: absolute;
@@ -427,7 +430,7 @@ body{
     color: #666;
     backdrop-filter: blur(15px);
     padding: 5px 10px;
-    width: 240px;
+    width: 150px;
     height: 100%;
     display: none;
   }
@@ -461,7 +464,7 @@ body{
     float: unset;
     right: 0;
     top: 0;
-    margin-left: 235px;
+    margin-left: 110px;
     min-height: 100vh;
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
