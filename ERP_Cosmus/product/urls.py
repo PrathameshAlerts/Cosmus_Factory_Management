@@ -21,9 +21,10 @@ urlpatterns = [
     path('definemaincategoryupdateproduct/<int:pk>',views.definemaincategoryproduct, name= 'define-main-category-update-product'),
     path('definemaincategoryproductdelete/<int:pk>',views.definemaincategoryproductdelete, name= 'define-main-category-delete-product'),
 
-
-
     path('definesubcategoryproduct/',views.definesubcategoryproduct, name= 'define-sub-category-product'),
+    path('definesubcategoryupdateproduct/<int:pk>',views.definesubcategoryproduct, name= 'define-sub-category-update-product'),
+    path('definesubcategoryproductdelete/<int:pk>',views.definesubcategoryproductdelete, name= 'define-sub-category-product-delete'),
+
     path('product2subcategoryupdate/<int:pk>',views.product2subcategory, name= 'product-2-subcategory-update'),
     path('product2subcategory/',views.product2subcategory, name= 'product-2-subcategory'),
     path('product2subcategoryajax/',views.product2subcategoryajax, name = 'product2subcategory-ajax'),
