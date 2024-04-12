@@ -1422,7 +1422,6 @@ def purchasevouchercreateupdate(request, pk=None):
         purchase_invoice_instance = None
         item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
 
-    items = Item_Creation.objects.all()
     Purchase_gst = gst.objects.all()
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = item_formsets_change
@@ -1431,15 +1430,17 @@ def purchasevouchercreateupdate(request, pk=None):
         godown_items_formset = purchase_voucher_items_godown_formset()
 
     try:
-
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
         party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+        items = Item_Creation.objects.all()
 
-        selected_party_name = request.GET['selected_party_name']
-        ledger_instance = Ledger.objects.filter(id = selected_party_name).first()
-        party_gst_no = ledger_instance.Gst_no
+        party_gst_no = ''
+        selected_party_name = request.GET.get('selected_party_name')
+        if selected_party_name is not None:
+            ledger_instance = Ledger.objects.filter(id = selected_party_name).first()
+            party_gst_no = party_gst_no + ledger_instance.Gst_no
+
         item_value = request.GET.get('item_value')
-        
         #item values
         item_color_out = ''
         item_per_out = ''

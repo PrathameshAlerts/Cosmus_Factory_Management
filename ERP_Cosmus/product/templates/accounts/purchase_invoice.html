@@ -433,7 +433,8 @@ $.ajax({
         console.log('itename',itemName);
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
-            var item_value = $(this).val();          
+            var item_value = $(this).val();   
+            console.log(item_value)       
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
