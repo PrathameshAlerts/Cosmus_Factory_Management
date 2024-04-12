@@ -3,7 +3,7 @@ from django.forms import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory,  ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, packaging, purchase_voucher_items
-from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, packaging_form, product_main_category_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update
+from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, packaging_form, product_main_category_form, product_sub_category_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -316,9 +316,12 @@ def definemaincategoryproduct(request,pk=None):
 
     if pk:
         instance = MainCategory.objects.get(pk=pk)
-        
+        title = 'Update'
+        message = 'updated'
     else:
         instance = None
+        title = 'Create'
+        message = 'created'
 
     main_cats = MainCategory.objects.all()
     form = product_main_category_form(instance=instance)
@@ -326,9 +329,13 @@ def definemaincategoryproduct(request,pk=None):
         form = product_main_category_form(request.POST, instance= instance)
         if form.is_valid():
             form.save()
+            if message == 'created':
+                messages.success(request,'Main Category created sucessfully')
+            if message == 'updated':
+                messages.success(request,'Main Category updated sucessfully')
             return redirect('define-main-category-product')
         
-    return render(request,'product/definemaincategoryproduct.html',{'form':form,'main_cats':main_cats})
+    return render(request,'product/definemaincategoryproduct.html',{'form':form,'main_cats':main_cats,'title':title})
 
 
 def definemaincategoryproductdelete(request,pk):
@@ -342,25 +349,47 @@ def definemaincategoryproductdelete(request,pk):
 
 
 
-def definesubcategoryproduct(request):
+def definesubcategoryproduct(request, pk=None):
+    if pk:
+        instance = SubCategory.objects.get(pk=pk)
+        title = 'Update'
+        message = 'updated'
+    else:
+        instance = None
+        title = 'Create'
+        message = 'created'
+
     main_categories = MainCategory.objects.all()
     sub_category = SubCategory.objects.all()
     print(request.POST)
+    form = product_sub_category_form(instance = instance)
     if request.method == 'POST':
         try:
-            m_category_name = request.POST.get('main_category_name')
-            s_category_name = request.POST.get('sub_category_name')
-
-            get_m_category_name = get_object_or_404(MainCategory,product_category_name = m_category_name)
+            form = product_sub_category_form(request.POST,instance = instance)
+            if form.is_valid():
+                form.save()
+                if message == 'created':
+                    messages.success(request,'Sub-Category created sucessfully')
+                if message == 'updated':
+                    messages.success(request,'Sub-Category updated sucessfully')
             
-            SubCategory.objects.create(product_sub_category_name=s_category_name,product_main_category=get_m_category_name)
-            messages.success(request, 'Sub-category created sucessfully')
-            return redirect('define-sub-category-product')
+                return redirect('define-sub-category-product')
         
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
 
-    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category})
+    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category,'form':form,'title':title})
+
+
+def definesubcategoryproductdelete(request, pk):
+    try:
+        instance = SubCategory.objects.get(pk=pk)
+        instance.delete()
+        messages.success(request,'Sub Category Deleted Successfully.')
+    except Exception as e:
+        messages.error(request,f'An Exception occoured - {e}')    
+    return redirect('define-sub-category-product')
+
 
 #NOTE: in this form one product can be in multiple main-category and multiple sub-categories - CURRENTLY NOT USING THIS LOGIC
 def product2subcategory(request):

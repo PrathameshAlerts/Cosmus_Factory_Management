@@ -221,6 +221,12 @@ class product_main_category_form(forms.ModelForm):
         fields = ['product_category_name']
 
 
+class product_sub_category_form(forms.ModelForm):
+    class Meta:
+        model = SubCategory
+        fields = ['product_sub_category_name','product_main_category']
+
+
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())
     password = forms.CharField(widget=PasswordInput())
