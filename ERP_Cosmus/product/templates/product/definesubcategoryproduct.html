@@ -41,15 +41,14 @@
           <lable class="form-label">List Of Sub-Category:</lable>
           <ul style="list-style: none;">
             {% for main_cat in main_categories %}
-            <li class=" mx-3 my-1">
-              <button type ="button" class="product2_btn my-2" onclick="setMainCategory('{{ main_cat.product_category_name }}')" value="{{main_cat.product_category_name}}">{{main_cat.product_category_name}}</button>
-              <ul class=''>
+            <li class=" mx-3 my-4">
+              <span  class="product2_btn my-3">{{main_cat.product_category_name}}</span>
+              <ul class='my-2'>
                 {% for sub_cat in main_cat.subcategories.all %}
-                <li class="mx-2">
-                  {{sub_cat.product_sub_category_name}}   <span><a href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i
-                    class="fa-solid fa-pen-to-square px-1"></i></a></span> <span><a href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i
-                    class="fa-solid fa-trash text-danger px-2"></i></a></span> 
-                  </li>
+                <p class="px-2">  <li class="mx-2">{{sub_cat.product_sub_category_name}}<a class="ms-2" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i
+                    class="fa-solid fa-pen-to-square px-1"></i></a> <a href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i
+                    class="fa-solid fa-trash text-danger px-2"></i></a>
+                  </li> </p>
                 {% endfor %}
               </ul>        
             </li>
