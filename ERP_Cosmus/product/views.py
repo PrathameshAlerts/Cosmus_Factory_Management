@@ -303,7 +303,6 @@ def add_product_video_url(request,pk):
             window.close();  // Close current window
             </script>
             """
-
             return HttpResponse(close_window_script)
 
     else:
@@ -361,7 +360,8 @@ def definesubcategoryproduct(request, pk=None):
 
     main_categories = MainCategory.objects.all()
     sub_category = SubCategory.objects.all()
-    print(request.POST)
+    
+    
     form = product_sub_category_form(instance = instance)
     if request.method == 'POST':
         try:
@@ -492,7 +492,7 @@ def item_create(request):
     
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
-        print(request.POST)
+        
         if form.is_valid():
             form.save()
             messages.success(request,'Item has been created')
@@ -1291,8 +1291,7 @@ def stocktransfer(request):
                 #quantity of shade in godown
                 item_id = x.Item_shade_name.id
                 items_shade_quantity_in_godown[item_id] = x.quantity
-        print(items_shade_quantity_in_godown)
-        print(item_shades)
+
 
 
         item_color = None
@@ -1415,7 +1414,6 @@ def stocktransferreport(request):
 
 
 def purchasevouchercreateupdate(request, pk=None):
-
     #get the purchase invoice for updating the form 
     if pk:
         purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk = pk)
@@ -1424,24 +1422,29 @@ def purchasevouchercreateupdate(request, pk=None):
         purchase_invoice_instance = None
         item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
 
+    items = Item_Creation.objects.all()
     Purchase_gst = gst.objects.all()
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = item_formsets_change
     
-
     for forms in items_formset.forms:
         godown_items_formset = purchase_voucher_items_godown_formset()
 
     try:
+
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
         party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
-        print(account_sub_grp.id)
-        items = Item_Creation.objects.all()
 
+        selected_party_name = request.GET['selected_party_name']
+        ledger_instance = Ledger.objects.filter(id = selected_party_name).first()
+        party_gst_no = ledger_instance.Gst_no
+        item_value = request.GET.get('item_value')
+        
         #item values
         item_color_out = ''
         item_per_out = ''
-        item_value = request.GET.get('item_value')
+        item_gst_out = 0
+    
         if item_value is not None: 
             item_value = int(item_value)
             item = Item_Creation.objects.get(id = item_value)
@@ -1449,6 +1452,8 @@ def purchasevouchercreateupdate(request, pk=None):
             item_color_out =  item_color_out + item_color
             item_per = item.unit_name_item.unit_name
             item_per_out = item_per_out + item_per
+            item_gst = item.Item_Creation_GST.gst_percentage
+            item_gst_out = item_gst_out + item_gst
         
         # filter out item shades
         item_shades = item_color_shade.objects.filter(items = item_value)
@@ -1463,16 +1468,15 @@ def purchasevouchercreateupdate(request, pk=None):
             shade_godowns =  item_godown_quantity_through_table.objects.filter(Item_shade_name = shade)
             for godown in shade_godowns:
                 godown_shade_quantity = godown_shade_quantity + godown.quantity
-
             item_shades_total_quantity_dict[shade.id] = godown_shade_quantity
         
-
     except Exception as e:
         print(f'exception occoured {e}')
     
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
-                                  "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict})
+                                  "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
+                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no})
 
 
     if request.method == 'POST':
@@ -1486,12 +1490,6 @@ def purchasevouchercreateupdate(request, pk=None):
             #create a formset instance for godowns in form items
             godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
 
-            # print('i_formset',items_formset)
-            # print('i_formset.forms',items_formset.forms)
-            # print('i_formset.changedforms',items_formset.has_changed()) - returns a bool
-            # print('i_formset_deleted_forms', items_formset.deleted_forms)
-
-            
             #filter out only the forms which are changed as shade is givin null error on extra field
             items_formset.forms = [form for form in items_formset.forms if form.has_changed()]  
             
@@ -1567,29 +1565,6 @@ def purchasevouchercreateupdate(request, pk=None):
     
     print('form3',items_formset.management_form)
     return render(request,'accounts/purchase_invoice.html',context=context)
-
-
-
-def purchasevoucherpopup(request,shade_id):
-
-    formset = purchase_voucher_items_godown_formset()
-    
-    try:
-        godowns = Godown_raw_material.objects.all()
-        item = Item_Creation.objects.get(shades__id = shade_id) 
-        item_shade = item_color_shade.objects.get(id = shade_id)
-
-    except Exception as e:
-        messages.error(request,'Error with Shades')
-    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
-
-
-
-def purchasevouchercreatepopupajax(request):
-    shade_id = request.GET.get('selected_shade')
-    popup_url = reverse('purchase-voucher-popup', args=[shade_id])
-    return JsonResponse({'popup_url':popup_url})
-
 
 
 

@@ -6,7 +6,7 @@
         <h2>Purchase invoice</h2>
         <form class="mt-4" action="" method="POST">
             {% csrf_token %}
-      <div class="d-flex">
+       <div class="d-flex mb-3">
         <div>
             <div class="d-flex mb-3">
                 <label for="id_purchase_number"  class="item-form">Purchase No</label>
@@ -17,11 +17,11 @@
                 <input type="number" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{master_form.instance.supplier_invoice_number}}" maxlength="255" required >
             </div>
             <div class="d-flex mb-3">
-                <label for="id_GST_type" class="item-form">Gst No : </label>
-                <input type="text" class="item-select" name="GST_type" id ="id_GST_type" value="" maxlength="50" required >
+                <label for="id_GST_numbers" class="item-form" >Gst No : </label>
+                <input type="text" class="item-select" name="GST_numbers" id ="id_GST_numbers" value="" maxlength="50" required >
             </div>
         </div>
-        <div class="ms-5 mb-3">
+        <div class="ms-5">
             <div class="d-flex mb-3">
                 <label for="id_ledger_type" class="item-form" >ledger Type</label>
                 <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{master_form.instance.ledger_type}}" maxlength="50" default='Purchase' readonly required placeholder="Purchase" >
@@ -43,12 +43,15 @@
                 </select>
             </div>
             <div class="d-flex mb-3">
-                <label for="id_GST_type" class="item-form">Party Gst No : </label>
-                <input type="text" class="item-select" name="GST_type" id ="id_GST_type" value="" maxlength="50" required >
+                <label for="id_GST_number" class="item-form" >Party Gst No : </label>
+                <input type="text" class="item-select" name="GST_number" id ="id_GST_number" value="" maxlength="50" required >
             </div>
+    
         </div>
-
-      </div>
+       </div>
+        
+        
+</div>
      
        
         
@@ -259,6 +262,48 @@
 
 <input type="submit" class="add_btn">
  </form>
+
+ <script>
+//this ajax is for gst no 
+$(document).ready(function(){
+
+$(document).on('change', 'select[name^="party_name"]', function(){
+
+var selected_party_name = $(this).val()
+
+var int_selected_party_name = parseInt(selected_party_name)
+
+$.ajax({
+        url: '/purchasevouchercreate/',
+                method: 'GET',
+                data: {
+                    'selected_party_name': selected_party_name,
+                },
+                success: function (response) {
+                    console.log('Data sent successfully')
+
+                    var party_gst_no_response = response.party_gst_no
+                    
+                    var gst_no_input = document.getElementById('id_GST_number') 
+                    gst_no_input.value = party_gst_no_response 
+                    
+
+                    },
+                error: function (xhr, errmsg, err) {
+                        console.log('Error sending value to the backend');
+                    }
+
+
+})
+
+})
+
+})
+
+
+ </script>
+
+
  <script>
     // This is for the modal open and crate a new table row
     document.body.appendChild(document.getElementById('exampleModal'));
@@ -405,15 +450,16 @@
                     var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
                     var item_color = response.item_color;
                  
-                    
                     var itemperinput = document.querySelector('#item_per_' +itemrownameid);
                     var itemperinput_response = response.item_per;
                     
                     itemcolorinput.value = item_color;
                     itemperinput.value = itemperinput_response;
-
-
-
+                    
+                    var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst')
+                    var item_gst_value_response = response.item_gst_out;
+                    itemgstinput.value = item_gst_value_response
+                   
                     var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
                     
