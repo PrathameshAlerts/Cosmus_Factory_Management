@@ -41,11 +41,11 @@
           <lable class="form-label">List Of Sub-Category:</lable>
           <ul style="list-style: none;">
             {% for main_cat in main_categories %}
-            <li class=" mx-3 my-4">
+            <li class=" mx-3 mt-3 mb-2">
               <span  class="product2_btn my-3">{{main_cat.product_category_name}}</span>
-              <ul class='my-2'>
+              <ul class=''>
                 {% for sub_cat in main_cat.subcategories.all %}
-                <p class="px-2">  <li class="mx-2">{{sub_cat.product_sub_category_name}}<a class="ms-2" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i
+                <p class="px-1">  <li class="mx-2">{{sub_cat.product_sub_category_name}}<a class="ms-2" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i
                     class="fa-solid fa-pen-to-square px-1"></i></a> <a href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i
                     class="fa-solid fa-trash text-danger px-2"></i></a>
                   </li> </p>
