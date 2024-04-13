@@ -2,8 +2,8 @@
 from django.forms import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory,  ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, packaging, purchase_voucher_items
-from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, packaging_form, product_main_category_form, product_sub_category_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update
+from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory,  ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items_temporary_table
+from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, packaging_form, product_main_category_form, product_sub_category_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, shade_godown_items_temporary_table_formset
 from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
@@ -1567,20 +1567,24 @@ def purchasevouchercreateupdate(request, pk=None):
                'item_godowns_raw':raw_material_godowns,
                }
     
-    
     print('form3',items_formset.management_form)
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
 def purchasevoucherpopup(request,unique_id,shade_id):
+    formset = shade_godown_items_temporary_table_formset(prefix='shade_godown_items_set')
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
         item_shade = item_color_shade.objects.get(id = shade_id)
-
     except Exception as e:
         messages.error(request,'Error with Shades')
-    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade, 'unique_id':unique_id})
+
+    if request.method == 'POST':
+        pass
+
+    
+    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade,'formset':formset ,'unique_id':unique_id})
 
 
 def purchasevouchercreatepopupajax(request):

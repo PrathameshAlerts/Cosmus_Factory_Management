@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -224,6 +224,14 @@ class product_sub_category_form(forms.ModelForm):
     class Meta:
         model = SubCategory
         fields = ['product_sub_category_name','product_main_category']
+
+
+class shade_godown_items_temporary_table_form(forms.ModelForm):
+    class Meta:
+        model = shade_godown_items_temporary_table
+        fields = '__all__'
+
+shade_godown_items_temporary_table_formset = forms.formset_factory(shade_godown_items_temporary_table_form, extra=1)
 
 
 class LoginForm(AuthenticationForm):
