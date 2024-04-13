@@ -1426,6 +1426,8 @@ def purchasevouchercreateupdate(request, pk=None):
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = item_formsets_change
     
+    raw_material_godowns = Godown_raw_material.objects.all()
+
     for forms in items_formset.forms:
         godown_items_formset = purchase_voucher_items_godown_formset()
 
@@ -1548,6 +1550,7 @@ def purchasevouchercreateupdate(request, pk=None):
                'items_formset': items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
+               'item_godowns_raw':raw_material_godowns,
                }
             return redirect(reverse('purchase-voucher-update', args=[master_instance.pk]))
         
@@ -1561,11 +1564,36 @@ def purchasevouchercreateupdate(request, pk=None):
                'items_formset':items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
+               'item_godowns_raw':raw_material_godowns,
                }
     
     
     print('form3',items_formset.management_form)
     return render(request,'accounts/purchase_invoice.html',context=context)
+
+
+def purchasevoucherpopup(request,shade_id):
+
+    formset = purchase_voucher_items_godown_formset()
+    
+    try:
+        godowns = Godown_raw_material.objects.all()
+        item = Item_Creation.objects.get(shades__id = shade_id) 
+        item_shade = item_color_shade.objects.get(id = shade_id)
+
+    except Exception as e:
+        messages.error(request,'Error with Shades')
+    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
+
+
+
+
+def purchasevouchercreatepopupajax(request):
+    shade_id = request.GET.get('selected_shade')
+    popup_url = reverse('purchase-voucher-popup', args=[shade_id])
+    return JsonResponse({'popup_url':popup_url})
+
+
 
 
 
@@ -1579,10 +1607,6 @@ def purchasevoucherdelete(request,pk):
     purchase_invoice_pk.delete()
     return redirect('purchase-voucher-list')
                     
-
-
-
-
 
 
 

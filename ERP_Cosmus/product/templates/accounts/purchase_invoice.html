@@ -254,7 +254,6 @@ $(document).ready(function(){
 $(document).on('change', 'select[name^="party_name"]', function(){
 
 var selected_party_name = $(this).val()
-
 var int_selected_party_name = parseInt(selected_party_name)
 
 $.ajax({
@@ -265,12 +264,10 @@ $.ajax({
                 },
                 success: function (response) {
                     console.log('Data sent successfully')
-
                     var party_gst_no_response = response.party_gst_no
-                    
                     var gst_no_input = document.getElementById('id_GST_number') 
                     gst_no_input.value = party_gst_no_response 
-                    
+                   
 
                     },
                 error: function (xhr, errmsg, err) {
@@ -442,7 +439,7 @@ $.ajax({
                     var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst')
                     var item_gst_value_response = response.item_gst_out;
                     itemgstinput.value = item_gst_value_response
-                    console.log
+                    
                     var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
                     

@@ -521,10 +521,9 @@ class item_purchase_voucher_master(models.Model):
     purchase_number = models.CharField(max_length = 100,unique = True, null = False, blank = False)
     supplier_invoice_number = models.CharField(max_length = 100)
     ledger_type = models.CharField(max_length = 20, default = 'purchase')
-    party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
+    party_name  = models.ForeignKey(Ledger, on_delete = models.PROTECT)
     fright_transport = models.DecimalField(max_digits=9, decimal_places=2)
     gross_total = models.DecimalField(max_digits=9, decimal_places=2)
-    gst_rate = models.ForeignKey(gst, on_delete = models.PROTECT)
     grand_total = models.DecimalField(max_digits=9, decimal_places=2)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
@@ -532,11 +531,9 @@ class item_purchase_voucher_master(models.Model):
 class purchase_voucher_items(models.Model):
     item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
     item_shade = models.ForeignKey(item_color_shade, on_delete = models.PROTECT)
-    quantity_total = models.IntegerField()
+    quantity = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
-
-
 
 
 class shade_godown_items(models.Model):

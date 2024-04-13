@@ -187,12 +187,11 @@ class item_purchase_voucher_master_form(forms.ModelForm):
         model = item_purchase_voucher_master
         fields = [
             'purchase_number','supplier_invoice_number','ledger_type',
-            'party_name','fright_transport','gross_total', 'gst_rate','grand_total'
+            'party_name','fright_transport','gross_total','grand_total'
         ]
 
-
-purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=1)
-purchase_voucher_items_formset_update = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=0)
+purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity','rate','amount'), extra=1)
+purchase_voucher_items_formset_update = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity','rate','amount'), extra=0)
 purchase_voucher_items_godown_formset = inlineformset_factory(purchase_voucher_items,shade_godown_items, fields = ('godown_select','quantity','rate','amount'),extra=1)
 
 
