@@ -1579,10 +1579,16 @@ def purchasevoucherpopup(request,unique_id,shade_id):
         item_shade = item_color_shade.objects.get(id = shade_id)
     except Exception as e:
         messages.error(request,'Error with Shades')
-
+    print(request.POST)
     if request.method == 'POST':
-        pass
-
+        formset = shade_godown_items_temporary_table_formset(request.POST,prefix='shade_godown_items_set')
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    form.save()
+            return HttpResponse('form saved success')
+        else:
+            print(formset.errors)
     
     return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade,'formset':formset ,'unique_id':unique_id})
 

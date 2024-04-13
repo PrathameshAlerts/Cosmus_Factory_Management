@@ -380,7 +380,6 @@ class AccountGroup(models.Model):
     account_group = models.CharField(max_length = 50 , unique= True)
 
 
-
 class AccountSubGroup(models.Model):
     acc_grp = models.ForeignKey(AccountGroup, on_delete = models.PROTECT)
     account_sub_group = models.CharField(max_length = 50, unique= True)
@@ -480,7 +479,6 @@ class item_godown_quantity_through_table(models.Model):
         return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
 
 
-
 class item_shades_godown_report(models.Model):  
 
     inward_outward = [
@@ -498,11 +496,8 @@ class item_shades_godown_report(models.Model):
     Quantity = models.IntegerField()
 
 
-
-
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225, unique= True)
-
 
 
 class RawStockTransfer(models.Model):
@@ -536,7 +531,6 @@ class purchase_voucher_items(models.Model):
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
 
-
 class shade_godown_items(models.Model):
     purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items, on_delete = models.CASCADE)
     godown_select = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
@@ -552,8 +546,6 @@ class shade_godown_items_temporary_table(models.Model):
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     total_amount = models.DecimalField(max_digits=9, decimal_places=2)
     
-
-
 
 # @receiver(pre_save, sender=Item_Creation)
 # def update_combined_field(sender, instance, **kwargs):

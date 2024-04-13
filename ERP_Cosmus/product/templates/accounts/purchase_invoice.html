@@ -254,7 +254,6 @@ $.ajax({
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
-                    console.log(itemrownameid);
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
                     
 
@@ -302,9 +301,6 @@ $.ajax({
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
             var selectedShade = $(this).val();
            var uniqueId = uniqueIdValue;
-            console.log('selectedShade',selectedShade);
-            console.log('uniqueId',uniqueId);
-            console.log('uniqueIdValue',uniqueIdValue);
             if (selectedShade !== "") {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
@@ -410,7 +406,7 @@ $.ajax({
      
          var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
         
-         console.log(grandTotal);
+        
        
           var  grossTotal = grandTotal;      
     
@@ -475,7 +471,7 @@ $.ajax({
             const selectElementShade = lastRow.querySelector('.item-shade[name^="purchase_voucher_items_set-"][name$="-item_shade"]');
             selectElementShade.id = `purchase_voucher_items_set-${formIndex}-item_shade`;
             selectElementShade.name = `purchase_voucher_items_set-${formIndex}-item_shade`;
-            selectElementShade.value =  null;
+            selectElementShade.innerHTML = '';
 
             const qunatityInputElement = lastRow.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
             qunatityInputElement.id = `purchase_voucher_items_set-${formIndex}-quantity_total`;

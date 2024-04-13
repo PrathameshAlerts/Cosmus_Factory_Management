@@ -31,8 +31,6 @@ class PProductCreateForm(forms.ModelForm):
         return sku
 
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
-
-
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
 
 
@@ -131,8 +129,6 @@ class ColorForm(forms.ModelForm):
         model = Color
         fields = ['color_name']
         
-
-
 class Itemform(forms.ModelForm):
     
     class Meta:

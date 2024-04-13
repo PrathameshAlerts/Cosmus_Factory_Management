@@ -25,7 +25,7 @@
                         {{ formset.management_form }}
                     {% for form in formset %}
                         <tr>
-                            <input type="hidden" id="id_shade_godown_items_set-0-unique_id" name="shade_godown_items_set-0-unique_id" value="1">
+                            <input type="hidden" id="id_shade_godown_items_set-0-unique_id" name="shade_godown_items_set-0-unique_id" value="{{unique_id}}">
                             <td>
                             <select name="shade_godown_items_set-0-godown_id" id="id_shade_godown_items_set-0-godown_id" class="purchase-input godown-select" value="">
                                 <option value=""></option>
@@ -46,7 +46,6 @@
                             <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
                                 <input type="hidden" class="purchase-amount" name="grand_godown_rate" id ="grand_godown_rate" value="" maxlength="50" step=".01"  >
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
-                                <input type="hidden" class ="purchase-amount" name = "godown-hidden-unique-value" id="godown-hidden-unique-value" value="{{unique_id}}">
                     </tbody>
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
@@ -95,6 +94,11 @@
         newAmount.attr('id', 'shade_godown_items_set-' + formsValue + '-total_amount');
         newAmount.val('');
 
+        const newUniqueValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-unique_id"]');
+        newUniqueValue.attr('name', 'shade_godown_items_set-' + formsValue + '-unique_id');
+        newUniqueValue.attr('id', 'shade_godown_items_set-' + formsValue + '-unique_id');
+        newUniqueValue.val('{{unique_id}}');
+
 
         $('#newTable tbody').append(tableClone);
         newFormValue.value = formsValue + 1;
@@ -114,7 +118,7 @@
         var amount = inputQtyValue * inputRateValue;
         
         totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
-        row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val(totalAmount);
+        row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-total_amount"]').val(totalAmount);
         
         return amount;
        
