@@ -4,22 +4,13 @@
 
 
 
-        <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel">Item Name: {{item}}</h3> 
-          <h3 class="modal-title" id="exampleModalLabel">shade Name: {{item_shade}}</h3>
+        <div class="">
+          <h5 class="" id="">Item Name: {{item}}</h5> 
+          <h5 class="" id="">shade Name: {{item_shade}}</h5>
+          </div>
         <div class="">
             <form method="post" id="" enctype="multipart/form-data">
                 {% csrf_token %}
-
-                <div>
-                    {{ formset.management_form }}
-                    {% for form in formset %}
-                        {{ form }}
-                    {% endfor %}
-
-                </div>
-
-
                 <table class="table table-striped table-hover" id="newTable">
                     <thead>
                         <tr>
@@ -31,28 +22,31 @@
                         </tr>
                     </thead>
                     <tbody class="mainTableList">
-                        
+                        {{ formset.management_form }}
+                    {% for form in formset %}
                         <tr>
-                            <input type="hidden" id="godown_unique_id" name="godown_unique_id--{{forloop.counter0}}" value="0">
+                            <input type="hidden" id="id_shade_godown_items_set-0-unique_id" name="shade_godown_items_set-0-unique_id" value="1">
                             <td>
-                            <select name="godown_id-{{forloop.counter0}}" id="godown_id-{{forloop.counter0}}" class="purchase-input godown-select" value="">
+                            <select name="shade_godown_items_set-0-godown_id" id="id_shade_godown_items_set-0-godown_id" class="purchase-input godown-select" value="">
                                 <option value=""></option>
                                 {% for godown in godowns %}
                                 <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
                                 {% endfor %}
                             </select>
                             </td>
-                            <td><input type="number" name="quantity-{{forloop.counter0}}" id="quantity-{{forloop.counter0}}" class="purchase-input godown-quantity" value=""></td>
-                            <td><input type="number" name="rate-{{forloop.counter0}}"  id="rate-{{forloop.counter0}}" class="purchase-input godown-rate" value="">
+                            <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity" class="purchase-input godown-quantity" value=""></td>
+                            <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate" class="purchase-input godown-rate" value="">
                             </td>
-                            <td><input type="number" name="amount-{{forloop.counter0}}"  id="amount-{{forloop.counter0}}" class="purchase-input godown-amount" value="" readonly>
+                            <td><input type="number" name="shade_godown_items_set-0-total_amount" step="0.01" id="id_shade_godown_items_set-0-total_amount" class="purchase-input godown-amount" value="" readonly>
                             </td>
                             <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
-                                <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
+                                
+                            </tr>
+                            {% endfor %}
+                            <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
                                 <input type="hidden" class="purchase-amount" name="grand_godown_rate" id ="grand_godown_rate" value="" maxlength="50" step=".01"  >
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
                                 <input type="hidden" class ="purchase-amount" name = "godown-hidden-unique-value" id="godown-hidden-unique-value" value="{{unique_id}}">
-                            </tr>
                     </tbody>
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
@@ -70,34 +64,35 @@
         
         $(document).on('click', '#addModalButton', function() {
        
-        var newFormValue = document.getElementById('godown_unique_id').value;
+        var newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
+        
+        var formsValue = parseInt(newFormValue.value);
         console.log(formsValue);
-        var formsValue = parseInt(newFormValue);
         
         var tableClone = $('#newTable').find('tbody tr').last().clone(true);
         
             //update the input name and id for the new row
-        const newGodownItem = tableClone.find('select[name^="godown_id-"]');
-        newGodownItem.attr('name', 'godown_id-' + formsValue );
-        newGodownItem.attr('id', 'godown_id-' + formsValue);
+        const newGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-godown_id"]');
+        newGodownItem.attr('name', 'shade_godown_items_set-' + formsValue + '-godown_id');
+        newGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-godown_id');
         newGodownItem.val('');
       
 
-        const newQuantity = tableClone.find('input[name^="quantity-"]');
-        newQuantity.attr('name', 'quantity-' + formsValue  );
-        newQuantity.attr('id', 'quantity-' + formsValue );
+        const newQuantity = tableClone.find('input[name^="shade_godown_items_set-"][name$="-quantity"]');
+        newQuantity.attr('name', 'shade_godown_items_set-' + formsValue + '-quantity');
+        newQuantity.attr('id', 'shade_godown_items_set-' + formsValue + '-quantity');
         newQuantity.val('');
        
 
-        const newRate = tableClone.find('input[name^="rate-"]');
-        newRate.attr('name', 'rate-' + formsValue);
-        newRate.attr('id', 'rate-' + formsValue);
+        const newRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]');
+        newRate.attr('name', 'shade_godown_items_set-' + formsValue + '-rate');
+        newRate.attr('id', 'shade_godown_items_set-' + formsValue + '-rate');
         newRate.val('');
        
 
-        const newAmount = tableClone.find('input[name$="amount-"]');
-        newAmount.attr('name', 'amount-' + formsValue);
-        newAmount.attr('id', 'amount-' + formsValue );
+        const newAmount = tableClone.find('input[name^="shade_godown_items_set-"][name$="-total_amount"]');
+        newAmount.attr('name', 'shade_godown_items_set-' + formsValue + '-total_amount');
+        newAmount.attr('id', 'shade_godown_items_set-' + formsValue + '-total_amount');
         newAmount.val('');
 
 
