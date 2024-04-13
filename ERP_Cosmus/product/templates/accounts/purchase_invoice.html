@@ -137,7 +137,7 @@
                         <input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly>
                     </td>
                     <td>{{ forms.DELETE }}</td>
-                    <td><input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value="" id="item_unique_id_{{forloop.counter0}}"></td>
+                    <td><input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value="{{forloop.counter0}}" id="item_unique_id_{{forloop.counter0}}"></td>
                  </tr>   
             
             {% endfor %}
@@ -294,25 +294,29 @@ $.ajax({
             });
             
         });
+
+
         
         var popupWindow = null; // Variable to hold the reference to the popup window
     
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
             var selectedShade = $(this).val();
+            var uniqueValueId = document.querySelectorAll('input[name="item_unique_id_]');
+            var uniqueId = uniqueValueId.value;
+            console.log('uniqueId',uniqueId);
             console.log('selectedShade',selectedShade);
             if (selectedShade !== "") {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
-                    var uniqueId = Math.floor(Math.random() * 10000000);
-                    console.log('uniqueId',uniqueId);
+                    
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',
                         method: 'GET',
                         data: {
                             'selected_shade': selectedShade,
-                            'unique_invoice_row_id': uniqueId
+                            //'unique_invoice_row_id': uniqueId
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
@@ -517,7 +521,8 @@ $.ajax({
            const uniqueElement = lastRow.querySelector('.unique-id');
            uniqueElement.id = `item_unique_id_${formIndex}`;
            uniqueElement.name = `item_unique_id_${formIndex}`;
-           uniqueElement.value="";
+           uniqueElement.value= `${formIndex}`;
+        
             
         
 
