@@ -101,7 +101,7 @@
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
                     </td>
                     <td>
-                        <select name="{{forms.prefix}}-item_shade" class="item-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade" data-item-id="item_unique_id_{{forloop.counter0}}">
+                        <select name="{{forms.prefix}}-item_shade" class="item-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
@@ -294,20 +294,25 @@ $.ajax({
             });
             
         });
-            var popupWindow = null; // Variable to hold the reference to the popup window
-
-            $('#shades').change(function () {
+        
+        var popupWindow = null; // Variable to hold the reference to the popup window
+    
+        $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
             var selectedShade = $(this).val();
+            console.log('selectedShade',selectedShade);
             if (selectedShade !== "") {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
+                    var uniqueId = Math.floor(Math.random() * 10000000);
+                    console.log('uniqueId',uniqueId);
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',
                         method: 'GET',
                         data: {
-                            'selected_shade': selectedShade
+                            'selected_shade': selectedShade,
+                            'unique_invoice_row_id': uniqueId
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
