@@ -1572,10 +1572,7 @@ def purchasevouchercreateupdate(request, pk=None):
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
-def purchasevoucherpopup(request,shade_id):
-
-    formset = purchase_voucher_items_godown_formset()
-    
+def purchasevoucherpopup(request,unique_id,shade_id):
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -1586,14 +1583,12 @@ def purchasevoucherpopup(request,shade_id):
     return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
 
 
-
-
 def purchasevouchercreatepopupajax(request):
     shade_id = request.GET.get('selected_shade')
-    
-    popup_url = reverse('purchase-voucher-popup', args=[shade_id])
-    return JsonResponse({'popup_url':popup_url})
+    unique_id = request.GET.get('unique_invoice_row_id')
+    popup_url = reverse('purchase-voucher-popup', args=[unique_id,shade_id])
 
+    return JsonResponse({'popup_url':popup_url})
 
 
 
@@ -1601,6 +1596,8 @@ def purchasevouchercreatepopupajax(request):
 def purchasevoucherlist(request):
     purchase_invoice_list = item_purchase_voucher_master.objects.all()
     return render(request,'accounts/purchase_invoice_list.html',{'purchase_invoice_list':purchase_invoice_list})
+
+
 
 
 def purchasevoucherdelete(request,pk):
