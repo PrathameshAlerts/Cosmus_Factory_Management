@@ -26,8 +26,11 @@
                         <tr>
                             <input type="hidden" id="godown_unique_id" name="godown_unique_id-{{forloop.counter0}}" value="1">
                             <td>
-                            <select name="godown_id-0" id="godown_id-0" class="purchase-input godown-select" value="">
-
+                            <select name="godown_id-{{forloop.counter0}}" id="godown_id-{{forloop.counter0}}" class="purchase-input godown-select" value="">
+                                <option value=""></option>
+                                {% for godown in godowns %}
+                                <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                                {% endfor %}
                             </select>
                             </td>
                             <td><input type="number" name="quantity-0" id="quantity-0" class="purchase-input godown-quantity" value=""></td>
@@ -36,12 +39,12 @@
                             <td><input type="number" name="amount-0"  id="amount-0" class="purchase-input godown-amount" value="" readonly>
                             </td>
                             <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
-                                <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
+                                
+                            </tr>
+                            <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
                                 <input type="hidden" class="purchase-amount" name="grand_godown_rate" id ="grand_godown_rate" value="" maxlength="50" step=".01"  >
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
-                            </tr>
-                            
-
+                                <input type="hidden" class ="purchase-amount" name = "godown-hidden-unique-value" id="godown-hidden-unique-value" value="{{unique_id}}">
                     </tbody>
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
@@ -85,10 +88,11 @@
         newRate.val('');
        
 
-        const newAmount = tableClone.find('input[name$="amount-"]');
+        const newAmount = tableClone.find('input[name^="amount-"]');
         newAmount.attr('name', 'amount-' + formsValue);
         newAmount.attr('id', 'amount-' + formsValue );
         newAmount.val('');
+
 
         $('#newTable tbody').append(tableClone);
 

@@ -289,6 +289,7 @@ class FabricFinishes(models.Model):
 class packaging(models.Model):
     packing_material = models.CharField(max_length = 100, unique=True)
     
+
 class Item_Creation(models.Model):
     STATUS =  [
         ("Unused","Unused"),
