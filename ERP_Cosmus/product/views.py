@@ -1580,7 +1580,7 @@ def purchasevoucherpopup(request,unique_id,shade_id):
 
     except Exception as e:
         messages.error(request,'Error with Shades')
-    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade})
+    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade, 'unique_id':unique_id})
 
 
 def purchasevouchercreatepopupajax(request):
