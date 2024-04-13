@@ -298,13 +298,14 @@ $.ajax({
     
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
             var selectedShade = $(this).val();
-            console.log('selectedShade',selectedShade);
+            
             if (selectedShade !== "") {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
                     var uniqueId = Math.floor(Math.random() * 10000000);
                     console.log('uniqueId',uniqueId);
+                    console.log('selectedShade',selectedShade);
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',

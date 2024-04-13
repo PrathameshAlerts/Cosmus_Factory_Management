@@ -1574,7 +1574,6 @@ def purchasevouchercreateupdate(request, pk=None):
 
 def purchasevoucherpopup(request,unique_id,shade_id):
 
-    formset = purchase_voucher_items_godown_formset()
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -1588,7 +1587,9 @@ def purchasevoucherpopup(request,unique_id,shade_id):
 
 def purchasevouchercreatepopupajax(request):
     unique_id = request.GET.get('unique_invoice_row_id')
-    shade_id = request.GET.get('shade_id')
+    shade_id = request.GET.get('selected_shade')
+    print(unique_id)
+    print(shade_id)
     popup_url = reverse('purchase-voucher-popup', args=[unique_id,shade_id])
     print(popup_url)
     return JsonResponse({'popup_url':popup_url})
