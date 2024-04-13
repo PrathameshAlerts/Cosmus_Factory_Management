@@ -234,10 +234,13 @@ $.ajax({
     // When click the item name then append the shades with the color, per 
     $(document).ready(function () {
         var itemName;
+        var uniqueIdValue;
         var lastSelectedItem = '';
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+        uniqueIdValue =$(this).closest('tr').find('input[name^="item_unique_id_"]').val();
         console.log('itename',itemName);
+        console.log('uniqueIdValue',uniqueIdValue);
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
@@ -301,10 +304,10 @@ $.ajax({
     
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
             var selectedShade = $(this).val();
-            var uniqueValueId = document.querySelectorAll('input[name="item_unique_id_]');
-            var uniqueId = uniqueValueId.value;
-            console.log('uniqueId',uniqueId);
+           var uniqueId = uniqueIdValue;
             console.log('selectedShade',selectedShade);
+            console.log('uniqueId',uniqueId);
+            console.log('uniqueIdValue',uniqueIdValue);
             if (selectedShade !== "") {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
@@ -316,7 +319,7 @@ $.ajax({
                         method: 'GET',
                         data: {
                             'selected_shade': selectedShade,
-                            //'unique_invoice_row_id': uniqueId
+                            'unique_invoice_row_id': uniqueId
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
