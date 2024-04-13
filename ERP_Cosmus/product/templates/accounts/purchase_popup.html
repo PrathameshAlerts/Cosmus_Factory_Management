@@ -4,10 +4,10 @@
 
 
 
-        <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel">Item Name: {{item}}</h3> 
-          <h3 class="modal-title" id="exampleModalLabel">shade Name: {{item_shade}}</h3>
-          
+        <div class="">
+          <h5 class="" id="">Item Name: {{item}}</h5> 
+          <h5 class="" id="">shade Name: {{item_shade}}</h5>
+          </div>
         <div class="">
             <form method="post" id="" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -24,16 +24,16 @@
                     <tbody class="mainTableList">
                         
                         <tr>
-                            <input type="hidden" id="godown_unique_id" name="godown_unique_id--{{forloop.counter0}}" value="0">
+                            <input type="hidden" id="godown_unique_id" name="godown_unique_id-{{forloop.counter0}}" value="1">
                             <td>
-                            <select name="godown_id-{{forloop.counter0}}" id="godown_id-{{forloop.counter0}}" class="purchase-input godown-select" value="">
+                            <select name="godown_id-0" id="godown_id-0" class="purchase-input godown-select" value="">
 
                             </select>
                             </td>
-                            <td><input type="number" name="quantity-{{forloop.counter0}}" id="quantity-{{forloop.counter0}}" class="purchase-input godown-quantity" value=""></td>
-                            <td><input type="number" name="rate-{{forloop.counter0}}"  id="rate-{{forloop.counter0}}" class="purchase-input godown-rate" value="">
+                            <td><input type="number" name="quantity-0" id="quantity-0" class="purchase-input godown-quantity" value=""></td>
+                            <td><input type="number" name="rate-0"  id="rate-0" class="purchase-input godown-rate" value="">
                             </td>
-                            <td><input type="number" name="amount-{{forloop.counter0}}"  id="amount-{{forloop.counter0}}" class="purchase-input godown-amount" value="" readonly>
+                            <td><input type="number" name="amount-0"  id="amount-0" class="purchase-input godown-amount" value="" readonly>
                             </td>
                             <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
                                 <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
@@ -59,9 +59,10 @@
         
         $(document).on('click', '#addModalButton', function() {
        
-        var newFormValue = document.getElementById('godown_unique_id').value;
+        var newFormValue = document.getElementById('godown_unique_id');
+        
+        var formsValue = parseInt(newFormValue.value);
         console.log(formsValue);
-        var formsValue = parseInt(newFormValue);
         
         var tableClone = $('#newTable').find('tbody tr').last().clone(true);
         
@@ -98,30 +99,30 @@
     });
    // This funcion calculate the amount for each row then set the total amount and total quantity
     function calculateNewRow(row) {
-        var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        var inputQty = row.find('.godown-quantity[name^="quantity-"]').val();
         var inputQtyValue = parseInt(inputQty);
-        var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        var inputRate = row.find('.godown-rate[name^="rate-"]').val();
         var inputRateValue = parseInt(inputRate);
-        var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
+        var totalAmount = row.find('.godown-amount[name^="amount-"]').val();
     
         // Calculate and set the amount for this row
         var amount = inputQtyValue * inputRateValue;
         
         totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
-        row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val(totalAmount);
+        row.find('.godown-amount[name^="amount-"]').val(totalAmount);
         
         return amount;
        
     }
     // calculate the total quantity
     function calculateQty(row) {
-        var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        var inputQty = row.find('.godown-quantity[name^="quantity-"]').val();
         var inputQtyValue = parseInt(inputQty);
         return inputQtyValue;
       
     }
     function calculateRate(row){
-        var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        var inputRate = row.find('.godown-rate[name^="rate-"]').val();
         var inputRateValue = parseInt(inputRate);
         return inputRateValue;
     }

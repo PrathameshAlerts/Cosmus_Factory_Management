@@ -239,7 +239,7 @@ $.ajax({
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         uniqueIdValue =$(this).closest('tr').find('input[name^="item_unique_id_"]').val();
         console.log('itename',itemName);
-        console.log('uniqueIdValue',uniqueIdValue);
+        
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
