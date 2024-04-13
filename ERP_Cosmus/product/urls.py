@@ -111,7 +111,7 @@ urlpatterns = [
     path('purchasevoucherlist/', views.purchasevoucherlist, name = 'purchase-voucher-list'),
     path('purchasevoucherdelete/<int:pk>', views.purchasevoucherdelete, name = 'purchase-voucher-delete'),
 
-    path('purchasevoucherpopup/<int:shade_id>', views.purchasevoucherpopup, name='purchase-voucher-popup'),
+    path('purchasevoucherpopup/<int:unique_id>/<int:shade_id>', views.purchasevoucherpopup, name='purchase-voucher-popup'),
     path('purchasevouchercreatepopupajax/',views.purchasevouchercreatepopupajax,name = 'purchasevoucher-createpopup-ajax'),
 
 
