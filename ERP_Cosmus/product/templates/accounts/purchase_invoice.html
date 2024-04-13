@@ -236,14 +236,15 @@ $.ajax({
         var uniqueIdValue;
         var lastSelectedItem = '';
         $(document).on('click', 'select[name^="item_name_"]', function () {
-        itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+        
         uniqueIdValue =$(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+        itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         console.log('itename',itemName);
         
     });
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
-            console.log(item_value)       
+            console.log('item_value',item_value)       
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -272,7 +273,7 @@ $.ajax({
                    
                     var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
-                    
+                    console.log(item_shade_response);
                  //once we get the response then we need to append it to the select box as a option with check the key and value
                     // if it is equal to key then append it to the select box else append it to the select box
                     $.each(item_shade_response, function (key, value) { 
@@ -456,8 +457,8 @@ $.ajax({
             const formCount = parseInt(formCountInput.value);
             const lastRow = tableBody.lastElementChild.cloneNode(true); // clone the last row of the table
             const formIndex = formCount;
-            lastRow.querySelectorAll("input, select").forEach(function(element) { 
-                element.value = ""; 
+            lastRow.querySelectorAll("input, select").forEach(function(el) { 
+            el.value = null; 
             });
             // update the input name,id and value of the last row      
             const selectElement = lastRow.querySelector('.item-name');
@@ -471,10 +472,10 @@ $.ajax({
             colorInputElement.name = `item_color_${formIndex}`;
             colorInputElement.value="";
 
-            const selectElementShade = lastRow.querySelector('.item-shade');
+            const selectElementShade = lastRow.querySelector('.item-shade[name^="purchase_voucher_items_set-"][name$="-item_shade"]');
             selectElementShade.id = `purchase_voucher_items_set-${formIndex}-item_shade`;
             selectElementShade.name = `purchase_voucher_items_set-${formIndex}-item_shade`;
-            selectElementShade.value='null';
+            selectElementShade.value= null;
 
             const qunatityInputElement = lastRow.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
             qunatityInputElement.id = `purchase_voucher_items_set-${formIndex}-quantity_total`;
