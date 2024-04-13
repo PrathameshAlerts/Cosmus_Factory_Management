@@ -108,7 +108,7 @@
         var inputQtyValue = parseInt(inputQty);
         var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
         var inputRateValue = parseInt(inputRate);
-        var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
+        var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-total_amount"]').val();
     
         // Calculate and set the amount for this row
         var amount = inputQtyValue * inputRateValue;
