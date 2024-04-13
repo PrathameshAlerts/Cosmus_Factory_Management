@@ -1426,6 +1426,8 @@ def purchasevouchercreateupdate(request, pk=None):
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
     items_formset = item_formsets_change
     
+    raw_material_godowns = Godown_raw_material.objects.all()
+
     for forms in items_formset.forms:
         godown_items_formset = purchase_voucher_items_godown_formset()
 
@@ -1548,6 +1550,7 @@ def purchasevouchercreateupdate(request, pk=None):
                'items_formset': items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
+               'item_godowns_raw':raw_material_godowns,
                }
             return redirect(reverse('purchase-voucher-update', args=[master_instance.pk]))
         
@@ -1561,6 +1564,7 @@ def purchasevouchercreateupdate(request, pk=None):
                'items_formset':items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
+               'item_godowns_raw':raw_material_godowns,
                }
     
     
