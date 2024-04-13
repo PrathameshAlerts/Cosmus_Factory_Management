@@ -11,6 +11,16 @@
         <div class="">
             <form method="post" id="" enctype="multipart/form-data">
                 {% csrf_token %}
+
+                <div>
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        {{ form }}
+                    {% endfor %}
+
+                </div>
+
+
                 <table class="table table-striped table-hover" id="newTable">
                     <thead>
                         <tr>
@@ -95,7 +105,6 @@
 
 
         $('#newTable tbody').append(tableClone);
-
         newFormValue.value = formsValue + 1;
 
        
