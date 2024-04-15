@@ -271,7 +271,7 @@
 
         {% for form in master_form %}
         {% if form.errors %}
-    <ul class="errorlist">
+    <ul class="errorlist" id="errorform">
       {% for field, error_list in form.errors.items %}
         {% for error in error_list %}
           <li class="errorShow">
@@ -294,7 +294,7 @@
         
         {% for form in items_formset %}
         {% if form.errors %}
-    <ul class="errorlist">
+    <ul class="errorlist" id="errorform">
       {% for field, error_list in form.errors.items %}
         {% for error in error_list %}
           <li class="errorShow">
@@ -319,7 +319,7 @@
 
       {% for form in formset %}
       {% if form.errors %}
-  <ul class="errorlist">
+  <ul class="errorlist" id="errorform">
     {% for field, error_list in form.errors.items %}
       {% for error in error_list %}
         <li class="errorShow">
@@ -341,7 +341,7 @@
 
         {% for form in godown_form %}
         {% if form.errors %}
-    <ul class="errorlist">
+    <ul class="errorlist" id="errorform">
       {% for field, error_list in form.errors.items %}
         {% for error in error_list %}
           <li class="errorShow">

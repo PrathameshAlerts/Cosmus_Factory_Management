@@ -136,7 +136,6 @@ urlpatterns = [
 
     path('fabricfinishespopup/', views.fabric_finishes_create_update, name = 'fabric-finishes-popup'),
 
-
     path('packaging_create/', views.packaging_create_update, name = 'packaging-create'),
     path('packagingupdate/<int:pk>', views.packaging_create_update, name = 'packaging-update'),
     path('packaginglist/', views.packaging_list, name = 'packaging-list'),
@@ -151,5 +150,5 @@ urlpatterns = [
     #common Routes
     path('', views.dashboard , name='dashboard-main'),
 
-
+    path('getsession/', views.get_cookie, name = 'getsession'),
 ]

@@ -1475,11 +1475,19 @@ def purchasevouchercreateupdate(request, pk=None):
         
     except Exception as e:
         print(f'exception occoured {e}')
+
+    # if 'fetch_data' in request.GET:
+    #     try:
+    #         Unique_ID = request.session['Unique_ID']
+    #         grand_quantity = request.session['grand_quantity']
+    #         grand_rate = request.session['grand_rate']
+    #     except Exception as e:
+    #         messages.error(f'an exception occoured{e}')
     
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
-                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no})
+                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,}) # 'Unique_ID':Unique_ID, 'grand_quantity':grand_quantity, 'grand_rate':grand_rate
 
 
     if request.method == 'POST':
@@ -1544,6 +1552,7 @@ def purchasevouchercreateupdate(request, pk=None):
             
             # items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
 
+
             context = {'master_form':master_form,
                'party_names':party_names,
                'items':items,
@@ -1551,7 +1560,7 @@ def purchasevouchercreateupdate(request, pk=None):
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
                'item_godowns_raw':raw_material_godowns,
-               }
+               } #remove this context later if not required
             return redirect(reverse('purchase-voucher-update', args=[master_instance.pk]))
         
         except Exception as e:
@@ -1577,19 +1586,41 @@ def purchasevoucherpopup(request,unique_id,shade_id):
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
         item_shade = item_color_shade.objects.get(id = shade_id)
+
     except Exception as e:
         messages.error(request,'Error with Shades')
+
     print(request.POST)
     if request.method == 'POST':
         formset = shade_godown_items_temporary_table_formset(request.POST,prefix='shade_godown_items_set')
         if formset.is_valid():
+            Unique_ID = unique_id
+            grand_quantity = request.POST.get('grand_godown_quantity')
+            grand_rate = request.POST.get('grand_godown_rate')
             for form in formset:
                 if form.is_valid():
                     form.save()
-            return HttpResponse('form saved success')
+                else:
+                    context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
+                                'formset': formset, 'unique_id': unique_id, 'shade_id': shade_id,
+                                                                 'errors': formset.errors}
+                    return render(request, 'accounts/purchase_popup.html', context)
+            request.session['Unique_ID'] = Unique_ID
+            request.session['grand_quantity'] = grand_quantity
+            request.session['grand_rate'] = grand_rate
+            return HttpResponse('<script>window.close();</script>')
         else:
             print(formset.errors)
-    
+            context = {
+                'godowns': godowns,
+                'item': item,
+                'item_shade': item_shade,
+                'formset': formset,
+                'unique_id': unique_id,
+                'shade_id': shade_id,
+                'errors': formset.errors,
+            }
+            return render(request, 'accounts/purchase_popup.html', context)
     return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade,'formset':formset ,'unique_id':unique_id})
 
 
@@ -1600,7 +1631,11 @@ def purchasevouchercreatepopupajax(request):
 
     return JsonResponse({'popup_url':popup_url})
 
-
+def get_cookie(request):
+    id = request.session['Unique_ID']
+    quantity = request.session['grand_quantity']
+    rate = request.session['grand_rate']
+    return render(request,'tests/testcookies.html',{'id':id ,'quantity':quantity,'rate':rate})
 
 
 def purchasevoucherlist(request):
@@ -1725,18 +1760,13 @@ def fabric_finishes_create_update(request, pk = None):
             form.save()
             messages.success(request,'fabric finish created')
             if 'save_and_add_another' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
-                
                 return redirect('fabric-finishes-create')
-            
+    
             elif 'save' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
-
                 return redirect('fabric-finishes-list')
-
-            elif 'save' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
-                
+            
+            elif 'save' in request.POST and template_name == 'misc/fabric_finishes_popup.html':
                 return HttpResponse('<script>window.close();</script>')
-
-
         else:
             messages.error(request,'An error occured.')
 
