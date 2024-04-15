@@ -252,11 +252,9 @@ $.ajax({
         var itemName;
         var uniqueIdValue;
         var lastSelectedItem = '';
-        uniqueIdValue =$(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-        console.log('uIv',uniqueIdValue)
         $(document).on('click', 'select[name^="item_name_"]', function () {
         
-      
+       uniqueIdValue =$(this).closest('tr').find('input[name^="item_unique_id_"]').val();
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         
         
