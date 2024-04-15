@@ -55,7 +55,21 @@
         </div>
     <script>
         function submitData(){
-
+            var newUniqueId = document.getElementById('id_shade_godown_items_set-0-unique_id').value;
+            var newTotalQty = document.getElementById('grand_godown_quantity').value;
+            var newTotalRate = document.getElementById('grand_godown_rate').value;
+            //var newTotalAmount = document.getElementById('grand_godown_amount').value;
+            console.log(newUniqueId);
+            console.log(newTotalQty);
+            console.log(newTotalRate);
+            var newSessionData = {
+                "newUniqueId": newUniqueId,
+                "newTotalQty": newTotalQty,
+                "newTotalRate": newTotalRate,
+                //"newTotalAmount": newTotalAmount
+            }
+            window.opener.updateFormData(newSessionData);
+           
         }
     </script>
 
