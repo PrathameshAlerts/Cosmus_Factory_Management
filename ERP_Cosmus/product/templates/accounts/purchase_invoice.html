@@ -115,10 +115,10 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" >
+                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly >
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" >
+                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" readonly>
                     </td>
                     <td>
                         <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
@@ -127,13 +127,13 @@
                         <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="" >
+                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="" readonly >
                     </td>
                     <td>
-                    <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value="" >
+                    <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value=""readonly >
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst mb-2" name="{{forms.prefix}}-sgst" value="" >
+                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst mb-2" name="{{forms.prefix}}-sgst" value=""readonly >
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly>
@@ -155,8 +155,8 @@
         <table class="table table-striped table-hover">
         <tbody>
         <tr>
-        <td colspan="4" class="text-center" ><lable style="padding-left: 20px;">Grand Total</lable></td>
-        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 492px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
+        <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
+        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 473px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
         <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 252px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
         <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 124px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
         <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
@@ -188,16 +188,27 @@
       
     </div>       -->
 
-<div class="row mb-4">
-    <div class="col-lg-2">
-        <lable  class="pe-5 ps-2 mb-2 fw-bold" >Gross total</lable>
-        <lable class="ps-2 mt-4 fw-bold">Fright & Transport</lable>
-        <label  class="fw-bold mt-4 px-2" >Grand total</label>
+<div class="table-left mb-4">
+    
+    <div class="d-flex mb-3">
+        <lable  class=" fw-bold" >Gross total</lable>
+        <input type="number" class="purchaseTableLabel-total purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50"  >
     </div>
-    <div class="col-lg-2 mb-2">
-        <input type="number" class="mb-2 purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50"  >
-        <input type="number" class=" mb-2 purchase-amount " name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" >
-        <input type="text" class="mb-2 purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
+
+    <div class="d-flex mb-3">
+        <lable class="fw-bold">Fright & Transport</lable>
+        <input type="number" class="purchase-amount purchaseTableLabel" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" >
+
+    </div>
+    <div class="d-flex mb-3">
+        <input type="hidden" id="temp_grand_total" value="">
+        <lable class="fw-bold">Round Of </lable>
+        <input type="number" class="purchase-amount purchaseTableLabel-total" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" >
+    </div>
+  
+    <div class="d-flex mb-3">
+        <label for="id_grand_total" class="fw-bold" >Grand total</label>
+          <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
     </div>
 </div>
 
@@ -207,7 +218,8 @@
  </form>
 
  <script>
-
+// this code contain the popup window for on submit button send to to parent window 
+// this function retrive the data and compare with same unquie id and update the table data
 function updateFormData(newSessionData){
     var newId = newSessionData.newUniqueId;
     var newQty = newSessionData.newTotalQty;
@@ -304,9 +316,7 @@ $.ajax({
                    
                     var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
-                    response.Unique_ID
-                    response.grand_quantity
-                    response.grand_rate
+                 
                  //once we get the response then we need to append it to the select box as a option with check the key and value
                     // if it is equal to key then append it to the select box else append it to the select box
                     $.each(item_shade_response, function (key, value) { 
@@ -451,9 +461,15 @@ $.ajax({
 
         var finalTotal = grossTotal + frightTransport;
 
+        document.getElementById('temp_grand_total').value = finalTotal.toFixed(2);
 
+
+        var finalTotals = Math.ceil(finalTotal)
+
+        var roundOff = finalTotals - finalTotal;
+        document.getElementById('id_round_off').value = roundOff.toFixed(2);
         // Set the calculated grand total value to the grand total input field
-        document.getElementById('id_grand_total').value = finalTotal.toFixed(2);
+        document.getElementById('id_grand_total').value = finalTotals.toFixed(2);
     }
 
     // Call the function initially to calculate total amount, GST, and grand total on page load
@@ -462,6 +478,9 @@ $.ajax({
   
     // Add onchange event handler to id_fright_transport
     document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
+    document.getElementById('id_round_off').addEventListener('input', calculateOtherTotal);
+
+
    
     function addEventListenersToInputs() {
         var inputs = document.querySelectorAll('#myTable tbody tr input');

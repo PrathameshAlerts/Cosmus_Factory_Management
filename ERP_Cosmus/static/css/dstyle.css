@@ -1141,15 +1141,16 @@ body{
 }
 
 .purchaseTableLabel{
-    margin-left: 30px;
+    margin-left: 20px;
 }
 .purchaseTableLabel-total{
-    margin-left: 62px;
+    margin-left: 52px;
 
 }
 .totalpurchase-cgst{
     margin-left: 138px;
 }
+
 
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
