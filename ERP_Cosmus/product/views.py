@@ -1416,7 +1416,7 @@ def stocktransferreport(request):
 def purchasevouchercreateupdate(request, pk=None):
     #get the purchase invoice for updating the form 
     if pk:
-        purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk = pk)
+        purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
         item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
     else:
         purchase_invoice_instance = None
@@ -1574,7 +1574,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
 def purchasevoucherpopup(request,unique_id,shade_id):
     instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
-
+    print(instances)
     formset = shade_godown_items_temporary_table_formset(queryset = instances,prefix='shade_godown_items_set')
     try:
         godowns = Godown_raw_material.objects.all()

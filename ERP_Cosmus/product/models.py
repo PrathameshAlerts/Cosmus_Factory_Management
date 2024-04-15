@@ -541,7 +541,7 @@ class shade_godown_items(models.Model):
 
 class shade_godown_items_temporary_table(models.Model):
     unique_id = models.IntegerField()
-    godown_id = models.IntegerField()
+    godown_id = models.ForeignKey(Godown_raw_material, on_delete= models.CASCADE)
     quantity = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     total_amount = models.DecimalField(max_digits=9, decimal_places=2)
