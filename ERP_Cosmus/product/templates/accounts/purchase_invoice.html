@@ -195,6 +195,26 @@
  </form>
 
  <script>
+
+function updateFormData(newSessionData){
+    var newId = newSessionData.newUniqueId;
+    var newQty = newSessionData.newTotalQty;
+    var newRate = newSessionData.newTotalRate;
+    var itemUniqueId = document.getElementById('item_unique_id_'+ newId).value; 
+    
+    if(newId == itemUniqueId){
+      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-quantity_total')
+      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-rate')
+
+      oldQty.value = newQty
+      oldRate.value = newRate
+
+    }
+}
+   
+</script>
+
+ <script>
 //this ajax is for gst no 
 $(document).ready(function(){
 
@@ -226,10 +246,6 @@ $.ajax({
 
 
  </script>
-
-
-
-
 
  <script>
     //This ajax call is to populate the shade and color based on the selected item once retrive the value

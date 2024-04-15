@@ -149,6 +149,4 @@ urlpatterns = [
 
     #common Routes
     path('', views.dashboard , name='dashboard-main'),
-
-    path('getsession/', views.get_cookie, name = 'getsession'),
 ]
