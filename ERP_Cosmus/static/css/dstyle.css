@@ -919,7 +919,7 @@ body{
     padding-left: 50px;
 }
 .table-left{
-    padding-left: 1243px;
+    padding-left: 1377px;
     padding-top: 30px;
 }
 
@@ -1138,16 +1138,6 @@ body{
     border-radius: 3px;
     padding-left: 5px;
     height: 33px;
-}
-.total-Final{
-    padding-left: 560px;
-}
-.total-final-taxamount{
-padding-left: 276px;
-
-}
-.total-final-tax{
-    padding-left: 18px;
 }
 
 .purchaseTableLabel{
