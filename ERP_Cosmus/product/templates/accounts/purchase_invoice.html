@@ -8,6 +8,9 @@
             {% csrf_token %}
        <div class="d-flex mb-3">
         <div>
+            {{Unique_ID}}
+            {{grand_quantity}}
+            {{grand_rate}}
             <div class="d-flex mb-3">
                 <label for="id_purchase_number"  class="item-form">Purchase No</label>
                 <input type="number" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required >
@@ -272,7 +275,9 @@ $.ajax({
                    
                     var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
-                   
+                    response.Unique_ID
+                    response.grand_quantity
+                    response.grand_rate
                  //once we get the response then we need to append it to the select box as a option with check the key and value
                     // if it is equal to key then append it to the select box else append it to the select box
                     $.each(item_shade_response, function (key, value) { 
