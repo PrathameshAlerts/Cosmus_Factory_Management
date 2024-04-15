@@ -1475,19 +1475,11 @@ def purchasevouchercreateupdate(request, pk=None):
         
     except Exception as e:
         print(f'exception occoured {e}')
-
-    # if 'fetch_data' in request.GET:
-    #     try:
-    #         Unique_ID = request.session['Unique_ID']
-    #         grand_quantity = request.session['grand_quantity']
-    #         grand_rate = request.session['grand_rate']
-    #     except Exception as e:
-    #         messages.error(f'an exception occoured{e}')
     
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
-                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,}) # 'Unique_ID':Unique_ID, 'grand_quantity':grand_quantity, 'grand_rate':grand_rate
+                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,})
 
 
     if request.method == 'POST':
@@ -1581,7 +1573,9 @@ def purchasevouchercreateupdate(request, pk=None):
 
 
 def purchasevoucherpopup(request,unique_id,shade_id):
-    formset = shade_godown_items_temporary_table_formset(prefix='shade_godown_items_set')
+    instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
+
+    formset = shade_godown_items_temporary_table_formset(queryset = instances,prefix='shade_godown_items_set')
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -1605,9 +1599,6 @@ def purchasevoucherpopup(request,unique_id,shade_id):
                                 'formset': formset, 'unique_id': unique_id, 'shade_id': shade_id,
                                                                  'errors': formset.errors}
                     return render(request, 'accounts/purchase_popup.html', context)
-            request.session['Unique_ID'] = Unique_ID
-            request.session['grand_quantity'] = grand_quantity
-            request.session['grand_rate'] = grand_rate
             return HttpResponse('<script>window.close();</script>')
         else:
             print(formset.errors)
@@ -1631,11 +1622,6 @@ def purchasevouchercreatepopupajax(request):
 
     return JsonResponse({'popup_url':popup_url})
 
-def get_cookie(request):
-    id = request.session['Unique_ID']
-    quantity = request.session['grand_quantity']
-    rate = request.session['grand_rate']
-    return render(request,'tests/testcookies.html',{'id':id ,'quantity':quantity,'rate':rate})
 
 
 def purchasevoucherlist(request):

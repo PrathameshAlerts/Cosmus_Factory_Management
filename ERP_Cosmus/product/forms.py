@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
+from django.forms import modelformset_factory
 
 
 
@@ -227,7 +228,7 @@ class shade_godown_items_temporary_table_form(forms.ModelForm):
         model = shade_godown_items_temporary_table
         fields = '__all__'
 
-shade_godown_items_temporary_table_formset = forms.formset_factory(shade_godown_items_temporary_table_form, extra=1)
+shade_godown_items_temporary_table_formset = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=1)
 
 
 class LoginForm(AuthenticationForm):
