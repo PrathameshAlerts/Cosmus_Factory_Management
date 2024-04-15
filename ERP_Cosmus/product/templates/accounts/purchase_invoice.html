@@ -8,9 +8,7 @@
             {% csrf_token %}
        <div class="d-flex mb-3">
         <div>
-            {{Unique_ID}}
-            {{grand_quantity}}
-            {{grand_rate}}
+
             <div class="d-flex mb-3">
                 <label for="id_purchase_number"  class="item-form">Purchase No</label>
                 <input type="number" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required >
@@ -279,13 +277,14 @@ $.ajax({
         var itemName;
         var uniqueIdValue;
         var lastSelectedItem = '';
+        
+        console.log('uIv',uniqueIdValue)
         $(document).on('click', 'select[name^="item_name_"]', function () {
-        
-       uniqueIdValue =$(this).closest('tr').find('input[name^="item_unique_id_"]').val();
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-        console.log('itename',itemName);
         
-    });
+});
+
+  
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
             console.log('item_value',item_value)       
@@ -343,13 +342,16 @@ $.ajax({
         var popupWindow = null; // Variable to hold the reference to the popup window
     
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-            var selectedShade = $(this).val();
+             uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+           var selectedShade = $(this).val();
            var uniqueId = uniqueIdValue;
-            if (selectedShade !== "") {
+           console.log('uv',uniqueId)
+           console.log('selectedShade',selectedShade)
+            if (selectedShade !== "" ) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
-                    
+    
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',

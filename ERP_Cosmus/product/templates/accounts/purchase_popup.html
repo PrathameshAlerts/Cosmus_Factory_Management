@@ -27,17 +27,24 @@
                         <tr>
                             <input type="hidden" id="id_shade_godown_items_set-0-unique_id" name="shade_godown_items_set-0-unique_id" value="{{unique_id}}">
                             <td>
-                            <select name="shade_godown_items_set-0-godown_id" id="id_shade_godown_items_set-0-godown_id" class="purchase-input godown-select" value="">
+                            <select name="shade_godown_items_set-0-godown_id" id="id_shade_godown_items_set-0-godown_id" class="purchase-input godown-select">
+                                {% if form.instance.id %}
+                                <option value="{{form.instance.godown_id.id}}">{{form.instance.godown_id.godown_name_raw}}</option>
+                                {% for godown in godowns %}
+                                <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                                {% endfor %}
+                                {% elif not form.instance.id %}
                                 <option value=""></option>
                                 {% for godown in godowns %}
                                 <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
                                 {% endfor %}
+                                {% endif %}
                             </select>
                             </td>
-                            <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity" class="purchase-input godown-quantity" value="" required></td>
-                            <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate" class="purchase-input godown-rate" value="" required>
+                            <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity}}" required></td>
+                            <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate" class="purchase-input godown-rate" value="{{form.instance.rate}}" required>
                             </td>
-                            <td><input type="number" name="shade_godown_items_set-0-total_amount" step="0.01" id="id_shade_godown_items_set-0-total_amount" class="purchase-input godown-amount" value="" readonly>
+                            <td><input type="number" name="shade_godown_items_set-0-total_amount" step="0.01" id="id_shade_godown_items_set-0-total_amount" class="purchase-input godown-amount" value="{{form.instance.total_amount}}" readonly>
                             </td>
                             <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
                                 
