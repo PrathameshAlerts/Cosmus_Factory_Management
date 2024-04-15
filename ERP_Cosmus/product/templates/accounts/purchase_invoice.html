@@ -270,9 +270,9 @@ $.ajax({
                     var item_gst_value_response = response.item_gst_out;
                     itemgstinput.value = item_gst_value_response
                    
-                    //var item_shade_response = response.item_shade;
+                    var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
-                    console.log(item_shade_response);
+                   
                  //once we get the response then we need to append it to the select box as a option with check the key and value
                     // if it is equal to key then append it to the select box else append it to the select box
                     $.each(item_shade_response, function (key, value) { 
