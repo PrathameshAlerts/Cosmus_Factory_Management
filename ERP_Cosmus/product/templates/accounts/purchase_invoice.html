@@ -79,7 +79,7 @@
                 
                 <tr>
                     
-                    <td>{{forloop.counter}}</td>
+                    <td>{{forloop.counter0}}</td>
                     <td> 
                         <select name="item_name_{{forloop.counter0}}" class="item-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
 
@@ -113,10 +113,10 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly >
+                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}">
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" readonly>
+                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
                     </td>
                     <td>
                         <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
@@ -195,7 +195,7 @@
 
     <div class="d-flex mb-3">
         <span class="fw-bold">Fright & Transport</span>
-        <span><input type="number" class="purchase-amount " name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" ></span>
+        <span><input type="number" class="purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" ></span>
 
     </div>
     <div class="d-flex mb-3">
