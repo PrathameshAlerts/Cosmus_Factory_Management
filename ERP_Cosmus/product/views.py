@@ -1,19 +1,34 @@
-
-from django.forms import ValidationError
-from django.shortcuts import get_object_or_404, redirect, render
-from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from . models import AccountGroup, AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods,  Godown_raw_material, Item_Creation, Ledger, MainCategory, PProduct_Creation, Product, Product2SubCategory,  ProductImage, RawStockTransfer, StockItem, SubCategory, Unit_Name_Create, account_credit_debit_master_table, gst, item_color_shade, item_godown_quantity_through_table, item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items_temporary_table
-from .forms import ColorForm, CreateUserForm, CustomPProductaddFormSet, FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm, LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet, StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet, ProductImagesFormSet, ProductVideoFormSet, gst_form, item_purchase_voucher_master_form, packaging_form, product_main_category_form, product_sub_category_form, purchase_voucher_items_formset,purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, shade_godown_items_temporary_table_formset
-from django.urls import reverse
 from django.contrib.auth.models import User , Group
 from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
+                       FabricFinishes, Godown_finished_goods, Godown_raw_material,
+                         Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
+                           Product2SubCategory,  ProductImage, RawStockTransfer, StockItem,
+                             SubCategory, Unit_Name_Create, account_credit_debit_master_table,
+                               gst, item_color_shade, item_godown_quantity_through_table,
+                                 item_purchase_voucher_master, packaging, purchase_voucher_items,
+                                   shade_godown_items_temporary_table)
+from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
+                    FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
+                     LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet,
+                       StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
+                        ProductImagesFormSet, ProductVideoFormSet,
+                         gst_form, item_purchase_voucher_master_form,
+                           packaging_form, product_main_category_form, 
+                            product_sub_category_form, purchase_voucher_items_formset,
+                             purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update,
+                                shade_godown_items_temporary_table_formset)
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
 from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
+
+
 
 
 
@@ -1573,9 +1588,14 @@ def purchasevouchercreateupdate(request, pk=None):
 
 
 def purchasevoucherpopup(request,unique_id,shade_id):
+    
+    #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
     instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
-    print(instances)
+    
+    #create a formset instance with the selected unique id 
     formset = shade_godown_items_temporary_table_formset(queryset = instances,prefix='shade_godown_items_set')
+    for form in formset:
+        print(form)
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -1588,9 +1608,6 @@ def purchasevoucherpopup(request,unique_id,shade_id):
     if request.method == 'POST':
         formset = shade_godown_items_temporary_table_formset(request.POST,prefix='shade_godown_items_set')
         if formset.is_valid():
-            Unique_ID = unique_id
-            grand_quantity = request.POST.get('grand_godown_quantity')
-            grand_rate = request.POST.get('grand_godown_rate')
             for form in formset:
                 if form.is_valid():
                     form.save()
@@ -1600,26 +1617,22 @@ def purchasevoucherpopup(request,unique_id,shade_id):
                                                                  'errors': formset.errors}
                     return render(request, 'accounts/purchase_popup.html', context)
             return HttpResponse('<script>window.close();</script>')
+        
         else:
-            print(formset.errors)
             context = {
-                'godowns': godowns,
-                'item': item,
-                'item_shade': item_shade,
-                'formset': formset,
-                'unique_id': unique_id,
-                'shade_id': shade_id,
-                'errors': formset.errors,
+                'godowns': godowns, 'item': item, 'item_shade': item_shade, 'formset': formset, 
+                'unique_id': unique_id, 'shade_id': shade_id, 'errors': formset.errors,
             }
             return render(request, 'accounts/purchase_popup.html', context)
-    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'item_shade':item_shade,'formset':formset ,'unique_id':unique_id})
+    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,
+                                                            'item_shade':item_shade,'formset':formset,
+                                                            'unique_id':unique_id})
 
 
 def purchasevouchercreatepopupajax(request):
     shade_id = request.GET.get('selected_shade')
     unique_id = request.GET.get('unique_invoice_row_id')
     popup_url = reverse('purchase-voucher-popup', args=[unique_id,shade_id])
-
     return JsonResponse({'popup_url':popup_url})
 
 
