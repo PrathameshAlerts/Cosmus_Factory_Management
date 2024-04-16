@@ -229,8 +229,6 @@ class shade_godown_items_temporary_table_form(forms.ModelForm):
         fields = '__all__'
 
 shade_godown_items_temporary_table_formset = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=1)
-
-
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())
     password = forms.CharField(widget=PasswordInput())

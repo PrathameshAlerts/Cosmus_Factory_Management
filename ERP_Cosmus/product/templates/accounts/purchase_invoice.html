@@ -128,10 +128,10 @@
                         <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="" readonly >
                     </td>
                     <td>
-                    <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value=""readonly >
+                    <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value="" readonly >
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst mb-2" name="{{forms.prefix}}-sgst" value=""readonly >
+                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst mb-2" name="{{forms.prefix}}-sgst" value="" readonly >
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly>
@@ -154,8 +154,8 @@
         <tbody>
         <tr>
         <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
-        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 483px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
-        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 252px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
+        <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 483px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" ></td>
+        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 252px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01"  ></td>
         <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 124px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
         <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
         <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
@@ -168,13 +168,13 @@
 <div class="table-left mb-4">
     
     <div class="d-flex mb-3">
-        <lable  class="purchaseTableLabel-total fw-bold">Gross total<span><input type="number" class=" purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50"  ></span></lable>
+        <lable  class="purchaseTableLabel-total fw-bold">Gross total<span><input type="number" class=" purchase-amount" name="gross_total" id ="id_gross_total" value="" maxlength="50"  ></span></lable>
        
     </div>
 
     <div class="d-flex mb-3">
         <span class="fw-bold">Fright & Transport</span>
-        <span><input type="number" class="purchase-amount " name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" ></span>
+        <span><input type="number" class="purchase-amount " name="fright_transport" id ="id_fright_transport" value="" maxlength="50" step=".01" ></span>
 
     </div>
     <div class="d-flex mb-3">
@@ -185,7 +185,7 @@
   
     <div class="d-flex mb-3">
         <span for="id_grand_total" class="fw-bold" >Grand total</span>
-          <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
+          <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="" id="id_grand_total">
     </div>
 </div>
 
@@ -197,23 +197,7 @@
  <script>
 // this code contain the popup window for on submit button send to to parent window 
 // this function retrive the data and compare with same unquie id and update the table data
-function updateFormData(newSessionData){
-    var newId = newSessionData.newUniqueId;
-    var newQty = newSessionData.newTotalQty;
-    var newRate = newSessionData.newTotalRate;
-    var itemUniqueId = document.getElementById('item_unique_id_'+ newId).value; 
-    
-    if(newId == itemUniqueId){
-      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-quantity_total')
-      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-rate')
 
-      oldQty.value = newQty
-      oldRate.value = newRate
-      calculateTotalAmount()
-      calculateOtherTotal()
-    }
-}
-   
 </script>
 
  <script>
@@ -359,6 +343,31 @@ $.ajax({
 
 <!--This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
 <script>
+
+function updateFormData(newSessionData){
+    var newId = newSessionData.newUniqueId;
+    var newQty = newSessionData.newTotalQty;
+    var newRate = newSessionData.newTotalRate;
+    var itemUniqueId = document.getElementById('item_unique_id_'+ newId).value; 
+    
+ 
+    if(newId == itemUniqueId){
+
+        var oldQty =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-quantity_total')
+        var oldRate =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-rate')
+
+    var oldQtyValue = parseInt(oldQty.value)
+    var oldRateValue = parseInt(oldRate.value)
+    oldQtyValue = newQty
+    oldRateValue = newRate
+
+    console.log(oldQtyValue,oldRateValue)
+     
+      calculateTotalAmount()
+      calculateOtherTotal()
+    }
+}
+   
    function calculateTotalAmount() {
         var rows = document.querySelectorAll('#myTable tbody tr');
         var total = 0; 
@@ -426,14 +435,14 @@ $.ajax({
     }
    
        
-        function calculateOtherTotal(grandTotal) { 
+        function calculateOtherTotal(total) { 
           
      
-         var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
+         var grandTotals = parseFloat(document.getElementById('id_grand_amount').value);
         
         
        
-          var  grossTotal = grandTotal;      
+          var  grossTotal = grandTotals;      
     
         // Set the calculated gross total value to the gross total input field
         document.getElementById('id_gross_total').value = grossTotal.toFixed(2);
