@@ -25,6 +25,7 @@
                         {{ formset.management_form }}
                     {% for form in formset %}
                         <tr>
+                            {{ form.id }}
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
                             <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="purchase-input godown-select">
@@ -83,12 +84,24 @@
     <script>
         $(document).ready (function(){
         
+            function updateRate(){
+                var newRate = $('input[name^="shade_godown_items_set-"][name$="-rate"]');
+
+                newRate.each(function(){
+                    $(this).attr('readonly', true)
+                })
+            }
+           
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {
-        var newRateValue = $('#shade_godown_items_set-0-rate').val();
-        console.log(newRateValue);
-        if(newRateValue != "" && newRateValue != null){
+
+            updateRate(); 
+          //first find the last row rate value is not empty then add a new row 
+          //there any one rate value is empty then don't add a new row
+        var newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
+
+        if(newRate != "" && newRate != null){
         var newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
         
         var formsValue = parseInt(newFormValue.value);
@@ -113,7 +126,7 @@
         newRate.attr('name', 'shade_godown_items_set-' + formsValue + '-rate');
         newRate.attr('id', 'shade_godown_items_set-' + formsValue + '-rate');
 
-        const firtRowRate = $("#shade_godown_items_set-0-rate").val();
+        const firtRowRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]').last().val();
         newRate.val(firtRowRate);
         newRate.attr('readonly', true);
        
