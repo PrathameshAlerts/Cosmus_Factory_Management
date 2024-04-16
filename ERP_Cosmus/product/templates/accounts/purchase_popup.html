@@ -25,9 +25,9 @@
                         {{ formset.management_form }}
                     {% for form in formset %}
                         <tr>
-                            <input type="hidden" id="id_shade_godown_items_set-0-unique_id" name="shade_godown_items_set-0-unique_id" value="{{unique_id}}">
+                            <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
-                            <select name="shade_godown_items_set-0-godown_id" id="id_shade_godown_items_set-0-godown_id" class="purchase-input godown-select">
+                            <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="purchase-input godown-select">
                                 {% if form.instance.id %}
                                 <option value="{{form.instance.godown_id.id}}">{{form.instance.godown_id.godown_name_raw}}</option>
                                 {% for godown in godowns %}
@@ -41,10 +41,10 @@
                                 {% endif %}
                             </select>
                             </td>
-                            <td><input type="number" name="shade_godown_items_set-0-quantity" id="id_shade_godown_items_set-0-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity}}" required></td>
-                            <td><input type="number" name="shade_godown_items_set-0-rate" step="0.01" id="id_shade_godown_items_set-0-rate" class="purchase-input godown-rate" value="{{form.instance.rate}}" required>
+                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity}}" required></td>
+                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate}}" required>
                             </td>
-                            <td><input type="number" name="shade_godown_items_set-0-total_amount" step="0.01" id="id_shade_godown_items_set-0-total_amount" class="purchase-input godown-amount" value="{{form.instance.total_amount}}" readonly>
+                            <td><input type="number" name="{{form.prefix}}-total_amount" step="0.01" id="{{form.prefix}}-total_amount" class="purchase-input godown-amount" value="{{form.instance.total_amount}}" readonly>
                             </td>
                             <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
                                 
@@ -62,7 +62,7 @@
         </div>
     <script>
         function submitData(){
-            var newUniqueId = document.getElementById('id_shade_godown_items_set-0-unique_id').value;
+            var newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
             var newTotalQty = document.getElementById('grand_godown_quantity').value;
             var newTotalRate = document.getElementById('grand_godown_rate').value;
             //var newTotalAmount = document.getElementById('grand_godown_amount').value;
@@ -86,7 +86,7 @@
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {
-        var newRateValue = $('#id_shade_godown_items_set-0-rate').val();
+        var newRateValue = $('#shade_godown_items_set-0-rate').val();
         console.log(newRateValue);
         if(newRateValue != "" && newRateValue != null){
         var newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
@@ -113,7 +113,7 @@
         newRate.attr('name', 'shade_godown_items_set-' + formsValue + '-rate');
         newRate.attr('id', 'shade_godown_items_set-' + formsValue + '-rate');
 
-        const firtRowRate = $("#id_shade_godown_items_set-0-rate").val();
+        const firtRowRate = $("#shade_godown_items_set-0-rate").val();
         newRate.val(firtRowRate);
         newRate.attr('readonly', true);
        
