@@ -527,7 +527,7 @@ class item_purchase_voucher_master(models.Model):
 class purchase_voucher_items(models.Model):
     item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
     item_shade = models.ForeignKey(item_color_shade, on_delete = models.PROTECT)
-    quantity = models.IntegerField()
+    quantity_total = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
 

@@ -1260,6 +1260,7 @@ def godowndelete(request,str,pk):
 
 # RawStockTransfer
 def stocktransfer(request):
+    print(request.POST)
     current_date = now().date()
     raw_godowns = Godown_raw_material.objects.all()
     rawstocktransferlist = RawStockTransfer.objects.all()
@@ -1496,26 +1497,25 @@ def purchasevouchercreateupdate(request, pk=None):
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
                                   'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,})
 
-
+    print('Master_post',request.POST)
     if request.method == 'POST':
         try:
             #create a form instance for main form
             master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
-            
+
             #create a formset instance for form items in invoice
             items_formset = item_formsets_change
 
             #create a formset instance for godowns in form items
             godown_items_formset = purchase_voucher_items_godown_formset(request.POST, prefix='shade_godown_items_set')
 
-            #filter out only the forms which are changed as shade is givin null error on extra field
+            #filter out only the forms which are changed as shade is giving null error on extra field
             items_formset.forms = [form for form in items_formset.forms if form.has_changed()]  
             
             if master_form.is_valid() and items_formset.is_valid():
                 # Save the master form
                 master_instance = master_form.save()
 
-    
                 # Check for items marked for deletion and delete them 
                 # delete wont work after default cos we are not saving items_formset instead we are saving  in the formsets individually
                 # items_formset.deleted_forms has the forms marked for deletion
@@ -1546,7 +1546,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                 godown_temp_data[f'shade_godown_items_set-{data.unique_id}-quantity'] = data.quantity
                                 godown_temp_data[f'shade_godown_items_set-{data.unique_id}-rate'] = data.rate
                                 godown_temp_data[f'shade_godown_items_set-{data.unique_id}-amount'] = data.total_amount
-
+                            print('dict', godown_temp_data)
                             #create a formset instance for godowns in form items
                             godown_items_formset = purchase_voucher_items_godown_formset(request.POST, initial = godown_temp_data, prefix='shade_godown_items_set')
                             #Saving godown items formset with item instance
@@ -1558,32 +1558,19 @@ def purchasevouchercreateupdate(request, pk=None):
                                     return HttpResponse('formset2 saved successfully')
                                 else:
                                     print('godown',godown_form.error)
-                
+
                     else:
-                        print('1',form.errors)
-                        print('2',master_form.errors)
-                        print('4',items_formset.errors)
+                        print('form1',form.errors)
                         return redirect('purchase-voucher-list')
-                    
-                
-                return redirect(reverse('purchase-voucher-update', args=[master_instance.pk]))
             
             # items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
-
-
-            context = {'master_form':master_form,
-               'party_names':party_names,
-               'items':items,
-               'items_formset': items_formset,
-               'Purchase_gst':Purchase_gst,
-               'godown_formsets':godown_items_formset,
-               'item_godowns_raw':raw_material_godowns,
-               } #remove this context later if not required
-            return redirect(reverse('purchase-voucher-update', args=[master_instance.pk]))
-        
+            else:
+                print('MF',master_form.errors)
+                print('IF',items_formset.errors)
+                return redirect('purchase-voucher-list')
+            
         except Exception as e:
             print('an error occoured-', e)
-
 
     context = {'master_form':master_form,
                'party_names':party_names,
@@ -1593,8 +1580,7 @@ def purchasevouchercreateupdate(request, pk=None):
                'godown_formsets':godown_items_formset,
                'item_godowns_raw':raw_material_godowns,
                }
-    
-    print('form3',items_formset.management_form)
+
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
