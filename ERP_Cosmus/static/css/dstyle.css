@@ -452,7 +452,7 @@ body{
 .pcoded-content{
     position: relative;
     display: block;
-    padding: 55px 25px;
+    padding: 50px 20px;
 }
 
 .pcoded-main-container {
@@ -919,7 +919,7 @@ body{
     padding-left: 50px;
 }
 .table-left{
-    padding-left: 1377px;
+    padding-left: 988px;
     padding-top: 30px;
 }
 
@@ -1075,9 +1075,15 @@ body{
     margin-left: 204px;
     text-decoration: none;
  }
-
+.purchase-select{
+    width: 138px;
+    border: 1px solid #cecdcd ;
+    border-radius: 2px;
+    padding-left: 5px; 
+    height: 33px;
+}
 .purchase-input{
-    width: 110px;
+    width: 79px;
     border: 1px solid #cecdcd ;
     border-radius: 2px;
     padding-left: 5px; 
@@ -1085,7 +1091,7 @@ body{
 }
 
 .purchase-amount{
-    width: 138px;
+    width: 115px;
     border: 1px solid #cecdcd ;
     border-radius: 3px;
     padding-left: 5px;
@@ -1144,14 +1150,32 @@ body{
     margin-left: 20px;
 }
 .purchaseTableLabel-total{
-    margin-left: 52px;
+    margin-left: 54px;
 
 }
 .totalpurchase-cgst{
     margin-left: 138px;
 }
 
+.purchase-span{
+    display: block; 
+            overflow: hidden; 
+            padding: 0px 4px 0px 6px;
+}
 
+.purchase-lable{
+    float: left;
+}
+.table-left-transport {
+    padding-left: 970px; 
+}
+
+.table-left-roundOf{
+    padding-left: 1005px;
+}
+.table-left-grandTotal{
+    padding-left: 988px;
+}
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {
