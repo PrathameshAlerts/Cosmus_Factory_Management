@@ -1526,6 +1526,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
                 # loop through each form in formset to attach the instance of master_instance with each form in the formset
                 for form in items_formset:
+                    print('test')
                     if form.is_valid():
                         # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
                         if not form.cleaned_data.get('DELETE'):
@@ -1534,35 +1535,38 @@ def purchasevouchercreateupdate(request, pk=None):
                             items_instance.save()
 
                             form_prefix_number = form.prefix[-1]
+                            print('prefix',form_prefix_number)
                             unique_id = request.POST.get(f'item_unique_id_{form_prefix_number}')
 
                             purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
 
-                            inoice_items = purchase_voucher_items.objects.get(id = form.instance.id)
                             godown_temp_data = {}
-
+                            form_set_id = 0
                             for data in purchase_voucher_temp_data:
-                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-godown_select'] = data.godown_id
-                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-quantity'] = data.quantity
-                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-rate'] = data.rate
-                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-amount'] = data.total_amount
+                                godown_temp_data[f'shade_godown_items_set-TOTAL_FORMS'] = str(len(purchase_voucher_temp_data))
+                                godown_temp_data[f'shade_godown_items_set-INITIAL_FORMS'] =  str(0)
+                                godown_temp_data[f'shade_godown_items_set-MIN_NUM_FORMS'] =  str(0)
+                                godown_temp_data[f'shade_godown_items_set-MAX_NUM_FORMS'] =  str(1000)
+                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-godown_select'] = data.godown_id
+                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-quantity'] = data.quantity
+                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-rate'] = data.rate
+                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-amount'] = data.total_amount
+                                form_set_id =  form_set_id + 1
                             print('dict', godown_temp_data)
-                            #create a formset instance for godowns in form items
-                            godown_items_formset = purchase_voucher_items_godown_formset(request.POST, initial = godown_temp_data, prefix='shade_godown_items_set')
-                            #Saving godown items formset with item instance
+
+                            godown_items_formset = purchase_voucher_items_godown_formset(godown_temp_data, prefix='shade_godown_items_set')
                             for godown_form in godown_items_formset:
                                 if godown_form.is_valid():
                                     godown_instance = godown_form.save(commit = False)
                                     godown_instance.purchase_voucher_godown_item = items_instance
                                     godown_instance.save()
-                                    return HttpResponse('formset2 saved successfully')
                                 else:
                                     print('godown',godown_form.error)
 
                     else:
                         print('form1',form.errors)
                         return redirect('purchase-voucher-list')
-            
+
             # items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
             else:
                 print('MF',master_form.errors)
