@@ -24,7 +24,9 @@
                     <tbody class="mainTableList">
                         {{ formset.management_form }}
                     {% for form in formset %}
+                    
                         <tr>
+                            {{form.id}}
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
                             <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="purchase-input godown-select">

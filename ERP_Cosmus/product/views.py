@@ -1506,7 +1506,7 @@ def purchasevouchercreateupdate(request, pk=None):
             items_formset = item_formsets_change
 
             #create a formset instance for godowns in form items
-            godown_items_formset = purchase_voucher_items_godown_formset(request.POST)
+            godown_items_formset = purchase_voucher_items_godown_formset(request.POST, prefix='shade_godown_items_set')
 
             #filter out only the forms which are changed as shade is givin null error on extra field
             items_formset.forms = [form for form in items_formset.forms if form.has_changed()]  
@@ -1526,27 +1526,38 @@ def purchasevouchercreateupdate(request, pk=None):
 
                 # loop through each form in formset to attach the instance of master_instance with each form in the formset
                 for form in items_formset:
-                    
                     if form.is_valid():
                         # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
                         if not form.cleaned_data.get('DELETE'):
-
                             items_instance = form.save(commit=False)
                             items_instance.item_purchase_master = master_instance
                             items_instance.save()
 
-                        # inoice_items = purchase_voucher_items.objects.get(id =form.instance.id)
-                        # #create a formset instance for godowns in form items
-                        # godown_items_formset = purchase_voucher_items_godown_formset(request.POST, instance = inoice_items)
-                        #Saving godown items formset with item instance
-                        # for godown_form in godown_items_formset:
-                        #     if godown_form.is_valid():
-                        #         godown_instance = godown_form.save(commit = False)
-                        #         godown_instance.purchase_voucher_godown_item = items_instance
-                        #         godown_instance.save()
-                        #         return HttpResponse('formset2 saved successfully')
-                        #     else:
-                        #         print('godown',godown_form.error)
+                            form_prefix_number = form.prefix[-1]
+                            unique_id = request.POST.get(f'item_unique_id_{form_prefix_number}')
+
+                            purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
+
+                            inoice_items = purchase_voucher_items.objects.get(id = form.instance.id)
+                            godown_temp_data = {}
+
+                            for data in purchase_voucher_temp_data:
+                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-godown_select'] = data.godown_id
+                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-quantity'] = data.quantity
+                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-rate'] = data.rate
+                                godown_temp_data[f'shade_godown_items_set-{data.unique_id}-amount'] = data.total_amount
+
+                            #create a formset instance for godowns in form items
+                            godown_items_formset = purchase_voucher_items_godown_formset(request.POST, initial = godown_temp_data, prefix='shade_godown_items_set')
+                            #Saving godown items formset with item instance
+                            for godown_form in godown_items_formset:
+                                if godown_form.is_valid():
+                                    godown_instance = godown_form.save(commit = False)
+                                    godown_instance.purchase_voucher_godown_item = items_instance
+                                    godown_instance.save()
+                                    return HttpResponse('formset2 saved successfully')
+                                else:
+                                    print('godown',godown_form.error)
                 
                     else:
                         print('1',form.errors)
@@ -1593,9 +1604,8 @@ def purchasevoucherpopup(request,unique_id,shade_id):
     instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
     
     #create a formset instance with the selected unique id 
-    formset = shade_godown_items_temporary_table_formset(queryset = instances,prefix='shade_godown_items_set')
-    for form in formset:
-        print(form)
+    formset = shade_godown_items_temporary_table_formset(queryset = instances, prefix='shade_godown_items_set')
+
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -1609,6 +1619,7 @@ def purchasevoucherpopup(request,unique_id,shade_id):
         formset = shade_godown_items_temporary_table_formset(request.POST,prefix='shade_godown_items_set')
         if formset.is_valid():
             for form in formset:
+                #print(form.prefix)  gives the prefix number of the current iteration of the form
                 if form.is_valid():
                     form.save()
                 else:
