@@ -154,7 +154,7 @@
         <tbody>
         <tr>
         <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
-        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 473px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
+        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 483px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
         <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 252px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
         <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 124px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
         <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
@@ -189,23 +189,23 @@
 <div class="table-left mb-4">
     
     <div class="d-flex mb-3">
-        <lable  class=" fw-bold" >Gross total</lable>
-        <input type="number" class="purchaseTableLabel-total purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50"  >
+        <lable  class="purchaseTableLabel-total fw-bold">Gross total<span><input type="number" class=" purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50"  ></span></lable>
+       
     </div>
 
     <div class="d-flex mb-3">
-        <lable class="fw-bold">Fright & Transport</lable>
-        <input type="number" class="purchase-amount purchaseTableLabel" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" >
+        <span class="fw-bold">Fright & Transport</span>
+        <span><input type="number" class="purchase-amount " name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" ></span>
 
     </div>
     <div class="d-flex mb-3">
         <input type="hidden" id="temp_grand_total" value="">
-        <lable class="fw-bold">Round Of </lable>
+        <span class="fw-bold">Round Of </span>
         <input type="number" class="purchase-amount purchaseTableLabel-total" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" >
     </div>
   
     <div class="d-flex mb-3">
-        <label for="id_grand_total" class="fw-bold" >Grand total</label>
+        <span for="id_grand_total" class="fw-bold" >Grand total</span>
           <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
     </div>
 </div>
