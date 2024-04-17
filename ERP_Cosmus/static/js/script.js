@@ -96,66 +96,7 @@ $(document).ready(function(){
 
 //add card in form 
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Counter to keep track of added cards
-  var cardCounter = 1;
 
-  // Event listener for adding new cards
-  document.getElementById('addButton').addEventListener('click', function() {
-    createCard();
-  });
-
-  function createCard() {
-    var cardContainer = document.getElementById('cardContainer');
-    var cardClone = document.querySelector('.card-clone');
-
-    // Clone the card clone element
-    var newCard = cardClone.cloneNode(true);
-
-    // Display the new card
-    newCard.style.display = 'block';
-
-    // Reset input values in the new card
-    newCard.querySelector('input[type="file"]').value = '';
-    newCard.querySelector('input[name="PProduct_SKU_"]').value = '';
-    newCard.querySelector('select[name="PProduct_color_"]').selectedIndex = 0;
-    newCard.querySelector('input[name="Product_EANCode_"]').value = '';
-   
-
-    // Update input names with dynamic counters
-    newCard.querySelectorAll('input, select').forEach(function(element) {
-      var name = element.getAttribute('name');
-      element.setAttribute('name', name + cardCounter);
-    });
-
-    // Event listener for image preview
-    newCard.querySelector('input[type="file"]').addEventListener('change', function(event) {
-      var imgPreview = newCard.querySelector('.card-img-top');
-      var file = event.target.files[0];
-      var reader = new FileReader();
-
-      reader.onload = function() {
-        imgPreview.src = reader.result;
-      }
-
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // Event listener for canceling the card
-    newCard.querySelector('.cancel-btn').addEventListener('click', function(event) {
-      var card = event.target.closest('.card');
-      card.parentNode.removeChild(card);
-      cardCounter--; // Decrement the counter
-  
-    });
-
-    cardContainer.appendChild(newCard);
-    cardCounter++; // Increment the counter
-  }
-
-});
 // //create and update item form
 /*document.addEventListener('DOMContentLoaded', function() {
   const field3Input = document.querySelector('#id_Item_Color');
