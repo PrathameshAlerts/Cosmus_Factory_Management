@@ -1430,31 +1430,34 @@ def stocktransferreport(request):
 
 
 def purchasevouchercreateupdate(request, pk=None):
-    print('Master_post',request.POST)
-    #get the purchase invoice for updating the form 
-    if pk:
-        purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
-        item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
+    if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+        print('Master_post',request.POST)
+
+        #get the purchase invoice for updating the form 
+        if pk:
+            purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
+            item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
         
-    else:
-        purchase_invoice_instance = None
-        item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
+        else:
+            purchase_invoice_instance = None
+            item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
 
-    if request.session.get('temp_data_exists') and request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
-        # Delete temporary data if there a a flag which was set while creating temp data
-        # this will ensure the table will be be deleted by someone who created some temp data   
-        shade_godown_items_temporary_table.objects.all().delete()
-        # Delete the flag from the session
-        del request.session['temp_data_exists']
+        items_formset = item_formsets_change
+        Purchase_gst = gst.objects.all()
 
-    Purchase_gst = gst.objects.all()
-    master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
-    items_formset = item_formsets_change
-    
-    raw_material_godowns = Godown_raw_material.objects.all()
+        for forms in items_formset.forms:
+            godown_items_formset = purchase_voucher_items_godown_formset()
 
-    for forms in items_formset.forms:
-        godown_items_formset = purchase_voucher_items_godown_formset()
+        raw_material_godowns = Godown_raw_material.objects.all()
+
+        master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
+
+        if request.session.get('temp_data_exists'):
+            # Delete temporary data if there a a flag which was set while creating temp data
+            # this will ensure the table will be be deleted by someone who created some temp data   
+            shade_godown_items_temporary_table.objects.all().delete()
+            # Delete the flag from the session
+            del request.session['temp_data_exists']
 
     try:
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
@@ -1631,8 +1634,7 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
             for form in formset:
                 if form.is_valid():
                     form.save()
-
-                    # Create temporary data and set the flag in the session for the user 
+                    # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate 
                     request.session['temp_data_exists'] = True
                 else:
                     context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,

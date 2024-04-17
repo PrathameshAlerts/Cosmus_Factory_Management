@@ -8,6 +8,11 @@ from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
 
+class CompanyMaster(models.Model):
+    company_name =models.CharField(max_length=100) 
+    Gst_number = models.CharField(max_length = 15,validators = [MinLengthValidator(15), MaxLengthValidator(15)])
+
+
 
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
