@@ -75,11 +75,10 @@
             <tbody class="mainTableList">
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
-                {{ forms.id }}
+                
                 
                 <tr>
-                    
-                    <td>{{forloop.counter0}}</td>
+                    {{ forms.id }}
                     <td> 
                         <select name="item_name_{{forloop.counter0}}" class="item-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
 
@@ -139,10 +138,8 @@
                     <td>{{ forms.DELETE }}</td>
                     <td><input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value="{{forloop.counter0}}" id="item_unique_id_{{forloop.counter0}}"></td>
                  </tr>   
-            
             {% endfor %}
         </tbody>
-
 
         </table>
         <button type="button" class="create-btn" id="addRowButton">Add +</button>
@@ -205,7 +202,7 @@
     </div>
   
     <div class="d-flex mb-3">
-        <span for="id_grand_total" class="fw-bold" >Grand total</span>
+        <span for="id_grand_total" class="fw-bold">Grand total</span>
           <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
     </div>
 </div>
@@ -445,15 +442,10 @@ $.ajax({
         });   
         
     }
-   
-       
-        function calculateOtherTotal(grandTotal) { 
-          
-     
+        function calculateOtherTotal(grandTotal) {
+
          var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
         
-        
-       
           var  grossTotal = grandTotal;      
     
         // Set the calculated gross total value to the gross total input field
@@ -491,7 +483,6 @@ $.ajax({
                 calculateTotalAmount();
                 calculateOtherTotal();
              
-                
             });
         });
        
@@ -575,8 +566,6 @@ $.ajax({
            uniqueElement.value= `${formIndex}`;
         
             
-        
-
             tableBody.appendChild(lastRow);
            
             addEventListenersToInputs(lastRow);
@@ -603,7 +592,5 @@ $.ajax({
     calculateOtherTotal();
 
   </script>
-
-
 
 {% endblock body %}

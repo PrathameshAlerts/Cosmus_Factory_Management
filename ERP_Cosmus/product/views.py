@@ -9,7 +9,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransfer, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, packaging, purchase_voucher_items,
+                                 item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items,
                                    shade_godown_items_temporary_table)
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
@@ -1430,13 +1430,22 @@ def stocktransferreport(request):
 
 
 def purchasevouchercreateupdate(request, pk=None):
+    print('Master_post',request.POST)
     #get the purchase invoice for updating the form 
     if pk:
         purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
         item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
+        
     else:
         purchase_invoice_instance = None
         item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
+
+    if request.session.get('temp_data_exists') and request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+        # Delete temporary data if there a a flag which was set while creating temp data
+        # this will ensure the table will be be deleted by someone who created some temp data   
+        shade_godown_items_temporary_table.objects.all().delete()
+        # Delete the flag from the session
+        del request.session['temp_data_exists']
 
     Purchase_gst = gst.objects.all()
     master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
@@ -1497,84 +1506,90 @@ def purchasevouchercreateupdate(request, pk=None):
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
                                   'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,})
 
-    print('Master_post',request.POST)
     if request.method == 'POST':
-        try:
-            #create a form instance for main form
-            master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
+        with transaction.atomic(): #start a database transaction
+            try:
+                #create a form instance for main form
+                master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
 
-            #create a formset instance for form items in invoice
-            items_formset = item_formsets_change
+                #create a formset instance for form items in invoice
+                items_formset = item_formsets_change
 
-            #create a formset instance for godowns in form items
-            godown_items_formset = purchase_voucher_items_godown_formset(request.POST, prefix='shade_godown_items_set')
+                #create a formset instance for godowns in form items
+                godown_items_formset = purchase_voucher_items_godown_formset(request.POST, prefix='shade_godown_items_set')
 
-            #filter out only the forms which are changed as shade is giving null error on extra field
-            items_formset.forms = [form for form in items_formset.forms if form.has_changed()]  
+                #filter out only the forms which are changed as shade is giving null error on extra field
+                items_formset.forms = [form for form in items_formset.forms if form.has_changed()]  
             
-            if master_form.is_valid() and items_formset.is_valid():
-                # Save the master form
-                master_instance = master_form.save()
-
-                # Check for items marked for deletion and delete them 
-                # delete wont work after default cos we are not saving items_formset instead we are saving  in the formsets individually
-                # items_formset.deleted_forms has the forms marked for deletion
-                for form in items_formset.deleted_forms:
+                if master_form.is_valid() and items_formset.is_valid():
+                    # Save the master form
+                    master_instance = master_form.save()
+                
+                    # Check for items marked for deletion and delete them 
+                    # delete wont work after default as we are not saving items_formset instead we are saving  in the formsets individually
+                    # items_formset.deleted_forms has the forms marked for deletion
+                    for form in items_formset.deleted_forms:
                         if form.instance.pk:
                             form.instance.delete()
 
+                    # loop through each form in formset to attach the instance of master_instance with each form in the formset
+                    for form in items_formset:
+                        if form.is_valid():
+                            # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
+                            if not form.cleaned_data.get('DELETE'):
+                                items_instance = form.save(commit=False)
+                                items_instance.item_purchase_master = master_instance
+                                items_instance.save()
+                                
+                                form_prefix_number = form.prefix[-1] #gives the prefix number of the current iteration of the form
 
-                # loop through each form in formset to attach the instance of master_instance with each form in the formset
-                for form in items_formset:
-                    print('test')
-                    if form.is_valid():
-                        # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
-                        if not form.cleaned_data.get('DELETE'):
-                            items_instance = form.save(commit=False)
-                            items_instance.item_purchase_master = master_instance
-                            items_instance.save()
+                                unique_id = request.POST.get(f'item_unique_id_{form_prefix_number}')
 
-                            form_prefix_number = form.prefix[-1]
-                            print('prefix',form_prefix_number)
-                            unique_id = request.POST.get(f'item_unique_id_{form_prefix_number}')
+                                purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
 
-                            purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
+                                godown_temp_data = {}
+                                form_set_id = 0
+                                for data in purchase_voucher_temp_data:
+                                    godown_temp_data[f'shade_godown_items_set-TOTAL_FORMS'] = str(len(purchase_voucher_temp_data))
+                                    godown_temp_data[f'shade_godown_items_set-INITIAL_FORMS'] =  str(0)
+                                    godown_temp_data[f'shade_godown_items_set-MIN_NUM_FORMS'] =  str(0)
+                                    godown_temp_data[f'shade_godown_items_set-MAX_NUM_FORMS'] =  str(1000)
+                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-godown_select'] = data.godown_id
+                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-quantity'] = data.quantity
+                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-rate'] = data.rate
+                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-amount'] = data.total_amount
+                                    form_set_id =  form_set_id + 1
+                            
+                                godown_items_formset = purchase_voucher_items_godown_formset(godown_temp_data, prefix='shade_godown_items_set')
+                                saved_data_to_delete = 0
+                                for godown_form in godown_items_formset:
+                                    if godown_form.is_valid():
+                                        godown_instance = godown_form.save(commit = False)
+                                        godown_instance.purchase_voucher_godown_item = items_instance
+                                        godown_instance.save()
+                                        saved_data_to_delete = saved_data_to_delete + 1
+                                    else:
+                                        print('godown',godown_form.error)
+                                        shade_godown_items_temporary_table.objects.all().delete()
 
-                            godown_temp_data = {}
-                            form_set_id = 0
-                            for data in purchase_voucher_temp_data:
-                                godown_temp_data[f'shade_godown_items_set-TOTAL_FORMS'] = str(len(purchase_voucher_temp_data))
-                                godown_temp_data[f'shade_godown_items_set-INITIAL_FORMS'] =  str(0)
-                                godown_temp_data[f'shade_godown_items_set-MIN_NUM_FORMS'] =  str(0)
-                                godown_temp_data[f'shade_godown_items_set-MAX_NUM_FORMS'] =  str(1000)
-                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-godown_select'] = data.godown_id
-                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-quantity'] = data.quantity
-                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-rate'] = data.rate
-                                godown_temp_data[f'shade_godown_items_set-{form_set_id}-amount'] = data.total_amount
-                                form_set_id =  form_set_id + 1
-                            print('dict', godown_temp_data)
+                                if saved_data_to_delete == form_set_id:
+                                    purchase_voucher_temp_data.delete()
 
-                            godown_items_formset = purchase_voucher_items_godown_formset(godown_temp_data, prefix='shade_godown_items_set')
-                            for godown_form in godown_items_formset:
-                                if godown_form.is_valid():
-                                    godown_instance = godown_form.save(commit = False)
-                                    godown_instance.purchase_voucher_godown_item = items_instance
-                                    godown_instance.save()
-                                else:
-                                    print('godown',godown_form.error)
+                        else:
+                            print('form1',form.errors)
+                            shade_godown_items_temporary_table.objects.all().delete()
 
-                    else:
-                        print('form1',form.errors)
-                        return redirect('purchase-voucher-list')
-
-            # items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
-            else:
-                print('MF',master_form.errors)
-                print('IF',items_formset.errors)
-                return redirect('purchase-voucher-list')
+                # items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
+                else:
+                    shade_godown_items_temporary_table.objects.all().delete()
+                    print('MF',master_form.errors)
+                    print('IF',items_formset.errors)
+                    return redirect('purchase-voucher-list')
             
-        except Exception as e:
-            print('an error occoured-', e)
+            except Exception as e:
+                shade_godown_items_temporary_table.objects.all().delete()
+                print('an error occoured-',e)
+                messages.error(request,f'An error occoured{e} godown temporary data deleted')
 
     context = {'master_form':master_form,
                'party_names':party_names,
@@ -1588,13 +1603,18 @@ def purchasevouchercreateupdate(request, pk=None):
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
-def purchasevoucherpopup(request,unique_id,shade_id):
+def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
+    if unique_id is not None:
+        #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
+        temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
+        formsets = shade_godown_items_temporary_table_formset(request.POST or None,queryset = temp_instances,prefix='shade_godown_items_set')
+        
+    elif pk is not None:
+        voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
+        formsets = purchase_voucher_items_godown_formset(request.POST or None, instance=voucher_item_instance, prefix='shade_godown_items_set')
     
-    #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
-    instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
-    
-    #create a formset instance with the selected unique id 
-    formset = shade_godown_items_temporary_table_formset(queryset = instances, prefix='shade_godown_items_set')
+    #create a formset instance with the selected unique id or PK 
+    formset = formsets
 
     try:
         godowns = Godown_raw_material.objects.all()
@@ -1606,15 +1626,17 @@ def purchasevoucherpopup(request,unique_id,shade_id):
 
     print(request.POST)
     if request.method == 'POST':
-        formset = shade_godown_items_temporary_table_formset(request.POST,prefix='shade_godown_items_set')
+        formset = formsets
         if formset.is_valid():
             for form in formset:
-                #print(form.prefix)  gives the prefix number of the current iteration of the form
                 if form.is_valid():
                     form.save()
+
+                    # Create temporary data and set the flag in the session for the user 
+                    request.session['temp_data_exists'] = True
                 else:
                     context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
-                                'formset': formset, 'unique_id': unique_id, 'shade_id': shade_id,
+                                'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,
                                                                  'errors': formset.errors}
                     return render(request, 'accounts/purchase_popup.html', context)
             return HttpResponse('<script>window.close();</script>')
@@ -1633,7 +1655,13 @@ def purchasevoucherpopup(request,unique_id,shade_id):
 def purchasevouchercreatepopupajax(request):
     shade_id = request.GET.get('selected_shade')
     unique_id = request.GET.get('unique_invoice_row_id')
-    popup_url = reverse('purchase-voucher-popup', args=[unique_id,shade_id])
+    primary_key = request.GET.get('primary_key')
+
+    if unique_id:
+        popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,unique_id])
+    elif primary_key:
+        popup_url = reverse('purchase-voucher-popup-update', args=[primary_key])
+
     return JsonResponse({'popup_url':popup_url})
 
 
@@ -1641,8 +1669,6 @@ def purchasevouchercreatepopupajax(request):
 def purchasevoucherlist(request):
     purchase_invoice_list = item_purchase_voucher_master.objects.all()
     return render(request,'accounts/purchase_invoice_list.html',{'purchase_invoice_list':purchase_invoice_list})
-
-
 
 
 def purchasevoucherdelete(request,pk):
