@@ -66,8 +66,8 @@
                     <th>Units</th>
                     <th>Taxable Value</th>
                     <th>GST %</th>
-                    <th>CGST %</th>
-                    <th>SGST/IGST %</th>
+                    <th>CGST</th>
+                    <th>SGST/IGST</th>
                     <th>Total Amount</th>
                     <th>DELETE</th>
                 </tr>
@@ -80,7 +80,7 @@
                 <tr>
                     {{ forms.id }}
                     <td> 
-                        <select name="item_name_{{forloop.counter0}}" class="item-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
+                        <select name="item_name_{{forloop.counter0}}" class="purchase-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
 
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
@@ -100,7 +100,7 @@
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
                     </td>
                     <td>
-                        <select name="{{forms.prefix}}-item_shade" class="item-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
+                        <select name="{{forms.prefix}}-item_shade" class="purchase-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
                              {% if forms.instance.id %} 
                              <option value="{{forms.instance.item_shade.id}}">{{forms.instance.item_shade.item_shade_name}}</option>
@@ -151,9 +151,9 @@
         <tbody>
         <tr>
         <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
-        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 483px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
-        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 252px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
-        <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 124px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
+        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 363px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
+        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 192px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
+        <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 96px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
         <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
         <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
         </tr>
@@ -183,29 +183,37 @@
       
     </div>       -->
 
-<div class="table-left mb-4">
+<div class=" mb-4">
     
-    <div class="d-flex mb-3">
-        <lable  class="purchaseTableLabel-total fw-bold">Gross total<span><input type="number" class=" purchase-amount" name="gross_total" step=".01" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50"  ></span></lable>
-       
+    <div class="table-left mb-3">
+        <lable  class="purchase-lable fw-bold">Gross total</lable>
+        <span class="purchase-span">
+            <input type="number" class="ms-5  purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" step=".01" >
+        </span>
+        
     </div>
-
-    <div class="d-flex mb-3">
-        <span class="fw-bold">Fright & Transport</span>
-        <span><input type="number" class="purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" ></span>
+</div>
+    <div class="table-left-transport mb-3">
+        <lable class="purchase-lable fw-bold">Fright & Transport</lable>
+        <span class="purchase-span">
+            <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" >
+        </span>
 
     </div>
-    <div class="d-flex mb-3">
+    <div class="table-left-roundOf mb-3">
         <input type="hidden" id="temp_grand_total" value="">
-        <span class="fw-bold">Round Of </span>
-        <input type="number" class="purchase-amount purchaseTableLabel-total" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" >
+        <label class="purchase-lable fw-bold">Round Of </label>
+        <span class="purchase-span">
+            <input type="number" class="ms-5  purchase-amount" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" >
+        </span>
+       
     </div>
   
     <div class="d-flex mb-3">
         <span for="id_grand_total" class="fw-bold">Grand total</span>
           <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
     </div>
-</div>
+
 
 
 
@@ -457,8 +465,8 @@ $.ajax({
 
         document.getElementById('temp_grand_total').value = finalTotal.toFixed(2);
 
-
-        var finalTotals = Math.ceil(finalTotal)
+          
+        var finalTotals = Math.round(finalTotal)
 
         var roundOff = finalTotals - finalTotal;
         document.getElementById('id_round_off').value = roundOff.toFixed(2);
