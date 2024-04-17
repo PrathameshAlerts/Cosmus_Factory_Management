@@ -75,9 +75,10 @@
             <tbody>
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
+                
+                
                 <tr>
                     {{ forms.id }}
-                    <td><span class="form-count">{{forloop.counter}}</span></td>
                     <td> 
                         <select name="item_name_{{forloop.counter0}}" class="purchase-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
 
@@ -137,10 +138,8 @@
                     <td>{{ forms.DELETE }}</td>
                     <td><input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value="{{forloop.counter0}}" id="item_unique_id_{{forloop.counter0}}"></td>
                  </tr>   
-            
             {% endfor %}
         </tbody>
-
 
         </table>
         <button type="button" class="create-btn" id="addRowButton">Add +</button>
@@ -210,12 +209,9 @@
        
     </div>
   
-    <div class="table-left-grandTotal mb-3">
-        <label class="purchase-lable fw-bold" >Grand total</label>
-        <span class="purchase-span">
-            <input type="number" class="ms-5 purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" step=".01">
-        </span>
-          
+    <div class="d-flex mb-3">
+        <span for="id_grand_total" class="fw-bold">Grand total</span>
+          <input type="text" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total">
     </div>
 
 </div>
@@ -533,85 +529,14 @@ $.ajax({
            document.getElementById('id_grand_sgst').value = totalSgst.toFixed(2);
           
            document.getElementById('id_grand_amount').value = grandTotalAmount.toFixed(2);
-         }
-
-    //      calculateRowAmount()
-    //      function calculateTotalAmount() {
-    //     var rows = document.querySelectorAll('#myTable tbody tr');
-    //     var total = 0; 
-    //     var totalQty = 0;
-    //     var newGst =0;
-    //     var newCgst = 0;
-    //     var totalCgst =0;
-    //     var newSgst = 0;
-    //     var totalSgst =0;
-    //     var grandTotal = 0;
-    //     var grandTotalAmount = 0;
-    //     // Iterate through each row
-    //     // rows.forEach(function(row) {
-    //     //     // Find the quantity, rate, and amount input fields for the current row
-    //     //     var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
-    //     //     var rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
-    //     //     var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
-    //     //     var gstValue = row.querySelector('.purchase-gst[name^="item_gst-"]');
-    //     //     var cgstValue= row.querySelector('.purchase-cgst[name^="item_cgst-"]');
-    //     //     var sgstValue= row.querySelector('.purchase-sgst[name^="item_sgst-"]');
-
-    //     //     var totalAmountInput = row.querySelector('.purchase-total[name^="item_total_amount-"]');
-         
-    //     //     // Get the values of quantity and rate
-    //     //     var quantity = parseFloat(quantityInput.value);
-    //     //     var rate = parseFloat(rateInput.value);
-    //     //     var gst = parseFloat(gstValue.value);
-         
-           
-           
-    //     //     // Calculate the amount for the current row
-    //     //    var amount = quantity * rate;
-    //     //    totalQty = quantity  +  totalQty;
-           
-    //     //     newGst = amount * gst / 100;
-    //     //     newCgst = newGst / 2;
-    //     //     newSgst = newGst / 2;
-           
-
-    //     //     cgstValue.value = isNaN(newCgst) ? '' : newCgst.toFixed(2);
-    //     //     sgstValue.value = isNaN(newSgst) ? '' : newSgst.toFixed(2);
-    //     //     totalCgst = totalCgst + newCgst;
-    //     //     totalSgst = totalSgst + newSgst;
-          
-             
-    //     //     // Set the calculated amount value to the amount input field
-    //     //     amountInput.value = isNaN(amount) ? '' : amount.toFixed(2);
-
-    //     //     // Set the calculated total amount value to the total amount input field
-
-    //     //     total= total + amount;
-            
-    //     //     grandTotal = total + newCgst + newSgst;
+        });   
         
-    //     //    totalAmountInput.value = isNaN(grandTotal) ? '' : grandTotal.toFixed(2); 
-    //     //    grandTotalAmount = grandTotalAmount + grandTotal; 
-    //     //    document.getElementById('id_grand_taxableAmount').value = total.toFixed(2);
-    //     //    document.getElementById('id_grand_quantity').value = totalQty.toFixed(2);
-    //     //    document.getElementById('id_grand_cgst').value = totalCgst.toFixed(2);
-    //     //    document.getElementById('id_grand_sgst').value = totalSgst.toFixed(2);
-          
-    //     //    document.getElementById('id_grand_amount').value = grandTotalAmount.toFixed(2);
-    //     // });   
+    }
+        function calculateOtherTotal(grandTotal) {
+
+         var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
         
-    // }
-   
-       
-    //     function calculateOtherTotal(grandTotal) { 
-          
-     
-    //      var grandTotals = parseFloat(document.getElementById('id_grand_amount').value);
-        
-    //     console.log(grandTotals);
-       
-    //       var  grossTotal = parseFloat(grandTotals);  
-    //       console.log('grossTotal',grossTotal);    
+          var  grossTotal = grandTotal;      
     
     //     // Set the calculated gross total value to the gross total input field
     //     document.getElementById('id_gross_total').value = grossTotal.toFixed(2);
@@ -641,16 +566,15 @@ $.ajax({
 
 
    
-    // function addEventListenersToInputs() {
-    //     var inputs = document.querySelectorAll('#myTable tbody tr input');
-    //     inputs.forEach(function(input) {
-    //         input.addEventListener('input', function() {
-    //             calculateTotalAmount();
-    //             calculateOtherTotal();
+    function addEventListenersToInputs() {
+        var inputs = document.querySelectorAll('#myTable tbody tr input');
+        inputs.forEach(function(input) {
+            input.addEventListener('input', function() {
+                calculateTotalAmount();
+                calculateOtherTotal();
              
-                
-    //         });
-    //     });
+            });
+        });
        
     // }
 
@@ -738,12 +662,11 @@ $.ajax({
 //            uniqueElement.name = `item_unique_id_${ formCount}`;
 //            uniqueElement.value= formCount;
         
-        
-//            formCountInput.value = formCount + 1; 
             
-//            tableBody.appendChild(lastRow);
-//             addEventListenersToInputs(lastRow);
-//             calculateTotalAmount();  
+            tableBody.appendChild(lastRow);
+           
+            addEventListenersToInputs(lastRow);
+            calculateTotalAmount();  
             
 //             console.log("form created") 
 
@@ -766,7 +689,5 @@ $.ajax({
     // calculateOtherTotal();
 
   </script>
-
-
 
 {% endblock body %}

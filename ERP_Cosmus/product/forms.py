@@ -187,11 +187,16 @@ class item_purchase_voucher_master_form(forms.ModelForm):
             'party_name','fright_transport','gross_total','grand_total'
         ]
 
-purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=1)
+purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=3)
 purchase_voucher_items_formset_update = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=0)
 purchase_voucher_items_godown_formset = inlineformset_factory(purchase_voucher_items,shade_godown_items, fields = ('godown_select','quantity','rate','amount'),extra=1)
 
+class shade_godown_items_temporary_table_form(forms.ModelForm):
+    class Meta:
+        model = shade_godown_items_temporary_table
+        fields = '__all__'
 
+shade_godown_items_temporary_table_formset = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=1)
 
 class gst_form(forms.ModelForm):
     class Meta:
@@ -223,12 +228,7 @@ class product_sub_category_form(forms.ModelForm):
         fields = ['product_sub_category_name','product_main_category']
 
 
-class shade_godown_items_temporary_table_form(forms.ModelForm):
-    class Meta:
-        model = shade_godown_items_temporary_table
-        fields = '__all__'
 
-shade_godown_items_temporary_table_formset = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=1)
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())
     password = forms.CharField(widget=PasswordInput())
