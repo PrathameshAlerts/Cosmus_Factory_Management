@@ -108,10 +108,10 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}">
+                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}">
+                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" readonly>
                     </td>
                     <td>
                         <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
@@ -192,11 +192,18 @@ function updateFormData(newSessionData){
     var newId = newSessionData.newUniqueId;
     var newQty = newSessionData.newTotalQty;
     var newRate = newSessionData.newTotalRate;
-    var itemUniqueId = document.getElementById('item_unique_id_'+ newId).value; 
+    var itemForm = document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value;
+    var itemFormValue = itemForm - 1
+    console.log('itemFormValue',itemFormValue)
+    var itemUniqueId = document.getElementById('item_unique_id_'+ itemFormValue).value; 
     
+    console.log('newId',newId)
+    console.log('newQty',newQty)
+    console.log('newRate',newRate)
+    console.log('itemUniqueId',itemUniqueId)
     if(newId == itemUniqueId){
-      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-quantity_total')
-      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ itemUniqueId + '-rate')
+      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ itemFormValue + '-quantity_total')
+      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ itemFormValue + '-rate')
 
       oldQty.value = newQty
       oldRate.value = newRate
@@ -204,16 +211,7 @@ function updateFormData(newSessionData){
       calculateOtherTotal()
     }
 }
-   
- function randomValue (){
-const uuid = uuidv4();
-
-    var uniqueId = document.getElementById('item_unique_id_0');
-
-    uniqueId.value = uuid;
- }
-
-randomValue();
+ 
 </script>
 
  <script>
@@ -246,6 +244,15 @@ $.ajax({
 
 })
 
+function randomValue (){
+const uuid = uuidv4();
+
+    var uniqueId = document.getElementById('item_unique_id_0');
+
+    uniqueId.value = uuid;
+ }
+
+randomValue();
 
  </script>
 
