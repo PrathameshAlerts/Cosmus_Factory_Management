@@ -1572,8 +1572,8 @@ def purchasevouchercreateupdate(request, pk=None):
                                         print('godown',godown_form.error)
                                         shade_godown_items_temporary_table.objects.all().delete()
 
-                                # if saved_data_to_delete == form_set_id:
-                                #     purchase_voucher_temp_data.delete()
+                                if saved_data_to_delete == form_set_id:
+                                    purchase_voucher_temp_data.delete()
 
                         else:
                             print('form1',form.errors)
@@ -1612,10 +1612,12 @@ def purchasevouchercreateupdate(request, pk=None):
 
 
 def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
+
     if unique_id is not None:
         #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
         temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
-        formsets = shade_godown_items_temporary_table_formset(request.POST or None,queryset = temp_instances,prefix='shade_godown_items_set')
+        print('temp_instances',temp_instances)
+        formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
         
     elif pk is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
@@ -1664,11 +1666,16 @@ def purchasevouchercreatepopupajax(request):
     unique_id = request.GET.get('unique_invoice_row_id')
     primary_key = request.GET.get('primary_key')
 
-    if unique_id:
+    if unique_id is not None:
         popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,unique_id])
-    elif primary_key:
+        
+    elif primary_key is not None:
         popup_url = reverse('purchase-voucher-popup-update', args=[shade_id,primary_key])
+    
+    else:
+        popup_url = None
 
+    print('popupurl', popup_url)
     return JsonResponse({'popup_url':popup_url})
 
 
