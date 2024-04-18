@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'tax',
     'bootstrap5',
     'cities_light',
+    "django_htmx",
     
 
 ]
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'

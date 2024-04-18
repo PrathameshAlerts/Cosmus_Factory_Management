@@ -304,10 +304,12 @@ def add_product_images(request, pk):
 
 
 def add_product_video_url(request,pk):
+    print(request.POST)
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductVideoFormSet(instance=product)  # pass the instance to the formset
     if request.method == 'POST':
         formset = ProductVideoFormSet(request.POST, instance=product)
+        print(formset)
         if formset.is_valid():
             formset.save()
             messages.success(request,'Product url sucessfully added.')
@@ -1432,6 +1434,7 @@ def stocktransferreport(request):
 def purchasevouchercreateupdate(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
         print('Master_post',request.POST)
+        print('Master_get',request.GET)
 
         #get the purchase invoice for updating the form 
         if pk:
