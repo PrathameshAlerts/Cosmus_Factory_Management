@@ -1455,12 +1455,12 @@ def purchasevouchercreateupdate(request, pk=None):
 
         master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
 
-        if request.session.get('temp_data_exists'):
-            # Delete temporary data if there a a flag which was set while creating temp data
-            # this will ensure the table will be be deleted by someone who created some temp data   
-            shade_godown_items_temporary_table.objects.all().delete()
-            # Delete the flag from the session
-            del request.session['temp_data_exists']
+        # if request.session.get('temp_data_exists'):
+        #     # Delete temporary data if there a a flag which was set while creating temp data
+        #     # this will ensure the table will be be deleted by someone who created some temp data   
+        #     shade_godown_items_temporary_table.objects.all().delete()
+        #     # Delete the flag from the session
+        #     del request.session['temp_data_exists']
 
     try:
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
@@ -1574,6 +1574,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                         godown_instance.purchase_voucher_godown_item = items_instance
                                         godown_instance.save()
                                         saved_data_to_delete = saved_data_to_delete + 1
+                                        print('Data-saved')
                                     else:
                                         print('godown',godown_form.error)
                                         shade_godown_items_temporary_table.objects.all().delete()
@@ -1665,7 +1666,7 @@ def purchasevouchercreatepopupajax(request):
     if unique_id:
         popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,unique_id])
     elif primary_key:
-        popup_url = reverse('purchase-voucher-popup-update', args=[primary_key])
+        popup_url = reverse('purchase-voucher-popup-update', args=[shade_id,primary_key])
 
     return JsonResponse({'popup_url':popup_url})
 
