@@ -49,9 +49,7 @@ INSTALLED_APPS = [
     'tax',
     'bootstrap5',
     'cities_light',
-    "django_htmx",
-    
-
+    'django_htmx',
 ]
 
 

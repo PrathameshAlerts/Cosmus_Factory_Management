@@ -9,7 +9,7 @@
           <h5 class="" id="">shade Name: {{item_shade}}</h5>
           </div>
         <div class="">
-            <form method="post" id="" enctype="multipart/form-data" onsubmit="submitData()">
+            <form method="post" id=""  onsubmit="submitData()">
                 {% csrf_token %}
                 <table class="table table-striped table-hover" id="newTable">
                     <thead>
@@ -96,8 +96,6 @@
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {
-
-            updateRate(); 
           //first find the last row rate value is not empty then add a new row 
           //there any one rate value is empty then don't add a new row
         var newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
