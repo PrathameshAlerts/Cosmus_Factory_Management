@@ -1434,7 +1434,8 @@ def stocktransferreport(request):
 def purchasevouchercreateupdate(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
         print('Master_post',request.POST)
-        print('Master_get',request.GET)
+        my_list = request.session.get('temp_uuid', [])
+        print(my_list)
 
         #get the purchase invoice for updating the form 
         if pk:
@@ -1531,6 +1532,7 @@ def purchasevouchercreateupdate(request, pk=None):
                         if form.instance.pk:
                             form.instance.delete()
 
+                    all_purchase_temp_data = []
                     # loop through each form in formset to attach the instance of master_instance with each form in the formset
                     for form in items_formset:
                         if form.is_valid():
@@ -1545,6 +1547,9 @@ def purchasevouchercreateupdate(request, pk=None):
                                 unique_id = request.POST.get(f'item_unique_id_{form_prefix_number}')
 
                                 purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
+
+                                for data in purchase_voucher_temp_data:
+                                    all_purchase_temp_data.append(data)
 
                                 godown_temp_data = {}
                                 form_set_id = 0
@@ -1568,36 +1573,42 @@ def purchasevouchercreateupdate(request, pk=None):
                                         godown_instance.save()
                                         saved_data_to_delete = saved_data_to_delete + 1
                                         print('Data-saved')
+
                                     else:
                                         print('godown',godown_form.error)
-                                        shade_godown_items_temporary_table.objects.all().delete()
+                                        purchase_voucher_temp_data.delete()
 
                                 if saved_data_to_delete == form_set_id:
                                     purchase_voucher_temp_data.delete()
-
                         else:
                             print('form1',form.errors)
-                            shade_godown_items_temporary_table.objects.all().delete()
+                            purchase_voucher_temp_data.delete()
 
-                # items_formset = purchase_voucher_items_formset(request.POST, instance=purchase_invoice_instance)
+                    print('all_data', all_purchase_temp_data)
+                    return HttpResponse('form submitted successfully')
+                
                 else:
-                    shade_godown_items_temporary_table.objects.all().delete()
+                    del request.session['temp_uuid']
                     print('MF',master_form.errors)
                     print('IF',items_formset.errors)
                     return redirect('purchase-voucher-list')
             
             except Exception as e:
-                shade_godown_items_temporary_table.objects.all().delete()
+                for data in all_purchase_temp_data:
+                    data.delete()
                 print('an error occoured-',e)
                 messages.error(request,f'An error occoured{e} godown temporary data deleted')
             
             finally:
+
                 if request.session.get('temp_data_exists'):
                     # Delete temporary data if there a a flag which was set while creating temp data
                     # this will ensure the table will be be deleted by someone who created some temp data   
-                    shade_godown_items_temporary_table.objects.all().delete()
+                    for data in all_purchase_temp_data:
+                        data.delete()
                     # Delete the flag from the session
                     del request.session['temp_data_exists']
+                    del request.session['temp_uuid']
 
     context = {'master_form':master_form,
                'party_names':party_names,
@@ -1634,20 +1645,26 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
     except Exception as e:
         messages.error(request,'Error with Shades')
 
-    print(request.POST)
     if request.method == 'POST':
         formset = formsets
         if formset.is_valid():
+            
             for form in formset:
                 if form.is_valid():
                     form.save()
-                    # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate 
-                    request.session['temp_data_exists'] = True
+                
                 else:
                     context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
                                 'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,
                                                                  'errors': formset.errors}
+                    
+                                        # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate 
+
                     return render(request, 'accounts/purchase_popup.html', context)
+            request.session['temp_data_exists'] = True
+            temp_uuid = request.session.get('temp_uuid', [])
+            temp_uuid.append(unique_id)
+            request.session['temp_uuid'] = temp_uuid 
             return HttpResponse('<script>window.close();</script>')
         
         else:
@@ -1691,6 +1708,14 @@ def purchasevoucherdelete(request,pk):
     return redirect('purchase-voucher-list')
                     
 
+def session_data_test(request):
+    if 'temp_data_exists' in request.session: 
+        temp_data_exists = request.session['temp_data_exists']
+
+    if 'temp_uuid' in request.session:
+        temp_uuid = request.session['temp_uuid']
+    context = {'temp_data_exists':temp_data_exists , 'temp_uuid':temp_uuid}
+    return render(request,'misc/session_test.html',context=context)
 
 
 

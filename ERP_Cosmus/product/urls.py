@@ -150,4 +150,7 @@ urlpatterns = [
 
     #common Routes
     path('', views.dashboard , name='dashboard-main'),
-]
+
+    #testing
+    path('testsession/', views.session_data_test, name='test-session'),
+]   
