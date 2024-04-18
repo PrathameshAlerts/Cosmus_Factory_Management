@@ -1455,13 +1455,6 @@ def purchasevouchercreateupdate(request, pk=None):
 
         master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
 
-        # if request.session.get('temp_data_exists'):
-        #     # Delete temporary data if there a a flag which was set while creating temp data
-        #     # this will ensure the table will be be deleted by someone who created some temp data   
-        #     shade_godown_items_temporary_table.objects.all().delete()
-        #     # Delete the flag from the session
-        #     del request.session['temp_data_exists']
-
     try:
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
         party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
@@ -1579,8 +1572,8 @@ def purchasevouchercreateupdate(request, pk=None):
                                         print('godown',godown_form.error)
                                         shade_godown_items_temporary_table.objects.all().delete()
 
-                                if saved_data_to_delete == form_set_id:
-                                    purchase_voucher_temp_data.delete()
+                                # if saved_data_to_delete == form_set_id:
+                                #     purchase_voucher_temp_data.delete()
 
                         else:
                             print('form1',form.errors)
@@ -1597,6 +1590,14 @@ def purchasevouchercreateupdate(request, pk=None):
                 shade_godown_items_temporary_table.objects.all().delete()
                 print('an error occoured-',e)
                 messages.error(request,f'An error occoured{e} godown temporary data deleted')
+            
+            finally:
+                if request.session.get('temp_data_exists'):
+                    # Delete temporary data if there a a flag which was set while creating temp data
+                    # this will ensure the table will be be deleted by someone who created some temp data   
+                    shade_godown_items_temporary_table.objects.all().delete()
+                    # Delete the flag from the session
+                    del request.session['temp_data_exists']
 
     context = {'master_form':master_form,
                'party_names':party_names,
