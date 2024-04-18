@@ -1455,13 +1455,6 @@ def purchasevouchercreateupdate(request, pk=None):
 
         master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
 
-        # if request.session.get('temp_data_exists'):
-        #     # Delete temporary data if there a a flag which was set while creating temp data
-        #     # this will ensure the table will be be deleted by someone who created some temp data   
-        #     shade_godown_items_temporary_table.objects.all().delete()
-        #     # Delete the flag from the session
-        #     del request.session['temp_data_exists']
-
     try:
         account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
         party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
@@ -1597,6 +1590,14 @@ def purchasevouchercreateupdate(request, pk=None):
                 shade_godown_items_temporary_table.objects.all().delete()
                 print('an error occoured-',e)
                 messages.error(request,f'An error occoured{e} godown temporary data deleted')
+            
+            finally:
+                if request.session.get('temp_data_exists'):
+                    # Delete temporary data if there a a flag which was set while creating temp data
+                    # this will ensure the table will be be deleted by someone who created some temp data   
+                    shade_godown_items_temporary_table.objects.all().delete()
+                    # Delete the flag from the session
+                    del request.session['temp_data_exists']
 
     context = {'master_form':master_form,
                'party_names':party_names,
@@ -1611,10 +1612,12 @@ def purchasevouchercreateupdate(request, pk=None):
 
 
 def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
+
     if unique_id is not None:
         #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
         temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
-        formsets = shade_godown_items_temporary_table_formset(request.POST or None,queryset = temp_instances,prefix='shade_godown_items_set')
+        print('temp_instances',temp_instances)
+        formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
         
     elif pk is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
@@ -1663,11 +1666,16 @@ def purchasevouchercreatepopupajax(request):
     unique_id = request.GET.get('unique_invoice_row_id')
     primary_key = request.GET.get('primary_key')
 
-    if unique_id:
+    if unique_id is not None:
         popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,unique_id])
-    elif primary_key:
+        
+    elif primary_key is not None:
         popup_url = reverse('purchase-voucher-popup-update', args=[shade_id,primary_key])
+    
+    else:
+        popup_url = None
 
+    print('popupurl', popup_url)
     return JsonResponse({'popup_url':popup_url})
 
 
