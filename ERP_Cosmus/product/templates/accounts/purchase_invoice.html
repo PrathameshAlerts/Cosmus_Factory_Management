@@ -74,7 +74,7 @@
                 {% for forms in items_formset %}
                 <tr>
                     {{ forms.id }}
-                    <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value="" id="item_unique_id_{{forloop.counter0}}">
+                    <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>1</td>
                     <td> 
                         <select name="item_name_{{forloop.counter0}}" class="purchase-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
@@ -205,10 +205,15 @@ function updateFormData(newSessionData){
     }
 }
    
-   function randomNumber() {
-    document.querySelector('.unique_id').value = Math.random().toString(36).substr(2, 9);
+ function randomValue (){
+const uuid = uuidv4();
 
-   }
+    var uniqueId = document.getElementById('item_unique_id_0');
+
+    uniqueId.value = uuid;
+ }
+
+randomValue();
 </script>
 
  <script>
@@ -540,12 +545,7 @@ $.ajax({
            const uniqueElement = lastRow.querySelector('.unique-id');
            uniqueElement.id = `item_unique_id_${formIndex}`;
            uniqueElement.name = `item_unique_id_${formIndex}`;
-           uniqueElement.value= `${formIndex}`;
-
-           const uniqueElementID = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-id"]')
-           uniqueElementID.id = `purchase_voucher_items_set-${formIndex}-id`;
-           uniqueElementID.name = `purchase_voucher_items_set-${formIndex}-id`;
-           TotalAmountElement.value="";
+           uniqueElement.value= uuidv4();
             
             tableBody.appendChild(lastRow);
            
