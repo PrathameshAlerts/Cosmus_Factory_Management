@@ -1435,15 +1435,6 @@ def purchasevouchercreateupdate(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
         print('Master_post',request.POST)
 
-        #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
-        # if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
-        #     temp_data_exists_bool = request.session['temp_data_exists']
-        #     temp_uuids = request.session['temp_uuid']
-        #     del request.session['temp_data_exists']
-        #     del request.session['temp_uuid']
-        #     for data in temp_uuids:
-        #         temp_uuids_data =  shade_godown_items_temporary_table.objects.filter(unique_id=data)
-        #         temp_uuids_data.delete()
         #get the purchase invoice for updating the form 
         if pk:
             purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
@@ -1525,7 +1516,7 @@ def purchasevouchercreateupdate(request, pk=None):
                 #create a formset instance for godowns in form items
                 godown_items_formset = purchase_voucher_items_godown_formset(request.POST, prefix='shade_godown_items_set')
 
-                #filter out only the forms which are changed as shade is giving null error on extra field
+                #filter out only the forms which are changed or added 
                 items_formset.forms = [form for form in items_formset.forms if form.has_changed()]  
             
                 if master_form.is_valid() and items_formset.is_valid():
@@ -1606,15 +1597,6 @@ def purchasevouchercreateupdate(request, pk=None):
                     return redirect('purchase-voucher-list')
             
         except Exception as e:
-            #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
-            # if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
-            #     temp_data_exists_bool = request.session['temp_data_exists']
-            #     temp_uuids = request.session['temp_uuid']
-            #     del request.session['temp_data_exists']
-            #     del request.session['temp_uuid']
-            #     for data in temp_uuids:
-            #         temp_uuids_data =  shade_godown_items_temporary_table.objects.filter(unique_id=data)
-            #         temp_uuids_data.delete()
             print('an error occoured-',e)
             messages.error(request,f'An error occoured{e} godown temporary data deleted')
             
@@ -1645,6 +1627,8 @@ def purchasevouchercreateupdate(request, pk=None):
 
 def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
 
+    #unique_id generation is on add button so created rows will not have unique id need to fetch the id from hidden ids 
+
     if unique_id is not None:
         #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
         temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
@@ -1653,7 +1637,7 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
         
     elif pk is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
-        formsets = purchase_voucher_items_godown_formset(request.POST or None, instance=voucher_item_instance, prefix='shade_godown_items_set')
+        formsets = purchase_voucher_items_godown_formset(request.POST or None, instance = voucher_item_instance, prefix='shade_godown_items_set')
     
     #create a formset instance with the selected unique id or PK 
     formset = formsets
@@ -1673,7 +1657,7 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
             for form in formset:
                 if form.is_valid():
                     form.save()
-                
+        
                 else:
                     context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
                                 'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,
