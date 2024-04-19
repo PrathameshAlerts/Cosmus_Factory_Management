@@ -45,7 +45,7 @@
                     </div>
                     <div class="d-flex mb-3">
                         <label for="id_GST_number" class="item-form" >Party GST No : </label>
-                        <input type="text" class="item-select" name="GST_number" id ="id_GST_number" value="{% if master_form.instance.id %}{{master_form.instance.party_name.Gst_no}}{% endif %}" maxlength="50" required >
+                        <input type="text" class="item-select" name="GST_number" id ="id_GST_number" value="" maxlength="50" required >
                     </div>
             
                 </div>
@@ -343,17 +343,28 @@ randomValue();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
       
         var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
-        
+        console.log('purchaseId',purchaseId)
         var primary_id = null;
-
-        if(purchaseId){
+        var test = null;
+        if(purchaseId ){
             primary_id = purchaseId.value
+
+            if (primary_id === "") {
+                primary_id = null
+            }
+
         }else{
+    
             console.log('purchaseId',purchaseId)
         }
+
+       // console.log('purchaseId',purchaseId)
+       
+           //console.log('purchaseId',purchaseId)    
            console.log('uniqueIdValue',uniqueIdValue)
            console.log('selectedShade',selectedShade)
-           
+           //var purchaseIdValue = purchaseId.value ; 
+           //console.log('purchaseIdValue',purchaseIdValue)
            
            
                 if (selectedShade !== "" && primary_id !== null ) {
@@ -383,7 +394,7 @@ randomValue();
                     console.log('A popup window is already open');
                 }
             
-            }else if (uniqueIdValue !== null && selectedShade !== "" ) {
+            }else if (uniqueIdValue !== "" && selectedShade !== "" ) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
