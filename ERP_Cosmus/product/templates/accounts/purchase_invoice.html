@@ -45,7 +45,7 @@
                     </div>
                     <div class="d-flex mb-3">
                         <label for="id_GST_number" class="item-form" >Party GST No : </label>
-                        <input type="text" class="item-select" name="GST_number" id ="id_GST_number" value="{% if master_form.instance.id %}{{master_form.instance.party_name.Gst_no}}{% endif %}" maxlength="50" required >
+                        <input type="text" class="item-select" name="GST_number" id ="id_GST_number" value="{% if master_form.instance.id %}{{ master_form.instance.party_name.Gst_no }} {% endif %}" maxlength="50" required >
                     </div>
             
                 </div>
@@ -74,6 +74,7 @@
                 {% for forms in items_formset %}
                 {{ forms.id }}
                 <tr>
+                  
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>1</td>
                     <td> 
@@ -119,7 +120,6 @@
                     <td>
                         <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
                     </td>
-                    {{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage }}
                     <td>
                         <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage }}" readonly >
                     </td>
@@ -139,7 +139,7 @@
             </tbody>
 
         </table>
-        <button type="button" class="create-btn" id="addRowButton">Add +</button>
+        <button type="button" class="create-btn ms-3 mb-3" id="addRowButton">Add +</button>
     
 
         <div class="mb-4">
@@ -183,7 +183,7 @@
         </div>
 
 
-      <input type="submit" class="add_btn">
+      <input type="submit" class="ms-5 add_btn">
     </form>
 </div>
  <script>
@@ -217,15 +217,15 @@ function updateFormData(newSessionData){
 
  <script>
 //this ajax is for gst no 
-$(document).ready(function(){
+    $(document).ready(function () {
 
-$(document).on('change', 'select[name^="party_name"]', function(){
+        $(document).on('change', 'select[name^="party_name"]', function () {
 
-var selected_party_name = $(this).val()
-var int_selected_party_name = parseInt(selected_party_name)
+            var selected_party_name = $(this).val()
+            var int_selected_party_name = parseInt(selected_party_name)
 
-$.ajax({
-        url: '/purchasevouchercreate/',
+            $.ajax({
+                url: '/purchasevouchercreate/',
                 method: 'GET',
                 data: {
                     'selected_party_name': selected_party_name,
@@ -233,17 +233,17 @@ $.ajax({
                 success: function (response) {
                     console.log('Data sent successfully')
                     var party_gst_no_response = response.party_gst_no
-                    var gst_no_input = document.getElementById('id_GST_number') 
-                    gst_no_input.value = party_gst_no_response 
-                    },
+                    var gst_no_input = document.getElementById('id_GST_number')
+                    gst_no_input.value = party_gst_no_response
+                },
                 error: function (xhr, errmsg, err) {
-                        console.log('Error sending value to the backend');
-                    }
-})
+                    console.log('Error sending value to the backend');
+                }
+            })
 
-})
+        })
 
-})
+    })
 
 function randomValue (){
 const uuid = uuidv4();
@@ -263,12 +263,15 @@ randomValue();
     $(document).ready(function () {
         var itemName;
         var uniqueIdValue;
+        var purchaseValue;
         var lastSelectedItem = '';
         
         console.log('uIv',uniqueIdValue)
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-        
+        console.log('itemName',itemName)
+        purchaseValue = itemName.split('-')[1];
+        console.log('purchaseValue',purchaseValue)
 });
 
   
@@ -327,14 +330,70 @@ randomValue();
         });
 
         var popupWindow = null; // Variable to hold the reference to the popup window
-    
+
+
+       
+     
+      
+        
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-             uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-           var selectedShade = $(this).val();
-           var uniqueId = uniqueIdValue;
-           console.log('uv',uniqueId)
+
+        var selectedShade = $(this).val();
+        var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+      
+        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
+        console.log('purchaseId',purchaseId)
+        var primary_id = null;
+        var test = null;
+        if(purchaseId ){
+            primary_id = purchaseId.value
+
+            if (primary_id === "") {
+                primary_id = null
+            }
+
+        }else{
+    
+            console.log('purchaseId',purchaseId)
+        }
+
+       // console.log('purchaseId',purchaseId)
+       
+           //console.log('purchaseId',purchaseId)    
+           console.log('uniqueIdValue',uniqueIdValue)
            console.log('selectedShade',selectedShade)
-            if (selectedShade !== "" ) {
+           //var purchaseIdValue = purchaseId.value ; 
+           //console.log('purchaseIdValue',purchaseIdValue)
+           
+           
+                if (selectedShade !== "" && primary_id !== null ) {
+                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                    var minWidth = 800;
+                    var minHeight = 600;
+                    console.log(selectedShade ,primary_id)
+                    $.ajax({
+                        // Use Django URL name to fetch the URL dynamically
+                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                        method: 'GET',
+                        data: {
+                            'selected_shade': selectedShade,
+                            'purchase_id': primary_id
+                            
+                        },
+                        success: function (response) {
+                            // Open the dynamic URL received from the server
+                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.log('Error getting popup URL');
+                        }
+                    });
+                } else {
+                    // If a popup window is already open, notify the user or take appropriate action
+                    console.log('A popup window is already open');
+                }
+            
+            }else if (uniqueIdValue !== "" && selectedShade !== "" ) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
@@ -345,7 +404,7 @@ randomValue();
                         method: 'GET',
                         data: {
                             'selected_shade': selectedShade,
-                            'unique_invoice_row_id': uniqueId
+                            'unique_invoice_row_id': uniqueIdValue
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
@@ -360,8 +419,9 @@ randomValue();
                     console.log('A popup window is already open');
                 }
             }
+            
         });
-        
+
     });
 </script>
 
