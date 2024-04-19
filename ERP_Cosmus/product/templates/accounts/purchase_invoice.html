@@ -74,6 +74,7 @@
                 {% for forms in items_formset %}
                 {{ forms.id }}
                 <tr>
+                  
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>1</td>
                     <td> 
@@ -263,12 +264,15 @@ randomValue();
     $(document).ready(function () {
         var itemName;
         var uniqueIdValue;
+        var purchaseValue;
         var lastSelectedItem = '';
         
         console.log('uIv',uniqueIdValue)
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-        
+        console.log('itemName',itemName)
+        purchaseValue = itemName.split('-')[1];
+        console.log('purchaseValue',purchaseValue)
 });
 
   
@@ -327,14 +331,59 @@ randomValue();
         });
 
         var popupWindow = null; // Variable to hold the reference to the popup window
-    
+
+
+       
+     
+      
+        
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-             uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-           var selectedShade = $(this).val();
-           var uniqueId = uniqueIdValue;
-           console.log('uv',uniqueId)
+
+        var selectedShade = $(this).val();
+        var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+      
+        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
+        
+        var primary_id = null;
+
+        if(purchaseId){
+            primary_id = purchaseId.value
+        }else{
+            console.log('purchaseId',purchaseId)
+        }
+           console.log('uniqueIdValue',uniqueIdValue)
            console.log('selectedShade',selectedShade)
-            if (selectedShade !== "" ) {
+           
+           
+           
+                if (selectedShade !== "" && primary_id !== null ) {
+                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                    var minWidth = 800;
+                    var minHeight = 600;
+                    console.log(selectedShade ,primary_id)
+                    $.ajax({
+                        // Use Django URL name to fetch the URL dynamically
+                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                        method: 'GET',
+                        data: {
+                            'selected_shade': selectedShade,
+                            'purchase_id': primary_id
+                            
+                        },
+                        success: function (response) {
+                            // Open the dynamic URL received from the server
+                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.log('Error getting popup URL');
+                        }
+                    });
+                } else {
+                    // If a popup window is already open, notify the user or take appropriate action
+                    console.log('A popup window is already open');
+                }
+            
+            }else if (uniqueIdValue !== null && selectedShade !== "" ) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
@@ -345,7 +394,7 @@ randomValue();
                         method: 'GET',
                         data: {
                             'selected_shade': selectedShade,
-                            'unique_invoice_row_id': uniqueId
+                            'unique_invoice_row_id': uniqueIdValue
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
@@ -360,8 +409,9 @@ randomValue();
                     console.log('A popup window is already open');
                 }
             }
+            
         });
-        
+
     });
 </script>
 

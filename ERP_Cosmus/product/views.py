@@ -1704,7 +1704,7 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
 def purchasevouchercreatepopupajax(request):
     shade_id = request.GET.get('selected_shade')
     unique_id = request.GET.get('unique_invoice_row_id')
-    primary_key = request.GET.get('primary_key')
+    primary_key = request.GET.get('purchase_id')
 
     if unique_id is not None:
         popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,unique_id])

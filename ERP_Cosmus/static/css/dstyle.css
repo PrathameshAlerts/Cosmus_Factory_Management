@@ -19,6 +19,18 @@ body{
     background-position: center;
     
 }
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 .pcoded-navbar .scroll-div.navbar-content {
     height: 100%;
 }
@@ -660,10 +672,10 @@ body{
 .item-btn{
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
     color: white;
-    padding: 12px;
+    padding: 10px;
     font-size: 15px;
     border: none;
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer;
   }
 
