@@ -428,7 +428,7 @@ class Ledger(models.Model):
     default_credit_period = models.CharField(max_length = 100, blank = True)
     types = models.CharField(choices = TYPES , max_length = 30, blank = True)
     Gst_no = models.CharField(max_length = 100,validators = [MinLengthValidator(15), MaxLengthValidator(15)])
-    address = models.TextField(blank = True)
+    address = models.TextField(blank = True) 
     state = models.CharField(max_length = 255, blank = True)
     country = models.CharField(max_length = 255,  blank=True) 
     city = models.CharField(max_length = 255,  blank=True) 
@@ -538,7 +538,7 @@ class purchase_voucher_items(models.Model):
 
 class shade_godown_items(models.Model):
     purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items, on_delete = models.CASCADE)
-    godown_select = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
+    godown_id = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
     quantity = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
@@ -549,7 +549,7 @@ class shade_godown_items_temporary_table(models.Model):
     godown_id = models.ForeignKey(Godown_raw_material, on_delete= models.CASCADE)
     quantity = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)
-    total_amount = models.DecimalField(max_digits=9, decimal_places=2)
+    amount = models.DecimalField(max_digits=9, decimal_places=2)
     
 
 # @receiver(pre_save, sender=Item_Creation)

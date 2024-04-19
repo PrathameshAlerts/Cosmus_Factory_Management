@@ -1556,10 +1556,10 @@ def purchasevouchercreateupdate(request, pk=None):
                                     godown_temp_data[f'shade_godown_items_set-INITIAL_FORMS'] =  str(0)
                                     godown_temp_data[f'shade_godown_items_set-MIN_NUM_FORMS'] =  str(0)
                                     godown_temp_data[f'shade_godown_items_set-MAX_NUM_FORMS'] =  str(1000)
-                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-godown_select'] = data.godown_id
+                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-godown_id'] = data.godown_id
                                     godown_temp_data[f'shade_godown_items_set-{form_set_id}-quantity'] = data.quantity
                                     godown_temp_data[f'shade_godown_items_set-{form_set_id}-rate'] = data.rate
-                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-amount'] = data.total_amount
+                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-amount'] = data.amount
                                     form_set_id =  form_set_id + 1
                             
                                 godown_items_formset = purchase_voucher_items_godown_formset(godown_temp_data, prefix='shade_godown_items_set')
