@@ -138,7 +138,7 @@
             </tbody>
 
         </table>
-        <button type="button" class="create-btn" id="addRowButton">Add +</button>
+        <button type="button" class="create-btn ms-3 mb-3" id="addRowButton">Add +</button>
     
 
         <div class="mb-4">
@@ -182,7 +182,7 @@
         </div>
 
 
-      <input type="submit" class="add_btn">
+      <input type="submit" class="ms-5 add_btn">
     </form>
 </div>
  <script>
@@ -216,15 +216,15 @@ function updateFormData(newSessionData){
 
  <script>
 //this ajax is for gst no 
-$(document).ready(function(){
+    $(document).ready(function () {
 
-$(document).on('change', 'select[name^="party_name"]', function(){
+        $(document).on('change', 'select[name^="party_name"]', function () {
 
-var selected_party_name = $(this).val()
-var int_selected_party_name = parseInt(selected_party_name)
+            var selected_party_name = $(this).val()
+            var int_selected_party_name = parseInt(selected_party_name)
 
-$.ajax({
-        url: '/purchasevouchercreate/',
+            $.ajax({
+                url: '/purchasevouchercreate/',
                 method: 'GET',
                 data: {
                     'selected_party_name': selected_party_name,
@@ -232,17 +232,17 @@ $.ajax({
                 success: function (response) {
                     console.log('Data sent successfully')
                     var party_gst_no_response = response.party_gst_no
-                    var gst_no_input = document.getElementById('id_GST_number') 
-                    gst_no_input.value = party_gst_no_response 
-                    },
+                    var gst_no_input = document.getElementById('id_GST_number')
+                    gst_no_input.value = party_gst_no_response
+                },
                 error: function (xhr, errmsg, err) {
-                        console.log('Error sending value to the backend');
-                    }
-})
+                    console.log('Error sending value to the backend');
+                }
+            })
 
-})
+        })
 
-})
+    })
 
 function randomValue (){
 const uuid = uuidv4();
