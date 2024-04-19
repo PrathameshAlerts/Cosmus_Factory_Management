@@ -46,7 +46,7 @@
                             <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity}}" required></td>
                             <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate}}" required>
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-total_amount" step="0.01" id="{{form.prefix}}-total_amount" class="purchase-amount godown-amount" value="{{form.instance.total_amount}}" readonly>
+                            <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount}}" readonly>
                             </td>
                             <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
                                 
@@ -130,9 +130,9 @@
         newRate.attr('readonly', true);
        
 
-        const newAmount = tableClone.find('input[name^="shade_godown_items_set-"][name$="-total_amount"]');
-        newAmount.attr('name', 'shade_godown_items_set-' + formsValue + '-total_amount');
-        newAmount.attr('id', 'shade_godown_items_set-' + formsValue + '-total_amount');
+        const newAmount = tableClone.find('input[name^="shade_godown_items_set-"][name$="-amount"]');
+        newAmount.attr('name', 'shade_godown_items_set-' + formsValue + '-amount');
+        newAmount.attr('id', 'shade_godown_items_set-' + formsValue + '-amount');
         newAmount.val('');
 
         const newUniqueValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-unique_id"]');
@@ -153,13 +153,13 @@
         var inputQtyValue = parseInt(inputQty);
         var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
         var inputRateValue = parseInt(inputRate);
-        var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-total_amount"]').val();
+        var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
     
         // Calculate and set the amount for this row
         var amount = inputQtyValue * inputRateValue;
         
         totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
-        row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-total_amount"]').val(totalAmount);
+        row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val(totalAmount);
         
         return amount;
        
@@ -197,13 +197,13 @@
     }
 
 
-    $(document).on('change', '.godown-quantity' && ' .godown-rate', function() {
+    $(document).on('input', '.godown-quantity' && ' .godown-rate', function() {
             //call the calculation function when qunatity and rate is changed   
             calculateGodownAmount();
 
         })
 
-        $(document).on('change', '.godown-quantity' , function() {
+        $(document).on('input', '.godown-quantity' , function() {
             //call the calculation function when qunatity and rate is changed   
             calculateGodownAmount();
 
