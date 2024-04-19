@@ -1434,20 +1434,16 @@ def stocktransferreport(request):
 def purchasevouchercreateupdate(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
         print('Master_post',request.POST)
-    
-        if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
-            temp_data_exists_bool = request.session['temp_data_exists']
-            temp_uuids = request.session['temp_uuid']
-            print(temp_data_exists_bool)
-            print(temp_uuids)
-            del request.session['temp_data_exists']
-            del request.session['temp_uuid']
-            for data in temp_uuids:
-                temp_uuids_data =  shade_godown_items_temporary_table.objects.filter(unique_id=data)
-                print(temp_uuids_data)
-                temp_uuids_data.delete()
 
-
+        #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
+        # if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
+        #     temp_data_exists_bool = request.session['temp_data_exists']
+        #     temp_uuids = request.session['temp_uuid']
+        #     del request.session['temp_data_exists']
+        #     del request.session['temp_uuid']
+        #     for data in temp_uuids:
+        #         temp_uuids_data =  shade_godown_items_temporary_table.objects.filter(unique_id=data)
+        #         temp_uuids_data.delete()
         #get the purchase invoice for updating the form 
         if pk:
             purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
@@ -1561,7 +1557,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
                                 for data in purchase_voucher_temp_data:
                                     all_purchase_temp_data.append(data)
-
+                                print('all_purchase_temp_data',purchase_voucher_temp_data)
                                 godown_temp_data = {}
                                 form_set_id = 0
                                 for data in purchase_voucher_temp_data:
@@ -1584,7 +1580,6 @@ def purchasevouchercreateupdate(request, pk=None):
                                         godown_instance.save()
                                         saved_data_to_delete = saved_data_to_delete + 1
                                         print('Data-saved')
-
                                     else:
                                         print('godown',godown_form.error)
                                         purchase_voucher_temp_data.delete()
@@ -1593,31 +1588,48 @@ def purchasevouchercreateupdate(request, pk=None):
                                     purchase_voucher_temp_data.delete()
                         else:
                             print('form1',form.errors)
-                            purchase_voucher_temp_data.delete()
-
+                            
                     print('all_data', all_purchase_temp_data)
                     return HttpResponse('form submitted successfully')
                 else:
-                    del request.session['temp_uuid']
+                    #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
+                    if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
+                        temp_data_exists_bool = request.session['temp_data_exists']
+                        temp_uuids = request.session['temp_uuid']
+                        del request.session['temp_data_exists']
+                        del request.session['temp_uuid']
+                        for data in temp_uuids:
+                            temp_uuids_data =  shade_godown_items_temporary_table.objects.filter(unique_id=data)
+                            temp_uuids_data.delete()
                     print('MF',master_form.errors)
                     print('IF',items_formset.errors)
                     return redirect('purchase-voucher-list')
             
         except Exception as e:
-            for data in all_purchase_temp_data:
-                data.delete()
+            #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
+            # if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
+            #     temp_data_exists_bool = request.session['temp_data_exists']
+            #     temp_uuids = request.session['temp_uuid']
+            #     del request.session['temp_data_exists']
+            #     del request.session['temp_uuid']
+            #     for data in temp_uuids:
+            #         temp_uuids_data =  shade_godown_items_temporary_table.objects.filter(unique_id=data)
+            #         temp_uuids_data.delete()
             print('an error occoured-',e)
             messages.error(request,f'An error occoured{e} godown temporary data deleted')
             
         finally:
-            if request.session.get('temp_data_exists'):
                 # Delete temporary data if there a a flag which was set while creating temp data
                 # this will ensure the table will be be deleted by someone who created some temp data   
-                for data in all_purchase_temp_data:
-                    data.delete()
-                # Delete the flag from the session
-                del request.session['temp_data_exists']
-                del request.session['temp_uuid']
+                #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
+                if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
+                    temp_data_exists_bool = request.session['temp_data_exists']
+                    temp_uuids = request.session['temp_uuid']
+                    del request.session['temp_data_exists']
+                    del request.session['temp_uuid']
+                    for data in temp_uuids:
+                        temp_uuids_data = shade_godown_items_temporary_table.objects.filter(unique_id=data)
+                        temp_uuids_data.delete()
 
     context = {'master_form':master_form,
                'party_names':party_names,
@@ -1670,7 +1682,7 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
                                         
 
                     return render(request, 'accounts/purchase_popup.html', context)
-            #if form is valid save the godownpoup data in session for verification
+            #if form is valid save the uniquekey in session for verification
             # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate  
             request.session['temp_data_exists'] = True
             temp_uuid = request.session.get('temp_uuid', [])

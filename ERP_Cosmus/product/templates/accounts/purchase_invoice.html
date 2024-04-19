@@ -72,8 +72,8 @@
             <tbody class="mainTableList">
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
+                {{ forms.id }}
                 <tr>
-                    {{ forms.id }}
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>1</td>
                     <td> 
@@ -119,8 +119,9 @@
                     <td>
                         <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
                     </td>
+                    {{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage }}
                     <td>
-                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="" readonly >
+                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage }}" readonly >
                     </td>
                     <td>
                     <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value=""readonly >
