@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User , Group
+from uuid import UUID
 from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
@@ -1541,42 +1542,47 @@ def purchasevouchercreateupdate(request, pk=None):
                                 items_instance.save()
                                 
                                 form_prefix_number = form.prefix[-1] #gives the prefix number of the current iteration of the form
-
+                                print('test1')
                                 unique_id = request.POST.get(f'item_unique_id_{form_prefix_number}')
-
-                                purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
-
-                                for data in purchase_voucher_temp_data:
-                                    all_purchase_temp_data.append(data)
-                                print('all_purchase_temp_data',purchase_voucher_temp_data)
-                                godown_temp_data = {}
-                                form_set_id = 0
-                                for data in purchase_voucher_temp_data:
-                                    godown_temp_data[f'shade_godown_items_set-TOTAL_FORMS'] = str(len(purchase_voucher_temp_data))
-                                    godown_temp_data[f'shade_godown_items_set-INITIAL_FORMS'] =  str(0)
-                                    godown_temp_data[f'shade_godown_items_set-MIN_NUM_FORMS'] =  str(0)
-                                    godown_temp_data[f'shade_godown_items_set-MAX_NUM_FORMS'] =  str(1000)
-                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-godown_id'] = data.godown_id
-                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-quantity'] = data.quantity
-                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-rate'] = data.rate
-                                    godown_temp_data[f'shade_godown_items_set-{form_set_id}-amount'] = data.amount
-                                    form_set_id =  form_set_id + 1
+                                primary_key = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-id')
+                                #check if pk is not there in the form is there in formset
+                                if primary_key == '' or primary_key == None: 
+                                    print('test3')
+                                    purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
+                                    print('test4')
+                                    for data in purchase_voucher_temp_data:
+                                        all_purchase_temp_data.append(data)
+                                
+                                    godown_temp_data = {}
+                                    form_set_id = 0
+                                    for data in purchase_voucher_temp_data:
+                                        godown_temp_data[f'shade_godown_items_set-TOTAL_FORMS'] = str(len(purchase_voucher_temp_data))
+                                        godown_temp_data[f'shade_godown_items_set-INITIAL_FORMS'] =  str(0)
+                                        godown_temp_data[f'shade_godown_items_set-MIN_NUM_FORMS'] =  str(0)
+                                        godown_temp_data[f'shade_godown_items_set-MAX_NUM_FORMS'] =  str(1000)
+                                        godown_temp_data[f'shade_godown_items_set-{form_set_id}-godown_id'] = data.godown_id
+                                        godown_temp_data[f'shade_godown_items_set-{form_set_id}-quantity'] = data.quantity
+                                        godown_temp_data[f'shade_godown_items_set-{form_set_id}-rate'] = data.rate
+                                        godown_temp_data[f'shade_godown_items_set-{form_set_id}-amount'] = data.amount
+                                        form_set_id =  form_set_id + 1
                             
-                                godown_items_formset = purchase_voucher_items_godown_formset(godown_temp_data, prefix='shade_godown_items_set')
-                                saved_data_to_delete = 0
-                                for godown_form in godown_items_formset:
-                                    if godown_form.is_valid():
-                                        godown_instance = godown_form.save(commit = False)
-                                        godown_instance.purchase_voucher_godown_item = items_instance
-                                        godown_instance.save()
-                                        saved_data_to_delete = saved_data_to_delete + 1
-                                        print('Data-saved')
-                                    else:
-                                        print('godown',godown_form.error)
-                                        purchase_voucher_temp_data.delete()
+                                    godown_items_formset = purchase_voucher_items_godown_formset(godown_temp_data, prefix='shade_godown_items_set')
+                                    saved_data_to_delete = 0
+                                    for godown_form in godown_items_formset:
+                                        if godown_form.is_valid():
+                                            godown_instance = godown_form.save(commit = False)
+                                            godown_instance.purchase_voucher_godown_item = items_instance
+                                            godown_instance.save()
+                                            saved_data_to_delete = saved_data_to_delete + 1
+                                            print('Data-saved')
+                                        else:
+                                            print('godown',godown_form.error)
+                                            purchase_voucher_temp_data.delete()
 
-                                if saved_data_to_delete == form_set_id:
-                                    purchase_voucher_temp_data.delete()
+                                    if saved_data_to_delete == form_set_id:
+                                        purchase_voucher_temp_data.delete()
+                                else:
+                                    print('form with pk not updated')
                         else:
                             print('form1',form.errors)
                             
@@ -1653,11 +1659,9 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
     if request.method == 'POST':
         formset = formsets
         if formset.is_valid():
-            
             for form in formset:
                 if form.is_valid():
                     form.save()
-        
                 else:
                     context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
                                 'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,
