@@ -201,10 +201,14 @@
         var jsonData = JSON.parse(jsonString);
 
         // Access the data as needed
-        var values1 = jsonData.parent_row_prefix_id;
-        var values2 = jsonData.all_Rate;
-        console.log('value1',values1)
-        console.log('value2',values2)
+        var row_prefix_child = jsonData.parent_row_prefix_id;
+        var all_rate_child = jsonData.all_Rate;
+        //var godown_data = jsonData.newRow;
+        console.log('value1',row_prefix_child)
+        console.log('value2',all_rate_child)
+        //console.log('value2',godown_data)
+
+
     var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
       var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
    

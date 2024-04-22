@@ -74,14 +74,8 @@
 
   
     <script>
-        var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value
-    
-        for( var i= 0; i<=total_forms; i++){
-            var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
-            var row ='row_'+ i;
-            var jsonRate = document.getElementById('shade_godown_items_set-' + i + '-rate').value;
-            console.log(jsonQty, row, jsonRate)
-        }
+
+
 
        
         function submitData(){
@@ -100,15 +94,25 @@
                 "prefixValue": prefixValue,
                 "newPrimaryKey": newPrimaryKey
             }
-            //Row_{x} : {G_id:4, Qty: 400}
 
-       
-         
+            var newRow = {};
+            for (var i = 0; i < total_forms; i++) {
+                var row = 'row_' + i;
+                var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
+                var jsonRate = document.getElementById('shade_godown_items_set-' + i + '-rate').value;
+                var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
+                console.log(jsonQty, row, jsonRate, gId);
+                newRow[row] = { gId, jsonQty, jsonRate };
+            }
+            
             var jsonData = {
                 parent_row_prefix_id: prefixValue,
                 all_Rate: json_data_first_rate,
-
+                newRow: newRow  // Assign newRow to a property of jsonData
             };
+            
+            console.log('row', jsonData);
+            
             // Convert the data object to JSON string
             var jsonString = JSON.stringify(jsonData);
 
