@@ -204,12 +204,13 @@
         var values1 = jsonData.parent_row_prefix_id;
         var values2 = jsonData.all_Rate;
         var values3 = jsonData.row;
+        var values4 = jsonData.gId;
        
 
         console.log('value1',values1)
         console.log('value2',values2)
         console.log('value3',values3)
-    var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
+      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
       var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
    
      oldQty.value = newQty
