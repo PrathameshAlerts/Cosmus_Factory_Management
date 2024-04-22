@@ -1631,20 +1631,23 @@ def purchasevouchercreateupdate(request, pk=None):
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
-def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
+def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
 
     #unique_id generation is on add button so created rows will not have unique id need to fetch the id from hidden ids 
-
+    primary_key_godown = None
+    unique_id_godown = None
     if unique_id is not None:
         #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
         temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
         print('temp_instances',temp_instances)
         formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
-        
+        unique_id_godown = unique_id
+
     elif pk is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
         formsets = purchase_voucher_items_godown_formset(request.POST or None, instance = voucher_item_instance, prefix='shade_godown_items_set')
-    
+        primary_key_godown = pk
+
     #create a formset instance with the selected unique id or PK 
     formset = formsets
 
@@ -1665,10 +1668,7 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
                 else:
                     context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
                                 'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,
-                                                                 'errors': formset.errors}
-                    
-                                        
-
+                                                                 'errors': formset.errors,'unique_id_godown':unique_id_godown ,'primary_key_godown':primary_key_godown,'prefix_id':prefix_id}
                     return render(request, 'accounts/purchase_popup.html', context)
             #if form is valid save the uniquekey in session for verification
             # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate  
@@ -1681,24 +1681,25 @@ def purchasevoucherpopup(request,shade_id,unique_id=None,pk=None):
         else:
             context = {
                 'godowns': godowns, 'item': item, 'item_shade': item_shade, 'formset': formset, 
-                'unique_id': unique_id, 'shade_id': shade_id, 'errors': formset.errors,
+                'unique_id': unique_id, 'shade_id': shade_id, 'errors': formset.errors,'unique_id_godown':unique_id_godown ,'primary_key_godown':primary_key_godown,'prefix_id':prefix_id
             }
             return render(request, 'accounts/purchase_popup.html', context)
     return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,
                                                             'item_shade':item_shade,'formset':formset,
-                                                            'unique_id':unique_id})
+                                                            'unique_id':unique_id,'unique_id_godown':unique_id_godown ,'primary_key_godown':primary_key_godown,'prefix_id':prefix_id})
 
 
 def purchasevouchercreatepopupajax(request):
     shade_id = request.GET.get('selected_shade')
     unique_id = request.GET.get('unique_invoice_row_id')
     primary_key = request.GET.get('purchase_id')
-
+    prefix_id  = request.GET.get('prefix_id')
+    print('test',prefix_id)
     if unique_id is not None:
-        popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,unique_id])
+        popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,prefix_id,unique_id])
         
     elif primary_key is not None:
-        popup_url = reverse('purchase-voucher-popup-update', args=[shade_id,primary_key])
+        popup_url = reverse('purchase-voucher-popup-update', args=[shade_id,prefix_id,primary_key])
     
     else:
         popup_url = None

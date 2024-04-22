@@ -189,30 +189,43 @@
  <script>
 // this code contain the popup window for on submit button send to to parent window 
 // this function retrive the data and compare with same unquie id and update the table data
-function updateFormData(newSessionData){
+
+//pefix value on item-shade change 
+    function updateFormData(newSessionData){
     var newId = newSessionData.newUniqueId;
     var newQty = newSessionData.newTotalQty;
     var newRate = newSessionData.newTotalRate;
-    var itemForm = document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value;
-    var itemFormValue = itemForm - 1
-    console.log('itemFormValue',itemFormValue)
-    var itemUniqueId = document.getElementById('item_unique_id_'+ itemFormValue).value; 
+    var primaryKey = newSessionData.newPrimaryKey;
+    var prefixId = newSessionData.prefixValue;
     
-    console.log('newId',newId)
-    console.log('newQty',newQty)
-    console.log('newRate',newRate)
-    console.log('itemUniqueId',itemUniqueId)
-    if(newId == itemUniqueId){
-      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ itemFormValue + '-quantity_total')
-      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ itemFormValue + '-rate')
+    var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
+      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
+   
+     oldQty.value = newQty
+      oldRate.value = newRate
+      calculateTotalAmount()
+      calculateOtherTotal()
+  
+    var itemform = document.getElementById('item_unique_id_' + prefixId ).value;
+ 
+   var primaryValueId = document.getElementById('id_purchase_voucher_items_set-' + prefixId + '-id').value;
 
+
+    if( primaryKey == primaryValueId){
+    
+      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
+      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
+ 
       oldQty.value = newQty
       oldRate.value = newRate
       calculateTotalAmount()
       calculateOtherTotal()
-    }
+     }
+     
+    
 }
- 
+
+
 </script>
 
  <script>
@@ -266,18 +279,18 @@ randomValue();
         var purchaseValue;
         var lastSelectedItem = '';
         
-        console.log('uIv',uniqueIdValue)
+       
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-        console.log('itemName',itemName)
+       
         purchaseValue = itemName.split('-')[1];
-        console.log('purchaseValue',purchaseValue)
+      
 });
 
   
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
-            console.log('item_value',item_value)       
+           // console.log('item_value',item_value)       
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -342,7 +355,8 @@ randomValue();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
       
         var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
-        console.log('purchaseId',purchaseId)
+        var prefix_id = purchaseValue;
+    
         var primary_id = null;
         var test = null;
         if(purchaseId ){
@@ -357,32 +371,26 @@ randomValue();
             console.log('purchaseId',purchaseId)
         }
 
-       // console.log('purchaseId',purchaseId)
-       
-           //console.log('purchaseId',purchaseId)    
-           console.log('uniqueIdValue',uniqueIdValue)
-           console.log('selectedShade',selectedShade)
-           //var purchaseIdValue = purchaseId.value ; 
-           //console.log('purchaseIdValue',purchaseIdValue)
-           
-           
                 if (selectedShade !== "" && primary_id !== null ) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
-                    console.log(selectedShade ,primary_id)
+                  
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',
                         method: 'GET',
                         data: {
                             'selected_shade': selectedShade,
-                            'purchase_id': primary_id
+                            'purchase_id': primary_id,
+                            'prefix_id':prefix_id
                             
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
+                           
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                           
                         },
                         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
@@ -404,7 +412,8 @@ randomValue();
                         method: 'GET',
                         data: {
                             'selected_shade': selectedShade,
-                            'unique_invoice_row_id': uniqueIdValue
+                            'unique_invoice_row_id': uniqueIdValue,
+                            'prefix_id':prefix_id
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
@@ -550,7 +559,7 @@ randomValue();
             const lastRow = tableBody.lastElementChild.cloneNode(true); // clone the last row of the table
             const formIndex = formCount;
             lastRow.querySelectorAll("input, select").forEach(function(el) { 
-            el.value = null; 
+            el.value = ""; 
             });
             // update the input name,id and value of the last row      
             const selectElement = lastRow.querySelector('.item-name');
