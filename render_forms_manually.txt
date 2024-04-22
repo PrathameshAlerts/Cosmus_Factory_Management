@@ -1,0 +1,125 @@
+<form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <table>
+        {{ formset.as_table }}
+    </table>
+    <button type="button" id="add-form">Add</button>
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-form').addEventListener('click', function() {
+            var formset = document.getElementById('id_form-TOTAL_FORMS');
+            var totalForms = parseInt(formset.value);
+            var newFormIndex = totalForms;
+            var newForm = document.createElement('tr');
+
+            // Construct the HTML for the new form
+            newForm.innerHTML = `
+                <td><input type="text" name="form-${newFormIndex}-field1"></td>
+                <td><input type="text" name="form-${newFormIndex}-field2"></td>
+            `;
+
+            // Append the new form to the formset
+            document.querySelector('table').appendChild(newForm);
+
+            // Increment the total forms count
+            formset.value = totalForms + 1;
+        });
+    });
+</script>
+
+
+_____________________update form_____________________________________
+
+
+When you have an instance with the form in a formset and you want to dynamically add a new form while maintaining the data from the instance, you can use JavaScript to clone the existing form fields and update their IDs and names accordingly. Here's how you can modify the JavaScript to handle instances:
+
+html
+Copy code
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-form').addEventListener('click', function() {
+            var formsetContainer = document.getElementById('formset-container');
+            var totalFormsField = document.getElementById('id_form-TOTAL_FORMS');
+            var totalForms = parseInt(totalFormsField.value);
+            var newFormIndex = totalForms;
+            var lastForm = document.querySelector('.formset-form:last-of-type');
+
+            // Clone the last form
+            var newForm = lastForm.cloneNode(true);
+
+            // Update the IDs and names of the form fields
+            newForm.querySelectorAll('input').forEach(function(input) {
+                var oldId = input.getAttribute('id');
+                var oldName = input.getAttribute('name');
+                input.setAttribute('id', oldId.replace(/-\d+-/, '-' + newFormIndex + '-'));
+                input.setAttribute('name', oldName.replace(/-\d+-/, '-' + newFormIndex + '-'));
+                // Clear the input value if you don't want to clone the values from the previous form
+                // input.value = '';
+            });
+
+            // Append the new form HTML to the formset container
+            formsetContainer.appendChild(newForm);
+
+            // Increment the total forms count
+            totalFormsField.value = totalForms + 1;
+        });
+    });
+</script>
+In this script:
+
+We clone the last form in the formset container using cloneNode(true) to clone its children as well.
+We update the IDs and names of the form fields in the cloned form to reflect the new form index.
+We append the cloned form HTML to the formset container.
+Finally, we increment the TOTAL_FORMS value to reflect the addition of the new form.
+This approach ensures that the new form retains the structure and data of the existing form from the instance. If you want to clear the input values in the cloned form, you can uncomment input.value = ''; inside the loop.
+
+
+
+
+
+
+___________________render the fields manually ____________________
+<form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <div id="formset-container">
+        {% for form in formset %}
+            <div class="formset-form">
+                {% for field in form %}
+                    <p>{{ field.label_tag }} {{ field }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-form">Add</button>
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-form').addEventListener('click', function() {
+            var formsetContainer = document.getElementById('formset-container');
+            var totalFormsField = document.getElementById('id_form-TOTAL_FORMS');
+            var totalForms = parseInt(totalFormsField.value);
+            var newFormIndex = totalForms;
+            var newForm = document.createElement('div');
+            newForm.className = 'formset-form';
+
+            // Construct the HTML for the new form fields
+            newForm.innerHTML = `
+                <p><label for="id_form-${newFormIndex}-field1">Field 1:</label> <input type="text" name="form-${newFormIndex}-field1" id="id_form-${newFormIndex}-field1"></p>
+                <p><label for="id_form-${newFormIndex}-field2">Field 2:</label> <input type="text" name="form-${newFormIndex}-field2" id="id_form-${newFormIndex}-field2"></p>
+            `;
+
+            // Append the new form to the formset container
+            formsetContainer.appendChild(newForm);
+
+            // Increment the total forms count
+            totalFormsField.value = totalForms + 1;
+        });
+    });
+</script>

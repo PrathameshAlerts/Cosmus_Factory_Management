@@ -1579,6 +1579,11 @@ def purchasevouchercreateupdate(request, pk=None):
                                             print('godown',godown_form.error)
                                             purchase_voucher_temp_data.delete()
 
+                                    godown_item_json = request.POST.get('jsonData')
+                                    print(godown_item_json)
+                                    item_shade = request.POST.get(f'purchase_voucher_items_set-{godown_item_json.parent_row_prefix_id}-item_shade')
+                                    print(item_shade)
+
                                     if saved_data_to_delete == form_set_id:
                                         purchase_voucher_temp_data.delete()
                                 else:
@@ -1644,7 +1649,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
         
         if temp_instances:
             formsets = shade_godown_items_temporary_table_formset_update(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
-            
+
         else:
             formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
     

@@ -73,8 +73,10 @@
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
                 {{ forms.id }}
+
+
                 <tr>
-                    <input type="hidden" id="jsonDataInput" name="jsonData">
+                    <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="jsonData">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>1</td>
                     <td> 
@@ -200,14 +202,20 @@
         // Parse the JSON string back into a JavaScript object
         var jsonData = JSON.parse(jsonString);
 
-        // Access the data as needed
+        
         var row_prefix_child = jsonData.parent_row_prefix_id;
         var all_rate_child = jsonData.all_Rate;
-        //var godown_data = jsonData.newRow;
+        var godown_data = jsonData.newRow;  
         console.log('value1',row_prefix_child)
         console.log('value2',all_rate_child)
-        //console.log('value2',godown_data)
+        console.log('value4',godown_data)
 
+        var godown_data_string = JSON.stringify(jsonData);
+
+        var json_data_quantity = document.getElementById('purchase_voucher_items_set-' + prefixId +'-jsonDataInputquantity')
+        
+        json_data_quantity.value = godown_data_string
+        console.log('jsonData')
 
     var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
       var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
