@@ -74,7 +74,7 @@
                 {% for forms in items_formset %}
                 {{ forms.id }}
                 <tr>
-                  
+                    <input type="hidden" id="jsonDataInput" name="jsonData">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>1</td>
                     <td> 
@@ -191,13 +191,20 @@
 // this function retrive the data and compare with same unquie id and update the table data
 
 //pefix value on item-shade change 
-    function updateFormData(newSessionData){
+    function updateFormData(newSessionData,jsonString){
     var newId = newSessionData.newUniqueId;
     var newQty = newSessionData.newTotalQty;
     var newRate = newSessionData.newTotalRate;
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
-    
+        // Parse the JSON string back into a JavaScript object
+        var jsonData = JSON.parse(jsonString);
+
+        // Access the data as needed
+        var values1 = jsonData.parent_row_prefix_id;
+        var values2 = jsonData.all_Rate;
+        console.log('value1',values1)
+        console.log('value2',values2)
     var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
       var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
    
@@ -242,6 +249,11 @@ if(newCompanyGst == newPartyGst){
     return false;
 }
 }
+
+
+
+
+
 
 </script>
 
