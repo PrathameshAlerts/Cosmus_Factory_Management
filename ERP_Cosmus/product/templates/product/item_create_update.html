@@ -284,7 +284,7 @@
 
   function openFabPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '/fabric_popup/');
+      newPopUpwindow(button, '{% url "fabric-popup" %}');
     } else {
       popUpWindow.focus();
     }
@@ -292,7 +292,7 @@
 
   function opencolorPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '/color_popup/');
+      newPopUpwindow(button, '{% url "color-popup" %}');
     } else {
       popUpWindow.focus();
     }
@@ -300,28 +300,28 @@
 
   function openunitPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '/units_popup/');
+      newPopUpwindow(button, '{% url "unit-name-popup" %}');
     } else {
       popUpWindow.focus();
     }
   }
   function openGstPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '/gstpopup/');
+      newPopUpwindow(button, '{% url "gst-popup" %}');
     } else {
       popUpWindow.focus();
     }
   }
   function openPackagePopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '/packagingpop/');
+      newPopUpwindow(button,'{% url "packaging-popup" %}');
     } else {
       popUpWindow.focus();
     }
   }
   function openFabricFinishPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '/fabricfinishespopup/');
+      newPopUpwindow(button, '{% url "fabric-finishes-popup" %}');
     } else {
       popUpWindow.focus();
     }
@@ -333,8 +333,8 @@
     var minHeight = 600; // minimum height
 
     // Open new page with specified dimensions
-    popUpWindow = window.open('http://127.0.0.1:8000' + path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-
+    popUpWindow = window.open( path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    console.log(popUpWindow)
     // Listen for messages from the popup window
     window.addEventListener('message', function (event) {
       if (event.data === 'popupClosed'|| event.data === 'submit') {

@@ -529,6 +529,7 @@ class item_purchase_voucher_master(models.Model):
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
+
 class purchase_voucher_items(models.Model):
     item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
     item_shade = models.ForeignKey(item_color_shade, on_delete = models.PROTECT)
@@ -536,13 +537,14 @@ class purchase_voucher_items(models.Model):
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
 
+
 class shade_godown_items(models.Model):
     purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items, on_delete = models.CASCADE)
     godown_id = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
     quantity = models.IntegerField()
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
-
+    
 
 class shade_godown_items_temporary_table(models.Model):
     unique_id = models.UUIDField()
@@ -556,6 +558,7 @@ class shade_godown_items_temporary_table(models.Model):
 # def update_combined_field(sender, instance, **kwargs):
 #     # Combine the values of field1 and field2 and save it to combined_field
 #     instance.Description = f"{instance.Fabric_Group} - {instance.Name} - {instance.Item_Color}"
+
 
     """
         or in forms

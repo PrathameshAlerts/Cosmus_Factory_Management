@@ -155,8 +155,7 @@
           <label for="id_Product_Status" class="form-label item-form">Status:</label>
           <select name="Product_Status" class="item-select" id="id_Product_Status">
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status |
-              default_if_none:''}}</option>
+            <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status | default_if_none:''}}</option>
             {% elif not form.instance.id %}
             <option value="" selected></option>
             {% endif %}
@@ -307,8 +306,7 @@
           <label for="" class="form-label item-form">Compartment:</label>
           <select name="Product_Compartments" required id="" class="item-select">
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments|
-              default_if_none:''}}</option>
+            <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments| default_if_none:''}}</option>
             {% elif not form.instance.id %}
             <option value=""></option>
             {% endif %}
