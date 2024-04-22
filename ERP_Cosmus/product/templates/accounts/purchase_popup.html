@@ -7,10 +7,12 @@
         <div class="">
           <h5 class="" id="">Item Name: {{item}}</h5> 
           <h5 class="" id="">shade Name: {{item_shade}}</h5>
+       
           </div>
         <div class="">
             <form method="post" id=""  onsubmit="submitData()">
                 {% csrf_token %}
+                
                 <table class="table table-striped table-hover" id="newTable">
                     <thead>
                         <tr>
@@ -22,6 +24,13 @@
                         </tr>
                     </thead>
                     <tbody class="mainTableList">
+
+                        {{unique_id_godown}}
+                        {{primary_key_godown}}
+                        {{prefix_id}}
+                        <input type="hidden" id="id_unique_id_godown" name="unique_id_godown" value="{{unique_id_godown}}">
+                        <input type="hidden" id="id_primary_key_godown" name="primary_key_godown" value="{{primary_key_godown}}">
+                        <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
                         {{ formset.management_form }}
                     {% for form in formset %}
                     
@@ -62,12 +71,36 @@
             </form>
             
         </div>
+  
     <script>
+      
+      var newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
+            var newTotalQty = document.getElementById('grand_godown_quantity').value;
+            var newTotalRate = document.getElementById('grand_godown_rate').value;
+            var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
+            var prefixValue = document.getElementById('prefix_id').value;
+            
+            
+           
+            console.log('prefixValue',prefixValue);
+            console.log('newPrimaryKey',newPrimaryKey);
+        
+            console.log(newUniqueId);
+            console.log(newTotalQty);
+            console.log(newTotalRate);
+       
         function submitData(){
             var newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
             var newTotalQty = document.getElementById('grand_godown_quantity').value;
             var newTotalRate = document.getElementById('grand_godown_rate').value;
-            //var newTotalAmount = document.getElementById('grand_godown_amount').value;
+            var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
+            var prefixValue = document.getElementById('prefix_id').value;
+            
+            
+           
+            console.log('prefixValue',prefixValue);
+            console.log('newPrimaryKey',newPrimaryKey);
+        
             console.log(newUniqueId);
             console.log(newTotalQty);
             console.log(newTotalRate);
@@ -75,11 +108,15 @@
                 "newUniqueId": newUniqueId,
                 "newTotalQty": newTotalQty,
                 "newTotalRate": newTotalRate,
-                //"newTotalAmount": newTotalAmount
+                "prefixValue": prefixValue,
+                "newPrimaryKey": newPrimaryKey
             }
             window.opener.updateFormData(newSessionData);
            
         }
+        
+   
+     
     </script>
 
     <script>
@@ -104,7 +141,7 @@
         var newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
         
         var formsValue = parseInt(newFormValue.value);
-         console.log(formsValue);
+         
         
         var tableClone = $('#newTable').find('tbody tr').last().clone(true);
         
