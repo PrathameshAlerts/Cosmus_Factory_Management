@@ -278,35 +278,18 @@
         
         
         // Delete row from delete button
-        $(document).on('click', '.delete-btn', function () {
+       $(document).on('click', '.delete-btn', function(){
         var tableRows = $('#newTable tbody tr');
-        if (tableRows.length > 1) { // Check if the table has more than one row
+          if (tableRows.length > 1) { // Check if the table has only one row
         var row = $(this).closest('tr');
-        console.log('row',row)
-        var rowId = row.data('id'); // Get the row ID or some identifier
-        // AJAX call to backend for deletion
-        // $.ajax({
-        //     url: '/deleteRow', // The backend endpoint for row deletion
-        //     type: 'POST',
-        //     data: { id: rowId }, // Send the row ID to delete
-        //     success: function (response) {
-        //         // If the backend deletion is successful, remove the row from the front-end
-        //         if (response.success) {
-        //             row.remove();
-        //             // If there's a function to recalculate the godown amount, call it
-        //             calculateGodownAmount();
-        //         } else {
-        //             alert('Error deleting row: ' + response.error);
-        //         }
-        //     },
-        //     error: function () {
-        //         alert('An error occurred while trying to delete the row.');
-        //     }
-        // });
+        row.remove();
+        calculateGodownAmount();
+
     } else {
-        alert('The table must have at least one godown item');
+        alert('Table must have at least one godown item');
     }
-});
+          
+        });
 
         })
     </script>
