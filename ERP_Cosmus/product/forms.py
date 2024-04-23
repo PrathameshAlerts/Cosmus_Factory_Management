@@ -198,6 +198,9 @@ class shade_godown_items_temporary_table_form(forms.ModelForm):
 
 shade_godown_items_temporary_table_formset = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=1)
 
+shade_godown_items_temporary_table_formset_update = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=0)
+
+
 class gst_form(forms.ModelForm):
     class Meta:
         model = gst

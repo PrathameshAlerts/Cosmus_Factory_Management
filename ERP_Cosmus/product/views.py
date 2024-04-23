@@ -21,7 +21,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                            packaging_form, product_main_category_form, 
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update,
-                                shade_godown_items_temporary_table_formset)
+                                shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update)
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
@@ -1641,9 +1641,15 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
     if unique_id is not None:
         #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
         temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
-        print('temp_instances',temp_instances)
-        formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
         
+        if temp_instances:
+            formsets = shade_godown_items_temporary_table_formset_update(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
+            
+        else:
+            formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
+    
+
+
     elif pk is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
         formsets = purchase_voucher_items_godown_formset(request.POST or None, instance = voucher_item_instance, prefix='shade_godown_items_set')

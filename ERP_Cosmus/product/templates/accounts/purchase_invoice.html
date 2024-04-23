@@ -73,8 +73,10 @@
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
                 {{ forms.id }}
+
+
                 <tr>
-                    <input type="hidden" id="jsonDataInput" name="jsonData">
+                    <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>1</td>
                     <td> 
@@ -191,52 +193,41 @@
 // this function retrive the data and compare with same unquie id and update the table data
 
 //pefix value on item-shade change 
-    function updateFormData(newSessionData,jsonString){
+    function updateFormData(newSessionData){
     var newId = newSessionData.newUniqueId;
     var newQty = newSessionData.newTotalQty;
     var newRate = newSessionData.newTotalRate;
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
-        // Parse the JSON string back into a JavaScript object
-        var jsonData = JSON.parse(jsonString);
 
-        // Access the data as needed
-        var values1 = jsonData.parent_row_prefix_id;
-        var values2 = jsonData.all_Rate;
-        var values3 = jsonData.row;
-        var values4 = jsonData.gId;
-       
 
-        console.log('value1',values1)
-        console.log('value2',values2)
-        console.log('value3',values3)
-      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
-      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
-   
-     oldQty.value = newQty
+        var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
+        var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
+        
+        oldQty.value = newQty
       oldRate.value = newRate
       calculateTotalAmount()
       calculateOtherTotal()
-  
-    var itemform = document.getElementById('item_unique_id_' + prefixId ).value;
- 
-   var primaryValueId = document.getElementById('id_purchase_voucher_items_set-' + prefixId + '-id').value;
 
-
-    if( primaryKey == primaryValueId){
-    
-      var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
-      var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
- 
-      oldQty.value = newQty
-      oldRate.value = newRate
-      calculateTotalAmount()
-      calculateOtherTotal()
-     }
-     
-    
 }
 
+// This function access for child popup window data on submit button. this data will be reflated to the main godown qunatity with the godown name 
+    function BackendQuantityjson(jsonString){
+
+        var jsonData = JSON.parse(jsonString);
+        var row_prefix_child = jsonData.parent_row_prefix_id;
+        var all_rate_child = jsonData.all_Rate;
+        var godown_data = jsonData.newRow;  
+        console.log('value1',row_prefix_child)
+        console.log('value2',all_rate_child)
+        console.log('value4',godown_data)
+
+        var updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
+        updateJsonData.value = JSON.stringify(jsonData);
+    }
+
+    
+// This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst 
 function getGstNo() {
     var partyGstValue = document.getElementById('id_GST_number').value;
     var comapnyGst = document.getElementById('id_company_GST_numbers').value;
@@ -294,6 +285,7 @@ if(newCompanyGst == newPartyGst){
 
     })
 
+    // this function gereate a randow uuid and store the value in unique id
 function randomValue (){
 const uuid = uuidv4();
 
@@ -681,6 +673,11 @@ randomValue();
            uniqueElement.id = `item_unique_id_${formIndex}`;
            uniqueElement.name = `item_unique_id_${formIndex}`;
            uniqueElement.value= uuidv4();
+
+           const backendQtyElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-jsonDataInputquantity"]');
+           backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
+           backendQtyElement.name = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
+           backendQtyElement.value= "";
             
             tableBody.appendChild(lastRow);
            
