@@ -31,7 +31,7 @@
     <link rel="icon" type="image/x-icon" href="../../../static/images/favicon.ico">
     <title id="headerTitle">Cosmus-ERP</title>
     
-    <script src="{% static "dynamic_formsets/jquery.formset.js" %}" type="text/javascript"> </script>
+    <!-- <script src="{% static "dynamic_formsets/jquery.formset.js" %}" type="text/javascript"> </script> -->
 </head>
 
 <body>
@@ -225,14 +225,21 @@
     // Get the alert element
     var alert = document.getElementById('message-timer');
 
-    // Show the alert by removing the 'hidden' class
-    alert.classList.remove('hidden');
+    
+    if(alert){
+      if (alert) { // Check if the element exists
+        // Show the alert by removing the 'hidden' class
+        alert.classList.remove('hidden');
 
-    // Hide the alert after the specified duration
-    setTimeout(function() {
-        // Hide the alert by adding the 'hidden' class
-        alert.classList.add('hidden');
-    }, duration);
+        // Hide the alert after the specified duration
+        setTimeout(function() {
+            // Hide the alert by adding the 'hidden' class
+            alert.classList.add('hidden');
+        }, duration);
+    } else {
+        console.warn("Element with ID 'message-timer' not found."); // Log a warning message if the element doesn't exist
+    }
+    }
 }
 
 // Example: Show the alert for 3 seconds

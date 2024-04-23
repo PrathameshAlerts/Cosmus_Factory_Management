@@ -160,14 +160,14 @@
             <div class="table-left mb-3">
                 <lable  class="purchase-lable fw-bold">Gross total</lable>
                 <span class="purchase-span">
-                    <input type="number" class="ms-5  purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total}}" maxlength="50" step=".01" readonly >
+                    <input type="number" class="ms-5  purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total | default_if_none:''}}" maxlength="50" step=".01" readonly >
                 </span>           
             </div>
 
             <div class="table-left-transport mb-3">
                 <lable class="purchase-lable fw-bold">Fright & Transport</lable>
                 <span class="purchase-span">
-                    <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport}}" maxlength="50" step=".01" >
+                    <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:''}}" maxlength="50" step=".01" >
                 </span>
             </div>
             <div class="table-left-roundOf mb-3">
@@ -180,7 +180,7 @@
         
             <div class="table-left-grandTotal mb-3">
                 <label class="purchase-lable fw-bold">Grand total</label>
-                <span class="purchase-span"><input type="number" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total}}" id="id_grand_total" step=".01" readonly></span> 
+                <span class="purchase-span"><input type="number" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" step=".01" readonly></span> 
             </div>
         </div>
 
@@ -305,17 +305,24 @@ randomValue();
         var itemName;
         var uniqueIdValue;
         var purchaseValue;
-        var lastSelectedItem = '';
+        var itemShadeName ;
+        var itemShadeIdValue;
         
-       
+       // perfix value on item-name change
         $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
        
         purchaseValue = itemName.split('-')[1];
       
 });
+    //perfix value on item-shade change 
+    $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
+        itemShadeName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+        itemShadeIdValue = itemShadeName.split('-')[1];
+        console.log(itemShadeIdValue);
+    })
 
-  
+  // This ajax call is to populate the shade and color based on the selected item once retrive the value
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
            // console.log('item_value',item_value)       
@@ -377,7 +384,7 @@ randomValue();
         var selectedShade = $(this).val();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
       
-        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
+        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + itemShadeIdValue + '-id');  
         var prefix_id = purchaseValue;
     
         var primary_id = null;
@@ -490,8 +497,8 @@ randomValue();
             // Calculate the amount for the current row
            var amount = quantity * rate;
            totalQty = quantity  +  totalQty;
-        
-           if(getGstNo()){
+        // This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst
+           if(getGstNo()){ 
             newGst = amount * gst / 100;
             newCgst = newGst / 2;
             newSgst = newGst / 2;
@@ -514,12 +521,12 @@ randomValue();
         
            totalAmountInput.value = isNaN(grandTotal) ? '' : grandTotal.toFixed(2); 
            grandTotalAmount = grandTotalAmount + grandTotal; 
-           document.getElementById('id_grand_taxableAmount').value = total.toFixed(2);
-           document.getElementById('id_grand_quantity').value = totalQty.toFixed(2);
-           document.getElementById('id_grand_cgst').value = totalCgst.toFixed(2);
-           document.getElementById('id_grand_sgst').value = totalSgst.toFixed(2);
+           document.getElementById('id_grand_taxableAmount').value = isNaN(total) ? '' :total.toFixed(2);
+           document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
+           document.getElementById('id_grand_cgst').value = isNaN(totalCgst) ? '' :totalCgst.toFixed(2);
+           document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
           
-           document.getElementById('id_grand_amount').value = grandTotalAmount.toFixed(2);
+           document.getElementById('id_grand_amount').value =isNaN(grandTotalAmount) ? '' : grandTotalAmount.toFixed(2);
            }else{
             cgstValue.value = ''
 
@@ -541,11 +548,11 @@ randomValue();
         
            totalAmountInput.value = isNaN(grandTotal) ? '' : grandTotal.toFixed(2); 
            grandTotalAmount = grandTotalAmount + grandTotal; 
-           document.getElementById('id_grand_taxableAmount').value = total.toFixed(2);
-           document.getElementById('id_grand_quantity').value = totalQty.toFixed(2);
-           document.getElementById('id_grand_sgst').value = totalSgst.toFixed(2);
+           document.getElementById('id_grand_taxableAmount').value = isNaN(total) ? '' :total.toFixed(2);
+           document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
+           document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
           
-           document.getElementById('id_grand_amount').value = grandTotalAmount.toFixed(2);
+           document.getElementById('id_grand_amount').value =isNaN(grandTotalAmount) ? '' : grandTotalAmount.toFixed(2);
            }
          
         });   
@@ -558,21 +565,21 @@ randomValue();
           var  grossTotal = grandTotal;      
     
         // Set the calculated gross total value to the gross total input field
-        document.getElementById('id_gross_total').value = grossTotal.toFixed(2);
+        document.getElementById('id_gross_total').value =isNaN(grossTotal) ? '' : grossTotal.toFixed(2);
 
         var frightTransport = parseFloat(document.getElementById('id_fright_transport').value);
 
         var finalTotal = grossTotal + frightTransport;
 
-        document.getElementById('temp_grand_total').value = finalTotal.toFixed(2);
+        document.getElementById('temp_grand_total').value =isNaN(finalTotal) ? '' : finalTotal.toFixed(2);
 
           
         var finalTotals = Math.round(finalTotal)
 
         var roundOff = finalTotals - finalTotal;
-        document.getElementById('id_round_off').value = roundOff.toFixed(2);
+        document.getElementById('id_round_off').value =isNaN(roundOff) ? '' : roundOff.toFixed(2);
         // Set the calculated grand total value to the grand total input field
-        document.getElementById('id_grand_total').value = finalTotals.toFixed(2);
+        document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
     }
 
     // Call the function initially to calculate total amount, GST, and grand total on page load

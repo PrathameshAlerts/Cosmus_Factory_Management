@@ -1587,7 +1587,7 @@ def purchasevouchercreateupdate(request, pk=None):
                             print('form1',form.errors)
                             
                     print('all_data', all_purchase_temp_data)
-                    return HttpResponse('form submitted successfully')
+                    return redirect('purchase-voucher-list')
                 else:
                     #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
                     if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
