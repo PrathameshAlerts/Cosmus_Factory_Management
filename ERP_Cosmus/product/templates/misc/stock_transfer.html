@@ -60,24 +60,24 @@
         <tbody>
           <tr>
             <td>
-              <select name="name" class="stock_input" placeholder="Item Name" required id="name">
-                
+              <select name="{{form.prefix}}-name" class="stock_input" placeholder="Item Name" required id="{{form.prefix}}-name">
+
               </select>
             </td>
             <td>
-              <input name="color" id="color" class="purchase-amount" readonly>
+              <input name="{{form.prefix}}-color" id="{{form.prefix}}-color" class="purchase-amount" readonly>
             </td>
             <td>
-              <select name='shades' class="stock_input" required id="shades"></select>
+              <select name='{{form.prefix}}-shades' class="stock_input" required id="{{form.prefix}}-shades"></select>
             </td>
             <td>
-              <input name='quantity' id="quantity" class="purchase-amount">
+              <input name='{{form.prefix}}-quantity' id="{{form.prefix}}-quantity" class="purchase-amount">
             </td>
             <td>
-              <input name='per' id="per" class="purchase-amount" readonly>
+              <input name='{{form.prefix}}-per' id="{{form.prefix}}-per" class="purchase-amount" readonly>
             </td>
             <td>
-              <input class="purchase-amount" type="text" id="remark" name="remark">
+              <input class="purchase-amount" type="text" id="{{form.prefix}}-remark" name="{{form.prefix}}-remark">
             </td>           
           </tr>
         </tbody>
@@ -94,9 +94,60 @@
 
 <script>
   document.getElementById('addRowButton').addEventListener('click', function () {
-    var newRow = document.querySelector('table tbody tr').cloneNode(true); // Clone the first row of the table
-    document.querySelector('table tbody').appendChild(newRow); // Append the cloned row to the table body
-  });
+    var addStockButton = document.getElementById('addRowButton');
+    var newRow = document.querySelector('table tbody tr')
+   if(addStockButton && newRow){
+     addStockButton.addEventListener('click',function (){
+      var prefixId = document.getElementById('id_stock_transfer_items_set-TOTAL_FORMS');
+      var newPrefixId = parseInt(prefixId.value);
+      var lastRow = newRow.lastElementChild.cloneNode(true); // clone the last row of the table
+
+      lastRow.querySelectorAll("input, select").forEach(function(el) {
+        el.value = "";
+      })
+    
+      const newStockElement = lastRow.querySelector('input[name^="stock_transfer_items_set-"][name$="-name"]');
+      newStockElement.id = `stock_transfer_items_set-${newPrefixId}-name`;
+      newStockElement.name = `stock_transfer_items_set-${newPrefixId}-name`;
+      newStockElement.innerHTML ="";
+      
+      const newColorElement = lastRow.querySelector('input[name^="stock_transfer_items_set-"][name$="-color"]');
+      newColorElement.id = `stock_transfer_items_set-${newPrefixId}-color`;
+      newColorElement.name = `stock_transfer_items_set-${newPrefixId}-color`;
+      newColorElement.value = "";
+
+      const  newItemShadeElement = lastRow.querySelector('select[name^="stock_transfer_items_set-"][name$="-shades"]');
+      newItemShadeElement.id =`stock_transfer_items_set-${newPrefixId}-shades`;
+      newItemShadeElement.name = `stock_transfer_items_set-${newPrefixId}-shades`;
+      newItemShadeElement.innerHTML = '';
+
+      const newQuantityElement = lastRow.querySelector('input[name^="stock_transfer_items_set-"][name$="-quantity"]');
+      newQuantityElement.id = `stock_transfer_items_set-${newPrefixId}-quantity`;
+      newQuantityElement.name = `stock_transfer_items_set-${newPrefixId}-quantity`;
+      newQuantityElement.value = "";
+
+      const newPerElement = lastRow.querySelector('input[name^="stock_transfer_items_set-"][name$="-per"]');
+      newPerElement.id = `stock_transfer_items_set-${newPrefixId}-per`;
+      newPerElement.name = `stock_transfer_items_set-${newPrefixId}-per`;
+      newPerElement.value = "";
+
+      const newRemarkElement = lastRow.querySelector('input[name^="stock_transfer_items_set-"][name$="-remark"]');
+      newRemarkElement.id = `stock_transfer_items_set-${newPrefixId}-remark`;
+      newRemarkElement.name = `stock_transfer_items_set-${newPrefixId}-remark`;
+      newRemarkElement.value = "";
+    
+      prefixId.value = newPrefixId + 1;
+
+      newRow.appendChild(lastRow);
+
+    });
+  }else{
+        console.error("Could not find addFormButton or table body element.");
+    }
+   
+   })
+   
+
 </script>
 <script>
 
