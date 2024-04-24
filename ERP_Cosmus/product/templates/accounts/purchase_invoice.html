@@ -200,7 +200,6 @@
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
 
-
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
         
@@ -217,8 +216,8 @@
         var jsonData = JSON.parse(jsonString);
         var row_prefix_child = jsonData.parent_row_prefix_id;
         var all_rate_child = jsonData.all_Rate;
-        var godown_data = jsonData.newRow;  
-      
+        var godown_data = jsonData.newRow; 
+       
         console.log('value1',row_prefix_child)
         console.log('value2',all_rate_child)
         console.log('value4',godown_data)
@@ -234,8 +233,7 @@ function getGstNo() {
     var partyGstValue = document.getElementById('id_GST_number').value;
     var comapnyGst = document.getElementById('id_company_GST_numbers').value;
 
-console.log('comapnyGst',comapnyGst);
-console.log('partyGstValue',partyGstValue);
+
 comapnyGst = comapnyGst.toString();
 partyGstValue = partyGstValue.toString();
 

@@ -1579,11 +1579,14 @@ def purchasevouchercreateupdate(request, pk=None):
                                             print('godown',godown_form.error)
                                             purchase_voucher_temp_data.delete()
 
-                                    
+                                    # godown_item_json = request.POST.get('jsonData')
+                                    # print('godown_item_json',godown_item_json)
+                                    # item_shade = request.POST.get(f'purchase_voucher_items_set-{godown_item_json.parent_row_prefix_id}-item_shade')
+                                    # print('item_shade',item_shade)
 
                                     if saved_data_to_delete == form_set_id:
                                         purchase_voucher_temp_data.delete()
-                            
+
                         else:
                             print('form1',form.errors)
                             
@@ -1684,7 +1687,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
             temp_uuid = request.session.get('temp_uuid', [])
             temp_uuid.append(unique_id)
             request.session['temp_uuid'] = temp_uuid 
-            return HttpResponse('<script>window.close();</script>')
+            return HttpResponse('<script>window.close();</script>') 
                     
 
         else:
@@ -1710,7 +1713,7 @@ def purchasevouchercreategodownpopupurl(request):
         
     elif unique_id is not None:
         popup_url = reverse('purchase-voucher-popup-create', args=[shade_id,prefix_id,unique_id])
-    
+        
     else:
         popup_url = None
 
