@@ -33,6 +33,7 @@
                         <tr>
                             {{ form.id }}
                             <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" >
+                            <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" >
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
                             <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="purchase-input godown-select">
@@ -220,6 +221,12 @@ $(document).ready(function(){
         newQuantity.val(0);
         
         const newQuantityValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-new_quantity"]');
+        newQuantityValue.attr('name', 'shade_godown_items_set-' + formsValue + '-new_quantity');
+        newQuantityValue.attr('id', 'shade_godown_items_set-' + formsValue + '-new_quantity');
+        newQuantityValue.val();
+        newQuantity.val(0);
+        
+        const newQuantityElementValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-new_quantity"]');
         newQuantityValue.attr('name', 'shade_godown_items_set-' + formsValue + '-new_quantity');
         newQuantityValue.attr('id', 'shade_godown_items_set-' + formsValue + '-new_quantity');
         newQuantityValue.val();

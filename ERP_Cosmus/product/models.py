@@ -541,7 +541,7 @@ class purchase_voucher_items(models.Model):
 class shade_godown_items(models.Model):
     purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items, on_delete = models.CASCADE)
     godown_id = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default = 0)
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
     
@@ -549,7 +549,7 @@ class shade_godown_items(models.Model):
 class shade_godown_items_temporary_table(models.Model):
     unique_id = models.UUIDField()
     godown_id = models.ForeignKey(Godown_raw_material, on_delete= models.CASCADE)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default = 0)
     rate = models.DecimalField(max_digits=9, decimal_places=2)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
     

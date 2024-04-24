@@ -1,1 +1,7 @@
 /venv
+notes_authentication_cookies.txt
+notes_signals.txt
+notes_validators.txt
+notes_workflow.txt
+notes_djangoormrelationships.txt
+formsets_for_accessing_reverse_relations.txt

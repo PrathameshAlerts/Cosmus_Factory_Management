@@ -75,6 +75,8 @@
                 {{ forms.id }}
 
 
+
+
                 <tr>
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
@@ -200,6 +202,12 @@
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
 
+        var godown_data_string = JSON.stringify(jsonData);
+
+        var json_data_quantity = document.getElementById('purchase_voucher_items_set-' + prefixId +'-jsonDataInputquantity')
+        
+        json_data_quantity.value = godown_data_string
+        console.log('jsonData')
 
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')

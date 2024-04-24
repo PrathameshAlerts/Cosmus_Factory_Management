@@ -115,3 +115,34 @@ def clean_fieldname(self):
 In summary, clean() is a general-purpose method for form-wide validation,
 while clean_<fieldname> is used for field-specific validation.
 Depending on your requirements, you may use either or both methods in your form class.
+
+
+_________________________________________________________________________________________
+
+model field validators / writing custom validators / ModelForms
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete = models.CASCADE)
+    rating = models.PositiveSmallIntegerField(
+        validators = [MinValueValidator(1), MaxValueValidator(5)]
+    )
+
+these type of validators work on submission of form and not on direct query from conole
+the form is validated with the help of full_clean()
+
+Example
+
+def run()
+    user = User.objects.first()
+    restaurant = Restaurant.objects.first()
+
+    rating = Rating(user = user, restaurant=restaurant, rating = 9)
+    rating.full_clean()
+    rating.save()
+
+We can also use the validators in forms 
+
+from django import forms
+from django.core.validators import MinValueValidator, MaxValueValidator
+    
