@@ -32,8 +32,7 @@
                     
                         <tr>
                             {{ form.id }}
-                            <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" >
-                            <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" >
+                            <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
                             <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="purchase-input godown-select">
@@ -50,14 +49,14 @@
                                 {% endif %}
                             </select>
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}" required ></td>
+                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity }}" required ></td>
 
                            
-                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate | default_if_none:''}}" required >
+                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate }}" required >
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount | default_if_none:''}}" readonly>
+                            <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount }}" readonly>
                             </td>
-                            <td><button class="border-0 bg-transparent delete-btn"><input type="button" class="godown-delete" value="" id="{{form.prefix}}-delete" name="{{form.prefix}}-delete" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
+                            <td><button class="border-0 bg-transparent delete-btn"><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
                                 
                             </tr>
                             {% endfor %}
@@ -75,6 +74,7 @@
          <!-- add delete modal on purchase popup when delete button is clicked then modal is open 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
+                <input type="button" class="godown-delete" value="" id="{{form.prefix}}-delete" name="{{form.prefix}}-delete" >
               <div class="modal-content">
                 <div class="modal-header">
                   <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
@@ -115,24 +115,27 @@ $(document).ready(function(){
     <script>
   // This code calculate the oldQty and  current Qty on item-shade change
         var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
+        
 
         for (var i = 0; i < total_form_Value; i++) {
-        var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
-        var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
-        oldquantity.value = jsonQty
-        //console.log(oldquantity)
+        var oldQuantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
+        var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity');
+        oldQuantity.value = jsonQty
+        console.log(jsonQty)
+        console.log(oldQuantity)
         }
 
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
-        function jsondata(){
-            var prefixValue = document.getElementById('prefix_id').value;
+        function jsonDataForm(){
+            var prefixIdValue = document.getElementById('prefix_id').value;
+            
             var json_data_first_rate = document.getElementById('shade_godown_items_set-0-rate').value
             var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value
+            console.log('total_forms',total_forms)
             var newRow = {};      
-            for (var i = 0; i < total_form_Value; i++) {
+            for (var i = 0; i <= total_forms; i++) {
                 var row = 'row_' + i;
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
-                var jsonRate = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-rate').value);
                 var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
                 var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
                 
@@ -141,9 +144,10 @@ $(document).ready(function(){
             }
 
             var jsonData = {
-                parent_row_prefix_id: prefixValue,
+                parent_row_prefix_id: prefixIdValue,
                 all_Rate: json_data_first_rate,
-                newRow: newRow  // Assign newRow to a property of jsonData
+                newRow: newRow // Assign newRow to a property of jsonData
+                
             };
             
             console.log('jsonData',jsonData)
@@ -157,15 +161,13 @@ $(document).ready(function(){
         }
        // This function for form submit then function call and send the data to the parent page with the value
         function submitData(){
+            
             var newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
             var newTotalQty = document.getElementById('grand_godown_quantity').value;
             var newTotalRate = document.getElementById('grand_godown_rate').value;
             var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
             var prefixValue = document.getElementById('prefix_id').value;
-            ; // Ensure total_forms is defined
-
-
-
+      
             var newSessionData = {
                 "newUniqueId": newUniqueId,
                 "newTotalQty": newTotalQty,
@@ -175,8 +177,8 @@ $(document).ready(function(){
             }
             
             window.opener.updateFormData(newSessionData);
-
-            jsondata() // call the function for send the data to the parent page
+            jsonDataForm()
+           // call the function for send the data to the parent page
             
         }
     </script>
@@ -250,9 +252,9 @@ $(document).ready(function(){
         newUniqueValue.attr('id', 'shade_godown_items_set-' + formsValue + '-unique_id');
         newUniqueValue.val('{{unique_id}}');
 
-        const newDeleteValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-delete"]');
-        newDeleteValue.attr('name', 'shade_godown_items_set-' + formsValue + '-delete');
-        newDeleteValue.attr('id', 'shade_godown_items_set-' + formsValue + '-delete');
+        // const newDeleteValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-delete"]');
+        // newDeleteValue.attr('name', 'shade_godown_items_set-' + formsValue + '-delete');
+        // newDeleteValue.attr('id', 'shade_godown_items_set-' + formsValue + '-delete');
       
 
 
@@ -326,34 +328,34 @@ $(document).ready(function(){
         
         
         // Delete row from delete button click then ajax request sent to backend foe deletion a row from table
-        $(document).on('click', '.delete-btn', function () {
-                var tableRows = $('#newTable tbody tr');
-                if (tableRows.length > 1) { // Check if the table has more than one row
-                    var row = $(this).closest('tr').find('.godown-delete[name^="shade_godown_items_set-"][name$="-delete"]').attr('id');
-                    var rowId = row.data('id'); // Get the row ID or some identifier
-                    // AJAX call to backend for deletion
-            $.ajax({
-                        url: '/delete_godown_row/', // The backend endpoint for row deletion
-                        type: 'POST',
-                        data: { id: rowId }, // Send the row ID to delete
-                        success: function (response) {
-                            // If the backend deletion is successful, remove the row from the front-end
-                            if (response.success) {
-                                row.remove();
-                                // If there's a function to recalculate the godown amount, call it
-                                calculateGodownAmount();
-                            } else {
-                                alert('Error deleting row: ' + response.error);
-                            }
-                        },
-                        error: function () {
-                            alert('An error occurred while trying to delete the row.');
-                        }
-                    });
-                } else {
-                    alert('The table must have at least one godown item');
-                }
-                });
+        // $(document).on('click', '.delete-btn', function () {
+        //         var tableRows = $('#newTable tbody tr');
+        //         if (tableRows.length > 1) { // Check if the table has more than one row
+        //             var row = $(this).closest('tr').find('.godown-delete[name^="shade_godown_items_set-"][name$="-delete"]').attr('id');
+        //             var rowId = row.data('id'); // Get the row ID or some identifier
+        //             // AJAX call to backend for deletion
+        //     $.ajax({
+        //                 url: '/delete_godown_row/', // The backend endpoint for row deletion
+        //                 type: 'POST',
+        //                 data: { id: rowId }, // Send the row ID to delete
+        //                 success: function (response) {
+        //                     // If the backend deletion is successful, remove the row from the front-end
+        //                     if (response.success) {
+        //                         row.remove();
+        //                         // If there's a function to recalculate the godown amount, call it
+        //                         calculateGodownAmount();
+        //                     } else {
+        //                         alert('Error deleting row: ' + response.error);
+        //                     }
+        //                 },
+        //                 error: function () {
+        //                     alert('An error occurred while trying to delete the row.');
+        //                 }
+        //             });
+        //         } else {
+        //             alert('The table must have at least one godown item');
+        //         }
+        //         });
 
         })
     </script>

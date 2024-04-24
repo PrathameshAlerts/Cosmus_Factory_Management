@@ -1579,15 +1579,11 @@ def purchasevouchercreateupdate(request, pk=None):
                                             print('godown',godown_form.error)
                                             purchase_voucher_temp_data.delete()
 
-                                    godown_item_json = request.POST.get('jsonData')
-                                    print(godown_item_json)
-                                    item_shade = request.POST.get(f'purchase_voucher_items_set-{godown_item_json.parent_row_prefix_id}-item_shade')
-                                    print(item_shade)
+                                    
 
                                     if saved_data_to_delete == form_set_id:
                                         purchase_voucher_temp_data.delete()
-                                else:
-                                    print('form with pk not updated')
+                            
                         else:
                             print('form1',form.errors)
                             

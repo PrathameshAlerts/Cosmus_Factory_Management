@@ -75,8 +75,6 @@
                 {{ forms.id }}
 
 
-
-
                 <tr>
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
@@ -202,12 +200,6 @@
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
 
-        var godown_data_string = JSON.stringify(jsonData);
-
-        var json_data_quantity = document.getElementById('purchase_voucher_items_set-' + prefixId +'-jsonDataInputquantity')
-        
-        json_data_quantity.value = godown_data_string
-        console.log('jsonData')
 
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
@@ -226,9 +218,11 @@
         var row_prefix_child = jsonData.parent_row_prefix_id;
         var all_rate_child = jsonData.all_Rate;
         var godown_data = jsonData.newRow;  
+      
         console.log('value1',row_prefix_child)
         console.log('value2',all_rate_child)
         console.log('value4',godown_data)
+        
 
         var updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
         updateJsonData.value = JSON.stringify(jsonData);
@@ -330,7 +324,7 @@ randomValue();
         console.log(itemShadeIdValue);
     })
 
-  // This ajax call is to populate the shade and color based on the selected item once retrive the value
+  // This ajax call
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
            // console.log('item_value',item_value)       
@@ -392,7 +386,7 @@ randomValue();
         var selectedShade = $(this).val();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
       
-        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + itemShadeIdValue + '-id');  
+        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
         var prefix_id = purchaseValue;
     
         var primary_id = null;
