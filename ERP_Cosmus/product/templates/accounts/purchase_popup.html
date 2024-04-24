@@ -57,7 +57,7 @@
                             </td>
                             <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount }}" readonly>
                             </td>
-                            <td><button class="border-0 bg-transparent delete-btn"><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
+                            <td><button class="delete-btn border-0 bg-transparent"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete" style="display: none;"  name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></button></td>
                                 
                             </tr>
                             {% endfor %}
@@ -95,7 +95,7 @@
             console.log('total_forms',total_forms)
             var newRow = {};   
 
-            for (var i = 0; i < total_forms; i++) {
+            for (var i = 0; i < total_forms; i++) { 10
                 var row = 'row_' + i;
                 var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
@@ -185,8 +185,8 @@
         const newQuantityValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-new_quantity"]');
         newQuantityValue.attr('name', 'shade_godown_items_set-' + formsValue + '-new_quantity');
         newQuantityValue.attr('id', 'shade_godown_items_set-' + formsValue + '-new_quantity');
-        newQuantityValue.val();
-        newQuantity.val(0);
+        newQuantityValue.val(0);
+       
         
         const newRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]');
         newRate.attr('name', 'shade_godown_items_set-' + formsValue + '-rate');
@@ -207,7 +207,10 @@
         newUniqueValue.attr('id', 'shade_godown_items_set-' + formsValue + '-unique_id');
         newUniqueValue.val('{{unique_id}}');
 
-       
+       const deleteElement = tableClone.find('input[name^="shade_godown_items_set-"][name$="-DELETE"]');
+        deleteElement.attr('name', 'shade_godown_items_set-' + formsValue + '-DELETE');
+        deleteElement.attr('id', 'shade_godown_items_set-' + formsValue + '-DELETE');
+        deleteElement.val('');
         newFormValue.value = formsValue + 1;
 
         $('#newTable tbody').append(tableClone);
@@ -279,35 +282,24 @@
         })
         
         
-        // Delete row from delete button click then ajax request sent to backend foe deletion a row from table
-        // $(document).on('click', '.delete-btn', function () {
-        //         var tableRows = $('#newTable tbody tr');
-        //         if (tableRows.length > 1) { // Check if the table has more than one row
-        //             var row = $(this).closest('tr').find('.godown-delete[name^="shade_godown_items_set-"][name$="-delete"]').attr('id');
-        //             var rowId = row.data('id'); // Get the row ID or some identifier
-        //             // AJAX call to backend for deletion
-        //     $.ajax({
-        //                 url: '/delete_godown_row/', // The backend endpoint for row deletion
-        //                 type: 'POST',
-        //                 data: { id: rowId }, // Send the row ID to delete
-        //                 success: function (response) {
-        //                     // If the backend deletion is successful, remove the row from the front-end
-        //                     if (response.success) {
-        //                         row.remove();
-        //                         // If there's a function to recalculate the godown amount, call it
-        //                         calculateGodownAmount();
-        //                     } else {
-        //                         alert('Error deleting row: ' + response.error);
-        //                     }
-        //                 },
-        //                 error: function () {
-        //                     alert('An error occurred while trying to delete the row.');
-        //                 }
-        //             });
-        //         } else {
-        //             alert('The table must have at least one godown item');
-        //         }
-        //         });
+        //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
+        $(document).on('click', '.delete-btn', function() {
+        var tableRows = $('#newTable tbody tr'); 
+        if (tableRows.length > 1) { 
+            var row = $(this).closest('tr'); 
+            var checkbox = row.find('.godown_delete[type="checkbox"]').attr('id'); // Find the associated checkbox
+            var newCheckBoxId = checkbox.split('-')[1];
+
+            var deleteValue = $('#shade_godown_items_set-' + newCheckBoxId + '-DELETE');
+            checkbox.prop('checked', true); 
+            row.remove(); 
+
+
+            calculateGodownAmount(); 
+        } else {
+            alert('The table must have at least one godown item'); 
+        }
+    });
 
         })
     </script>

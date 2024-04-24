@@ -134,7 +134,9 @@
                     <td>
                         <input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly>
                     </td>
-                    <td>{{ forms.DELETE }}</td>
+                    <td>
+                        <input type="checkbox" name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE">
+                    </td>
                     
                  </tr>   
             {% endfor %}
@@ -319,7 +321,7 @@ randomValue();
     $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
         itemShadeName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         itemShadeIdValue = itemShadeName.split('-')[1];
-        console.log(itemShadeIdValue);
+        //console.log(itemShadeIdValue);
     })
 
   // This ajax call
@@ -685,6 +687,10 @@ randomValue();
            backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
            backendQtyElement.name = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
            backendQtyElement.value= "";
+
+           const deleteElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+           deleteElement.id = `purchase_voucher_items_set-${formIndex}-DELETE`;
+           deleteElement.name = `purchase_voucher_items_set-${formIndex}-DELETE`;
             
             tableBody.appendChild(lastRow);
            
