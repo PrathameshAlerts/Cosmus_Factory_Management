@@ -50,7 +50,7 @@
                                 {% endif %}
                             </select>
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}" required ></td>
+                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:0}}" required ></td>
 
                            
                             <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate | default_if_none:''}}" required >
@@ -66,7 +66,7 @@
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
                     </tbody>
                 </table>
-               <button type="button" class="create-btn" id="addModalButton" onclick="jsondata()">Add +</button>
+               <button type="button" class="create-btn" id="addModalButton">Add +</button>
                <input type="submit" class="add_btn">
             </form>
             
@@ -113,16 +113,17 @@ $(document).ready(function(){
 
   
     <script>
-  // This code calculate the oldQty and  current Qty on item-shade change
+        
         var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
 
-        for (var i = 0; i <= total_form_Value; i++) {
+        for (var i = 0; i < total_form_Value; i++) {
         var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
+        console.log('first',jsonQty)
         oldquantity.value = jsonQty
-        console.log(jsonQty)
+        console.log('last',jsonQty)
         }
-
+    
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
         function jsondata(){
             var prefixValue = document.getElementById('prefix_id').value;
@@ -131,7 +132,7 @@ $(document).ready(function(){
             console.log('total_forms',total_forms)
             var newRow = {};   
 
-            for (var i = 0; i <= total_forms; i++) {
+            for (var i = 0; i < total_forms; i++) {
                 var row = 'row_' + i;
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
                 var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
