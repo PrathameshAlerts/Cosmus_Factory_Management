@@ -97,6 +97,7 @@
     var addStockButton = document.getElementById('addRowButton');
     var newRow = document.querySelector('table tbody tr')
    if(addStockButton && newRow){
+
      addStockButton.addEventListener('click',function (){
       var prefixId = document.getElementById('id_stock_transfer_items_set-TOTAL_FORMS');
       var newPrefixId = parseInt(prefixId.value);
@@ -142,7 +143,7 @@
 
     });
   }else{
-        console.error("Could not find addFormButton or table body element.");
+        console.error("Could not find addStockButton or  newRow");
     }
    
    })
