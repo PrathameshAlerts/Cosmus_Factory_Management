@@ -73,21 +73,16 @@
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
                 {{ forms.id }}
-
-
-
-
-                <tr>
+                <tr>    
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
-                    <td>1</td>
+                    <td>{{forms.instance.id}}</td>
                     <td> 
                         <select name="item_name_{{forloop.counter0}}" class="purchase-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
-                            {% for item in items %}
-                            <option value="{{item.id}}">{{item.item_name}}</option>
-                            {% endfor %}
+                            <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
+
                             {% elif not forms.instance.id %}
                             <option value=""></option>
                             {% for item in items %}
@@ -223,6 +218,7 @@
         console.log('value1',row_prefix_child)
         console.log('value2',all_rate_child)
         console.log('value4',godown_data)
+        
 
         var updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
         updateJsonData.value = JSON.stringify(jsonData);
@@ -234,8 +230,7 @@ function getGstNo() {
     var partyGstValue = document.getElementById('id_GST_number').value;
     var comapnyGst = document.getElementById('id_company_GST_numbers').value;
 
-console.log('comapnyGst',comapnyGst);
-console.log('partyGstValue',partyGstValue);
+
 comapnyGst = comapnyGst.toString();
 partyGstValue = partyGstValue.toString();
 
@@ -324,7 +319,8 @@ randomValue();
         console.log(itemShadeIdValue);
     })
 
-  // This ajax call is to populate the shade and color based on the selected item once retrive the value
+   
+  // This ajax call
      $(document).on('change', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
            // console.log('item_value',item_value)       
@@ -687,6 +683,9 @@ randomValue();
            backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
            backendQtyElement.name = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
            backendQtyElement.value= "";
+
+
+
             
             tableBody.appendChild(lastRow);
            
