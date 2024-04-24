@@ -202,13 +202,6 @@
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
 
-        var godown_data_string = JSON.stringify(jsonData);
-
-        var json_data_quantity = document.getElementById('purchase_voucher_items_set-' + prefixId +'-jsonDataInputquantity')
-        
-        json_data_quantity.value = godown_data_string
-        console.log('jsonData')
-
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
         
@@ -225,7 +218,8 @@
         var jsonData = JSON.parse(jsonString);
         var row_prefix_child = jsonData.parent_row_prefix_id;
         var all_rate_child = jsonData.all_Rate;
-        var godown_data = jsonData.newRow;  
+        var godown_data = jsonData.newRow; 
+       
         console.log('value1',row_prefix_child)
         console.log('value2',all_rate_child)
         console.log('value4',godown_data)
@@ -392,7 +386,7 @@ randomValue();
         var selectedShade = $(this).val();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
       
-        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + itemShadeIdValue + '-id');  
+        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
         var prefix_id = purchaseValue;
     
         var primary_id = null;

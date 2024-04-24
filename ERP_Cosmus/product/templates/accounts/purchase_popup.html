@@ -33,7 +33,7 @@
                         <tr>
                             {{ form.id }}
                             <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" >
-                            <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" >
+                            
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
                             <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="purchase-input godown-select">
@@ -66,7 +66,7 @@
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
                     </tbody>
                 </table>
-               <button type="button" class="create-btn" id="addModalButton">Add +</button>
+               <button type="button" class="create-btn" id="addModalButton" onclick="jsondata()">Add +</button>
                <input type="submit" class="add_btn">
             </form>
             
@@ -116,11 +116,11 @@ $(document).ready(function(){
   // This code calculate the oldQty and  current Qty on item-shade change
         var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
 
-        for (var i = 0; i < total_form_Value; i++) {
+        for (var i = 0; i <= total_form_Value; i++) {
         var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
         oldquantity.value = jsonQty
-        //console.log(oldquantity)
+        console.log(jsonQty)
         }
 
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
@@ -128,11 +128,12 @@ $(document).ready(function(){
             var prefixValue = document.getElementById('prefix_id').value;
             var json_data_first_rate = document.getElementById('shade_godown_items_set-0-rate').value
             var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value
-            var newRow = {};      
-            for (var i = 0; i < total_form_Value; i++) {
+            console.log('total_forms',total_forms)
+            var newRow = {};   
+
+            for (var i = 0; i <= total_forms; i++) {
                 var row = 'row_' + i;
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
-                var jsonRate = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-rate').value);
                 var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
                 var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
                 
@@ -143,28 +144,25 @@ $(document).ready(function(){
             var jsonData = {
                 parent_row_prefix_id: prefixValue,
                 all_Rate: json_data_first_rate,
-                newRow: newRow  // Assign newRow to a property of jsonData
+                newRow: newRow,
+              
             };
             
-            console.log('jsonData',jsonData)
-            // Convert the data object to JSON string
             var jsonString = JSON.stringify(jsonData);
-
+            
             window.opener.BackendQuantityjson(jsonString);
-
-
 
         }
        // This function for form submit then function call and send the data to the parent page with the value
         function submitData(){
+
+            jsondata()
+
             var newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
             var newTotalQty = document.getElementById('grand_godown_quantity').value;
             var newTotalRate = document.getElementById('grand_godown_rate').value;
             var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
             var prefixValue = document.getElementById('prefix_id').value;
-            ; // Ensure total_forms is defined
-
-
 
             var newSessionData = {
                 "newUniqueId": newUniqueId,
@@ -176,7 +174,6 @@ $(document).ready(function(){
             
             window.opener.updateFormData(newSessionData);
 
-            jsondata() // call the function for send the data to the parent page
             
         }
     </script>
