@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -140,6 +140,16 @@ class Itemform(forms.ModelForm):
         
 
 ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
+OpeningShadeFormSetupdate = inlineformset_factory(item_color_shade, opening_shade_godown_quantity, fields=('opening_godown_id', 'opening_quantity', 'opening_rate','opening_amount'), extra=1)
+
+class opening_shade_godown_quantityform(forms.ModelForm):
+    class Meta:
+        model = opening_shade_godown_quantity
+        fields ='__all__'
+
+opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, form=opening_shade_godown_quantityform, extra=1)
+
+
 
 
 

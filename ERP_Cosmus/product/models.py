@@ -394,6 +394,8 @@ class opening_shade_godown_quantity(models.Model):
 
 
 
+
+
 class AccountGroup(models.Model):
     account_group = models.CharField(max_length = 50 , unique= True)
 

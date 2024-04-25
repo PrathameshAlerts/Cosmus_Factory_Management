@@ -15,7 +15,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                    shade_godown_items_temporary_table)
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
-                     LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet,
+                     LoginForm, opening_shade_godown_quantitycreateformset, OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
                         ProductImagesFormSet, ProductVideoFormSet,
                          gst_form, item_purchase_voucher_master_form,
@@ -245,7 +245,6 @@ def product_color_sku(request,ref_id = None):
 
 def pproduct_list(request):
     
-    
     queryset = Product.objects.select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color').all()
     product_search = request.GET.get('product_search')
   
@@ -256,16 +255,6 @@ def pproduct_list(request):
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
    
     context = {'products': queryset}
-
-    for products in queryset:
-        for categories in products.product_cats.all():
-            print(categories.SubCategory_id.product_main_category)
-    
-        # for categories in products.product_cats.all():
-        #         print(categories.SubCategory_id)
-
-        print('_____')
-
 
     return render(request,'product/pproduct_list.html',context=context)
 
@@ -284,7 +273,7 @@ def pproduct_delete(request, pk):
 def add_product_images(request, pk):
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductImagesFormSet(instance=product)  # pass the instance to the formset
-    print(request.POST)
+    
     if request.method == 'POST':
         formset = ProductImagesFormSet(request.POST, request.FILES, instance=product)
         if formset.is_valid():
@@ -636,6 +625,34 @@ def item_edit(request,pk):
                                                                  'formset': formset})
 
 
+def openingquantityformsetpopup(request,parent_row_id,pk=None):
+
+    if pk is not None:
+        shade_instance =  get_object_or_404(item_color_shade,pk=pk)
+        formsets = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance)
+    else:
+        #get data from session
+        session_quantity_data = {}
+        formsets = opening_shade_godown_quantitycreateformset(queryset = session_quantity_data)
+
+    formset = formsets
+
+    if request.method == 'POST':
+        if pk is not None:
+            if formset.is_valid:
+                for form in formset:
+                    if form.is_valid():
+                        form.save()
+
+        else:
+            
+            data_to_store = {}
+            # Convert the data to JSON string
+            data_json_string = json.dumps(data_to_store)
+            # Store the JSON string in the session
+            request.session['openingquantitytemp'] = data_json_string
+
+    return render(request,'product/opening_godown_qty.html',{'formset':formset})
 
 def item_delete(request, pk):
     
