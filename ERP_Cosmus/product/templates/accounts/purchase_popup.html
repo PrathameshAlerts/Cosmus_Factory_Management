@@ -75,17 +75,18 @@
       
   
     <script>
-  // This code calculate the oldQty and  current Qty on item-shade change
+        
         var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
         
 
         for (var i = 0; i <= total_form_Value; i++) {
         var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
+        console.log('first',jsonQty)
         oldquantity.value = jsonQty
-        console.log(jsonQty)
+        console.log('last',jsonQty)
         }
-
+    
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
         function jsondata(){
             var prefixIdValue = document.getElementById('prefix_id').value;

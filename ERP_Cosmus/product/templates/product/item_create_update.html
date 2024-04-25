@@ -273,6 +273,25 @@
 {% endif %}
 </div>
 
+<script>
+  // Listen for messages from child windows
+  window.addEventListener('message', function(event) {
+      // Check if the message indicates form submission
+      console.log(event.data)
+      if (event.data === 'formSubmitted') {
+          // Refresh the dropdown
+          refreshDropdown();
+      }
+  });
+
+  // Function to refresh the dropdown
+  function refreshDropdown() {
+      // Replace 'dropdownId' with the ID of your dropdown
+      var dropdown = document.getElementById('id_Item_Color');
+      console.log(dropdown)
+  }
+</script>
+
 
 
 

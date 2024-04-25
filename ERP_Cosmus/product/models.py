@@ -359,6 +359,7 @@ class item_color_shade(models.Model):
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
+    item_shade_quantity = models.DecimalField(default=0,max_digits=10, decimal_places=2)
 
     def __str__(self) -> str:
         return self.item_shade_name
@@ -447,7 +448,8 @@ class Ledger(models.Model):
 
 
 class account_credit_debit_master_table(models.Model):
-    ledger = models.ForeignKey(Ledger, on_delete=models.PROTECT, blank = False, null = False, related_name = 'transaction_entry')
+    ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, blank = False, null = False, related_name = 'transaction_entry')
+    #need to check if models.CASCADE or models.PROTECT 
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     credit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     account_name = models.CharField(max_length = 100)
@@ -469,8 +471,8 @@ class Godown_raw_material(models.Model):
 class item_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
-    quantity = models.IntegerField(default = 0)
-    item_rate = models.IntegerField(default = 0)
+    quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
+    item_rate = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
 
 
     class Meta:
@@ -498,7 +500,7 @@ class item_shades_godown_report(models.Model):
     voucher_type = models.CharField(max_length = 150)
     voucher_no = models.IntegerField()
     inward_outward = models.CharField(max_length = 50, choices = inward_outward)
-    Quantity = models.IntegerField()
+    Quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
 
 
 class Godown_finished_goods(models.Model):
@@ -523,9 +525,9 @@ class item_purchase_voucher_master(models.Model):
     supplier_invoice_number = models.CharField(max_length = 100)
     ledger_type = models.CharField(max_length = 20, default = 'purchase')
     party_name  = models.ForeignKey(Ledger, on_delete = models.PROTECT)
-    fright_transport = models.DecimalField(max_digits=9, decimal_places=2)
-    gross_total = models.DecimalField(max_digits=9, decimal_places=2)
-    grand_total = models.DecimalField(max_digits=9, decimal_places=2)
+    fright_transport = models.DecimalField(max_digits=10, decimal_places=2)
+    gross_total = models.DecimalField(max_digits=10, decimal_places=2)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
@@ -533,25 +535,25 @@ class item_purchase_voucher_master(models.Model):
 class purchase_voucher_items(models.Model):
     item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
     item_shade = models.ForeignKey(item_color_shade, on_delete = models.PROTECT)
-    quantity_total = models.IntegerField()
-    rate = models.DecimalField(max_digits=9, decimal_places=2)
-    amount = models.DecimalField(max_digits=9, decimal_places=2)
+    quantity_total = models.DecimalField(max_digits=10, decimal_places=2)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 class shade_godown_items(models.Model):
     purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items, on_delete = models.CASCADE)
     godown_id = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
-    quantity = models.IntegerField(default = 0)
-    rate = models.DecimalField(max_digits=9, decimal_places=2)
-    amount = models.DecimalField(max_digits=9, decimal_places=2)
+    quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     
 
 class shade_godown_items_temporary_table(models.Model):
     unique_id = models.UUIDField()
     godown_id = models.ForeignKey(Godown_raw_material, on_delete= models.CASCADE)
-    quantity = models.IntegerField(default = 0)
-    rate = models.DecimalField(max_digits=9, decimal_places=2)
-    amount = models.DecimalField(max_digits=9, decimal_places=2)
+    quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     
 
 # @receiver(pre_save, sender=Item_Creation)

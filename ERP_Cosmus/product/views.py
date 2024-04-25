@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User , Group
 from uuid import UUID
+import json
 from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
@@ -31,6 +32,8 @@ from django.contrib import messages
 
 
 
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
 
 
 #____________________________Production-Product-View-Start__________________________________
@@ -1438,7 +1441,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
         #get the purchase invoice for updating the form 
         if pk:
-            purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
+            purchase_invoice_instance = get_object_or_404(item_purchase_voucher_master,pk=pk)
             item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
         
         else:
@@ -1454,10 +1457,18 @@ def purchasevouchercreateupdate(request, pk=None):
         raw_material_godowns = Godown_raw_material.objects.all()
 
         master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
+        
+        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
+        
+        if account_sub_grp is not None:
+            
+            party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+        else:
+            party_names = ''
+    
 
     try:
-        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
-        party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+        
         items = Item_Creation.objects.all()
 
         party_gst_no = ''
@@ -1586,7 +1597,27 @@ def purchasevouchercreateupdate(request, pk=None):
 
                                     if saved_data_to_delete == form_set_id:
                                         purchase_voucher_temp_data.delete()
+                                
+                                # first check if quantity is updated in invoice database 
+                                godown_item_quantity = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-jsonDataInputquantity')
 
+                                voucher_row_godown_data = json.loads(godown_item_quantity)
+                                parent_row_prefix_id = voucher_row_godown_data.get('parent_row_prefix_id')
+
+                                if parent_row_prefix_id == form_prefix_number:
+                                    print(voucher_row_godown_data)
+                                    new_row = voucher_row_godown_data.get('newRow')
+                                    new_rate = float(voucher_row_godown_data.get('all_Rate'))
+                                    row_item = items_instance.item_shade.id
+                                    Item_instance =  item_color_shade.objects.get(id = row_item)
+                                    for key, value in new_row.items():
+                                        godown_id = int(value['gId'])
+                                        qtydiffrence = value['updateQty']
+                                        godown_instance = Godown_raw_material.objects.get(id = godown_id)
+                                        Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
+                                        Item.quantity = Item.quantity + qtydiffrence
+                                        Item.item_rate = new_rate
+                                        Item.save()
                         else:
                             print('form1',form.errors)
                             
@@ -1653,10 +1684,10 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
             formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
     
 
-
     elif pk is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
-        formsets = purchase_voucher_items_godown_formset(request.POST or None, instance = voucher_item_instance, prefix='shade_godown_items_set')
+
+        formsets = purchase_voucher_items_godown_formset(request.POST or None, instance = voucher_item_instance,prefix='shade_godown_items_set')
     
     #create a formset instance with the selected unique id or PK 
     formset = formsets
@@ -1781,6 +1812,7 @@ def gst_create_update(request, pk = None):
     if pk:
         instance = gst.objects.get(pk=pk)
         title = 'Update'
+
     else:
         instance = None
         title = 'Create'
@@ -1799,20 +1831,19 @@ def gst_create_update(request, pk = None):
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
+
             messages.success(request,'GST created successfully.')
             if 'save_and_add_another' in request.POST and template_name == 'accounts/gst_create_update.html':
-                
                 return redirect('gst-create')
             
             elif 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
-
                 return redirect('gst-list')
 
-            elif 'save' in request.POST and template_name == 'product/gst_popup.html':
-                
+            elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
                 return HttpResponse('<script>window.close();</script>')
         else:
             messages.success(request,'An error occured.')
+
     return render(request,template_name,{'form' : form, 'title':title})
 
 
