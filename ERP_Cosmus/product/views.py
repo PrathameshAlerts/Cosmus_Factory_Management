@@ -15,7 +15,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                    shade_godown_items_temporary_table)
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
-                     LoginForm, PProductAddForm, PProductCreateForm, ShadeFormSet,
+                     LoginForm, OpeningShadeFormSet, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
                         ProductImagesFormSet, ProductVideoFormSet,
                          gst_form, item_purchase_voucher_master_form,
@@ -245,7 +245,6 @@ def product_color_sku(request,ref_id = None):
 
 def pproduct_list(request):
     
-    
     queryset = Product.objects.select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color').all()
     product_search = request.GET.get('product_search')
   
@@ -256,16 +255,6 @@ def pproduct_list(request):
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
    
     context = {'products': queryset}
-
-    for products in queryset:
-        for categories in products.product_cats.all():
-            print(categories.SubCategory_id.product_main_category)
-    
-        # for categories in products.product_cats.all():
-        #         print(categories.SubCategory_id)
-
-        print('_____')
-
 
     return render(request,'product/pproduct_list.html',context=context)
 
@@ -284,7 +273,7 @@ def pproduct_delete(request, pk):
 def add_product_images(request, pk):
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductImagesFormSet(instance=product)  # pass the instance to the formset
-    print(request.POST)
+    
     if request.method == 'POST':
         formset = ProductImagesFormSet(request.POST, request.FILES, instance=product)
         if formset.is_valid():
@@ -612,6 +601,8 @@ def item_edit(request,pk):
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
 
+    openingquantityformset = OpeningShadeFormSet()
+    
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
