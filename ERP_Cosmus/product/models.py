@@ -357,9 +357,9 @@ class item_color_shade(models.Model):
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
-    created_date = models.DateTimeField(auto_now= True)
+    created_date = models.DateTimeField(auto_now = True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
-    item_shade_quantity = models.DecimalField(default=0,max_digits=10, decimal_places=2)
+
 
     def __str__(self) -> str:
         return self.item_shade_name
@@ -379,6 +379,18 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
                                                             item_color_image = instance.item_shade_image)
         # Save the newly created item_color_shade object
         primary_color_shade.save()
+
+
+
+class opening_shade_godown_quantity(models.Model):
+    opening_purchase_voucher_godown_item = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
+    opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
+    opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
+    opening_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    opening_amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
 
 
 

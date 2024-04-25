@@ -515,9 +515,10 @@ def item_create(request):
         form = Itemform(request.POST, request.FILES)
         
         if form.is_valid():
-            form.save()
-            messages.success(request,'Item has been created')
-            return redirect("item-list")
+            #make a var of saved form and get the id 
+            instance = form.save()
+            messages.success(request,'Item has been created, Update quantity in godown')
+            return redirect(reverse('item-edit', args=[instance.id]))
         else:
             print(form.errors)
             return render(request,'product/item_create_update.html', {'gsts':gsts,
