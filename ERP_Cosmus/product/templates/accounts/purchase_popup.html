@@ -57,7 +57,7 @@
                             </td>
                             <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount }}" readonly>
                             </td>
-                            <td><button class="delete-btn border-0 bg-transparent"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete" style="display: none;"  name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></button></td>
+                            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2"   name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
                                 
                             </tr>
                             {% endfor %}
@@ -166,7 +166,7 @@
        
         var formsValue = parseInt(newFormValue.value);
        
-         console.log('formsValue',formsValue)
+       
         
         var tableClone = $('#newTable').find('tbody tr').last().clone(true);
         
@@ -275,11 +275,11 @@
 
         })
 
-        $(document).on('input', '.godown-quantity' , function() {
+    $(document).on('input', '.godown-quantity' , function() {
             //call the calculation function when qunatity and rate is changed   
             calculateGodownAmount();
 
-        })
+    })
         
         
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
@@ -287,19 +287,19 @@
         var tableRows = $('#newTable tbody tr'); 
         if (tableRows.length > 1) { 
             var row = $(this).closest('tr'); 
-            var checkbox = row.find('.godown_delete[type="checkbox"]').attr('id'); // Find the associated checkbox
-            var newCheckBoxId = checkbox.split('-')[1];
+            var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+           // var newCheckBoxId = checkbox.split('-')[1];
 
-            var deleteValue = $('#shade_godown_items_set-' + newCheckBoxId + '-DELETE');
+            //var deleteValue = $('#shade_godown_items_set-' + newCheckBoxId + '-DELETE');
             checkbox.prop('checked', true); 
-            row.remove(); 
+            //row.remove(); 
 
 
             calculateGodownAmount(); 
         } else {
             alert('The table must have at least one godown item'); 
         }
-    });
+        });
 
         })
     </script>

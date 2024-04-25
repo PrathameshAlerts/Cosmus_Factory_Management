@@ -27,10 +27,12 @@
         contentType: false,
         success: function(response) {
             // Handle success response
-    
+            
             // Trigger page refresh in the parent window
             if (window.opener && !window.opener.closed) {
-                window.opener.location.reload(true);
+               
+        // Reload the parent window if necessary
+        window.opener.reladFabricPage();
             }
         },
         error: function(xhr, errmsg, err) {

@@ -66,9 +66,9 @@
           <tr>
             <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
             <th><label for="{{ shade_form.prefix }}-item_shade_name">Name</label></th>
+            <th><label for="{{ shade_form.prefix }}-item_Qty">Openening Qty</label></th>
             <th><label for="{{ shade_form.prefix }}-item_color_image">Shade Image</label></th>
-            <th><label for="{{ shade_form.prefix }}-item_color_image">Image</label></th>
-            <th><label for="{{ shade_form.prefix }}-item_color_image">Delete</label></th>
+            <th><label for="{{ shade_form.prefix }}-item_delete">Delete</label></th>
           </tr>
           {{ formset.management_form }}
           {% for shade_form in formset %}
@@ -78,16 +78,8 @@
             <tr>
               <td>
                 <!-- item_name_rank -->
-                {% if forloop.first %}
-                <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
+                <input type="text" class="item-rank" style="border: none;" name="{{ shade_form.prefix }}-item_name_rank"
                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}"readonly>
-                  <!-- <td>{{shade_form.item_name_rank}}</td> -->
-                {% else %}
-                 <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
-                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank | default_if_none:''}}">
-                  <!-- <td>{{shade_form.item_name_rank}}</td> -->
-                {% endif %}
-
               </td>
               <td>
                 <!-- item_shade_name -->
@@ -100,26 +92,25 @@
               {% endif %}
             </td>
             <td>
-                <input type="file" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
+              <input type="number" class="purchase-amount" name="{{shade_form.prefix}}.openning_qty" id="{{shade_form.prefix}}.openning_qty" value="">
+            </td>
+            <td>
+              {% if shade_form.instance.item_color_image %}
+              <img src="{{ shade_form.instance.item_color_image.url }}" alt="Image Preview" style="max-width: 150px; max-height: 150px;">
+            {% endif %}
+            <div>
+              <input type="file" class="pt-1" style="width: 250px;" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
+            </div>
+                
                 <!--image clear checkbox-->
                 <!--<label for="{{ shade_form.prefix }}-item_color_image-clear_id">Clear</label>
                 <input type="checkbox" name="{{ shade_form.prefix }}-item_color_image-clear" id="{{ shade_form.prefix }}-item_color_image-clear_id">-->
               </td>
-              <td>
-                {% if shade_form.instance.item_color_image %}
-                  <img src="{{ shade_form.instance.item_color_image.url }}" alt="Image Preview" style="max-width: 150px; max-height: 150px;">
-                {% endif %}
-              </td>
+             
               <td>{{ shade_form.DELETE }}</td>
             </tr>
 
-            <!-- Render the image preview if available -->
-            <tr>
-              
-              
-              
-            </tr>
-            <!-- Render the image preview if available -->
+            
           </div>
           {% endfor %}
         </table>
@@ -172,6 +163,12 @@
       <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required
         id="id_Units">
     </div>
+    {% if not form.instance.id %}
+    <div class=" d-flex my-3">
+      <label for="id_openening balance" class="form-label item-form">Openening Balance:</label>
+      <input type="number" class="item-select" name="openening balance" id="id_openening balance" value="" step="0.01" required>
+    </div>
+    {% endif %}
     <div class=" d-flex my-3">
       <label for="id_Panha" class="form-label item-form">Panha:</label>
       <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha}}" step="0.01" required
@@ -280,6 +277,36 @@
 
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+var prefixValue = document.getElementById('id_shades-INITIAL_FORMS');
+var newPrefix = parseInt(prefixValue.value) + 1;
+console.log('newPrefix',newPrefix)
+document.getElementById('shades-'+prefixValue.value +'-item_name_rank').value = newPrefix;
+});
+  
+
+function reladFabricPage(){
+  $.ajax({
+    url: '{% url "fabric-popup" %}',
+    type: 'GET',
+    success: function (response){
+      var fabricSelectOption = document.getElementById('id_Fabric_Group');
+      fabricSelectOption.innerHTML = '';
+      response.data.forEach(element => {
+        var options = document.createElement('option');
+        options.value = element.id;
+        options.textContent = element.name;
+        fabricSelectOption.appendChild(options);
+
+      });
+    },
+    error(xhr,msg,err){
+      console.log('Error submitting form');
+    }
+  })
+}
+
   var popUpWindow = null;
 
   function openFabPopup(button) {
