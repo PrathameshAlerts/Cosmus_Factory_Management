@@ -15,7 +15,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                    shade_godown_items_temporary_table)
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
-                     LoginForm, OpeningShadeFormSet, PProductAddForm, PProductCreateForm, ShadeFormSet,
+                     LoginForm, opening_shade_godown_quantitycreateformset, OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
                         ProductImagesFormSet, ProductVideoFormSet,
                          gst_form, item_purchase_voucher_master_form,
@@ -601,8 +601,6 @@ def item_edit(request,pk):
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
 
-    openingquantityformset = OpeningShadeFormSet()
-    
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
@@ -627,6 +625,32 @@ def item_edit(request,pk):
                                                                  'formset': formset})
 
 
+def openingquantityformsetpopup(request,parent_row_id,pk=None):
+
+    if pk is not None:
+        shade_instance =  get_object_or_404(item_color_shade,pk=pk)
+        formsets = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance)
+    else:
+        #get data from session
+        session_quantity_data = {}
+        formsets = opening_shade_godown_quantitycreateformset(queryset = session_quantity_data)
+
+    formset = formsets
+
+    if request.method == 'POST':
+        if pk is not None:
+            if formset.is_valid:
+                for form in formset:
+                    if form.is_valid():
+                        form.save()
+
+        else:
+            
+            data_to_store = {}
+            # Convert the data to JSON string
+            data_json_string = json.dumps(data_to_store)
+            # Store the JSON string in the session
+            request.session['openingquantitytemp'] = data_json_string
 
 def item_delete(request, pk):
     
