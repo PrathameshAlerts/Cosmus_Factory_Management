@@ -66,7 +66,6 @@
           <tr>
             <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
             <th><label for="{{ shade_form.prefix }}-item_shade_name">Name</label></th>
-            <th><label for="{{ shade_form.prefix }}-item_Qty">Openening Qty</label></th>
             <th><label for="{{ shade_form.prefix }}-item_color_image">Shade Image</label></th>
             <th><label for="{{ shade_form.prefix }}-item_delete">Delete</label></th>
           </tr>
@@ -92,9 +91,6 @@
               {% endif %}
             </td>
             <td>
-              <input type="number" class="purchase-amount" name="{{shade_form.prefix}}.openning_qty" id="{{shade_form.prefix}}.openning_qty" value="">
-            </td>
-            <td>
               {% if shade_form.instance.item_color_image %}
               <img src="{{ shade_form.instance.item_color_image.url }}" alt="Image Preview" style="max-width: 150px; max-height: 150px;">
             {% endif %}
@@ -109,8 +105,6 @@
              
               <td>{{ shade_form.DELETE }}</td>
             </tr>
-
-            
           </div>
           {% endfor %}
         </table>
@@ -163,12 +157,7 @@
       <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required
         id="id_Units">
     </div>
-    {% if not form.instance.id %}
-    <div class=" d-flex my-3">
-      <label for="id_openening balance" class="form-label item-form">Openening Balance:</label>
-      <input type="number" class="item-select" name="openening balance" id="id_openening balance" value="" step="0.01" required>
-    </div>
-    {% endif %}
+
     <div class=" d-flex my-3">
       <label for="id_Panha" class="form-label item-form">Panha:</label>
       <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha}}" step="0.01" required
@@ -240,7 +229,6 @@
       
       
     </div>
-    <input type="submit" class="add_btn" name="save_and_add_another" value="Save and Add Another">
     {% endif %}
     <input type="submit" class="add_btn" name="save" value="Save">
   </form>
