@@ -81,8 +81,9 @@
                         <select name="item_name_{{forloop.counter0}}" class="purchase-select item-name" placeholder="Item Name" id="item_name_{{forloop.counter0}}">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
-                            <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
-
+                            {% for item in items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %}
                             {% elif not forms.instance.id %}
                             <option value=""></option>
                             {% for item in items %}
@@ -215,11 +216,6 @@
         var all_rate_child = jsonData.all_Rate;
         var godown_data = jsonData.newRow; 
        
-        console.log('value1',row_prefix_child)
-        console.log('value2',all_rate_child)
-        console.log('value4',godown_data)
-        
-
         var updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
         updateJsonData.value = JSON.stringify(jsonData);
     }
@@ -242,11 +238,6 @@ if(newCompanyGst == newPartyGst){
     return false;
 }
 }
-
-
-
-
-
 
 </script>
 

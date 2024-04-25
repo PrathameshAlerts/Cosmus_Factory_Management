@@ -32,6 +32,8 @@ from django.contrib import messages
 
 
 
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
 
 
 #____________________________Production-Product-View-Start__________________________________
@@ -1439,7 +1441,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
         #get the purchase invoice for updating the form 
         if pk:
-            purchase_invoice_instance = item_purchase_voucher_master.objects.get(pk= pk)
+            purchase_invoice_instance = get_object_or_404(item_purchase_voucher_master,pk=pk)
             item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
         
         else:
@@ -1455,10 +1457,18 @@ def purchasevouchercreateupdate(request, pk=None):
         raw_material_godowns = Godown_raw_material.objects.all()
 
         master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
+        
+        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
+        
+        if account_sub_grp is not None:
+            
+            party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+        else:
+            party_names = ''
+    
 
     try:
-        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
-        party_names = Ledger.objects.filter(under_group=account_sub_grp.id)
+        
         items = Item_Creation.objects.all()
 
         party_gst_no = ''
@@ -1802,6 +1812,7 @@ def gst_create_update(request, pk = None):
     if pk:
         instance = gst.objects.get(pk=pk)
         title = 'Update'
+
     else:
         instance = None
         title = 'Create'
@@ -1820,20 +1831,19 @@ def gst_create_update(request, pk = None):
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
+
             messages.success(request,'GST created successfully.')
             if 'save_and_add_another' in request.POST and template_name == 'accounts/gst_create_update.html':
-                
                 return redirect('gst-create')
             
             elif 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
-
                 return redirect('gst-list')
 
-            elif 'save' in request.POST and template_name == 'product/gst_popup.html':
-                
+            elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
                 return HttpResponse('<script>window.close();</script>')
         else:
             messages.success(request,'An error occured.')
+
     return render(request,template_name,{'form' : form, 'title':title})
 
 

@@ -11,8 +11,22 @@
         <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
        </div>
 
-    <input type="submit" id="saveButton" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" id="saveButton"  onsubmit="onSubmit()" class="create-btn mt-4" name="save" value="Save">
       </form>
 </div>
+
+
+
+<script>
+  // After form submission
+  function onSubmit() {
+      // Send a message to the parent window indicating form submission
+      window.opener.postMessage('formSubmitted', '*');
+      // Close the popup window
+      window.close();
+  }
+</script>
+
+
 
 {% endblock body %}
