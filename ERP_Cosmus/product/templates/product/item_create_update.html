@@ -67,6 +67,7 @@
             <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
             <th><label for="{{ shade_form.prefix }}-item_shade_name">Name</label></th>
             <th><label for="{{ shade_form.prefix }}-item_color_image">Shade Image</label></th>
+            <td></td>
             <th><label for="{{ shade_form.prefix }}-item_delete">Delete</label></th>
           </tr>
           {{ formset.management_form }}
@@ -97,12 +98,8 @@
             <div>
               <input type="file" class="pt-1" style="width: 250px;" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
             </div>
-                
-                <!--image clear checkbox-->
-                <!--<label for="{{ shade_form.prefix }}-item_color_image-clear_id">Clear</label>
-                <input type="checkbox" name="{{ shade_form.prefix }}-item_color_image-clear" id="{{ shade_form.prefix }}-item_color_image-clear_id">-->
               </td>
-             
+             <td><button type="button" class="add_btn" id="opening_qty" onclick="editGodownQty(this)">Add</button></td>
               <td>{{ shade_form.DELETE }}</td>
             </tr>
           </div>
@@ -224,7 +221,7 @@
       
       <div class="">
         <img id="iFrame" src="..." class="py-1" alt="..." style="width: 10rem; height: 10rem;">
-        <input type="file" class=" " name="item_shade_image" required id="item_shade_image" onchange="preview()">
+        <input type="file" class=" " style="width: 201px;" name="item_shade_image" required id="item_shade_image" onchange="preview()">
       </div>
       
       
@@ -260,6 +257,10 @@
 
 {% endif %}
 </div>
+
+
+
+
 
 <script>
 
@@ -339,6 +340,13 @@ function reladFabricPage(){
     }
   }
 
+  function editGodownQty(button){
+    if (popUpWindow === null || popUpWindow.closed) {
+      newPopUpwindow(button, '{% url "opening-godown-qty" %}');
+    } else {
+      popUpWindow.focus();
+    }
+  }
   function newPopUpwindow(button, path) {
     // Specify minimum height and width
     var minWidth = 800; // minimum width

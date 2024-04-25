@@ -58,6 +58,9 @@ urlpatterns = [
     path('itemlist/',views.item_list ,name= 'item-list'),
     path('itemdelete/<int:pk>',views.item_delete , name= 'item-delete'),
 
+#opening_godown_qty
+    path('opening_godown_qty/',views.opening_godown_qty , name= 'opening-godown-qty'),
+
     #itemfabgroup
     path('itemfabricgroupcreate/',views.item_fabric_group_create , name= 'item-fabgroup-create'),
     path('itemfabricgroupupdate/<int:pk>',views.item_fabric_group_update , name= 'item-fabgroup-update'),

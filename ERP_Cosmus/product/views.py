@@ -1958,6 +1958,10 @@ def packaging_delete(request,pk):
 #__________________________Sub Category End_____________________________
 
 
+def opening_godown_qty(request):
+    return render(request,'product/opening_godown_qty.html')
+
+#__________________________Category End_____________________________
 
 
 #_______________________authentication View start___________________________
