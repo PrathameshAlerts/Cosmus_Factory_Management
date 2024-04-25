@@ -652,6 +652,8 @@ def openingquantityformsetpopup(request,parent_row_id,pk=None):
             # Store the JSON string in the session
             request.session['openingquantitytemp'] = data_json_string
 
+    return render(request,'product/opening_godown_qty.html',{'formset':formset})
+
 def item_delete(request, pk):
     
     try:
