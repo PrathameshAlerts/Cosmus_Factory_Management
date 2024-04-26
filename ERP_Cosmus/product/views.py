@@ -29,7 +29,7 @@ from django.db.models import Q
 from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 from django.contrib import messages
-
+from django.db.models import Sum
 
 
 def custom_404_view(request, exception):
@@ -536,10 +536,11 @@ def item_create(request):
     
 def item_list(request):
     g_search = request.GET.get('item_search')
-    #select related for loading forward FK relationships and select related for reverse relationship   
+    #select related for loading forward FK relationships and select related for reverse relationship  
+    #annotate to make a temp table in item_creation for the sum of all item and its related shades in all godowns 
     queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item',
                                                     'Fabric_Group',
-                                                    'Item_Creation_GST').prefetch_related('shades').all()
+                                                    'Item_Creation_GST').prefetch_related('shades').all().annotate(total_quantity=Sum('shades__godown_shades__quantity'))
 
 
 # cannot use icontains on foreignkey fields even if it has data in the fields
@@ -622,7 +623,7 @@ def item_edit(request,pk):
                                                                  'packaging_material_all':packaging_material_all,
                                                                  'fab_finishes':fab_finishes,
                                                                  'form':form,
-                                                                 'formset': formset})
+                                                                 'formset': formset,'item_quantity':item_total_quantity})
 
 
 def openingquantityformsetpopup(request,parent_row_id,pk=None):
@@ -653,6 +654,9 @@ def openingquantityformsetpopup(request,parent_row_id,pk=None):
     #         request.session['openingquantitytemp'] = data_json_string
 
     # return render(request,'product/opening_godown_qty.html',{'formset':formset})
+
+def openingquantityformsetpopupajax(request):
+    pass
 
 def item_delete(request, pk):
     

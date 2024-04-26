@@ -189,7 +189,10 @@ the input field will be pre-filled with that value when the page is loaded. -->
           <td>{{ forloop.counter}}</td>              
               <td>{{item.item_name}}</td>
               <td>{{item.fab_grp}}</td>
-              <td>{{item.Color_Name}}</td>
+              <td>{{item.Color_Name}}
+              
+              <span style="color: rgb(166, 0, 0);">{{item.total_quantity}}</span>
+              </td>
               <!-- render reverse related fields -->
               <td>
                 <table>
@@ -208,7 +211,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                             <tr>
                               <td class="px-3">{{shade_q.godown_name}}</td>
                               <td class="ps-5">{{shade_q.quantity}}</td>
-                             
+                              
                           </tr>
                         </table>
                         {% endfor %}
