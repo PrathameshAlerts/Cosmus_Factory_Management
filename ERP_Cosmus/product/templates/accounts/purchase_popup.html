@@ -147,17 +147,18 @@
         // create a new row and the calculation the single row and save
         $(document).ready (function(){
         
-            function updateRate(){
-                var newRate = $('input[name^="shade_godown_items_set-"][name$="-rate"]');
+            // function updateRate(){
+            //     var newRate = $('input[name^="shade_godown_items_set-"][name$="-rate"]');
 
-                newRate.each(function(){
-                    $(this).attr('readonly', true)
-                })
-            }
+            //     newRate.each(function(){
+            //         $(this).attr('readonly', true)
+            //     })
+            // }
        
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {
+          
           //first find the last row rate value is not empty then add a new row 
           //there any one rate value is empty then don't add a new row
         var newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
