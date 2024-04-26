@@ -626,33 +626,33 @@ def item_edit(request,pk):
 
 
 def openingquantityformsetpopup(request,parent_row_id,pk=None):
+    pass
+    # if pk is not None:
+    #     shade_instance =  get_object_or_404(item_color_shade,pk=pk)
+    #     formsets = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance)
+    # else:
+    #     #get data from session
+    #     session_quantity_data = {}
+    #     formsets = opening_shade_godown_quantitycreateformset(queryset = session_quantity_data)
 
-    if pk is not None:
-        shade_instance =  get_object_or_404(item_color_shade,pk=pk)
-        formsets = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance)
-    else:
-        #get data from session
-        session_quantity_data = {}
-        formsets = opening_shade_godown_quantitycreateformset(queryset = session_quantity_data)
+    # formset = formsets
 
-    formset = formsets
+    # if request.method == 'POST':
+    #     if pk is not None:
+    #         if formset.is_valid:
+    #             for form in formset:
+    #                 if form.is_valid():
+    #                     form.save()
 
-    if request.method == 'POST':
-        if pk is not None:
-            if formset.is_valid:
-                for form in formset:
-                    if form.is_valid():
-                        form.save()
-
-        else:
+    #     else:
             
-            data_to_store = {}
-            # Convert the data to JSON string
-            data_json_string = json.dumps(data_to_store)
-            # Store the JSON string in the session
-            request.session['openingquantitytemp'] = data_json_string
+    #         data_to_store = {}
+    #         # Convert the data to JSON string
+    #         data_json_string = json.dumps(data_to_store)
+    #         # Store the JSON string in the session
+    #         request.session['openingquantitytemp'] = data_json_string
 
-    return render(request,'product/opening_godown_qty.html',{'formset':formset})
+    # return render(request,'product/opening_godown_qty.html',{'formset':formset})
 
 def item_delete(request, pk):
     
