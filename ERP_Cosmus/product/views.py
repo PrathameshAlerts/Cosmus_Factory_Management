@@ -634,15 +634,33 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     if parent_row_id is not None and primary_key is not None:
         shade_instance =  get_object_or_404(item_color_shade,pk=primary_key)
         formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
-       
+
     elif primary_key is None and parent_row_id is not None:
         #get data from session
-        session_quantity_data = {}
-        if session_quantity_data:
-            formset = opening_shade_godown_quantitycreateformset(prefix = "opening_shade_godown_quantity_set")
+        session_quantity_data = request.session['openingquantitytemp']
+        loaded_data = json.loads(session_quantity_data)
 
+        if loaded_data:
+            print('testtt')
+            new_row_data = loaded_data.get('new_row', {})
+            initial_data = []
+            count = 0 
+            for key, value in new_row_data.items():
+                initial_data.append({
+                        'opening_shade_godown_quantity_set-TOTAL_FORMS' : str(new_row_data),
+                        'opening_shade_godown_quantity_set-INITIAL_FORMS' :  str(new_row_data),
+                        'opening_shade_godown_quantity_set-MIN_NUM_FORMS' :  str(0),
+                        'opening_shade_godown_quantity_set-MAX_NUM_FORMS' :  str(1000),
+                        f"opening_shade_godown_quantity_set-{count}-opening_godown_id": int(value['gid']),
+                        f"opening_shade_godown_quantity_set-{count}-opening_quantity": int(value['quantity']),
+                        f"opening_shade_godown_quantity_set-{count}-opening_rate": float(loaded_data['all_rate'])})
+
+                count = count + 1
+            print(initial_data)
+            formset = opening_shade_godown_quantitycreateformset(initial=initial_data,prefix = "opening_shade_godown_quantity_set")
         else:
-            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
+            print('TESTTT')
+            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(), prefix = "opening_shade_godown_quantity_set")
     
 
     if request.method == 'POST':
@@ -660,18 +678,21 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             for form_prefix_id in range(total_forms):
                 
                 godown_id =  f"opening_shade_godown_quantity_set-{form_prefix_id}-opening_godown_id"
-                diffrence_quantity =  f"opening_shade_godown_quantity_set-{form_prefix_id}-opening_quantity"
+                quantity =  f"opening_shade_godown_quantity_set-{form_prefix_id}-opening_quantity"
+
+                difference_quantity =  f"opening_shade_godown_quantity_set-{form_prefix_id}-old_opening_quantity"
 
                 godown_id_get = request.POST.get(godown_id)
-                diffrence_quantity_get = request.POST.get(diffrence_quantity)
+                quantity = request.POST.get(quantity)
+                difference_quantity_get = request.POST.get(difference_quantity)
 
-                new_row[f'row_{form_prefix_id}'] = {'gid':godown_id_get,"updateqty":diffrence_quantity_get} 
+                new_row[f'row_{form_prefix_id}'] = {'gid':godown_id_get,'quantity':quantity,"updateqty":difference_quantity_get} 
 
             data_to_store = {'parent_row_prefix_id': parent_row_id, 'all_rate':all_rate, 'new_row':new_row}
             # Convert the data to JSON string
-            print(data_to_store)
+            
             data_json_string = json.dumps(data_to_store)
-            print(data_json_string)
+            
             # Store the JSON string in the session
             request.session['openingquantitytemp'] = data_json_string
 
