@@ -340,13 +340,7 @@ function reladFabricPage(){
     }
   }
 
-  function editGodownQty(button){
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '{% url "opening-godown-qty" %}');
-    } else {
-      popUpWindow.focus();
-    }
-  }
+
   function newPopUpwindow(button, path) {
     // Specify minimum height and width
     var minWidth = 800; // minimum width
