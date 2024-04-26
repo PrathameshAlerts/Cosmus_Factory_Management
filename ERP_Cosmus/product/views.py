@@ -633,18 +633,17 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     formset = None
     if parent_row_id is not None and primary_key is not None:
         shade_instance =  get_object_or_404(item_color_shade,pk=primary_key)
-        formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance)
+        formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
        
     elif primary_key is None and parent_row_id is not None:
         #get data from session
         session_quantity_data = {}
         if session_quantity_data:
-            formset = opening_shade_godown_quantitycreateformset()
+            formset = opening_shade_godown_quantitycreateformset(prefix = "opening_shade_godown_quantity_set")
 
         else:
-            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none())
+            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
     
-    print(formset)
 
     if request.method == 'POST':
         if primary_key is not None:
@@ -652,23 +651,30 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                 for form in formset:
                     if form.is_valid():
                         form.save()
-        else:
-            total_forms = request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS')
-            all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
 
+        else:
+            total_forms = int(request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS'))
+            all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
+            
             new_row = {}
-            for form_prefix_id in range(len(total_forms)):
-                godown_id =  f"opening_shade_godown_quantity_set-f{form_prefix_id}-opening_godown_id"
-                diffrence_quantity =  f"opening_shade_godown_quantity_set-f{form_prefix_id}-opening_quantity"
-                new_row[f'row_{form_prefix_id}'] = {'gid':godown_id,"updateqty":diffrence_quantity} 
+            for form_prefix_id in range(total_forms):
+                
+                godown_id =  f"opening_shade_godown_quantity_set-{form_prefix_id}-opening_godown_id"
+                diffrence_quantity =  f"opening_shade_godown_quantity_set-{form_prefix_id}-opening_quantity"
+
+                godown_id_get = request.POST.get(godown_id)
+                diffrence_quantity_get = request.POST.get(diffrence_quantity)
+
+                new_row[f'row_{form_prefix_id}'] = {'gid':godown_id_get,"updateqty":diffrence_quantity_get} 
 
             data_to_store = {'parent_row_prefix_id': parent_row_id, 'all_rate':all_rate, 'new_row':new_row}
-            print('data_to_store',data_to_store) 
+            # Convert the data to JSON string
+            print(data_to_store)
+            data_json_string = json.dumps(data_to_store)
+            print(data_json_string)
+            # Store the JSON string in the session
+            request.session['openingquantitytemp'] = data_json_string
 
-            # # Convert the data to JSON string
-            # data_json_string = json.dumps(data_to_store)
-            # # Store the JSON string in the session
-            # request.session['openingquantitytemp'] = data_json_string
 
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns})
 
@@ -1822,14 +1828,11 @@ def purchasevoucherdelete(request,pk):
                     
 
 def session_data_test(request):
-    temp_data_exists = None
-    if 'temp_data_exists' in request.session: 
-        temp_data_exists = request.session['temp_data_exists']
-    temp_uuid = None
-    if 'temp_uuid' in request.session:
-        temp_uuid = request.session['temp_uuid']
+    
+    openingquantitytemp = request.session['openingquantitytemp']
 
-    context = {'temp_data_exists':temp_data_exists , 'temp_uuid':temp_uuid}
+
+    context = {'temp_data_exists':openingquantitytemp}
     return render(request,'misc/session_test.html',context=context)
 
 
