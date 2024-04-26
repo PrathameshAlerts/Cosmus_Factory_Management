@@ -82,9 +82,9 @@
         for (var i = 0; i <= total_form_Value; i++) {
         var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
-        console.log('first',jsonQty)
+       
         oldquantity.value = jsonQty
-        console.log('last',jsonQty)
+        
         }
     
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
@@ -93,7 +93,7 @@
             
             var json_data_first_rate = document.getElementById('shade_godown_items_set-0-rate').value
             var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value
-            console.log('total_forms',total_forms)
+          
             var newRow = {};   
 
             for (var i = 0; i < total_forms; i++) { 10

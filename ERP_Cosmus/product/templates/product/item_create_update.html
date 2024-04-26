@@ -62,7 +62,7 @@
       <label for="id_Item_shades" class="form-label item-form">Shades:</label>
       <!-- Render reverse related relationship fields dynamically using formset factory  -->
       <div class="mx-3 mb-3">
-        <table class="table table-striped table-hover table-responsive rounded-3">
+        <table class="table table-striped table-hover table-responsive rounded-3" id="shadeTable">
           <tr>
             <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
             <th><label for="{{ shade_form.prefix }}-item_shade_name">Name</label></th>
@@ -72,10 +72,10 @@
           </tr>
           {{ formset.management_form }}
           {% for shade_form in formset %}
-          <div>
-            {{ shade_form.id }}
-            <!-- Render each field manually -->
+          {{ shade_form.id }}
             <tr>
+             
+              <!-- Render each field manually -->
               <td>
                 <!-- item_name_rank -->
                 <input type="text" class="item-rank" style="border: none;" name="{{ shade_form.prefix }}-item_name_rank"
@@ -96,13 +96,13 @@
               <img src="{{ shade_form.instance.item_color_image.url }}" alt="Image Preview" style="max-width: 150px; max-height: 150px;">
             {% endif %}
             <div>
-              <input type="file" class="pt-1" style="width: 250px;" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
+              <input type="file" class="pt-1 itemQty" style="width: 250px;" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
             </div>
               </td>
-             <td><button type="button" class="add_btn" id="opening_qty" onclick="editGodownQty(this)">Add</button></td>
+             <td><button type="button" class="add_btn itemQty" id="{{ shade_form.prefix }}-opening_qty" name="{{ shade_form.prefix }}-opening_qty" >Add</button></td>
               <td>{{ shade_form.DELETE }}</td>
             </tr>
-          </div>
+          
           {% endfor %}
         </table>
       </div>
@@ -258,7 +258,45 @@
 {% endif %}
 </div>
 
+<script>
+  $(document).ready(function(){
+    var newPopup = null;
+    var itemValue;
 
+    $(document).on ('click','button.itemQty',function(button){
+      var itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
+      var itemValue = itemId.split('-')[1];
+      var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
+      var id = primaryKey.value;
+      console.log('id',id)
+      console.log('itemId',itemId)
+      console.log('itemValue',itemValue)
+      if (newPopup === null || newPopup.closed) { // Check if no popup is open or the existing one is closed
+                    var minWidth = 800;
+                    var minHeight = 600;
+      $.ajax({
+        url: '{% url "opening-godown-qty"}',
+        type: 'GET',
+        data:{
+          itemValue:itemValue,
+          id:id
+        },
+        success: function (response){
+          console.log('Data sent successfully')
+          popupWindow = window.open(response.new_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+        },
+        error: function (xhr, errmsg, err) {
+                            console.log('Error getting popup URL');
+                        }
+      })
+      }
+    })
+
+  })
+  
+
+
+  </script>
 
 
 
@@ -272,28 +310,29 @@ document.getElementById('shades-'+ prefixValue.value +'-item_name_rank').value =
 });
   
 
-function reladFabricPage(){
-  $.ajax({
-    url: '{% url "fabric-popup" %}',
-    type: 'GET',
-    success: function (response){
-      var fabricSelectOption = document.getElementById('id_Fabric_Group');
-      fabricSelectOption.innerHTML = '';
-      response.data.forEach(element => {
-        var options = document.createElement('option');
-        options.value = element.id;
-        options.textContent = element.name;
-        fabricSelectOption.appendChild(options);
+// function reladFabricPage(){
+//   $.ajax({
+//     url: '{% url "fabric-popup" %}',
+//     type: 'GET',
+//     success: function (response){
+//       var fabricSelectOption = document.getElementById('id_Fabric_Group');
+//       fabricSelectOption.innerHTML = '';
+//       response.data.forEach(element => {
+//         var options = document.createElement('option');
+//         options.value = element.id;
+//         options.textContent = element.name;
+//         fabricSelectOption.appendChild(options);
 
-      });
-    },
-    error(xhr,msg,err){
-      console.log('Error submitting form');
-    }
-  })
-}
+//       });
+//     },
+//     error(xhr,msg,err){
+//       console.log('Error submitting form');
+//     }
+//   })
+// }
 
   var popUpWindow = null;
+
 
   function openFabPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
@@ -332,6 +371,7 @@ function reladFabricPage(){
       popUpWindow.focus();
     }
   }
+
   function openFabricFinishPopup(button) {
     if (popUpWindow === null || popUpWindow.closed) {
       newPopUpwindow(button, '{% url "fabric-finishes-popup" %}');
@@ -341,6 +381,7 @@ function reladFabricPage(){
   }
 
 
+  
   function newPopUpwindow(button, path) {
     // Specify minimum height and width
     var minWidth = 800; // minimum width
