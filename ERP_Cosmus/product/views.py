@@ -540,7 +540,7 @@ def item_list(request):
     #annotate to make a temp table in item_creation for the sum of all item and its related shades in all godowns 
     queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item',
                                                     'Fabric_Group',
-                                                    'Item_Creation_GST').prefetch_related('shades').all().annotate(total_quantity=Sum('shades__godown_shades__quantity'))
+                                                    'Item_Creation_GST','Item_Fabric_Finishes','Item_Packing').prefetch_related('shades','shades__godown_shades').all().annotate(total_quantity=Sum('shades__godown_shades__quantity'))
 
 
 # cannot use icontains on foreignkey fields even if it has data in the fields
@@ -623,7 +623,7 @@ def item_edit(request,pk):
                                                                  'packaging_material_all':packaging_material_all,
                                                                  'fab_finishes':fab_finishes,
                                                                  'form':form,
-                                                                 'formset': formset,'item_quantity':item_total_quantity})
+                                                                 'formset': formset})
 
 
 def openingquantityformsetpopup(request,parent_row_id,pk=None):
