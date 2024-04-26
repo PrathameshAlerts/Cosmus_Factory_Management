@@ -59,6 +59,9 @@ urlpatterns = [
     path('itemdelete/<int:pk>',views.item_delete , name= 'item-delete'),
     #opening_godown_qty
     path('openinggodownquantity/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty'),
+    path('openinggodownquantitypk/<int:primary_key>/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty-pk'),
+
+    path('openinggodownquantityajax/',views.openingquantityformsetpopupajax , name= 'opening-godown-qty-ajax'),
 
     #itemfabgroup
     path('itemfabricgroupcreate/',views.item_fabric_group_create , name= 'item-fabgroup-create'),

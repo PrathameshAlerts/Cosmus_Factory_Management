@@ -348,7 +348,7 @@ class Item_Creation(models.Model):
     def Packaging_Material(self):
         return self.Item_Packing.packing_material
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.item_name
     
 
@@ -387,7 +387,7 @@ class opening_shade_godown_quantity(models.Model):
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
     opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
     opening_rate = models.DecimalField(max_digits=10, decimal_places=2)
-    opening_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    #opening_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 

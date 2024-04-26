@@ -23,22 +23,33 @@
             {{ form.id }}
             <tr>
                 <td>
-                    <select class="item-select" name="item_godown" id="item_godown">
-                        
-                    </select>
-                </td>
-                <td>
-                    <input type="number" class="purchase-amount" name="opening_godown_qty" id="opening_godown_qty">
-                </td>
-                <td>
-                    <input type="number" class="purchase-amount" name="opening_godown_rate" id="opening_godown_rate">
-                </td>
-                <td>
-                    <input type="checkbox" name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE">
+                    <select name="{{form.prefix}}-opening_godown_id" id="{{form.prefix}}-opening_godown_id" class="purchase-input godown-select">
+                    {% if form.instance.id %}
+                    <option value="{{form.instance.opening_godown_id.id}}">{{form.instance.opening_godown_id.godown_name_raw}}</option>
+                    {% for godown in godowns %}
+                    <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                    {% endfor %}
+                    {% elif not form.instance.id %}
+                    <option value=""></option>
+                    {% for godown in godowns %}
+                    <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+
                 </td>
 
+                <td>
+                    <input type="number" class="purchase-amount" name="{{form.prefix}}-opening_quantity" value="{{form.instance.opening_quantity}}" id="{{form.prefix}}-opening_quantity">
+                </td>
+                <td>
+                    <input type="number" class="purchase-amount" name="{{form.prefix}}-opening_rate" value="{{form.instance.opening_rate}}" id="{{form.prefix}}-opening_rate">
+                </td>
+                <td>
+                    <input type="checkbox" name="{{form.prefix}}-DELETE" id="{{forms.prefix}}-DELETE">
+                </td>
             </tr>
-
+            {% endfor %}
         </tbody>
     </table>
     <div>

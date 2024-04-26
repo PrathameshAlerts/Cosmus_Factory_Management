@@ -267,23 +267,23 @@
       var itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
       var itemValue = itemId.split('-')[1];
       var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
-      var id = primaryKey.value;
-      console.log('id',id)
+      var primary_key_id = primaryKey.value;
+      console.log('id',primary_key_id)
       console.log('itemId',itemId)
       console.log('itemValue',itemValue)
       if (newPopup === null || newPopup.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
       $.ajax({
-        url: '{% url "opening-godown-qty"}',
+        url: '{% url "opening-godown-qty-ajax" %}',
         type: 'GET',
         data:{
           itemValue:itemValue,
-          id:id
+          primary_key_id:primary_key_id
         },
         success: function (response){
           console.log('Data sent successfully')
-          popupWindow = window.open(response.new_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+          popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
         },
         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
