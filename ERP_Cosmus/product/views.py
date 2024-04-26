@@ -11,7 +11,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransfer, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, packaging, purchase_voucher_items, shade_godown_items,
+                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, purchase_voucher_items, shade_godown_items,
                                    shade_godown_items_temporary_table)
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
@@ -626,19 +626,25 @@ def item_edit(request,pk):
                                                                  'formset': formset})
 
 
-def openingquantityformsetpopup(request,parent_row_id,primary_key=None):
+def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     print(request.POST)
     godowns =  Godown_raw_material.objects.all()
-    if primary_key is not None:
+
+    formset = None
+    if parent_row_id is not None and primary_key is not None:
         shade_instance =  get_object_or_404(item_color_shade,pk=primary_key)
-        formsets = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance)
+        formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance)
+       
+    elif primary_key is None and parent_row_id is not None:
+        #get data from session
+        session_quantity_data = {}
+        if session_quantity_data:
+            formset = opening_shade_godown_quantitycreateformset()
 
-    # else:
-    #     #get data from session
-    #     session_quantity_data = {}
-    #     formsets = opening_shade_godown_quantitycreateformset(queryset = session_quantity_data)
-
-    formset = formsets
+        else:
+            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none())
+    
+    print(formset)
 
     if request.method == 'POST':
         if primary_key is not None:
@@ -646,13 +652,23 @@ def openingquantityformsetpopup(request,parent_row_id,primary_key=None):
                 for form in formset:
                     if form.is_valid():
                         form.save()
-        # else:
-            
-        #     data_to_store = {}
-        #     # Convert the data to JSON string
-        #     data_json_string = json.dumps(data_to_store)
-        #     # Store the JSON string in the session
-        #     request.session['openingquantitytemp'] = data_json_string
+        else:
+            total_forms = request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS')
+            all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
+
+            new_row = {}
+            for form_prefix_id in range(len(total_forms)):
+                godown_id =  f"opening_shade_godown_quantity_set-f{form_prefix_id}-opening_godown_id"
+                diffrence_quantity =  f"opening_shade_godown_quantity_set-f{form_prefix_id}-opening_quantity"
+                new_row[f'row_{form_prefix_id}'] = {'gid':godown_id,"updateqty":diffrence_quantity} 
+
+            data_to_store = {'parent_row_prefix_id': parent_row_id, 'all_rate':all_rate, 'new_row':new_row}
+            print('data_to_store',data_to_store) 
+
+            # # Convert the data to JSON string
+            # data_json_string = json.dumps(data_to_store)
+            # # Store the JSON string in the session
+            # request.session['openingquantitytemp'] = data_json_string
 
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns})
 
