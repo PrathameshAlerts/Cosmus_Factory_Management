@@ -4,6 +4,7 @@ import json
 from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
@@ -15,7 +16,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                    shade_godown_items_temporary_table)
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
-                     LoginForm, opening_shade_godown_quantitycreateformset, OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
+                     LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
                         ProductImagesFormSet, ProductVideoFormSet,
                          gst_form, item_purchase_voucher_master_form,
@@ -630,6 +631,7 @@ def item_edit(request,pk):
 def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     print(request.POST)
 
+    
     godowns =  Godown_raw_material.objects.all()
 
     formset = None
@@ -645,27 +647,28 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             session_quantity_data = request.session['openingquantitytemp']
             loaded_data = json.loads(session_quantity_data)
 
-            
-
+        
         if loaded_data:
             print('testtt')
             new_row_data = loaded_data.get('new_row', {})
-            initial_data = []
+            initial_data_backend = []
 
+            total_forms = len(new_row_data)
+            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)
+            
             count = 0 
             for key, value in new_row_data.items():
-                initial_data.append({
-                        f"opening_shade_godown_quantity_set-{count}-opening_godown_id": int(value['gid']),
-                        f"opening_shade_godown_quantity_set-{count}-opening_quantity": int(value['quantity']),
-                        f"opening_shade_godown_quantity_set-{count}-opening_rate": float(loaded_data['all_rate'])})
+                initial_data_backend.append({
+                        "opening_godown_id": int(value['gid']),
+                        "opening_quantity": float(value['quantity']),
+                        "opening_rate": float(loaded_data['all_rate'])})
 
                 count = count + 1
-            
-            formset = opening_shade_godown_quantitycreateformset(prefix = "opening_shade_godown_quantity_set")
-            
+
+            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend,prefix = "opening_shade_godown_quantity_set")
+            print(formset)
         else:
-            
-            formset = opening_shade_godown_quantitycreateformset(prefix = "opening_shade_godown_quantity_set")
+            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
     
 
     if request.method == 'POST':
@@ -676,7 +679,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                         form.save()
 
         else:
-            print('TEST123')
+            
             total_forms = int(request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS'))
             all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
             
@@ -703,7 +706,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             request.session['openingquantitytemp'] = data_json_string
 
 
-    return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns})
+    return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns })
 
 
 
