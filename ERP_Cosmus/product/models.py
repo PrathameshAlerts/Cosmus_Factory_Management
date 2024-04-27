@@ -385,8 +385,8 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 class opening_shade_godown_quantity(models.Model):
     opening_purchase_voucher_godown_item = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
-    opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
-    opening_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=1)
+    opening_rate = models.DecimalField(max_digits=10, decimal_places=1)
 
 
 
