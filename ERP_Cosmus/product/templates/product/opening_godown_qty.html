@@ -73,16 +73,15 @@
             var newTableRate = tableId.lastElementChild;
             console.log('newTableRate',newTableRate)
     
-            var newRates = newTableRate.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
-       
-
-           console.log(newRates)
+           var newRates = newTableRate.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
+           console.log('newRates',newRates)
+           if(newRates != '' && newRates != null){
             const index = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS');
             const indexValue = parseInt(index.value);
            
             const rows = tableId.lastElementChild.cloneNode(true);
-            const rateValue = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
-            console.log('rateValue',rateValue);
+           
+           
 
             rows.querySelectorAll('input ,select').forEach(element => {
                 element.value ='';
@@ -106,6 +105,9 @@
             const rateElement = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]');
             rateElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
             rateElement.id = `opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
+
+
+            const rateValue = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
             rateElement.value= rateValue;
             rateElement.setAttribute('readonly', true);
 
@@ -119,7 +121,7 @@
             index.value = indexValue + 1;
 
 
-       
+        }
          
             
         })

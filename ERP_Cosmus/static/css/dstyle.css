@@ -773,7 +773,7 @@ input[type=number] {
 }
 .card-clone{
     border: 1px solid;
-    border-radius: 15px;
+    border-radius: 10px;
     margin: 25px;
     background-color: #f9f9f9;
     float: left;
@@ -785,8 +785,8 @@ input[type=number] {
     background-color:#cfcccc ;
     font-size: 15px;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 /*=====end card item====*/
@@ -1092,6 +1092,7 @@ input[type=number] {
     border-radius: 10px;
     margin-left: 204px;
     text-decoration: none;
+    background-color: transparent;
  }
 .purchase-select{
     width: 138px;
