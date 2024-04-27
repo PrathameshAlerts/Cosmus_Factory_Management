@@ -1178,8 +1178,8 @@ input[type=number] {
 
 .purchase-span{
     display: block; 
-            overflow: hidden; 
-            padding: 0px 4px 0px 6px;
+    overflow: hidden; 
+    padding: 0px 4px 0px 6px;
 }
 
 .purchase-lable{
