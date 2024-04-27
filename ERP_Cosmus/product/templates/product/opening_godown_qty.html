@@ -22,7 +22,7 @@
             {% for form in formset %}
             {{ form.id }}
             <tr>
-                <input type="hidden" class="old-qty" value="" id ="{{form.prefix}}-old_opening_quantity" name="{{form.prefix}}-old_opening_quantity">
+                <!-- <input type="hidden" class="old-qty" value="" id ="{{form.prefix}}-old_opening_quantity" name="{{form.prefix}}-old_opening_quantity"> -->
                 <td>
                     <select name="{{form.prefix}}-opening_godown_id" id="{{form.prefix}}-opening_godown_id" class="purchase-input godown-select">
                     {% if form.instance.id %}
@@ -105,10 +105,7 @@
             const rateElement = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]');
             rateElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
             rateElement.id = `opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
-
-
-            const rateValue = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
-            rateElement.value= rateValue;
+            rateElement.value= newRates;
             rateElement.setAttribute('readonly', true);
 
         
