@@ -270,9 +270,7 @@ if(newCompanyGst == newPartyGst){
                     console.log('Error sending value to the backend');
                 }
             })
-
         })
-
     })
 
     // this function gereate a randow uuid and store the value in unique id
@@ -355,16 +353,11 @@ randomValue();
                         }else{
                             $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
                         }
-                        
-                     
                     });
-                    
                 },
-                
                 error: function (xhr, errmsg, err) {
                     console.log('Error sending value to the backend');
                 }
-               
             });
         });
 
