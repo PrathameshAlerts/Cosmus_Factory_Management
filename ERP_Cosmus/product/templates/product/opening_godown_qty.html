@@ -70,10 +70,11 @@
     if(addItem && tableId){
         addItem.addEventListener('click',function(){
 
-            var tableRate =document.getElementById('tableItem');
-            var newTableRate = tableRate.querySelectorAll('tbody tr');
-            var newRates = newTableRate.length -1;
-            //var newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
+            var newTableRate = tableId.lastElementChild;
+            console.log('newTableRate',newTableRate)
+    
+            var newRates = newTableRate.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
+       
 
            console.log(newRates)
             const index = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS');
@@ -81,6 +82,7 @@
            
             const rows = tableId.lastElementChild.cloneNode(true);
             const rateValue = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
+            console.log('rateValue',rateValue);
 
             rows.querySelectorAll('input ,select').forEach(element => {
                 element.value ='';
