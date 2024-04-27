@@ -590,6 +590,7 @@ def item_list(request):
 
 
 def item_edit(request,pk): 
+    
     title = 'Item update'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
@@ -628,6 +629,7 @@ def item_edit(request,pk):
 
 def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     print(request.POST)
+
     godowns =  Godown_raw_material.objects.all()
 
     formset = None
@@ -636,41 +638,45 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
         formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
 
     elif primary_key is None and parent_row_id is not None:
+
+        loaded_data = False
         #get data from session
-        session_quantity_data = request.session['openingquantitytemp']
-        loaded_data = json.loads(session_quantity_data)
+        if 'openingquantitytemp' in request.session:
+            session_quantity_data = request.session['openingquantitytemp']
+            loaded_data = json.loads(session_quantity_data)
+
+            
 
         if loaded_data:
             print('testtt')
             new_row_data = loaded_data.get('new_row', {})
             initial_data = []
+
             count = 0 
             for key, value in new_row_data.items():
                 initial_data.append({
-                        'opening_shade_godown_quantity_set-TOTAL_FORMS' : str(new_row_data),
-                        'opening_shade_godown_quantity_set-INITIAL_FORMS' :  str(new_row_data),
-                        'opening_shade_godown_quantity_set-MIN_NUM_FORMS' :  str(0),
-                        'opening_shade_godown_quantity_set-MAX_NUM_FORMS' :  str(1000),
                         f"opening_shade_godown_quantity_set-{count}-opening_godown_id": int(value['gid']),
                         f"opening_shade_godown_quantity_set-{count}-opening_quantity": int(value['quantity']),
                         f"opening_shade_godown_quantity_set-{count}-opening_rate": float(loaded_data['all_rate'])})
 
                 count = count + 1
-            print(initial_data)
-            formset = opening_shade_godown_quantitycreateformset(initial=initial_data,prefix = "opening_shade_godown_quantity_set")
+            
+            formset = opening_shade_godown_quantitycreateformset(prefix = "opening_shade_godown_quantity_set")
+            
         else:
-            print('TESTTT')
-            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(), prefix = "opening_shade_godown_quantity_set")
+            
+            formset = opening_shade_godown_quantitycreateformset(prefix = "opening_shade_godown_quantity_set")
     
 
     if request.method == 'POST':
         if primary_key is not None:
-            if formset.is_valid:
+            if formset.is_valid():
                 for form in formset:
                     if form.is_valid():
                         form.save()
 
         else:
+            print('TEST123')
             total_forms = int(request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS'))
             all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
             
@@ -1849,8 +1855,10 @@ def purchasevoucherdelete(request,pk):
                     
 
 def session_data_test(request):
-    
-    openingquantitytemp = request.session['openingquantitytemp']
+    if request.session['openingquantitytemp']:
+        openingquantitytemp = request.session['openingquantitytemp']
+    else:
+        openingquantitytemp == None
 
 
     context = {'temp_data_exists':openingquantitytemp}

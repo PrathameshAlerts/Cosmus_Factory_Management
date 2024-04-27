@@ -145,7 +145,7 @@ OpeningShadeFormSetupdate = inlineformset_factory(item_color_shade, opening_shad
 class opening_shade_godown_quantityform(forms.ModelForm):
     class Meta:
         model = opening_shade_godown_quantity
-        fields ='__all__'
+        fields =['opening_rate','opening_quantity','opening_godown_id']
 
 opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, form=opening_shade_godown_quantityform, extra=1)
 
