@@ -631,7 +631,6 @@ def item_edit(request,pk):
 def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     print(request.POST)
 
-    
     godowns =  Godown_raw_material.objects.all()
 
     formset = None
@@ -678,7 +677,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                         form.save()
 
         else:
-            
+
             total_forms = int(request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS'))
             all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
             
