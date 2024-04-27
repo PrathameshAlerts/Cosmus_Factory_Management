@@ -653,9 +653,6 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             new_row_data = loaded_data.get('new_row', {})
             initial_data_backend = []
 
-            total_forms = len(new_row_data)
-            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)
-            
             count = 0 
             for key, value in new_row_data.items():
                 initial_data_backend.append({
@@ -665,12 +662,14 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
                 count = count + 1
 
+            total_forms = len(initial_data_backend)
+            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)            
             formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend,prefix = "opening_shade_godown_quantity_set")
-            print(formset)
+            print(formset.forms)
         else:
+            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=1)            
             formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
     
-
     if request.method == 'POST':
         if primary_key is not None:
             if formset.is_valid():
