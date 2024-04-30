@@ -7,10 +7,10 @@
         <div class="">
           <h5 class="" id="">Item Name: {{item}}</h5> 
           <h5 class="" id="">shade Name: {{item_shade}}</h5>
-       
+            
           </div>
         <div class="">
-            <form method="post" id=""  onsubmit="submitData()">
+            <form method="post" id="childform"  onsubmit="submitData()">
                 {% csrf_token %}
                 
                 <table class="table table-striped table-hover" id="newTable">
@@ -27,16 +27,19 @@
                         <input type="hidden" id="id_unique_id_godown" name="unique_id_godown" value="{{unique_id_godown}}">
                         <input type="hidden" id="id_primary_key_godown" name="primary_key_godown" value="{{primary_key_godown}}">
                         <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
+                        
                         {{ formset.management_form }}
+                        {{ temptableformset.management_form }}
                     {% for form in formset %}
                     
                         <tr>
                             {{ form.id }}
+                            <input type="hidden" id="{{form.prefix}}-combinedId" name="{{form.prefix}}-combinedId" value="{{combinedId}}">
                             <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
                             
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
-                            <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="purchase-input godown-select">
+                            <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="item-select godown-select">
                                 {% if form.instance.id %}
                                 <option value="{{form.instance.godown_id.id}}">{{form.instance.godown_id.godown_name_raw}}</option>
                                 {% for godown in godowns %}
@@ -67,23 +70,42 @@
                     </tbody>
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
-               <input type="submit" class="add_btn">
+               <input type="submit" class="add_btn" id="popupData">
             </form>
             
         </div>
+        <script>
+            document.getElementById('popupData').addEventListener('click', function() {
+                var formData = $('#childform').serializeArray(); // Serialize form data
+                window.opener.postMessage(formData, "*"); // Send form data to parent window
+                window.close(); // Close the child window
+            });
+        </script>
 
+<script>
+
+    var popupFormData = null;
+
+    document.getElementById('addModalButton').addEventListener('submit',function(event){
+        event.preventDefault();
+        popupFormData = new FormData(this);
+        console.log(popupFormData)
+    })
+
+</script>
       
   
     <script>
         
+
         var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
         
-
         for (var i = 0; i <= total_form_Value; i++) {
         var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
        
         oldquantity.value = jsonQty
+      
         
         }
     
@@ -102,6 +124,8 @@
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
                 var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
                 
+                console.log('jsonQty',jsonQty)
+                console.log('old_qty',old_qty)
                 var updateQty = jsonQty - old_qty;
                 newRow[row] = {gId, updateQty};
             }
@@ -208,6 +232,7 @@
         newUniqueValue.attr('name', 'shade_godown_items_set-' + formsValue + '-unique_id');
         newUniqueValue.attr('id', 'shade_godown_items_set-' + formsValue + '-unique_id');
         newUniqueValue.val('{{unique_id}}');
+
 
        const deleteElement = tableClone.find('input[name^="shade_godown_items_set-"][name$="-DELETE"]');
         deleteElement.attr('name', 'shade_godown_items_set-' + formsValue + '-DELETE');
