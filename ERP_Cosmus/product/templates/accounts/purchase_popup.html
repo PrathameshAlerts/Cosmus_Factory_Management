@@ -29,12 +29,11 @@
                         <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
                         
                         {{ formset.management_form }}
-                        {{ temptableformset.management_form }}
+                        
                     {% for form in formset %}
                     
                         <tr>
                             {{ form.id }}
-                            <input type="hidden" id="{{form.prefix}}-combinedId" name="{{form.prefix}}-combinedId" value="{{combinedId}}">
                             <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
                             
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
@@ -75,24 +74,18 @@
             
         </div>
         <script>
+            var formDataget = $('#childform').serializeArray(); // Serialize form data
+            
+
             document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
                 window.opener.postMessage(formData, "*"); // Send form data to parent window
+                window.opener.postMessage(formDataget, "*");
                 window.close(); // Close the child window
             });
         </script>
 
-<script>
 
-    var popupFormData = null;
-
-    document.getElementById('addModalButton').addEventListener('submit',function(event){
-        event.preventDefault();
-        popupFormData = new FormData(this);
-        console.log(popupFormData)
-    })
-
-</script>
       
   
     <script>
@@ -232,7 +225,11 @@
         newUniqueValue.attr('name', 'shade_godown_items_set-' + formsValue + '-unique_id');
         newUniqueValue.attr('id', 'shade_godown_items_set-' + formsValue + '-unique_id');
         newUniqueValue.val('{{unique_id}}');
-
+        
+        const ID = tableClone.find('input[name^="shade_godown_items_set-"][name$="-id"]');
+        ID.attr('name', 'shade_godown_items_set-' + formsValue + '-id');
+        ID.attr('id', 'shade_godown_items_set-' + formsValue + '-id');
+        ID.val('');
 
        const deleteElement = tableClone.find('input[name^="shade_godown_items_set-"][name$="-DELETE"]');
         deleteElement.attr('name', 'shade_godown_items_set-' + formsValue + '-DELETE');
