@@ -200,6 +200,8 @@
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
 
+    console.log('newQty',newQty)
+    console.log('newRate',newRate)
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
         
@@ -402,6 +404,7 @@ randomValue();
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
+                         
                            
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                            

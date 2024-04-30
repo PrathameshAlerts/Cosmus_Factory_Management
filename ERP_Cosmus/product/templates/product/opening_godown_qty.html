@@ -80,36 +80,36 @@
             
             
  
-            //  rows.querySelectorAll('input ,select').forEach(element => {
-            //      element.value ='';
-            //  });
+             rows.querySelectorAll('input ,select').forEach(element => {
+                 element.value ='';
+             });
  
-            //  const itemElement = rows.querySelector('.godown-select[name^="opening_shade_godown_quantity_set-"]');
-            //  itemElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_godown_id`;
-            //  itemElement.id = `opening_shade_godown_quantity_set-${indexValue}-opening_godown_id`;
+             const itemElement = rows.querySelector('.godown-select[name^="opening_shade_godown_quantity_set-"]');
+             itemElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_godown_id`;
+             itemElement.id = `id_opening_shade_godown_quantity_set-${indexValue}-opening_godown_id`;
             
              
-            //  const qtyElement = rows.querySelector('.item-qty[name^="opening_shade_godown_quantity_set-"][name$="-opening_quantity"]');
-            //  qtyElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_quantity`;
-            //  qtyElement.id = `opening_shade_godown_quantity_set-${indexValue}-opening_quantity`;
-            //  qtyElement.value = '';
+             const qtyElement = rows.querySelector('.item-qty[name^="opening_shade_godown_quantity_set-"][name$="-opening_quantity"]');
+             qtyElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_quantity`;
+             qtyElement.id = `id_opening_shade_godown_quantity_set-${indexValue}-opening_quantity`;
+             qtyElement.value = '';
  
-            //  const newQtyElement = rows.querySelector('.old-qty[name^="opening_shade_godown_quantity_set-"][name$="-old_opening_quantity"]');
-            //  newQtyElement.name = `opening_shade_godown_quantity_set-${indexValue}-old_opening_quantity`;
-            //  newQtyElement.id = `opening_shade_godown_quantity_set-${indexValue}-old_opening_quantity`;
-            //  newQtyElement.value = '';
+             const newQtyElement = rows.querySelector('.old-qty[name^="opening_shade_godown_quantity_set-"][name$="-old_opening_quantity"]');
+             newQtyElement.name = `opening_shade_godown_quantity_set-${indexValue}-old_opening_quantity`;
+             newQtyElement.id = `id_opening_shade_godown_quantity_set-${indexValue}-old_opening_quantity`;
+             newQtyElement.value = '';
  
-            //  const rateElement = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]');
-            //  rateElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
-            //  rateElement.id = `opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
-            //  rateElement.value= newRates;
-            //  rateElement.setAttribute('readonly', true);
+             const rateElement = rows.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]');
+             rateElement.name = `opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
+             rateElement.id = `id_opening_shade_godown_quantity_set-${indexValue}-opening_rate`;
+             rateElement.value= newRates;
+             rateElement.setAttribute('readonly', true);
  
          
  
-            //  const deleteElement = rows.querySelector('.godown_delete[name^="opening_shade_godown_quantity_set-"][name$="-DELETE"]');
-            //  deleteElement.name = `opening_shade_godown_quantity_set-${indexValue}-DELETE`;
-            //  deleteElement.id = `opening_shade_godown_quantity_set-${indexValue}-DELETE`;
+             const deleteElement = rows.querySelector('.godown_delete[name^="opening_shade_godown_quantity_set-"][name$="-DELETE"]');
+             deleteElement.name = `opening_shade_godown_quantity_set-${indexValue}-DELETE`;
+             deleteElement.id = `id_opening_shade_godown_quantity_set-${indexValue}-DELETE`;
  
              tableId.appendChild(rows);
              index.value = indexValue + 1;
