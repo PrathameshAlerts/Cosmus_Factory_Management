@@ -497,12 +497,13 @@ def item_create(request):
     unit_name = Unit_Name_Create.objects.all()
     packaging_material_all = packaging.objects.all()
     fab_finishes = FabricFinishes.objects.all()
-
+    print(request.POST)
     colors = Color.objects.all()
 
     
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
+        
         
         if form.is_valid():
             #make a var of saved form and get the id 
@@ -604,7 +605,9 @@ def item_edit(request,pk):
 
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
-
+    print(formset)
+    print(formset.forms)
+    print(request.POST)
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
@@ -1776,7 +1779,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
 
     elif pk is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=pk)
-        
+
         formsets = purchase_voucher_items_godown_formset(request.POST or None, instance = voucher_item_instance,prefix='shade_godown_items_set')
     
     #create a formset instance with the selected unique id or PK 

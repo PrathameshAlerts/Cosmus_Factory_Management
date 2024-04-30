@@ -196,29 +196,31 @@
 
     function receiveMessage(event) {
 
-        var ChildData = event.data;
-        console.log(ChildData)
+        var convertedData = event.data;
+        console.log(convertedData)
 
-        submitToBackend(ChildData);
+        submitToData(convertedData);
+    
     }
 
-    function submitToBackend(data) {
-    $.ajax({
-        url: "{% url 'purchase-voucher-list' %}", // Backend endpoint
-        type: "POST",
-        data: { ChildData: JSON.stringify(data) }, // Convert the data to JSON for sending
-        headers: { "X-CSRFToken": getCSRFToken() }, // Include CSRF token for security
-        success: function (response) {
-            console.log("Data submitted successfully:", response);
-        },
+    function submitToData(data) {
+        $.ajax({
+            type: 'POST',
+            url: '{% url "purchase-voucher-list" %}',
+            data: convertedData(data),
+            headers: { "X-CSRFToken": getCSRFToken() },
+            success: function (response) {
+                console.log(response)
+                
+            },
+            
         error: function (error) {
             console.error("Error submitting data:", error);
         },
-    });
-}
+        });
+    }
 
-// Helper function to get CSRF token (for Django)
-function getCSRFToken() {
+    function getCSRFToken() {
     return document.querySelector("[name=csrfmiddlewaretoken]").value;
 }
 </script>
