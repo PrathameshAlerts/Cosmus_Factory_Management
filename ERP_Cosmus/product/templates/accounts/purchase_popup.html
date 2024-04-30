@@ -79,8 +79,32 @@
 
             document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
-                window.opener.postMessage(formData, "*"); // Send form data to parent window
-                window.opener.postMessage(formDataget, "*");
+                var array2 = formData
+                var array1 = formDataget
+
+
+                function getChangedDicts(array1, array2) {
+                    var changedDicts = [];
+                
+                    // Iterate over each object in array1
+                    array1.forEach(function(obj1) {
+                        var obj2 = array2.find(function(item) {
+                            return item.name === obj1.name;
+                        });
+                
+                        // Compare values of corresponding objects
+                        if (obj2 && obj2.value !== obj1.value) {
+                            changedDicts.push(obj1);
+                        }
+                    });
+                
+                    return changedDicts;
+                }
+                
+                // Call the function to get the changed dictionaries
+                var ChildData = getChangedDicts(array1, array2);
+                window.opener.postMessage(ChildData, "*"); // Send form data to parent window
+                
                 window.close(); // Close the child window
             });
         </script>
