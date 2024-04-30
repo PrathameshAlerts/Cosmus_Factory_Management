@@ -2209,7 +2209,3 @@ def register(request):
 
 # def aplus(request):
 #     return render(request, 'product/aplus.html')
-
-
-
-

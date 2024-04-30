@@ -70,52 +70,120 @@
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
                <input type="submit" class="add_btn" id="popupData">
+               <input type="submit" class="">
             </form>
             
         </div>
         <script>
+
+
             var formDataget = $('#childform').serializeArray(); // Serialize form data
             
 
             document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
-                window.opener.postMessage({ type: 'formDataget', data: formDataget }, "*");
-                window.opener.postMessage({ type: 'formData', data: formData }, "*");
                 
-                function findChangedOrAddedDicts(array1, array2) {
-                    let changedOrAddedDicts = [];
+                function findFieldByName(formData, fieldName) {
+                    return formData.find(field => field.name === fieldName);
+               }
+               const formSetData = [
+
+               ]
+              
+               const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
+               const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
+               const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
+               const prefix = findFieldByName(formData, 'prefix_id');
+               // window.opener.postMessage(formData, "*")
+                var array2 = formData
+                var array1 = formDataget
+ //               window.opener.postMessage(array2, "*");
+   //             window.opener.postMessage(array1, "*");
+                function getChangedDicts(array1, array2, formSetData, extraFields) {
+                    var changedDicts = [];
                 
-                    // Iterate over each dictionary in array2
-                    array2.forEach((dict2) => {
-                        let found = false;
-                
-                        // Find corresponding dictionary in array1
-                        array1.forEach(dict1 => {
-                            if (dict1.name === dict2.name) {
-                                // Compare values of corresponding keys
-                                if (dict1.value !== dict2.value) {
-                                    // If values are different, add to changed dictionaries
-                                    changedOrAddedDicts.push(dict2);
-                                }
-                                found = true;
+                    // Iterate over each object in array1
+                    array1.forEach(function (obj1) {
+        var obj2 = array2.find(function (item) {
+            return item.name === obj1.name;
+        });
+
+        if (obj2) {
+            if (obj2.value !== obj1.value) {
+                // If values differ, the field is modified
+                changedDicts.push({
+                    name: obj1.name,
+                    change_type: "modified",
+                    //original_value: obj1.value,
+                    //new_value: obj2.value,
+                    value: obj2.value,
+                });
+            }
+        } else {
+            // If obj2 does not exist, the field is removed
+            changedDicts.push({
+                name: obj1.name,
+                change_type: "removed",
+                value: obj1.value,
+            });
+        }
+    });
+
+    // Check for added fields in array2
+    array2.forEach(function (obj2) {
+        if (!array1.some((obj1) => obj1.name === obj2.name)) {
+            // If obj2 does not exist in array1, it is an added field
+            changedDicts.push({
+                name: obj2.name,
+                change_type: "added",
+                value: obj2.value,
+            });
+        }
+    });
+
+
+                    // Add extra fields if they exist
+                    if (extraFields) {
+                        extraFields.forEach(function(field) {
+                            if (field) {
+                                changedDicts.push(field);
                             }
                         });
-                
-                        // If corresponding dictionary not found in array1, it's added in array2
-                        if (!found) {
-                            changedOrAddedDicts.push(dict2);
-                        }
-                    });
-                
-                    return changedOrAddedDicts;
+                    }
+                                
+
+                 return changedDicts;
                 }
-
-                var array1 = formDataget
-                var array2 = formData
-                const changedOrAddedDicts = findChangedOrAddedDicts(array1, array2);
+                var extraFields = [initialForms, maxForms , minForms , prefix];
+                // Call the function to get the changed dictionaries
+                var ChildData = getChangedDicts(array1, array2, formSetData, extraFields);
                 
-                window.opener.postMessage(changedOrAddedDicts , "*");
+            var convertedData = {};
 
+// Iterate over each object in ChildData
+for (var i = 0; i < ChildData.length; i++) {
+    var name = ChildData[i].name;
+    var value = ChildData[i].value;
+
+    // Check if the name already exists in convertedData
+    if (convertedData.hasOwnProperty(name)) {
+        // If the name exists, convert the value to an array
+        if (!Array.isArray(convertedData[name])) {
+            convertedData[name] = [convertedData[name]];
+        }
+        // Push the new value to the array
+        convertedData[name].push(value);
+    } else {
+        // If the name doesn't exist, directly set the value
+        convertedData[name] = value;
+    }
+}
+
+
+
+
+                window.opener.postMessage(convertedData, "*"); // Send form data to parent window
+                
                 window.close(); // Close the child window
             });
         </script>
