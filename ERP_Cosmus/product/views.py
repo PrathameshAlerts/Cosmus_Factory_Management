@@ -1526,6 +1526,7 @@ def stocktransferreport(request):
 #__________________________purchase voucher start__________________________
 
 
+
 def purchasevouchercreateupdate(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
         print('Master_post',request.POST)
@@ -1557,9 +1558,7 @@ def purchasevouchercreateupdate(request, pk=None):
         else:
             party_names = ''
     
-
     try:
-        
         items = Item_Creation.objects.all()
 
         party_gst_no = ''
