@@ -4,7 +4,7 @@
 {% block body %} 
 <div>
     <h2>Purchase invoice</h2>
-    <form class="mt-4" action=""method="POST">
+    <form class="mt-4" action=""method="POST" onsubmit="receiveMessage()">
             {% csrf_token %}
             <div class="d-flex mb-3">
                 <div>
@@ -196,39 +196,38 @@
     window.addEventListener('message', receiveMessage, false);
 
     function receiveMessage(event) {
-        // Handle data received from the child window
         var formData = event.data;
-        console.log(formData); // Display form data in the console (for demonstration)
-        // Process the received form data as needed
 
-        // Assuming formData is the array of objects you provided
 
+
+
+        // Initialize an empty object to store the converted data
+var convertedData = {};
+
+// Iterate over each object in formData
+for (var i = 0; i < formData.length; i++) {
+    var name = formData[i].name;
+    var value = formData[i].value;
+
+    // Check if the name already exists in convertedData
+    if (convertedData.hasOwnProperty(name)) {
+        // If the name exists, convert the value to an array
+        if (!Array.isArray(convertedData[name])) {
+            convertedData[name] = [convertedData[name]];
+        }
+        // Push the new value to the array
+        convertedData[name].push(value);
+    } else {
+        // If the name doesn't exist, directly set the value
+        convertedData[name] = value;
+    }
+}
+
+console.log(convertedData);
     }
 </script>
 
-<script>
-    document.getElementById('parentForm').addEventListener('submit', function(event){
-        event.preventDefault();
 
-        var parenFormData = new FormData(this);
-        if(popupFormData !== null){
-            for (var pair of popupFormData.entries()){
-                parenFormData.append(pair[0],pair[1]);
-            }
-        }
-
-        console.log(parenFormData)
-         // Send parent form data (including popup form data) to the server
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/submit-parent-form/', true);
-    xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            console.log('Parent form submitted successfully');
-        }
-    };
-    xhr.send(parentFormData);
-    });
-</script>
  <script>
 // this code contain the popup window for on submit button send to to parent window 
 // this function retrive the data and compare with same unquie id and update the table data
