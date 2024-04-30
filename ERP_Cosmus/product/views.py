@@ -1683,10 +1683,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                             print('godown',godown_form.error)
                                             purchase_voucher_temp_data.delete()
 
-                                    # godown_item_json = request.POST.get('jsonData')
-                                    # print('godown_item_json',godown_item_json)
-                                    # item_shade = request.POST.get(f'purchase_voucher_items_set-{godown_item_json.parent_row_prefix_id}-item_shade')
-                                    # print('item_shade',item_shade)
+                                   
 
                                     if saved_data_to_delete == form_set_id:
                                         purchase_voucher_temp_data.delete()
@@ -1802,7 +1799,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
                 else:
                     context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
                                 'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,
-                                                                 'errors': formset.errors,'prefix_id':prefix_id}
+                                                                 'errors': formset.errors,'prefix_id':prefix_id, 'primary_key':pk}
                     return render(request, 'accounts/purchase_popup.html', context)
                 
             #if form is valid save the uniquekey in session for verification
@@ -1817,12 +1814,12 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,pk=None):
         else:
             context = {
                 'godowns': godowns, 'item': item, 'item_shade': item_shade, 'formset': formset, 
-                'unique_id': unique_id, 'shade_id': shade_id, 'errors': formset.errors,'prefix_id':prefix_id
+                'unique_id': unique_id, 'shade_id': shade_id, 'errors': formset.errors,'prefix_id':prefix_id, 'primary_key':pk
             }
             return render(request, 'accounts/purchase_popup.html', context)
-    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,
+    return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'shade_id': shade_id,
                                                             'item_shade':item_shade,'formset':formset,
-                                                            'unique_id':unique_id,'prefix_id':prefix_id})
+                                                            'unique_id':unique_id,'prefix_id':prefix_id, 'primary_key':pk})
 
 
 def purchasevouchercreategodownpopupurl(request):

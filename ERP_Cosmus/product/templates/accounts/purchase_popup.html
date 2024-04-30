@@ -7,7 +7,9 @@
         <div class="">
           <h5 class="" id="">Item Name: {{item}}</h5> 
           <h5 class="" id="">shade Name: {{item_shade}}</h5>
-            
+            {{shade_id}}
+            {{prefix_id}}
+            {{primary_key}}
           </div>
         <div class="">
             <form method="post" id="childform"  onsubmit="submitData()">
@@ -69,7 +71,7 @@
                     </tbody>
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
-               <input type="submit" class="add_btn" id="popupData">
+               <input type="submit" class="add_btn" id="">popupData
                <input type="submit" class="">
             </form>
             
@@ -157,8 +159,11 @@
                 var extraFields = [initialForms, maxForms , minForms , prefix];
                 // Call the function to get the changed dictionaries
                 var ChildData = getChangedDicts(array1, array2, formSetData, extraFields);
+            
+
                 
             var convertedData = {};
+            
 
 // Iterate over each object in ChildData
 for (var i = 0; i < ChildData.length; i++) {
@@ -178,9 +183,6 @@ for (var i = 0; i < ChildData.length; i++) {
         convertedData[name] = value;
     }
 }
-
-
-
 
                 window.opener.postMessage(convertedData, "*"); // Send form data to parent window
                 
