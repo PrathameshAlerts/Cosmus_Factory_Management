@@ -70,17 +70,95 @@
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
                <input type="submit" class="add_btn" id="popupData">
+               <input type="submit" class="">
             </form>
             
         </div>
         <script>
+
+
             var formDataget = $('#childform').serializeArray(); // Serialize form data
             
 
             document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
-                window.opener.postMessage(formData, "*"); // Send form data to parent window
-                window.opener.postMessage(formDataget, "*");
+                
+                function findFieldByName(formData, fieldName) {
+                    return formData.find(field => field.name === fieldName);
+               }
+               const formSetData = [
+
+               ]
+              
+               const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
+               const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
+               const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
+               const prefix = findFieldByName(formData, 'prefix_id');
+               // window.opener.postMessage(formData, "*")
+                var array2 = formData
+                var array1 = formDataget
+                window.opener.postMessage(array2, "*");
+                window.opener.postMessage(array1, "*");
+                function getChangedDicts(array1, array2, formSetData, extraFields) {
+                    var changedDicts = [];
+                
+                    // Iterate over each object in array1
+                    array1.forEach(function (obj1) {
+        var obj2 = array2.find(function (item) {
+            return item.name === obj1.name;
+        });
+
+        if (obj2) {
+            if (obj2.value !== obj1.value) {
+                // If values differ, the field is modified
+                changedDicts.push({
+                    name: obj1.name,
+                    change_type: "modified",
+                    original_value: obj1.value,
+                    new_value: obj2.value,
+                });
+            }
+        } else {
+            // If obj2 does not exist, the field is removed
+            changedDicts.push({
+                name: obj1.name,
+                change_type: "removed",
+                value: obj1.value,
+            });
+        }
+    });
+
+    // Check for added fields in array2
+    array2.forEach(function (obj2) {
+        if (!array1.some((obj1) => obj1.name === obj2.name)) {
+            // If obj2 does not exist in array1, it is an added field
+            changedDicts.push({
+                name: obj2.name,
+                change_type: "added",
+                value: obj2.value,
+            });
+        }
+    });
+
+
+                    // Add extra fields if they exist
+                    if (extraFields) {
+                        extraFields.forEach(function(field) {
+                            if (field) {
+                                changedDicts.push(field);
+                            }
+                        });
+                    }
+                                
+
+                 return changedDicts;
+                }
+                var extraFields = [initialForms, maxForms , minForms , prefix];
+                // Call the function to get the changed dictionaries
+                var ChildData = getChangedDicts(array1, array2, formSetData, extraFields);
+
+                window.opener.postMessage(ChildData, "*"); // Send form data to parent window
+                
                 window.close(); // Close the child window
             });
         </script>

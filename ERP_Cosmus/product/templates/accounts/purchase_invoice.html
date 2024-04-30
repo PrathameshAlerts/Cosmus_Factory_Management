@@ -196,34 +196,12 @@
     window.addEventListener('message', receiveMessage, false);
 
     function receiveMessage(event) {
-        var formData = event.data;
 
+        var ChildData = event.data;
+        console.log(ChildData)
 
-        console.log('Data received from parent window',formData);
+      
 
-        // Initialize an empty object to store the converted data
-var convertedData = {};
-
-// Iterate over each object in formData
-for (var i = 0; i < formData.length; i++) {
-    var name = formData[i].name;
-    var value = formData[i].value;
-
-    // Check if the name already exists in convertedData
-    if (convertedData.hasOwnProperty(name)) {
-        // If the name exists, convert the value to an array
-        if (!Array.isArray(convertedData[name])) {
-            convertedData[name] = [convertedData[name]];
-        }
-        // Push the new value to the array
-        convertedData[name].push(value);
-    } else {
-        // If the name doesn't exist, directly set the value
-        convertedData[name] = value;
-    }
-}
-
-  console.log(convertedData);
     }
 </script>
 
