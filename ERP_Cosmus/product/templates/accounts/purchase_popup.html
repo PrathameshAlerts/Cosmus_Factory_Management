@@ -79,32 +79,43 @@
 
             document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
-                var array2 = formData
-                var array1 = formDataget
-
-
-                function getChangedDicts(array1, array2) {
-                    var changedDicts = [];
+                window.opener.postMessage({ type: 'formDataget', data: formDataget }, "*");
+                window.opener.postMessage({ type: 'formData', data: formData }, "*");
                 
-                    // Iterate over each object in array1
-                    array1.forEach(function(obj1) {
-                        var obj2 = array2.find(function(item) {
-                            return item.name === obj1.name;
+                function findChangedOrAddedDicts(array1, array2) {
+                    let changedOrAddedDicts = [];
+                
+                    // Iterate over each dictionary in array2
+                    array2.forEach((dict2) => {
+                        let found = false;
+                
+                        // Find corresponding dictionary in array1
+                        array1.forEach(dict1 => {
+                            if (dict1.name === dict2.name) {
+                                // Compare values of corresponding keys
+                                if (dict1.value !== dict2.value) {
+                                    // If values are different, add to changed dictionaries
+                                    changedOrAddedDicts.push(dict2);
+                                }
+                                found = true;
+                            }
                         });
                 
-                        // Compare values of corresponding objects
-                        if (obj2 && obj2.value !== obj1.value) {
-                            changedDicts.push(obj1);
+                        // If corresponding dictionary not found in array1, it's added in array2
+                        if (!found) {
+                            changedOrAddedDicts.push(dict2);
                         }
                     });
                 
-                    return changedDicts;
+                    return changedOrAddedDicts;
                 }
+
+                var array1 = formDataget
+                var array2 = formData
+                const changedOrAddedDicts = findChangedOrAddedDicts(array1, array2);
                 
-                // Call the function to get the changed dictionaries
-                var ChildData = getChangedDicts(array1, array2);
-                window.opener.postMessage(ChildData, "*"); // Send form data to parent window
-                
+                window.opener.postMessage(changedOrAddedDicts , "*");
+
                 window.close(); // Close the child window
             });
         </script>
