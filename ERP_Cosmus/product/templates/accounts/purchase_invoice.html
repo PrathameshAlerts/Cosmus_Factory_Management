@@ -75,7 +75,6 @@
                 {{ forms.id }}
                 <tr>    
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
-                    <input type="hidden" class="combinedId" id="{{forms.prefix}}-combinedId" value="" name="{{forms.prefix}}-combinedId">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>{{forms.instance.id}}</td>
                     <td> 
@@ -200,9 +199,28 @@
         var ChildData = event.data;
         console.log(ChildData)
 
-      
-
+        submitToBackend(ChildData);
     }
+
+    function submitToBackend(data) {
+    $.ajax({
+        url: "{% url 'purchase-voucher-list' %}", // Backend endpoint
+        type: "POST",
+        data: { ChildData: JSON.stringify(data) }, // Convert the data to JSON for sending
+        headers: { "X-CSRFToken": getCSRFToken() }, // Include CSRF token for security
+        success: function (response) {
+            console.log("Data submitted successfully:", response);
+        },
+        error: function (error) {
+            console.error("Error submitting data:", error);
+        },
+    });
+}
+
+// Helper function to get CSRF token (for Django)
+function getCSRFToken() {
+    return document.querySelector("[name=csrfmiddlewaretoken]").value;
+}
 </script>
 
 
@@ -715,12 +733,6 @@ randomValue();
            uniqueElement.id = `item_unique_id_${formIndex}`;
            uniqueElement.name = `item_unique_id_${formIndex}`;
            uniqueElement.value= uuidv4();
-
-            const combinedElement = lastRow.querySelector('.combinedId');
-            combinedElement.id= `purchase_voucher_items_set-${formIndex}-combinedId`;
-            combinedElement.name= `purchase_voucher_items_set-${formIndex}-combinedId`;
-            combinedElement.value= '';
-
 
            const backendQtyElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-jsonDataInputquantity"]');
            backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;

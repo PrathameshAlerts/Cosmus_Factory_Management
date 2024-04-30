@@ -104,41 +104,41 @@
                 
                     // Iterate over each object in array1
                     array1.forEach(function (obj1) {
-        var obj2 = array2.find(function (item) {
-            return item.name === obj1.name;
-        });
+                    var obj2 = array2.find(function (item) {
+                        return item.name === obj1.name;
+                    });
 
-        if (obj2) {
-            if (obj2.value !== obj1.value) {
-                // If values differ, the field is modified
-                changedDicts.push({
-                    name: obj1.name,
-                    change_type: "modified",
-                    original_value: obj1.value,
-                    new_value: obj2.value,
+                    if (obj2) {
+                        if (obj2.value !== obj1.value) {
+                            // If values differ, the field is modified
+                            changedDicts.push({
+                                name: obj1.name,
+                                change_type: "modified",
+                                original_value: obj1.value,
+                                new_value: obj2.value,
+                            });
+                        }
+                    } else {
+                        // If obj2 does not exist, the field is removed
+                        changedDicts.push({
+                            name: obj1.name,
+                            change_type: "removed",
+                            value: obj1.value,
+                        });
+                    }
                 });
-            }
-        } else {
-            // If obj2 does not exist, the field is removed
-            changedDicts.push({
-                name: obj1.name,
-                change_type: "removed",
-                value: obj1.value,
-            });
-        }
-    });
 
-    // Check for added fields in array2
-    array2.forEach(function (obj2) {
-        if (!array1.some((obj1) => obj1.name === obj2.name)) {
-            // If obj2 does not exist in array1, it is an added field
-            changedDicts.push({
-                name: obj2.name,
-                change_type: "added",
-                value: obj2.value,
-            });
-        }
-    });
+                // Check for added fields in array2
+                array2.forEach(function (obj2) {
+                    if (!array1.some((obj1) => obj1.name === obj2.name)) {
+                        // If obj2 does not exist in array1, it is an added field
+                        changedDicts.push({
+                            name: obj2.name,
+                            change_type: "added",
+                            value: obj2.value,
+                        });
+                    }
+                });
 
 
                     // Add extra fields if they exist
