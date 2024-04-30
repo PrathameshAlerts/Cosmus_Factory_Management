@@ -506,9 +506,10 @@ def item_create(request):
         
         if form.is_valid():
             #make a var of saved form and get the id 
-            instance = form.save()
+            form.save()
+
             messages.success(request,'Item has been created, Update quantity in godown')
-            return redirect(reverse('item-edit', args=[instance.id]))
+            # return redirect(reverse('item-edit', args=[instance.id]))
         else:
             print(form.errors)
             return render(request,'product/item_create_update.html', {'gsts':gsts,
@@ -616,7 +617,6 @@ def item_edit(request,pk):
             messages.success(request,'Item updated successfully')
             return redirect('item-list')
         
-    
     return render(request,'product/item_create_update.html',{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
                                                                  'unit_name':unit_name,

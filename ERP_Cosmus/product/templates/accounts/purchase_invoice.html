@@ -75,6 +75,7 @@
                 {{ forms.id }}
                 <tr>    
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
+                    <input type="hidden" class="combinedId" id="{{forms.prefix}}-combinedId" value="" name="{{forms.prefix}}-combinedId">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>{{forms.instance.id}}</td>
                     <td> 
@@ -185,9 +186,46 @@
         </div>
 
 
-      <input type="submit" class="ms-5 newProductCreateBtn">
+      <input type="submit" class="ms-5 newProductCreateBtn" id="parentForm">
     </form>
 </div>
+
+
+
+<script>
+    window.addEventListener('message', receiveMessage, false);
+
+    function receiveMessage(event) {
+        // Handle data received from the child window
+        var formData = event.data;
+        console.log(formData); // Display form data in the console (for demonstration)
+        // Process the received form data as needed
+    }
+</script>
+
+<script>
+    document.getElementById('parentForm').addEventListener('submit', function(event){
+        event.preventDefault();
+
+        var parenFormData = new FormData(this);
+        if(popupFormData !== null){
+            for (var pair of popupFormData.entries()){
+                parenFormData.append(pair[0],pair[1]);
+            }
+        }
+
+        console.log(parenFormData)
+         // Send parent form data (including popup form data) to the server
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/submit-parent-form/', true);
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            console.log('Parent form submitted successfully');
+        }
+    };
+    xhr.send(parentFormData);
+    });
+</script>
  <script>
 // this code contain the popup window for on submit button send to to parent window 
 // this function retrive the data and compare with same unquie id and update the table data
@@ -219,7 +257,7 @@
         var row_prefix_child = jsonData.parent_row_prefix_id;
         var all_rate_child = jsonData.all_Rate;
         var godown_data = jsonData.newRow; 
-       
+       console.log(godown_data)
         var updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
         updateJsonData.value = JSON.stringify(jsonData);
     }
@@ -277,11 +315,41 @@ if(newCompanyGst == newPartyGst){
 
     // this function gereate a randow uuid and store the value in unique id
 function randomValue (){
-const uuid = uuidv4();
 
-    var uniqueId = document.getElementById('item_unique_id_0');
+    var itemShadeIdValue
+ 
+  var itemName = document.querySelector('select[name^="purchase_voucher_items_set-"]').closest('tr');
+  var selectElement = itemName.querySelector('select[name^="purchase_voucher_items_set-"]');
+  var itemShadeName = selectElement.getAttribute('name');
+  var totalForms = document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value;
+ 
+    itemShadeIdValue = itemShadeName.split('-')[1];
+    console.log('itemShadeIdValue',itemShadeIdValue)
+    
+   console.log('primeId',primeId)
 
-    uniqueId.value = uuid;
+   for( var i =0; i<totalForms ; i++){
+    const uuid = uuidv4();
+    var primeId = document.getElementById('id_purchase_voucher_items_set-' +i+ '-id').value;
+    if(primeId == ''){
+        var uniqueId = document.getElementById('item_unique_id_' + i);
+        uniqueId.value = uuid; 
+         console.log('newId',uniqueId.value)
+    }else if(primeId != ''){
+        
+        var uniqueId = document.getElementById('purchase_voucher_items_set-' + i+ '-combinedId');
+        uniqueId.value =primeId+'--' + uuid;
+        console.log('newIds',uniqueId.value)
+    }
+   }
+    
+  
+    //console.log('itemShadeIdValue',itemShadeIdValue)
+   
+   
+    
+ 
+  
  }
 
 randomValue();
@@ -372,6 +440,8 @@ randomValue();
       
         var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
         var prefix_id = purchaseValue;
+
+        
     
         var primary_id = null;
         var test = null;
@@ -399,7 +469,8 @@ randomValue();
                         data: {
                             'selected_shade': selectedShade,
                             'purchase_id': primary_id,
-                            'prefix_id':prefix_id
+                            'prefix_id':prefix_id,
+                            
                             
                         },
                         success: function (response) {
@@ -667,6 +738,12 @@ randomValue();
            uniqueElement.id = `item_unique_id_${formIndex}`;
            uniqueElement.name = `item_unique_id_${formIndex}`;
            uniqueElement.value= uuidv4();
+
+            const combinedElement = lastRow.querySelector('.combinedId');
+            combinedElement.id= `purchase_voucher_items_set-${formIndex}-combinedId`;
+            combinedElement.name= `purchase_voucher_items_set-${formIndex}-combinedId`;
+            combinedElement.value= '';
+
 
            const backendQtyElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-jsonDataInputquantity"]');
            backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
