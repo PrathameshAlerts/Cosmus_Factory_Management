@@ -53,14 +53,14 @@
                                 {% endif %}
                             </select>
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity}}" required></td>
+                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity }}" required ></td>
 
                            
-                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate}}" required>
+                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate }}" required >
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount}}" readonly>
+                            <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount }}" readonly>
                             </td>
-                            <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2"   name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
                                 
                             </tr>
                             {% endfor %}
@@ -82,17 +82,7 @@
             });
         </script>
 
-<script>
 
-    var popupFormData = null;
-
-    document.getElementById('addModalButton').addEventListener('submit',function(event){
-        event.preventDefault();
-        popupFormData = new FormData(this);
-        console.log(popupFormData)
-    })
-
-</script>
       
   
     <script>
@@ -103,6 +93,7 @@
         for (var i = 0; i <= total_form_Value; i++) {
         var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
+       
         oldquantity.value = jsonQty
       
         
@@ -143,15 +134,15 @@
         }
        // This function for form submit then function call and send the data to the parent page with the value
         function submitData(){
+
+            jsondata()
+
             var newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
             var newTotalQty = document.getElementById('grand_godown_quantity').value;
             var newTotalRate = document.getElementById('grand_godown_rate').value;
             var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
             var prefixValue = document.getElementById('prefix_id').value;
-            var json_data_first_rate = document.getElementById('shade_godown_items_set-0-rate').value
-            var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value; // Ensure total_forms is defined
 
-            
             var newSessionData = {
                 "newUniqueId": newUniqueId,
                 "newTotalQty": newTotalQty,
@@ -159,66 +150,45 @@
                 "prefixValue": prefixValue,
                 "newPrimaryKey": newPrimaryKey
             }
+            
+            window.opener.updateFormData(newSessionData);
 
-            var newRow = {};
-            for (var i = 0; i < total_forms; i++) {
-                var row = 'row_' + i;
-                var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
-                var jsonRate = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-rate').value);
-                var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
-                var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
-                
-                var updateQty = old_qty - jsonQty;
-                newRow[row] = {gId, updateQty};
-            }
             
-            var jsonData = {
-                parent_row_prefix_id: prefixValue,
-                all_Rate: json_data_first_rate,
-                newRow: newRow  // Assign newRow to a property of jsonData
-            };
-            
-            console.log('row', jsonData);
-            
-            // Convert the data object to JSON string
-            var jsonString = JSON.stringify(jsonData);
-
-            window.opener.updateFormData(newSessionData,jsonString);
         }
-        
-   
-     
     </script>
 
     <script>
+        // create a new row and the calculation the single row and save
         $(document).ready (function(){
         
-            function updateRate(){
-                var newRate = $('input[name^="shade_godown_items_set-"][name$="-rate"]');
+            // function updateRate(){
+            //     var newRate = $('input[name^="shade_godown_items_set-"][name$="-rate"]');
 
-                newRate.each(function(){
-                    $(this).attr('readonly', true)
-                })
-            }
-           
+            //     newRate.each(function(){
+            //         $(this).attr('readonly', true)
+            //     })
+            // }
+       
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {
+          
           //first find the last row rate value is not empty then add a new row 
           //there any one rate value is empty then don't add a new row
         var newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
        
         if(newRate != "" && newRate != null){
         var newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
-        
+       
         var formsValue = parseInt(newFormValue.value);
-         
+       
+       
         
         var tableClone = $('#newTable').find('tbody tr').last().clone(true);
         
             //update the input name and id for the new row
         const newGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-godown_id"]');
-        newGodownItem.attr('name', 'shade_godown_items_set-' + formsValue + '-godown_id');
+        newGodownItem.attr('name', 'shade_godown_items_set-'+formsValue +'-godown_id');
         newGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-godown_id');
         newGodownItem.val('');
       
@@ -231,8 +201,9 @@
         const newQuantityValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-new_quantity"]');
         newQuantityValue.attr('name', 'shade_godown_items_set-' + formsValue + '-new_quantity');
         newQuantityValue.attr('id', 'shade_godown_items_set-' + formsValue + '-new_quantity');
-        newQuantityValue.val();
-
+        newQuantityValue.val(0);
+       
+        
         const newRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]');
         newRate.attr('name', 'shade_godown_items_set-' + formsValue + '-rate');
         newRate.attr('id', 'shade_godown_items_set-' + formsValue + '-rate');
@@ -260,7 +231,7 @@
         newFormValue.value = formsValue + 1;
 
         $('#newTable tbody').append(tableClone);
-        newFormValue.value = formsValue + 1;
+       
 
        
         }   
@@ -321,25 +292,30 @@
 
         })
 
-        $(document).on('input', '.godown-quantity' , function() {
+    $(document).on('input', '.godown-quantity' , function() {
             //call the calculation function when qunatity and rate is changed   
             calculateGodownAmount();
 
-        })
+    })
         
         
-        // Delete row from delete button
-       $(document).on('click', '.delete-btn', function(){
-        var tableRows = $('#newTable tbody tr');
-          if (tableRows.length > 1) { // Check if the table has only one row
-        var row = $(this).closest('tr');
-        row.remove();
-        calculateGodownAmount();
+        //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
+        $(document).on('click', '.delete-btn', function() {
+        var tableRows = $('#newTable tbody tr'); 
+        if (tableRows.length > 1) { 
+            var row = $(this).closest('tr'); 
+            var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+           // var newCheckBoxId = checkbox.split('-')[1];
 
-    } else {
-        alert('Table must have at least one godown item');
-    }
-          
+            //var deleteValue = $('#shade_godown_items_set-' + newCheckBoxId + '-DELETE');
+            checkbox.prop('checked', true); 
+            //row.remove(); 
+
+
+            calculateGodownAmount(); 
+        } else {
+            alert('The table must have at least one godown item'); 
+        }
         });
 
         })
