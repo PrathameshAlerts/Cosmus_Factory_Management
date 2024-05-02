@@ -7,9 +7,9 @@
         <div class="">
           <h5 class="" id="">Item Name: {{item}}</h5> 
           <h5 class="" id="">shade Name: {{item_shade}}</h5>
-            {{shade_id}}
+            <!-- {{shade_id}}
             {{prefix_id}}
-            {{primary_key}}
+            {{primary_key}} -->
           </div>
         <div class="">
             <form method="post" id="childform"  onsubmit="submitData()">
@@ -28,7 +28,9 @@
                     <tbody class="mainTableList">
                         <input type="hidden" id="id_unique_id_godown" name="unique_id_godown" value="{{unique_id_godown}}">
                         <input type="hidden" id="id_primary_key_godown" name="primary_key_godown" value="{{primary_key_godown}}">
+                        <input type="hidden" id="id_shade_id" name="shade_id" value="{{shade_id}}">
                         <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
+                        <input type="hidden" id="primary_id" name="primary_id" value=" {{primary_key}}">
                         
                         {{ formset.management_form }}
                         
@@ -71,7 +73,7 @@
                     </tbody>
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
-               <input type="submit" class="add_btn" id="">popupData
+               <input type="submit" class="add_btn" id="popupData">
                <input type="submit" class="">
             </form>
             
@@ -80,18 +82,27 @@
 
 
             var formDataget = $('#childform').serializeArray(); // Serialize form data
-            
+            // var primaryId = document.getElementById('id_primary_key_godown').value;
+            //    var shadeId = document.getElementById('id_shade_id').value;
+            //    var prefixId = document.getElementById('prefix_id').value;
+
+            //    console.log("Primary key:", primaryId);
+            //    console.log("Shade id:", shadeId);
+            //    console.log("Prefix id:", prefixId);
 
             document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
-                
+                var prefixs = formData.find(field => field.name === 'prefix_id')?.value;
+
+                console.log("Prefix value:", prefixs);
                 function findFieldByName(formData, fieldName) {
                     return formData.find(field => field.name === fieldName);
                }
-               const formSetData = [
 
-               ]
-              
+                
+               const primaryId = document.getElementById('primary_id').value;
+               const shadeId = document.getElementById('id_shade_id').value;
+               const prefixId = document.getElementById('prefix_id').value;
                const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
                const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
                const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
@@ -101,47 +112,52 @@
                 var array1 = formDataget
  //               window.opener.postMessage(array2, "*");
    //             window.opener.postMessage(array1, "*");
-                function getChangedDicts(array1, array2, formSetData, extraFields) {
+
+                
+               var primaryIdDict = {"primaryIdKey": primaryId};
+               var shadeIdDict = {"shadeIdKey":shadeId};
+               var prefixIdDict = {"prefixIdKey":prefixId};
+                function getChangedDicts(array1, array2, extraFields) {
                     var changedDicts = [];
                 
                     // Iterate over each object in array1
                     array1.forEach(function (obj1) {
-        var obj2 = array2.find(function (item) {
-            return item.name === obj1.name;
-        });
+                    var obj2 = array2.find(function (item) {
+                        return item.name === obj1.name;
+                    });
 
-        if (obj2) {
-            if (obj2.value !== obj1.value) {
-                // If values differ, the field is modified
-                changedDicts.push({
-                    name: obj1.name,
-                    change_type: "modified",
-                    //original_value: obj1.value,
-                    //new_value: obj2.value,
-                    value: obj2.value,
+                    if (obj2) {
+                        if (obj2.value !== obj1.value) {
+                            // If values differ, the field is modified
+                            changedDicts.push({
+                                name: obj1.name,
+                                change_type: "modified",
+                                //original_value: obj1.value,
+                                //new_value: obj2.value,
+                                value: obj2.value,
+                            });
+                        }
+                    } else {
+                        // If obj2 does not exist, the field is removed
+                        changedDicts.push({
+                            name: obj1.name,
+                            change_type: "removed",
+                            value: obj1.value,
+                        });
+                    }
                 });
-            }
-        } else {
-            // If obj2 does not exist, the field is removed
-            changedDicts.push({
-                name: obj1.name,
-                change_type: "removed",
-                value: obj1.value,
-            });
-        }
-    });
 
-    // Check for added fields in array2
-    array2.forEach(function (obj2) {
-        if (!array1.some((obj1) => obj1.name === obj2.name)) {
-            // If obj2 does not exist in array1, it is an added field
-            changedDicts.push({
-                name: obj2.name,
-                change_type: "added",
-                value: obj2.value,
-            });
-        }
-    });
+                // Check for added fields in array2
+                array2.forEach(function (obj2) {
+                    if (!array1.some((obj1) => obj1.name === obj2.name)) {
+                        // If obj2 does not exist in array1, it is an added field
+                        changedDicts.push({
+                            name: obj2.name,
+                            change_type: "added",
+                            value: obj2.value,
+                        });
+                    }
+                });
 
                     // Add extra fields if they exist
                     if (extraFields) {
@@ -154,35 +170,21 @@
 
                  return changedDicts;
                 }
-                var extraFields = [initialForms, maxForms , minForms , prefix];
+
+
+                var extraFields = [initialForms, maxForms , minForms , prefix, primaryIdDict, shadeIdDict , prefixIdDict];
                 // Call the function to get the changed dictionaries
-                var ChildData = getChangedDicts(array1, array2, formSetData, extraFields);
+                var ChildData = getChangedDicts(array1, array2, extraFields);
+                
             
+                var dataWithPrefix = {
+                [`popupRow_${prefixId}`]:ChildData,
+                };
 
                 
-            var convertedData = {};
-            
+           
 
-// Iterate over each object in ChildData
-for (var i = 0; i < ChildData.length; i++) {
-    var name = ChildData[i].name;
-    var value = ChildData[i].value;
-
-    // Check if the name already exists in convertedData
-    if (convertedData.hasOwnProperty(name)) {
-        // If the name exists, convert the value to an array
-        if (!Array.isArray(convertedData[name])) {
-            convertedData[name] = [convertedData[name]];
-        }
-        // Push the new value to the array
-        convertedData[name].push(value);
-    } else {
-        // If the name doesn't exist, directly set the value
-        convertedData[name] = value;
-    }
-}
-
-                window.opener.postMessage(convertedData, "*"); // Send form data to parent window
+                window.opener.postMessage(dataWithPrefix, "*"); // Send form data to parent window
                 
                 window.close(); // Close the child window
             });
