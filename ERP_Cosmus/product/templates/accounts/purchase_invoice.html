@@ -229,31 +229,11 @@
 }
     console.log("convertedData",convertedData)
 
-    //submitToData(ChildData);
     var data = document.getElementById('purchase_voucher_items_set-'+ datasId  + '-popupData')
     data.value = JSON.stringify(convertedData);
     }
 
-//     function submitToData(data) {
-//         $.ajax({
-//             type: 'POST',
-//             url: '{% url "purchase-voucher-list" %}',
-//             data: {"data": data},
-//             headers: { "X-CSRFToken": getCSRFToken() },
-//             success: function (response) {
-//                 console.log(response)
-                
-//             },
-            
-//         error: function (error) {
-//             console.error("Error submitting data:", error);
-//         },
-//         });
-//     }
 
-//     function getCSRFToken() {
-//     return document.querySelector("[name=csrfmiddlewaretoken]").value;
-// }
 </script>
 
 

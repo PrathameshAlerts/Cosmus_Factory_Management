@@ -116,7 +116,7 @@
                const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
                const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
                const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
-               const prefix = findFieldByName(formData, 'prefix_id');
+          
           
 
                 var array2 = formData
@@ -124,9 +124,9 @@
 
 
                 
-               var primaryIdDict = {"primaryIdKey": primaryId};
-               var shadeIdDict = {"shadeIdKey":shadeId};
-               var prefixIdDict = {"prefixIdKey":prefixId};
+               var primaryIdDict = {"name": "primary_id" , "value": primaryId};
+               var shadeIdDict = {"name": "shade_id" , "value":shadeId};
+               var prefixIdDict = {"name": "prefix_id" , "value":prefixId};
                 function getChangedDicts(array1, array2, extraFields) {
                     var changedDicts = [];
                 
@@ -184,7 +184,7 @@
                 }
 
 
-                var extraFields = [initialForms, maxForms , minForms , prefix, primaryIdDict, shadeIdDict , prefixIdDict];
+                var extraFields = [initialForms, maxForms , minForms , primaryIdDict, shadeIdDict , prefixIdDict];
                 // Call the function to get the changed dictionaries
                 var ChildData = getChangedDicts(array1, array2, extraFields);
                 
@@ -240,6 +240,7 @@
                 console.log('old_qty',old_qty)
                 var updateQty = jsonQty - old_qty;
                 newRow[row] = {gId, updateQty};
+               
             }
 
             var jsonData = {
@@ -411,6 +412,9 @@
         $('#grand_godown_rate').val(totalRate);
     }
 
+    $(document).on('change', '.godown-select', function(){
+        calculateGodownAmount();
+    })
 
     $(document).on('input', '.godown-quantity' && ' .godown-rate', function() {
             //call the calculation function when qunatity and rate is changed   
