@@ -1838,7 +1838,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
             return render(request, 'accounts/purchase_popup.html', context)
     return render(request, 'accounts/purchase_popup.html' ,{'godowns':godowns,'item':item,'shade_id': shade_id,
                                                             'item_shade':item_shade,'formset':formset,
-                                                            'unique_id':unique_id,'prefix_id':prefix_id, 'primary_key':pk})
+                                                            'unique_id':unique_id,'prefix_id':prefix_id, 'primary_key':primarykey})
 
 
 def purchasevouchercreategodownpopupurl(request):
