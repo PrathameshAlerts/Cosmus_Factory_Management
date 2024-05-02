@@ -5,7 +5,7 @@ from django.contrib.auth.models import auth #help us to logout
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
-from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
@@ -1692,20 +1692,30 @@ def purchasevouchercreateupdate(request, pk=None):
                                 #popupvoucherfunction post initilization
                                  
                                 popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
-
+                                print(popup_godowns_exists)
                                 if popup_godowns_exists != '':
                                     popup_godown_data = json.loads(popup_godowns_exists)
-                                    print(popup_godown_data)
+                                    print('popup_godown_data',popup_godown_data)
                                     row_prefix_id = popup_godown_data.get('prefix_id')
 
                                     if row_prefix_id == form_prefix_number:
-                                        # Construct redirect URL with selected POST data
-                                        shade_id = None
-                                        prefix_id = None
-                                        unique_id = None
-                                        primarykey = None
-                                        redirect_url = reverse('purchase-voucher-popup-update', args=[shade_id, prefix_id, unique_id, primarykey])
+                                        
+                                        shade_id = int(popup_godown_data.get('shade_id'))
+                                        prefix_id =  int(popup_godown_data.get('prefix_id'))
+                                        primarykey = int(popup_godown_data.get('primary_id'))
+                                        
+                                        
+                                        # temp_godown_data = {'shade':shade_id,'prefix':prefix_id,'primarykey':primarykey}
+                                        # temp_godown_data['g_temp_data'] = popup_godown_data
 
+                                        # temp_godown_rows = request.session.get(f'invoice_row_{prefix_id}', {})
+                                        # temp_godown_rows.update(temp_godown_rows)
+                                        # print('temp_godown_rows',temp_godown_rows)
+                                        # request.session[f'invoice_row_{prefix_id}'] = temp_godown_data 
+                                        print('main', popup_godown_data,shade_id,prefix_id,primarykey)
+
+                                        purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey)
+                                        
                                 # first check if quantity is updated in invoice database 
                                 godown_item_quantity = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-jsonDataInputquantity')
 
@@ -1746,7 +1756,7 @@ def purchasevouchercreateupdate(request, pk=None):
                     return redirect('purchase-voucher-list')
             
         except Exception as e:
-            print('an error occoured-',e)
+            print('an error occoured-test',e)
             messages.error(request,f'An error occoured{e} godown temporary data deleted')
             
         finally:
@@ -1772,6 +1782,21 @@ def purchasevouchercreateupdate(request, pk=None):
                }
 
     return render(request,'accounts/purchase_invoice.html',context=context)
+
+
+def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey):
+        if primarykey is not None:
+            
+
+            voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
+
+            formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
+            print(formset)
+            if formset.is_valid():
+                formset.save()
+            else:
+                print(formset.errors)
+
 
 
 #popup page for purchase voucher godown update
@@ -1874,15 +1899,23 @@ def purchasevoucherdelete(request,pk):
                     
 
 def session_data_test(request):
-    if request.session['openingquantitytemp']:
-        openingquantitytemp = request.session['openingquantitytemp']
-    else:
-        openingquantitytemp == None
+    # if request.session['openingquantitytemp']:
+    #     openingquantitytemp = request.session['openingquantitytemp']
+    # else:
+    #     openingquantitytemp == None
 
 
-    context = {'temp_data_exists':openingquantitytemp}
+
+    # Get all data from the session
+    session_data = request.session
+    
+    # Now session_data contains all data stored in the session
+    # You can access individual items using dictionary-like syntax
+    for key, value in session_data.items():
+        print(f"Key: {key}, Value: {value}")
+
+    context = {}
     return render(request,'misc/session_test.html',context=context)
-
 
 
 #__________________________purchase voucher end__________________________
