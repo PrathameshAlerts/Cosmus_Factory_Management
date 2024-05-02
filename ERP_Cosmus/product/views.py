@@ -458,8 +458,10 @@ def product2subcategory(request):
         
         except IntegrityError:
             messages.error(request, 'Product already present in Subcategory')
+
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
+
     return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
 
 
@@ -1683,11 +1685,10 @@ def purchasevouchercreateupdate(request, pk=None):
                                             print('godown',godown_form.error)
                                             purchase_voucher_temp_data.delete()
 
-                                   
-
                                     if saved_data_to_delete == form_set_id:
                                         purchase_voucher_temp_data.delete()
                                 
+
                                 # first check if quantity is updated in invoice database 
                                 godown_item_quantity = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-jsonDataInputquantity')
 
