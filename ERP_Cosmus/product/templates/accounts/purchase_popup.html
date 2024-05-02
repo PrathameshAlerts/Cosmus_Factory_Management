@@ -7,9 +7,10 @@
         <div class="">
           <h5 class="" id="">Item Name: {{item}}</h5> 
           <h5 class="" id="">shade Name: {{item_shade}}</h5>
-            <!-- {{shade_id}}
+            {{shade_id}}
             {{prefix_id}}
-            {{primary_key}} -->
+            {{primary_key}}
+            {{unique_id}}
           </div>
         <div class="">
             <form method="post" id="childform"  onsubmit="submitData()">
@@ -26,11 +27,13 @@
                         </tr>
                     </thead>
                     <tbody class="mainTableList">
-                        <input type="hidden" id="id_unique_id_godown" name="unique_id_godown" value="{{unique_id_godown}}">
+                        <input type="hidden" id="id_unique_id_godown" name="unique_id_godown" value="{{unique_id}}">
                         <input type="hidden" id="id_primary_key_godown" name="primary_key_godown" value="{{primary_key_godown}}">
                         <input type="hidden" id="id_shade_id" name="shade_id" value="{{shade_id}}">
                         <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
                         <input type="hidden" id="primary_id" name="primary_id" value=" {{primary_key}}">
+                    
+                       
                         
                         {{ formset.management_form }}
                         
@@ -74,23 +77,30 @@
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
                <input type="submit" class="add_btn" id="popupData">
-               <input type="submit" class="">
             </form>
             
         </div>
         <script>
 
 
-            var formDataget = $('#childform').serializeArray(); // Serialize form data
-            // var primaryId = document.getElementById('id_primary_key_godown').value;
-            //    var shadeId = document.getElementById('id_shade_id').value;
-            //    var prefixId = document.getElementById('prefix_id').value;
+          
+              var primaryId  = document.getElementById('primary_id').value;
+               var shadeId = document.getElementById('id_shade_id').value;
+               var prefixId = document.getElementById('prefix_id').value;
+               var uniqueId = document.getElementById('id_unique_id_godown').value;
 
             //    console.log("Primary key:", primaryId);
             //    console.log("Shade id:", shadeId);
             //    console.log("Prefix id:", prefixId);
+            //    console.log("Unique id:", uniqueId);
 
-            document.getElementById('popupData').addEventListener('click', function() {
+               
+            if(primaryId != "None" && uniqueId == "None"){
+
+                var formDataget = $('#childform').serializeArray(); // Serialize form data
+
+
+              document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
                 var prefixs = formData.find(field => field.name === 'prefix_id')?.value;
 
@@ -107,11 +117,11 @@
                const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
                const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
                const prefix = findFieldByName(formData, 'prefix_id');
-               // window.opener.postMessage(formData, "*")
+          
+
                 var array2 = formData
                 var array1 = formDataget
- //               window.opener.postMessage(array2, "*");
-   //             window.opener.postMessage(array1, "*");
+
 
                 
                var primaryIdDict = {"primaryIdKey": primaryId};
@@ -190,6 +200,8 @@
                 
                 window.close(); // Close the child window
             });
+            }
+           
         </script>
 
 
