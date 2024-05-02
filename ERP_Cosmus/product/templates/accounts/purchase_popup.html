@@ -7,7 +7,9 @@
         <div class="">
           <h5 class="" id="">Item Name: {{item}}</h5> 
           <h5 class="" id="">shade Name: {{item_shade}}</h5>
-            
+            <!-- {{shade_id}}
+            {{prefix_id}}
+            {{primary_key}} -->
           </div>
         <div class="">
             <form method="post" id="childform"  onsubmit="submitData()">
@@ -28,6 +30,7 @@
                         <input type="hidden" id="id_primary_key_godown" name="primary_key_godown" value="{{primary_key_godown}}">
                         <input type="hidden" id="id_shade_id" name="shade_id" value="{{shade_id}}">
                         <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
+                        <input type="hidden" id="primary_id" name="primary_id" value=" {{primary_key}}">
                         
                         {{ formset.management_form }}
                         
@@ -79,9 +82,15 @@
 
 
             var formDataget = $('#childform').serializeArray(); // Serialize form data
-            
+            // var primaryId = document.getElementById('id_primary_key_godown').value;
+            //    var shadeId = document.getElementById('id_shade_id').value;
+            //    var prefixId = document.getElementById('prefix_id').value;
 
-            document.getElementById('addModalButton').addEventListener('click', function() {
+            //    console.log("Primary key:", primaryId);
+            //    console.log("Shade id:", shadeId);
+            //    console.log("Prefix id:", prefixId);
+
+            document.getElementById('popupData').addEventListener('click', function() {
                 var formData = $('#childform').serializeArray(); // Serialize form data
                 var prefixs = formData.find(field => field.name === 'prefix_id')?.value;
 
@@ -89,9 +98,11 @@
                 function findFieldByName(formData, fieldName) {
                     return formData.find(field => field.name === fieldName);
                }
+
                 
-               var primaryId = document.getElementById('id_primary_key_godown').value;
-               var shadeId = document.getElementById('id_shade_id').value;
+               const primaryId = document.getElementById('primary_id').value;
+               const shadeId = document.getElementById('id_shade_id').value;
+               const prefixId = document.getElementById('prefix_id').value;
                const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
                const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
                const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
@@ -101,6 +112,11 @@
                 var array1 = formDataget
  //               window.opener.postMessage(array2, "*");
    //             window.opener.postMessage(array1, "*");
+
+                
+               var primaryIdDict = {"primaryIdKey": primaryId};
+               var shadeIdDict = {"shadeIdKey":shadeId};
+               var prefixIdDict = {"prefixIdKey":prefixId};
                 function getChangedDicts(array1, array2, extraFields) {
                     var changedDicts = [];
                 
@@ -156,36 +172,21 @@
 
                  return changedDicts;
                 }
-                var extraFields = [initialForms, maxForms , minForms , prefix, primaryId, shadeId];
+
+
+                var extraFields = [initialForms, maxForms , minForms , prefix, primaryIdDict, shadeIdDict , prefixIdDict];
                 // Call the function to get the changed dictionaries
                 var ChildData = getChangedDicts(array1, array2, extraFields);
                 
-              
-            var convertedData = {};
+            
+                var dataWithPrefix = {
+                [`popupRow_${prefixId}`]:ChildData,
+                };
 
-            // Iterate over each object in ChildData
-            for (var i = 0; i < ChildData.length; i++) {
-                var name = ChildData[i].name;
-                var value = ChildData[i].value;
+                
+           
 
-                // Check if the name already exists in convertedData
-                if (convertedData.hasOwnProperty(name)) {
-                    // If the name exists, convert the value to an array
-                    if (!Array.isArray(convertedData[name])) {
-                        convertedData[name] = [convertedData[name]];
-                    }
-                    // Push the new value to the array
-                    convertedData[name].push(value);
-                } else {
-                    // If the name doesn't exist, directly set the value
-                    convertedData[name] = value;
-                }
-            }
-
-
-
-
-                window.opener.postMessage(convertedData, "*"); // Send form data to parent window
+                window.opener.postMessage(dataWithPrefix, "*"); // Send form data to parent window
                 
                 window.close(); // Close the child window
             });

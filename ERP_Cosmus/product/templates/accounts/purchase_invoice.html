@@ -73,7 +73,8 @@
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
                 {{ forms.id }}
-                <tr>    
+                <tr>
+                    <input type="hidden" id="{{forms.prefix}}-popupData" name="{{forms.prefix}}-popupData" value="">    
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <td>{{forms.instance.id}}</td>
@@ -192,37 +193,67 @@
 
 
 <script>
+
     window.addEventListener('message', receiveMessage, false);
 
     function receiveMessage(event) {
 
-        var convertedData = event.data;
-        console.log(convertedData)
+        var dataWithPrefix = event.data;
+  
+        console.log(dataWithPrefix)
+        console.log()
+    var convertedData = {};
+       var datalength = Object.values(dataWithPrefix)[0]
+       var dataId =Object.keys(dataWithPrefix)[0];
 
-        submitToData(convertedData);
-    
+       var datasId = dataId.split('_')[1]
+       console.log('dataId',datasId)
+
+            // Iterate over each object in ChildData
+    for (var i = 0; i < datalength.length; i++) {
+                var name = datalength[i].name;
+                var value = datalength[i].value;
+
+    // Check if the name already exists in convertedData
+    if (convertedData.hasOwnProperty(name)) {
+        // If the name exists, convert the value to an array
+        if (!Array.isArray(convertedData[name])) {
+            convertedData[name] = [convertedData[name]];
+        }
+        // Push the new value to the array
+        convertedData[name].push(value);
+    } else {
+        // If the name doesn't exist, directly set the value
+        convertedData[name] = value;
     }
-
-    function submitToData(data) {
-        $.ajax({
-            type: 'POST',
-            url: '{% url "purchase-voucher-list" %}',
-            data: convertedData(data),
-            headers: { "X-CSRFToken": getCSRFToken() },
-            success: function (response) {
-                console.log(response)
-                
-            },
-            
-        error: function (error) {
-            console.error("Error submitting data:", error);
-        },
-        });
-    }
-
-    function getCSRFToken() {
-    return document.querySelector("[name=csrfmiddlewaretoken]").value;
 }
+    console.log("convertedData",convertedData)
+
+    //submitToData(ChildData);
+    var data = document.getElementById('purchase_voucher_items_set-'+ datasId  + '-popupData')
+    data.value = JSON.stringify(convertedData);
+    }
+
+//     function submitToData(data) {
+//         $.ajax({
+//             type: 'POST',
+//             url: '{% url "purchase-voucher-list" %}',
+//             data: {"data": data},
+//             headers: { "X-CSRFToken": getCSRFToken() },
+//             success: function (response) {
+//                 console.log(response)
+                
+//             },
+            
+//         error: function (error) {
+//             console.error("Error submitting data:", error);
+//         },
+//         });
+//     }
+
+//     function getCSRFToken() {
+//     return document.querySelector("[name=csrfmiddlewaretoken]").value;
+// }
 </script>
 
 
@@ -335,9 +366,9 @@ function randomValue (){
          console.log('newId',uniqueId.value)
     }else if(primeId != ''){
         
-        var uniqueId = document.getElementById('purchase_voucher_items_set-' + i+ '-combinedId');
-        uniqueId.value =primeId+'--' + uuid;
-        console.log('newIds',uniqueId.value)
+        // var uniqueId = document.getElementById('purchase_voucher_items_set-' + i+ '-combinedId');
+        // uniqueId.value =primeId+'--' + uuid;
+        // console.log('newIds',uniqueId.value)
     }
    }
     
@@ -740,6 +771,11 @@ randomValue();
            backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
            backendQtyElement.name = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
            backendQtyElement.value= "";
+           
+           const popUpElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-popupData"]');
+           popUpElement.id = `purchase_voucher_items_set-${formIndex}-popupData`;
+           popUpElement.name = `purchase_voucher_items_set-${formIndex}-popupData`;
+           popUpElement.value= "";
 
            const deleteElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
            deleteElement.id = `purchase_voucher_items_set-${formIndex}-DELETE`;
