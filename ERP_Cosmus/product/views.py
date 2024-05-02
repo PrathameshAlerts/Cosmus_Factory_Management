@@ -1689,6 +1689,14 @@ def purchasevouchercreateupdate(request, pk=None):
                                         purchase_voucher_temp_data.delete()
                                 
 
+                                #popupvoucherfunction post initilization
+                                 
+                                popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
+
+                                if popup_godowns_exists != '':
+                                    popup_godown_data = json.loads(popup_godowns_exists)
+                                    print(popup_godown_data)
+
                                 # first check if quantity is updated in invoice database 
                                 godown_item_quantity = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-jsonDataInputquantity')
 
