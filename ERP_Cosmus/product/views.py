@@ -1704,15 +1704,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                         prefix_id =  int(popup_godown_data.get('prefix_id'))
                                         primarykey = int(popup_godown_data.get('primary_id'))
                                         
-                                        
-                                        # temp_godown_data = {'shade':shade_id,'prefix':prefix_id,'primarykey':primarykey}
-                                        # temp_godown_data['g_temp_data'] = popup_godown_data
-
-                                        # temp_godown_rows = request.session.get(f'invoice_row_{prefix_id}', {})
-                                        # temp_godown_rows.update(temp_godown_rows)
-                                        # print('temp_godown_rows',temp_godown_rows)
-                                        # request.session[f'invoice_row_{prefix_id}'] = temp_godown_data 
-                                        print('main', popup_godown_data,shade_id,prefix_id,primarykey)
+                
 
                                         purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey)
                                         
@@ -1786,8 +1778,6 @@ def purchasevouchercreateupdate(request, pk=None):
 
 def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey):
         if primarykey is not None:
-            
-
             voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')

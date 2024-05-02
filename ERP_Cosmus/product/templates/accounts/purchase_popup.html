@@ -110,23 +110,23 @@
                }
 
                 
-               const primaryId = document.getElementById('primary_id').value;
-               const shadeId = document.getElementById('id_shade_id').value;
-               const prefixId = document.getElementById('prefix_id').value;
-               const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
-               const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
-               const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
-          
+            //    const primaryId = document.getElementById('primary_id').value;
+            //    const shadeId = document.getElementById('id_shade_id').value;
+            //    const prefixId = document.getElementById('prefix_id').value;
+            //    const totalForms = findFieldByName(formData, 'shade_godown_items_set-TOTAL_FORMS');
+            //    const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
+            //    const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
+            //    const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
           
 
+               
                 var array2 = formData
                 var array1 = formDataget
 
-
-                
                var primaryIdDict = {"name": "primary_id" , "value": primaryId};
                var shadeIdDict = {"name": "shade_id" , "value":shadeId};
                var prefixIdDict = {"name": "prefix_id" , "value":prefixId};
+
                 function getChangedDicts(array1, array2, extraFields) {
                     var changedDicts = [];
                 
@@ -137,25 +137,33 @@
                     });
 
                     if (obj2) {
-                        if (obj2.value !== obj1.value) {
-                            // If values differ, the field is modified
-                            changedDicts.push({
-                                name: obj1.name,
-                                change_type: "modified",
-                                //original_value: obj1.value,
-                                //new_value: obj2.value,
-                                value: obj2.value,
-                            });
-                        }
-                    } else {
-                        // If obj2 does not exist, the field is removed
-                        changedDicts.push({
-                            name: obj1.name,
-                            change_type: "removed",
-                            value: obj1.value,
-                        });
-                    }
+            if (obj2.value !== obj1.value) {
+                // If values differ, the field is modified
+                changedDicts.push({
+                    name: obj1.name,
+                    change_type: "modified",
+                    original_value: obj1.value,
+                    value: obj2.value,
                 });
+            } else {
+                // If values are the same, the field is unchanged
+                changedDicts.push({
+                    name: obj1.name,
+                    change_type: "unchanged",
+                    //original_value: obj1.value,
+                    value: obj2.value,
+                });
+            }
+        } else {
+            // If obj2 does not exist, the field is removed
+            changedDicts.push({
+                name: obj1.name,
+                change_type: "removed",
+                original_value: obj1.value,
+            });
+        }
+    });
+
 
                 // Check for added fields in array2
                 array2.forEach(function (obj2) {
@@ -182,9 +190,9 @@
                 }
 
 
-                var extraFields = [initialForms, maxForms , minForms , primaryIdDict, shadeIdDict , prefixIdDict];
+                //var extraFields = [ primaryIdDict, shadeIdDict , prefixIdDict];
                 // Call the function to get the changed dictionaries
-                var ChildData = getChangedDicts(array1, array2, extraFields);
+                var ChildData = getChangedDicts(array1, array2);
                 
             
                 var dataWithPrefix = {
