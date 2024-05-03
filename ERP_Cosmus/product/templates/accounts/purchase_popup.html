@@ -314,7 +314,7 @@
         newGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-godown_id');
         newGodownItem.val('');
       
-        const oldGodownItem = tableClone.find('input[name^="shade_godown_items_set-"][name$="-old_godown_id"]');
+        const oldGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-old_godown_id"]');
         oldGodownItem.attr('name', 'shade_godown_items_set-'+formsValue +'-old_godown_id');
         oldGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-old_godown_id');
         oldGodownItem.val('');
