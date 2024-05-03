@@ -232,17 +232,23 @@
             var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value
             
             var newRow = {};   
-
-            for (var i = 0; i < total_forms; i++) { 10
+            
+            for (var i = 0; i < total_forms; i++) {
                 var row = 'row_' + i;
+                var popup_row_id = document.getElementById('id_shade_godown_items_set-' + i + '-id');
                 var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
                 var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
+                console.log(popup_row_id,gId,jsonQty,old_qty)
                 
-                console.log('jsonQty',jsonQty)
-                console.log('old_qty',old_qty)
-                var updateQty = jsonQty - old_qty;
-                newRow[row] = {gId, updateQty};
+                if(popup_row_id){
+
+                    popup_row_id = popup_row_id.value
+                    newRow[row] = {gId, jsonQty, popup_row_id};
+                }else{
+                    newRow[row] = {gId, jsonQty};
+                }
+                
                
             }
 

@@ -1648,6 +1648,44 @@ def purchasevouchercreateupdate(request, pk=None):
                                 items_instance.save()
                                 
                                 form_prefix_number = form.prefix[-1] #gives the prefix number of the current iteration of the form
+
+                                # first check if quantity is updated in invoice database 
+                                godown_item_quantity = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-jsonDataInputquantity')
+
+                                voucher_row_godown_data = json.loads(godown_item_quantity)
+                                parent_row_prefix_id = voucher_row_godown_data.get('parent_row_prefix_id')
+
+                                if parent_row_prefix_id == form_prefix_number:
+                                    print('test--',voucher_row_godown_data)
+                                    new_row = voucher_row_godown_data.get('newRow')
+                                    new_rate = float(voucher_row_godown_data.get('all_Rate'))
+                                    row_item = items_instance.item_shade.id
+                                    Item_instance =  item_color_shade.objects.get(id = row_item)
+
+                                    for key, value in new_row.items():
+                                        godown_id = int(value['gId'])
+                                        updated_quantity = value['jsonQty']
+                                        popup_row_id = value.get('popup_row_id')
+                                        godown_instance = Godown_raw_material.objects.get(id = godown_id)
+                                        Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
+                                                
+                                        if popup_row_id == None or popup_row_id == '':
+                                            initial_quantity = 0
+
+                                        else:
+                                            initial_quantity = shade_godown_items.objects.get(pk = popup_row_id)
+                                            initial_quantity = initial_quantity.quantity
+                                        
+                                        qty_to_update = updated_quantity - initial_quantity
+                                        print(initial_quantity) 
+                                        print(updated_quantity) 
+                                        print(qty_to_update) 
+                                        print(Item.quantity)
+
+                                        Item.quantity = Item.quantity + qty_to_update
+                                        print(Item.quantity)
+                                        Item.item_rate = new_rate
+                                        Item.save()
     
                                 #get the pk of that item row and get the unique id if any present 
                                 unique_id_no = request.POST.get(f'item_unique_id_{form_prefix_number}')
@@ -1677,7 +1715,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                     for godown_form in godown_items_formset:
                                         if godown_form.is_valid():
                                             godown_instance = godown_form.save(commit = False)
-                                            godown_instance.purchase_voucher_godown_item = items_instance
+                                            godown_instance.purchase_voucher_godown_item = items_instance #save form to permanant table with link to parent table 
                                             godown_instance.save()
                                             saved_data_to_delete = saved_data_to_delete + 1
                                             print('Data-saved')
@@ -1690,7 +1728,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                 
 
                                 #popupvoucherfunction post initilization
-                                 
+                    
                                 popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
                                 print(popup_godowns_exists)
                                 if popup_godowns_exists != '':
@@ -1704,30 +1742,10 @@ def purchasevouchercreateupdate(request, pk=None):
                                         prefix_id =  int(popup_godown_data.get('prefix_id'))
                                         primarykey = int(popup_godown_data.get('primary_id'))
                                         
-                
-
+                                        #function to update popup data on main submit only 
                                         purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey)
                                         
-                                # first check if quantity is updated in invoice database 
-                                godown_item_quantity = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-jsonDataInputquantity')
-
-                                voucher_row_godown_data = json.loads(godown_item_quantity)
-                                parent_row_prefix_id = voucher_row_godown_data.get('parent_row_prefix_id')
-
-                                if parent_row_prefix_id == form_prefix_number:
-                                    print(voucher_row_godown_data)
-                                    new_row = voucher_row_godown_data.get('newRow')
-                                    new_rate = float(voucher_row_godown_data.get('all_Rate'))
-                                    row_item = items_instance.item_shade.id
-                                    Item_instance =  item_color_shade.objects.get(id = row_item)
-                                    for key, value in new_row.items():
-                                        godown_id = int(value['gId'])
-                                        qtydiffrence = value['updateQty']
-                                        godown_instance = Godown_raw_material.objects.get(id = godown_id)
-                                        Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
-                                        Item.quantity = Item.quantity + qtydiffrence
-                                        Item.item_rate = new_rate
-                                        Item.save()
+                                
                         else:
                             print('form1',form.errors)
                             
@@ -1776,26 +1794,27 @@ def purchasevouchercreateupdate(request, pk=None):
     return render(request,'accounts/purchase_invoice.html',context=context)
 
 
+#popup page for purchase voucher godown update
 def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey):
         if primarykey is not None:
             voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
-            print(formset)
+            
             if formset.is_valid():
                 formset.save()
             else:
                 print(formset.errors)
+                
 
 
-
-#popup page for purchase voucher godown update
 #url for this func is generated by purchasevouchercreategodownpopupurl func 
 def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=None):
     
     #unique_id generation is on add button so created rows will not have unique id
-    # create dynamic formsets depends on create or update 
-
+    # create dynamic formsets depends on create or update
+    
+    #only for popup create and update temp table
     if unique_id is not None:
         #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
         temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
@@ -1806,11 +1825,11 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
         else:
             formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
     
-
+    #only for poup get
     elif primarykey is not None:
         voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
 
-        formsets = purchase_voucher_items_godown_formset(request.POST or None, instance = voucher_item_instance,prefix='shade_godown_items_set')
+        formsets = purchase_voucher_items_godown_formset(instance = voucher_item_instance,prefix='shade_godown_items_set')
     
     #create a formset instance with the selected unique id or PK 
     formset = formsets
