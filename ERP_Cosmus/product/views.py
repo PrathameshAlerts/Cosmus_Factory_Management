@@ -1677,13 +1677,8 @@ def purchasevouchercreateupdate(request, pk=None):
                                             initial_quantity = initial_quantity.quantity
                                         
                                         qty_to_update = updated_quantity - initial_quantity
-                                        print(initial_quantity) 
-                                        print(updated_quantity) 
-                                        print(qty_to_update) 
-                                        print(Item.quantity)
-
                                         Item.quantity = Item.quantity + qty_to_update
-                                        print(Item.quantity)
+                                        
                                         Item.item_rate = new_rate
                                         Item.save()
     
