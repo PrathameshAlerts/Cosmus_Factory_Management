@@ -42,6 +42,7 @@
                         <tr>
                             {{ form.id }}
                             <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
+                            <input type="hidden" value="" id ="{{form.prefix}}-old_godown_id" name="{{form.prefix}}-old_godown_id">
                             
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
@@ -89,11 +90,6 @@
                var prefixId = document.getElementById('prefix_id').value;
                var uniqueId = document.getElementById('id_unique_id_godown').value;
 
-            //    console.log("Primary key:", primaryId);
-            //    console.log("Shade id:", shadeId);
-            //    console.log("Prefix id:", prefixId);
-            //    console.log("Unique id:", uniqueId);
-
                
             if(primaryId != "None" && uniqueId == "None"){
 
@@ -108,16 +104,6 @@
                 function findFieldByName(formData, fieldName) {
                     return formData.find(field => field.name === fieldName);
                }
-
-                
-            //    const primaryId = document.getElementById('primary_id').value;
-            //    const shadeId = document.getElementById('id_shade_id').value;
-            //    const prefixId = document.getElementById('prefix_id').value;
-            //    const totalForms = findFieldByName(formData, 'shade_godown_items_set-TOTAL_FORMS');
-            //    const initialForms = findFieldByName(formData, 'shade_godown_items_set-INITIAL_FORMS');
-            //    const maxForms = findFieldByName(formData, 'shade_godown_items_set-MAX_NUM_FORMS');
-            //    const minForms = findFieldByName(formData, 'shade_godown_items_set-MIN_NUM_FORMS');
-          
 
                
                 var array2 = formData
@@ -218,16 +204,20 @@
         for (var i = 0; i <= total_form_Value; i++) {
         var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
-       
-        oldquantity.value = jsonQty
+        var oldGid = document.getElementById('shade_godown_items_set-'+ i + '-old_godown_id');
+        var newGid = document.getElementById('shade_godown_items_set-'+ i + '-godown_id').value;
+        oldquantity.value = jsonQty;
+
+        oldGid.value = newGid;
       
+        
         
         }
     
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
         function jsondata(){
             var prefixIdValue = document.getElementById('prefix_id').value;
-            
+         
             var json_data_first_rate = document.getElementById('shade_godown_items_set-0-rate').value
             var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value
             
@@ -239,17 +229,17 @@
                 var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
                 var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
-                console.log(popup_row_id,gId,jsonQty,old_qty)
+                var popup_old_id = document.getElementById('shade_godown_items_set-' + i + '-old_godown_id');
+               
                 
-                if(popup_row_id){
-
+                if(popup_row_id && popup_old_id != ''){
+                    popup_old_id = popup_old_id.value
                     popup_row_id = popup_row_id.value
-                    newRow[row] = {gId, jsonQty, popup_row_id};
+                    newRow[row] = {gId, jsonQty, popup_row_id ,popup_old_id};
+                    
                 }else{
                     newRow[row] = {gId, jsonQty};
-                }
-                
-               
+                } 
             }
 
             var jsonData = {
@@ -324,6 +314,10 @@
         newGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-godown_id');
         newGodownItem.val('');
       
+        const oldGodownItem = tableClone.find('input[name^="shade_godown_items_set-"][name$="-old_godown_id"]');
+        oldGodownItem.attr('name', 'shade_godown_items_set-'+formsValue +'-old_godown_id');
+        oldGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-old_godown_id');
+        oldGodownItem.val('');
 
         const newQuantity = tableClone.find('input[name^="shade_godown_items_set-"][name$="-quantity"]');
         newQuantity.attr('name', 'shade_godown_items_set-' + formsValue + '-quantity');
