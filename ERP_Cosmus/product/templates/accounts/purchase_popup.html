@@ -415,6 +415,9 @@
         $('#grand_godown_rate').val(totalRate);
     }
 
+    $(document).on('click','#popupData', function(){
+        calculateGodownAmount();
+    })
     $(document).on('change', '.godown-select', function(){
         calculateGodownAmount();
     })
@@ -430,7 +433,11 @@
             calculateGodownAmount();
 
     })
-        
+      
+    $(document).on('change', '.godown-select, .godown-quantity, .godown-rate', function() {
+    calculateGodownAmount(); // Recalculate the amount
+});
+
         
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
