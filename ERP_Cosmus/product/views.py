@@ -1710,13 +1710,26 @@ def purchasevouchercreateupdate(request, pk=None):
                                         new_rate = float(voucher_row_godown_data.get('all_Rate'))
                                         row_item = items_instance.item_shade.id
                                         Item_instance =  item_color_shade.objects.get(id = row_item)
-                                    
+
                                         for key, value in new_row.items():
                                             godown_id = int(value['gId'])
                                             updated_quantity = value['jsonQty']
-                                            godown_old_id = value['popup_old_id']
-                                            popup_row_id = value.get('popup_row_id')
-                                            print(godown_id,updated_quantity,godown_old_id,popup_row_id,godown_id)
+
+                                            # Check for empty string specifically
+                                            godown_old_id = value.get('popup_old_id', None)
+                                            if godown_old_id == '':
+                                                godown_old_id = None
+    
+                                            popup_row_id = value.get('popup_row_id', None)
+                                            if popup_row_id == '':
+                                                popup_row_id = None
+
+
+                                            print('godown_id',godown_id)
+                                            print('updated_quantity',updated_quantity)
+                                            print('godown_old_id',godown_old_id)
+                                            print('popup_row_id',popup_row_id)
+                                            
                                             godown_instance = Godown_raw_material.objects.get(id = godown_id)
                                             Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
                                                 
@@ -1733,17 +1746,26 @@ def purchasevouchercreateupdate(request, pk=None):
                                             Item.save()
 
                                             if godown_old_id != None:
-                                                godown_old_id = int(godown_old_id)
+                                                print('on Update')
+                                                godown_old_id = int(godown_old_id) 
                                                 godown_instance = Godown_raw_material.objects.get(id = godown_old_id)
 
                                                 if godown_old_id != godown_id:
-                                                
+                                                    godown_instance_new = Godown_raw_material.objects.get(id = godown_id)
+
                                                     initial_quantity_g = shade_godown_items.objects.get(pk = popup_row_id)
-                                                    initial_quantity_g = initial_quantity_g.quantity
-                                                
-                                                    item_godown = item_godown_quantity_through_table.objects.get(godown_name = godown_instance, Item_shade_name = Item_instance)
-                                                    item_godown.quantity = item_godown.quantity - initial_quantity_g
-                                                    item_godown.save()
+                                                    print('initial_quantity_g',initial_quantity_g.quantity)
+                                                    initial_quantity_g = initial_quantity_g.quantity 
+                                                    
+                                                    item_godown_sub = item_godown_quantity_through_table.objects.get(godown_name = godown_instance, Item_shade_name = Item_instance) # old row of through table
+                                                    print('item_godown_sub',item_godown_sub.quantity)
+                                                    item_godown_sub.quantity = item_godown_sub.quantity - initial_quantity_g
+                                                    item_godown_sub.save()
+
+                                                    item_godown_add, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance_new, Item_shade_name = Item_instance)
+                                                    print('item_godown_add',item_godown_add.quantity)
+                                                    item_godown_add.quantity = updated_quantity
+                                                    item_godown_add.save()
                                     
                                 #popupvoucherfunction post initilization
                                 popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
