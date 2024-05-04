@@ -1764,7 +1764,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
                                                     item_godown_add, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance_new, Item_shade_name = Item_instance)
                                                     print('item_godown_add',item_godown_add.quantity)
-                                                    item_godown_add.quantity = updated_quantity
+                                                    item_godown_add.quantity = initial_quantity_g + updated_quantity
                                                     item_godown_add.save()
                                     
                                 #popupvoucherfunction post initilization
