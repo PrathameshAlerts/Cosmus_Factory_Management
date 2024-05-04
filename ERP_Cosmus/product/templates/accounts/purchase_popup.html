@@ -76,7 +76,7 @@
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
                     </tbody>
                 </table>
-               <button type="button" class="create-btn" id="addModalButton">Add +</button>
+               <button type="button" class="create-btn" id="addModalButton" onclick="jsondata()">Add +</button>
                <input type="submit" class="add_btn" id="popupData">
             </form>
             
@@ -235,6 +235,9 @@
                 if(popup_row_id && popup_old_id != ''){
                     popup_old_id = popup_old_id.value
                     popup_row_id = popup_row_id.value
+
+                    console.log('popup_row_id',popup_row_id)
+                    console.log('popup_old_id',popup_old_id)
                     newRow[row] = {gId, jsonQty, popup_row_id ,popup_old_id};
                     
                 }else{
@@ -314,7 +317,7 @@
         newGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-godown_id');
         newGodownItem.val('');
       
-        const oldGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-old_godown_id"]');
+        const oldGodownItem = tableClone.find('input[name^="shade_godown_items_set-"][name$="-old_godown_id"]');
         oldGodownItem.attr('name', 'shade_godown_items_set-'+formsValue +'-old_godown_id');
         oldGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-old_godown_id');
         oldGodownItem.val('');

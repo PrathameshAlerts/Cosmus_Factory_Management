@@ -1666,6 +1666,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                         godown_id = int(value['gId'])
                                         updated_quantity = value['jsonQty']
                                         popup_row_id = value.get('popup_row_id')
+                                        godown_old_id = value['popup_old_id']
                                         godown_instance = Godown_raw_material.objects.get(id = godown_id)
                                         Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
                                                 
@@ -1686,7 +1687,20 @@ def purchasevouchercreateupdate(request, pk=None):
                                         print(Item.quantity)
                                         Item.item_rate = new_rate
                                         Item.save()
-    
+                                        
+                                        if godown_old_id != None:
+                                            godown_old_id = int(godown_old_id)
+                                      
+                                            if godown_old_id != godown_id:
+                                                initial_quantity = shade_godown_items.objects.get(pk = popup_row_id)
+                                                initial_quantity = initial_quantity.quantity
+                                               
+                                                item_godown = item_godown_quantity_through_table.objects.get(godown_name = godown_instance,Item_shade_name = Item_instance)
+                                                item_godown.quantity = item_godown.quantity - initial_quantity
+                                               
+                                                item_godown.save()
+
+                    
                                 #get the pk of that item row and get the unique id if any present 
                                 unique_id_no = request.POST.get(f'item_unique_id_{form_prefix_number}')
                                 primary_key = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-id')
