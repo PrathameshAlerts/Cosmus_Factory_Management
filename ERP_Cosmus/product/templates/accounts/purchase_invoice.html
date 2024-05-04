@@ -73,6 +73,7 @@
                 {{items_formset.management_form}}
                 {% for forms in items_formset %}
                 {{ forms.id }}
+                
                 <tr>
                     <input type="hidden" id="{{forms.prefix}}-popupData" name="{{forms.prefix}}-popupData" value="">    
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
@@ -191,9 +192,8 @@
 </div>
 
 
-
 <script>
-
+  
     window.addEventListener('message', receiveMessage, false);
 
     function receiveMessage(event) {
@@ -216,6 +216,10 @@
      var name = datalength[i].name;
     var value = datalength[i].value;
     var original_value = datalength[i].original_value || null;
+    var changeData = datalength[i].change_type
+    
+  
+
 
 
     if (convertedData.hasOwnProperty(name)) {
@@ -806,6 +810,7 @@ randomValue();
            popUpElement.id = `purchase_voucher_items_set-${formIndex}-popupData`;
            popUpElement.name = `purchase_voucher_items_set-${formIndex}-popupData`;
            popUpElement.value= "";
+
 
            const deleteElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
            deleteElement.id = `purchase_voucher_items_set-${formIndex}-DELETE`;
