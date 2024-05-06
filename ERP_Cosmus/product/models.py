@@ -2,9 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.forms import ValidationError
 from multiselectfield import MultiSelectField
-from django.db.models.signals import pre_save , post_save, post_delete,pre_delete
-from django.dispatch import receiver
-from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
 
@@ -367,8 +364,6 @@ class item_color_shade(models.Model):
 
 
 
-
-
 class opening_shade_godown_quantity(models.Model):
     opening_purchase_voucher_godown_item = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
@@ -447,8 +442,7 @@ class account_credit_debit_master_table(models.Model):
     #need to check if models.CASCADE or models.PROTECT 
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     credit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
-    account_name = models.CharField(max_length = 100)
-    voucher_no = models.IntegerField(null = True, blank= True)
+    voucher_no = models.IntegerField(null = True, blank= True, unique=True)
     voucher_type = models.CharField(max_length = 100)
     particulars = models.CharField(max_length = 100)
     create_date = models.DateField(auto_now= True)

@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_delete , post_save
 from django.dispatch import receiver
-from .models import item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, purchase_voucher_items, shade_godown_items
+from .models import account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, purchase_voucher_items, shade_godown_items
 
 
 
@@ -69,8 +69,13 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
         godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
         godown_quantity_to_delete.save()
 
-        
 
+# @receiver(post_save, sender=item_purchase_voucher_master)
+# def save_purchase_invoice_report(sender, instance, created, **kwargs):
+#     purchase_voucher = instance.purchase_number
+#     instance_get, created = account_credit_debit_master_table.objects.get_or_create(voucher_no = purchase_voucher)
+
+#     if created:
 
 
 
