@@ -234,9 +234,11 @@
                 var popup_old_id = document.getElementById('shade_godown_items_set-' + i + '-old_godown_id');
                
                 
-                if(popup_row_id && popup_old_id != ''){
+                if(popup_row_id && popup_old_id != ""){
                     popup_old_id = popup_old_id.value
                     popup_row_id = popup_row_id.value
+
+
                     newRow[row] = {gId, jsonQty, popup_row_id ,popup_old_id};
                     
                 }else{
@@ -316,7 +318,7 @@
         newGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-godown_id');
         newGodownItem.val('');
       
-        const oldGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-old_godown_id"]');
+        const oldGodownItem = tableClone.find('input[name^="shade_godown_items_set-"][name$="-old_godown_id"]');
         oldGodownItem.attr('name', 'shade_godown_items_set-'+formsValue +'-old_godown_id');
         oldGodownItem.attr('id', 'shade_godown_items_set-' + formsValue + '-old_godown_id');
         oldGodownItem.val('');
@@ -344,7 +346,7 @@
         const newAmount = tableClone.find('input[name^="shade_godown_items_set-"][name$="-amount"]');
         newAmount.attr('name', 'shade_godown_items_set-' + formsValue + '-amount');
         newAmount.attr('id', 'shade_godown_items_set-' + formsValue + '-amount');
-        newAmount.val('');
+        newAmount.val(0);
 
         const newUniqueValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-unique_id"]');
         newUniqueValue.attr('name', 'shade_godown_items_set-' + formsValue + '-unique_id');
@@ -440,25 +442,67 @@
     calculateGodownAmount(); // Recalculate the amount
 });
 
-        
+      var deletedRowsData = [];
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
+            
         var tableRows = $('#newTable tbody tr'); 
         if (tableRows.length > 1) { 
             var row = $(this).closest('tr'); 
             var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
-           // var newCheckBoxId = checkbox.split('-')[1];
-
-            //var deleteValue = $('#shade_godown_items_set-' + newCheckBoxId + '-DELETE');
+             var newCheckBoxId = checkbox.attr('id');
+             var newCheckedId = newCheckBoxId.split('-')[1];
+            // console.log('newCheckBoxId',newCheckBoxId)
+            // console.log('newCheckedId',newCheckedId)
+           
             checkbox.prop('checked', true); 
-            //row.remove(); 
+            checkbox.val('true');
+           
+            if(checkbox.val() == 'true'){
+            //   var checkedGodownId = $('#shade_godown_items_set-' + newCheckedId + '-godown_id').val();
+            //   var checkedQty = $('#shade_godown_items_set-' + newCheckedId + '-quantity').val();
+            //   var checkedRate = $('#shade_godown_items_set-' + newCheckedId + '-rate').val();
+            //   var checkedAmount = $('#shade_godown_items_set-' + newCheckedId + '-amount').val();
+              var parentPrefix = $('#prefix_id').val();
+             var primaryKey = $('#id_shade_godown_items_set-' + newCheckedId + '-id').val();
+            
+            //   console.log('checkedGodownId',checkedGodownId)
+            //   console.log('checkedQty',checkedQty)
+            //   console.log('checkedRate',checkedRate)
+            //   console.log('checkedAmount',checkedAmount)
 
-
-            calculateGodownAmount(); 
+              var rowData = {
+                // checkedGodownId: checkedGodownId,
+                // checkedQty: checkedQty,
+                // checkedRate: checkedRate,
+                // checkedAmount: checkedAmount,
+                // newCheckedId: newCheckedId,
+                parentPrefix :parentPrefix,
+                 primaryKey : primaryKey
+              }
+              deletedRowsData.push(rowData);
+             var deleteJsonForm = JSON.stringify(deletedRowsData);
+                console.log('deleteJsonForm',deleteJsonForm)
+              if (window.opener === 'function') {
+                window.opener.postMessage(deleteJsonForm); // Pass data to the parent page
+            }
+            row.remove();
+            calculateGodownAmount();
+            }
+           
+             
+            
         } else {
             alert('The table must have at least one godown item'); 
         }
         });
+
+        $('#popupData').on('click', function() {
+        if (window.opener && typeof window.opener.postMessage === 'function') {
+            var deleteJsonForm = JSON.stringify(deletedRowsData);
+            window.opener.postMessage(deleteJsonForm, '*'); // Send message to parent
+        }
+       });
 
         })
     </script>
