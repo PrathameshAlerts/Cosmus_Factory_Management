@@ -1712,61 +1712,81 @@ def purchasevouchercreateupdate(request, pk=None):
                                         Item_instance =  item_color_shade.objects.get(id = row_item)
 
                                         for key, value in new_row.items():
-                                            godown_id = int(value['gId'])
-                                            updated_quantity = value['jsonQty']
+                                            godown_id = int(value['gId'])    # new godown id
+                                            updated_quantity = value['jsonQty']   # new quantity
 
                                             # Check for empty string specifically
-                                            godown_old_id = value.get('popup_old_id', None)
+                                            godown_old_id = value.get('popup_old_id', None)   # old_godown_id 
                                             if godown_old_id == '':
                                                 godown_old_id = None
-    
-                                            popup_row_id = value.get('popup_row_id', None)
+
+                                            if godown_old_id != '' and godown_old_id is not None:
+                                                godown_old_id = int(godown_old_id)   
+
+                                            popup_row_id = value.get('popup_row_id', None)  # godown_row_id 
                                             if popup_row_id == '':
                                                 popup_row_id = None
-
-
-                                            print('godown_id',godown_id)
-                                            print('updated_quantity',updated_quantity)
-                                            print('godown_old_id',godown_old_id)
-                                            print('popup_row_id',popup_row_id)
                                             
-                                            godown_instance = Godown_raw_material.objects.get(id = godown_id)
-                                            Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
+                                            print('godown_old_id',godown_old_id,type(godown_old_id))
+                                            print('godown_id',godown_id,type(godown_id))
+                                            
+                                            if godown_old_id == None or godown_old_id == godown_id:
                                                 
-                                            if popup_row_id == None or popup_row_id == '':
-                                                initial_quantity = 0
+                                                godown_instance = Godown_raw_material.objects.get(id = godown_id)
+                                                Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
+                                                
+                                                if popup_row_id == None or popup_row_id == '':
+                                                    initial_quantity = 0
 
-                                            else:
-                                                initial_quantity = shade_godown_items.objects.get(pk = popup_row_id)
-                                                initial_quantity = initial_quantity.quantity
-                                        
-                                            qty_to_update = updated_quantity - initial_quantity
-                                            Item.quantity = Item.quantity + qty_to_update
-                                            Item.item_rate = new_rate
-                                            Item.save()
-
+                                                else:
+                                                    initial_quantity = shade_godown_items.objects.get(pk = popup_row_id)
+                                                    initial_quantity = initial_quantity.quantity
+                                                
+                                                
+                                                qty_to_update = updated_quantity - initial_quantity
+                                                print('qty_to_update',qty_to_update)
+                                                print('Item.quantity',Item.quantity)
+                                                Item.quantity = Item.quantity + qty_to_update
+                                                Item.item_rate = new_rate
+                                                Item.save()
+                                            
                                             if godown_old_id != None:
-                                                print('on Update')
+                                                
                                                 godown_old_id = int(godown_old_id) 
-                                                godown_instance = Godown_raw_material.objects.get(id = godown_old_id)
+                                                godown_instance_old = Godown_raw_material.objects.get(id = godown_old_id)
 
-                                                if godown_old_id != godown_id:
-                                                    godown_instance_new = Godown_raw_material.objects.get(id = godown_id)
+                                                godown_new_id = int(godown_id)
+                                                godown_instance_new = Godown_raw_material.objects.get(id = godown_new_id)
 
-                                                    initial_quantity_g = shade_godown_items.objects.get(pk = popup_row_id)
-                                                    print('initial_quantity_g',initial_quantity_g.quantity)
-                                                    initial_quantity_g = initial_quantity_g.quantity 
+                                                if godown_old_id != godown_new_id:
+                                                    old_quantity_get = shade_godown_items.objects.get(pk = popup_row_id)
+                                                    old_quantity = old_quantity_get.quantity
+                                                    print('old_quantity',old_quantity)
+
+                                                    old_godown_through_row = item_godown_quantity_through_table.objects.get(godown_name = godown_instance_old,Item_shade_name=Item_instance)
+                                                    print('old_godown_through_row',old_godown_through_row)
+
+                                                    old_godown_through_row.quantity = old_godown_through_row.quantity - old_quantity
+                                                    print('old_godown_through_row.quantity',old_godown_through_row.quantity)
+                                                    old_godown_through_row.save()
+
+                                                    new_godown_through_row, created  = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance_new,Item_shade_name=Item_instance)
+
+                                                    if new_godown_through_row:
+                                                        new_quantity_c = new_godown_through_row.quantity
+                                                    else:
+                                                        new_quantity_c = 0
+
+                                                    print('new_quantity_c',new_quantity_c)
+                                                    new_godown_through_row.quantity = new_quantity_c + updated_quantity
+                                                    print('updated_quantity',updated_quantity)
+                                                    print('new_godown_through_row.quantity',new_godown_through_row.quantity)
+                                                    new_godown_through_row.save()
+
+                                            
+                                                
+
                                                     
-                                                    item_godown_sub = item_godown_quantity_through_table.objects.get(godown_name = godown_instance, Item_shade_name = Item_instance) # old row of through table
-                                                    print('item_godown_sub',item_godown_sub.quantity)
-                                                    item_godown_sub.quantity = item_godown_sub.quantity - initial_quantity_g
-                                                    item_godown_sub.save()
-
-                                                    item_godown_add, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance_new, Item_shade_name = Item_instance)
-                                                    print('item_godown_add',item_godown_add.quantity)
-                                                    item_godown_add.quantity = initial_quantity_g + updated_quantity
-                                                    item_godown_add.save()
-                                    
                                 #popupvoucherfunction post initilization
                                 popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
                                 print('TESTTT',popup_godowns_exists)

@@ -76,7 +76,7 @@
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
                     </tbody>
                 </table>
-               <button type="button" class="create-btn" id="addModalButton" onclick="jsondata()">Add +</button>
+               <button type="button" class="create-btn" id="addModalButton">Add +</button>
                <input type="submit" class="add_btn" id="popupData">
             </form>
             
@@ -242,7 +242,7 @@
                     newRow[row] = {gId, jsonQty, popup_row_id ,popup_old_id};
                     
                 }else{
-                    newRow[row] = {gId, jsonQty, popup_row_id ,popup_old_id};
+                    newRow[row] = {gId, jsonQty};
                 } 
             }
 
@@ -442,25 +442,67 @@
     calculateGodownAmount(); // Recalculate the amount
 });
 
-        
+      var deletedRowsData = [];
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
+            
         var tableRows = $('#newTable tbody tr'); 
         if (tableRows.length > 1) { 
             var row = $(this).closest('tr'); 
             var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
-           // var newCheckBoxId = checkbox.split('-')[1];
-
-            //var deleteValue = $('#shade_godown_items_set-' + newCheckBoxId + '-DELETE');
+             var newCheckBoxId = checkbox.attr('id');
+             var newCheckedId = newCheckBoxId.split('-')[1];
+            // console.log('newCheckBoxId',newCheckBoxId)
+            // console.log('newCheckedId',newCheckedId)
+           
             checkbox.prop('checked', true); 
-            //row.remove(); 
+            checkbox.val('true');
+           
+            if(checkbox.val() == 'true'){
+            //   var checkedGodownId = $('#shade_godown_items_set-' + newCheckedId + '-godown_id').val();
+            //   var checkedQty = $('#shade_godown_items_set-' + newCheckedId + '-quantity').val();
+            //   var checkedRate = $('#shade_godown_items_set-' + newCheckedId + '-rate').val();
+            //   var checkedAmount = $('#shade_godown_items_set-' + newCheckedId + '-amount').val();
+              var parentPrefix = $('#prefix_id').val();
+             var primaryKey = $('#id_shade_godown_items_set-' + newCheckedId + '-id').val();
+            
+            //   console.log('checkedGodownId',checkedGodownId)
+            //   console.log('checkedQty',checkedQty)
+            //   console.log('checkedRate',checkedRate)
+            //   console.log('checkedAmount',checkedAmount)
 
-
-            calculateGodownAmount(); 
+              var rowData = {
+                // checkedGodownId: checkedGodownId,
+                // checkedQty: checkedQty,
+                // checkedRate: checkedRate,
+                // checkedAmount: checkedAmount,
+                // newCheckedId: newCheckedId,
+                parentPrefix :parentPrefix,
+                 primaryKey : primaryKey
+              }
+              deletedRowsData.push(rowData);
+             var deleteJsonForm = JSON.stringify(deletedRowsData);
+                console.log('deleteJsonForm',deleteJsonForm)
+              if (window.opener === 'function') {
+                window.opener.postMessage(deleteJsonForm); // Pass data to the parent page
+            }
+            row.remove();
+            calculateGodownAmount();
+            }
+           
+             
+            
         } else {
             alert('The table must have at least one godown item'); 
         }
         });
+
+        $('#popupData').on('click', function() {
+        if (window.opener && typeof window.opener.postMessage === 'function') {
+            var deleteJsonForm = JSON.stringify(deletedRowsData);
+            window.opener.postMessage(deleteJsonForm, '*'); // Send message to parent
+        }
+       });
 
         })
     </script>
