@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.forms import ValidationError
 from multiselectfield import MultiSelectField
-from django.db.models.signals import pre_save , post_save
+from django.db.models.signals import pre_save , post_save, post_delete,pre_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
@@ -365,20 +365,7 @@ class item_color_shade(models.Model):
         return self.item_shade_name
 
 
-#post_save signal for item_color_shade if Item_Creation instance is created 
-@receiver(post_save, sender=Item_Creation)
-def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
-# data in the instance is from the form which is submitted in the front end 
-    if created:
-        #getting the color name attribte instead of object function
-        color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of color
-        # Create a new item_color_shade object related to the newly created instance
-        primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
-                                                            item_name_rank= 1,
-                                                            item_shade_name = color_name,
-                                                            item_color_image = instance.item_shade_image)
-        # Save the newly created item_color_shade object
-        primary_color_shade.save()
+
 
 
 
@@ -387,11 +374,6 @@ class opening_shade_godown_quantity(models.Model):
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
     opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=1)
     opening_rate = models.DecimalField(max_digits=10, decimal_places=1)
-
-
-
-
-
 
 
 
@@ -481,23 +463,6 @@ class Godown_raw_material(models.Model):
         return self.godown_name_raw      
 
 
-class item_godown_quantity_through_table(models.Model):
-    godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
-    Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
-    quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
-    item_rate = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
-
-
-    class Meta:
-        unique_together = [['godown_name','Item_shade_name']]
-        # godown and items unique together as
-        # if there are already item in a godown if user again enters quantity instead of creating
-        # one more entry for the same item in godown u just need to update the quantity of the item in that
-        # godown.
-
-    def __str__(self):
-        return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
-
 
 class item_shades_godown_report(models.Model):  
 
@@ -569,25 +534,26 @@ class shade_godown_items_temporary_table(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     
 
-# @receiver(pre_save, sender=Item_Creation)
-# def update_combined_field(sender, instance, **kwargs):
-#     # Combine the values of field1 and field2 and save it to combined_field
-#     instance.Description = f"{instance.Fabric_Group} - {instance.Name} - {instance.Item_Color}"
+
+class item_godown_quantity_through_table(models.Model):
+    godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
+    Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
+    quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
+    item_rate = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
 
 
-    """
-        or in forms
-            def clean(self):
-        cleaned_data = super().clean()
-        # Get values from the three fields
-        value1 = cleaned_data.get('field1')
-        value2 = cleaned_data.get('field2')
-        value3 = cleaned_data.get('field3')
+    class Meta:
+        unique_together = [['godown_name','Item_shade_name']]
+        # godown and items unique together as
+        # if there are already item in a godown if user again enters quantity instead of creating
+        # one more entry for the same item in godown u just need to update the quantity of the item in that
+        # godown.
 
-        # Perform logic to autofill the autofill_field
-        if value1 and value2 and value3:
-            autofill_value = f'{value1}-{value2}-{value3}'
-            cleaned_data['autofill_field'] = autofill_value
 
-        return cleaned_data
-    """
+    def __str__(self):
+        return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
+    
+
+
+
+
