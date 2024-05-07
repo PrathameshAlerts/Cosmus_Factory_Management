@@ -135,8 +135,8 @@
                     <td>
                         <input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly>
                     </td>
-                    <td>
-                        <input type="checkbox" name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE">
+                    <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span>
+                    
                     </td>
                     
                  </tr>   
@@ -250,6 +250,8 @@
         console.log('combineData',dataWithPrefix)
  
        var convertedData = {};
+
+       if (typeof dataWithPrefix === 'object' && Object.keys(dataWithPrefix).length > 0) {
        var datalength = Object.values(dataWithPrefix)[0]
         console.log(datalength)
         var dataId =Object.keys(dataWithPrefix)[0];
@@ -270,14 +272,6 @@
                 var value = datalength[i].value;
                 var original_value = datalength[i].original_value || null;
                 var changeData = datalength[i].change_type
-                console.log("changeData", changeData);
-                 
-                
-               // var dynamicKey = `shade_godown_items_set-${i}-id`;
-                //var foundItem = datalength.find(item => item.name == dynamicKey);
-                 
-                 
-              
                
                 if (convertedData.hasOwnProperty(name)) {
                     if (!Array.isArray(convertedData[name])) {
@@ -287,17 +281,13 @@
                 } else {
                     convertedData[name] = value; // Set the initial value
                 } 
-                
-                 if(changeData == "removed"){
-
-                 }
             }
         }else {
             // Handle the case where dataId is undefined
             console.log('No dataId found');
         }
 
-
+    }
     console.log("convertedData", convertedData);
    
    
@@ -880,6 +870,7 @@ randomValue();
            const deleteElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
            deleteElement.id = `purchase_voucher_items_set-${formIndex}-DELETE`;
            deleteElement.name = `purchase_voucher_items_set-${formIndex}-DELETE`;
+           deleteElement.value= "";
 
            const deletedCheckBoxElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-deleteJsonData"]');
            deletedCheckBoxElement.id = `purchase_voucher_items_set-${formIndex}-deleteJsonData`;
@@ -910,6 +901,54 @@ randomValue();
     calculateTotalAmount();
 
     calculateOtherTotal();
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // If there are multiple delete buttons, assign the event to each
+    var deleteButtons = document.querySelectorAll('.delete-btn');
+
+    // Loop over each delete button to add a click event listener
+    deleteButtons.forEach(function(deleteButton) {
+        deleteButton.addEventListener('click', function() {
+            // Get all rows in the table body
+            var myTableRows = document.querySelectorAll('#myTable tbody tr');
+
+            // Ensure there's more than one row
+            if (myTableRows.length > 1) {
+                // Get the last row
+                var lastRow = myTableRows[myTableRows.length - 1]; // Fixed to get the correct last row
+                // Find the checkbox for deletion
+                var checkRow = lastRow.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+
+                // Check if the checkbox exists and set it to true
+                if (checkRow) {
+                    checkRow.checked = true;
+
+                    if (checkRow.checked) {
+                        // Update the total forms count
+                        var totalForms = document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value;
+                        var formValue = parseInt(totalForms) - 1;
+
+                        document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value = formValue;
+                        addEventListenersToInputs();
+ 
+                        calculateTotalAmount();
+
+                      calculateOtherTotal();
+
+                        // Hide the row
+                        lastRow.style.display = 'none'; // Using vanilla JS to hide the row
+                    }
+                } else {
+                    console.error("Checkbox for deletion not found in the last row");
+                }
+            } else {
+                console.error("Only one row left, cannot delete");
+            }
+        });
+    });
+});
+
 
   </script>
 

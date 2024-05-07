@@ -67,7 +67,7 @@
                             </td>
                             <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount }}" readonly>
                             </td>
-                            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2"   name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
+                            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;"   name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
                                 
                             </tr>
                             {% endfor %}
@@ -364,6 +364,8 @@
         deleteElement.attr('name', 'shade_godown_items_set-' + formsValue + '-DELETE');
         deleteElement.attr('id', 'shade_godown_items_set-' + formsValue + '-DELETE');
         deleteElement.val('');
+        
+        
         newFormValue.value = formsValue + 1;
 
         $('#newTable tbody').append(tableClone);
@@ -480,7 +482,7 @@
            
             
              
-            row.remove();
+            row.hide();
             calculateGodownAmount();
             
             }
