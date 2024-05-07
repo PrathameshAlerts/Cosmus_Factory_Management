@@ -18,7 +18,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
-                        ProductImagesFormSet, ProductVideoFormSet,
+                        ProductImagesFormSet, ProductVideoFormSet,purchase_voucher_items_godown_formset_shade_change,
                          gst_form, item_purchase_voucher_master_form,
                            packaging_form, product_main_category_form, 
                             product_sub_category_form, purchase_voucher_items_formset,
@@ -300,7 +300,7 @@ def add_product_images(request, pk):
 def add_product_video_url(request,pk):
     print(request.POST)
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
-    formset = ProductVideoFormSet(instance=product)  # pass the instance to the formset
+    formset = ProductVideoFormSet(instance= product)  # pass the instance to the formset
     if request.method == 'POST':
         formset = ProductVideoFormSet(request.POST, instance=product)
         print(formset)
@@ -1730,7 +1730,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                                 godown_instance = Godown_raw_material.objects.get(id = godown_id)
                                                 Item, created = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance,Item_shade_name = Item_instance)
                                                 
-                                                if popup_row_id == None or popup_row_id == '':
+                                                if popup_row_id == None or popup_row_id == '' :
                                                     initial_quantity = 0
 
                                                 else:
@@ -1882,13 +1882,20 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
     
     #only for poup get
     elif primarykey is not None:
-        voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
 
-        formsets = purchase_voucher_items_godown_formset(instance = voucher_item_instance,prefix='shade_godown_items_set')
-    
+        godowns_for_selected_shade = shade_godown_items.objects.filter(purchase_voucher_godown_item__item_shade = shade_id,purchase_voucher_godown_item = primarykey)
+        print('TESTT',godowns_for_selected_shade)
+        voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
+        if godowns_for_selected_shade:
+            formsets = purchase_voucher_items_godown_formset(instance = voucher_item_instance,prefix='shade_godown_items_set')
+        else:
+            formsets = purchase_voucher_items_godown_formset_shade_change(
+            instance=voucher_item_instance,
+            prefix='shade_godown_items_set',
+            queryset=godowns_for_selected_shade)
+
     #create a formset instance with the selected unique id or PK 
     formset = formsets
-
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 

@@ -194,6 +194,8 @@ purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_mas
 purchase_voucher_items_formset_update = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=0)
 purchase_voucher_items_godown_formset = inlineformset_factory(purchase_voucher_items,shade_godown_items, fields = ('godown_id','quantity','rate','amount'),extra=0)
 
+purchase_voucher_items_godown_formset_shade_change = inlineformset_factory(purchase_voucher_items,shade_godown_items, fields = ('godown_id','quantity','rate','amount'),extra=1)
+
 class shade_godown_items_temporary_table_form(forms.ModelForm):
     class Meta:
         model = shade_godown_items_temporary_table
