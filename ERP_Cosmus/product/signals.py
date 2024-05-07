@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_delete , post_save
 from django.dispatch import receiver
-from .models import item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, purchase_voucher_items, shade_godown_items
+from .models import Ledger, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, purchase_voucher_items, shade_godown_items
 
 
 
@@ -21,11 +21,11 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 
 
 
-#signal to reduce the quantity from all the godowns in the invoice if it was deleted 
+#signal to reduce the quantity from all the godowns in the invoice if it was deleted and delete it form c/d master table
 @receiver(pre_delete, sender=item_purchase_voucher_master)
 def handle_invoice_delete(sender, instance, **kwargs):
     invoice_item_instance = instance.purchase_voucher_items_set.all()
-
+    
     for items in invoice_item_instance:
         item_shade = items.item_shade
         item_godowns_instance = items.shade_godown_items_set.all()
@@ -36,8 +36,11 @@ def handle_invoice_delete(sender, instance, **kwargs):
             godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
             godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
             godown_quantity_to_delete.save()
-            
 
+    # delete instance form c/d master if entire invoice is deleted
+    purchase_voucher = instance.purchase_number
+    instance_get = account_credit_debit_master_table.objects.get(voucher_no = purchase_voucher)        
+    instance_get.delete()
 
 
 # if 'using' not in kwargs: this check is done to make sure that the deleting request has come directly from delete() and not from
@@ -69,8 +72,26 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
         godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
         godown_quantity_to_delete.save()
 
-        
 
+@receiver(post_save, sender=item_purchase_voucher_master)
+def save_purchase_invoice_report(sender, instance, created, **kwargs):
+    purchase_voucher = instance.purchase_number
+    purchase_ledger = instance.party_name
+    ledger_type = instance.ledger_type
+    grand_total = instance.grand_total
+    
+    if created:
+        instance_create = account_credit_debit_master_table.objects.create(voucher_no = purchase_voucher,ledger=purchase_ledger,voucher_type = ledger_type, particulars= 'Raw Material',debit = grand_total,credit = 0)
+
+    elif not created:
+        instance_get = account_credit_debit_master_table.objects.get(voucher_no = purchase_voucher)
+        instance_get.ledger=purchase_ledger
+        instance_get.voucher_type = ledger_type
+        instance_get.particulars = 'Raw Material'
+        instance_get.debit = grand_total
+        instance_get.credit = 0
+        instance_get.save()
+    
 
 
 

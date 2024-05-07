@@ -245,66 +245,62 @@
 
     function receiveMessage(event) {
 
-        var combineData = event.data;
+        var dataWithPrefix = event.data;
   
-        console.log('combineData',combineData)
+        console.log('combineData',dataWithPrefix)
  
        var convertedData = {};
-
-        var deleteValue = [];
+       var datalength = Object.values(dataWithPrefix)[0]
+        console.log(datalength)
+        var dataId =Object.keys(dataWithPrefix)[0];
+        
        
-       var datalength = Object.values(combineData)[0]
-     
-       var dataId =Object.keys(combineData)[0];
-    
-       var datasId = dataId.split('_')[1]
-       
-    
-       if (datasId !== undefined ) {
-    // Iterate over the datalength array
-    for (var i = 0; i < datalength.length; i++) {
-        var name = datalength[i].name;
-        var value = datalength[i].value;
-        var original_value = datalength[i].original_value || null;
-        var changeData = datalength[i].change_type;
-
-        // Generate dynamic key to find specific item
-        if(changeData != undefined){
-        var dynamicKey = `shade_godown_items_set-${i}-id`;
-        var findName = datalength.find(item => item.name === dynamicKey);
-        var nameValue = findName.changeData
-        }
-       
-
-        // Check if the change type indicates "removed"
-        if (nameValue === "removed") {
-            var changeOriginalValue = findName.original_value;
-
-            console.log("changeOriginalValue", changeOriginalValue);
-
-            // Store the changeOriginalValue in deleteValue
-           //deleteValue.push(changeOriginalValue); // Accumulate all removed original values
-        }
-
-        // Convert value to array if required and push to convertedData
-        if (convertedData.hasOwnProperty(name)) {
-            if (!Array.isArray(convertedData[name])) {
-                convertedData[name] = [convertedData[name]]; // Ensure it's an array
-            }
-            convertedData[name].push(value); // Push the new value
-        } else {
-            convertedData[name] = value; // Initialize with first value
-        }
+       if (dataId) {
+        var datasId = dataId.split('_')[1];
+        // Use datasId as needed
+    } else {
+        // Handle the case where dataId is undefined
+        console.log('No dataId found');
     }
+        if(datalength){
+            for (var i = 0; i < datalength.length; i++) {
+   
+   
+                var name = datalength[i].name;
+                var value = datalength[i].value;
+                var original_value = datalength[i].original_value || null;
+                var changeData = datalength[i].change_type
+                console.log("changeData", changeData);
+                 
+                
+               // var dynamicKey = `shade_godown_items_set-${i}-id`;
+                //var foundItem = datalength.find(item => item.name == dynamicKey);
+                 
+                 
+              
+               
+                if (convertedData.hasOwnProperty(name)) {
+                    if (!Array.isArray(convertedData[name])) {
+                        convertedData[name] = [convertedData[name]]; // Convert to array
+                    }
+                    convertedData[name].push(value); // Push new value to array
+                } else {
+                    convertedData[name] = value; // Set the initial value
+                } 
+                
+                 if(changeData == "removed"){
+
+                 }
+            }
+        }else {
+            // Handle the case where dataId is undefined
+            console.log('No dataId found');
+        }
+
 
     console.log("convertedData", convertedData);
-    console.log("deleteValue",deleteValue)
-    // Get the deleteData field
-    // var deleteData = document.getElementById('purchase_voucher_items_set-' + datasId + '-deleteJsonData');
-    
-    // // Set deleteData.value with the collected "removed" original values
-    // deleteData.value = JSON.stringify(deleteValue); // Convert array to JSON string
-
+   
+   
     // Set the popupData with convertedData
     var data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData');
     data.value = JSON.stringify(convertedData);
@@ -314,7 +310,7 @@
    
 
 
-    }
+    
 
 
 </script>
@@ -333,8 +329,8 @@
     var prefixId = newSessionData.prefixValue;
 
 
-    console.log('newQty',newQty)
-    console.log('newRate',newRate)
+    // console.log('newQty',newQty)
+    // console.log('newRate',newRate)
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
         
@@ -361,21 +357,21 @@
     
    
 
-    // window.addEventListener('message', function(event) {
-    //     try {
-    //         var deleteData = JSON.parse(event.data);
+    window.addEventListener('message', function(event) {
+        try {
+            var deleteData = JSON.parse(event.data);
          
-    //         var dataRows = Object.values(deleteData)[0];
+            var dataRows = Object.values(deleteData)[0];
           
-    //     var parentPrefixId = dataRows.parentPrefix;
-    //     var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
-    //     deleteRow.value = JSON.stringify(deleteData);
-    //     console.log('deleteData',deleteRow)
+        var parentPrefixId = dataRows.parentPrefix;
+        var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
+        deleteRow.value = JSON.parse(deleteData);
+       // console.log('deleteData',deleteRow)
         
-    //     } catch (e) {
-    //         console.error('Error parsing received data', e);
-    //     }
-    // });
+        } catch (e) {
+            console.error('Error parsing received data', e);
+        }
+    });
    
 
 // This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst 
@@ -502,7 +498,7 @@ randomValue();
             var item_value = $(this).val();   
             var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
             var purchaseDataValue = purchaseData.value;
-        console.log('purchaseDataValue',purchaseDataValue)
+       // console.log('purchaseDataValue',purchaseDataValue)
          if(purchaseDataValue == ''){
             $.ajax({
                 url: '/purchasevouchercreate/',

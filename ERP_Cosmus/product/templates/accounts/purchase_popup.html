@@ -232,9 +232,10 @@
                 var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
                 var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
                 var popup_old_id = document.getElementById('shade_godown_items_set-' + i + '-old_godown_id');
+                var uniqueKey = document.getElementById('shade_godown_items_set-' + i + '-unique_id').value;
                
                 
-                if(popup_row_id && popup_old_id != ""){
+                if(popup_row_id && popup_old_id != "" && uniqueKey == ''){
                     popup_old_id = popup_old_id.value
                     popup_row_id = popup_row_id.value
 
@@ -467,13 +468,18 @@
              var parentPrefix = $('#prefix_id').val();
              var primaryKey = $('#id_shade_godown_items_set-' + newCheckedId + '-id').val();
             var totalForms = $('#id_shade_godown_items_set-TOTAL_FORMS').val();
-            var formsValue = parseInt(totalForms) - 1;
-            $('#id_shade_godown_items_set-TOTAL_FORMS').val(formsValue);
+            var formValue = parseInt(totalForms) - 1;
+            $('#id_shade_godown_items_set-TOTAL_FORMS').val(formValue)
            
 
-              var rowData =  primaryKey;
-
-            deleteData.push(rowData);
+              var rowData = {
+                parentPrefix : parentPrefix,
+                 primaryKey : primaryKey
+              }
+              deleteData.push(rowData);
+           
+            
+             
             row.remove();
             calculateGodownAmount();
             
