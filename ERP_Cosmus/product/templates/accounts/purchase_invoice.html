@@ -926,10 +926,7 @@ randomValue();
 
                     if (checkRow.checked) {
                         // Update the total forms count
-                        var totalForms = document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value;
-                        var formValue = parseInt(totalForms) - 1;
-
-                        document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value = formValue;
+                    
                         addEventListenersToInputs();
  
                         calculateTotalAmount();
