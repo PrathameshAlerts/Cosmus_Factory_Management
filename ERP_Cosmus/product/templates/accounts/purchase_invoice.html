@@ -365,7 +365,7 @@
           
         var parentPrefixId = dataRows.parentPrefix;
         var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
-        deleteRow.value = JSON.parse(deleteData);
+        deleteRow.value = JSON.stringify(deleteData);
        // console.log('deleteData',deleteRow)
         
         } catch (e) {
