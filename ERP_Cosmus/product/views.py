@@ -1531,7 +1531,7 @@ def stocktransferreport(request):
 
 
 def purchasevouchercreateupdate(request, pk=None):
-    print('Master_post1',request.POST)
+    # print('Master_post1',request.POST)
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
 
@@ -1611,7 +1611,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                   'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,})
 
     if request.method == 'POST':
-        print('Master_post2',request.POST)
+        
         try:
             with transaction.atomic(): #start a database transaction
                 #create a form instance for main form
@@ -1778,9 +1778,10 @@ def purchasevouchercreateupdate(request, pk=None):
 
                                 # godown_popup_rows_to_delete
                                 popup_data_to_data = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-deleteJsonData')            
-
+                                print('popup_data_to_data',popup_data_to_data)
                                 if popup_data_to_data:
-                                    pass
+                                    delete_data_popup_godown = json.loads(popup_data_to_data)
+                                    print('delete_data_popup_godown', delete_data_popup_godown)
 
 
                                 #popupvoucherfunction post initilization
@@ -1788,7 +1789,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                
                                 if popup_godowns_exists != '':
                                     popup_godown_data = json.loads(popup_godowns_exists)
-                                    
+                                    print('popup_godown_data',popup_godown_data)
                                     row_prefix_id = popup_godown_data.get('prefix_id')
 
                                     if row_prefix_id == form_prefix_number:
@@ -1851,15 +1852,23 @@ def purchasevouchercreateupdate(request, pk=None):
 
 #popup page for purchase voucher godown update
 def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey):
+        
         if primarykey is not None:
             voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
+            item_shade_old = voucher_item_instance
+
+            # continue here for droprown shade change issue
+            # print('item_shade_old',item_shade_old.quantity_total)
+            # print('new_shade',shade_id)
+            # print('popup_godown_data',popup_godown_data)
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
-            print('function')
+
             if formset.is_valid():
                 formset.save()
             else:
                 print(formset.errors)
+
                 
 
 
