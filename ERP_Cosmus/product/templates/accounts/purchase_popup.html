@@ -77,7 +77,7 @@
                     </tbody>
                 </table>
                <button type="button" class="create-btn" id="addModalButton">Add +</button>
-               <input type="submit" class="add_btn" id="popupData">
+               <input type="submit" class="add_btn submitBtn" id="popupData">
             </form>
             
         </div>
@@ -269,6 +269,7 @@
             var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
             var prefixValue = document.getElementById('prefix_id').value;
 
+            
             var newSessionData = {
                 "newUniqueId": newUniqueId,
                 "newTotalQty": newTotalQty,
@@ -422,6 +423,10 @@
     $(document).on('click','#popupData', function(){
         calculateGodownAmount();
     })
+
+    $(document).on('click', '.delete-btn', function(){
+        calculateGodownAmount();
+    })
     $(document).on('change', '.godown-select', function(){
         calculateGodownAmount();
     })
@@ -442,7 +447,7 @@
     calculateGodownAmount(); // Recalculate the amount
 });
 
-      var deletedRowsData = [];
+     var deleteData = [];
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
             
@@ -452,46 +457,28 @@
             var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
              var newCheckBoxId = checkbox.attr('id');
              var newCheckedId = newCheckBoxId.split('-')[1];
-            // console.log('newCheckBoxId',newCheckBoxId)
-            // console.log('newCheckedId',newCheckedId)
+            
            
             checkbox.prop('checked', true); 
             checkbox.val('true');
            
             if(checkbox.val() == 'true'){
-            //   var checkedGodownId = $('#shade_godown_items_set-' + newCheckedId + '-godown_id').val();
-            //   var checkedQty = $('#shade_godown_items_set-' + newCheckedId + '-quantity').val();
-            //   var checkedRate = $('#shade_godown_items_set-' + newCheckedId + '-rate').val();
-            //   var checkedAmount = $('#shade_godown_items_set-' + newCheckedId + '-amount').val();
-              var parentPrefix = $('#prefix_id').val();
-             var primaryKey = $('#id_shade_godown_items_set-' + newCheckedId + '-id').val();
             
-            //   console.log('checkedGodownId',checkedGodownId)
-            //   console.log('checkedQty',checkedQty)
-            //   console.log('checkedRate',checkedRate)
-            //   console.log('checkedAmount',checkedAmount)
+             var parentPrefix = $('#prefix_id').val();
+             var primaryKey = $('#id_shade_godown_items_set-' + newCheckedId + '-id').val();
+            var totalForms = $('#id_shade_godown_items_set-TOTAL_FORMS').val();
+            var formsValue = parseInt(totalForms) - 1;
+            $('#id_shade_godown_items_set-TOTAL_FORMS').val(formsValue);
+           
 
-              var rowData = {
-                // checkedGodownId: checkedGodownId,
-                // checkedQty: checkedQty,
-                // checkedRate: checkedRate,
-                // checkedAmount: checkedAmount,
-                // newCheckedId: newCheckedId,
-                parentPrefix :parentPrefix,
-                 primaryKey : primaryKey
-              }
-              deletedRowsData.push(rowData);
-             var deleteJsonForm = JSON.stringify(deletedRowsData);
-                console.log('deleteJsonForm',deleteJsonForm)
-              if (window.opener === 'function') {
-                window.opener.postMessage(deleteJsonForm); // Pass data to the parent page
-            }
+              var rowData =  primaryKey;
+
+            deleteData.push(rowData);
             row.remove();
             calculateGodownAmount();
-            }
-           
-             
             
+            }
+              
         } else {
             alert('The table must have at least one godown item'); 
         }
@@ -499,8 +486,9 @@
 
         $('#popupData').on('click', function() {
         if (window.opener && typeof window.opener.postMessage === 'function') {
-            var deleteJsonForm = JSON.stringify(deletedRowsData);
+            var deleteJsonForm = JSON.stringify(deleteData);
             window.opener.postMessage(deleteJsonForm, '*'); // Send message to parent
+               
         }
        });
 

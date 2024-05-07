@@ -4,7 +4,7 @@
 {% block body %} 
 <div>
     <h2>Purchase invoice</h2>
-    <form class="mt-4" action=""method="POST" onsubmit="receiveMessage()">
+    <form class="mt-4" action=""method="POST">
             {% csrf_token %}
             <div class="d-flex mb-3">
                 <div>
@@ -245,45 +245,75 @@
 
     function receiveMessage(event) {
 
-        var dataWithPrefix = event.data;
+        var combineData = event.data;
   
-        console.log(dataWithPrefix)
+        console.log('combineData',combineData)
  
        var convertedData = {};
-       var datalength = Object.values(dataWithPrefix)[0]
-      
-       var dataId =Object.keys(dataWithPrefix)[0];
-      
-       var datasId = dataId.split('_')[1]
+
+        var deleteValue = [];
+       
+       var datalength = Object.values(combineData)[0]
      
-
+       var dataId =Object.keys(combineData)[0];
+    
+       var datasId = dataId.split('_')[1]
+       
+    
+       if (datasId !== undefined ) {
+    // Iterate over the datalength array
     for (var i = 0; i < datalength.length; i++) {
-   
-   
-    var name = datalength[i].name;
-    var value = datalength[i].value;
-    var original_value = datalength[i].original_value || null;
-    var changeData = datalength[i].change_type
-    
-  
+        var name = datalength[i].name;
+        var value = datalength[i].value;
+        var original_value = datalength[i].original_value || null;
+        var changeData = datalength[i].change_type;
 
-
-
-    if (convertedData.hasOwnProperty(name)) {
-        if (!Array.isArray(convertedData[name])) {
-            convertedData[name] = [convertedData[name]]; // Convert to array
+        // Generate dynamic key to find specific item
+        if(changeData != undefined){
+        var dynamicKey = `shade_godown_items_set-${i}-id`;
+        var findName = datalength.find(item => item.name === dynamicKey);
+        var nameValue = findName.changeData
         }
-        convertedData[name].push(value); // Push new value to array
-    } else {
-        convertedData[name] = value; // Set the initial value
-    } 
+       
+
+        // Check if the change type indicates "removed"
+        if (nameValue === "removed") {
+            var changeOriginalValue = findName.original_value;
+
+            console.log("changeOriginalValue", changeOriginalValue);
+
+            // Store the changeOriginalValue in deleteValue
+           //deleteValue.push(changeOriginalValue); // Accumulate all removed original values
+        }
+
+        // Convert value to array if required and push to convertedData
+        if (convertedData.hasOwnProperty(name)) {
+            if (!Array.isArray(convertedData[name])) {
+                convertedData[name] = [convertedData[name]]; // Ensure it's an array
+            }
+            convertedData[name].push(value); // Push the new value
+        } else {
+            convertedData[name] = value; // Initialize with first value
+        }
+    }
+
+    console.log("convertedData", convertedData);
+    console.log("deleteValue",deleteValue)
+    // Get the deleteData field
+    // var deleteData = document.getElementById('purchase_voucher_items_set-' + datasId + '-deleteJsonData');
     
-}
+    // // Set deleteData.value with the collected "removed" original values
+    // deleteData.value = JSON.stringify(deleteValue); // Convert array to JSON string
 
-    console.log("convertedData",convertedData)
-
-    var data = document.getElementById('purchase_voucher_items_set-'+ datasId  + '-popupData')
+    // Set the popupData with convertedData
+    var data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData');
     data.value = JSON.stringify(convertedData);
+}
+    
+
+   
+
+
     }
 
 
@@ -302,6 +332,9 @@
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
 
+
+    console.log('newQty',newQty)
+    console.log('newRate',newRate)
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
         
@@ -311,7 +344,7 @@
       calculateOtherTotal()
 
 }
-
+ 
 // This function access for child popup window data on submit button. this data will be reflated to the main godown qunatity with the godown name 
     function BackendQuantityjson(jsonString){
 
@@ -320,50 +353,30 @@
         var all_rate_child = jsonData.all_Rate;
         var godown_data = jsonData.newRow; 
        console.log(godown_data)
+   
+
         var updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
         updateJsonData.value = JSON.stringify(jsonData);
     }
-
-    window.addEventListener('message', function(event) {
-        try {
-            var deleteData = JSON.parse(event.data);
-         
-            var dataRows = Object.values(deleteData)[0];
-      
-          
-            var parentPrefixId = dataRows.parentPrefix;
-        var primaryKey = deleteData.primaryKey;
-     
-        var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
-        deleteRow.value = JSON.stringify(deleteData);
-        console.log('deleteData',deleteRow)
-        
-      
-       
     
-      
+   
 
-        } catch (e) {
-            console.error('Error parsing received data', e);
-        }
-    });
-    // function deleteRowData(deleteJsonForm){
-
-    //     var deleteData = JSON.parse(deleteJsonForm);
-    //     console.log('deleteData',deleteData)
-    //     // var godownIdDelete = deleteData.checkedGodownId;
-    //     // var godowanQtyDelete = deleteData.checkedGodownQty;
-    //     // var godownRateDelete = deleteData.checkedGodownRate;
-    //     // var godownTotalDelete = deleteData.checkedGodownTotal;
-    //     // var deletePrefixId = deleteData.newCheckedId;
-    //     var parentPrefixId = deleteData.parentPrefix;
-    //     var primaryKey = deleteData.primaryKey;
-
+    // window.addEventListener('message', function(event) {
+    //     try {
+    //         var deleteData = JSON.parse(event.data);
+         
+    //         var dataRows = Object.values(deleteData)[0];
+          
+    //     var parentPrefixId = dataRows.parentPrefix;
     //     var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
-    //     console.log('deleteRow',deleteRow)
     //     deleteRow.value = JSON.stringify(deleteData);
-    //     console.log('deleteData',deleteData)
-    // }
+    //     console.log('deleteData',deleteRow)
+        
+    //     } catch (e) {
+    //         console.error('Error parsing received data', e);
+    //     }
+    // });
+   
 
 // This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst 
 function getGstNo() {
@@ -446,7 +459,7 @@ function randomValue (){
    }
     
   
-    //console.log('itemShadeIdValue',itemShadeIdValue)
+   
    
    
     
