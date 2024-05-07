@@ -465,18 +465,13 @@
             //   var checkedAmount = $('#shade_godown_items_set-' + newCheckedId + '-amount').val();
               var parentPrefix = $('#prefix_id').val();
              var primaryKey = $('#id_shade_godown_items_set-' + newCheckedId + '-id').val();
-            
-            //   console.log('checkedGodownId',checkedGodownId)
-            //   console.log('checkedQty',checkedQty)
-            //   console.log('checkedRate',checkedRate)
-            //   console.log('checkedAmount',checkedAmount)
+            var totalForms = $('#id_shade_godown_items_set-TOTAL_FORMS').val();
+            var formValue = parseInt(totalForms) - 1;
+            $('#id_shade_godown_items_set-TOTAL_FORMS').val(formValue)
+           
 
               var rowData = {
-                // checkedGodownId: checkedGodownId,
-                // checkedQty: checkedQty,
-                // checkedRate: checkedRate,
-                // checkedAmount: checkedAmount,
-                // newCheckedId: newCheckedId,
+               
                 parentPrefix :parentPrefix,
                  primaryKey : primaryKey
               }

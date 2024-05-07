@@ -152,6 +152,7 @@ urlpatterns = [
 
     #reports
     path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
+    path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
 
     #common Routes
     path('', views.dashboard , name='dashboard-main'),

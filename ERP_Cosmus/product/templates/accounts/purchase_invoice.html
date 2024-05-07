@@ -4,7 +4,7 @@
 {% block body %} 
 <div>
     <h2>Purchase invoice</h2>
-    <form class="mt-4" action=""method="POST" onsubmit="receiveMessage()">
+    <form class="mt-4" action=""method="POST">
             {% csrf_token %}
             <div class="d-flex mb-3">
                 <div>
@@ -251,34 +251,41 @@
  
        var convertedData = {};
        var datalength = Object.values(dataWithPrefix)[0]
-      
-       var dataId =Object.keys(dataWithPrefix)[0];
-      
-       var datasId = dataId.split('_')[1]
-     
-
-    for (var i = 0; i < datalength.length; i++) {
-   
-   
-    var name = datalength[i].name;
-    var value = datalength[i].value;
-    var original_value = datalength[i].original_value || null;
-    var changeData = datalength[i].change_type
-    
-  
-
-
-
-    if (convertedData.hasOwnProperty(name)) {
-        if (!Array.isArray(convertedData[name])) {
-            convertedData[name] = [convertedData[name]]; // Convert to array
-        }
-        convertedData[name].push(value); // Push new value to array
+        console.log(datalength)
+        var dataId =Object.keys(dataWithPrefix)[0];
+        console.log('dataId',dataId)
+       
+       if (dataId) {
+        var datasId = dataId.split('_')[1];
+        // Use datasId as needed
     } else {
-        convertedData[name] = value; // Set the initial value
-    } 
-    
-}
+        // Handle the case where dataId is undefined
+        console.log('No dataId found');
+    }
+        if(datalength){
+            for (var i = 0; i < datalength.length; i++) {
+   
+   
+                var name = datalength[i].name;
+                var value = datalength[i].value;
+                var original_value = datalength[i].original_value || null;
+                var changeData = datalength[i].change_type
+            
+                if (convertedData.hasOwnProperty(name)) {
+                    if (!Array.isArray(convertedData[name])) {
+                        convertedData[name] = [convertedData[name]]; // Convert to array
+                    }
+                    convertedData[name].push(value); // Push new value to array
+                } else {
+                    convertedData[name] = value; // Set the initial value
+                } 
+                
+            }
+        }else {
+            // Handle the case where dataId is undefined
+            console.log('No dataId found');
+        }
+
 
     console.log("convertedData",convertedData)
 

@@ -1,0 +1,73 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<div>
+    <h2>Credit Debit Report</h2>
+    <div class="">
+      
+        <div class="d-flex mb-3">
+          <div class="container-account"> 
+           <input class="" type="search" placeholder="Search" aria-label="Search" id="" name="" />
+             <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+          </div>
+         </div>
+        </div>  
+       
+      <div class="row">
+        <div class="col-lg-6">
+          <table class="table table-striped table-hover table-responsive" id="tableId">
+            <thead>
+              <tr>
+                <th scope="col" class="name_absolute">No</th>
+                <th scope="col" class="name_absolute">Date Created</th>
+                <th scope="col" class="name_absolute">Date Modified</th>
+                <th scope="col" class="name_absolute">Party A/c Name</th>
+                <th scope="col" class="name_absolute">Voucher Type</th>
+                <th scope="col" class="name_absolute">Voucher No</th>
+                <th scope="col" class="name_absolute">Debit Amount</th>
+                <th scope="col" class="name_absolute">Credit Amount</th>
+                <th scope="col" class="name_absolute">View</th>
+                
+              </tr>
+            </thead>
+            
+            <tbody class="mainTableList">
+            
+            {% for row in all_reports %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{row.create_date}}</td>
+              <td>{{row.modified_date_time}}</td>
+              <td>{{row.ledger.name}}</td>
+              <td><span value="{{row.voucher_type}}">{{row.voucher_type}}</span></td>
+              <td>{{row.voucher_no}}</td>
+              <td>{{row.debit}}</td>
+              <td>{{row.credit}}</td>
+              <td><button id="urlmaker">View</button></td>
+            </tr>
+           {% endfor %}
+           
+            </tbody>
+            
+          </table>
+        </div>  
+       
+      </div>
+ 
+  </div>
+
+
+  <script>
+    $(document).ready(function () {
+      $('#urlmaker').on('click',function () {
+        var row_value = $(this); // Get the value of the selected option
+        console.log(row_value)
+         var vouchartype = $('#tableId').find('tbody tr').find('span').val();
+        
+         console.log('vouchartype',vouchartype)
+        
+      });
+    });
+    
+  </script>
+{% endblock %}

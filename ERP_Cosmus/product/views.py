@@ -1410,8 +1410,6 @@ def stocktransfer(request):
                 item_id = x.Item_shade_name.id
                 items_shade_quantity_in_godown[item_id] = x.quantity
 
-
-
         item_color = None
         item_per = None
 
@@ -1739,7 +1737,6 @@ def purchasevouchercreateupdate(request, pk=None):
                                                     initial_quantity = shade_godown_items.objects.get(pk = popup_row_id)
                                                     initial_quantity = initial_quantity.quantity
                                                 
-                                                
                                                 qty_to_update = updated_quantity - initial_quantity
                                                 
                                                 Item.quantity = Item.quantity + qty_to_update
@@ -1779,8 +1776,13 @@ def purchasevouchercreateupdate(request, pk=None):
                                                     
                                                     new_godown_through_row.save()
 
-                                            
-                                                      
+                                # godown_popup_rows_to_delete
+                                popup_data_to_data = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-deleteJsonData')            
+
+                                if popup_data_to_data:
+                                    pass
+
+
                                 #popupvoucherfunction post initilization
                                 popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
                                
@@ -2173,6 +2175,19 @@ def opening_godown_qty(request):
     return render(request,'product/opening_godown_qty.html')
 
 #__________________________Category End_____________________________
+
+
+
+#__________________________reports-start_________________________________
+
+def creditdebitreport(request):
+    all_reports = account_credit_debit_master_table.objects.all()
+
+    return render(request,'misc/purchase_report.html',{'all_reports':all_reports})
+
+#__________________________reports-end____________________________________
+
+
 
 
 #_______________________authentication View start___________________________
