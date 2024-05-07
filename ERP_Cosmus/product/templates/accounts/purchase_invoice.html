@@ -247,13 +247,13 @@
 
         var dataWithPrefix = event.data;
   
-        console.log(dataWithPrefix)
+        console.log('combineData',dataWithPrefix)
  
        var convertedData = {};
        var datalength = Object.values(dataWithPrefix)[0]
         console.log(datalength)
         var dataId =Object.keys(dataWithPrefix)[0];
-        console.log('dataId',dataId)
+        
        
        if (dataId) {
         var datasId = dataId.split('_')[1];
@@ -270,7 +270,15 @@
                 var value = datalength[i].value;
                 var original_value = datalength[i].original_value || null;
                 var changeData = datalength[i].change_type
-            
+                console.log("changeData", changeData);
+                 
+                
+               // var dynamicKey = `shade_godown_items_set-${i}-id`;
+                //var foundItem = datalength.find(item => item.name == dynamicKey);
+                 
+                 
+              
+               
                 if (convertedData.hasOwnProperty(name)) {
                     if (!Array.isArray(convertedData[name])) {
                         convertedData[name] = [convertedData[name]]; // Convert to array
@@ -280,6 +288,9 @@
                     convertedData[name] = value; // Set the initial value
                 } 
                 
+                 if(changeData == "removed"){
+
+                 }
             }
         }else {
             // Handle the case where dataId is undefined
@@ -287,11 +298,19 @@
         }
 
 
-    console.log("convertedData",convertedData)
-
-    var data = document.getElementById('purchase_voucher_items_set-'+ datasId  + '-popupData')
+    console.log("convertedData", convertedData);
+   
+   
+    // Set the popupData with convertedData
+    var data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData');
     data.value = JSON.stringify(convertedData);
-    }
+}
+    
+
+   
+
+
+    
 
 
 </script>
@@ -309,6 +328,9 @@
     var primaryKey = newSessionData.newPrimaryKey;
     var prefixId = newSessionData.prefixValue;
 
+
+    // console.log('newQty',newQty)
+    // console.log('newRate',newRate)
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
         
@@ -318,7 +340,7 @@
       calculateOtherTotal()
 
 }
-
+ 
 // This function access for child popup window data on submit button. this data will be reflated to the main godown qunatity with the godown name 
     function BackendQuantityjson(jsonString){
 
@@ -327,50 +349,30 @@
         var all_rate_child = jsonData.all_Rate;
         var godown_data = jsonData.newRow; 
        console.log(godown_data)
+   
+
         var updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
         updateJsonData.value = JSON.stringify(jsonData);
     }
+    
+   
 
     window.addEventListener('message', function(event) {
         try {
             var deleteData = JSON.parse(event.data);
          
             var dataRows = Object.values(deleteData)[0];
-      
           
-            var parentPrefixId = dataRows.parentPrefix;
-        var primaryKey = deleteData.primaryKey;
-     
+        var parentPrefixId = dataRows.parentPrefix;
         var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
         deleteRow.value = JSON.stringify(deleteData);
-        console.log('deleteData',deleteRow)
+       // console.log('deleteData',deleteRow)
         
-      
-       
-    
-      
-
         } catch (e) {
             console.error('Error parsing received data', e);
         }
     });
-    // function deleteRowData(deleteJsonForm){
-
-    //     var deleteData = JSON.parse(deleteJsonForm);
-    //     console.log('deleteData',deleteData)
-    //     // var godownIdDelete = deleteData.checkedGodownId;
-    //     // var godowanQtyDelete = deleteData.checkedGodownQty;
-    //     // var godownRateDelete = deleteData.checkedGodownRate;
-    //     // var godownTotalDelete = deleteData.checkedGodownTotal;
-    //     // var deletePrefixId = deleteData.newCheckedId;
-    //     var parentPrefixId = deleteData.parentPrefix;
-    //     var primaryKey = deleteData.primaryKey;
-
-    //     var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
-    //     console.log('deleteRow',deleteRow)
-    //     deleteRow.value = JSON.stringify(deleteData);
-    //     console.log('deleteData',deleteData)
-    // }
+   
 
 // This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst 
 function getGstNo() {
@@ -453,7 +455,7 @@ function randomValue (){
    }
     
   
-    //console.log('itemShadeIdValue',itemShadeIdValue)
+   
    
    
     
@@ -496,7 +498,7 @@ randomValue();
             var item_value = $(this).val();   
             var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
             var purchaseDataValue = purchaseData.value;
-        console.log('purchaseDataValue',purchaseDataValue)
+       // console.log('purchaseDataValue',purchaseDataValue)
          if(purchaseDataValue == ''){
             $.ajax({
                 url: '/purchasevouchercreate/',
