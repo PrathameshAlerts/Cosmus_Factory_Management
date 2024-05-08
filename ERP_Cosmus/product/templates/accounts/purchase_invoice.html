@@ -81,8 +81,8 @@
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td>{{forms.instance.id}}</td>
-                    <td> <input type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="purchase-select search-input" value="" placeholder="Item Name">
-                        <select name="item_name_{{forloop.counter0}}" class="purchase-select item-name"  id="item_name_{{forloop.counter0}}">
+                    <td> <input type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" value="" placeholder="Item Name">
+                        <select name="item_name_{{forloop.counter0}}" class="item-select item-name"  id="item_name_{{forloop.counter0}}">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
                             {% for item in items %}
@@ -320,11 +320,13 @@
     var prefixId = newSessionData.prefixValue;
 
 
-    // console.log('newQty',newQty)
-    // console.log('newRate',newRate)
+    console.log('newQty',newQty)
+    console.log('newRate',newRate)
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
+    
         
+
         oldQty.value = newQty
       oldRate.value = newRate
       calculateTotalAmount()
@@ -736,8 +738,95 @@ randomValue();
     // Add onchange event handler to id_fright_transport
     document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
     document.getElementById('id_round_off').addEventListener('input', calculateOtherTotal);
+     
+    function deleteCalculationRow(){
+        var total = 0; // Total amount across all rows
+        var totalQty = 0; // Total quantity
+        var totalRate = 0;
+        var totalSgst= 0;
+        var totalCgst = 0;
+        var grandAmount =0;
+        
+        var totalRow = document.querySelectorAll('#myTable tbody tr');
+        
+        var visibleRow = Array.from(totalRow).filter(function(row) {
+            var style = window.getComputedStyle(row);
+            return style.display !== 'none';
+        })
 
+  
+
+        visibleRow.forEach(function (row){
+            var quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
+            var rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
+            var amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
+            var gstValue = row.querySelector('.purchase-gst[name^="purchase_voucher_items_set-"][name$="-gst"]');
+            var cgstValue= row.querySelector('.purchase-cgst[name^="purchase_voucher_items_set-"][name$="-cgst"]');
+            var sgstValue= row.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
+            var totalAmountInput = row.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-total_amount"]');
+
+            var quantity = parseFloat(quantityInput.value);
+            var rate = parseFloat(rateInput.value);
+            var amount = parseFloat(amountInput.value);
+            var gst = parseFloat(gstValue.value);
+            var cgst = parseFloat(cgstValue.value);
+            var sgst = parseFloat(sgstValue.value);
+            var totalAmount = parseFloat(totalAmountInput.value);
+
+
+            total= total + amount;
+
+            totalQty = totalQty+ quantity;
+
+            totalSgst = totalSgst + sgst;
+            totalCgst = totalCgst + cgst;
+
+            grandAmount = grandAmount + totalAmount;
+
+           });
+           
+      if(getGstNo()){
+        document.getElementById('id_grand_taxableAmount').value = isNaN(total) ? '' :total.toFixed(2);
+           document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
+           document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
+           document.getElementById('id_grand_cgst').value = isNaN(totalCgst) ? '' : totalCgst.toFixed(2);
+           document.getElementById('id_grand_amount').value =isNaN(grandAmount) ? '' : grandAmount.toFixed(2)
+
+         }else{
+            document.getElementById('id_grand_taxableAmount').value = isNaN(total) ? '' :total.toFixed(2);
+           document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
+           document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
+         
+           document.getElementById('id_grand_amount').value =isNaN(grandAmount) ? '' : grandAmount.toFixed(2)
+
+         }
+           
+     
+    }
     
+    function deleteAlltotal(grandAmount){
+        var grandTotal = parseFloat(document.getElementById('id_grand_amount').value);
+        
+        var  grossTotal = grandTotal;      
+  
+      // Set the calculated gross total value to the gross total input field
+      document.getElementById('id_gross_total').value =isNaN(grossTotal) ? '' : grossTotal.toFixed(2);
+
+      var frightTransport = parseFloat(document.getElementById('id_fright_transport').value);
+
+      var finalTotal = grossTotal + frightTransport;
+
+      document.getElementById('temp_grand_total').value =isNaN(finalTotal) ? '' : finalTotal.toFixed(2);
+
+        
+      var finalTotals = Math.round(finalTotal)
+
+      var roundOff = finalTotals - finalTotal;
+      document.getElementById('id_round_off').value =isNaN(roundOff) ? '' : roundOff.toFixed(2);
+      // Set the calculated grand total value to the grand total input field
+      document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
+
+    }
 
    
     function addEventListenersToInputs() {
@@ -746,6 +835,8 @@ randomValue();
             input.addEventListener('input', function() {
                 calculateTotalAmount();
                 calculateOtherTotal();
+                deleteCalculationRow();
+                deleteAlltotal();
              
             });
         });
@@ -762,6 +853,7 @@ randomValue();
             const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
             const formCount = parseInt(formCountInput.value);
             const lastRow = tableBody.lastElementChild.cloneNode(true); // clone the last row of the table
+            lastRow.style.display= 'table-row'; // Ensure the cloned row is visible
             const formIndex = formCount;
             lastRow.querySelectorAll("input, select").forEach(function(el) { 
             el.value = ""; 
@@ -865,7 +957,9 @@ randomValue();
             tableBody.appendChild(lastRow);
            
             addEventListenersToInputs(lastRow);
-            calculateTotalAmount();  
+            calculateTotalAmount(); 
+            deleteCalculationRow();
+            deleteAlltotal();
             
             formCountInput.value = formCount + 1;    
         });
@@ -877,7 +971,9 @@ randomValue();
 	addEventListenersToInputs(); // Add event listeners to the new row inputs
     calculateTotalAmount();
     calculateOtherTotal();
- 
+    deleteCalculationRow();
+    deleteAlltotal();
+  
 });
 
     // Call function to add event listeners to existing rows' inputs
@@ -886,66 +982,34 @@ randomValue();
     calculateTotalAmount();
 
     calculateOtherTotal();
+    deleteCalculationRow();
+    deleteAlltotal();
 
+    document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Find the row containing the clicked delete button
+            var row = this.closest('tr');
+            var checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+            if (checkRow) {
+                checkRow.checked = true; // Mark as checked
+                checkRow.value = 'true'; // Set the value to 'true'
 
-    // document.addEventListener('DOMContentLoaded', function() {
- 
-   
-
-    // Loop over each delete button to add a click event listener
-  
-    // document.querySelectorAll('.delete-btn').addEventListener('click', function() {
-    //         // Get all rows in the table body
-    //         var myTableRows = document.querySelectorAll('#myTable tbody tr');
-
-    //         // Ensure there's more than one row
-    //         if (myTableRows.length > 1) {
-    //             // Get the last row
-    //             var lastRow = myTableRows[myTableRows.length - 1]; // Fixed to get the correct last row
-    //             // Find the checkbox for deletion
-    //             var checkRow = lastRow.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
-
-    //             // Check if the checkbox exists and set it to true
-    //             if (checkRow) {
-    //                 checkRow.checked = true;
-
-    //                 if (checkRow.checked) {
-                      
-    //                     lastRow.style.display = 'none';
-    //                     addEventListenersToInputs();
- 
-    //                     calculateTotalAmount();
-
-    //                   calculateOtherTotal();
-    //                     // Using vanilla JS to hide the row
-    //                 }
-    //             } else {
-    //                 console.error("Checkbox for deletion not found in the last row");
-    //             }
-    //         } else {
-    //             console.error("Only one row left, cannot delete");
-    //         }
-    //     });
-    // });
-
-
-    $(document).ready(function(){
-        $('.delete-btn').click(function(){
-            var deleteRow = $(this).closest('tr');
-     
-            var checkBoxValue = deleteRow.find('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
-            
-            checkBoxValue.prop('checked', true);
-            checkBoxValue.val('true');
-            if(checkBoxValue.val() == 'true'){
-
-                deleteRow.hide();
-                calculateTotalAmount();
+                row.style.display = 'none';
+                deleteCalculationRow();
+                deleteAlltotal();
+              
+                
+            } else {
+                console.error("Checkbox for deletion not found in this row");
             }
-
-
         });
-    })
+    });
+});
+
+
+   
 
   </script>
 
