@@ -25,7 +25,7 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 @receiver(pre_delete, sender=item_purchase_voucher_master)
 def handle_invoice_delete(sender, instance, **kwargs):
     invoice_item_instance = instance.purchase_voucher_items_set.all()
-    
+    print('INVOICE')
     for items in invoice_item_instance:
         item_shade = items.item_shade
         item_godowns_instance = items.shade_godown_items_set.all()
@@ -49,7 +49,7 @@ def handle_invoice_delete(sender, instance, **kwargs):
 @receiver(pre_delete, sender=purchase_voucher_items)
 def handle_invoice_items_delete(sender, instance, **kwargs):
     
-    if 'using' not in kwargs:
+    if instance.deleted_directly:
         invoice_godown_items_instance = instance.shade_godown_items_set.all()
         item_shade = instance.item_shade
         for g_items in invoice_godown_items_instance:            
@@ -62,15 +62,17 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
 
 #signal to reduce the quantity from the godowns in the godown in the itemrow was deleted 
 @receiver(pre_delete, sender=shade_godown_items)
-def handle_invoice_items_delete(sender, instance, **kwargs):
-
-    if 'using' not in kwargs:
+def handle_invoice_items_godowns_delete(sender, instance, **kwargs):
+    
+    if instance.deleted_directly:
         godown = instance.godown_id
         quantity = instance.quantity
         item_shade = instance.purchase_voucher_godown_item.item_shade
         godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
         godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
+    
         godown_quantity_to_delete.save()
+        
 
 
 @receiver(post_save, sender=item_purchase_voucher_master)
@@ -82,6 +84,7 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
     
     if created:
         instance_create = account_credit_debit_master_table.objects.create(voucher_no = purchase_voucher,ledger=purchase_ledger,voucher_type = ledger_type, particulars= 'Raw Material',debit = grand_total,credit = 0)
+        instance_create.save()
 
     elif not created:
         instance_get = account_credit_debit_master_table.objects.get(voucher_no = purchase_voucher)

@@ -510,6 +510,7 @@ class purchase_voucher_items(models.Model):
     quantity_total = models.DecimalField(max_digits=10, decimal_places=2)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    deleted_directly = models.BooleanField(default=False)
 
 
 class shade_godown_items(models.Model):
@@ -518,6 +519,7 @@ class shade_godown_items(models.Model):
     quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    deleted_directly = models.BooleanField(default=False)
     
 
 class shade_godown_items_temporary_table(models.Model):

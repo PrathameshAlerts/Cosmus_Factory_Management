@@ -1626,7 +1626,7 @@ def purchasevouchercreateupdate(request, pk=None):
                 #filter out only the forms which are changed or added 
                 items_formset.forms = [form for form in items_formset.forms] # if form.has_changed()  
 
-                print('items_formset.forms',items_formset.forms)
+                print('items_formset.forms',items_formset.deleted_forms)
                 if master_form.is_valid() and items_formset.is_valid():
                     # Save the master form
                     master_instance = master_form.save()
@@ -1636,6 +1636,8 @@ def purchasevouchercreateupdate(request, pk=None):
                     # items_formset.deleted_forms has the forms marked for deletion
                     for form in items_formset.deleted_forms:
                         if form.instance.pk:
+                            #boolen to check if the instance was directly deleted or via models.CASCADE later used in signals 
+                            form.instance.deleted_directly = True
                             form.instance.delete()
 
                     all_purchase_temp_data = []
@@ -1699,9 +1701,8 @@ def purchasevouchercreateupdate(request, pk=None):
                                     
                                     parent_row_prefix_id = voucher_row_godown_data.get('parent_row_prefix_id')
 
-                                
                                     if parent_row_prefix_id == form_prefix_number:
-                                    
+
                                         new_row = voucher_row_godown_data.get('newRow')
                                         new_rate = float(voucher_row_godown_data.get('all_Rate'))
                                         row_item = items_instance.item_shade.id
@@ -1723,7 +1724,11 @@ def purchasevouchercreateupdate(request, pk=None):
                                             if popup_row_id == '':
                                                 popup_row_id = None
                                             
-                                            
+                                            print(godown_id)
+                                            print(updated_quantity)
+                                            print(godown_old_id) 
+                                            print(popup_row_id) 
+
                                             #logic for new row added in godownpopup or godown is the same as old only quantity is updated
                                             if godown_old_id == None or godown_old_id == godown_id:
                                                 
@@ -1863,9 +1868,16 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey):
             # print('popup_godown_data',popup_godown_data)
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
-
+            
             if formset.is_valid():
+                for form in formset.deleted_forms:
+                    if form.instance.pk:
+                       # boolen to check if the instance was directly deleted or via models.CASCADE later used in signals
+                       form.instance.deleted_directly = True
+                       form.instance.delete()
+
                 formset.save()
+                
             else:
                 print(formset.errors)
 
