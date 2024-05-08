@@ -76,7 +76,7 @@
                                 <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
                     </tbody>
                 </table>
-               <button type="button" class="create-btn" id="addModalButton">Add +</button>
+               <button type="button" class="create-btn" id="addModalButton" onclick="submitData()">Add +</button>
                <input type="submit" class="add_btn submitBtn" id="popupData">
             </form>
             
@@ -234,7 +234,7 @@
                 var popup_old_id = document.getElementById('shade_godown_items_set-' + i + '-old_godown_id');
                 var uniqueKey = document.getElementById('shade_godown_items_set-' + i + '-unique_id').value;
                 var deleteValue = document.getElementById('shade_godown_items_set-' + i + '-DELETE').value;
-               console.log(uniqueKey)
+              
                 
                 if(popup_row_id && popup_old_id != "" && uniqueKey == 'None' && deleteValue != 'true'){
                     popup_old_id = popup_old_id.value
@@ -454,10 +454,7 @@
         if (tableRows.length > 1) { 
             var row = $(this).closest('tr'); 
             var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
-             var newCheckBoxId = checkbox.attr('id');
-             var newCheckedId = newCheckBoxId.split('-')[1];
             
-           
             checkbox.prop('checked', true); 
             checkbox.val('true');
            
@@ -465,13 +462,15 @@
         
              
             row.hide();
-            calculateGodownAmount();
+          
             
             }
               
         } else {
             alert('The table must have at least one godown item'); 
         }
+
+        calculateGodownAmount();
         });
 
        
