@@ -481,7 +481,11 @@ randomValue();
          if(e.key==='Enter'){
             e.preventDefault();
             var item_value = $(this).val(); 
+
+            var nameValue = document.querySelector('select[name^="purchase_voucher_items_set-"]').val();
+
             console.log('item_value',item_value) 
+            console.log('nameValue',nameValue) 
             
             $.ajax({
                 url: '/purchasevouchercreate/',
