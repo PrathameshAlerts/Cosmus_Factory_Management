@@ -71,12 +71,12 @@
                                 
                             </tr>
                             {% endfor %}
-                            <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
-                                <input type="hidden" class="purchase-amount" name="grand_godown_rate" id ="grand_godown_rate" value="" maxlength="50" step=".01"  >
-                                <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
+                            <input type="text" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
+                                <input type="text" class="purchase-amount" name="grand_godown_rate" id ="grand_godown_rate" value="" maxlength="50" step=".01"  >
+                                <input type="text" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
                     </tbody>
                 </table>
-               <button type="button" class="create-btn" id="addModalButton" onclick="submitData()">Add +</button>
+               <button type="button" class="create-btn" id="addModalButton">Add +</button>
                <input type="submit" class="add_btn submitBtn" id="popupData">
             </form>
             
@@ -270,10 +270,7 @@
             var newTotalRate = document.getElementById('grand_godown_rate').value;
             var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
             var prefixValue = document.getElementById('prefix_id').value;
-
-            console.log('newTotalQty',newTotalQty)
-            console.log('newTotalRate',newTotalRate)
-            
+    
             var newSessionData = {
                 "newUniqueId": newUniqueId,
                 "newTotalQty": newTotalQty,
@@ -308,6 +305,8 @@
        
         
         var tableClone = $('#newTable').find('tbody tr').last().clone(true);
+
+        tableClone.show();
         
             //update the input name and id for the new row
         const newGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-godown_id"]');
@@ -365,9 +364,12 @@
 
         $('#newTable tbody').append(tableClone);
        
-
+        calculateGodownAmount();
+        deleteRowCalculate();
        
         }   
+        calculateGodownAmount();
+        deleteRowCalculate();
     });
    // This funcion calculate the amount for each row then set the total amount and total quantity
     function calculateNewRow(row) {
@@ -428,15 +430,11 @@
         
         $('#newTable tbody tr:visible').each(function() {
             var currentRow = $(this); 
-            console.log(currentRow); 
+        
             var amount = parseFloat( currentRow.find('.godown-amount').val()); // Calculate amount for this row
             var qty = parseFloat(currentRow.find('.godown-quantity').val()); // Calculate quantity
             var rate = parseFloat(currentRow.find('.godown-rate').val()); // Calculate rate
 
-
-            console.log('qty', qty)
-            console.log('rate', rate)
-            console.log('amount', amount)
             // Accumulate totals
             totalAmount += amount; // Add amount to total
             totalQty += qty; // Add quantity to total
@@ -452,27 +450,32 @@
     }
     $(document).on('click','#popupData', function(){
         calculateGodownAmount();
+        deleteRowCalculate();
     })
 
   
     $(document).on('change', '.godown-select', function(){
         calculateGodownAmount();
+        deleteRowCalculate()
     })
 
     $(document).on('input', '.godown-quantity' && ' .godown-rate', function() {
             //call the calculation function when qunatity and rate is changed   
             calculateGodownAmount();
+            deleteRowCalculate();
 
         })
 
     $(document).on('input', '.godown-quantity' , function() {
             //call the calculation function when qunatity and rate is changed   
             calculateGodownAmount();
+            deleteRowCalculate();
 
     })
       
     $(document).on('change', '.godown-select, .godown-quantity, .godown-rate', function() {
     calculateGodownAmount(); // Recalculate the amount
+    deleteRowCalculate();
 });
 
     
