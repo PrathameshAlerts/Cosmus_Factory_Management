@@ -1636,6 +1636,8 @@ def purchasevouchercreateupdate(request, pk=None):
                     # items_formset.deleted_forms has the forms marked for deletion
                     for form in items_formset.deleted_forms:
                         if form.instance.pk:
+                            #boolen to check if the instance was directly deleted or via models.CASCADE later used in signals 
+                            form.instance.deleted_directly = True
                             form.instance.delete()
 
                     all_purchase_temp_data = []
@@ -1866,9 +1868,16 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey):
             # print('popup_godown_data',popup_godown_data)
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
-
+            
             if formset.is_valid():
+                for form in formset.deleted_forms:
+                    if form.instance.pk:
+                       # boolen to check if the instance was directly deleted or via models.CASCADE later used in signals
+                       form.instance.deleted_directly = True
+                       form.instance.delete()
+
                 formset.save()
+                
             else:
                 print(formset.errors)
 
