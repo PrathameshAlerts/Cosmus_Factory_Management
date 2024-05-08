@@ -80,8 +80,8 @@
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <td>{{forms.instance.id}}</td>
-                    <td> <input type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" value="" placeholder="Item Name">
-                        <select name="item_name_{{forloop.counter0}}" class="item-select item-name"  id="item_name_{{forloop.counter0}}">
+                    <td> <input  type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off">
+                         <select name="item_name_{{forloop.counter0}}" class="item-select item-name" id="item_name_{{forloop.counter0}}" style="display: none;">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
                             {% for item in items %}
@@ -94,7 +94,7 @@
                             {% endfor %}
                             {% endif %}
                           </select>
-                        
+                          <!-- <select id="filtered_suggestions" style="position: absolute; display: none;"></select> -->
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
@@ -110,6 +110,7 @@
                              {% endif %}
 
                         </select>
+                        
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly>
@@ -194,49 +195,59 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-       
+    const searchInput = document.querySelector(".search-input"); // Text input
+    const select = document.querySelector(".item-name"); // Original select dropdown with all options
+    //const suggestionsDropdown = document.getElementById("filtered_suggestions"); // Dropdown for filtered suggestions
 
-        // Loop through each row to add event listeners for interactions
-       
-            const searchInput = document.querySelector(".search-input"); // Text input
-            const select = document.querySelector(".item-name"); // Select dropdown
+    const originalSelectOptions = Array.from(select.options); // Store the original options
 
+    searchInput.addEventListener("input", function() {
+        const searchText = searchInput.value.toLowerCase();
+        select.innerHTML = ""; // Clear existing suggestions
 
-            function filterDropdown(searchText){
-                const originalSelectOptions = Array.from(select.options); 
-                searchInput.addEventListener("input", function() {
-                const searchText = searchInput.value.toLowerCase();
-                select.innerHTML = "";
+        const filteredOptions = originalSelectOptions.filter((option) =>
+            option.text.toLowerCase().includes(searchText)
+        );
 
-                const filteredOptions = originalSelectOptions.filter((option) =>
-                    option.text.toLowerCase().includes(searchText)
-                );
+        // Add filtered options to the suggestions dropdown
+        filteredOptions.forEach((option) => {
+            const clone = option.cloneNode(true); // Clone the original option
+            select.add(clone);
+        });
 
-                // Add filtered options to the select dropdown
-                filteredOptions.forEach((option) => select.add(option));
-
-                
-            });
-            }
-       
-
-            // Event handler to reset the select options when input is focused
-            searchInput.addEventListener("focus", function() {
-                select.innerHTML = ""; // Reset the select
-                originalSelectOptions.forEach((option) => select.add(option));
-            });
-
-            // Handle "Enter" key to select the first suggestion from select
-            searchInput.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" && select.children.length > 0) {
-                    // Select the first suggestion on Enter key
-                    const firstSuggestion = select.children[0];
-                    searchInput.value = firstSuggestion.text;
-                    select.innerHTML = ""; // Clear select after choosing
-                    e.preventDefault(); // Prevent default Enter behavior
-                }
-            });
+        if (filteredOptions.length > 0) {
+            select.style.display = "block"; // Show suggestions if there are any
+            const inputRect = searchInput.getBoundingClientRect();
+            select.style.top = inputRect.bottom + "px"; // Position below the input field
+            select.style.left = inputRect.left + "px";
+            select.style.width = searchInput.offsetWidth + "px"; // Match the width of the input field
+        } else {
+            select.style.display = "none"; // Hide if no suggestions
+        }
     });
+
+    searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && select.children.length > 0) {
+            // Select the first suggestion on Enter key
+            const firstSuggestion = select.children[0];
+            searchInput.value = firstSuggestion.text; // Set the text field with the selected suggestion
+            select.style.display = "none"; // Hide the suggestions
+            e.preventDefault(); // Prevent default Enter behavior
+        }
+    });
+
+    searchInput.addEventListener("focus", function() {
+        if (searchInput.value.trim() === "") {
+            // If the input field is empty, reset to show all original options
+            select.innerHTML = "";
+            originalSelectOptions.forEach((option) => {
+                const clone = option.cloneNode(true); // Clone the original option
+                select.add(clone);
+            });
+            select.style.display = "block"; // Show all suggestions
+        }
+    });
+});
 
 </script>
 <script>
@@ -450,9 +461,9 @@ randomValue();
         var itemShadeIdValue;
         
        // perfix value on item-name change
-        $(document).on('click', 'select[name^="item_name_"]', function () {
+        $(document).on('click', 'input[name^="input_item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-       
+       console.log('itemName',itemName);
         purchaseValue = itemName.split('-')[1];
       console.log(purchaseValue);
 });
@@ -466,12 +477,12 @@ randomValue();
    
     
   // This ajax call
-     $(document).on('click', 'select[name^="item_name_"]', function () {
-            var item_value = $(this).val();   
-            var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
-            var purchaseDataValue = purchaseData.value;
-       // console.log('purchaseDataValue',purchaseDataValue)
-         //if(purchaseDataValue == ''){
+     $(document).on('keydown', '.search-input', function (e) {
+         if(e.key==='Enter'){
+            e.preventDefault();
+            var item_value = $(this).val(); 
+            console.log('item_value',item_value) 
+            
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -481,9 +492,10 @@ randomValue();
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
+
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
                     
-
+                    console.log('itemrownameid',itemrownameid)
                     var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
                     var item_color = response.item_color;
                  
@@ -516,8 +528,14 @@ randomValue();
                     console.log('Error sending value to the backend');
                 }
             });
+         }
+             
+            //var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
+            //var purchaseDataValue = purchaseData.value;
+       // console.log('purchaseDataValue',purchaseDataValue)
+         //if(purchaseDataValue == ''){
         // }
-           // console.log('item_value',item_value)       
+              
            
         });
 
