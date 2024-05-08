@@ -319,11 +319,13 @@
     var prefixId = newSessionData.prefixValue;
 
 
-    // console.log('newQty',newQty)
-    // console.log('newRate',newRate)
+    console.log('newQty',newQty)
+    console.log('newRate',newRate)
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
+    
         
+
         oldQty.value = newQty
       oldRate.value = newRate
       calculateTotalAmount()
@@ -883,65 +885,35 @@ randomValue();
 
     calculateOtherTotal();
 
+    document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Find the row containing the clicked delete button
+            var row = this.closest('tr');
 
-    // document.addEventListener('DOMContentLoaded', function() {
- 
-   
+            // Find the checkbox within the row that needs to be set for deletion
+            var checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
 
-    // Loop over each delete button to add a click event listener
-  
-    // document.querySelectorAll('.delete-btn').addEventListener('click', function() {
-    //         // Get all rows in the table body
-    //         var myTableRows = document.querySelectorAll('#myTable tbody tr');
+            // Check if the checkbox exists and set its value
+            if (checkRow) {
+                checkRow.checked = true; // Mark as checked
+                checkRow.value = 'true'; // Set the value to 'true'
 
-    //         // Ensure there's more than one row
-    //         if (myTableRows.length > 1) {
-    //             // Get the last row
-    //             var lastRow = myTableRows[myTableRows.length - 1]; // Fixed to get the correct last row
-    //             // Find the checkbox for deletion
-    //             var checkRow = lastRow.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+                // Hide the row after marking for deletion
+                row.style.display = 'none';
 
-    //             // Check if the checkbox exists and set it to true
-    //             if (checkRow) {
-    //                 checkRow.checked = true;
-
-    //                 if (checkRow.checked) {
-                      
-    //                     lastRow.style.display = 'none';
-    //                     addEventListenersToInputs();
- 
-    //                     calculateTotalAmount();
-
-    //                   calculateOtherTotal();
-    //                     // Using vanilla JS to hide the row
-    //                 }
-    //             } else {
-    //                 console.error("Checkbox for deletion not found in the last row");
-    //             }
-    //         } else {
-    //             console.error("Only one row left, cannot delete");
-    //         }
-    //     });
-    // });
-
-
-    $(document).ready(function(){
-        $('.delete-btn').click(function(){
-            var deleteRow = $(this).closest('tr');
-     
-            var checkBoxValue = deleteRow.find('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
-            
-            checkBoxValue.prop('checked', true);
-            checkBoxValue.val('true');
-            if(checkBoxValue.val() == 'true'){
-
-                deleteRow.hide();
-                calculateTotalAmount();
+                // Call additional functions if needed
+                
+            } else {
+                console.error("Checkbox for deletion not found in this row");
             }
-
-
         });
-    })
+    });
+});
+
+
+   
 
   </script>
 
