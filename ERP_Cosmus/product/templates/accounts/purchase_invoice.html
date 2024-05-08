@@ -79,6 +79,7 @@
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
+                    <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td>{{forms.instance.id}}</td>
                     <td> <input  type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off">
                          <select name="item_name_{{forloop.counter0}}" class="item-select item-name" id="item_name_{{forloop.counter0}}" style="display: none;">
@@ -584,9 +585,7 @@ randomValue();
                         data: {
                             'selected_shade': selectedShade,
                             'purchase_id': primary_id,
-                            'prefix_id':prefix_id,
-                            
-                            
+                            'prefix_id':prefix_id,   
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
@@ -966,11 +965,16 @@ randomValue();
            deleteElement.id = `purchase_voucher_items_set-${formIndex}-DELETE`;
            deleteElement.name = `purchase_voucher_items_set-${formIndex}-DELETE`;
            deleteElement.value= "";
-
+           
            const deletedCheckBoxElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-deleteJsonData"]');
            deletedCheckBoxElement.id = `purchase_voucher_items_set-${formIndex}-deleteJsonData`;
            deletedCheckBoxElement.name = `purchase_voucher_items_set-${formIndex}-deleteJsonData`;
            deletedCheckBoxElement.value = '';
+
+           const olditemshadeElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-old_item_shade"]');
+           olditemshadeElement.id = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
+           olditemshadeElement.name = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
+           olditemshadeElement.value = '';
             
             tableBody.appendChild(lastRow);
            

@@ -33,6 +33,7 @@ from django.contrib import messages
 from django.db.models import Sum
 
 
+
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
 
@@ -1611,7 +1612,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                   'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,})
 
     if request.method == 'POST':
-        
+        print(request.POST)
         try:
             with transaction.atomic(): #start a database transaction
                 #create a form instance for main form
@@ -1630,7 +1631,7 @@ def purchasevouchercreateupdate(request, pk=None):
                 if master_form.is_valid() and items_formset.is_valid():
                     # Save the master form
                     master_instance = master_form.save()
-                
+
                     # Check for items marked for deletion and delete them 
                     # delete wont work after default as we are not saving items_formset instead we are saving  in the formsets individually
                     # items_formset.deleted_forms has the forms marked for deletion
@@ -1644,7 +1645,7 @@ def purchasevouchercreateupdate(request, pk=None):
                     # loop through each form in formset to attach the instance of master_instance with each form in the formset
                     for form in items_formset:
                         if form.is_valid():
-                            
+
                             # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
                             if not form.cleaned_data.get('DELETE'):
                                 items_instance = form.save(commit=False)
@@ -1723,12 +1724,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                             popup_row_id = value.get('popup_row_id', None)  # godown_row_id 
                                             if popup_row_id == '':
                                                 popup_row_id = None
-                                            
-                                            print(godown_id)
-                                            print(updated_quantity)
-                                            print(godown_old_id) 
-                                            print(popup_row_id) 
-
+                                        
                                             #logic for new row added in godownpopup or godown is the same as old only quantity is updated
                                             if godown_old_id == None or godown_old_id == godown_id:
                                                 
@@ -1776,22 +1772,14 @@ def purchasevouchercreateupdate(request, pk=None):
                                                         # else if row is not present 
                                                         new_quantity_c = 0
 
-                                                    
                                                     new_godown_through_row.quantity = new_quantity_c + updated_quantity
-                                                    
                                                     new_godown_through_row.save()
-
-                                # godown_popup_rows_to_delete
-                                popup_data_to_data = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-deleteJsonData')            
-                                print('popup_data_to_data',popup_data_to_data)
-                                if popup_data_to_data:
-                                    delete_data_popup_godown = json.loads(popup_data_to_data)
-                                    print('delete_data_popup_godown', delete_data_popup_godown)
 
 
                                 #popupvoucherfunction post initilization
                                 popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
-                               
+                                old_item_shade = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-old_item_shade')
+                                
                                 if popup_godowns_exists != '':
                                     popup_godown_data = json.loads(popup_godowns_exists)
                                     print('popup_godown_data',popup_godown_data)
@@ -1802,9 +1790,9 @@ def purchasevouchercreateupdate(request, pk=None):
                                         shade_id = int(popup_godown_data.get('shade_id'))
                                         prefix_id =  int(popup_godown_data.get('prefix_id'))
                                         primarykey = int(popup_godown_data.get('primary_id'))
-                                        
+                                        old_item_shade = int(old_item_shade)
                                         #function to update popup data on main submit only 
-                                        purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey)
+                                        purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade)
                                         
                                 
                         else:
@@ -1856,30 +1844,33 @@ def purchasevouchercreateupdate(request, pk=None):
 
 
 #popup page for purchase voucher godown update
-def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey):
+def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade):
         
         if primarykey is not None:
             voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
-            item_shade_old = voucher_item_instance
 
-            # continue here for droprown shade change issue
-            # print('item_shade_old',item_shade_old.quantity_total)
-            # print('new_shade',shade_id)
-            # print('popup_godown_data',popup_godown_data)
+            if old_item_shade != shade_id:
+                all_godown_old_instances = shade_godown_items.objects.filter(purchase_voucher_godown_item = primarykey)
+                if all_godown_old_instances:
+                    print('all_godown_old_instances',all_godown_old_instances)
+                    for items in all_godown_old_instances:
+                        items.deleted_directly = True
+                        
+                        #send old shade to the signal for deleting qty from through table using temp attribute extra_data_old_shade
+                        items.extra_data_old_shade = old_item_shade
+                        items.delete()
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
             
             if formset.is_valid():
                 for form in formset.deleted_forms:
                     if form.instance.pk:
-                       # boolen to check if the instance was directly deleted or via models.CASCADE later used in signals
-                       form.instance.deleted_directly = True
-                       form.instance.delete()
-
+                        # boolen to check if the instance was directly deleted or via models.CASCADE later used in signals
+                        form.instance.deleted_directly = True
+                        form.instance.delete()
                 formset.save()
-                
             else:
-                print(formset.errors)
+                print('godown_errors',formset.errors)
 
                 
 
