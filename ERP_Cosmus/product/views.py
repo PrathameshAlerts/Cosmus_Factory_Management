@@ -1626,7 +1626,7 @@ def purchasevouchercreateupdate(request, pk=None):
                 #filter out only the forms which are changed or added 
                 items_formset.forms = [form for form in items_formset.forms] # if form.has_changed()  
 
-                print('items_formset.forms',items_formset.forms)
+                print('items_formset.forms',items_formset.deleted_forms)
                 if master_form.is_valid() and items_formset.is_valid():
                     # Save the master form
                     master_instance = master_form.save()

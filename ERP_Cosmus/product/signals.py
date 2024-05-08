@@ -62,7 +62,7 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
 
 #signal to reduce the quantity from the godowns in the godown in the itemrow was deleted 
 @receiver(pre_delete, sender=shade_godown_items)
-def handle_invoice_items_delete(sender, instance, **kwargs):
+def handle_invoice_items_godowns_delete(sender, instance, **kwargs):
     print('TESTT')
     print(kwargs)
     if 'using' not in kwargs:
