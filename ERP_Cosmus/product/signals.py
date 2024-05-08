@@ -63,13 +63,15 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
 #signal to reduce the quantity from the godowns in the godown in the itemrow was deleted 
 @receiver(pre_delete, sender=shade_godown_items)
 def handle_invoice_items_delete(sender, instance, **kwargs):
-
+    print('TESTT')
+    print(kwargs)
     if 'using' not in kwargs:
         godown = instance.godown_id
         quantity = instance.quantity
         item_shade = instance.purchase_voucher_godown_item.item_shade
         godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
         godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
+        print('TEST1',godown,quantity,item_shade,godown_quantity_to_delete,godown_quantity_to_delete.quantity)
         godown_quantity_to_delete.save()
 
 

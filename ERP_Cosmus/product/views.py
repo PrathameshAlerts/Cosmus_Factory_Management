@@ -1699,9 +1699,8 @@ def purchasevouchercreateupdate(request, pk=None):
                                     
                                     parent_row_prefix_id = voucher_row_godown_data.get('parent_row_prefix_id')
 
-                                
                                     if parent_row_prefix_id == form_prefix_number:
-                                    
+
                                         new_row = voucher_row_godown_data.get('newRow')
                                         new_rate = float(voucher_row_godown_data.get('all_Rate'))
                                         row_item = items_instance.item_shade.id
@@ -1723,7 +1722,11 @@ def purchasevouchercreateupdate(request, pk=None):
                                             if popup_row_id == '':
                                                 popup_row_id = None
                                             
-                                            
+                                            print(godown_id)
+                                            print(updated_quantity)
+                                            print(godown_old_id) 
+                                            print(popup_row_id) 
+
                                             #logic for new row added in godownpopup or godown is the same as old only quantity is updated
                                             if godown_old_id == None or godown_old_id == godown_id:
                                                 
