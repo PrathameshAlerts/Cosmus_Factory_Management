@@ -345,24 +345,6 @@
         updateJsonData.value = JSON.stringify(jsonData);
     }
     
-   
-
-    window.addEventListener('message', function(event) {
-        try {
-            var deleteData = JSON.parse(event.data);
-         
-            var dataRows = Object.values(deleteData)[0];
-          
-        var parentPrefixId = dataRows.parentPrefix;
-        var deleteRow = document.getElementById('purchase_voucher_items_set-'+ parentPrefixId + '-deleteJsonData');
-        deleteRow.value = JSON.stringify(deleteData);
-       // console.log('deleteData',deleteRow)
-        
-        } catch (e) {
-            console.error('Error parsing received data', e);
-        }
-    });
-   
 
 // This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst 
 function getGstNo() {
@@ -425,9 +407,7 @@ function randomValue (){
   var totalForms = document.getElementById('id_purchase_voucher_items_set-TOTAL_FORMS').value;
  
     itemShadeIdValue = itemShadeName.split('-')[1];
-    console.log('itemShadeIdValue',itemShadeIdValue)
-    
-   console.log('primeId',primeId)
+   
 
    for( var i =0; i<totalForms ; i++){
     const uuid = uuidv4();
@@ -489,7 +469,7 @@ randomValue();
             var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
             var purchaseDataValue = purchaseData.value;
        // console.log('purchaseDataValue',purchaseDataValue)
-         if(purchaseDataValue == ''){
+         //if(purchaseDataValue == ''){
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -534,7 +514,7 @@ randomValue();
                     console.log('Error sending value to the backend');
                 }
             });
-        }
+        //}
            // console.log('item_value',item_value)       
            
         });
@@ -758,6 +738,7 @@ randomValue();
     document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
     document.getElementById('id_round_off').addEventListener('input', calculateOtherTotal);
 
+    
 
    
     function addEventListenersToInputs() {
@@ -925,16 +906,14 @@ randomValue();
                     checkRow.checked = true;
 
                     if (checkRow.checked) {
-                        // Update the total forms count
-                    
+                      
+                        lastRow.style.display = 'none';
                         addEventListenersToInputs();
  
                         calculateTotalAmount();
 
                       calculateOtherTotal();
-
-                        // Hide the row
-                        lastRow.style.display = 'none'; // Using vanilla JS to hide the row
+                        // Using vanilla JS to hide the row
                     }
                 } else {
                     console.error("Checkbox for deletion not found in the last row");

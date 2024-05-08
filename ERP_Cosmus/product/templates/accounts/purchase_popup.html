@@ -233,16 +233,17 @@
                 var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
                 var popup_old_id = document.getElementById('shade_godown_items_set-' + i + '-old_godown_id');
                 var uniqueKey = document.getElementById('shade_godown_items_set-' + i + '-unique_id').value;
-               
+                var deleteValue = document.getElementById('shade_godown_items_set-' + i + '-DELETE').value;
+               console.log(uniqueKey)
                 
-                if(popup_row_id && popup_old_id != "" && uniqueKey == ''){
+                if(popup_row_id && popup_old_id != "" && uniqueKey == 'None' && deleteValue != 'true'){
                     popup_old_id = popup_old_id.value
                     popup_row_id = popup_row_id.value
 
 
                     newRow[row] = {gId, jsonQty, popup_row_id ,popup_old_id};
                     
-                }else{
+                }else if(deleteValue != 'true'){
                     newRow[row] = {gId, jsonQty};
                 } 
             }
@@ -270,6 +271,8 @@
             var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
             var prefixValue = document.getElementById('prefix_id').value;
 
+            console.log('newTotalQty',newTotalQty)
+            console.log('newTotalRate',newTotalRate)
             
             var newSessionData = {
                 "newUniqueId": newUniqueId,
@@ -289,14 +292,6 @@
         // create a new row and the calculation the single row and save
         $(document).ready (function(){
         
-            // function updateRate(){
-            //     var newRate = $('input[name^="shade_godown_items_set-"][name$="-rate"]');
-
-            //     newRate.each(function(){
-            //         $(this).attr('readonly', true)
-            //     })
-            // }
-       
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {
@@ -428,6 +423,7 @@
     })
 
     $(document).on('click', '.delete-btn', function(){
+      
         calculateGodownAmount();
     })
     $(document).on('change', '.godown-select', function(){
@@ -466,20 +462,7 @@
             checkbox.val('true');
            
             if(checkbox.val() == 'true'){
-            
-             var parentPrefix = $('#prefix_id').val();
-             var primaryKey = $('#id_shade_godown_items_set-' + newCheckedId + '-id').val();
-            var totalForms = $('#id_shade_godown_items_set-TOTAL_FORMS').val();
-            
-           
-
-              var rowData = {
-                parentPrefix : parentPrefix,
-                 primaryKey : primaryKey
-              }
-              deleteData.push(rowData);
-           
-            
+        
              
             row.hide();
             calculateGodownAmount();
@@ -491,13 +474,7 @@
         }
         });
 
-        $('#popupData').on('click', function() {
-        if (window.opener && typeof window.opener.postMessage === 'function') {
-            var deleteJsonForm = JSON.stringify(deleteData);
-            window.opener.postMessage(deleteJsonForm, '*'); // Send message to parent
-               
-        }
-       });
+       
 
         })
     </script>
