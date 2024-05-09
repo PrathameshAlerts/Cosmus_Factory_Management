@@ -1,9 +1,16 @@
 from django.contrib.auth.models import User , Group
-from uuid import UUID
+from django.core.exceptions import ValidationError
 import json
-from django.contrib.auth.models import auth #help us to logout
+from django.contrib.auth.models import auth 
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Q
+from django.db import IntegrityError, transaction
+from django.utils.timezone import now
+from django.contrib import messages
+from django.db.models import Sum
 from django.forms import modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
@@ -14,6 +21,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, purchase_voucher_items, shade_godown_items,
                                    shade_godown_items_temporary_table)
+
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -24,13 +32,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update)
-from django.urls import reverse
-from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q
-from django.db import IntegrityError, transaction
-from django.utils.timezone import now
-from django.contrib import messages
-from django.db.models import Sum
+
 
 
 
@@ -1566,8 +1568,7 @@ def purchasevouchercreateupdate(request, pk=None):
             party_names = ''
     
     try:
-        items = Item_Creation.objects.all()
-
+        
         party_gst_no = ''
         selected_party_name = request.GET.get('selected_party_name')
         if selected_party_name is not None:
@@ -1835,7 +1836,6 @@ def purchasevouchercreateupdate(request, pk=None):
 
     context = {'master_form':master_form,
                'party_names':party_names,
-               'items':items,
                'items_formset':items_formset,
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
@@ -1971,20 +1971,41 @@ def purchasevouchercreategodownpopupurl(request):
     return JsonResponse({'popup_url':popup_url})
 
 
+
+
+
 def purchasevoucheritemsearchajax(request):
-    item_name_typed = request.GET.get('nameValue')
-    print('item_name_typed',item_name_typed)
-    item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
-    print('item_name_searched',item_name_searched)
-    searched_item_name_dict = {}
-    for queryset in item_name_searched:
-        item_name = queryset.item_name
-        item_id = queryset.id
-        searched_item_name_dict[item_id] = item_name
+    try:
+        # Retrieve the partial name typed by the user from the GET request
+        item_name_typed = request.GET.get('nameValue')
+        if not item_name_typed:
+            raise ValidationError("No partial name provided.")
 
-    print('searched_item_name_dict',searched_item_name_dict)
+        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
 
-    return JsonResponse({'item_name_typed': item_name_typed,'searched_item_name_dict':searched_item_name_dict})
+        # Prepare a dictionary of searched items with IDs as keys and names as values
+        searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
+
+        """
+        or 
+        searched_item_name_dict = {}
+        for queryset in item_name_searched:
+            item_name = queryset.item_name
+            item_id = queryset.id
+            searched_item_name_dict[item_id] = item_name
+        
+        """
+
+        
+        return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict})
+
+    except ValidationError as ve:
+        error_message = str(ve)
+        return JsonResponse({'error': error_message}, status=400)
+    
+    except Exception as e:
+        error_message = f"An error occurred: {str(e)}"
+        return JsonResponse({'error': error_message}, status=500)
     
 
 def purchasevoucherlist(request):
