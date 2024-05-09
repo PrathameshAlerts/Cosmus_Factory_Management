@@ -83,24 +83,11 @@
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td>{{forms.instance.id}}</td>
                     <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.item_name }} {% endif %}">
-                         <!-- <select name="item_name_{{forloop.counter0}}" class="item-select item-name" id="item_name_{{forloop.counter0}}" style="display: none;">
-                            {% if forms.instance.id %}
-                            <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
+                         <select name="select_item_name_{{forloop.counter0}}" class="item-select item-name" id="select_item_name_{{forloop.counter0}}" style="display: none;">
 
-                            {% for item in items %}
-                            <option value="{{item.id}}">{{item.item_name}}</option>
-                            {% endfor %}
-
-                            {% elif not forms.instance.id %}
-                            <option value=""></option>
-                            {% for item in items %}
-                            <option value="{{item.id}}">{{item.item_name}}</option>
-                            {% endfor %}
-                            {% endif %}
-                          </select> -->
-                         <div id="item_name_{{forloop.counter0}}_list">
-
-                         </div>
+                        
+                          </select>
+                         
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
@@ -501,7 +488,15 @@ randomValue();
                 searched_item_name_dict = response.searched_item_name_dict
                 console.log(filtered_data_backend)
                 console.log(searched_item_name_dict)
+
+                var itemNameValue = document.querySelector(`.item-name[name^="input_item_name_" +${purchaseValue} ]`);
+                console.log('itemNameValue',itemNameValue)
                
+                $.each(searched_item_name_dict, function (key, value) {
+                    console.log(key, value)
+                   
+                });
+                
               
             },
             error: function (xhr, errmsg, err) {
