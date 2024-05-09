@@ -1972,7 +1972,20 @@ def purchasevouchercreategodownpopupurl(request):
 
 
 def purchasevoucheritemsearchajax(request):
-    pass
+    item_name_typed = request.GET.get('nameValue')
+    print('item_name_typed',item_name_typed)
+    item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
+    print('item_name_searched',item_name_searched)
+    searched_item_name_dict = {}
+    for queryset in item_name_searched:
+        item_name = queryset.item_name
+        item_id = queryset.id
+        searched_item_name_dict[item_id] = item_name
+
+    print('searched_item_name_dict',searched_item_name_dict)
+
+    return JsonResponse({'item_name_typed': item_name_typed,'searched_item_name_dict':searched_item_name_dict})
+    
 
 def purchasevoucherlist(request):
     purchase_invoice_list = item_purchase_voucher_master.objects.all()

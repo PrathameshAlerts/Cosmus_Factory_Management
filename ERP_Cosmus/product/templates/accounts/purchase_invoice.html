@@ -495,7 +495,10 @@ randomValue();
                 'nameValue': nameValue,
             },
             success: function (response) {
-                console.log('Data sent successfully')
+                filtered_data_backend = response.item_name_typed
+                searched_item_name_dict = response.searched_item_name_dict
+                console.log(filtered_data_backend)
+                console.log(searched_item_name_dict)
                
               
             },
