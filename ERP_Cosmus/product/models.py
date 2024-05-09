@@ -439,7 +439,6 @@ class Ledger(models.Model):
 
 class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, blank = False, null = False, related_name = 'transaction_entry')
-    #need to check if models.CASCADE or models.PROTECT 
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     credit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     voucher_no = models.IntegerField(null = True, blank= True, unique=True)

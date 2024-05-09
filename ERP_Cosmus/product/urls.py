@@ -57,6 +57,7 @@ urlpatterns = [
     path('itemcreate/',views.item_create , name= 'item-create'),
     path('itemlist/',views.item_list ,name= 'item-list'),
     path('itemdelete/<int:pk>',views.item_delete , name= 'item-delete'),
+    path('item_create_dropdown_refresh_ajax/',views.item_create_dropdown_refresh_ajax, name = 'item-create-dropdown-refresh-ajax'),
     #opening_godown_qty
     path('openinggodownquantity/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty'),
     path('openinggodownquantitypk/<int:primary_key>/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty-pk'),
@@ -119,7 +120,7 @@ urlpatterns = [
     path('purchasevoucherpopupcreate/<int:shade_id>/<int:prefix_id>/<str:unique_id>', views.purchasevoucherpopup, name='purchase-voucher-popup-create'),
     path('purchasevoucherpopupupdate/<int:shade_id>/<int:prefix_id>/<int:primarykey>', views.purchasevoucherpopup, name='purchase-voucher-popup-update'),
     path('purchasevouchercreategodownpopupurl/',views.purchasevouchercreategodownpopupurl,name = 'purchasevoucher-createpopup-ajax'),
-
+    path('purchasevoucheritemsearchajax/',views.purchasevoucheritemsearchajax,name = 'purchasevoucher-item-search-ajax'),
 
     #SalesVoucher
     path('salesvouchercreate/', views.salesvouchercreate, name = 'sales-voucher-create'),

@@ -489,7 +489,7 @@ randomValue();
         var nameValue = document.querySelector('.search-input').value;
         console.log('nameValue',nameValue)
         $.ajax({
-            url: '/purchasevouchercreate/',
+            url: '/purchasevoucheritemsearchajax/',
             method: 'GET',
             data: {
                 'nameValue': nameValue,
