@@ -1971,6 +1971,8 @@ def purchasevouchercreategodownpopupurl(request):
     return JsonResponse({'popup_url':popup_url})
 
 
+def purchasevoucheritemsearchajax(request):
+    pass
 
 def purchasevoucherlist(request):
     purchase_invoice_list = item_purchase_voucher_master.objects.all()

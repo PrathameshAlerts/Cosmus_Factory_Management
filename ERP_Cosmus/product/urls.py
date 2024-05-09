@@ -120,7 +120,7 @@ urlpatterns = [
     path('purchasevoucherpopupcreate/<int:shade_id>/<int:prefix_id>/<str:unique_id>', views.purchasevoucherpopup, name='purchase-voucher-popup-create'),
     path('purchasevoucherpopupupdate/<int:shade_id>/<int:prefix_id>/<int:primarykey>', views.purchasevoucherpopup, name='purchase-voucher-popup-update'),
     path('purchasevouchercreategodownpopupurl/',views.purchasevouchercreategodownpopupurl,name = 'purchasevoucher-createpopup-ajax'),
-
+    path('purchasevoucheritemsearchajax/',views.purchasevoucheritemsearchajax,name = 'purchasevoucher-item-search-ajax'),
 
     #SalesVoucher
     path('salesvouchercreate/', views.salesvouchercreate, name = 'sales-voucher-create'),
