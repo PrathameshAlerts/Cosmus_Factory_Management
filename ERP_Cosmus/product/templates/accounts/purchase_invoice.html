@@ -98,7 +98,9 @@
                             {% endfor %}
                             {% endif %}
                           </select> -->
-                         <div id="item_name_{{forloop.counter0}}_list"></div>
+                         <div id="item_name_{{forloop.counter0}}_list">
+
+                         </div>
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
