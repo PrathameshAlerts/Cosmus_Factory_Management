@@ -743,6 +743,10 @@ def item_delete(request, pk):
     return redirect('item-list')
 
 
+
+def item_create_dropdown_refresh_ajax(request):
+    return JsonResponse('test')
+
 #_____________________Item-Views-end_______________________
 
 #_____________________Color-start________________________
