@@ -191,7 +191,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>{{item.fab_grp}}</td>
               <td>{{item.Color_Name}}
               
-              <span style="color: rgb(166, 0, 0);">{{item.total_quantity}}</span>
+              <span style="color: rgb(166, 0, 0);">{{item.total_quantity | default_if_none:0}}</span>
               </td>
               <!-- render reverse related fields -->
               <td>

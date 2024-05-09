@@ -81,7 +81,7 @@
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td>{{forms.instance.id}}</td>
-                    <td> <input type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" value="" placeholder="Item Name">
+                    <td> <input type="hidden" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" value="" placeholder="Item Name">
                         <select name="item_name_{{forloop.counter0}}" class="item-select item-name"  id="item_name_{{forloop.counter0}}">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
@@ -470,9 +470,14 @@ randomValue();
      $(document).on('click', 'select[name^="item_name_"]', function () {
             var item_value = $(this).val();   
             var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
+            var primaryKey = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id').value;
+            var uniqueId = document.getElementById('item_unique_id_' + purchaseValue).value;
             var purchaseDataValue = purchaseData.value;
-       // console.log('purchaseDataValue',purchaseDataValue)
-         //if(purchaseDataValue == ''){
+        console.log('purchaseDataValue',purchaseDataValue)
+        console.log('primaryKey',primaryKey)
+        console.log('uniqueId',uniqueId)
+        
+         if(purchaseDataValue == ''){
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -517,7 +522,7 @@ randomValue();
                     console.log('Error sending value to the backend');
                 }
             });
-        // }
+        }
            // console.log('item_value',item_value)       
            
         });
