@@ -81,7 +81,7 @@
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td>{{forms.instance.id}}</td>
-                    <td> <input  type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off">
+                    <td> <input  type="text" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.item_name }} {% endif %}">
                          <select name="item_name_{{forloop.counter0}}" class="item-select item-name" id="item_name_{{forloop.counter0}}" style="display: none;">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
@@ -95,7 +95,7 @@
                             {% endfor %}
                             {% endif %}
                           </select>
-                          <!-- <select id="filtered_suggestions" style="position: absolute; display: none;"></select> -->
+                         
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
@@ -195,20 +195,36 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.querySelector(".search-input"); // Text input
-    const select = document.querySelector(".item-name"); // Original select dropdown with all options
-    //const suggestionsDropdown = document.getElementById("filtered_suggestions"); // Dropdown for filtered suggestions
+
+    $(document).ready(function(){
+        var formItemName;
+
+        var nameValue;
+
+        $(document).on('click', 'input[name^="input_item_name_"]', function () {
+        formItemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+      
+        nameValue = formItemName.split('-')[1];
+     
+
+      if(nameValue != ''){
+    var searchInput = document.querySelector(`.search-input[name="input_item_name_${nameValue}"]`); // Text inpu
+    var select = document.querySelector(`.item-name[name="item_name_${nameValue}"]`); // Original select dropdown with all options
+   
 
     const originalSelectOptions = Array.from(select.options); // Store the original options
 
+  
     searchInput.addEventListener("input", function() {
         const searchText = searchInput.value.toLowerCase();
         select.innerHTML = ""; // Clear existing suggestions
-
+        
+        
         const filteredOptions = originalSelectOptions.filter((option) =>
             option.text.toLowerCase().includes(searchText)
         );
+
+       
 
         // Add filtered options to the suggestions dropdown
         filteredOptions.forEach((option) => {
@@ -216,6 +232,7 @@
             select.add(clone);
         });
 
+       
         if (filteredOptions.length > 0) {
             select.style.display = "block"; // Show suggestions if there are any
             const inputRect = searchInput.getBoundingClientRect();
@@ -248,6 +265,22 @@
             select.style.display = "block"; // Show all suggestions
         }
     });
+
+      }
+});
+
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+    
+    
+  
+
+    //totalForms.forEach((totalForms) => {
+       
+   // });
+    
 });
 
 </script>
@@ -331,8 +364,7 @@
     var prefixId = newSessionData.prefixValue;
 
 
-    console.log('newQty',newQty)
-    console.log('newRate',newRate)
+   
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
     
@@ -464,9 +496,9 @@ randomValue();
        // perfix value on item-name change
         $(document).on('click', 'input[name^="input_item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-       console.log('itemName',itemName);
+      
         purchaseValue = itemName.split('-')[1];
-      console.log(purchaseValue);
+     
 });
     //perfix value on item-shade change 
     $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
@@ -481,13 +513,16 @@ randomValue();
      $(document).on('keydown', '.search-input', function (e) {
          if(e.key==='Enter'){
             e.preventDefault();
-            var item_value = $(this).val(); 
+           
 
-            var nameValue = document.querySelector('select[name^="purchase_voucher_items_set-"]').val();
-
-            console.log('item_value',item_value) 
-            console.log('nameValue',nameValue) 
-            
+        var item_value = document.querySelector('select[name^="item_name_"]').options[document.querySelector('select[name^="item_name_"]').selectedIndex].value;
+        console.log('item_value',item_value)   
+        var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
+        //var primaryKey = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id').value;
+        var purchaseDataValue = purchaseData.value;
+        console.log('purchaseDataValue',purchaseDataValue)
+       
+         if(purchaseDataValue == '' ){
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -535,11 +570,8 @@ randomValue();
             });
          }
              
-            //var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
-            //var purchaseDataValue = purchaseData.value;
-       // console.log('purchaseDataValue',purchaseDataValue)
-         //if(purchaseDataValue == ''){
-        // }
+         
+         }
               
            
         });
@@ -881,7 +913,7 @@ randomValue();
             el.value = ""; 
             });
             // update the input name,id and value of the last row     
-            const inputSelectElement = lastRow.querySelector('.item-name');
+            const inputSelectElement = lastRow.querySelector('.search-input');
             inputSelectElement.id = `input_item_name_${formIndex}`;
             inputSelectElement.name = `input_item_name_${formIndex}`;
             inputSelectElement.value="";
@@ -891,7 +923,7 @@ randomValue();
             const selectElement = lastRow.querySelector('.item-name');
             selectElement.id = `item_name_${formIndex}`;
             selectElement.name = `item_name_${formIndex}`;
-            selectElement.value="";
+            selectElement.options.value="";
 
             // Update input name and id
             const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
