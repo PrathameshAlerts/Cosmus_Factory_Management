@@ -25,7 +25,7 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 @receiver(pre_delete, sender=item_purchase_voucher_master)
 def handle_invoice_delete(sender, instance, **kwargs):
     invoice_item_instance = instance.purchase_voucher_items_set.all()
-    print('INVOICE')
+    
     for items in invoice_item_instance:
         item_shade = items.item_shade
         item_godowns_instance = items.shade_godown_items_set.all()

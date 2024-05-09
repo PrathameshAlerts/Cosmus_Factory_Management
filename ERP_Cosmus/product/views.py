@@ -507,13 +507,12 @@ def item_create(request):
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
         
-        
         if form.is_valid():
-            #make a var of saved form and get the id 
-            form.save()
+            form_instance = form.save()
 
             messages.success(request,'Item has been created, Update quantity in godown')
-            # return redirect(reverse('item-edit', args=[instance.id]))
+            return redirect(reverse('item-edit', args=[form_instance.id]))
+        
         else:
             print(form.errors)
             return render(request,'product/item_create_update.html', {'gsts':gsts,
@@ -1159,14 +1158,13 @@ def ledgercreate(request):
             ledger_instance = form.save(commit = False) #ledger_instance this has the instance of ledger form
             form.save()
             open_bal_value = form.cleaned_data['opening_balance']
-            name_value = form.cleaned_data['name']
             debit_credit_value = form.cleaned_data['Debit_Credit']
 
             if debit_credit_value == 'Debit':
-                account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger' ,debit= open_bal_value)
+                account_credit_debit_master_table.objects.create(ledger = ledger_instance, voucher_type = 'Ledger' ,debit= open_bal_value)
 
             elif debit_credit_value == 'Credit':
-                account_credit_debit_master_table.objects.create(ledger = ledger_instance, account_name= name_value,voucher_type = 'Ledger',credit= open_bal_value)
+                account_credit_debit_master_table.objects.create(ledger = ledger_instance, voucher_type = 'Ledger',credit= open_bal_value)
             else:
                 print(form.errors)
             messages.success(request,'Ledger Created')
@@ -1855,7 +1853,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
                     print('all_godown_old_instances',all_godown_old_instances)
                     for items in all_godown_old_instances:
                         items.deleted_directly = True
-                        
+
                         #send old shade to the signal for deleting qty from through table using temp attribute extra_data_old_shade
                         items.extra_data_old_shade = old_item_shade
                         items.delete()

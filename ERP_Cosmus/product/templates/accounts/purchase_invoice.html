@@ -85,9 +85,11 @@
                          <select name="item_name_{{forloop.counter0}}" class="item-select item-name" id="item_name_{{forloop.counter0}}" style="display: none;">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
+                            
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
                             {% endfor %}
+
                             {% elif not forms.instance.id %}
                             <option value=""></option>
                             {% for item in items %}
@@ -207,14 +209,14 @@
         nameValue = formItemName.split('-')[1];
      
 
-      if(nameValue != ''){
+      
     var searchInput = document.querySelector(`.search-input[name="input_item_name_${nameValue}"]`); // Text inpu
     var select = document.querySelector(`.item-name[name="item_name_${nameValue}"]`); // Original select dropdown with all options
    
-
+    console.log('select',select)
     const originalSelectOptions = Array.from(select.options); // Store the original options
 
-  
+  console.log(originalSelectOptions)
     searchInput.addEventListener("input", function() {
         const searchText = searchInput.value.toLowerCase();
         select.innerHTML = ""; // Clear existing suggestions
@@ -224,6 +226,7 @@
             option.text.toLowerCase().includes(searchText)
         );
 
+        console.log(filteredOptions)
        
 
         // Add filtered options to the suggestions dropdown
@@ -266,7 +269,7 @@
         }
     });
 
-      }
+    
 });
 
     });
@@ -913,17 +916,17 @@ randomValue();
             el.value = ""; 
             });
             // update the input name,id and value of the last row     
-            const inputSelectElement = lastRow.querySelector('.search-input');
+            const inputSelectElement = lastRow.querySelector('.search-input[name^="input_item_name_"]');
             inputSelectElement.id = `input_item_name_${formIndex}`;
             inputSelectElement.name = `input_item_name_${formIndex}`;
             inputSelectElement.value="";
             
 
 
-            const selectElement = lastRow.querySelector('.item-name');
+            const selectElement = lastRow.querySelector('.item-name[name^="item_name_"]');
             selectElement.id = `item_name_${formIndex}`;
             selectElement.name = `item_name_${formIndex}`;
-            selectElement.options.value="";
+           
 
             // Update input name and id
             const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
