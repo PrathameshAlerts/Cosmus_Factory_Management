@@ -1536,7 +1536,7 @@ def stocktransferreport(request):
 
 
 def purchasevouchercreateupdate(request, pk=None):
-    # print('Master_post1',request.POST)
+    item_name_searched = Item_Creation.objects.all()
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
 
@@ -1840,6 +1840,7 @@ def purchasevouchercreateupdate(request, pk=None):
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
                'item_godowns_raw':raw_material_godowns,
+               'items':item_name_searched
                }
 
     return render(request,'accounts/purchase_invoice.html',context=context)
@@ -1983,21 +1984,22 @@ def purchasevoucheritemsearchajax(request):
 
         item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
 
-        # Prepare a dictionary of searched items with IDs as keys and names as values
-        searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
+        if item_name_searched:
+            # Prepare a dictionary of searched items with IDs as keys and names as values
+            searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
 
-        """
-        or 
-        searched_item_name_dict = {}
-        for queryset in item_name_searched:
-            item_name = queryset.item_name
-            item_id = queryset.id
-            searched_item_name_dict[item_id] = item_name
+            """
+            or 
+            searched_item_name_dict = {}
+            for queryset in item_name_searched:
+                item_name = queryset.item_name
+                item_id = queryset.id
+                searched_item_name_dict[item_id] = item_name
         
-        """
-
-        
-        return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict})
+            """
+            return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict})
+        else:
+            return JsonResponse({'error': 'No items found.'}, status=404)
 
     except ValidationError as ve:
         error_message = str(ve)
