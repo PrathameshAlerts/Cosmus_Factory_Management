@@ -42,7 +42,6 @@
                         {% endif %}
                 
                         </select>
-
                     </div>
                     <div class="d-flex mb-3">
                         <label for="id_GST_number" class="item-form" >Party GST No : </label>
@@ -82,15 +81,13 @@
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td>{{forms.instance.id}}</td>
-                    <td> <input  type="hidden" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.item_name }} {% endif %}">
-                         <select name="item_name_{{forloop.counter0}}" class="item-select item-name" id="item_name_{{forloop.counter0}}" >
+                    <td> <input type="hidden" name="input_item_name_{{forloop.counter0}}" id="input_item_name_{{forloop.counter0}}" class="item-select search-input" value="" placeholder="Item Name">
+                        <select name="item_name_{{forloop.counter0}}" class="item-select item-name"  id="item_name_{{forloop.counter0}}">
                             {% if forms.instance.id %}
                             <option value="{{forms.instance.item_shade.items.id}}">{{forms.instance.item_shade.items.item_name}}</option>
-
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
                             {% endfor %}
-
                             {% elif not forms.instance.id %}
                             <option value=""></option>
                             {% for item in items %}
@@ -98,7 +95,7 @@
                             {% endfor %}
                             {% endif %}
                           </select>
-                         <div id="item_name_{{forloop.counter0}}_list"></div>
+                        
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
@@ -114,7 +111,6 @@
                              {% endif %}
 
                         </select>
-                        
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly>
@@ -197,69 +193,53 @@
     </form>
 </div>
 
-<!-- <script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+       
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Query elements more robustly
-    const searchInput = document.querySelector(".search-input");
-    const select = document.querySelector(".item-name");
-    const suggestionsDropdown = document.getElementById("filtered_suggestions");
+        // Loop through each row to add event listeners for interactions
+       
+            const searchInput = document.querySelector(".search-input"); // Text input
+            const select = document.querySelector(".item-name"); // Select dropdown
 
-    if (!searchInput || !select || !suggestionsDropdown) {
-        console.error("One or more elements not found");
-        return; // Exit if elements are missing
-    }
 
-    const originalSelectOptions = Array.from(select.options);
+            function filterDropdown(searchText){
+                const originalSelectOptions = Array.from(select.options); 
+                searchInput.addEventListener("input", function() {
+                const searchText = searchInput.value.toLowerCase();
+                select.innerHTML = "";
 
-    searchInput.addEventListener("input", function() {
-        const searchText = searchInput.value.toLowerCase();
-        suggestionsDropdown.innerHTML = ""; // Clear existing suggestions
+                const filteredOptions = originalSelectOptions.filter((option) =>
+                    option.text.toLowerCase().includes(searchText)
+                );
 
-        const filteredOptions = originalSelectOptions.filter((option) =>
-            option.text.toLowerCase().includes(searchText)
-        );
+                // Add filtered options to the select dropdown
+                filteredOptions.forEach((option) => select.add(option));
 
-        filteredOptions.forEach((option) => {
-            const clone = option.cloneNode(true); // Clone the original option
-            suggestionsDropdown.add(clone);
-        });
-
-        if (filteredOptions.length > 0) {
-            select.style.display = "block";
-            const inputRect = searchInput.getBoundingClientRect();
-            select.style.top = `${inputRect.bottom}px`;
-            select.style.left = `${inputRect.left}px`;
-            select.style.width = `${searchInput.offsetWidth}px`;
-        } else {
-            suggestionsDropdown.style.display = "none"; // Hide if no suggestions
-        }
-    });
-
-    searchInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && suggestionsDropdown.children.length > 0) {
-            const firstSuggestion = suggestionsDropdown.children[0];
-            searchInput.value = firstSuggestion.text; // Set the text field with the selected suggestion
-            suggestionsDropdown.style.display = "none"; // Hide suggestions
-            e.preventDefault(); // Prevent default Enter behavior
-        }
-    });
-
-    searchInput.addEventListener("focus", function() {
-        if (searchInput.value.trim() === "") {
-            // If the input field is empty, reset the suggestions dropdown
-            suggestionsDropdown.innerHTML = ""; // Clear previous suggestions
-            originalSelectOptions.forEach((option) => {
-                const clone = option.cloneNode(true);
-                suggestionsDropdown.add(clone);
+                
             });
-            suggestionsDropdown.style.display = "block";
-        }
+            }
+       
+
+            // Event handler to reset the select options when input is focused
+            searchInput.addEventListener("focus", function() {
+                select.innerHTML = ""; // Reset the select
+                originalSelectOptions.forEach((option) => select.add(option));
+            });
+
+            // Handle "Enter" key to select the first suggestion from select
+            searchInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" && select.children.length > 0) {
+                    // Select the first suggestion on Enter key
+                    const firstSuggestion = select.children[0];
+                    searchInput.value = firstSuggestion.text;
+                    select.innerHTML = ""; // Clear select after choosing
+                    e.preventDefault(); // Prevent default Enter behavior
+                }
+            });
     });
-});
 
-
-</script> -->
+</script>
 <script>
   
     window.addEventListener('message', receiveMessage, false);
@@ -340,7 +320,8 @@ document.addEventListener("DOMContentLoaded", function() {
     var prefixId = newSessionData.prefixValue;
 
 
-   
+    console.log('newQty',newQty)
+    console.log('newRate',newRate)
         var oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         var oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')
     
@@ -470,11 +451,11 @@ randomValue();
         var itemShadeIdValue;
         
        // perfix value on item-name change
-        $(document).on('click', 'input[name^="input_item_name_"]', function () {
+        $(document).on('click', 'select[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-      
+       
         purchaseValue = itemName.split('-')[1];
-     
+      console.log(purchaseValue);
 });
     //perfix value on item-shade change 
     $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
@@ -483,46 +464,20 @@ randomValue();
         //console.log(itemShadeIdValue);
     })
 
-   $(document).on('keyup', 'input[name^="item_name_"]', function (e) {
-     
-        e.preventDefault();
-        var nameValue = document.querySelector('.search-input').value;
-        console.log('nameValue',nameValue)
-        $.ajax({
-            url: '/purchasevoucheritemsearchajax/',
-            method: 'GET',
-            data: {
-                'nameValue': nameValue,
-            },
-            success: function (response) {
-                filtered_data_backend = response.item_name_typed
-                searched_item_name_dict = response.searched_item_name_dict
-                console.log(filtered_data_backend)
-                console.log(searched_item_name_dict)
-               
-              
-            },
-            error: function (xhr, errmsg, err) {
-                console.log(xhr.status + ": " + xhr.responseText); // Log any errors
-            }
-        })
-
-   })
+   
     
   // This ajax call
-     $(document).on('keydown', '.search-input', function (e) {
-         if(e.key==='Enter'){
-            e.preventDefault();
+     $(document).on('change', 'select[name^="item_name_"]', function () {
+            var item_value = $(this).val();   
+            var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
            
-
-         var item_value = document.querySelector('.search-input').value;
-         console.log('item_value',item_value)   
-        //var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
-        //var primaryKey = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id').value;
-        var purchaseDataValue = purchaseData.value;
+            
+            var purchaseDataValue = purchaseData.value;
         console.log('purchaseDataValue',purchaseDataValue)
-       
-         //if(purchaseDataValue == '' ){
+        
+        
+        
+         if(purchaseDataValue == ''){
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -532,10 +487,9 @@ randomValue();
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
-
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
                     
-                    console.log('itemrownameid',itemrownameid)
+
                     var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
                     var item_color = response.item_color;
                  
@@ -568,11 +522,8 @@ randomValue();
                     console.log('Error sending value to the backend');
                 }
             });
-         //}
-             
-         
-         }
-              
+        }
+           // console.log('item_value',item_value)       
            
         });
 
@@ -913,17 +864,17 @@ randomValue();
             el.value = ""; 
             });
             // update the input name,id and value of the last row     
-            const inputSelectElement = lastRow.querySelector('.search-input[name^="input_item_name_"]');
+            const inputSelectElement = lastRow.querySelector('.item-name');
             inputSelectElement.id = `input_item_name_${formIndex}`;
             inputSelectElement.name = `input_item_name_${formIndex}`;
             inputSelectElement.value="";
             
 
 
-            const selectElement = lastRow.querySelector('.item-name[name^="item_name_"]');
+            const selectElement = lastRow.querySelector('.item-name');
             selectElement.id = `item_name_${formIndex}`;
             selectElement.name = `item_name_${formIndex}`;
-           
+            selectElement.value="";
 
             // Update input name and id
             const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
