@@ -1,6 +1,7 @@
 {% extends 'product/base.html' %} 
 {% load static %} 
 
+
 {% block body %} 
 <div>
     <h2>Purchase invoice</h2>
@@ -83,11 +84,11 @@
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td>{{forms.instance.id}}</td>
                     <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.item_name }} {% endif %}">
-                         <select name="select_item_name_{{forloop.counter0}}" class="item-select item-name" id="select_item_name_{{forloop.counter0}}" style="display: none;">
+                         <select name="select_item_name_{{forloop.counter0}}" class="item-select item-name" id="select_item_name_{{forloop.counter0}}" style="display: none;" >
 
                         
                           </select>
-                         
+                          
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
@@ -186,69 +187,7 @@
     </form>
 </div>
 
-<!-- <script>
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Query elements more robustly
-    const searchInput = document.querySelector(".search-input");
-    const select = document.querySelector(".item-name");
-    const suggestionsDropdown = document.getElementById("filtered_suggestions");
-
-    if (!searchInput || !select || !suggestionsDropdown) {
-        console.error("One or more elements not found");
-        return; // Exit if elements are missing
-    }
-
-    const originalSelectOptions = Array.from(select.options);
-
-    searchInput.addEventListener("input", function() {
-        const searchText = searchInput.value.toLowerCase();
-        suggestionsDropdown.innerHTML = ""; // Clear existing suggestions
-
-        const filteredOptions = originalSelectOptions.filter((option) =>
-            option.text.toLowerCase().includes(searchText)
-        );
-
-        filteredOptions.forEach((option) => {
-            const clone = option.cloneNode(true); // Clone the original option
-            suggestionsDropdown.add(clone);
-        });
-
-        if (filteredOptions.length > 0) {
-            select.style.display = "block";
-            const inputRect = searchInput.getBoundingClientRect();
-            select.style.top = `${inputRect.bottom}px`;
-            select.style.left = `${inputRect.left}px`;
-            select.style.width = `${searchInput.offsetWidth}px`;
-        } else {
-            suggestionsDropdown.style.display = "none"; // Hide if no suggestions
-        }
-    });
-
-    searchInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && suggestionsDropdown.children.length > 0) {
-            const firstSuggestion = suggestionsDropdown.children[0];
-            searchInput.value = firstSuggestion.text; // Set the text field with the selected suggestion
-            suggestionsDropdown.style.display = "none"; // Hide suggestions
-            e.preventDefault(); // Prevent default Enter behavior
-        }
-    });
-
-    searchInput.addEventListener("focus", function() {
-        if (searchInput.value.trim() === "") {
-            // If the input field is empty, reset the suggestions dropdown
-            suggestionsDropdown.innerHTML = ""; // Clear previous suggestions
-            originalSelectOptions.forEach((option) => {
-                const clone = option.cloneNode(true);
-                suggestionsDropdown.add(clone);
-            });
-            suggestionsDropdown.style.display = "block";
-        }
-    });
-});
-
-
-</script> -->
 <script>
   
     window.addEventListener('message', receiveMessage, false);
@@ -377,6 +316,12 @@ if(newCompanyGst == newPartyGst){
 
 </script>
 
+
+
+
+
+
+
  <script>
 //this ajax is for gst no 
     $(document).ready(function () {
@@ -452,19 +397,22 @@ randomValue();
     //This ajax call is to populate the shade and color based on the selected item once retrive the value
     // When click the item name then append the shades with the color, per 
     $(document).ready(function () {
+        //$('.js-example-basic-single').select2();
         var itemName;
         var uniqueIdValue;
         var purchaseValue;
         var itemShadeName ;
         var itemShadeIdValue;
+        var selectName;
         
        // perfix value on item-name change
-        $(document).on('click', 'input[name^="input_item_name_"]', function () {
+        $(document).on('click', 'input[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-      
+       
+    
         purchaseValue = itemName.split('-')[1];
      
-});
+        });
     //perfix value on item-shade change 
     $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
         itemShadeName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
@@ -472,11 +420,22 @@ randomValue();
         //console.log(itemShadeIdValue);
     })
 
+   $(document).on('keydown','input[name^="item_name_"]',function(e){
+    selectName = $(this).closest('tr').find('[name^="select_item_name_"]').attr('name');
+      
+         
+     
+       
+   })
+
    $(document).on('keyup', 'input[name^="item_name_"]', function (e) {
      
         e.preventDefault();
-        var nameValue = document.querySelector('.search-input').value;
+        var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
         console.log('nameValue',nameValue)
+       if(nameValue != '' && nameValue != null && nameValue != undefined){
+        
+
         $.ajax({
             url: '/purchasevoucheritemsearchajax/',
             method: 'GET',
@@ -486,38 +445,60 @@ randomValue();
             success: function (response) {
                 filtered_data_backend = response.item_name_typed
                 searched_item_name_dict = response.searched_item_name_dict
-                console.log(filtered_data_backend)
-                console.log(searched_item_name_dict)
-
-                var itemNameValue = document.querySelector(`.item-name[name^="input_item_name_" +${purchaseValue} ]`);
-                console.log('itemNameValue',itemNameValue)
-               
-                $.each(searched_item_name_dict, function (key, value) {
-                    console.log(key, value)
-                   
-                });
+                if(searched_item_name_dict == 200 && searched_item_name_dict != '' ){
+                    var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+                console.log('selectNameValue',selectNameValue)
+                selectNameValue.css('display', 'block');
+                }
                 
+                
+                console.log(searched_item_name_dict)
+                var select = $('#' + selectName);
+                // Clear and repopulate options
+            select.empty();
+            $.each(searched_item_name_dict, function (key, value) {
+                select.append('<option value="' + key + '">' + value + '</option>');
+            });
+
+            // Show the select and initialize Select2
+            select.show();
+                select.off('click').on('click', function() {
+                var selectedValue = $(this).val(); // This is the key
+                var selectedText = $(this).find("option:selected").text(); // This is the displayed value
+                var inputElement = $(this).closest('tr').find('input[name^="item_name_"]');
+                
+                console.log('Selected Key:', selectedValue);
+                console.log('Selected Text:', selectedText);
+                console.log('Input Element:', inputElement);
+
+                inputElement.val(selectedText); // Set the visible text
+                inputElement.attr('data-key', selectedValue); // Store the key as a data attribute
+             });
+          
               
             },
             error: function (xhr, errmsg, err) {
                 console.log(xhr.status + ": " + xhr.responseText); // Log any errors
+                if(xhr.status == 400){
+                    $('#' + selectName).empty(); 
+                }
             }
         })
-
+    }
    })
     
   // This ajax call
-     $(document).on('keydown', '.search-input', function (e) {
-         if(e.key==='Enter'){
-            e.preventDefault();
+     $(document).on('click', 'select[name^="select_item_name_"]', function (e) {
+        //  if(e.key==='Enter'){
+        //     e.preventDefault();
            
 
-        // var item_value = document.querySelector('.search-input').value;
-        // console.log('item_value',item_value)   
+         var item_value = $(this).val();
+        console.log('item_value',item_value)   
         //var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
         //var primaryKey = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id').value;
-        var purchaseDataValue = purchaseData.value;
-        console.log('purchaseDataValue',purchaseDataValue)
+        // var purchaseDataValue = purchaseData.value;
+        // console.log('purchaseDataValue',purchaseDataValue)
        
          //if(purchaseDataValue == '' ){
             $.ajax({
@@ -568,7 +549,7 @@ randomValue();
          //}
              
          
-         }
+         //}
               
            
         });
@@ -909,17 +890,19 @@ randomValue();
             lastRow.querySelectorAll("input, select").forEach(function(el) { 
             el.value = ""; 
             });
+
             // update the input name,id and value of the last row     
-            const inputSelectElement = lastRow.querySelector('.search-input[name^="input_item_name_"]');
-            inputSelectElement.id = `input_item_name_${formIndex}`;
-            inputSelectElement.name = `input_item_name_${formIndex}`;
+            const inputSelectElement = lastRow.querySelector('.search-input[name^="item_name_"]');
+            inputSelectElement.id = `item_name_${formIndex}`;
+            inputSelectElement.name = `item_name_${formIndex}`;
             inputSelectElement.value="";
             
 
 
-            const selectElement = lastRow.querySelector('.item-name[name^="item_name_"]');
-            selectElement.id = `item_name_${formIndex}`;
-            selectElement.name = `item_name_${formIndex}`;
+            const selectElement = lastRow.querySelector('.item-name[name^="select_item_name_"]');
+            selectElement.id = `select_item_name_${formIndex}`;
+            selectElement.name = `select_item_name_${formIndex}`;
+            selectElement.innerHTML = '';
            
 
             // Update input name and id
