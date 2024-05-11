@@ -1195,6 +1195,37 @@ input[type=number] {
 .table-left-grandTotal{
     padding-left: 988px;
 }
+
+.search-input{
+    
+   
+   
+}
+.item-name{
+   border: none;
+   position: absolute;
+   z-index: 10;
+
+}
+.itemName-span{
+    display: block;
+    background-color: #fff; 
+    display: absolute;
+    overflow: hidden;
+    padding: 2px 5px;
+    line-height: 30px;
+    cursor: pointer;
+    border-radius: 3px;
+    
+    
+}
+.itemName-span:hover{
+    background-color: rgb(57, 142, 234);
+    color: #fff;
+}
+
+
+
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {

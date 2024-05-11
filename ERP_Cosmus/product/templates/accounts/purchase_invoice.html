@@ -87,10 +87,12 @@
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
-                    <td>{{forms.instance.id}}</td>
-                    <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{forms.instance.item_shade.items.item_name}}{% endif %}">
-                         <select name="select_item_name_{{forloop.counter0}}" class="item-select item-name" id="select_item_name_{{forloop.counter0}}" style="display: none;" >
-                          </select>
+                    <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
+                    <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.item_name }} {% endif %}"  > 
+                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name" id="select_item_name_{{forloop.counter0}}" style="display: none;" >
+
+                        
+                          </div>
                           
                     </td>
                     <td>
@@ -400,7 +402,7 @@ randomValue();
     //This ajax call is to populate the shade and color based on the selected item once retrive the value
     // When click the item name then append the shades with the color, per 
     $(document).ready(function () {
-        //$('.js-example-basic-single').select2();
+       
         var itemName;
         var uniqueIdValue;
         var purchaseValue;
@@ -411,36 +413,44 @@ randomValue();
        // perfix value on item-name change
         $(document).on('click', 'input[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-       
-    
         purchaseValue = itemName.split('-')[1];
+       
      
         });
     //perfix value on item-shade change 
     $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
         itemShadeName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         itemShadeIdValue = itemShadeName.split('-')[1];
-        //console.log(itemShadeIdValue);
+       
+       
     })
 
    $(document).on('keydown','input[name^="item_name_"]',function(e){
-    selectName = $(this).closest('tr').find('[name^="select_item_name_"]').attr('name');
-      
-         
-     
-       
+    selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
+
    })
 
-   $(document).on('keyup', 'input[name^="item_name_"]', function (e) {
-     
-        e.preventDefault();
-        var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
+   $(document).on('keyup click','input[name^="item_name_"]',function(e) {
+
+        if(e.type === 'keyup'){
+
+            var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
         console.log('nameValue',nameValue)
-       if(nameValue == ''){
+        var purchaseData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-popupData').value;
+          var jsonData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
+          //var primaryKey = document.getElementById('id_purchase_voucher_items_set-'+purchaseValue +'-id').value; 
+        var uniqueValue = document.getElementById('item_unique_id_'+purchaseValue).value;
+        console.log('uniqueValue',uniqueValue)
+
+        if(nameValue == ''){
         var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
-                console.log('selectNameValue',selectNameValue)
-                selectNameValue.css('display', 'none');
+              
+        selectNameValue.css('display', 'none');
+             
        }
+    
+     
+      if((purchaseData == '' && uniqueValue != '' )|| (purchaseData == '' && uniqueValue == '' && jsonData == '')){
         $.ajax({
             url: '/purchasevoucheritemsearchajax/',
             method: 'GET',
@@ -451,34 +461,32 @@ randomValue();
                 filtered_data_backend = response.item_name_typed
                 searched_item_name_dict = response.searched_item_name_dict
                 if(searched_item_name_dict == 200 && searched_item_name_dict != '' ){
-                    var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
-                console.log('selectNameValue',selectNameValue)
+                var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+              
                 selectNameValue.css('display', 'block');
                 }
                 
                 
-                console.log(searched_item_name_dict)
+                
                 var select = $('#' + selectName);
                 // Clear and repopulate options
             select.empty();
             $.each(searched_item_name_dict, function (key, value) {
-                select.append('<option value="' + key + '">' + value + '</option>');
+                select.append('<span class="itemName-span"  data-key="' + key + '">' + value + '</span>');
             });
 
             // Show the select and initialize Select2
             select.show();
-                select.off('click').on('click', function() {
-                var selectedValue = $(this).val(); // This is the key
-                var selectedText = $(this).find("option:selected").text(); // This is the displayed value
+                $('.itemName-span').on('click', function() {
+                var selectedValue = $(this).data('key'); 
+                var selectedText = $(this).text(); // This is the displayed value
                 var inputElement = $(this).closest('tr').find('input[name^="item_name_"]');
                 
-                console.log('Selected Key:', selectedValue);
-                console.log('Selected Text:', selectedText);
-                console.log('Input Element:', inputElement);
-
                 inputElement.val(selectedText); // Set the visible text
-                inputElement.attr('data-key', selectedValue); // Store the key as a data attribute
-             });
+                inputElement.attr('data-key', selectedValue);// Store the key as a data attribute
+             
+                select.hide();
+            });
           
               
             },
@@ -489,23 +497,96 @@ randomValue();
                 }
             }
         })
+      }
+
+
+        }else if(e.type === 'click'){
+            var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
+        console.log('nameValue',nameValue)
+        var purchaseData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-popupData').value;
+          var jsonData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
+          //var primaryKey = document.getElementById('id_purchase_voucher_items_set-'+purchaseValue +'-id').value; 
+        var uniqueValue = document.getElementById('item_unique_id_'+purchaseValue).value;
+        console.log('uniqueValue',uniqueValue)
+
+        if(nameValue == ''){
+        var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+              
+        selectNameValue.css('display', 'none');
+             
+       }
+    
+     
+      if((purchaseData == '' && uniqueValue != '' )|| (purchaseData == '' && uniqueValue == '' && jsonData == '')){
+        $.ajax({
+            url: '/purchasevoucheritemsearchajax/',
+            method: 'GET',
+            data: {
+                'nameValue': nameValue,
+            },
+            success: function (response) {
+                filtered_data_backend = response.item_name_typed
+                searched_item_name_dict = response.searched_item_name_dict
+                if(searched_item_name_dict == 200 && searched_item_name_dict != '' ){
+                var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+              
+                selectNameValue.css('display', 'block');
+                }
+                
+                
+                
+                var select = $('#' + selectName);
+                // Clear and repopulate options
+            select.empty();
+            $.each(searched_item_name_dict, function (key, value) {
+                select.append('<span class="itemName-span"  data-key="' + key + '">' + value + '</span>');
+            });
+
+            // Show the select and initialize Select2
+            select.show();
+                $('.itemName-span').on('click', function() {
+                var selectedValue = $(this).data('key'); 
+                var selectedText = $(this).text(); // This is the displayed value
+                var inputElement = $(this).closest('tr').find('input[name^="item_name_"]');
+                
+                inputElement.val(selectedText); // Set the visible text
+                inputElement.attr('data-key', selectedValue);// Store the key as a data attribute
+             
+                select.hide();
+            });
+          
+              
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText); // Log any errors
+                if(xhr.status == 400){
+                    $('#' + selectName).empty(); 
+                }
+            }
+        })
+      }else{
+        var itemNameData = $(this).closest('tr').find('input[name^="item_name_"]');
+        var shadeNameData = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
+        itemNameData.attr('readonly', true);
+        shadeNameData.prop('disabled', true);
+    }  
+        }
+       
+        
+    
     
    })
     
   // This ajax call
-     $(document).on('click', 'select[name^="select_item_name_"]', function (e) {
-        //  if(e.key==='Enter'){
-        //     e.preventDefault();
-           
+     $(document).on('click', '[name^="select_item_name_"]', function (e) {
+        
+          e.preventDefault();
 
-         var item_value = $(this).val();
-        console.log('item_value',item_value)   
-        var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
-        //var primaryKey = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id').value;
-         var purchaseDataValue = purchaseData.value;
-        // console.log('purchaseDataValue',purchaseDataValue)
+         var item_value = $(this).closest('tr').find('input[name^="item_name_"]').attr('data-key');
+        console.log('item_value',item_value)  
        
-         //if(purchaseDataValue == '' ){
+      
+       
             $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
@@ -551,12 +632,7 @@ randomValue();
                     console.log('Error sending value to the backend');
                 }
             });
-         //}
-             
-         
-         //}
-              
-           
+       
         });
 
         
@@ -896,11 +972,21 @@ randomValue();
             el.value = ""; 
             });
 
-            // update the input name,id and value of the last row     
+            // update the input name,id and value of the last row   
+            const rowElement = lastRow.querySelector('.rowNo[name^="rowNo_"]');
+            rowElement.id = `rowNo_${formIndex}`;
+            rowElement.name = `rowNo_${formIndex}`;
+            rowElement.textContent = formIndex + 1;
+            rowElement.style.border="none";
+
+            
+
+
             const inputSelectElement = lastRow.querySelector('.search-input[name^="item_name_"]');
             inputSelectElement.id = `item_name_${formIndex}`;
             inputSelectElement.name = `item_name_${formIndex}`;
             inputSelectElement.value="";
+            inputSelectElement.removeAttribute('readonly');
             
 
 
@@ -908,6 +994,7 @@ randomValue();
             selectElement.id = `select_item_name_${formIndex}`;
             selectElement.name = `select_item_name_${formIndex}`;
             selectElement.innerHTML = '';
+          
            
 
             // Update input name and id
@@ -920,6 +1007,7 @@ randomValue();
             selectElementShade.id = `purchase_voucher_items_set-${formIndex}-item_shade`;
             selectElementShade.name = `purchase_voucher_items_set-${formIndex}-item_shade`;
             selectElementShade.innerHTML = '';
+            selectElementShade.removeAttribute('disabled');
 
             const qunatityInputElement = lastRow.querySelector('.purchase-qunatity[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
             qunatityInputElement.id = `purchase_voucher_items_set-${formIndex}-quantity_total`;
