@@ -442,12 +442,7 @@ randomValue();
         var uniqueValue = document.getElementById('item_unique_id_'+purchaseValue).value;
         console.log('uniqueValue',uniqueValue)
 
-        if(nameValue == ''){
-        var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
-              
-        selectNameValue.css('display', 'none');
-             
-       }
+        
     
      
       if((purchaseData == '' && uniqueValue != '' )|| (purchaseData == '' && uniqueValue == '' && jsonData == '')){
