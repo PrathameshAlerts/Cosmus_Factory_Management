@@ -437,9 +437,11 @@ randomValue();
         e.preventDefault();
         var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
         console.log('nameValue',nameValue)
-       if(nameValue != '' && nameValue != null && nameValue != undefined){
-        
-
+       if(nameValue == ''){
+        var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+                console.log('selectNameValue',selectNameValue)
+                selectNameValue.css('display', 'none');
+       }
         $.ajax({
             url: '/purchasevoucheritemsearchajax/',
             method: 'GET',
@@ -488,7 +490,7 @@ randomValue();
                 }
             }
         })
-    }
+    
    })
     
   // This ajax call
@@ -499,9 +501,9 @@ randomValue();
 
          var item_value = $(this).val();
         console.log('item_value',item_value)   
-        //var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
+        var purchaseData = document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-popupData');
         //var primaryKey = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id').value;
-        // var purchaseDataValue = purchaseData.value;
+         var purchaseDataValue = purchaseData.value;
         // console.log('purchaseDataValue',purchaseDataValue)
        
          //if(purchaseDataValue == '' ){
