@@ -51,7 +51,7 @@
                     </div>
                     <div class="d-flex mb-3">
                         <label for="id_GST_number" class="item-form" >Party GST No : </label>
-                        <input type="text" class="item-select" name="GST_number" id ="id_GST_number"  value="{% if master_form.instance.id %}{{ master_form.instance.party_name.Gst_no }} {% endif %}" maxlength="15" readonly required>
+                        <input type="text" class="item-select" name="GST_number" id ="id_GST_number"  value="{% if master_form.instance.id %}{{ master_form.instance.party_name.Gst_no }}{% endif %}" maxlength="15" readonly required>
                     </div>
             
                 </div>
@@ -87,7 +87,7 @@
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
-                    <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.item_name }} {% endif %}"  > 
+                    <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
                          <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name" id="select_item_name_{{forloop.counter0}}" style="display: none;" >
 
                         
@@ -95,7 +95,7 @@
                           
                     </td>
                     <td>
-                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
+                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
                     </td>
                     <td>
                         <select name="{{forms.prefix}}-item_shade" class="purchase-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
@@ -117,13 +117,13 @@
                         <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" readonly>
                     </td>
                     <td>
-                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %} {{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
+                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage }}" readonly >
+                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage}}" readonly >
                     </td>
                     <td>
                     <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value=""readonly >
@@ -410,11 +410,10 @@ randomValue();
         var selectName;
         
        // perfix value on item-name change
-        $(document).on('click', 'input[name^="item_name_"]', function () {
+        $(document).on('click input keyup focus', 'input[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         purchaseValue = itemName.split('-')[1];
-       
-     
+    
         });
     //perfix value on item-shade change 
     $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
@@ -428,83 +427,15 @@ randomValue();
     selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
 
    })
+ // This ajax request for a input type value send to the backend and show the input name 
+   $(document).on('input keyup click focus','input[name^="item_name_"]',function(e) {
 
-   $(document).on('keyup click','input[name^="item_name_"]',function(e) {
-
-        if(e.type === 'keyup'){
-
-            var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
+        if( e.type === 'input' || e.type === 'keyup' || e.type === 'focus' || e.type === 'click'){
+           
+       var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
         console.log('nameValue',nameValue)
         var purchaseData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-popupData').value;
-          var jsonData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
-          //var primaryKey = document.getElementById('id_purchase_voucher_items_set-'+purchaseValue +'-id').value; 
-        var uniqueValue = document.getElementById('item_unique_id_'+purchaseValue).value;
-        console.log('uniqueValue',uniqueValue)
-
-        if(nameValue == ''){
-        var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
-              
-        selectNameValue.css('display', 'none');
-             
-       }
-    
-     
-      if((purchaseData == '' && uniqueValue != '' )|| (purchaseData == '' && uniqueValue == '' && jsonData == '')){
-        $.ajax({
-            url: '/purchasevoucheritemsearchajax/',
-            method: 'GET',
-            data: {
-                'nameValue': nameValue,
-            },
-            success: function (response) {
-                filtered_data_backend = response.item_name_typed
-                searched_item_name_dict = response.searched_item_name_dict
-                if(searched_item_name_dict == 200 && searched_item_name_dict != '' ){
-                var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
-              
-                selectNameValue.css('display', 'block');
-                }
-                
-                
-                
-                var select = $('#' + selectName);
-                // Clear and repopulate options
-            select.empty();
-            $.each(searched_item_name_dict, function (key, value) {
-                select.append('<span class="itemName-span"  data-key="' + key + '">' + value + '</span>');
-            });
-
-            // Show the select and initialize Select2
-            select.show();
-                $('.itemName-span').on('click', function() {
-                var selectedValue = $(this).data('key'); 
-                var selectedText = $(this).text(); // This is the displayed value
-                var inputElement = $(this).closest('tr').find('input[name^="item_name_"]');
-                
-                inputElement.val(selectedText); // Set the visible text
-                inputElement.attr('data-key', selectedValue);// Store the key as a data attribute
-             
-                select.hide();
-            });
-          
-              
-            },
-            error: function (xhr, errmsg, err) {
-                console.log(xhr.status + ": " + xhr.responseText); // Log any errors
-                if(xhr.status == 400){
-                    $('#' + selectName).empty(); 
-                }
-            }
-        })
-      }
-
-
-        }else if(e.type === 'click'){
-            var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
-        console.log('nameValue',nameValue)
-        var purchaseData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-popupData').value;
-          var jsonData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
-          //var primaryKey = document.getElementById('id_purchase_voucher_items_set-'+purchaseValue +'-id').value; 
+        var jsonData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         var uniqueValue = document.getElementById('item_unique_id_'+purchaseValue).value;
         console.log('uniqueValue',uniqueValue)
 
@@ -570,13 +501,9 @@ randomValue();
         shadeNameData.prop('disabled', true);
     }  
         }
-       
-        
-    
-    
    })
     
-  // This ajax call
+  // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
      $(document).on('click', '[name^="select_item_name_"]', function (e) {
         
           e.preventDefault();
@@ -595,7 +522,7 @@ randomValue();
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
-
+                    console.log('itemrownameid',itemrownameid)
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
                     
                     console.log('itemrownameid',itemrownameid)
