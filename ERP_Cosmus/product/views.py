@@ -609,16 +609,19 @@ def item_edit(request,pk):
 
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
-    print(formset)
-    print(formset.forms)
+
     print(request.POST)
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
-        
+
         if form.is_valid() and formset.is_valid():
+            print(formset)
+            print('forms',formset.forms)
+            formsethas_changed = [forms for forms in formset if formset.has_changed()]
+            print('has_changed',formsethas_changed)
             form.save()
             formset.save()
             messages.success(request,'Item updated successfully')
@@ -1995,7 +1998,7 @@ def purchasevoucheritemsearchajax(request):
                 item_name = queryset.item_name
                 item_id = queryset.id
                 searched_item_name_dict[item_id] = item_name
-        
+
             """
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict})
         else:

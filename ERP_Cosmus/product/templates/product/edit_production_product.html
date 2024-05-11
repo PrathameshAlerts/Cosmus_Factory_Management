@@ -96,8 +96,10 @@
             <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo mx-2">
             <span>{{form.Cosmus_link}}</span>
 
-            <label class="mx-2 text-dan ger">Delete:</label>
-            <span class="">{{form.DELETE}}</span>
+            
+            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="product_delete_related px-2" style="display: none;"name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
+
+            
           </div>
         </div>
         <div class="col-lg-2">
@@ -564,6 +566,33 @@
   
 </form>
 
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+          
+            // Find the row containing the clicked delete button
+            var rows = this.closest('.card');
+            console.log(rows)
+            var checkRow = rows.querySelector('.product_delete_related[name^="productdetails-"][name$="-DELETE"]');
+            if (checkRow) {
+                checkRow.checked = true; // Mark as checked
+                checkRow.value = 'true'; // Set the value to 'true'
+
+                rows.style.display = 'none';
+
+            } else {
+                console.error("Checkbox for deletion not found in this row");
+            }
+        });
+    });
+});
+
+
+</script>
 
 <script>
 

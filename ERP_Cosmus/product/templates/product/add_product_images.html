@@ -49,7 +49,7 @@
             <input type="number" class="item-select" name="{{form.prefix}}-Order_by" value="{{form.instance.Order_by}}" id="{{form.prefix}}-Order_by">
           </td>
           
-          <td><input type="checkbox" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" class=""></td>
+          <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_image_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
           </tr>
           {% endfor %}
   
@@ -64,6 +64,34 @@
   </div>
  
 </div>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Find the row containing the clicked delete button
+            var row = this.closest('tr');
+            var checkRow = row.querySelector('.product_image_deleteId[name^="productimages-"][name$="-DELETE"]');
+            if (checkRow) {
+                checkRow.checked = true; // Mark as checked
+                checkRow.value = 'true'; // Set the value to 'true'
+
+                row.style.display = 'none';
+
+            } else {
+                console.error("Checkbox for deletion not found in this row");
+            }
+        });
+    });
+});
+
+
+</script>
+
+
+
 <script>
   document.addEventListener("DOMContentLoaded", function() {
       const addFormButton = document.getElementById("addForm");

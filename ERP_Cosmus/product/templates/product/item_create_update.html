@@ -78,10 +78,18 @@
               <!-- Render each field manually -->
               <td>
                 <!-- item_name_rank -->
-                <input type="text" class="item-rank" style="border: none;" name="{{ shade_form.prefix }}-item_name_rank"
+                {% if forloop.first %}
+                <input type="number" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}"readonly>
-              </td>
-              <td>
+                  <!-- <td>{{shade_form.item_name_rank}}</td> -->
+                {% else %}
+                 <input type="number" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
+                  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank | default_if_none:''}}">
+                  <!-- <td>{{shade_form.item_name_rank}}</td> -->
+                {% endif %}
+
+              </td>        
+                   <td>
                 <!-- item_shade_name -->
               {% if forloop.first %}
               <input type="text" class="item-select" name="{{ shade_form.prefix }}-item_shade_name"
@@ -99,8 +107,9 @@
               <input type="file" class="pt-1 itemQty" style="width: 250px;" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
             </div>
               </td>
-             <td><button type="button" class="add_btn itemQty" id="{{ shade_form.prefix }}-opening_qty" name="{{ shade_form.prefix }}-opening_qty" >Add</button></td>
-              <td>{{ shade_form.DELETE }}</td>
+            <td><button type="button" class="add_btn itemQty" id="{{ shade_form.prefix }}-opening_qty" name="{{ shade_form.prefix }}-opening_qty" >Add</button></td>
+              
+              <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="shade_deleteId px-2" style="display: none;"  name="{{shade_form.prefix}}-DELETE" id="{{shade_form.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
           
           {% endfor %}
@@ -258,6 +267,32 @@
 {% endif %}
 </div>
 
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Find the row containing the clicked delete button
+            var row = this.closest('tr');
+            var checkRow = row.querySelector('.shade_deleteId[name^="shades-"][name$="-DELETE"]');
+            if (checkRow) {
+                checkRow.checked = true; // Mark as checked
+                checkRow.value = 'true'; // Set the value to 'true'
+
+                row.style.display = 'none';
+
+            } else {
+                console.error("Checkbox for deletion not found in this row");
+            }
+        });
+    });
+});
+
+
+</script>
+
 <script>
   $(document).ready(function(){
     var newPopup = null;
@@ -302,12 +337,6 @@
 
 <script>
 
-document.addEventListener('DOMContentLoaded', function () {
-var prefixValue = document.getElementById('id_shades-INITIAL_FORMS');
-var newPrefix = parseInt(prefixValue.value) + 1;
-console.log('newPrefix',newPrefix)
-document.getElementById('shades-'+ prefixValue.value +'-item_name_rank').value = newPrefix;
-});
   
 
 // function reladFabricPage(){
