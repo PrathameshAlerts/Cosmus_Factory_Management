@@ -90,8 +90,9 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
     ledger_type = instance.ledger_type
     grand_total = instance.grand_total
     
-    print('purchase_voucher',instance.purchase_number)
+    
     if created:
+        
         instance_create = account_credit_debit_master_table.objects.create(voucher_no = purchase_voucher,ledger=purchase_ledger,voucher_type = ledger_type, particulars= 'Raw Material',debit = grand_total,credit = 0)
         instance_create.save()
     

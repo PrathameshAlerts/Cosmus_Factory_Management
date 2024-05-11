@@ -12,7 +12,11 @@
 
                     <div class="d-flex mb-3">
                         <label for="id_purchase_number"  class="item-form">Purchase No</label>
-                        <input type="number" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required >
+                        {% if master_form.instance.id %}
+                        <input type="number" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required readonly>
+                        {% else %}
+                        <input type="number" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required>
+                        {% endif %}
                     </div>
                     <div class="d-flex mb-3">
                         <label for="id_supplier_invoice_number" class="item-form" >Supplier Invoice No</label>
