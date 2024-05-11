@@ -8,7 +8,7 @@
         
           </div>
         <div class="">
-            <form method="post" id="childform" enctype="multipart/form-data">
+            <form method="post" id="childform" onsubmit="submitData()">
                 {% csrf_token %}
                 <table class="table table-striped table-hover" id="newTable">
                     <thead>

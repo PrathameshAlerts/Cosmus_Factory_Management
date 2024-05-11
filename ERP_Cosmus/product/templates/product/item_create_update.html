@@ -268,13 +268,35 @@
 </div>
 
 
-<script>
-  '/item_create_dropdown_refresh_ajax/'
+<!-- <script>
+  
+  $(document).ready(function () {
+
+    $(document).on('change', 'hiddeninput', function () {
+
+        var selected_party_name = $(this).val()
+        var int_selected_party_name = parseInt(selected_party_name)
+
+        $.ajax({
+            url: '/item_create_dropdown_refresh_ajax/',
+            method: 'GET',
+            data: {
+                'selected_party_name': selected_party_name,
+            },
+            success: function (response) {
+                console.log('Data sent successfully')
+
+            },
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+            }
+        })
+    })
+})
 
 
 
-
-</script>
+</script> -->
 
 <script>
 

@@ -548,13 +548,6 @@ class item_godown_quantity_through_table(models.Model):
     def __str__(self):
         return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
     
-
-    # overriden save method if quantity is 0 so that use can delete the item and models.Protect wont affect it 
-    def save(self, *args, **kwargs):
-        if self.quantity == 0:
-            # Delete the instance if quantity is 0
-            self.delete()
-        else:
-            super().save(*args, **kwargs)
+            
 
 
