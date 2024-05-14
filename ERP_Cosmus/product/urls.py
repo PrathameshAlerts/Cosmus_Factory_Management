@@ -31,10 +31,10 @@ urlpatterns = [
     path('product2subcategoryproductajax/', views.product2subcategoryproductajax, name = 'product2subcategoryajax'),
 
     #productImages
-    path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
+    path('product/add_images/<int:pk>/', views.add_product_images, name='add-product-images'),
 
     #productVideourl
-    path('product/<int:pk>/add_video_url/', views.add_product_video_url, name='add-product-video-url'),
+    path('product/add_video_url/<int:pk>/', views.add_product_video_url, name='add-product-video-url'),
 
 
     #color routes
