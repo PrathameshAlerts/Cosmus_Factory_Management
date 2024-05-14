@@ -12,10 +12,36 @@
     </div>
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    {% if not form.instance.id %}
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-    {% endif %}
-   <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'fabric-finishes-list' %}">Return</a></button>
+    
 </form>
 
+
+<section>
+
+    <div class="row ps-3 mt-3">
+        <div class="col-lg-4">
+            <table class="table table-striped table-bordered table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Fabrics</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="mainTableList">
+                    {% for fabricfinish in fabricfinishes %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                       <td>{{fabricfinish.fabric_finish}}</td>  
+                       <td><a href="{% url 'fabric-finishes-update' fabricfinish.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
+                       <td><a href="{% url 'fabric-finishes-delete' fabricfinish.id %}"><i class="fa-solid fa-trash text-danger px-2"></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody> 
+            </table>
+        </div>
+    </div>
+
+</section>
  {% endblock body %}

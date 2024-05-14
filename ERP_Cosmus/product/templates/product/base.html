@@ -49,12 +49,12 @@
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Sub Category')"><i class="fas fa-table"></i>Sub Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'simplecolorlistonly' %}" class="sub-item">Colors</a>
-          <a href="{% url 'item-fabgroup-list' %}" class="sub-item">Fabric Groups</a>
-          <a href="{% url 'unit_name-list' %}" class="sub-item">Units(Metrics)</a> 
-          <a href="{% url 'gst-list' %}" class="sub-item">GST</a>
-          <a href="{% url 'fabric-finishes-list' %}" class="sub-item">Fabric Finshes</a>
-          <a href="{% url 'packaging-list' %}" class="sub-item">Packaging List</a>
+          <a href="{% url 'simplecolorlist' %}" class="sub-item">Colors</a>
+          <a href="{% url 'item-fabgroup-create-list' %}" class="sub-item">Fabric Groups</a>
+          <a href="{% url 'unit_name-create_list' %}" class="sub-item">Units(Metrics)</a> 
+          <a href="{% url 'gst-create-list' %}" class="sub-item">GST</a>
+          <a href="{% url 'fabric-finishes-create-list' %}" class="sub-item">Fabric Finshes</a>
+          <a href="{% url 'packaging-create-list' %}" class="sub-item">Packaging List</a>
         </div>
       </div>
       
@@ -63,7 +63,7 @@
         <div class="sub-menu">
           <a href="{% url 'account_sub_group-list' %}" class="sub-item">Groups</a>
           <a href="{% url 'ledger-list' %}" class="sub-item">Ledgers</a>
-          <a href="{% url 'stock_item-list' %}" class="sub-item">Stock Items</a>
+          <a href="{% url 'stock-item-create' %}" class="sub-item">Stock Items</a>
         </div>
       </div>
       <div class="item">
@@ -121,12 +121,12 @@
             <li class="nav-item dropdown">
               <span class="nav-link ms-2" style="cursor: pointer;"   onclick="showThePopUp('Sub Category')">Sub Category</span>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li class="pro-head"><a href="{% url 'simplecolorlistonly' %}" class="navText">Colors</a></li> 
-                <li class="pro-head"><a href="{% url 'item-fabgroup-list' %}" class="navText">Fabrics Groups</a></li>
-                <li class="pro-head"><a href="{% url 'unit_name-list' %}" class="navText">Units</a></li> 
-                <li class="pro-head"><a href="{% url 'gst-list' %}" class="navText">GST</a></li> 
-                <li class="pro-head"><a href="{% url 'fabric-finishes-list' %}" class="navText">Fabric Finshes</a></li>
-                <li class="pro-head"><a href="{% url 'packaging-list' %}" class="navText">Packaging List</a></li> 
+                <li class="pro-head"><a href="{% url 'simplecolorlist' %}" class="navText">Colors</a></li> 
+                <li class="pro-head"><a href="{% url 'item-fabgroup-create-list' %}" class="navText">Fabrics Groups</a></li>
+                <li class="pro-head"><a href="{% url 'unit_name-create_list' %}" class="navText">Units</a></li> 
+                <li class="pro-head"><a href="{% url 'gst-create-list' %}" class="navText">GST</a></li> 
+                <li class="pro-head"><a href="{% url 'fabric-finishes-create-list' %}" class="navText">Fabric Finshes</a></li>
+                <li class="pro-head"><a href="{% url 'packaging-create-list' %}" class="navText">Packaging List</a></li> 
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -150,12 +150,12 @@
         <li class="nav-item my-3 mx-2  dropdown">
           <span class="nav-link text-white" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">Sub Category</span> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'simplecolorlistonly' %}" class="navText">Colors</a></li> 
-           <li class="pro-head"><a href="{% url 'item-fabgroup-list' %}" class="navText">Fabrics Groups</a></li>
-           <li class="pro-head"><a href="{% url 'unit_name-list' %}" class="navText">Units</a></li> 
-           <li class="pro-head"><a href="{% url 'gst-list' %}" class="navText">GST</a></li> 
-           <li class="pro-head"><a href="{% url 'fabric-finishes-list' %}" class="navText">Fabric Finshes</a></li>
-           <li class="pro-head"><a href="{% url 'packaging-list' %}" class="navText">Packaging List</a></li> 
+           <li class="pro-head"><a href="{% url 'simplecolorlist' %}" class="navText">Colors</a></li> 
+           <li class="pro-head"><a href="{% url 'item-fabgroup-create-list' %}" class="navText">Fabrics Groups</a></li>
+           <li class="pro-head"><a href="{% url 'unit_name-create_list' %}" class="navText">Units</a></li> 
+           <li class="pro-head"><a href="{% url 'gst-create-list' %}" class="navText">GST</a></li> 
+           <li class="pro-head"><a href="{% url 'fabric-finishes-create-list' %}" class="navText">Fabric Finshes</a></li>
+           <li class="pro-head"><a href="{% url 'packaging-create-list' %}" class="navText">Packaging List</a></li> 
          </ul>  
          </li>
          <li class="nav-item my-3 mx-2  dropdown">
@@ -163,7 +163,7 @@
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Groups</a></li> 
            <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
-           <li class="pro-head"><a href="{% url 'stock_item-list' %}" class="navText">Stock Item</a></li> 
+           <li class="pro-head"><a href="{% url 'stock-item-create' %}" class="navText">Stock Item</a></li> 
          </ul>  
          </li>
          <li class="nav-item my-3 mx-2  dropdown">

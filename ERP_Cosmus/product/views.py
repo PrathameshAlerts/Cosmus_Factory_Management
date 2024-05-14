@@ -759,11 +759,9 @@ def item_create_dropdown_refresh_ajax(request):
 
 
 def color_create_update(request, pk=None):
-    if request.path == '/simple_colorcreate_list/':
-        template_name = 'product/color_list.html'
-        title = 'Color List'
 
-    elif request.path == '/simple_colorcreate_update/':
+
+    if request.path == '/simple_colorcreate_update/':
         template_name = 'product/color_create_update.html'
         title = 'Create Color'
 
@@ -793,16 +791,15 @@ def color_create_update(request, pk=None):
         if form.is_valid():
             form.save()
             # need to add a verification if getting request from simple form or from modal for save redirection 
-            if 'save_and_add_another' in request.POST:
-                messages.success(request, 'Color created successfully.')
-                return redirect('simplecolorlist')
             
-            elif 'save' in request.POST and request.path == '/simple_colorcreate_update/':
+            
+            if 'save' in request.POST and request.path == '/simple_colorcreate_update/':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
                 else:
                     messages.success(request, 'Color created successfully.')
-                return redirect('simplecolorlistonly')
+
+                return redirect('simplecolorlist')
             
             elif 'save' in request.POST and template_name == "product/color_popup.html":
                 messages.success(request, 'Color created successfully.')
@@ -822,10 +819,10 @@ def color_delete(request, pk):
         messages.success(request,f'Color {product_color.color_name} was deleted')
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {product_color.color_name} because it is referenced by other objects.')
-    return redirect('simplecolorlistonly')
+    return redirect('simplecolorlist')
 
-def colorpopup(request):
-    return render(request,'product/color_popup.html')
+
+
 
 # def color_create(request):
 #     if request.method == 'POST':
@@ -878,64 +875,56 @@ def colorpopup(request):
 #         return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form,'return_url_get':return_url_get})
 
 
-def item_fabric_group_create(request):
-    form = ItemFabricGroup()
+def item_fabric_group_create_update(request, pk = None):
+    fab_group_all = Fabric_Group_Model.objects.all()
+
+    if pk:
+        item_fabric_pk =  get_object_or_404(Fabric_Group_Model,pk=pk)
+        instance = item_fabric_pk
+        title = 'Fabric Group Update'
+    else:
+        form = ItemFabricGroup()
+        instance = None
+        title = 'Fabric Group Create'
     
-    if request.path == '/itemfabricgroupcreate/':
+
+    if request.path == '/itemfabricgroupcreateupdate/':
         template_name = 'product/item_fabric_group_create_update.html'
 
     elif request.path == '/fabric_popup/':
         template_name = 'product/fabric_popup.html'
 
+    elif request.path == f'/itemfabricgroupcreateupdate/{pk}':
+        template_name = 'product/item_fabric_group_create_update.html'
 
+    form = ItemFabricGroup(instance=instance)
     if request.method == 'POST':
-        form = ItemFabricGroup(request.POST)
+        form = ItemFabricGroup(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            messages.success(request,'Fabric group created.')
-            if 'save_and_add_another' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
-                
-                return redirect('item-fabgroup-create')
-            
-            elif 'save' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
 
-                return redirect('item-fabgroup-list')
+            if pk:
+                messages.success(request,'Fabric group updated sucessfully.')
+            else:
+                messages.success(request,'Fabric group created sucessfully.')
+
+            if 'save' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
+                return redirect('item-fabgroup-create-list')
 
             elif 'save' in request.POST and template_name == 'product/fabric_popup.html':
-
                 return HttpResponse('<script>window.close();</script>')
 
         else:
             print(form.errors)
-            return render(request,template_name,{'title': 'Create Fabric Group',
+            return render(request,template_name,{'title': title,"fab_group_all":fab_group_all,
                                                                                   'form':form})
 
 
-    return render(request,template_name,{'title': 'Create Fabric Group',
+    return render(request,template_name,{'title': title, "fab_group_all":fab_group_all,
                                                                           'form':form})
 
 
-def item_fabric_group_list(request):
-    fab_group_all = Fabric_Group_Model.objects.all()
-    return render(request,'product/fabric_group_list.html', {"fab_group_all":fab_group_all})
 
-
-def item_fabric_group_update(request,pk):
-    item_fabric_pk =  get_object_or_404(Fabric_Group_Model,pk=pk)
-    form = ItemFabricGroup(instance = item_fabric_pk)
-    if request.method == 'POST':
-        form = ItemFabricGroup(request.POST,instance = item_fabric_pk)
-        if form.is_valid():
-            form.save()
-            messages.success(request,'Fabric group updated.')
-            return redirect('item-fabgroup-list')
-        else:
-            
-            return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group',
-                                                                                  'form':form})
-    else:
-        return render(request,'product/item_fabric_group_create_update.html',{'title': 'Update Fabric Group',
-                                                                              'form':form})
 
 
 def item_fabric_group_delete(request,pk):
@@ -947,68 +936,61 @@ def item_fabric_group_delete(request,pk):
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {item_fabric_pk.fab_grp_name} because it is referenced by other objects.')
     
-    return redirect('item-fabgroup-list')
+    return redirect('item-fabgroup-create-list')
 
 
-def fabricpopup(request):
-    return render(request,'product/fabric_popup.html')
 #_______________________fabric group end___________________________________
 
 #_______________________Unit Name Start____________________________________
 
-def unit_name_create(request):
-    print(request.POST)
-    form = UnitName()
+def unit_name_create_update(request,pk=None):
+    
+    unit_name_all = Unit_Name_Create.objects.all()
+
+    if pk:
+        unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
+        instance = unit_name_pk
+        title = 'Unit Update'
+    else:
+        instance= None
+        title = 'Unit Create'
+
+    form = UnitName(instance = instance)
+
     if request.path == '/unitnamecreate/':
         template_name = 'product/unit_name_create_update.html'
 
     elif request.path == '/units_popup/':
         template_name = 'product/units_popup.html'
+    
+    elif request.path == f'/unitnameupdate/{pk}':
+        template_name = 'product/unit_name_create_update.html'
 
     if request.method == 'POST':
-        form = UnitName(request.POST)
+        form = UnitName(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            messages.success(request,'Unit created sucessfully.')
 
-            if 'save_and_add_another' in request.POST and template_name == 'product/unit_name_create_update.html':
-        
-                return redirect('unit_name-create')
+            if pk:
+                messages.success(request,'Unit updated sucessfully.')
+            else:
+                messages.success(request,'Unit created sucessfully.')
+
             
-            elif 'save' in request.POST and template_name == 'product/unit_name_create_update.html':
-
-                return redirect('unit_name-list')
+            if 'save' in request.POST and template_name == 'product/unit_name_create_update.html':
+                return redirect('unit_name-create_list')
 
             elif 'save' in request.POST and template_name == 'product/units_popup.html':
                 return HttpResponse('<script>window.close();</script>')
 
         else:
             print(form.errors)
-            return render(request, template_name, {'title': 'Create Unit','form':form})
+            return render(request, template_name, {'title': 'Create Unit','form':form,"unit_name_all":unit_name_all})
         
     else:
-        return render(request, template_name, {'title':'Create Unit','form':form})
+        return render(request, template_name, {'title':'Create Unit','form':form,"unit_name_all":unit_name_all})
 
 
-def unit_name_list(request):
-    unit_name_all = Unit_Name_Create.objects.all()
-    return render(request,'product/unit_name_list.html', {"unit_name_all":unit_name_all})
-
-
-def unit_name_update(request,pk):
-    unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
-    form = UnitName(instance=unit_name_pk)
-    if request.method == 'POST':
-        form = UnitName(request.POST ,instance=unit_name_pk)
-        if form.is_valid():
-            form.save()
-            messages.success(request,'Unit updated.')
-            return redirect('unit_name-list')
-        else:
-            return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,
-                                                                            "form":form})
-    return render(request, 'product/unit_name_create_update.html', {'title':'Update Unit' ,
-                                                                    "form":form})
 
 
 
@@ -1019,11 +1001,9 @@ def unit_name_delete(request,pk):
         messages.success(request,f'Unit name {unit_name_pk.unit_name} was deleted.')
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {unit_name_pk.unit_name} because it is referenced by other objects.')
-    return redirect('unit_name-list')
+    return redirect('unit_name-create_list')
 
 
-def unitnamepopup(request):
-    return render(request,'product/units_popup.html')
 #________________________Unit Name End_______________________________________
 
 
@@ -1054,6 +1034,7 @@ def account_sub_group_create(request):
     return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp, 
                                                                      'title':'Account Sub-Group Create',
                                                                      'form':form})
+
 
 def account_sub_group_update(request, pk):
     main_grp = AccountGroup.objects.all()
@@ -1092,57 +1073,45 @@ def account_sub_group_delete(request, pk):
 
 
 
-def stock_item_create(request):
-    print(request.POST)
+def stock_item_create_update(request,pk=None):
+
+    if pk:
+        instance = get_object_or_404(StockItem ,pk=pk)
+        title = 'Stock Item Update'
+    else:
+        instance = None
+        title = 'Stock Item Update'
+
+
+    stocks = StockItem.objects.all()
     accsubgrps = AccountSubGroup.objects.all()
-    form = StockItemForm()
+    form = StockItemForm(instance=instance)
     if request.method == 'POST':
-        form = StockItemForm(request.POST)
+        form = StockItemForm(request.POST,instance=instance)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Stock item created sucessfully')
+
+            if pk:
+                messages.success(request, 'Stock item updated sucessfully')
+            else:
+                messages.success(request, 'Stock item created sucessfully')
+
             if 'save' in request.POST:
-                return redirect('stock_item-list')
-            elif 'save_and_add_another' in request.POST:
                 return redirect('stock-item-create')
+
         else:
             print(form.errors)
             return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
                                                                             'accsubgrps':accsubgrps,
-                                                                            'form':form})
+                                                                            'form':form,'stocks':stocks})
     
     
     return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
                                                                     'accsubgrps':accsubgrps,
-                                                                    'form':form})
+                                                                    'form':form,'stocks':stocks})
 
 
 
-def stock_item_update(request, pk):
-
-    accsubgrps = AccountSubGroup.objects.all()
-    stock =get_object_or_404(StockItem ,pk=pk)
-    form = StockItemForm(instance = stock)
-    if request.method == 'POST':
-        form = StockItemForm(request.POST, instance = stock)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Stock item updated sucessfully')
-            return redirect('stock_item-list')
-        else:
-            print(form.errors)
-            return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update',
-                                                                             'accsubgrps':accsubgrps,
-                                                                             'form':form})
-    return render(request, 'product/stock_item_create_update.html', {'title':'Stock Item Update',
-                                                                     'accsubgrps':accsubgrps,
-                                                                     'form':form})
-
-
-def stock_item_list(request):
-
-    stocks = StockItem.objects.all()
-    return render(request,'product/stock_item_list.html', {"stocks":stocks})
 
 
 def stock_item_delete(request, pk):
@@ -1152,7 +1121,7 @@ def stock_item_delete(request, pk):
         messages.success(request,f'Stock Item {stock.stock_item_name} was deleted')
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {stock.stock_item_name} because it is referenced by other objects.')        
-    return redirect('stock_item-list')
+    return redirect('stock-item-create')
 
 
 
@@ -2054,8 +2023,10 @@ def salesvouchercreate(request):
     return render(request,'.html')
 
 
+
 def salesvoucherupdate(request,pk):
     return render(request,'.html')
+
 
 
 def salesvoucherlist(request):
@@ -2076,6 +2047,7 @@ def salesvoucherdelete(request,pk):
 
 
 def gst_create_update(request, pk = None):
+    gsts =  gst.objects.all()
     if pk:
         instance = gst.objects.get(pk=pk)
         title = 'Update'
@@ -2084,39 +2056,39 @@ def gst_create_update(request, pk = None):
         instance = None
         title = 'Create'
 
+    print(f'gstupdate/{pk}')
     print(request.path)
     if request.path == '/gstpopup/':
         template_name = 'accounts/gst_popup.html'
     
-    
     elif request.path == '/gstcreate/':
         template_name = 'accounts/gst_create_update.html'
 
-    
+
+    elif request.path == f'/gstupdate/{pk}':
+        template_name = 'accounts/gst_create_update.html'
+
+
     form = gst_form(instance = instance)
     if request.method == 'POST':
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
+            if pk:
+                messages.success(request,'GST updated successfully.')
+            else:
+                messages.success(request,'GST created successfully.')
 
-            messages.success(request,'GST created successfully.')
-            if 'save_and_add_another' in request.POST and template_name == 'accounts/gst_create_update.html':
-                return redirect('gst-create')
-            
-            elif 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
-                return redirect('gst-list')
+            if 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
+                return redirect('gst-create-list')
 
             elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
                 return HttpResponse('<script>window.close();</script>')
         else:
             messages.success(request,'An error occured.')
 
-    return render(request,template_name,{'form' : form, 'title':title})
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
 
-
-def gst_list(request):
-    gsts =  gst.objects.all()
-    return render(request,'accounts/gst_list.html',{'gsts':gsts})
 
 
 
@@ -2124,11 +2096,12 @@ def gst_delete(request,pk):
     gst_pk = gst.objects.get(pk=pk)
     gst_pk.delete()
     messages.success(request,'GST deleted')
-    return redirect('gst-list')
+    return redirect('gst-create-list')
 
 
 
 def fabric_finishes_create_update(request, pk = None):
+    fabricfinishes =  FabricFinishes.objects.all()
     if pk:
         fabric_finishes_instance = FabricFinishes.objects.get(pk=pk)
         title = 'Update'
@@ -2148,26 +2121,21 @@ def fabric_finishes_create_update(request, pk = None):
         form = FabricFinishes_form(request.POST,instance = fabric_finishes_instance)
         if form.is_valid():
             form.save()
-            messages.success(request,'fabric finish created')
-            if 'save_and_add_another' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
-                return redirect('fabric-finishes-create')
-    
-            elif 'save' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
-                return redirect('fabric-finishes-list')
+
+            if pk:
+                messages.success(request,'fabric finish updated sucessfully')
+            else:
+                messages.success(request,'fabric finish created sucessfully')
+
+            if 'save' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
+                return redirect('fabric-finishes-create-list')
             
             elif 'save' in request.POST and template_name == 'misc/fabric_finishes_popup.html':
                 return HttpResponse('<script>window.close();</script>')
         else:
             messages.error(request,'An error occured.')
 
-    return render(request,template_name,{'form':form,'title':title})
-
-
-
-
-def fabric_finishes_list(request):
-    fabricfinishes =  FabricFinishes.objects.all()
-    return render(request,'misc/fabric_finishes_list.html',{'fabricfinishes':fabricfinishes})
+    return render(request,template_name,{'form':form,'title':title,'fabricfinishes':fabricfinishes})
 
 
 
@@ -2175,10 +2143,13 @@ def fabric_finishes_delete(request,pk):
     fabric_finish =  FabricFinishes.objects.get(pk=pk)
     fabric_finish.delete()
     messages.success(request,'fabric finish deleted.')
-    return redirect('fabric-finishes-list')
+    return redirect('fabric-finishes-create-list')
 
 
 def packaging_create_update(request, pk = None):
+    
+    packaging_all =  packaging.objects.all()
+
     if pk:
         packaging_instance = packaging.objects.get(pk=pk)
         title = 'Update'
@@ -2198,27 +2169,24 @@ def packaging_create_update(request, pk = None):
         form = packaging_form(request.POST,instance = packaging_instance)
         if form.is_valid():
             form.save()
-            messages.success(request,'packing created.')
 
-            if 'save_and_add_another' in request.POST and template_name == 'misc/packaging_create_update.html':
-                return redirect('packaging-create')
+            if pk:
+                messages.success(request,'packing updated sucessfully.')
+            else:
+                messages.success(request,'packing created sucessfully.')
+
             
-            elif 'save' in request.POST and template_name == 'misc/packaging_create_update.html':
-                return redirect('packaging-list')
+            if 'save' in request.POST and template_name == 'misc/packaging_create_update.html':
+                return redirect('packaging-create-list')
 
             elif 'save' in request.POST and template_name == 'misc/packaging_popup.html':
                 return HttpResponse('<script>window.close();</script>')
         else:
             messages.error(request, 'An error accoured.')  
 
-    return render(request, template_name ,{'form':form,'title':title})
+    return render(request, template_name ,{'form':form,'title':title,'packaging_all':packaging_all})
 
 
-
-
-def packaging_list(request):
-    packaging_all =  packaging.objects.all()
-    return render(request,'misc/packaging_list.html',{'packaging_all':packaging_all})
 
 
 
@@ -2226,19 +2194,21 @@ def packaging_delete(request,pk):
     packaging_pk =  packaging.objects.get(pk=pk)
     packaging_pk.delete()
     messages.success(request,'Packing deleted.')
-    return redirect('packaging-list')
+    return redirect('packaging-create-list')
 
 
 
 #__________________________Sub Category End_____________________________
 
 
-def opening_godown_qty(request):
-    return render(request,'product/opening_godown_qty.html')
 
-#__________________________Category End_____________________________
+#_________________________production-end______________________________
 
+def set_production(request,pk):
+    context = {'primary_key':pk}
+    return render(request,'production/set_production.html',context= context)
 
+#_________________________production-send______________________________
 
 #__________________________reports-start_________________________________
 
@@ -2248,8 +2218,6 @@ def creditdebitreport(request):
     return render(request,'misc/purchase_report.html',{'all_reports':all_reports})
 
 #__________________________reports-end____________________________________
-
-
 
 
 #_______________________authentication View start___________________________

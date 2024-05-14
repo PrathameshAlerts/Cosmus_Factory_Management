@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.forms import ValidationError
 from multiselectfield import MultiSelectField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
@@ -22,6 +21,7 @@ class MainCategory(models.Model):
 
     def __str__(self):
         return self.product_category_name   
+
 
 class SubCategory(models.Model):
     product_sub_category_name = models.CharField(max_length = 250)
@@ -306,7 +306,7 @@ class Item_Creation(models.Model):
         ]
 
     #need to add many to many field to vendor 
-    item_name = models.CharField(unique= True, null=False, max_length = 255)
+    item_name = models.CharField(unique = True, null=False, max_length = 255)
     Material_code = models.CharField(max_length = 255)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Item_Packing = models.ForeignKey(packaging, on_delete=models.PROTECT)
@@ -318,10 +318,10 @@ class Item_Creation(models.Model):
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     Item_Creation_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
     HSN_Code = models.CharField(max_length = 100, blank = True)
-    status= models.CharField(max_length=50, choices= STATUS)
+    status= models.CharField(max_length = 50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
     created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now_add = True)
     
 # these functions are used to show related attributes instead of PK id in listview
    
@@ -550,4 +550,15 @@ class item_godown_quantity_through_table(models.Model):
     
             
 
+
+class product_2_item_through_table(models.Model):
+    PART_TYPE = [("Body","Body"),
+                ("combination","combination"),
+                ("Misc","Misc")]
+    
+    PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
+    Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
+    part_name = models.CharField(max_length=255)
+    part_type = models.CharField(max_length=50, choices=PART_TYPE) 
+    
 

@@ -77,7 +77,7 @@
 
           </div>
           <div class="mb-2 d-flex">
-            <label for="" class="form-label pe-3">EANCode :</label>
+            <label for="" class="form-label pe-3">EAN Code:</label>
             <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode"
               value="{{form.instance.Product_EANCode}}" class="rounded-3 w-75 px-2">
             <label for="" class="form-label ms-2 pe-4">Rating :</label>
@@ -107,9 +107,17 @@
           <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 150px;">
           {% endif %}
         </div>
+
+
+
+        <div class="col-lg-1">
+          <span><a href="{% url 'set-production' form.instance.PProduct_SKU %}">SetP link</a></span>
+
+        </div>
+        
       </div>
     </div>
-
+    
 
     {% endfor %}
   </div>
