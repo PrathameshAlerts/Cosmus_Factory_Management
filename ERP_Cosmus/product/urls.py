@@ -31,10 +31,10 @@ urlpatterns = [
     path('product2subcategoryproductajax/', views.product2subcategoryproductajax, name = 'product2subcategoryajax'),
 
     #productImages
-    path('product/<int:pk>/add_images/', views.add_product_images, name='add-product-images'),
+    path('product/add_images/<int:pk>/', views.add_product_images, name='add-product-images'),
 
     #productVideourl
-    path('product/<int:pk>/add_video_url/', views.add_product_video_url, name='add-product-video-url'),
+    path('product/add_video_url/<int:pk>/', views.add_product_video_url, name='add-product-video-url'),
 
 
     #color routes
@@ -47,7 +47,6 @@ urlpatterns = [
     # color in page
     path('simple_colorcreate_update/',views.color_create_update, name='simplecolorlist'),
     path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlist'),
-    path('simple_colorcreate_list/',views.color_create_update, name='simplecolorlistonly'),
 
     #color popup
     path('color_popup/',views.color_create_update, name='color-popup'),
@@ -61,25 +60,22 @@ urlpatterns = [
     #opening_godown_qty
     path('openinggodownquantity/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty'),
     path('openinggodownquantitypk/<int:primary_key>/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty-pk'),
-
     path('openinggodownquantityajax/',views.openingquantityformsetpopupajax , name= 'opening-godown-qty-ajax'),
 
     #itemfabgroup
-    path('itemfabricgroupcreate/',views.item_fabric_group_create , name= 'item-fabgroup-create'),
-    path('itemfabricgroupupdate/<int:pk>',views.item_fabric_group_update , name= 'item-fabgroup-update'),
-    path('itemfabricgrouplist/',views.item_fabric_group_list , name= 'item-fabgroup-list'),
+    path('itemfabricgroupcreateupdate/',views.item_fabric_group_create_update , name= 'item-fabgroup-create-list'),
+    path('itemfabricgroupcreateupdate/<int:pk>',views.item_fabric_group_create_update , name= 'item-fabgroup-update'),
     path('itemfabricgroupdelete/<int:pk>',views.item_fabric_group_delete , name= 'item-fabgroup-delete'),
     #popup
-    path('fabric_popup/',views.item_fabric_group_create, name='fabric-popup'),
+    path('fabric_popup/',views.item_fabric_group_create_update, name='fabric-popup'),
 
 
     #unitname
-    path('unitnamecreate/',views.unit_name_create , name= 'unit_name-create'),
-    path('unitnameupdate/<int:pk>',views.unit_name_update , name= 'unit_name-update'),
-    path('unitnamelist/',views.unit_name_list , name= 'unit_name-list'),
+    path('unitnamecreate/',views.unit_name_create_update , name= 'unit_name-create_list'),
+    path('unitnameupdate/<int:pk>',views.unit_name_create_update , name= 'unit_name-update'),
     path('unitnamedelete/<int:pk>',views.unit_name_delete , name= 'unit_name-delete'),
     #popup
-    path('units_popup/',views.unit_name_create, name='unit-name-popup'),
+    path('units_popup/',views.unit_name_create_update, name='unit-name-popup'),
 
     #accountsubgrp
     path('accsubgrpcreate/',views.account_sub_group_create , name= 'account_sub_group-create'),
@@ -88,9 +84,8 @@ urlpatterns = [
     path('accsubgrpdelete/<int:pk>',views.account_sub_group_delete , name= 'account_sub_group-delete'),
 
     #stockitem
-    path('stockitemcreate/',views.stock_item_create , name= 'stock-item-create'),
-    path('stockitemupdate/<int:pk>',views.stock_item_update , name= 'stock_item-update'),
-    path('stockitemlist/',views.stock_item_list , name='stock_item-list'),
+    path('stockitemcreate/',views.stock_item_create_update , name= 'stock-item-create'),
+    path('stockitemupdate/<int:pk>',views.stock_item_create_update , name= 'stock_item-update'),
     path('stockitemdelete/<int:pk>',views.stock_item_delete , name= 'stock_item-delete'),
 
 
@@ -129,27 +124,24 @@ urlpatterns = [
     path('salesvoucherdelete/', views.salesvoucherdelete, name = 'sales-voucher-delete'),
 
     #subcategorys
-    path('gstcreate/', views.gst_create_update, name = 'gst-create'),
-    # path('gstupdate/<int:pk>', views.gst_create_update, name = 'gst-update'),
-    path('gstlist/', views.gst_list, name = 'gst-list'),
+    path('gstcreate/', views.gst_create_update, name = 'gst-create-list'),
+    path('gstupdate/<int:pk>', views.gst_create_update, name = 'gst-update'),
     path('gstdelete/<int:pk>', views.gst_delete, name = 'gst-delete'),
     path('gstpopup/',views.gst_create_update, name = 'gst-popup'),
 
 
-    path('fabricfinishesscreate/', views.fabric_finishes_create_update, name = 'fabric-finishes-create'),
+    path('fabricfinishesscreate/', views.fabric_finishes_create_update, name = 'fabric-finishes-create-list'),
     path('fabricfinishesupdate/<int:pk>', views.fabric_finishes_create_update, name = 'fabric-finishes-update'),
-    path('fabricfinisheslist/', views.fabric_finishes_list, name = 'fabric-finishes-list'),
     path('fabricfinishesdelete/<int:pk>', views.fabric_finishes_delete, name = 'fabric-finishes-delete'),
-
     path('fabricfinishespopup/', views.fabric_finishes_create_update, name = 'fabric-finishes-popup'),
 
-    path('packaging_create/', views.packaging_create_update, name = 'packaging-create'),
+    path('packaging_create/', views.packaging_create_update, name = 'packaging-create-list'),
     path('packagingupdate/<int:pk>', views.packaging_create_update, name = 'packaging-update'),
-    path('packaginglist/', views.packaging_list, name = 'packaging-list'),
     path('packagingdelete/<int:pk>', views.packaging_delete, name = 'packaging-delete'),
-    
     path('packagingpop/',views.packaging_create_update, name = 'packaging-popup'),
 
+    #Production
+    path('setproduction/<int:pk>',views.set_production, name = 'set-production'),
 
     #reports
     path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),

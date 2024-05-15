@@ -2,24 +2,117 @@
 {% load static %} 
 
 {% block body %} 
-<div>
-  <h2>{{title}}</h2>
-      <form class="mb-5" action="" method="POST">
+
+<div class="row mt-3 mx-2">
+  <div class="col-lg-6">
+   
+      <form  action="" method="POST">
+        <h2 class="mb-3">{{title}}</h2>
         {% csrf_token %}  
        <div class="d-flex">
         <label for="id_color_name" class="form-label create_color_lable">Name:</label>
-        <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
+        <input type="text" class="item-select rounded" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
        </div>
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    {% if not form.instance.id %}
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-    {% endif %}
-      <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'simplecolorlistonly' %}">Return</a></button>
+    
       </form>
 
 </div>
+  <div class="col-lg-6">  
+      <div class="row">
+        <div class="col-lg-12 sub_main">
+          <div class="d-flex mb-3">
+            <div class="container-category "> 
+             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_sear  h" />
+               <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+            </div>
+           </div>
+          </div>  
+        </div>  
+        <div class="row ps-3">
+          <div class="col-lg-12">
+            <table class="table table-striped table-hover table-responsive table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col" class="name_absolute">No</th>
+                  <th scope="col" class="name_absolute">Name
+                    <!-- <div class="nav-item dropdown color-list-icons">
+                      <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
+                      <ul class="dropdown-menu">
+                        <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
+                      </ul>
+                    </div> -->
+                  </th>
+                  <th scope="col" class="name_absolute">Edit</th>
+                  <th scope="col" class="name_absolute">Delete</th>
+                </tr>
+              </thead>
+              <tbody class="mainTableList">
+              </tr>
+              {% for color in colors%}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{color.color_name}}</td>
+                <td><a href="{% url 'simplecolorlist' color.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ color.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+              </tr>
+             {% endfor %}
+              </tbody>
+              
+            </table>
+          </div>
+         
+        </div>
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          Are you sure you want to delete this color?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+        <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  
+ 
+  </div>
+</div>
+  
 
+  
+
+
+
+
+<script>
+  document.body.appendChild(document.getElementById('exampleModal'));
+  
+  $(document).ready(function(){
+      $('.delete-btn').click(function(){
+          var itemId = $(this).data('item-id');
+          $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+          $('#exampleModal').modal('show');
+      });
+  
+      // Confirm delete button click event
+      $('#confirmDeleteButton').click(function(){
+          var itemId = $(this).data('item-id');
+          // Redirect to delete view
+          window.location.href = '/colordelete/' + itemId;
+      });
+  });
+  
+  </script>
 
 {% endblock body %}
 

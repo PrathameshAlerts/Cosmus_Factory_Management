@@ -12,10 +12,37 @@
     </div>
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    {% if not form.instance.id %}
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-    {% endif %}
-   <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'gst-list' %}">Return</a></button>
+
 </form>
 
+
+<section>
+
+    <div class="row ps-3 mt-3">
+        <div class="col-lg-4">
+            <table class="table table-striped table-hover table-responsive table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Gst %</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="mainTableList">
+                    {% for gst in gsts %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                       <td>{{gst.gst_percentage}}</td>  
+                       <td> <a href=" {% url 'gst-update' gst.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+                       <td><a href="{% url 'gst-delete' gst.id %}"><i class="fa-solid fa-trash text-danger px-2"></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody> 
+            </table>
+        </div>
+    </div>
+
+
+</section>
  {% endblock body %}

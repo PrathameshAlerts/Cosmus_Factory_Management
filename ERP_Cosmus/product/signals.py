@@ -36,6 +36,7 @@ def handle_invoice_delete(sender, instance, **kwargs):
             godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
             godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
             godown_quantity_to_delete.save()
+            
 
     # delete instance form c/d master if entire invoice is deleted
     purchase_voucher = instance.purchase_number
@@ -92,7 +93,6 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
     
     
     if created:
-        
         instance_create = account_credit_debit_master_table.objects.create(voucher_no = purchase_voucher,ledger=purchase_ledger,voucher_type = ledger_type, particulars= 'Raw Material',debit = grand_total,credit = 0)
         instance_create.save()
     
@@ -106,9 +106,13 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
         instance_get.save()
     
 
-
-
-
+# signal to delete  0 quantity on update of model instance 
+@receiver(post_save, sender=item_godown_quantity_through_table)
+def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
+    if not created:  # remove this if statement if 0 quantity values are creating issue on creating new model instances
+        quantity_after_save = instance.quantity
+        if quantity_after_save == 0:
+            instance.delete()
 
 
 

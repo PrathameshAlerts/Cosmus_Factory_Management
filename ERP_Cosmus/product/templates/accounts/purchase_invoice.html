@@ -173,7 +173,7 @@
             <div class="table-left-transport mb-3">
                 <lable class="purchase-lable fw-bold">Fright & Transport</lable>
                 <span class="purchase-span">
-                    <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:''}}" maxlength="50" step=".01" >
+                    <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" >
                 </span>
             </div>
             <div class="table-left-roundOf mb-3">
@@ -490,9 +490,14 @@ randomValue();
                 // Clear and repopulate options
                 select.empty();
                    
-           
+          
                     $.each(filteredOptions, function(key, value) {
-            select.append('<div class="itemName-div itemName-div-suggestion selected" data-key="' + value[0] + '">' + value[1] + '</div>');
+                        var newFilter = filteredOptions.indexOf(value);
+                       
+                       
+                            
+            select.append('<div id="itemName-div_'+newFilter+'" value="" class="itemName-div itemName-div-suggestion selected" data-key="' + value[0] + '">' + value[1] + '</div>');
+                        
         });
 
 
@@ -524,44 +529,111 @@ randomValue();
         }
    })
 
-   $('.search-input').on('keydown', function(event) {
+   var index = 0; // Declare index outside of the event listener
+   var indexbool = false
+   
+$(document).on('keydown','input[name^="item_name_"]', function(event) {
+    console.log('inputName')   
     var select = $(this).next('.item-name');
-       var selectedItem = select.find('.itemName-div');
-       var currentIndex = selectedItem.index($('.itemName-div.selected'));
-      
-     
-       if (event.key === 'ArrowDown' ) {
-           event.preventDefault();
-          
-           currentIndex = (currentIndex + 1) % selectedItem.length; 
-           
-           
-       }else if(event.key === 'ArrowUp'){
-           event.preventDefault();
-        
-       currentIndex = (currentIndex - 1 + selectedItem.length) % selectedItem.length; // Decrement the index
-       
-       }else if (event.key === "Tab") {
-           event.preventDefault(); // Prevent default tab behavior
-           currentIndex = (currentIndex + 1) % selectedItem.length;
-           
-       }else if (event.key === 'Enter') {
+    var selectLength = select.find('.itemName-div').length-1;
+    var inputName = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
+    console.log('inputName',inputName)
+    if (event.key === 'ArrowDown') {
         event.preventDefault();
+        console.log('indexdown',index)
+        console.log('selectLength-',selectLength)
+       if(index <= selectLength){
         
-        var item_value = selectedItem.eq(currentIndex).data('key');
-       
-        console.log('item_value',item_value)
+            var selectedItem = select.find('#itemName-div_' + index);
+            var nameDataKey= selectedItem.text();
+            var nameKey = selectedItem.data('key');
 
+            //inputName.value = nameDataKey;
+            inputName.setAttribute('data-key', nameKey);
+        
+            selectedItem.addClass(" bg-highlight");
+            selectedItem.removeClass("selected");
+
+            if(index != selectLength ){
+                index += 1; 
+             indexbool = true;
+             console.log('indexdown-',index)
+            }
+             
+             
+       }else{
+           index = 0;
+       }
+      
+       
+     
+     }else if(event.key === 'ArrowUp'){
+           event.preventDefault();
+           if (index != 0 && indexbool == true)
+           {
+            console.log('indexdownif',index)
+                index = index - 1;
+           }
+           console.log('indexup',index)
+            console.log('selectLength-',selectLength)
+           if(index <= selectLength){
+ 
+            var selectedItem = select.find('#itemName-div_' + index);
+            var nameDataKey= selectedItem.text();
+            var nameKey = selectedItem.data('key');
+
+            //inputName.value = nameDataKey;
+            inputName.setAttribute('data-key', nameKey);
+            
+            selectedItem.addClass(" bg-highlight");
+            selectedItem.removeClass("selected");
+            }
+            else{
+                    index=0
+            }   
+     
+        }else if (event.key === 'Tab') {
+        event.preventDefault();
+        console.log('indexdown',index)
+       if(index <= selectLength){
+        
+            var selectedItem = select.find('#itemName-div_' + index);
+            var nameDataKey= selectedItem.text();
+            var nameKey = selectedItem.data('key');
+
+            //inputName.value = nameDataKey;
+            inputName.setAttribute('data-key', nameKey);
+        
+            selectedItem.addClass(" bg-highlight");
+            selectedItem.removeClass("selected");
+             index += 1; 
+             indexbool = true;
+             console.log('indexdown-',index)
+             
+       }else{
+           index = 0;
+       }
+      
+       
+     
+     }else if (event.key === 'Enter') {
+
+        
+        event.preventDefault();
+        var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
+        var  item_value = itemEnterValue.getAttribute('data-key');
+      
+        console.log('item_values',item_value)
+        select.hide();
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
     
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
         var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change').value
-        if(newData == ''){
+        if(newData == '' && itemShadeValue != ''){
             itemShade.value = itemShadeValue;
             itemShade.style = "display : block";
         }
 
-        selectedItem.css('display', 'none');
             if (item_value !== undefined) {
                 var selectedValue = searched_item_name_dict[item_value];
                 $(this).val(selectedValue);
@@ -619,8 +691,7 @@ randomValue();
         }
 
        
-       selectedItem.removeClass("selected"); // Remove classes from all items
-       selectedItem.eq(currentIndex).addClass("selected bg-highlight");
+       
 
         
    });   
@@ -980,7 +1051,10 @@ randomValue();
             inputSelectElement.value="";
             inputSelectElement.removeAttribute('readonly');
             
-
+            const oldShadeElement = lastRow.querySelector('[name^="input_item_shade_"]');
+            oldShadeElement.id = `input_item_shade_${formIndex}`;
+            oldShadeElement.name =  `input_item_shade_${formIndex}`;
+            oldShadeElement.value="";
 
             const selectElement = lastRow.querySelector('.item-name[name^="select_item_name_"]');
             selectElement.id = `select_item_name_${formIndex}`;

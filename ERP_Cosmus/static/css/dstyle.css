@@ -713,6 +713,7 @@ input[type=number] {
   border: none;
   border-radius: 10px;
   margin: 10px;
+  width: 80px;
 }
 .color_search{
     color: #555;
@@ -797,8 +798,8 @@ input[type=number] {
     border: 1px solid;
     border-radius: 20px;
     margin: 0 0;
-    width: 200px;
-    margin-left: 125px;
+    width: 270px;
+    margin-left: 230px;
 }
 .fabric-list-icons{
     position: absolute;
@@ -992,12 +993,17 @@ input[type=number] {
     overflow-y: auto;
 }
 .errorShow{
-    color: #9a0f0f;
+    position: fixed;
+  width: 70%;
+  display: flex;
+    color: #f4f4f4;
     list-style-type: none;
-    border: 2px solid #fff;
+    border: 2px solid #f8d7da;
     border-radius: 10px;
     padding: 5px 20px;
-    background-color: #dba6a6;
+    background-color: rgba(216, 67, 67, 0.5);
+    z-index: 10;
+
 }
 .image_btn{
     border: none;
@@ -1237,7 +1243,7 @@ input[type=number] {
     flex-direction: row;
 }
 .bg-highlight{
-    background-color: #656464;
+    background-color: #d11010;
     color: #000;
 }
 
