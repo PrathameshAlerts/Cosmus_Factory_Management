@@ -713,6 +713,7 @@ input[type=number] {
   border: none;
   border-radius: 10px;
   margin: 10px;
+  width: 80px;
 }
 .color_search{
     color: #555;
@@ -797,8 +798,8 @@ input[type=number] {
     border: 1px solid;
     border-radius: 20px;
     margin: 0 0;
-    width: 200px;
-    margin-left: 125px;
+    width: 270px;
+    margin-left: 230px;
 }
 .fabric-list-icons{
     position: absolute;
@@ -992,12 +993,17 @@ input[type=number] {
     overflow-y: auto;
 }
 .errorShow{
-    color: #9a0f0f;
+    position: fixed;
+  width: 70%;
+  display: flex;
+    color: #f4f4f4;
     list-style-type: none;
-    border: 2px solid #fff;
+    border: 2px solid #f8d7da;
     border-radius: 10px;
     padding: 5px 20px;
-    background-color: #dba6a6;
+    background-color: rgba(216, 67, 67, 0.5);
+    z-index: 10;
+
 }
 .image_btn{
     border: none;
@@ -1009,6 +1015,7 @@ input[type=number] {
     background: linear-gradient(45deg, #49e4b6, #69e490);
     cursor: pointer;
 }
+
 
 /*===product cart rating===*/
 .my-file {
@@ -1196,34 +1203,49 @@ input[type=number] {
     padding-left: 988px;
 }
 
-.search-input{
-    
-   
-   
+.search_input{
+
 }
 .item-name{
-   border: none;
+    display: block;
+    width: 180px;
    position: absolute;
+   background-color: #f1f1f1;
    z-index: 10;
 
-}
-.itemName-span{
-    display: block;
-    background-color: #fff; 
-    display: absolute;
-    overflow: hidden;
-    padding: 2px 5px;
-    line-height: 30px;
+} 
+ .itemName-div{
+    padding: 7px 0 7px 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 14px;
     cursor: pointer;
-    border-radius: 3px;
-    
-    
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    flex: 1 1 0%; 
 }
-.itemName-span:hover{
-    background-color: rgb(57, 142, 234);
-    color: #fff;
+.itemName-div-suggestion{
+    direction: ltr;
+    text-align: left;
 }
-
+.s-suggestion-container {
+    font-size: 14px;
+    padding-right: 8px;
+    height: auto;
+    display: block;
+    width: 180px;
+    position: absolute;
+    background-color: #f1f1f1;
+    z-index: 10;
+    cursor: pointer;
+    flex-direction: row;
+}
+.bg-highlight{
+    background-color: #d11010;
+    color: #000;
+}
 
 
 /*===product cart rating===*/

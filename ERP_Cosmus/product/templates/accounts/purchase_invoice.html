@@ -87,10 +87,11 @@
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
                     <input type="hidden" id="{{forms.prefix}}-deleteJsonData" value="" name="{{forms.prefix}}-deleteJsonData">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
+                    <input type="hidden" id="{{forms.prefix}}-old_item_shade_for_dropdown_change" value="{{forms.instance.item_shade}}" name="{{forms.prefix}}-old_item_shade_for_dropdown_change">
                     <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
-                    <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name" id="select_item_name_{{forloop.counter0}}" style="display: none;" >
-
+                    <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" id="select_item_name_{{forloop.counter0}}" style="display: none; height: auto; flex: 1 1 0%;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                           
                         
                           </div>
                           
@@ -100,6 +101,7 @@
                         
                     </td>
                     <td>
+                        <input type ="text" name="input_item_shade_{{forloop.counter0}}" id="input_item_shade_{{forloop.counter0}}" class="purchase-select" style="border: none ;color: #000; background-color: transparent; display: none;" readonly value="">
                         <select name="{{forms.prefix}}-item_shade" class="purchase-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
                              {% if forms.instance.id %} 
@@ -110,7 +112,7 @@
                              {% endif %}
 
                         </select>
-                        
+                       
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly>
@@ -410,19 +412,33 @@ randomValue();
         var itemShadeName ;
         var itemShadeIdValue;
         var selectName;
+
+        $(document).on('change','select[name^="purchase_voucher_items_set-"]', function () {
+            var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
+        var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
+        var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change')
+       
+        var selectElementValue = itemShadeValue.value;
+        console.log('newData',newData)
+        if(newData == ''){
+        
+            itemShade.value = selectElementValue;
+            itemShade.style ="display: none";
+        }
+
+        });
         
        // perfix value on item-name change
-        $(document).on('click input keyup focus', 'input[name^="item_name_"]', function () {
+        $(document).on('click input keyup focus keydown', 'input[name^="item_name_"]', function () {
         itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         purchaseValue = itemName.split('-')[1];
-    
+                
         });
     //perfix value on item-shade change 
     $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
         itemShadeName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
         itemShadeIdValue = itemShadeName.split('-')[1];
-       
-       
+    
     })
 
    $(document).on('keydown','input[name^="item_name_"]',function(e){
@@ -430,16 +446,15 @@ randomValue();
 
    })
  // This ajax request for a input type value send to the backend and show the input name 
-   $(document).on('input keyup click focus','input[name^="item_name_"]',function(e) {
+   $(document).on('input keyup click focus ','input[name^="item_name_"]',function(e) {
 
         if( e.type === 'input' || e.type === 'keyup' || e.type === 'focus' || e.type === 'click'){
            
        var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
-        console.log('nameValue',nameValue)
         var purchaseData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-popupData').value;
         var jsonData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         var uniqueValue = document.getElementById('item_unique_id_'+purchaseValue).value;
-        console.log('uniqueValue',uniqueValue)
+        
 
         if(nameValue == ''){
         var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
@@ -459,35 +474,44 @@ randomValue();
             success: function (response) {
                 filtered_data_backend = response.item_name_typed
                 searched_item_name_dict = response.searched_item_name_dict
-                if(searched_item_name_dict == 200 && searched_item_name_dict != '' ){
-                var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
-              
-                selectNameValue.css('display', 'block');
-                }
-                
-                
-                
-                var select = $('#' + selectName);
-                // Clear and repopulate options
-            select.empty();
-            $.each(searched_item_name_dict, function (key, value) {
-                select.append('<span class="itemName-span"  data-key="' + key + '">' + value + '</span>');
-            });
 
-            // Show the select and initialize Select2
-            select.show();
-                $('.itemName-span').on('click', function() {
-                var selectedValue = $(this).data('key'); 
-                var selectedText = $(this).text(); // This is the displayed value
-                var inputElement = $(this).closest('tr').find('input[name^="item_name_"]');
-                
-                inputElement.val(selectedText); // Set the visible text
-                inputElement.attr('data-key', selectedValue);// Store the key as a data attribute
-             
-                select.hide();
-            });
-          
+
               
+
+                $('.search-input').on('keyup', function () {
+                    var select = $('#' + selectName);
+            
+                    
+            var searchQuery = $(this).val();
+             var filteredOptions =Object.entries(searched_item_name_dict).filter(([key, value]) =>
+                  value.toLowerCase().includes(searchQuery)  
+                );
+            
+                // Clear and repopulate options
+                select.empty();
+                   
+          
+                    $.each(filteredOptions, function(key, value) {
+                        var newFilter = filteredOptions.indexOf(value);
+                       
+                       
+                            
+            select.append('<div id="itemName-div_'+newFilter+'" value="" class="itemName-div itemName-div-suggestion selected" data-key="' + value[0] + '">' + value[1] + '</div>');
+                        
+        });
+
+
+
+        // Show the suggestions div if there are options, hide it otherwise
+        if (filteredOptions.length > 0) {
+            select.show();
+        
+        } else {
+            select.hide();
+        }
+    
+    });
+     
             },
             error: function (xhr, errmsg, err) {
                 console.log(xhr.status + ": " + xhr.responseText); // Log any errors
@@ -504,18 +528,117 @@ randomValue();
     }  
         }
    })
-    
-  // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
-     $(document).on('click', '[name^="select_item_name_"]', function (e) {
-        
-          e.preventDefault();
 
-         var item_value = $(this).closest('tr').find('input[name^="item_name_"]').attr('data-key');
-        console.log('item_value',item_value)  
-       
+   var index = 0; // Declare index outside of the event listener
+   var indexbool = false
+   
+$(document).on('keydown','input[name^="item_name_"]', function(event) {
+    console.log('inputName')   
+    var select = $(this).next('.item-name');
+    var selectLength = select.find('.itemName-div').length-1;
+    var inputName = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
+    console.log('inputName',inputName)
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        console.log('indexdown',index)
+        console.log('selectLength-',selectLength)
+       if(index <= selectLength){
+        
+            var selectedItem = select.find('#itemName-div_' + index);
+            var nameDataKey= selectedItem.text();
+            var nameKey = selectedItem.data('key');
+
+            //inputName.value = nameDataKey;
+            inputName.setAttribute('data-key', nameKey);
+        
+            selectedItem.addClass(" bg-highlight");
+            selectedItem.removeClass("selected");
+
+            if(index != selectLength ){
+                index += 1; 
+             indexbool = true;
+             console.log('indexdown-',index)
+            }
+             
+             
+       }else{
+           index = 0;
+       }
       
        
-            $.ajax({
+     
+     }else if(event.key === 'ArrowUp'){
+           event.preventDefault();
+           if (index != 0 && indexbool == true)
+           {
+            console.log('indexdownif',index)
+                index = index - 1;
+           }
+           console.log('indexup',index)
+            console.log('selectLength-',selectLength)
+           if(index <= selectLength){
+ 
+            var selectedItem = select.find('#itemName-div_' + index);
+            var nameDataKey= selectedItem.text();
+            var nameKey = selectedItem.data('key');
+
+            //inputName.value = nameDataKey;
+            inputName.setAttribute('data-key', nameKey);
+            
+            selectedItem.addClass(" bg-highlight");
+            selectedItem.removeClass("selected");
+            }
+            else{
+                    index=0
+            }   
+     
+        }else if (event.key === 'Tab') {
+        event.preventDefault();
+        console.log('indexdown',index)
+       if(index <= selectLength){
+        
+            var selectedItem = select.find('#itemName-div_' + index);
+            var nameDataKey= selectedItem.text();
+            var nameKey = selectedItem.data('key');
+
+            //inputName.value = nameDataKey;
+            inputName.setAttribute('data-key', nameKey);
+        
+            selectedItem.addClass(" bg-highlight");
+            selectedItem.removeClass("selected");
+             index += 1; 
+             indexbool = true;
+             console.log('indexdown-',index)
+             
+       }else{
+           index = 0;
+       }
+      
+       
+     
+     }else if (event.key === 'Enter') {
+
+        
+        event.preventDefault();
+        var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
+        var  item_value = itemEnterValue.getAttribute('data-key');
+      
+        console.log('item_values',item_value)
+        select.hide();
+        var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
+    
+        var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
+        var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change').value
+        if(newData == '' && itemShadeValue != ''){
+            itemShade.value = itemShadeValue;
+            itemShade.style = "display : block";
+        }
+
+            if (item_value !== undefined) {
+                var selectedValue = searched_item_name_dict[item_value];
+                $(this).val(selectedValue);
+               
+                $.ajax({
                 url: '/purchasevouchercreate/',
                 method: 'GET',
                 data: {
@@ -524,10 +647,10 @@ randomValue();
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
-                    console.log('itemrownameid',itemrownameid)
-                    $('#' + itemName).empty().append('<option value="">TEST</option>'); 
+                   
+                    $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
                     
-                    console.log('itemrownameid',itemrownameid)
+                    
                     var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
                     var item_color = response.item_color;
                  
@@ -542,7 +665,9 @@ randomValue();
                     itemgstinput.value = item_gst_value_response
                    
                     var item_shade_response = response.item_shade;
+                    
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
+                 
                  
                  //once we get the response then we need to append it to the select box as a option with check the key and value
                     // if it is equal to key then append it to the select box else append it to the select box
@@ -551,6 +676,7 @@ randomValue();
                         $.each(item_shade__quantity, function (key, value) { });
                         if (key == key) {
                             $('#' + itemName).append('<option value="' + key + '">' + value +  ' -  '  + item_shade__quantity[key]+ '</option>');
+                          
                         }else{
                             $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
                         }
@@ -559,11 +685,20 @@ randomValue();
                 error: function (xhr, errmsg, err) {
                     console.log('Error sending value to the backend');
                 }
-            });
+            });  
+            }
+           
+        }
+
        
-        });
+       
 
         
+   });   
+       
+  // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
+     
+ 
      
         var popupWindow = null; // Variable to hold the reference to the popup window
        
@@ -916,7 +1051,10 @@ randomValue();
             inputSelectElement.value="";
             inputSelectElement.removeAttribute('readonly');
             
-
+            const oldShadeElement = lastRow.querySelector('[name^="input_item_shade_"]');
+            oldShadeElement.id = `input_item_shade_${formIndex}`;
+            oldShadeElement.name =  `input_item_shade_${formIndex}`;
+            oldShadeElement.value="";
 
             const selectElement = lastRow.querySelector('.item-name[name^="select_item_name_"]');
             selectElement.id = `select_item_name_${formIndex}`;
@@ -1008,6 +1146,11 @@ randomValue();
            olditemshadeElement.id = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
            olditemshadeElement.name = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
            olditemshadeElement.value = '';
+
+           const olditemshadeElementforupdate = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-old_item_shade_for_dropdown_change"]');
+           olditemshadeElementforupdate.id = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
+           olditemshadeElementforupdate.name = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
+           olditemshadeElementforupdate.value = '';
             
             tableBody.appendChild(lastRow);
            

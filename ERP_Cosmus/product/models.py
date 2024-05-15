@@ -561,14 +561,12 @@ class set_prod_item_part_name(models.Model):
     part_pieces = models.IntegerField()
     part_type = models.CharField(max_length=255)  #remark
 
+
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT) 
     set_prod_config = models.ManyToManyField(set_prod_item_part_name)
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
-
-
-
 
     
     

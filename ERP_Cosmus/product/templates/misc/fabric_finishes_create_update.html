@@ -2,46 +2,51 @@
 {% load static %} 
  {% block body %}
 
-<form action="" method="POST">
+ <div class="row ps-3 mt-5">
+    <div class="col-lg-5">
+        <form action="" method="POST">
 
-    {% csrf_token %}
-   <h2>Fabric Finishes {{title}}</h2>
-    <div class="d-flex my-4">
-        <label for="id_fabric_finish" class="item-form">Fabric Finishes :</label>
-        <input type="text" name="fabric_finish" class="item-select" required id="id_fabric_finish" value="{{form.instance.fabric_finish}}">    
+            {% csrf_token %}
+           <h2>Fabric Finishes {{title}}</h2>
+            <div class="d-flex my-4">
+                <label for="id_fabric_finish" class="item-form">Fabric Finishes :</label>
+                <input type="text" name="fabric_finish" class="item-select" required id="id_fabric_finish" value="{{form.instance.fabric_finish}}">    
+            </div>
+        
+            <input type="submit" class="create-btn mt-4" name="save" value="Save">
+            
+        </form>
     </div>
-
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    
-</form>
-
-
-<section>
-
-    <div class="row ps-3 mt-3">
-        <div class="col-lg-4">
-            <table class="table table-striped table-bordered table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Fabrics</th>
-                        <th>Update</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody class="mainTableList">
-                    {% for fabricfinish in fabricfinishes %}
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                       <td>{{fabricfinish.fabric_finish}}</td>  
-                       <td><a href="{% url 'fabric-finishes-update' fabricfinish.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
-                       <td><a href="{% url 'fabric-finishes-delete' fabricfinish.id %}"><i class="fa-solid fa-trash text-danger px-2"></a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody> 
-            </table>
-        </div>
+    <div class="col-lg-5">
+            
+                    <table class="table table-striped table-bordered table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Fabrics</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList">
+                            {% for fabricfinish in fabricfinishes %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                               <td>{{fabricfinish.fabric_finish}}</td>  
+                               <td><a href="{% url 'fabric-finishes-update' fabricfinish.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
+                               <td><a href="{% url 'fabric-finishes-delete' fabricfinish.id %}"><i class="fa-solid fa-trash text-danger px-2"></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody> 
+                    </table>
+              
+        
+        
+       
     </div>
+ </div>
 
-</section>
+
+
+
  {% endblock body %}
