@@ -46,7 +46,7 @@ urlpatterns = [
 
     # color in page
     path('simple_colorcreate_update/',views.color_create_update, name='simplecolorlist'),
-    path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlist'),
+    path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlistupdate'),
 
     #color popup
     path('color_popup/',views.color_create_update, name='color-popup'),

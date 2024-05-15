@@ -11,6 +11,7 @@ from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 from django.contrib import messages
 from django.db.models import Sum
+import openpyxl
 from django.forms import modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
@@ -792,13 +793,12 @@ def color_create_update(request, pk=None):
             form.save()
             # need to add a verification if getting request from simple form or from modal for save redirection 
             
-            
-            if 'save' in request.POST and request.path == '/simple_colorcreate_update/':
+            if 'save' in request.POST and request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
                 else:
                     messages.success(request, 'Color created successfully.')
-
+                
                 return redirect('simplecolorlist')
             
             elif 'save' in request.POST and template_name == "product/color_popup.html":
@@ -823,56 +823,12 @@ def color_delete(request, pk):
 
 
 
-
-# def color_create(request):
-#     if request.method == 'POST':
-#         form = ColorForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             if 'save_and_add_another' in request.POST:
-#                 form = ColorForm()
-#                 return render(request,'product/create_color.html',{'form': form, 'return_url_get': request.session.get('return_url_color', '/')})
-#             #get the return url from the session and redirect it to the same 
-#             return_url = request.session.get('return_url_color', '/')
-#             # delete the session
-#             del request.session['return_url_color']
-#             return redirect(return_url)
-#         else:
-#             print(form.errors)
-#             return render(request,"product/create_color.html",{'form': form})
-#     else:
-#         #store HTTP_REFERER which has the previous page route in the session 
-#         if 'return_url_color' not in request.session:
-#             return_url_get = request.META.get('HTTP_REFERER', '/')
-#             request.session['return_url_color'] = return_url_get
-#         form = ColorForm()
-#         return render(request,'product/create_color.html',{'form': form, 'return_url_get': request.session.get('return_url_color', '/')})
-
-
-
 #_____________________Color-end________________________
 
 
 
 #_______________________fabric group start___________________________________
 
-# def item_fabric_group_create(request):
-#     form = ItemFabricGroup()
-#     if request.method == 'POST':
-#         form = ItemFabricGroup(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             #get the return url from the session and redirect it to the same 
-#             return_url = request.session.get('return_url', '/')
-#             # delete the session
-#             del request.session['return_url']
-#             return redirect(return_url)
-#         else:
-#             return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form})
-#     else:
-#         return_url_get = request.META.get('HTTP_REFERER', '/')
-#         request.session['return_url'] = return_url_get
-#         return render(request,'product/item_fabric_group_create_update.html',{'title': 'Create Fabric Group','form':form,'return_url_get':return_url_get})
 
 
 def item_fabric_group_create_update(request, pk = None):
@@ -985,10 +941,10 @@ def unit_name_create_update(request,pk=None):
 
         else:
             print(form.errors)
-            return render(request, template_name, {'title': 'Create Unit','form':form,"unit_name_all":unit_name_all})
+            return render(request, template_name, {'title': title,'form':form,"unit_name_all":unit_name_all})
         
     else:
-        return render(request, template_name, {'title':'Create Unit','form':form,"unit_name_all":unit_name_all})
+        return render(request, template_name, {'title':title,'form':form,"unit_name_all":unit_name_all})
 
 
 

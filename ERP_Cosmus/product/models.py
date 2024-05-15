@@ -551,14 +551,25 @@ class item_godown_quantity_through_table(models.Model):
             
 
 
+
+
+
+class set_prod_item_part_name(models.Model):
+    part_name = models.CharField(max_length=100) #part name 
+    part_dimentions = models.CharField(max_length=100)
+    dimention_total = models.DecimalField(max_digits=7, decimal_places=2)
+    part_pieces = models.IntegerField()
+    part_type = models.CharField(max_length=255)  #remark
+
 class product_2_item_through_table(models.Model):
-    PART_TYPE = [("Body","Body"),
-                ("combination","combination"),
-                ("Misc","Misc")]
-    
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
-    Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
-    part_name = models.CharField(max_length=255)
-    part_type = models.CharField(max_length=50, choices=PART_TYPE) 
+    Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT) 
+    set_prod_config = models.ManyToManyField(set_prod_item_part_name)
+    grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+
+
+
+
+    
     
 
