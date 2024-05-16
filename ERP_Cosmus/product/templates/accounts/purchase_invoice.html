@@ -90,7 +90,7 @@
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade_for_dropdown_change" value="{{forms.instance.item_shade}}" name="{{forms.prefix}}-old_item_shade_for_dropdown_change">
                     <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
                     <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" id="select_item_name_{{forloop.counter0}}" style="display: none; height: auto; flex: 1 1 0%;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" id="select_item_name_{{forloop.counter0}}" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                            
                         
                           </div>
@@ -204,13 +204,11 @@
 
         var dataWithPrefix = event.data;
   
-        console.log('combineData',dataWithPrefix)
- 
        var convertedData = {};
 
        if (typeof dataWithPrefix === 'object' && Object.keys(dataWithPrefix).length > 0) {
        var datalength = Object.values(dataWithPrefix)[0]
-        console.log(datalength)
+       
         var dataId =Object.keys(dataWithPrefix)[0];
         
        
@@ -223,7 +221,6 @@
     }
         if(datalength){
             for (var i = 0; i < datalength.length; i++) {
-   
    
                 var name = datalength[i].name;
                 var value = datalength[i].value;
@@ -245,20 +242,10 @@
         }
 
     }
-    console.log("convertedData", convertedData);
-   
-   
     // Set the popupData with convertedData
     var data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData');
     data.value = JSON.stringify(convertedData);
 }
-    
-
-   
-
-
-    
-
 
 </script>
 
@@ -378,26 +365,12 @@ function randomValue (){
     var primeId = document.getElementById('id_purchase_voucher_items_set-' +i+ '-id').value;
     if(primeId == ''){
         var uniqueId = document.getElementById('item_unique_id_' + i);
-        uniqueId.value = uuid; 
-         console.log('newId',uniqueId.value)
-    }else if(primeId != ''){
-        
-        // var uniqueId = document.getElementById('purchase_voucher_items_set-' + i+ '-combinedId');
-        // uniqueId.value =primeId+'--' + uuid;
-        // console.log('newIds',uniqueId.value)
+        uniqueId.value = uuid;   
     }
    }
-    
-  
-   
-   
-   
-    
- 
-  
  }
 
-randomValue();
+  randomValue();
 
  </script>
 
@@ -414,12 +387,12 @@ randomValue();
         var selectName;
 
         $(document).on('change','select[name^="purchase_voucher_items_set-"]', function () {
-            var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
+        var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
         var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change')
        
         var selectElementValue = itemShadeValue.value;
-        console.log('newData',newData)
+       
         if(newData == ''){
         
             itemShade.value = selectElementValue;
@@ -477,18 +450,26 @@ randomValue();
 
               
 
-                $('.search-input').on('keyup', function () {
+            $('.search-input').on('keyup', function () {
                     var select = $('#' + selectName);
-            
                     
             var searchQuery = $(this).val();
              var filteredOptions =Object.entries(searched_item_name_dict).filter(([key, value]) =>
                   value.toLowerCase().includes(searchQuery)  
                 );
             
+               
                 // Clear and repopulate options
                 select.empty();
                    
+            if (filteredOptions.length > 0) {
+                        select.show();
+                    
+                    } else { 
+                        
+                        select.hide();
+                    }
+                
           
                     $.each(filteredOptions, function(key, value) {
                         var newFilter = filteredOptions.indexOf(value);
@@ -502,13 +483,7 @@ randomValue();
 
 
         // Show the suggestions div if there are options, hide it otherwise
-        if (filteredOptions.length > 0) {
-            select.show();
-        
-        } else {
-            select.hide();
-        }
-    
+      
     });
      
             },
@@ -532,7 +507,7 @@ randomValue();
    var indexbool = false
    
 $(document).on('keydown','input[name^="item_name_"]', function(event) {
-    console.log('inputName')   
+   
     var select = $(this).next('.item-name');
     var selectLength = select.find('.itemName-div').length-1;
     var inputName = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
@@ -551,7 +526,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             inputName.setAttribute('data-key', nameKey);
         
             selectedItem.css('background-color', 'red');
-            selectedItem.removeClass("selected");
+           
 
             if(index != selectLength ){
                 index += 1; 
@@ -584,50 +559,23 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             inputName.setAttribute('data-key', nameKey);
             
             selectedItem.addClass(" bg-highlight");
-            selectedItem.removeClass("selected");
+           
             }
             else{
                     index=0
             }   
      
-        }else if (event.key === 'Tab') {
-        event.preventDefault();
-      
-       if(index <= selectLength){
-        
-            var selectedItem = select.find('#itemName-div_' + index);
-            var nameDataKey= selectedItem.text();
-            var nameKey = selectedItem.data('key');
-
-            //inputName.value = nameDataKey;
-            inputName.setAttribute('data-key', nameKey);
-        
-            selectedItem.addClass(" bg-highlight");
-            selectedItem.removeClass("selected");
-             index += 1; 
-             indexbool = true;
-             console.log('indexdown-',index)
-             
-       }else{
-           index = 0;
-       }
-      
-       
-     
-     }else if (event.key === 'Enter') {
+        }else if (event.key === 'Enter') {
 
         
         event.preventDefault();
+        select.hide();
         var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
         var  item_value = itemEnterValue.getAttribute('data-key');
-      
+     
+    
         
-       if(item_value != ''){
-       
-        select.hide();
-
-        
-       }
+   
        
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
     
@@ -694,9 +642,20 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
            
         }
 
-       
+        $(document).on('click','[name^="item_name_"]', function(event) {
+          
+                event.preventDefault();
+                select.hide()
+                       
+        })
        
 
+        $(document).on('keydown','[name^="item_name_"]', function(event) {
+          if(event.key === 'Tap') {
+          event.preventDefault();
+          select.hide()
+          }      
+        })
         
    });   
        

@@ -1223,14 +1223,13 @@ input[type=number] {
     flex: 1 1 auto;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; 
-    flex: 1 1 0%; 
+    text-overflow: ellipsis;  
 }
 .itemName-div-suggestion{
     direction: ltr;
     text-align: left;
 }
-.s-suggestion-container {
+/* .s-suggestion-container {
     font-size: 14px;
     padding-right: 8px;
     height: auto;
@@ -1241,12 +1240,16 @@ input[type=number] {
     z-index: 10;
     cursor: pointer;
     flex-direction: row;
-}
+  
+} */
 .bg-highlight{
     background-color: #d11010;
     color: #000;
 }
+.hideRow{
+    display: none;
 
+}
 
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
