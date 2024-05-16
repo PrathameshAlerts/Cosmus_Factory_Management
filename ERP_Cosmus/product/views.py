@@ -2163,16 +2163,15 @@ def packaging_delete(request,pk):
 #_________________________production-end______________________________
 
 def set_production_popup(request,p_name,p_reference_id):
-    print(p_name)
-    print(p_reference_id)
+
+    
     context = {'product_name':p_name,'product_ref_id':p_reference_id}
     return render(request,'production/set_production.html', context=context)
 
 
 
-
-def set_production_upload(request,product_ref_id):
-
+def set_production_upload(request,product_ref_id,item_number):
+    print(item_number)
     product_products = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_ref_id)
 
     workbook = Workbook()
@@ -2188,11 +2187,12 @@ def set_production_upload(request,product_ref_id):
     
     fileoutput = BytesIO()
     workbook.save(fileoutput)
-
+    print('fileoutput',fileoutput)
     # Prepare the HTTP response with the Excel file content
     response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     file_name_with_pk = f'product_reference_id_{product_ref_id}'
     response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
+    print(print('response',response))
 
     return response
 

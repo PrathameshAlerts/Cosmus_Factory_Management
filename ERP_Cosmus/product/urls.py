@@ -141,7 +141,7 @@ urlpatterns = [
     path('packagingpop/',views.packaging_create_update, name = 'packaging-popup'),
 
     #Production
-    path('setproductiondownload/<int:product_ref_id>',views.set_production_upload, name = 'set-production-upload'),
+    path('setproductiondownload/<int:product_ref_id>/<int:item_number>',views.set_production_upload, name = 'set-production-upload'),
     path('setproductionpopup/<str:p_name>/<int:p_reference_id>',views.set_production_popup, name = 'set-production-popup'),
 
     #reports
