@@ -1210,7 +1210,6 @@ input[type=number] {
     display: block;
     width: 180px;
    position: absolute;
-   background-color: #f1f1f1;
    z-index: 10;
 
 } 
@@ -1229,7 +1228,7 @@ input[type=number] {
     direction: ltr;
     text-align: left;
 }
-/* .s-suggestion-container {
+.s-suggestion-container {
     font-size: 14px;
     padding-right: 8px;
     height: auto;
@@ -1241,15 +1240,16 @@ input[type=number] {
     cursor: pointer;
     flex-direction: row;
   
-} */
-.bg-highlight{
-    background-color: #d11010;
+}
+.selected{
+    background-color: #f1f1f1;
     color: #000;
 }
-.hideRow{
-    display: none;
-
+.bg-highlight{
+    background-color: #5c5c5c;
+    color: #000;
 }
+
 
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {

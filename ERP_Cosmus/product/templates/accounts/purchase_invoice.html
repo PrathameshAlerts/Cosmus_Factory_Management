@@ -525,9 +525,10 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             //inputName.value = nameDataKey;
             inputName.setAttribute('data-key', nameKey);
         
-            selectedItem.css('background-color', 'red');
+            selectedItem.addClass("bg-highlight");
+            selectedItem.removeClass("selected");
            
-
+            console.log(selectedItem)
             if(index != selectLength ){
                 index += 1; 
              indexbool = true;
@@ -545,7 +546,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
            event.preventDefault();
            if (index != 0 && indexbool == true)
            {
-            console.log('indexdownif',index)
+           
                 index = index - 1;
            }
           
@@ -558,7 +559,8 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             //inputName.value = nameDataKey;
             inputName.setAttribute('data-key', nameKey);
             
-            selectedItem.addClass(" bg-highlight");
+            selectedItem.addClass("bg-highlight");
+            selectedItem.removeClass("selected");
            
             }
             else{
@@ -572,10 +574,6 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         select.hide();
         var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
         var  item_value = itemEnterValue.getAttribute('data-key');
-     
-    
-        
-   
        
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
     
@@ -654,7 +652,8 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
           if(event.key === 'Tap') {
           event.preventDefault();
           select.hide()
-          }      
+          } 
+        
         })
         
    });   
