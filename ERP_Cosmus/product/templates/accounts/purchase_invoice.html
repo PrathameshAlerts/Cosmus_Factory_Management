@@ -446,19 +446,18 @@ randomValue();
 
    })
  // This ajax request for a input type value send to the backend and show the input name 
-   $(document).on('input keyup click focus ','input[name^="item_name_"]',function(e) {
+   $(document).on('input keyup click focus keydown ','input[name^="item_name_"]',function(e) {
 
-        if( e.type === 'input' || e.type === 'keyup' || e.type === 'focus' || e.type === 'click'){
+        if( e.type === 'input' || e.type === 'keyup' || e.type === 'focus' || e.type === 'click' || e.type === 'Enter'){
            
-       var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
+        var nameValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`).value;
         var purchaseData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-popupData').value;
         var jsonData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         var uniqueValue = document.getElementById('item_unique_id_'+purchaseValue).value;
         
-
         if(nameValue == ''){
         var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
-              
+             
         selectNameValue.css('display', 'none');
              
        }
@@ -537,11 +536,11 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
     var select = $(this).next('.item-name');
     var selectLength = select.find('.itemName-div').length-1;
     var inputName = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
-    console.log('inputName',inputName)
+    
+   
     if (event.key === 'ArrowDown') {
         event.preventDefault();
-        console.log('indexdown',index)
-        console.log('selectLength-',selectLength)
+      
        if(index <= selectLength){
         
             var selectedItem = select.find('#itemName-div_' + index);
@@ -551,13 +550,13 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             //inputName.value = nameDataKey;
             inputName.setAttribute('data-key', nameKey);
         
-            selectedItem.addClass(" bg-highlight");
+            selectedItem.css('background-color', 'red');
             selectedItem.removeClass("selected");
 
             if(index != selectLength ){
                 index += 1; 
              indexbool = true;
-             console.log('indexdown-',index)
+             
             }
              
              
@@ -574,8 +573,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             console.log('indexdownif',index)
                 index = index - 1;
            }
-           console.log('indexup',index)
-            console.log('selectLength-',selectLength)
+          
            if(index <= selectLength){
  
             var selectedItem = select.find('#itemName-div_' + index);
@@ -594,7 +592,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
      
         }else if (event.key === 'Tab') {
         event.preventDefault();
-        console.log('indexdown',index)
+      
        if(index <= selectLength){
         
             var selectedItem = select.find('#itemName-div_' + index);
@@ -623,8 +621,14 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
         var  item_value = itemEnterValue.getAttribute('data-key');
       
-        console.log('item_values',item_value)
+        
+       if(item_value != ''){
+       
         select.hide();
+
+        
+       }
+       
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
     
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
@@ -1055,6 +1059,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             oldShadeElement.id = `input_item_shade_${formIndex}`;
             oldShadeElement.name =  `input_item_shade_${formIndex}`;
             oldShadeElement.value="";
+            oldShadeElement.style.display = 'none';
 
             const selectElement = lastRow.querySelector('.item-name[name^="select_item_name_"]');
             selectElement.id = `select_item_name_${formIndex}`;

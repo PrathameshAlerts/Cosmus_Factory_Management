@@ -1,19 +1,28 @@
-{% extends 'product/base.html' %} 
+{% extends 'misc/navbar_popup.html' %}
 {% load static %} 
 
 {% block body %}
 
-<form method="POST">
+<form method="post">
     {% csrf_token %}
-<span>Set Production</span>
+<h2>Set Production</h2>
+<div class="d-flex mb-3">
+    <lable>Product Refrence ID:</lable>
+    <span class="product_items "> {{product_ref_id}}</span>
 
-Product Refrence ID {{product_ref_id}}
-Product Name {{product_name}}
+    <label>Product Name:</label>
+    <span> {{product_name}}</span>
+</div>
+ 
 
 
-<span><label for="item_Numbers">No of Items</label><input type="number" name="item_number" id="item_Numbers" value=""></span>
 
-<input type="submit">
+<div class="mb-2">
+    <label for="item_Numbers">No of Items:</label>
+    <input type="number" class="purchase-input" id="item_Numbers" name="item_numbers" value="">
+</div>
+
+<input type="submit" class="create-btn">
 </form>
 {% endblock %}
 
