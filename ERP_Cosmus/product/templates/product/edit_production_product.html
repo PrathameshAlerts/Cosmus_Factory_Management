@@ -13,9 +13,9 @@
     <span type="text" class="product_items fs-5 text-danger" value="" name="" readonly id="">{{form.instance.Model_Name|default_if_none:''}}</span>
     <label for="" class="fw-bold ms-2 fs-5">Color Count :</label>
     <span class="mx-2 fs-5 text-danger">{{products_sku_counts}}</span>
-
-      
-      <span><a href="{% url 'set-production-popup' form.instance.Product_Name form.instance.Product_Refrence_ID %}">SetP link</a></span>
+    <span style="padding-left: 80px;">
+    <button class="add_btn" type="button" onclick="editsetProduction(this)" id="setProduction">Set Production</button>  
+  </span>
   </div>
 
 
@@ -25,6 +25,7 @@
       <div>
         <button type="button" class="create-btn" onclick="redirectPproduct()">Return</button>
       </div>
+      
     </div>
 
     <div class="mx-2">
@@ -35,7 +36,7 @@
       {% endif %}
       {% endfor %}
     </div>
-
+    
   </div>
 
   <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Product Details<span class="span_padding"><i
@@ -694,6 +695,7 @@
     }
   }
 
+
   function openPopup(button, path) {
     var card = button.closest('.card');
     if (card) {
@@ -714,40 +716,37 @@
     }
   }
 </script>
+<script>
+   var popupWindow = null;
 
-
-<!--<script>
-  const stars = document.querySelectorAll('.rating input');
-
-  stars.forEach(star => star.addEventListener('click', function () {
-    // Get the value of the clicked star
-    const rating = this.value;
-
-    // Remove the 'star-selected' class from all stars
-    document.querySelectorAll('.rating label').forEach(label => {
-      label.classList.remove('star-selected');
-    });
-
-    // Add the 'star-selected' class to the clicked star
-    this.previousElementSibling.classList.add('star-selected');
-
-    // Send the rating to the backend
-    sendRatingToBackend(rating);
-  }));
-
-  function sendRatingToBackend(rating) {
-    // Assuming you're using AJAX to send data to the backend
-    // const xhr = new XMLHttpRequest();
-    //xhr.open('POST', 'backend_endpoint_url', true);
-    //xhr.setRequestHeader('Content-Type', 'application/json');
-    // xhr.onload = function () {
-    // Handle response from the backend if needed
-    //  console.log(xhr.responseText);
-    // };
-    //xhr.send(JSON.stringify({ rating: rating }));
-    console.log(rating)
+   function editsetProduction(button){
+    if(popupWindow === null || popupWindow.closed){
+      setPopup(button, '/setproductionpopup/');
+    }else{
+      popupWindow.focus();
+    }
   }
-</script>-->
+
+  function setPopup(button, path) {
+    // var card = button.closest('.card');
+    // if (card) {
+      //var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+     // if (productSkuInput) {
+        //var productSku = productSkuInput.value;
+        var minWidth = 800; // minimum width
+        var minHeight = 600;
+
+        // this will generate http://127.0.0.1:8000/ 
+        var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+        popupWindow = window.open( baseUrl  + path  , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+      // } else {
+      //   console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
+      // }
+    
+  }
+  </script>
+
+
 <script>
   // create a function to toggle the visibility of the data container when the button is clicked to show the data container
   document.addEventListener("DOMContentLoaded", function () {
