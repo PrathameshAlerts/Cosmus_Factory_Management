@@ -2192,7 +2192,7 @@ def set_production_upload(request,product_ref_id,item_number):
     sheet3 = workbook.worksheets[2]
     sheet4 = workbook.worksheets[3]
 
-    # for product_sku
+    #product_sku
     firstcell = sheet1.cell(row=1, column=1)
     firstcell.value = "product_sku"
 
@@ -2212,16 +2212,34 @@ def set_production_upload(request,product_ref_id,item_number):
             row_num = row_num+1
 
 
-    #unlock the rows apart from generated 
+    #unlock the editable part of the sheet 
     for row in sheet1.iter_rows(min_row=2, max_row = len(product_products) + 1 ,min_col=2, max_col= number_of_items + 1):
-        print(row)
+        
         for cell in row:
             cell.protection = Protection(locked =False)
 
 
-    
-    # Protect the worksheet
+    for row in sheet2.iter_rows(min_row=1, max_row=1, min_col=1, max_col=7):
+        row[0].value = 'location'
+        row[1].value = 'id'
+        row[2].value = 'name'
+        row[3].value = 'calculation'
+        row[4].value = 'total'
+        row[5].value = 'cut_part'
+        row[6].value = 'type'
+
+
+    for col in sheet2.iter_cols(min_row=2,max_row=10000,min_col=2, max_col=7):    
+        print(col)
+        for cell in col:
+            cell.protection = Protection(locked = False)
+        
+
+    # Protect the entire worksheet
     sheet1.protection.sheet = True
+    sheet2.protection.sheet = True
+    
+
     fileoutput = BytesIO()
     workbook.save(fileoutput)
     print('fileoutput',fileoutput)
