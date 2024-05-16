@@ -3,10 +3,16 @@
 
 {% block body %}
 
+<form action="{% url 'set-production-upload' product_ref_id %}">
 <span>Set Production</span>
 
-{{primary_key}}
+Product Refrence ID {{product_ref_id}}
+Product Name {{product_name}}
 
 
+<span><label for="item_Numbers">No of Items</label><input type="number" id="item_Numbers" value=""></span>
+
+<input type="submit">
+</form>
 {% endblock %}
 

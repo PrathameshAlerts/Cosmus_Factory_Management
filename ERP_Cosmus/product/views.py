@@ -1,3 +1,4 @@
+from io import BytesIO
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError
 import json
@@ -11,7 +12,7 @@ from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 from django.contrib import messages
 from django.db.models import Sum
-import openpyxl
+from openpyxl import Workbook
 from django.forms import modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
@@ -20,7 +21,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransfer, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, purchase_voucher_items, shade_godown_items,
+                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table)
 
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
@@ -32,7 +33,8 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                            packaging_form, product_main_category_form, 
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update,
-                                shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update)
+                                shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
+                                )
 
 
 
@@ -2160,9 +2162,42 @@ def packaging_delete(request,pk):
 
 #_________________________production-end______________________________
 
-def set_production(request,pk):
-    context = {'primary_key':pk}
-    return render(request,'production/set_production.html',context= context)
+def set_production_popup(request,p_name,p_reference_id):
+    print(p_name)
+    print(p_reference_id)
+    context = {'product_name':p_name,'product_ref_id':p_reference_id}
+    return render(request,'production/set_production.html', context=context)
+
+
+
+
+def set_production_upload(request,product_ref_id):
+
+    product_products = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_ref_id)
+
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet["A1"] = "product_sku"
+    sheet['B1'] = "fabric_1"
+    
+    start_letter = 2
+    for products in product_products:
+        product_sku = products.PProduct_SKU
+        sheet[f'A{start_letter}'] = product_sku
+        start_letter = start_letter + 1
+    
+    fileoutput = BytesIO()
+    workbook.save(fileoutput)
+
+    # Prepare the HTTP response with the Excel file content
+    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    file_name_with_pk = f'product_reference_id_{product_ref_id}'
+    response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
+
+    return response
+
+
+
 
 #_________________________production-send______________________________
 
