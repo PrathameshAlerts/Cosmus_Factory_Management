@@ -13,6 +13,7 @@ from django.utils.timezone import now
 from django.contrib import messages
 from django.db.models import Sum
 from openpyxl import Workbook
+from openpyxl.styles import Protection
 from django.forms import modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
@@ -84,7 +85,6 @@ def edit_production_product(request,pk):
     colors = Color.objects.all()
     main_categories = MainCategory.objects.all()
 
-    print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
@@ -2163,28 +2163,65 @@ def packaging_delete(request,pk):
 #_________________________production-end______________________________
 
 def set_production_popup(request,p_name,p_reference_id):
-
-    
     context = {'product_name':p_name,'product_ref_id':p_reference_id}
+
+    if request.method == 'POST':
+        return HttpResponse('<script>window.close();</script>')
+    
     return render(request,'production/set_production.html', context=context)
 
 
 
 def set_production_upload(request,product_ref_id,item_number):
-    print(item_number)
+    number_of_items = int(item_number)
     product_products = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_ref_id)
 
     workbook = Workbook()
-    sheet = workbook.active
-    sheet["A1"] = "product_sku"
-    sheet['B1'] = "fabric_1"
     
-    start_letter = 2
+    #delete the default workbook
+    default_sheet = workbook['Sheet']
+    workbook.remove(default_sheet)
+
+    workbook.create_sheet('product_special_items')
+    workbook.create_sheet('product_special_configs')
+    workbook.create_sheet('product_common_items')
+    workbook.create_sheet('product_common_configs')
+    
+    sheet1 = workbook.worksheets[0]
+    sheet2 = workbook.worksheets[1]
+    sheet3 = workbook.worksheets[2]
+    sheet4 = workbook.worksheets[3]
+
+    # for product_sku
+    firstcell = sheet1.cell(row=1, column=1)
+    firstcell.value = "product_sku"
+
+
+    #for entering the products
+    col_num = 2
     for products in product_products:
         product_sku = products.PProduct_SKU
-        sheet[f'A{start_letter}'] = product_sku
-        start_letter = start_letter + 1
+        sheet1[f'A{col_num}'] = product_sku
+        col_num = col_num + 1
+
+    #for creating columns for fabric group
+    row_num = 1
+    for row in sheet1.iter_rows(min_row=1, max_row=1, min_col=2, max_col= number_of_items + 1):
+        for cell in row:
+            cell.value = f"fabric_{row_num}"
+            row_num = row_num+1
+
+
+    #unlock the rows apart from generated 
+    for row in sheet1.iter_rows(min_row=2, max_row = len(product_products) + 1 ,min_col=2, max_col= number_of_items + 1):
+        print(row)
+        for cell in row:
+            cell.protection = Protection(locked =False)
+
+
     
+    # Protect the worksheet
+    sheet1.protection.sheet = True
     fileoutput = BytesIO()
     workbook.save(fileoutput)
     print('fileoutput',fileoutput)
@@ -2192,7 +2229,7 @@ def set_production_upload(request,product_ref_id,item_number):
     response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     file_name_with_pk = f'product_reference_id_{product_ref_id}'
     response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
-    print(print('response',response))
+    
 
     return response
 
