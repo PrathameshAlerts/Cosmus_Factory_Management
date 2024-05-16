@@ -84,7 +84,6 @@ def edit_production_product(request,pk):
     colors = Color.objects.all()
     main_categories = MainCategory.objects.all()
 
-    print(request.POST)
     if request.method == 'POST':
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
@@ -2163,8 +2162,6 @@ def packaging_delete(request,pk):
 #_________________________production-end______________________________
 
 def set_production_popup(request,p_name,p_reference_id):
-
-    
     context = {'product_name':p_name,'product_ref_id':p_reference_id}
     return render(request,'production/set_production.html', context=context)
 
@@ -2176,6 +2173,8 @@ def set_production_upload(request,product_ref_id,item_number):
 
     workbook = Workbook()
     sheet = workbook.active
+    sheet.title = 'product_special_items'
+    
     sheet["A1"] = "product_sku"
     sheet['B1'] = "fabric_1"
     
@@ -2184,7 +2183,9 @@ def set_production_upload(request,product_ref_id,item_number):
         product_sku = products.PProduct_SKU
         sheet[f'A{start_letter}'] = product_sku
         start_letter = start_letter + 1
+
     
+
     fileoutput = BytesIO()
     workbook.save(fileoutput)
     print('fileoutput',fileoutput)
