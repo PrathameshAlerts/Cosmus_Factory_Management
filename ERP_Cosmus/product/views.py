@@ -2163,6 +2163,10 @@ def packaging_delete(request,pk):
 
 def set_production_popup(request,p_name,p_reference_id):
     context = {'product_name':p_name,'product_ref_id':p_reference_id}
+
+    if request.method == 'POST':
+        return HttpResponse('<script>window.close();</script>')
+    
     return render(request,'production/set_production.html', context=context)
 
 
@@ -2174,7 +2178,7 @@ def set_production_upload(request,product_ref_id,item_number):
     workbook = Workbook()
     sheet = workbook.active
     sheet.title = 'product_special_items'
-    
+
     sheet["A1"] = "product_sku"
     sheet['B1'] = "fabric_1"
     
