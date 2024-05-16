@@ -1210,7 +1210,6 @@ input[type=number] {
     display: block;
     width: 180px;
    position: absolute;
-   background-color: #f1f1f1;
    z-index: 10;
 
 } 
@@ -1223,8 +1222,7 @@ input[type=number] {
     flex: 1 1 auto;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; 
-    flex: 1 1 0%; 
+    text-overflow: ellipsis;  
 }
 .itemName-div-suggestion{
     direction: ltr;
@@ -1241,9 +1239,14 @@ input[type=number] {
     z-index: 10;
     cursor: pointer;
     flex-direction: row;
+  
+}
+.selected{
+    background-color: #f1f1f1;
+    color: #000;
 }
 .bg-highlight{
-    background-color: #d11010;
+    background-color: #5c5c5c;
     color: #000;
 }
 
