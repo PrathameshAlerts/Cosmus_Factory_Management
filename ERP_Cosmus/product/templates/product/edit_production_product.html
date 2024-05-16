@@ -13,6 +13,9 @@
     <span type="text" class="product_items fs-5 text-danger" value="" name="" readonly id="">{{form.instance.Model_Name|default_if_none:''}}</span>
     <label for="" class="fw-bold ms-2 fs-5">Color Count :</label>
     <span class="mx-2 fs-5 text-danger">{{products_sku_counts}}</span>
+
+      
+      <span><a href="{% url 'set-production-popup' form.instance.Product_Name form.instance.Product_Refrence_ID %}">SetP link</a></span>
   </div>
 
 
@@ -107,12 +110,6 @@
           {% endif %}
         </div>
 
-
-
-        <div class="col-lg-1">
-          <span><a href="{% url 'set-production' form.instance.PProduct_SKU %}">SetP link</a></span>
-
-        </div>
         
       </div>
     </div>

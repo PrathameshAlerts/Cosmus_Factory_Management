@@ -46,7 +46,7 @@ urlpatterns = [
 
     # color in page
     path('simple_colorcreate_update/',views.color_create_update, name='simplecolorlist'),
-    path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlist'),
+    path('simple_colorcreate_update/<int:pk>',views.color_create_update, name='simplecolorlistupdate'),
 
     #color popup
     path('color_popup/',views.color_create_update, name='color-popup'),
@@ -141,7 +141,8 @@ urlpatterns = [
     path('packagingpop/',views.packaging_create_update, name = 'packaging-popup'),
 
     #Production
-    path('setproduction/<int:pk>',views.set_production, name = 'set-production'),
+    path('setproductiondownload/<int:product_ref_id>',views.set_production_upload, name = 'set-production-upload'),
+    path('setproductionpopup/<str:p_name>/<int:p_reference_id>',views.set_production_popup, name = 'set-production-popup'),
 
     #reports
     path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
