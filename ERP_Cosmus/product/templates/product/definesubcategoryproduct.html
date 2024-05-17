@@ -3,41 +3,46 @@
 
 {% block body %} 
 
-<h2>Product Sub Category - {{title}}</h2>
-<form class="mt-5" action="" method="POST">
-    {% csrf_token %}
-    <div class="d-flex mb-3">
-        <label for="id_product_main_category" class="form-label px-2">Main Category:</label>
-        <select name="product_main_category" id="id_product_main_category">
-          
-          {% if form.instance.id %}
 
-          <option value="{{form.instance.product_main_category.id}}">{{form.instance.product_main_category.product_category_name}}</option>
-          {% for main_cat in main_categories %}
-          <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
-          {% endfor %}
 
-          {% elif not form.instance.id %}
-          <option value=""></option>
-          {% for main_cat in main_categories %}
-          <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
-          {% endfor %}
-          {% endif %}
-        </select>
-  
+    <div class="row mt-4">
+      <h2>Product Sub Category - {{title}}</h2>
+      <div class="col-lg-5 mt-2">
+
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="d-flex mb-3">
+              <label for="id_product_main_category" class="form-label px-2">Main Category:</label>
+              <select name="product_main_category" id="id_product_main_category">
+                
+                {% if form.instance.id %}
+      
+                <option value="{{form.instance.product_main_category.id}}">{{form.instance.product_main_category.product_category_name}}</option>
+                {% for main_cat in main_categories %}
+                <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
+                {% endfor %}
+      
+                {% elif not form.instance.id %}
+                <option value=""></option>
+                {% for main_cat in main_categories %}
+                <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+        
+            </div>
+      
+            <div>
+              <div class="d-flex mb-3">
+                <label for="id_product_sub_category_name" class="form-label px-2">Sub Category Name:</label>
+                <input type="text" class="item-select" value="{{form.instance.product_sub_category_name}}" name="product_sub_category_name" maxlength="255" required id="id_product_sub_category_name">
+              </div>
+            <input type="submit" class="product2create-btn" name="save" value="Save">
+        
+          </div>
+        </form>
       </div>
-
-      <div>
-        <div class="d-flex mb-3">
-          <label for="id_product_sub_category_name" class="form-label px-2">Sub Category Name:</label>
-          <input type="text" class="item-select" value="{{form.instance.product_sub_category_name}}" name="product_sub_category_name" maxlength="255" required id="id_product_sub_category_name">
-        </div>
-      <input type="submit" class="product2create-btn" name="save" value="Save">
-  
-    </div>
-  </form>
-    <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-5 mt-4">
         <div class="d-flex my-2">
           <lable class="form-label">List Of Sub-Category:</lable>
           <ul style="list-style: none;">

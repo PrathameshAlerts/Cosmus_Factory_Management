@@ -893,8 +893,17 @@ input[type=number] {
     border-radius: 20px;
     margin: 0 0;
     width: 200px;
-    margin-left: 125px; 
+    margin-left: 275px; 
 }
+
+.stock-Input{
+    width: 240px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+}
+
 .product-btn{
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
     color: white;
@@ -988,6 +997,23 @@ input[type=number] {
     height: 25px;
 }
 
+.success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.info {
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    color: #0c5460;
+}
+
+.error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
 .table-responsive {
     max-height: 800px !important;
     overflow-y: auto;
