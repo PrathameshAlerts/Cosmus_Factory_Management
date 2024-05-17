@@ -6,6 +6,7 @@
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="d-flex mb-3 productItem">
+    <input type="hidden" class="product_items" name="Number_of_items" id="id_Number_of_items" value="{{form.instance.Number_of_items | default_if_none:'0'}}">
     <label for="id_Product_Refrence_ID" class="fs-5 fw-bold">Refrence ID :</label>
     <input type="number" readonly class="product_items fs-5 id text-danger" value={{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID"  id="id_Product_Refrence_ID">
     <label for="id_Model_Name" class="fw-bold ms-2 fs-5 ">Model Name :</label>
@@ -14,6 +15,10 @@
     <span class="mx-2 fs-5 text-danger">{{products_sku_counts}}</span>
     <span style="padding-left: 80px;">
     <button class="add_btn" type="button" onclick="editsetProduction(this)" id="setProduction">Set Production</button>  
+  </span>
+  <span>
+    <input class="form-control" type="file" id="formFile"name="excel_file">
+    <button type="submit" class="btn btn-light">Import</button>
   </span>
   </div>
 

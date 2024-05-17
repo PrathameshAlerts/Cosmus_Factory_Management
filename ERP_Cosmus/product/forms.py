@@ -57,7 +57,7 @@ class PProductAddForm(forms.ModelForm):
                   'Product_Dimensions_WOP_Width','Product_Dimensions_WOP_Height','Product_Dimensions_WOP_Weight',
                   'Product_WRP','Product_CashCounterPrice','Product_IndiaMartPrice','Product_Retailer_dealer_Price',
                   'Product_Wholesaler_DistributorPrice','Product_Gender',
-                  'Product_QtyPerBox']
+                  'Product_QtyPerBox','Number_of_items']
         
 
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',
