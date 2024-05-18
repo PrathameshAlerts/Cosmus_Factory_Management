@@ -594,13 +594,17 @@ def product2commonitem(request,product_id):
     print('product_items_qs',product_items_qs)
 
     formset = Product2CommonItemFormSet(queryset=product_items_qs) # queryset of all the instannces of productcreation binded to form 
-    print(formset)
+    print('formset_get',formset)
 
 
     if request.method == 'POST':
-        formset = Product2CommonItemFormSet(request.POST,queryset=product_items_qs)
+        formset = Product2CommonItemFormSet(request.POST, queryset=product_items_qs)
+        print('formset_post',formset)
         if formset.is_valid():
-            formset.save()
+            for form in formset:
+                form.save(commit = False)
+                form.common_unique = True
+                form.save()
 
             messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
