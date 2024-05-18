@@ -33,7 +33,7 @@ class PProductCreateForm(forms.ModelForm):
 
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
-
+ProductProductionFormset = inlineformset_factory(PProduct_Creation,product_2_item_through_table, fields = ['PProduct_pk','Item_pk'],extra=1)
 
 class PProductAddForm(forms.ModelForm):
 
@@ -57,7 +57,7 @@ class PProductAddForm(forms.ModelForm):
                   'Product_Dimensions_WOP_Width','Product_Dimensions_WOP_Height','Product_Dimensions_WOP_Weight',
                   'Product_WRP','Product_CashCounterPrice','Product_IndiaMartPrice','Product_Retailer_dealer_Price',
                   'Product_Wholesaler_DistributorPrice','Product_Gender',
-                  'Product_QtyPerBox','Number_of_items']
+                  'Product_QtyPerBox']
         
 
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',

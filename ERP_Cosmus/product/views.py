@@ -36,7 +36,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                )
+                                ProductProductionFormset)
 
 
 
@@ -87,56 +87,58 @@ def edit_production_product(request,pk):
     main_categories = MainCategory.objects.all()
 
     if request.method == 'POST':
-        try:
-            excel_file = request.FILES['excel_file']
-            file_name = excel_file.name
-            product_ref_id = file_name.split('_')[-1].split('.')[0]
-            
-            if not excel_file.name.endswith('.xlsx'):
-                messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
-                return redirect('pproductlist')
-            
-            with transaction.atomic():
-                wb = load_workbook(excel_file)
-                ws1 = wb['product_special_items']
-                ws2 = wb['product_special_configs']
-                Number_of_items = 0
-                for row in ws1.iter_rows(min_row=2,min_col=1):
-                    product_sku = row[0]
-                    Number_of_items = Number_of_items + 1
-                    print('product_sku', product_sku.value)
-                    for cell in row:
-                        cell_value_item = cell.value   #get the cell value
-                        column_letter = get_column_letter(cell.column)  # get the letter of that column 
-                        if column_letter != 'A': 
-                            print('column_letter',column_letter)
-                            print('cell_value_item',cell_value_item)
-                            found_rows = []
-                            search_column = 'B'   # column with the locations
-                            search_value = column_letter #column letter of that item from w1
-                            for cell in ws2[search_column]: #search 
-                                if cell.value == search_value: # if cell value in column B in ws2 == column of the item in ws1 
 
-                                    # If the condition is met, get the entire row's data
-                                    row_data = [cell.value for cell in ws2[cell.row]] # value of each cell in ws2[cell row number ex 5]
+        # try:
+        #     excel_file = request.FILES['excel_file']
+        #     file_name = excel_file.name
+        #     product_ref_id = file_name.split('_')[-1].split('.')[0]
+            
+        #     if not excel_file.name.endswith('.xlsx'):
+        #         messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
+        #         return redirect('pproductlist')
+            
+        #     with transaction.atomic():
+        #         wb = load_workbook(excel_file)
+        #         ws1 = wb['product_special_items']
+        #         ws2 = wb['product_special_configs']
+        #         Number_of_items = 0
 
-                                    item_id = Item_Creation.objects.get(item_name=cell_value_item)
-                                    product_instance = PProduct_Creation.objects.get(PProduct_SKU=product_sku.value)
-                                    obj , created = set_prod_item_part_name.objects.get_or_create(id = row_data[0])
-                                    obj.part_name =row_data[2]
-                                    obj.part_dimentions = row_data[3] 
-                                    obj.dimention_total = row_data[4]
-                                    obj.part_pieces = row_data[5]
-                                    obj.part_type = row_data[6]
-                                    obj.save()
+        #         for row in ws1.iter_rows(min_row=2,min_col=1):
+        #             product_sku = row[0]
+        #             Number_of_items = Number_of_items + 1
+                    
+        #             for cell in row:
+        #                 cell_value_item = cell.value   #get the cell value
+        #                 column_letter = get_column_letter(cell.column)  # get the letter of that column 
+        #                 if column_letter != 'A': 
+
+        #                     found_rows = []
+        #                     search_column = 'B'   # column with the locations
+        #                     search_value = column_letter #column letter of that item from w1
+        #                     for cell in ws2[search_column]: #search 
+        #                         if cell.value == search_value: # if cell value in column B in ws2 == column of the item in ws1 
+
+        #                             # If the condition is met, get the entire row's data
+        #                             row_data = [cell.value for cell in ws2[cell.row]] # value of each cell in ws2[cell row number ex 5]
+
+        #                             item_id = Item_Creation.objects.get(item_name=cell_value_item)
+        #                             product_instance = PProduct_Creation.objects.get(PProduct_SKU=product_sku.value)
+        #                             obj , created = set_prod_item_part_name.objects.get_or_create(id = row_data[0])
+        #                             obj.location = row_data[1]
+        #                             obj.part_name = row_data[2]
+        #                             obj.part_dimentions = row_data[3] 
+        #                             obj.dimention_total = row_data[4]
+        #                             obj.part_pieces = row_data[5]
+        #                             obj.part_type = row_data[6]
+        #                             obj.save()
                                                               
-                                    obj1, created = product_2_item_through_table.objects.get_or_create(PProduct_pk =product_instance,Item_pk=item_id)
-                                    obj1.set_prod_config.add(obj.id)
-                                    obj1.save()
+        #                             obj1, created = product_2_item_through_table.objects.get_or_create(PProduct_pk =product_instance,Item_pk=item_id)
+        #                             obj1.set_prod_config.add(obj.id)
+        #                             obj1.save()
                          
                             
-        except Exception as e:
-            messages.error(request, f'Error uploading Excel file: {str(e)}')
+        # except Exception as e:
+        #     messages.error(request, f'Error uploading Excel file: {str(e)}')
 
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
@@ -168,7 +170,7 @@ def edit_production_product(request,pk):
                 sub_cat = SubCategory.objects.get(id = sub_cat_id)
                 p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
 
-            form.Number_of_items = Number_of_items
+            # form.Number_of_items = Number_of_items
             form.save()
             return redirect('pproductlist')
         
@@ -541,8 +543,29 @@ def product2subcategoryajax(request):
     
 
 
+def product2item(request,pk):
+    print(request.POST)
+    product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
+    formset = ProductProductionFormset(instance= product)  # pass the instance to the formset
+    if request.method == 'POST':
+        formset = ProductProductionFormset(request.POST, instance=product)
+        print(formset)
+        if formset.is_valid():
+            formset.save()
+            messages.success(request,'Items 2 Product sucessfully added.')
+            # return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+            close_window_script = """
+            <script>
+            window.opener.location.reload(true);  // Reload parent window if needed
+            window.close();  // Close current window
+            </script>
+            """
+            return HttpResponse(close_window_script)
 
+    else:
+            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product})
 
+    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product})
 
 
 #____________________________Product-View-End__________________________________
@@ -2280,8 +2303,6 @@ def set_production_upload(request,product_ref_id,item_number):
 
         if product_2_items_exists:
             pass
-
-
 
     # wb2
     for row in sheet2.iter_rows(min_row=1, max_row=1, min_col=1, max_col=7):
