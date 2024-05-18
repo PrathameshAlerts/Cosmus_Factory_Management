@@ -3,8 +3,9 @@
 
 {% block body %}
 
-<form method="post" action="{{ request.scheme }}://{{ request.get_host }}/setproductiondownload/{{product_ref_id}}" id="myForm">
+<form method="post" action="" id="myForm" onsubmit="submitForm()">
     {% csrf_token %}
+    <input type="hidden" id="urlInput" name="url" value="{{ request.scheme }}://{{ request.get_host }}/setproductiondownload/{{product_ref_id}}">
 <h2>Set Production</h2>
 <div class="d-flex mb-3">
     <lable>Product Refrence ID:</lable>
@@ -19,26 +20,36 @@
     <input type="number" class="purchase-input" id="item_Numbers" name="item_numbers" value="">
 </div>
 
-<input type="submit" onclick="submitForm()" class="create-btn">
+<input type="submit"  class="create-btn">
+<button type="button" class="create-btn">Add +</button>
 </form>
 
 
 
-<script>
-    function submitForm() {
-        var form = document.getElementById('myForm');
-        var formData = new FormData(form);
-        var url = form.getAttribute('action');
-        var itemValue = document.getElementById('item_Numbers').value;
+<!-- <script>
+   
+  function submitForm() {
+    var url = document.getElementById('urlInput').value;
+   
+    var itemValue = document.getElementById('item_Numbers').value;
+    
+    // Modify form action to include encoded URL parameters
+    var updatedUrl = url + '/' + itemValue;
 
-        // Modify form action to include encoded URL parameters
-        form.setAttribute('action', url + '/' + itemValue);
+   console.log('updatedUrl:', updatedUrl);
+   console.log('itemValue:', itemValue);
+    var newData = {
+        'itemValue': itemValue,
+        'updatedUrl': updatedUrl
 
-        // Submit the form
-        form.submit();
-        
     }
-</script>
+    console.log('newData', newData)
+    window.opener.newUrlData(newData);
+}
+
+
+
+</script> -->
 
 {% endblock %}
 

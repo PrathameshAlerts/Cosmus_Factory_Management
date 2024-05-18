@@ -969,7 +969,9 @@ input[type=number] {
 .span_padding{
     padding-left: 560px;
 }
-
+.production_padding{
+    padding-left: 500px;
+}
 .additnal-padding{
     padding-left: 485px;
 }
