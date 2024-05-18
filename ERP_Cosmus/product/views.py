@@ -36,7 +36,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                ProductProductionFormset)
+                                ProductProductionFormset,Product2CommonItemFormSet)
 
 
 
@@ -546,17 +546,20 @@ def product2subcategoryajax(request):
 def product2item(request,pk):
     print(request.POST)
     items = Item_Creation.objects.all()
-    product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
-    formset = ProductProductionFormset(instance= product)  # pass the instance to the formset
-    product_name = product.Product.Model_Name
-    product_color = product.PProduct_color
-    print(product_name,product_color)
+    product_creation = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
+    formset = ProductProductionFormset(instance= product_creation)  # pass the instance to the formset
+    product_name = product_creation.Product.Model_Name
+    product_color = product_creation.PProduct_color
+
     if request.method == 'POST':
-        formset = ProductProductionFormset(request.POST, instance=product)
+        formset = ProductProductionFormset(request.POST, instance=product_creation)
         
         if formset.is_valid():
-            formset.save()
-            messages.success(request,'Items 2 Product sucessfully added.')
+            for form in formset:
+                form.save(commit=False)
+                form.common_unique = False
+                form.save()
+            messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
             <script>
             window.opener.location.reload(true);  // Reload parent window if needed
@@ -566,9 +569,58 @@ def product2item(request,pk):
             return HttpResponse(close_window_script)
 
     else:
-            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color ,'items':items})
+            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product_creation,
+                                                                       'product_name':product_name,
+                                                                       'product_color':product_color,'items':items})
 
-    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color,'items':items})
+    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product_creation,
+                                                               'product_name':product_name,
+                                                               'product_color':product_color,'items':items})
+
+def product2commonitem(request,product_id):
+    print(request.POST) 
+    items = Item_Creation.objects.all()
+
+    product = get_object_or_404(Product, Product_Refrence_ID=product_id) #get the product of the refrence id
+    product_name = product.Model_Name
+    
+    print('product',product)
+    pproducts = PProduct_Creation.objects.filter(Product=product) #filter all instances related to the product
+
+
+    # Fetch the queryset of product_2_item_through_table instances related to the filtered PProduct_Creation instances of a product ref id 
+    # common_unique represents True if its common in all products and False it its unique to a product
+    product_items_qs = product_2_item_through_table.objects.filter(PProduct_pk__in=pproducts).filter(common_unique=False)
+    print('product_items_qs',product_items_qs)
+
+    formset = Product2CommonItemFormSet(queryset=product_items_qs) # queryset of all the instannces of productcreation binded to form 
+    print(formset)
+
+
+    if request.method == 'POST':
+        formset = Product2CommonItemFormSet(request.POST,queryset=product_items_qs)
+        if formset.is_valid():
+            formset.save()
+
+            messages.success(request,'Items to Product sucessfully added.')
+            close_window_script = """
+            <script>
+            window.opener.location.reload(true);  // Reload parent window if needed
+            window.close();  // Close current window
+            </script>
+            """
+            return HttpResponse(close_window_script)
+        
+        else:
+            return render(request, 'production/product2commonitemset.html', {'formset': formset,
+                                                                       'product_name':product_name,
+                                                                       'items':items})
+
+    return render(request, 'production/product2commonitemset.html', {'formset': formset,
+                                                               'product_name':product_name,
+                                                               'items':items})
+
+
 
 
 #____________________________Product-View-End__________________________________

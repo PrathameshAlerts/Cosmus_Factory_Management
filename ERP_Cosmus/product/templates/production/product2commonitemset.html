@@ -1,0 +1,128 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
+<h3 class="mb-3">Add items to Common Product</h3>
+
+   <h5 class="me-5">Product Name : <span class="text-capitalize text-danger">{{product_name}}</span></h5>
+   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ formset.management_form }}
+   
+    <table class="table table-responsive table-striped table-bordered" id="productForm">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Item Select</th>
+                <th>Selected Item</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+       
+        <tbody class="mainTableList">
+            {% for forms in formset %}
+            {{ forms.id }}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>
+                    <select class="item-select" name="{{forms.prefix}}-Item_pk" id="{{forms.prefix}}-Item_pk">
+                        
+                        <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
+                        {% for item in items %}
+                        <option value="{{item.id}}">{{item.item_name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </td>
+                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" readonly></td>
+                    <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+    
+            
+<button type="button" class="add_btn" id="addForm">Add</button>  
+<input type="submit" class="add_btn" >
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addFormButton = document.getElementById('addForm');
+        const tableBody = document.querySelector('#productForm tbody');
+
+        if( addFormButton && tableBody) {
+        addFormButton.addEventListener('click', function() {
+        let lastVisibleRow = null;
+        tableBody.querySelectorAll('tr').forEach(row => {
+            if (window.getComputedStyle(row).display !== 'none') {
+                lastVisibleRow = row;
+            }
+        });
+        if (lastVisibleRow) {
+            var forms = document.getElementById('id_product_2_item_through_table_set-TOTAL_FORMS');
+            var newFormCount = parseInt(forms.value) ;
+            var newTable = lastVisibleRow.cloneNode(true);
+            newTable.querySelectorAll("input select").forEach(function(e) {
+            e.value= "";
+          });
+
+
+
+            const selectElement = newTable.querySelector('select[name^="product_2_item_through_table_set-"][name$="Item_pk"]');
+            selectElement.id = `product_2_item_through_table_set-${newFormCount}-Item_pk`;
+            selectElement.name = `product_2_item_through_table_set-${newFormCount}-Item_pk`;
+            selectElement.value = '';
+
+
+            const inputElement = newTable.querySelector('input[name^="product_2_item_through_table_set-"][name$="product_common_item_name"]');
+            inputElement.id = `product_2_item_through_table_set-${newFormCount}-product_common_item_name`;
+            inputElement.name = `product_2_item_through_table_set-${newFormCount}-product_common_item_name`;
+            inputElement.value = '';
+
+            const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="product_2_item_through_table_set-"][name$="DELETE"]');
+            deleteElement.id = `product_2_item_through_table_set-${newFormCount}-DELETE`;
+            deleteElement.name = `product_2_item_through_table_set-${newFormCount}-DELETE`;
+            deleteElement.value = '';
+            deleteElement.checked = false;
+
+
+            forms.value = newFormCount + 1;
+
+            tableBody.appendChild(newTable);
+            deleteRow();
+
+        }else {
+            console.error("No visible rows found to clone.");
+        }   
+        });
+    }
+
+    function deleteRow(){
+// Add click event listener to all delete buttons
+document.querySelectorAll('.delete-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+        // Find the row containing the clicked delete button
+        var row = this.closest('tr');
+        console.log("row",row);
+        var checkRow = row.querySelector('.product_Item_deleteId[name^="product_2_item_through_table_set-"][name$="-DELETE"]');
+        if (checkRow) {
+            checkRow.checked = true; // Mark as checked
+            checkRow.value = 'true'; // Set the value to 'true'
+
+            row.style.display = 'none';
+
+        } else {
+            console.error("Checkbox for deletion not found in this row");
+        }
+    });
+});
+
+};
+deleteRow();
+    });
+
+ 
+
+</script>
+    {% endblock body %} 
