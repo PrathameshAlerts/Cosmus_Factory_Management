@@ -566,9 +566,9 @@ def product2item(request,pk):
             return HttpResponse(close_window_script)
 
     else:
-            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color})
+            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color ,'items':items})
 
-    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color})
+    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color,'items':items})
 
 
 #____________________________Product-View-End__________________________________

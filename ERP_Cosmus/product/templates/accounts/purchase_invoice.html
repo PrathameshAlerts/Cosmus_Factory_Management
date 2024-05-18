@@ -990,6 +990,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         addButton.addEventListener('click', function() {
             const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
             const formCount = parseInt(formCountInput.value);
+            
             const lastRow = tableBody.lastElementChild.cloneNode(true); // clone the last row of the table
             lastRow.style.display= 'table-row'; // Ensure the cloned row is visible
             const formIndex = formCount;
@@ -1121,7 +1122,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             calculateTotalAmount(); 
             deleteCalculationRow();
             deleteAlltotal();
-            
+            deleteRowData();
             formCountInput.value = formCount + 1;    
         });
         
@@ -1135,18 +1136,12 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
     deleteCalculationRow();
     deleteAlltotal();
   
-});
+
 
     // Call function to add event listeners to existing rows' inputs
-    addEventListenersToInputs();
-    // Call calculateTotalAmount initially to calculate total on page load
-    calculateTotalAmount();
+    
 
-    calculateOtherTotal();
-    deleteCalculationRow();
-    deleteAlltotal();
-
-    document.addEventListener('DOMContentLoaded', function() {
+   function deleteRowData(){
     // Add click event listener to all delete buttons
     document.querySelectorAll('.delete-btn').forEach(function(button) {
         button.addEventListener('click', function() {
@@ -1167,10 +1162,16 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             }
         });
     });
+};
+deleteRowData();
 });
+addEventListenersToInputs();
+    // Call calculateTotalAmount initially to calculate total on page load
+    calculateTotalAmount();
 
-
-   
+    calculateOtherTotal();
+    deleteCalculationRow();
+    deleteAlltotal();
 
   </script>
 

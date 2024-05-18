@@ -33,7 +33,7 @@
 
                     </td>
                     <td> <input type="text" class="item-select me-3" name="{{form.prefix}}-product_item_name" value="{{form.instance.Item_pk.item_name}}"  maxlength="255" id="{{form.prefix}}-product_item_name" readonly></td>
-                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2"   name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
+                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -61,7 +61,6 @@
             if (lastVisibleRow) {
                 var forms = document.getElementById('id_product_2_item_through_table_set-TOTAL_FORMS');
                 var newFormCount = parseInt(forms.value) ;
-                console.log(newFormCount)
                 var newTable = lastVisibleRow.cloneNode(true);
                 newTable.querySelectorAll("input select").forEach(function(e) {
                 e.value= "";
@@ -84,25 +83,27 @@
                 deleteElement.id = `product_2_item_through_table_set-${newFormCount}-DELETE`;
                 deleteElement.name = `product_2_item_through_table_set-${newFormCount}-DELETE`;
                 deleteElement.value = '';
+                deleteElement.checked = false;
 
 
                 forms.value = newFormCount + 1;
 
                 tableBody.appendChild(newTable);
+                deleteRow();
 
             }else {
                 console.error("No visible rows found to clone.");
             }   
             });
         }
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        function deleteRow(){
     // Add click event listener to all delete buttons
     document.querySelectorAll('.delete-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             // Find the row containing the clicked delete button
             var row = this.closest('tr');
+            console.log("row",row);
             var checkRow = row.querySelector('.product_Item_deleteId[name^="product_2_item_through_table_set-"][name$="-DELETE"]');
             if (checkRow) {
                 checkRow.checked = true; // Mark as checked
@@ -115,7 +116,12 @@
             }
         });
     });
-});
+    
+};
+deleteRow();
+        });
+
+     
 
     </script>
     {% endblock body %} 

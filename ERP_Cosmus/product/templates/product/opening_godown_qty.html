@@ -110,13 +110,14 @@
 
                         tableBody.appendChild(newRow);
                         index.value = indexValue + 1;
+                        deleteData();
                     }
                 } else {
                     console.error("No visible rows found to clone.");
                 }
             });
         }
-
+        function deleteData(){
         document.addEventListener('click', function (e) {
             if (e.target.closest('.delete-btn')) {
                 const deleteBtn = e.target.closest('.delete-btn');
@@ -132,6 +133,8 @@
                 }
             }
         });
+    }
+        deleteData();
     });
 
 
