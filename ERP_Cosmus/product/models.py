@@ -560,14 +560,15 @@ class set_prod_item_part_name(models.Model):
     part_name = models.CharField(max_length=100)
     part_dimentions = models.CharField(max_length=100)
     dimention_total = models.CharField(max_length=100)
-    part_pieces = models.IntegerField()
+    part_pieces = models.IntegerField(default=0)
     part_type = models.CharField(max_length=255)  #remark
     
 
 
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
-    Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT) 
+    Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
+    location = models.CharField(max_length=5, null=False, blank=False)
     set_prod_config = models.ManyToManyField(set_prod_item_part_name)
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
 

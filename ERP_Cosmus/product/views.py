@@ -122,13 +122,14 @@ def edit_production_product(request,pk):
 
                                     item_id = Item_Creation.objects.get(item_name=cell_value_item)
                                     product_instance = PProduct_Creation.objects.get(PProduct_SKU=product_sku.value)
-                                    obj , created = set_prod_item_part_name.objects.get_or_create(id = row_data[0], 
-                                                                                                  defaults= {'location' : row_data[1],
-                                                                                                             'part_name' : row_data[2],
-                                                                                                             'part_dimentions' :  row_data[3],
-                                                                                                             'dimention_total' : row_data[4],
-                                                                                                             'part_pieces' : row_data[5],
-                                                                                                             'part_type' : row_data[6]})                           
+                                    obj , created = set_prod_item_part_name.objects.get_or_create(id = row_data[0])
+                                    obj.part_name =row_data[2]
+                                    obj.part_dimentions = row_data[3] 
+                                    obj.dimention_total = row_data[4]
+                                    obj.part_pieces = row_data[5]
+                                    obj.part_type = row_data[6]
+                                    obj.save()
+                                                              
                                     obj1, created = product_2_item_through_table.objects.get_or_create(PProduct_pk =product_instance,Item_pk=item_id)
                                     obj1.set_prod_config.add(obj.id)
                                     obj1.save()
@@ -2226,6 +2227,11 @@ def set_production_upload(request,product_ref_id,item_number):
     number_of_items = int(item_number)
     product_products = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_ref_id)
 
+    #check if product has any set productions
+    product_2_items_exists = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id).first()
+
+
+
     workbook = Workbook()
     
     #delete the default workbook
@@ -2242,7 +2248,7 @@ def set_production_upload(request,product_ref_id,item_number):
     sheet3 = workbook.worksheets[2]
     sheet4 = workbook.worksheets[3]
 
-    #product_sku
+    # wb1 product_sku
     firstcell = sheet1.cell(row=1, column=1)
     firstcell.value = "product_sku"
     sheet1.column_dimensions['A'].width = 30  # Adjust the width as needed
@@ -2257,7 +2263,7 @@ def set_production_upload(request,product_ref_id,item_number):
 
     #for creating columns for fabric group
     row_num = 1
-    for row in sheet1.iter_rows(min_row=1, max_row=1, min_col=2, max_col= number_of_items + 1):
+    for row in sheet1.iter_rows(min_row=1, max_row=1, min_col=2, max_col = number_of_items + 1):
         for cell in row:
             cell.value = f"fabric_{row_num}"
 
@@ -2272,7 +2278,12 @@ def set_production_upload(request,product_ref_id,item_number):
         for cell in row:
             cell.protection = Protection(locked =False)
 
+        if product_2_items_exists:
+            pass
 
+
+
+    # wb2
     for row in sheet2.iter_rows(min_row=1, max_row=1, min_col=1, max_col=7):
         row[0].value = 'id'
         row[1].value = 'location'
@@ -2292,7 +2303,9 @@ def set_production_upload(request,product_ref_id,item_number):
     for col in sheet2.iter_cols(min_row=2,max_row=10000,min_col=2, max_col=7):    
         for cell in col:
             cell.protection = Protection(locked = False)
-        
+
+
+
 
     # Protect the entire worksheet
     sheet1.protection.sheet = True
