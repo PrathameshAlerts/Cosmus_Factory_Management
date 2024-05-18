@@ -548,13 +548,15 @@ def product2item(request,pk):
     items = Item_Creation.objects.all()
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductProductionFormset(instance= product)  # pass the instance to the formset
+    product_name = product.Product.Model_Name
+    product_color = product.PProduct_color
+    print(product_name,product_color)
     if request.method == 'POST':
         formset = ProductProductionFormset(request.POST, instance=product)
-        print(formset)
+        
         if formset.is_valid():
             formset.save()
             messages.success(request,'Items 2 Product sucessfully added.')
-            # return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
             close_window_script = """
             <script>
             window.opener.location.reload(true);  // Reload parent window if needed
@@ -564,9 +566,9 @@ def product2item(request,pk):
             return HttpResponse(close_window_script)
 
     else:
-            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product, 'items':items})
+            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color})
 
-    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product, 'items':items})
+    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product,'product_name':product_name,'product_color':product_color})
 
 
 #____________________________Product-View-End__________________________________
@@ -2247,102 +2249,97 @@ def set_production_popup(request,p_name,p_reference_id):
 
 
 
-def set_production_upload(request,product_ref_id,item_number):
-    number_of_items = int(item_number)
-    product_products = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_ref_id)
+# def set_production_upload(request,product_ref_id,item_number):
+#     number_of_items = int(item_number)
+#     product_products = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_ref_id)
 
-    #check if product has any set productions
-    product_2_items_exists = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id).first()
+#     #check if product has any set productions
+#     product_2_items_exists = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id).first()
 
-
-
-    workbook = Workbook()
+#     workbook = Workbook()
     
-    #delete the default workbook
-    default_sheet = workbook['Sheet']
-    workbook.remove(default_sheet)
+#     #delete the default workbook
+#     default_sheet = workbook['Sheet']
+#     workbook.remove(default_sheet)
 
-    workbook.create_sheet('product_special_items')
-    workbook.create_sheet('product_special_configs')
-    workbook.create_sheet('product_common_items')
-    workbook.create_sheet('product_common_configs')
+#     workbook.create_sheet('product_special_items')
+#     workbook.create_sheet('product_special_configs')
+#     workbook.create_sheet('product_common_items')
+#     workbook.create_sheet('product_common_configs')
     
-    sheet1 = workbook.worksheets[0]
-    sheet2 = workbook.worksheets[1]
-    sheet3 = workbook.worksheets[2]
-    sheet4 = workbook.worksheets[3]
+#     sheet1 = workbook.worksheets[0]
+#     sheet2 = workbook.worksheets[1]
+#     sheet3 = workbook.worksheets[2]
+#     sheet4 = workbook.worksheets[3]
 
-    # wb1 product_sku
-    firstcell = sheet1.cell(row=1, column=1)
-    firstcell.value = "product_sku"
-    sheet1.column_dimensions['A'].width = 30  # Adjust the width as needed
+#     # wb1 product_sku
+#     firstcell = sheet1.cell(row=1, column=1)
+#     firstcell.value = "product_sku"
+#     sheet1.column_dimensions['A'].width = 30  # Adjust the width as needed
 
-    #for entering the products
-    col_num = 2
-    for products in product_products:
-        product_sku = products.PProduct_SKU
-        sheet1[f'A{col_num}'] = product_sku
-        col_num = col_num + 1
-
-
-    #for creating columns for fabric group
-    row_num = 1
-    for row in sheet1.iter_rows(min_row=1, max_row=1, min_col=2, max_col = number_of_items + 1):
-        for cell in row:
-            cell.value = f"fabric_{row_num}"
-
-            # Set the width of the current column (function to get the column letter from cell)
-            col_letter = get_column_letter(cell.column)
-            sheet1.column_dimensions[col_letter].width = 20  # Adjust the width
-            row_num = row_num + 1
+#     #for entering the products
+#     col_num = 2
+#     for products in product_products:
+#         product_sku = products.PProduct_SKU
+#         sheet1[f'A{col_num}'] = product_sku
+#         col_num = col_num + 1
 
 
-    #unlock the editable part of the sheet 
-    for row in sheet1.iter_rows(min_row=2, max_row = len(product_products) + 1 ,min_col=2, max_col= number_of_items + 1):
-        for cell in row:
-            cell.protection = Protection(locked =False)
+#     #for creating columns for fabric group
+#     row_num = 1
+#     for row in sheet1.iter_rows(min_row=1, max_row=1, min_col=2, max_col = number_of_items + 1):
+#         for cell in row:
+#             cell.value = f"fabric_{row_num}"
 
-        if product_2_items_exists:
-            pass
+#             # Set the width of the current column (function to get the column letter from cell)
+#             col_letter = get_column_letter(cell.column)
+#             sheet1.column_dimensions[col_letter].width = 20  # Adjust the width
+#             row_num = row_num + 1
 
-    # wb2
-    for row in sheet2.iter_rows(min_row=1, max_row=1, min_col=1, max_col=7):
-        row[0].value = 'id'
-        row[1].value = 'location'
-        row[2].value = 'name'
-        row[3].value = 'calculation'
-        row[4].value = 'total'
-        row[5].value = 'cut_part'
-        row[6].value = 'type'
+
+#     #unlock the editable part of the sheet 
+#     for row in sheet1.iter_rows(min_row=2, max_row = len(product_products) + 1 ,min_col=2, max_col= number_of_items + 1):
+#         for cell in row:
+#             cell.protection = Protection(locked =False)
+
+#         if product_2_items_exists:
+#             pass
+
+#     # wb2
+#     for row in sheet2.iter_rows(min_row=1, max_row=1, min_col=1, max_col=7):
+#         row[0].value = 'id'
+#         row[1].value = 'location'
+#         row[2].value = 'name'
+#         row[3].value = 'calculation'
+#         row[4].value = 'total'
+#         row[5].value = 'cut_part'
+#         row[6].value = 'type'
         
 
-        #get the column letter of the above and change the width 
-        for cell in row:
-            column_letter = get_column_letter(cell.column)
-            sheet2.column_dimensions[column_letter].width = 20
+#         #get the column letter of the above and change the width 
+#         for cell in row:
+#             column_letter = get_column_letter(cell.column)
+#             sheet2.column_dimensions[column_letter].width = 20
 
-    #unlock the editable part of the sheet
-    for col in sheet2.iter_cols(min_row=2,max_row=10000,min_col=2, max_col=7):    
-        for cell in col:
-            cell.protection = Protection(locked = False)
+#     #unlock the editable part of the sheet
+#     for col in sheet2.iter_cols(min_row=2,max_row=10000,min_col=2, max_col=7):    
+#         for cell in col:
+#             cell.protection = Protection(locked = False)
 
-
-
-
-    # Protect the entire worksheet
-    sheet1.protection.sheet = True
-    sheet2.protection.sheet = True
+#     # Protect the entire worksheet
+#     sheet1.protection.sheet = True
+#     sheet2.protection.sheet = True
     
 
-    fileoutput = BytesIO()
-    workbook.save(fileoutput)
+#     fileoutput = BytesIO()
+#     workbook.save(fileoutput)
     
-    # Prepare the HTTP response with the Excel file content
-    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    file_name_with_pk = f'product_reference_id_{product_ref_id}'
-    response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
+#     # Prepare the HTTP response with the Excel file content
+#     response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+#     file_name_with_pk = f'product_reference_id_{product_ref_id}'
+#     response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
 
-    return response
+#     return response
 
 
 
@@ -2403,17 +2400,6 @@ def register(request):
 #_________________________________________ Cosmus ERP Code_______________________
 
 
-# def index(request):
-#     return render(request,"product/index.html")
-
-
-# def listproduct(request):
-#     queryset = Product.objects.all()
-#     product_image = ProductImage.objects.filter(Image_ID=1)
-#     context = {'products' : queryset, 'image': product_image}
-#     for image in product_image:
-#         print(image.Image.url)
-#     return render(request, 'product/list_products.html', context)
 
 
 # def add_product(request):
@@ -2492,15 +2478,3 @@ def register(request):
 #             return redirect('listproduct')
 #     context = {'form': form, 'product': product}
 #     return render(request, 'product/edit_product.html', context)
-
-
-
-# def deleteproduct(request, pk):
-#     product = Product.objects.get(id = pk)
-#     product.delete()
-#     print('record deleted')
-#     return redirect('listproduct')
-
-
-# def aplus(request):
-#     return render(request, 'product/aplus.html')

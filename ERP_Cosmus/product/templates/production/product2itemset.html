@@ -1,7 +1,8 @@
 {% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
-    <h1>Add items to product</h1>
+    <h4>Add items to product</h4>
+    Product Name : {{product_name}} product Color : {{product_color}}
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ formset.management_form }}
