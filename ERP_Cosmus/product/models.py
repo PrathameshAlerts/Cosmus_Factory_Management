@@ -200,7 +200,6 @@ class Product(models.Model):
     Product_Create_Date=models.DateField(auto_now=True)
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank = True, null = True)
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
-    Number_of_items = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
@@ -560,16 +559,17 @@ class set_prod_item_part_name(models.Model):
     part_name = models.CharField(max_length=100)
     part_dimentions = models.CharField(max_length=100)
     dimention_total = models.CharField(max_length=100)
-    part_pieces = models.IntegerField()
+    part_pieces = models.IntegerField(default=0)
     part_type = models.CharField(max_length=255)  #remark
     
 
 
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
-    Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT) 
+    Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     set_prod_config = models.ManyToManyField(set_prod_item_part_name)
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+
 
     class Meta:
         unique_together = [['PProduct_pk','Item_pk']]

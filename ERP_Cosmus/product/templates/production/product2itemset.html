@@ -1,0 +1,17 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
+    <h1>Add items to product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ formset.management_form }}
+       
+        {% for form in formset %}
+        {{form}}
+        {% endfor %}
+                
+    <button type="button" class="add_btn" id="addForm">Add</button>  
+    <input type="submit" class="add_btn" >
+    </form>
+
+    {% endblock body %} 
