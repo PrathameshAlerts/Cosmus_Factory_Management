@@ -278,6 +278,7 @@ class Fabric_Group_Model(models.Model):
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
+
 class Unit_Name_Create(models.Model):
     unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
@@ -360,8 +361,6 @@ class item_color_shade(models.Model):
 
     def __str__(self) -> str:
         return self.item_shade_name
-
-
 
 
 class opening_shade_godown_quantity(models.Model):
@@ -551,16 +550,12 @@ class item_godown_quantity_through_table(models.Model):
             
 
 
-
-
-
 class set_prod_item_part_name(models.Model):
-    location = models.CharField(max_length=5, null=False, blank=False)
     part_name = models.CharField(max_length=100)
     part_dimentions = models.CharField(max_length=100)
     dimention_total = models.CharField(max_length=100)
     part_pieces = models.IntegerField(default=0)
-    part_type = models.CharField(max_length=255)  #remark
+    part_type = models.CharField(max_length=255) #remark
     
 
 
