@@ -3,10 +3,11 @@
 {% block body %}
 
 <h2>Update Product</h2>
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" action="" id="newForm">
   {% csrf_token %}
   <div class="d-flex mb-3 productItem">
     <input type="hidden" class="product_items" name="Number_of_items" id="id_Number_of_items" value="{{form.instance.Number_of_items | default_if_none:'0'}}">
+    <input type="hidden" name="updated_url" id="updated_url" value="">
     <label for="id_Product_Refrence_ID" class="fs-5 fw-bold">Refrence ID :</label>
     <input type="number" readonly class="product_items fs-5 id text-danger" value={{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID"  id="id_Product_Refrence_ID">
     <label for="id_Model_Name" class="fw-bold ms-2 fs-5 ">Model Name :</label>
@@ -81,6 +82,7 @@
 
             <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
             <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
+            <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button>
 
           </div>
           <div class="mb-2 d-flex">
@@ -570,6 +572,19 @@
 
     
   </div>
+
+  <button type="button" class="edit_btn w-75 mb-3" id="set_production_btn">Set Production<span class="production_padding"><i
+    class="fas fa-angle-right arrowBtn"></i></span></button>
+
+  <div id="set_production" style="display: none;">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class=" d-flex mb-3">
+          
+        </div>
+      </div>
+    </div>
+
 <div>
   <input type="submit" class="item-btn mx-5" value="submit">
 </div>
@@ -599,8 +614,25 @@
             }
         });
     });
+
+    
+
 });
 
+// function newUrlData(newData){
+//       var itemValue = newData.itemValue;
+//      var updatedUrl = newData.updatedUrl;
+    
+     
+      
+//       console.log('itemValue',itemValue)
+//       console.log('updatedUrl:', updatedUrl);
+//       document.getElementById('id_Number_of_items').value = itemValue;
+//      document.getElementById('updated_url').value = updatedUrl;
+      
+//       var form = document.getElementById('newForm');
+//     form.setAttribute('action', updatedUrl);
+//     }
 
 </script>
 
@@ -724,27 +756,32 @@
 <script>
    var popupWindow = null;
 
-   function editsetProduction(button){
+   function editSetProduction(button){
     if(popupWindow === null || popupWindow.closed){
-      setPopup(button, 'setproductionpopup/');
+      setPopup(button, '/product2item/');
     }else{
       popupWindow.focus();
     }
   }
 
   function setPopup(button, path) {
-    var ref_id_value = button.closest('.productItem');
-    var RefrenceId = ref_id_value.querySelector('#id_Product_Refrence_ID').value;
-    var productName = document.querySelector('#id_Product_Name').value;
-    console.log('RefrenceId'.RefrenceId)
+    var card = button.closest('.card');
+    if (card) {
+      var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+      if (productSkuInput) {
+        var productSku = productSkuInput.value;
         var minWidth = 800; // minimum width
         var minHeight = 600;
 
         // this will generate http://127.0.0.1:8000/ 
         var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
-        popupWindow = window.open( baseUrl  + path + productName +'/'+  RefrenceId  , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-     
-    
+        popupWindow = window.open( baseUrl  + path + productSku , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+      } else {
+        console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
+      }
+    } else {
+      console.error('Parent card container not found.');
+    }
   }
   </script>
 
@@ -773,6 +810,7 @@
     toggleVisible("product_capacity_btn", "product_capacity");
     toggleVisible("product_description_btn", "product_description");
     toggleVisible("product_pricing_btn", "product_pricing");
+    toggleVisible("set_production_btn", "set_production");
 
   });
 </script>

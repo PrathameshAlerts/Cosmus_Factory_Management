@@ -234,6 +234,8 @@
 <section> 
   <div class="pcoded-main-container">
     <div class="pcoded-content">
+
+      
       <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check-circle-fill" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -370,19 +372,19 @@
       {% for message in messages %}
 
     {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-     <div id="message-timer" class="" role="alert">
-      <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+     <div id="message-timer" class="success" role="alert">
+      <svg class="bi flex-shrink-0 ms-2 alertImg" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
          &nbsp; {{message}}
      </div>
 
      {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-     <div id="message-timer" class="" role="alert">
-      <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> 
+     <div id="message-timer" class="info" role="alert">
+      <svg class="bi  flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> 
       &nbsp; {{message}}
      </div> 
 
      {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-     <div id="message-timer" class="" role="alert">
+     <div id="message-timer" class="error" role="alert">
       <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
        &nbsp; {{message}}
      </div>
@@ -408,7 +410,7 @@
            if (errorMessage) {
                setTimeout(function() {
                    errorMessage.style.display = 'none';
-               }, 7000); // Hide the error message after 5 seconds (5000 milliseconds)
+               }, 5000); // Hide the error message after 5 seconds (5000 milliseconds)
            }
        };
 
@@ -436,7 +438,7 @@
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    showAlertForDuration(2000); // Show the alert for 3 seconds
+    showAlertForDuration(3000); // Show the alert for 3 seconds
 });
 
 // This function is used to toggle the sidebar
