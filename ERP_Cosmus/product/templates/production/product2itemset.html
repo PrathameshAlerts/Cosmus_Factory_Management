@@ -1,8 +1,14 @@
 {% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
-    <h4>Add items to product</h4>
-    Product Name : {{product_name}} product Color : {{product_color}}
+
+<h3 class="mb-3">Add items to product</h3>
+<div class="d-flex mb-3">
+    <h5 class="me-5">Product Name : <span class="text-capitalize text-danger">{{product_name}}</span></h5>
+    <h5>Product Color : <span class="text-capitalize text-danger">{{product_color}}</span></h5> 
+   
+</div>
+   
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ formset.management_form }}
@@ -61,8 +67,7 @@
             if (lastVisibleRow) {
                 var forms = document.getElementById('id_product_2_item_through_table_set-TOTAL_FORMS');
                 var newFormCount = parseInt(forms.value) ;
-                console.log(newFormCount)
-                var newTable = tableBody.lastElementChild.cloneNode(true);
+                var newTable = lastVisibleRow.cloneNode(true);
                 newTable.querySelectorAll("input select").forEach(function(e) {
                 e.value= "";
               });
@@ -84,38 +89,45 @@
                 deleteElement.id = `product_2_item_through_table_set-${newFormCount}-DELETE`;
                 deleteElement.name = `product_2_item_through_table_set-${newFormCount}-DELETE`;
                 deleteElement.value = '';
+                deleteElement.checked = false;
 
 
                 forms.value = newFormCount + 1;
 
                 tableBody.appendChild(newTable);
+                deleteRow();
 
             }else {
                 console.error("No visible rows found to clone.");
             }   
             });
         }
+
+        function deleteRow(){
+    // Add click event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Find the row containing the clicked delete button
+            var row = this.closest('tr');
+            console.log("row",row);
+            var checkRow = row.querySelector('.product_Item_deleteId[name^="product_2_item_through_table_set-"][name$="-DELETE"]');
+            if (checkRow) {
+                checkRow.checked = true; // Mark as checked
+                checkRow.value = 'true'; // Set the value to 'true'
+
+                row.style.display = 'none';
+
+            } else {
+                console.error("Checkbox for deletion not found in this row");
+            }
+        });
+    });
+    
+};
+deleteRow();
         });
 
-//         document.addEventListener('DOMContentLoaded', function() {
-//     // Add click event listener to all delete buttons
-//     document.querySelectorAll('.delete-btn').forEach(function(button) {
-//         button.addEventListener('click', function() {
-//             // Find the row containing the clicked delete button
-//             var row = this.closest('tr');
-//             var checkRow = row.querySelector('.product_Item_deleteId[name^="product_2_item_through_table_set-"][name$="-DELETE"]');
-//             if (checkRow) {
-//                 checkRow.checked = true; // Mark as checked
-//                 checkRow.value = 'true'; // Set the value to 'true'
-
-//                 row.style.display = 'none';
-
-//             } else {
-//                 console.error("Checkbox for deletion not found in this row");
-//             }
-//         });
-//     });
-// });
+     
 
     </script>
     {% endblock body %} 
