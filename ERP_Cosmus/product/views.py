@@ -545,6 +545,7 @@ def product2subcategoryajax(request):
 
 def product2item(request,pk):
     print(request.POST)
+    items = Item_Creation.objects.all()
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductProductionFormset(instance= product)  # pass the instance to the formset
     if request.method == 'POST':
@@ -563,9 +564,9 @@ def product2item(request,pk):
             return HttpResponse(close_window_script)
 
     else:
-            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product})
+            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product, 'items':items})
 
-    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product})
+    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product, 'items':items})
 
 
 #____________________________Product-View-End__________________________________
