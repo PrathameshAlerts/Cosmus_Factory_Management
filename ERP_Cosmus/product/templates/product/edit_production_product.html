@@ -82,6 +82,7 @@
 
             <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
             <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
+            <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button>
 
           </div>
           <div class="mb-2 d-flex">
@@ -579,9 +580,7 @@
     <div class="row">
       <div class="col-lg-4">
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">Product Sku:</label>
-          <input type="date" class="item-select" name="Production_Date"
-            value="{{form.instance.Production_Date | default_if_none:''}}" id="">
+          
         </div>
       </div>
     </div>
@@ -757,27 +756,32 @@
 <script>
    var popupWindow = null;
 
-   function editsetProduction(button){
+   function editSetProduction(button){
     if(popupWindow === null || popupWindow.closed){
-      setPopup(button, 'setproductionpopup/');
+      setPopup(button, '/product2item/');
     }else{
       popupWindow.focus();
     }
   }
 
   function setPopup(button, path) {
-    var ref_id_value = button.closest('.productItem');
-    var RefrenceId = ref_id_value.querySelector('#id_Product_Refrence_ID').value;
-    var productName = document.querySelector('#id_Product_Name').value;
-    console.log('RefrenceId'.RefrenceId)
+    var card = button.closest('.card');
+    if (card) {
+      var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+      if (productSkuInput) {
+        var productSku = productSkuInput.value;
         var minWidth = 800; // minimum width
         var minHeight = 600;
 
         // this will generate http://127.0.0.1:8000/ 
         var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
-        popupWindow = window.open( baseUrl  + path + productName +'/'+  RefrenceId  , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-     
-    
+        popupWindow = window.open( baseUrl  + path + productSku , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+      } else {
+        console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
+      }
+    } else {
+      console.error('Parent card container not found.');
+    }
   }
   </script>
 
