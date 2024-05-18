@@ -545,6 +545,7 @@ def product2subcategoryajax(request):
 
 def product2item(request,pk):
     print(request.POST)
+    items = Item_Creation.objects.all()
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductProductionFormset(instance= product)  # pass the instance to the formset
     product_name = product.Product.Model_Name
