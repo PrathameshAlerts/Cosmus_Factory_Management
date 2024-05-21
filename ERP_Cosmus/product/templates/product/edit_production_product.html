@@ -580,7 +580,7 @@
       </div>
       <div class="col-lg-3">
         <label>Download File:</label>
-        <button class="add_btn"  onclick="editsetProduction(this)" id="setProduction">Set Production</button>  
+        <input type="button" class="add_btn"  onclick="redirectSetProduction()" id="setProduction" value="Set Production">
       </div>
       <div class="col-lg-3">
         <div class="d-flex mb-3">
@@ -626,20 +626,7 @@
 
 });
 
-// function newUrlData(newData){
-//       var itemValue = newData.itemValue;
-//      var updatedUrl = newData.updatedUrl;
-    
-     
-      
-//       console.log('itemValue',itemValue)
-//       console.log('updatedUrl:', updatedUrl);
-//       document.getElementById('id_Number_of_items').value = itemValue;
-//      document.getElementById('updated_url').value = updatedUrl;
-      
-//       var form = document.getElementById('newForm');
-//     form.setAttribute('action', updatedUrl);
-//     }
+
 
 </script>
 
@@ -689,6 +676,11 @@
 
 
 <script>
+  function redirectSetProduction(){
+    var ref_id = document.getElementById('id_Product_Refrence_ID').value
+    console.log(ref_id)
+    window.location.href = '/export_Product2Item_excel/' + encodeURIComponent(ref_id)
+  }
 
   function checkAll(source) {
     var checkboxes = document.querySelectorAll('input[name="Product_Channel"]');

@@ -34,7 +34,7 @@ class PProductCreateForm(forms.ModelForm):
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
 # PProduct_Creation attribute which is PProduct_pk is not required as we are already passing the instance in form 
-ProductProductionFormset = inlineformset_factory(PProduct_Creation,product_2_item_through_table, fields = ['Item_pk'],extra=1)
+Product2ItemFormset = inlineformset_factory(PProduct_Creation,product_2_item_through_table, fields = ['Item_pk'],extra=1)
 
 Product2CommonItemFormSet = inlineformset_factory( PProduct_Creation, product_2_item_through_table, fields= ['PProduct_pk', 'Item_pk'], extra=1, can_delete=True)
 class PProductAddForm(forms.ModelForm):
