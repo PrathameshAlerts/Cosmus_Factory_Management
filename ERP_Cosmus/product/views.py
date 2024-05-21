@@ -357,14 +357,12 @@ def add_product_images(request, pk):
 
 
 def add_product_video_url(request,pk):
-    print(request.POST)
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductVideoFormSet(instance= product)  # pass the instance to the formset
     if request.method == 'POST':
         formset = ProductVideoFormSet(request.POST, instance=product)
         
         if formset.is_valid():
-            print(formset.deleted_forms)
             formset.save()
             messages.success(request,'Product url sucessfully added.')
             # return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
@@ -554,18 +552,21 @@ def product2item(request,pk):
 
     if request.method == 'POST':
         formset = Product2ItemFormset(request.POST, instance=product_creation)
-        
-        if formset.is_valid():           
+        if formset.is_valid():      
             # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
             for form in formset.deleted_forms:
                 if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
                     form.instance.delete()
 
+            
             for form in formset:
-                if form not in formset.deleted_forms: # check if form not in deleted forms to avoid saving it again 
-                    p2i_instance = form.save(commit=False)
-                    p2i_instance.common_unique = False
-                    p2i_instance.save()
+                # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
+                if not form.cleaned_data.get('DELETE'):
+                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        p2i_instance = form.save(commit=False)
+                        p2i_instance.common_unique = False
+                        p2i_instance.save()
+
             messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
             <script>
@@ -608,7 +609,6 @@ def product2commonitem(request,product_id):
 
     if request.method == 'POST':
         formset = Product2CommonItemFormSet(request.POST, instance=product_instance, queryset=product_items_qs)
-
         if formset.is_valid():
             # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
             for form in formset.deleted_forms:
@@ -616,10 +616,11 @@ def product2commonitem(request,product_id):
                     form.instance.delete()
 
             for form in formset:
-                if form not in formset.deleted_forms: # check if form not in deleted forms to avoid saving it again 
-                    p2i_instance = form.save(commit = False)
-                    p2i_instance.common_unique = True
-                    p2i_instance.save()
+                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        p2i_instance = form.save(commit = False)
+                        p2i_instance.common_unique = True
+                        p2i_instance.save()
 
             messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
@@ -650,13 +651,13 @@ def export_Product2Item_excel(request,product_ref_id):
     print(queryset)
 
     # Define the headers based on model fields
-    headers = ['Field1', 'Field2', 'Field3']  # replace with your model fields
+    headers = ['ID', 'Product SKU', 'Item','Common/Unique']  # replace with your model fields
     ws.append(headers)
 
 
     # Append the data rows
     for obj in queryset:
-        row = [obj.field1, obj.field2, obj.field3]  # replace with your model fields
+        row = [obj.id, obj.PProduct_pk.PProduct_SKU, obj.Item_pk.item_name, obj.common_unique]  # replace with your model fields
         ws.append(row)
 
     fileoutput = BytesIO()

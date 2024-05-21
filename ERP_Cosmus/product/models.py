@@ -564,7 +564,7 @@ class product_2_item_through_table(models.Model):
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     set_prod_config = models.ManyToManyField(set_prod_item_part_name)
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
-    common_unique = models.BooleanField(default=False)  #True if its common and false if its special
+    common_unique = models.BooleanField(default=False)  # True if its common and false if its special
 
 
     class Meta:
