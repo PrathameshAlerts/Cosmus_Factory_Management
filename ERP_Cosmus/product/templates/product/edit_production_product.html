@@ -47,7 +47,7 @@
     <div class="card rounded-3 mb-3 p-2">
 
       <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
           <div class=" d-flex mb-3">
             <label class="mx-2">Color:</label>
             <select class="item-selects" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
@@ -75,7 +75,7 @@
               id="{{form.prefix}}-PProduct_SKU">
 
             <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
-            <button type="button" class="add_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
+            <button type="button" class="video_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
             <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button>
 
           </div>
@@ -88,7 +88,20 @@
               value="{{form.instance.Product_Rating}}" min="0" max="5" class="rounded-3 w-75 px-2">
           </div>
 
-          <label for="" class="form-label fw-bold ps-2">Links</label>
+          
+        </div>
+        <div class="col-lg-2">
+          {% if form.instance.PProduct_image %}
+          <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 150px;">
+          {% endif %}
+        </div>
+        <div class="col-lg-1">
+          <div class="delete-btn border-0 bg-transparent mt-5" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="product_delete_related px-2" style="display: none;"name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></div>
+                
+        </div>
+       
+      </div>
+      <label for="" class="form-label fw-bold ps-2">Links</label>
           <div class="d-flex">
             <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo mx-2">
             <span>{{form.Amazon_Link}}</span>
@@ -98,21 +111,7 @@
 
             <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo mx-2">
             <span>{{form.Cosmus_link}}</span>
-
-            
-            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="product_delete_related px-2" style="display: none;"name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
-
-            
           </div>
-        </div>
-        <div class="col-lg-2">
-          {% if form.instance.PProduct_image %}
-          <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 150px;">
-          {% endif %}
-        </div>
-
-        
-      </div>
     </div>
     
 
@@ -572,20 +571,25 @@
 
   <div id="set_production" style="display: none;">
     <div class="row">
-      <div class="col-lg-3">
+      <div class="col-lg-3 mx-3">
        
           <button type="button" class="add_btn" id="edit_set_production" onclick="editCommonSetProduction(this)">Edit Common Set Production</button>  
-            <!-- <button type="submit" class="btn btn-light">Import</button>
-        -->
       </div>
       <div class="col-lg-3">
-        <label>Download File:</label>
-        <input type="button" class="add_btn"  onclick="redirectSetProduction()" id="setProduction" value="Set Production">
-      </div>
-      <div class="col-lg-3">
-        <div class="d-flex mb-3">
-          <label>Upload File:</label>
-        <input class="form-control mx-3" type="file" id="formFile"name="excel_file">
+        <div class="d-flex">
+          <div class="mx-4">
+            <label for="setProduction">
+              <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/128/Downloads-icon.png" style="width: 50px; height: 50px"/>
+            </label>
+            <input type="button" class="add_btn"  onclick="redirectSetProduction()" id="setProduction" value="Set Production" style="display: none;" download>
+          </div>
+         
+          <div class="image-upload">
+            <label for="file-input">
+              <img src="../static/images/up-loading.png" style="width: 50px; height: 50px"/>
+            </label>
+            <input id="file-input" type="file" id="formFile"name="excel_file" />
+          </div>
         </div>
         
       </div>
@@ -692,7 +696,7 @@
   function redirectPproduct() {
     var ref_id_value = document.getElementById('id_Product_Refrence_ID').value
     console.log(ref_id_value)
-    window.location.href = '/pproduct_creation_ref_id/' + ref_id_value;
+    window.location.href = '/pproduct_creation_ref_id/' + encodeURIComponent(ref_id_value);
   }
 
   function previewFile(event, counter) {

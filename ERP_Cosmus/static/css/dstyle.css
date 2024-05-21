@@ -738,7 +738,7 @@ input[type=number] {
     font-size: 13px;
     margin-left: 10px;
     height:35px;
-    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    background: linear-gradient(45deg, #55c2da, #59e0c5);
 }
 .product_logo{
     width: 30px;
@@ -994,6 +994,17 @@ input[type=number] {
     cursor: pointer;
 }
 
+.video_btn{
+    background: linear-gradient(45deg, #ED0800, #f60a02);
+    color: white;
+    padding: 10px;
+    font-size: 13px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 0px 5px;
+    height:35px;
+}
 .alertImg{
     width: 25px;
     height: 25px;
@@ -1278,7 +1289,9 @@ input[type=number] {
     color: #000;
 }
 
-
+.image-upload>input {
+    display: none;
+  }
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {
