@@ -14,9 +14,6 @@
     <span type="text" class="product_items fs-5 text-danger" value="" name="" readonly id="">{{form.instance.Model_Name|default_if_none:''}}</span>
     <label for="" class="fw-bold ms-2 fs-5">Color Count :</label>
     <span class="mx-2 fs-5 text-danger">{{products_sku_counts}}</span>
-    <span style="padding-left: 80px;">
-    <button class="add_btn" type="button" onclick="editsetProduction(this)" id="setProduction">Set Production</button>  
-  </span>
   <span>
     <input class="form-control" type="file" id="formFile"name="excel_file">
     <button type="submit" class="btn btn-light">Import</button>
@@ -581,6 +578,9 @@
       <div class="col-lg-4">
         <div class=" d-flex mb-3">
           <button type="button" class="add_btn" id="edit_set_production" onclick="editCommonSetProduction(this)">Edit Set Production</button>
+          <span style="padding-left: 80px;">
+            <button class="add_btn" type="button" onclick="editsetProduction(this)" id="setProduction">Set Production Export</button>  
+          </span>
         </div>
       </div>
     </div>
@@ -758,7 +758,7 @@
 
    function editSetProduction(button){
     if(popupWindow === null || popupWindow.closed){
-      setPopup(button, '/product2item/');
+      setPopup(button, '/export_Product2Item_excel/');
     }else{
       popupWindow.focus();
     }

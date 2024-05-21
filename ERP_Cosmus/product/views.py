@@ -563,9 +563,9 @@ def product2item(request,pk):
 
             for form in formset:
                 if form not in formset.deleted_forms: # check if form not in deleted forms to avoid saving it again 
-                    form.save(commit=False)
-                    form.common_unique = False
-                    form.save()
+                    p2i_instance = form.save(commit=False)
+                    p2i_instance.common_unique = False
+                    p2i_instance.save()
             messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
             <script>
@@ -603,7 +603,7 @@ def product2commonitem(request,product_id):
 
     #instance and queryset params explained in file #formsets_for_accessing_reverse_relations.txt
     formset = Product2CommonItemFormSet(instance=product_instance,queryset=product_items_qs) # queryset of all the instannces of productcreation binded to form 
-    print('formset_get',formset)
+    
 
 
     if request.method == 'POST':
@@ -617,9 +617,9 @@ def product2commonitem(request,product_id):
 
             for form in formset:
                 if form not in formset.deleted_forms: # check if form not in deleted forms to avoid saving it again 
-                    form.save(commit = False)
-                    form.common_unique = True
-                    form.save()
+                    p2i_instance = form.save(commit = False)
+                    p2i_instance.common_unique = True
+                    p2i_instance.save()
 
             messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
@@ -639,6 +639,35 @@ def product2commonitem(request,product_id):
                                                                'product_name':product_name,
                                                                'items':items})
 
+
+def export_Product2Item_excel(request,product_ref_id):
+    # Create an in-memory workbook
+    wb = Workbook()
+    ws = wb.active
+    
+    # Define the queryset
+    queryset = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_ref_id)
+    print(queryset)
+
+    # Define the headers based on model fields
+    headers = ['Field1', 'Field2', 'Field3']  # replace with your model fields
+    ws.append(headers)
+
+
+    # Append the data rows
+    for obj in queryset:
+        row = [obj.field1, obj.field2, obj.field3]  # replace with your model fields
+        ws.append(row)
+
+    fileoutput = BytesIO()
+    wb.save(fileoutput)
+    
+    # Prepare the HTTP response with the Excel file content
+    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    file_name_with_pk = f'product_reference_id_{product_ref_id}'
+    response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
+
+    return response
 
 
 
