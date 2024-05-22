@@ -598,7 +598,7 @@ def product2item(request,product_refrence_id):
         else:
             print(formset_single.errors)
 
-    return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,
+    return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
                                                                'Products_all':Products_all,
                                                                'items':items,'product_refrence_no': product_refrence_no})
 

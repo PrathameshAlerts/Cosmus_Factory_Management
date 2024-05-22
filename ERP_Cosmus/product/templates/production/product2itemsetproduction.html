@@ -5,8 +5,10 @@
 
    <h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
    <form method="post" enctype="multipart/form-data">
- 
+
     {% csrf_token %}
+
+ 
     <table class="table table-responsive table-striped table-bordered" id="mainProductForm">
         <thead>
             <tr>
@@ -54,6 +56,8 @@
         
     </table>
     <button type="button" class="add_btn mb-4" id="addForm">Add</button>  
+  
+
     <table class="table table-responsive table-striped table-bordered" id="productForm">
         <thead>
             <tr>
@@ -66,11 +70,14 @@
         </thead>
        
         <tbody class="mainTableList">
-           
+           {{formset_common.management_form}}
+           {% for forms in formset_common %}
+           {{ forms.id }}
+
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>
-                    <select class="item-select" name="{{forms.prefix}}-Item_pk" id="{{forms.prefix}}-Item_pk">
+                    <select class="item-select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
                         
                         <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
                         {% for item in items %}
@@ -80,14 +87,14 @@
 
                 </td>
               
-                    <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value=""  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
+                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-no_of_rows" value=""  maxlength="255" id="id_{{forms.prefix}}-no_of_rows" ></td>
               
-                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value=""  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
+                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-Remark" value=""  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
                 <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
            
         </tbody>
-        
+        {% endfor %}
     </table>
     
             
@@ -204,7 +211,7 @@ deleteRow();
             }
         });
         if (lastVisibleRow) {
-            var forms = document.getElementById('id_-TOTAL_FORMS');
+            var forms = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
             var newFormCount = parseInt(forms.value) ;
             var newTable = lastVisibleRow.cloneNode(true);
             newTable.querySelectorAll("input select").forEach(function(e) {
@@ -213,28 +220,28 @@ deleteRow();
 
 
 
-            // const selectElement = newTable.querySelector('select[name^="-"][name$="Item_pk"]');
-            // selectElement.id = `-${newFormCount}-Item_pk`;
-            // selectElement.name = `-${newFormCount}-Item_pk`;
-            // selectElement.value = '';
+            const selectElement = newTable.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
+            selectElement.id = `id_product2itemcommonformset-${newFormCount}-Item_pk`;
+            selectElement.name = `product2itemcommonformset-${newFormCount}-Item_pk`;
+            selectElement.value = '';
 
 
-            // const inputNameValue = newTable.querySelector('input[name^="-"][name$="product_common_item_name"]');
-            // inputNameValue.id = `-${newFormCount}-product_common_item_name`;
-            // inputNameValue.name = `-${newFormCount}-product_common_item_name`;
-            // inputNameValue.value = '';
+            const inputNameValue = newTable.querySelector('input[name^="product2itemcommonformset-"][name$="no_of_rows"]');
+            inputNameValue.id = `id_product2itemcommonformset-${newFormCount}-no_of_rows`;
+            inputNameValue.name = `product2itemcommonformset-${newFormCount}-no_of_rows`;
+            inputNameValue.value = '';
 
 
-            // const inputElement = newTable.querySelector('input[name^="-"][name$="product_common_item_name"]');
-            // inputElement.id = `-${newFormCount}-product_common_item_name`;
-            // inputElement.name = `-${newFormCount}-product_common_item_name`;
-            // inputElement.value = '';
+            const inputElement = newTable.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
+            inputElement.id = `id_product2itemcommonformset-${newFormCount}-Remark`;
+            inputElement.name = `product2itemcommonformset-${newFormCount}-Remark`;
+            inputElement.value = '';
 
-            // const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="-"][name$="DELETE"]');
-            // deleteElement.id = `-${newFormCount}-DELETE`;
-            // deleteElement.name = `-${newFormCount}-DELETE`;
-            // deleteElement.value = '';
-            // deleteElement.checked = false;
+            const deleteElement = newTable.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
+            deleteElement.id = `id_product2itemcommonformset-${newFormCount}-DELETE`;
+            deleteElement.name = `product2itemcommonformset-${newFormCount}-DELETE`;
+            deleteElement.value = '';
+            deleteElement.checked = false;
 
 
             forms.value = newFormCount + 1;
