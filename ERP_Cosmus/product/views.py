@@ -12,6 +12,7 @@ from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 from django.contrib import messages
 from django.db.models import Sum
+from numpy import single
 from openpyxl.utils import get_column_letter 
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
@@ -544,6 +545,7 @@ def product2subcategoryajax(request):
 
 def product2item(request,product_refrence_id):
     items = Item_Creation.objects.all()
+    product_refrence_no = product_refrence_id
     Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id)
 
     product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False)
@@ -552,36 +554,41 @@ def product2item(request,product_refrence_id):
 
     if request.method == 'POST':
         formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
-
-        # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
-        for form in formset_single.deleted_forms:
-            if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
-                form.instance.delete()
-        
-
-        for form in formset_single:
+        print(request.POST)
+        if formset_single.is_valid():
+            # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
+            for form in formset_single.deleted_forms:
+                if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
+                    form.instance.delete()
+            
+            for form in formset_single:
+                print('form.cleaned_data1',form.cleaned_data.get('DELETE'))
                 if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+                    print('form.cleaned_data1',form.cleaned_data.get('Item_pk'))
                     if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        print('form.cleaned_data',form.cleaned_data)
                         p2i_instance = form.save(commit = False)
                         p2i_instance.common_unique = False
                         p2i_instance.save()
 
 
+            messages.success(request,'Items to Product sucessfully added.')
+            close_window_script = """
+                            <script>
+                        window.opener.location.reload(true);  // Reload parent window if needed
+                        window.close();  // Close current window
+                        </script>
+                        """
+            return HttpResponse(close_window_script)    
+        else:
+            print(formset_single.errors)
 
-    messages.success(request,'Items to Product sucessfully added.')
-    close_window_script = """
-            <script>
-            window.opener.location.reload(true);  // Reload parent window if needed
-            window.close();  // Close current window
-            </script>
-            """
-    # return HttpResponse(close_window_script)    
     return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,
                                                                'Products_all':Products_all,
-                                                               'items':items})
+                                                               'items':items,'product_refrence_no': product_refrence_no})
 def product2commonitem(request,product_id): 
     items = Item_Creation.objects.all()
-
+    product_refrence_no = product_id
     product = get_object_or_404(Product, Product_Refrence_ID=product_id) #get the product of the refrence id
     product_name = product.Model_Name
     
@@ -601,6 +608,7 @@ def product2commonitem(request,product_id):
 
     if request.method == 'POST':
         formset = Product2CommonItemFormSet(request.POST, instance=product_instance, queryset=product_items_qs)
+        formset.forms = [form for form in  formset if form.has_changed()]
         if formset.is_valid():
             # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
             for form in formset.deleted_forms:
@@ -608,11 +616,9 @@ def product2commonitem(request,product_id):
                     form.instance.delete()
 
             for form in formset:
-                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
-                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-                        p2i_instance = form.save(commit = False)
-                        p2i_instance.common_unique = True
-                        p2i_instance.save()
+                p2i_instance = form.save(commit = False)
+                p2i_instance.common_unique = True
+                p2i_instance.save()
 
             messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
@@ -626,11 +632,11 @@ def product2commonitem(request,product_id):
         else:
             return render(request, 'production/product2commonitemset.html', {'formset': formset,
                                                                        'product_name':product_name,
-                                                                       'items':items})
+                                                                       'items':items,'product_refrence_no':product_refrence_no})
 
     return render(request, 'production/product2commonitemset.html', {'formset': formset,
                                                                'product_name':product_name,
-                                                               'items':items})
+                                                               'items':items,'product_refrence_no':product_refrence_no})
 
 
 def export_Product2Item_excel(request,product_ref_id):
