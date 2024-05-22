@@ -573,7 +573,7 @@
     <div class="row">
       <div class="col-lg-3 mx-3">
        
-          <button type="button" class="add_btn" id="edit_set_production" onclick="editCommonSetProduction(this)">Edit Common Set Production</button>  
+          <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button>  
       </div>
       <div class="col-lg-3">
         <div class="d-flex">
@@ -756,43 +756,13 @@
     }
   }
 </script>
-<script>
-   var popupWindow = null;
 
-   function editSetProduction(button){
-    if(popupWindow === null || popupWindow.closed){
-      setPopup(button, '/product2item/');
-    }else{
-      popupWindow.focus();
-    }
-  }
-
-  function setPopup(button, path) {
-    var card = button.closest('.card');
-    if (card) {
-      var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
-      if (productSkuInput) {
-        var productSku = productSkuInput.value;
-        var minWidth = 800; // minimum width
-        var minHeight = 600;
-
-        // this will generate http://127.0.0.1:8000/ 
-        var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
-        popupWindow = window.open( baseUrl  + path + productSku , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-      } else {
-        console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
-      }
-    } else {
-      console.error('Parent card container not found.');editCommonSetProduction
-    }
-  }
-  </script>
   <script>
     var popupWindow = null;
  
-    function editCommonSetProduction(button){
+    function editSetProduction(button){
      if(popupWindow === null || popupWindow.closed){
-       newPopup(button, '/product2commonitem/');
+       newPopup(button, 'product2item/');
      }else{
        popupWindow.focus();
      }

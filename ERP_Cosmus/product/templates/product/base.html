@@ -264,7 +264,7 @@
       {% endif %}
       </div>
 
-            <!-- non_form errors for formsets -->
+            
             {% if formset.non_form_errors %}
             <ul id="errorform">
               {% for error in formset.non_form_errors.values %}
@@ -329,7 +329,7 @@
   <ul class="errorlist" id="errorform">
     {% for field, error_list in form.errors.items %}
       {% for error in error_list %}
-        <li class="errorShow">
+        <li class = "errorShow">
           {% if field == "__all__" %}
             {{ error }}
           {% else %}

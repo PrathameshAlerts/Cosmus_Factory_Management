@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, BaseInlineFormSet
 
 
 
@@ -33,12 +33,13 @@ class PProductCreateForm(forms.ModelForm):
 
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
-# PProduct_Creation attribute which is PProduct_pk is not required as we are already passing the instance in form 
-Product2ItemFormset = inlineformset_factory(PProduct_Creation,product_2_item_through_table, fields = ['Item_pk'],extra=1)
 
-Product2CommonItemFormSet = inlineformset_factory( PProduct_Creation, product_2_item_through_table, fields= [ 'Item_pk'], extra=1, can_delete=True)
+
+
+Product2ItemFormset = modelformset_factory(product_2_item_through_table, fields= ['PProduct_pk','Item_pk','Remark','no_of_rows'],extra=1)
+
+Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, fields= ['PProduct_pk','Item_pk','Remark'], extra=1, can_delete=True)
 class PProductAddForm(forms.ModelForm):
-
 
     widgets = {
             'Product_Channel': forms.CheckboxSelectMultiple,
@@ -205,9 +206,9 @@ class shade_godown_items_temporary_table_form(forms.ModelForm):
         model = shade_godown_items_temporary_table
         fields = '__all__'
 
-shade_godown_items_temporary_table_formset = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=1)
+shade_godown_items_temporary_table_formset = modelformset_factory(shade_godown_items_temporary_table, form = shade_godown_items_temporary_table_form, extra=1)
 
-shade_godown_items_temporary_table_formset_update = modelformset_factory(shade_godown_items_temporary_table,form = shade_godown_items_temporary_table_form, extra=0)
+shade_godown_items_temporary_table_formset_update = modelformset_factory(shade_godown_items_temporary_table, form = shade_godown_items_temporary_table_form, extra=0)
 
 
 class gst_form(forms.ModelForm):

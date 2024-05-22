@@ -29,7 +29,7 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td>
-                        <select class=" custom-select" name="{{form.prefix}}-Item_pk" id="{{form.prefix}}-Item_pk">
+                        <select class="custom-select" name="{{form.prefix}}-Item_pk" id="{{form.prefix}}-Item_pk">
                             
                             <option value="{{form.instance.Item_pk.id}}">{{form.instance.Item_pk.item_name}}</option>
                             {% for item in items %}

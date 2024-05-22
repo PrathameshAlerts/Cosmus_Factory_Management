@@ -542,51 +542,34 @@ def product2subcategoryajax(request):
     
 
 
-def product2item(request,pk):
-    print(request.POST)
+def product2item(request,product_refrence_id):
     items = Item_Creation.objects.all()
-    product_creation = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
-    formset = Product2ItemFormset(instance= product_creation)  # pass the instance to the formset
-    product_name = product_creation.Product.Model_Name
-    product_color = product_creation.PProduct_color
+    Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id)
+
+    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False)
+
+    formset_single = Product2ItemFormset(queryset=product2item_instances)
 
     if request.method == 'POST':
-        formset = Product2ItemFormset(request.POST, instance=product_creation)
-        if formset.is_valid():      
-            # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
-            for form in formset.deleted_forms:
-                if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
-                    form.instance.delete()
+        formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances)
 
-            
-            for form in formset:
-                # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
-                if not form.cleaned_data.get('DELETE'):
-                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-                        p2i_instance = form.save(commit=False)
-                        p2i_instance.common_unique = False
-                        p2i_instance.save()
+        if formset_single.is_valid():
+            formset_single.save()
 
-            messages.success(request,'Items to Product sucessfully added.')
-            close_window_script = """
+
+
+    messages.success(request,'Items to Product sucessfully added.')
+    close_window_script = """
             <script>
             window.opener.location.reload(true);  // Reload parent window if needed
             window.close();  // Close current window
             </script>
             """
-            return HttpResponse(close_window_script)
-
-    else:
-            return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product_creation,
-                                                                       'product_name':product_name,
-                                                                       'product_color':product_color,'items':items})
-
-    return render(request, 'production/product2itemset.html', {'formset': formset, 'product': product_creation,
-                                                               'product_name':product_name,
-                                                               'product_color':product_color,'items':items})
-
-def product2commonitem(request,product_id):
-    print(request.POST) 
+    # return HttpResponse(close_window_script)    
+    return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,
+                                                               'Products_all':Products_all,
+                                                               'items':items})
+def product2commonitem(request,product_id): 
     items = Item_Creation.objects.all()
 
     product = get_object_or_404(Product, Product_Refrence_ID=product_id) #get the product of the refrence id
@@ -605,7 +588,6 @@ def product2commonitem(request,product_id):
     #instance and queryset params explained in file #formsets_for_accessing_reverse_relations.txt
     formset = Product2CommonItemFormSet(instance=product_instance,queryset=product_items_qs) # queryset of all the instannces of productcreation binded to form 
     
-
 
     if request.method == 'POST':
         formset = Product2CommonItemFormSet(request.POST, instance=product_instance, queryset=product_items_qs)
@@ -669,6 +651,8 @@ def export_Product2Item_excel(request,product_ref_id):
     response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
 
     return response
+
+
 
 
 
