@@ -1278,7 +1278,20 @@ input[type=number] {
     z-index: 10;
     cursor: pointer;
     flex-direction: row;
-  
+    overflow-y: scroll;
+}
+.s-suggestion-container::-webkit-scrollbar {
+    width: 8px;
+}  
+.s-suggestion-container::-webkit-scrollbar-track {
+   background: #f1f1f1;
+} 
+.s-suggestion-container::-webkit-scrollbar-thumb {
+   background: #000000; /* Thumb color */
+   border-radius: 4px;
+} 
+.s-suggestion-container::-webkit-scrollbar-thumb:hover {
+   background: #000000; /* Hover color */
 }
 .selected{
     background-color: #f1f1f1;
@@ -1292,6 +1305,16 @@ input[type=number] {
 .image-upload>input {
     display: none;
   }
+
+ 
+  .custom-select {
+    background-color: white;
+    width: 180px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+}
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {
