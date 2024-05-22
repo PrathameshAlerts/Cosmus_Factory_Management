@@ -555,7 +555,6 @@ class set_prod_item_part_name(models.Model):
     part_dimentions = models.CharField(max_length=100)
     dimention_total = models.CharField(max_length=100)
     part_pieces = models.IntegerField(default=0)
-    part_type = models.CharField(max_length=255) #remark
     
 
 
@@ -565,6 +564,7 @@ class product_2_item_through_table(models.Model):
     set_prod_config = models.ManyToManyField(set_prod_item_part_name)
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     common_unique = models.BooleanField(default=False)  # True if its common and false if its special
+    Remark = models.CharField(max_length=100, blank = True, null=True) #remark
 
 
     class Meta:
