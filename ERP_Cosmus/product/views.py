@@ -548,13 +548,23 @@ def product2item(request,product_refrence_id):
 
     product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False)
 
-    formset_single = Product2ItemFormset(queryset=product2item_instances)
+    formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
     if request.method == 'POST':
-        formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances)
+        formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
 
-        if formset_single.is_valid():
-            formset_single.save()
+        # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
+        for form in formset_single.deleted_forms:
+            if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
+                form.instance.delete()
+        
+
+        for form in formset_single:
+                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        p2i_instance = form.save(commit = False)
+                        p2i_instance.common_unique = False
+                        p2i_instance.save()
 
 
 
