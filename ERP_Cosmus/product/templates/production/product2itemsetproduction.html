@@ -3,11 +3,10 @@
 {% block body %}
 <h3 class="mb-3">Add items Product</h3>
 
-   <h5 class="me-5">Product Name : <span class="text-capitalize text-danger">{{product_name}}</span></h5>
-   <h5>Product Color : <span class="text-capitalize text-danger">{{product_color}}</span></h5> 
+   <h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
    <form method="post" enctype="multipart/form-data">
  
-
+    {% csrf_token %}
     <table class="table table-responsive table-striped table-bordered" id="mainProductForm">
         <thead>
             <tr>
@@ -29,8 +28,7 @@
                
                 <td>
                     <select class="item-select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
-                        
-                        <option value="{{form.instance.Item_pk.id}}">{{form.instance.Item_pk.item_name}}</option>
+                        <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">{{form.instance.PProduct_pk.PProduct_SKU}}  {{form.instance.PProduct_pk.PProduct_color}}</option>
                         {% for product in Products_all %}
                         <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} - {{product.PProduct_color}}</option>
                         {% endfor %}
@@ -47,9 +45,9 @@
                     </select>
 
                 </td>
-                <td> <input type="text" class="item-select me-3" name="{{form.prefix}}-no_of_rows" value=""  maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
-                <td> <input type="text" class="item-select me-3" name="{{form.prefix}}-Remark" value=""  maxlength="255" id="id_{{form.prefix}}-Remark" ></td>
-                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
+                <td> <input type="text" class="item-select me-3" name="{{form.prefix}}-no_of_rows" value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
+                <td> <input type="text" class="item-select me-3" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}"  maxlength="255" id="id_{{form.prefix}}-Remark"></td>
+                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -86,7 +84,7 @@
                     <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
               
                 <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
-                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
             {% endfor %}
         </tbody>
