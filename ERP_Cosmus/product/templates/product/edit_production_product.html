@@ -38,13 +38,12 @@
     
   </div>
 
-  <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Product Details<span class="span_padding"><i
-        class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Product Details<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
 
   <div id="product_details" style="display: none;">
     {{ formset.management_form }}
     {% for form in formset %}
-    <div class="card rounded-3 mb-3 p-2">
+    <div class="card rounded-3 mb-3 px-2 py-3 border-3">
 
       <div class="row">
         <div class="col-lg-8">
@@ -63,29 +62,22 @@
 
             <div class=" d-flex mb-3">
               <label for="{{ form.prefix }}-PProduct_image" class="mx-3">Image:</label>
-              <input type="file" class="my-files" name="{{ form.prefix }}-PProduct_image" accept="image/*"
-                id="{{ form.prefix }}-PProduct_image">
-              <!-- <span>{{form.PProduct_image}}</span>-->
+              <input type="file" class="my-files" name="{{ form.prefix }}-PProduct_image" accept="image/*"  id="{{ form.prefix }}-PProduct_image">
+       
             </div>
           </div>
           <div class=" d-flex mb-3">
             <label class="mx-2">SKU:</label>
-            <input type="text" class="item-select" name="{{form.prefix}}-PProduct_SKU"
-              value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly
-              id="{{form.prefix}}-PProduct_SKU">
+            <input type="text" class="item-select me-3" name="{{form.prefix}}-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly id="{{form.prefix}}-PProduct_SKU">
 
-            <button type="button" class="add_btn" id="edit_images" onclick="editImages(this)">Add Image</button>
-            <button type="button" class="video_btn" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
-            <!-- <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button> -->
-
+            <button type="button" class="add_btn me-2" id="edit_images" onclick="editImages(this)">Add Image</button>
+            <button type="button" class="video_btn ms-2" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
           </div>
           <div class="mb-2 d-flex">
-            <label for="" class="form-label pe-3">EAN Code:</label>
-            <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode"
-              value="{{form.instance.Product_EANCode}}" class="rounded-3 w-75 px-2">
-            <label for="" class="form-label ms-2 pe-4">Rating :</label>
-            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating"
-              value="{{form.instance.Product_Rating}}" min="0" max="5" class="rounded-3 w-75 px-2">
+            <label for="" class="mx-2 pe-2">EAN Code:</label>
+            <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode" value="{{form.instance.Product_EANCode}}" class="rounded-3 w-75 px-2">
+            <label for="" class="mx-2 pe-4">Rating :</label>
+            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating" value="{{form.instance.Product_Rating}}" min="0" max="5" class="rounded-3 w-75 px-2">
           </div>
 
           
@@ -575,18 +567,20 @@
        
           <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button>  
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-6">
         <div class="d-flex">
-          <div class="mx-4">
-            <label for="setProduction">
-              <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/128/Downloads-icon.png" style="width: 50px; height: 50px"/>
+          <div class="d-flex mx-4">
+            <lable class="mt-2 me-2">Download File:</lable>
+            <label for="setProduction"> 
+              <img src="../static/images/file down.png" style="width: 40px; height: 40px"/>
             </label>
             <input type="button" class="add_btn"  onclick="redirectSetProduction()" id="setProduction" value="Set Production" style="display: none;" download>
           </div>
          
           <div class="image-upload">
-            <label for="file-input">
-              <img src="../static/images/up-loading.png" style="width: 50px; height: 50px"/>
+            <lable class="mt-2 me-2">Upload File:</lable>
+            <label for="file-input"> 
+              <img src="../static/images/file.png" style="width: 40px; height: 40px"/>
             </label>
             <input id="file-input" type="file" id="formFile"name="excel_file" />
           </div>
