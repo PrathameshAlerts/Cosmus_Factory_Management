@@ -552,16 +552,16 @@ def product2item(request,product_refrence_id):
     product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False)
     formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
-    product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True)
+    product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True) #.values('Item_pk').distinct()
+
     print('product2item_common_instances',product2item_common_instances)
     formset_common = Product2CommonItemFormSet(queryset=product2item_common_instances,prefix='product2itemcommonformset')
 
 
     if request.method == 'POST':
         formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
-        formset_common = Product2CommonItemFormSet(request.POST, queryset=product2item_common_instances, prefix='product2itemcommonformset')
-        
-        if formset_single.is_valid() or formset_common.is_valid():
+    
+        if formset_single.is_valid():
             # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted 
             for form in formset_single.deleted_forms:
                 if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
@@ -574,17 +574,19 @@ def product2item(request,product_refrence_id):
                         p2i_instance.common_unique = False
                         p2i_instance.save()
             
-            #common formset
-            for form in formset_common.deleted_forms:
-                if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
-                    form.instance.delete()
-            
+        
+
+        formset_common = Product2CommonItemFormSet(request.POST, queryset=product2item_common_instances, prefix='product2itemcommonformset')    
+        if formset_common.is_valid():
             for form in formset_common:
                 if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
                     if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-                        p2i_instance = form.save(commit = False)
-                        p2i_instance.common_unique = True
-                        p2i_instance.save()
+                        for product in Products_all:
+                            item = form.instance.Item_pk
+                            obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product,Item_pk=item, common_unique=True)
+                            obj.no_of_rows =  form.instance.no_of_rows
+                            obj.Remark = form.instance.Remark
+                            obj.save()
 
 
             messages.success(request,'Items to Product sucessfully added.')
