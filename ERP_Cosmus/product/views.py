@@ -561,8 +561,8 @@ def product2item(request,product_refrence_id):
         formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
         formset_common = Product2CommonItemFormSet(request.POST, queryset=product2item_common_instances, prefix='product2itemcommonformset')
         
-        if formset_single.is_valid() and formset_common.is_valid():
-            # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
+        if formset_single.is_valid() or formset_common.is_valid():
+            # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted 
             for form in formset_single.deleted_forms:
                 if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
                     form.instance.delete()
