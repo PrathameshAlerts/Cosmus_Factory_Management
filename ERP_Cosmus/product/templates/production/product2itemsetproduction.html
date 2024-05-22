@@ -7,6 +7,12 @@
    <h5>Product Color : <span class="text-capitalize text-danger">{{product_color}}</span></h5> 
    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+
+    {{formset_single.management_form}}
+    {% for form in formset_single %}
+    {{form}}
+    {% endfor %}
+
     {{ formset.management_form }}
     <table class="table table-responsive table-striped table-bordered" >
         <thead>
@@ -28,8 +34,8 @@
                     <select class="item-select" name="{{forms.prefix}}-Item_pk" id="{{forms.prefix}}-Item_pk">
                         
                         <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
-                        {% for item in items %}
-                        <option value="{{item.id}}">{{item.item_name}}</option>
+                        {% for product in Products_all %}
+                        <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} - {{product.PProduct_color}}</option>
                         {% endfor %}
                     </select>
 
