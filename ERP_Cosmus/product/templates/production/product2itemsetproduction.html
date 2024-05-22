@@ -24,7 +24,7 @@
             {% for form in formset_single %}
             {{ form.id }}
             <tr>
-                <td>1</td>
+                <td>{{forloop.counter}}</td>
                
                 <td>
                     <select class="item-select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
@@ -53,7 +53,7 @@
         </tbody>
         
     </table>
-    <button type="button" class="add_btn" id="addForm">Add</button>  
+    <button type="button" class="add_btn mb-4" id="addForm">Add</button>  
     <table class="table table-responsive table-striped table-bordered" id="productForm">
         <thead>
             <tr>
@@ -66,8 +66,7 @@
         </thead>
        
         <tbody class="mainTableList">
-            {% for forms in formset %}
-            {{ forms.id }}
+           
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>
@@ -81,19 +80,22 @@
 
                 </td>
               
-                    <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
+                    <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value=""  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
               
-                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
-                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
+                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value=""  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
+                <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
-            {% endfor %}
+           
         </tbody>
         
     </table>
     
             
-<button type="button" class="add_btn" id="addNewRow">Add</button>  
-<input type="submit" class="add_btn" >
+<button type="button" class="add_btn mb-3" id="addNewRow">Add</button>  
+<div>
+    <input type="submit" class="add_btn" >
+</div>
+
 </form>
 
 <script>
@@ -121,7 +123,7 @@
     
          
             const newSelectElement = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
-            // newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;
+            newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;
             newSelectElement.name = `product2itemuniqueformset-${newFormCount}-PProduct_pk`;
             newSelectElement.value = '';
 
@@ -202,7 +204,7 @@ deleteRow();
             }
         });
         if (lastVisibleRow) {
-            var forms = document.getElementById('id_product_2_item_through_table_set-TOTAL_FORMS');
+            var forms = document.getElementById('id_-TOTAL_FORMS');
             var newFormCount = parseInt(forms.value) ;
             var newTable = lastVisibleRow.cloneNode(true);
             newTable.querySelectorAll("input select").forEach(function(e) {
@@ -211,34 +213,34 @@ deleteRow();
 
 
 
-            const selectElement = newTable.querySelector('select[name^="product_2_item_through_table_set-"][name$="Item_pk"]');
-            selectElement.id = `product_2_item_through_table_set-${newFormCount}-Item_pk`;
-            selectElement.name = `product_2_item_through_table_set-${newFormCount}-Item_pk`;
-            selectElement.value = '';
+            // const selectElement = newTable.querySelector('select[name^="-"][name$="Item_pk"]');
+            // selectElement.id = `-${newFormCount}-Item_pk`;
+            // selectElement.name = `-${newFormCount}-Item_pk`;
+            // selectElement.value = '';
 
 
-            const inputNameValue = newTable.querySelector('input[name^="product_2_item_through_table_set-"][name$="product_common_item_name"]');
-            inputNameValue.id = `product_2_item_through_table_set-${newFormCount}-product_common_item_name`;
-            inputNameValue.name = `product_2_item_through_table_set-${newFormCount}-product_common_item_name`;
-            inputNameValue.value = '';
+            // const inputNameValue = newTable.querySelector('input[name^="-"][name$="product_common_item_name"]');
+            // inputNameValue.id = `-${newFormCount}-product_common_item_name`;
+            // inputNameValue.name = `-${newFormCount}-product_common_item_name`;
+            // inputNameValue.value = '';
 
 
-            const inputElement = newTable.querySelector('input[name^="product_2_item_through_table_set-"][name$="product_common_item_name"]');
-            inputElement.id = `product_2_item_through_table_set-${newFormCount}-product_common_item_name`;
-            inputElement.name = `product_2_item_through_table_set-${newFormCount}-product_common_item_name`;
-            inputElement.value = '';
+            // const inputElement = newTable.querySelector('input[name^="-"][name$="product_common_item_name"]');
+            // inputElement.id = `-${newFormCount}-product_common_item_name`;
+            // inputElement.name = `-${newFormCount}-product_common_item_name`;
+            // inputElement.value = '';
 
-            const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="product_2_item_through_table_set-"][name$="DELETE"]');
-            deleteElement.id = `product_2_item_through_table_set-${newFormCount}-DELETE`;
-            deleteElement.name = `product_2_item_through_table_set-${newFormCount}-DELETE`;
-            deleteElement.value = '';
-            deleteElement.checked = false;
+            // const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="-"][name$="DELETE"]');
+            // deleteElement.id = `-${newFormCount}-DELETE`;
+            // deleteElement.name = `-${newFormCount}-DELETE`;
+            // deleteElement.value = '';
+            // deleteElement.checked = false;
 
 
             forms.value = newFormCount + 1;
 
             tableBody.appendChild(newTable);
-            deleteRow();
+            deletedRow();
 
         }else {
             console.error("No visible rows found to clone.");
@@ -246,14 +248,14 @@ deleteRow();
         });
     }
 
-    function deleteRow(){
+    function deletedRow(){
 // Add click event listener to all delete buttons
-document.querySelectorAll('.delete-btn').forEach(function(button) {
+document.querySelectorAll('.delete').forEach(function(button) {
     button.addEventListener('click', function() {
         // Find the row containing the clicked delete button
         var row = this.closest('tr');
         console.log("row",row);
-        var checkRow = row.querySelector('.product_Item_deleteId[name^="product_2_item_through_table_set-"][name$="-DELETE"]');
+        var checkRow = row.querySelector('.product_deleteId[name^="-"][name$="-DELETE"]');
         if (checkRow) {
             checkRow.checked = true; // Mark as checked
             checkRow.value = 'true'; // Set the value to 'true'
@@ -267,7 +269,7 @@ document.querySelectorAll('.delete-btn').forEach(function(button) {
 });
 
 };
-deleteRow();
+deletedRow();
     });
 
  
