@@ -38,7 +38,7 @@ ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, 
 
 Product2ItemFormset = modelformset_factory(product_2_item_through_table, fields= ['PProduct_pk','Item_pk','Remark','no_of_rows'],extra=1)
 
-Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, fields= ['PProduct_pk','Item_pk','Remark'], extra=1, can_delete=True)
+Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, fields= ['Item_pk','Remark','no_of_rows'], extra=1, can_delete=True)
 class PProductAddForm(forms.ModelForm):
 
     widgets = {
