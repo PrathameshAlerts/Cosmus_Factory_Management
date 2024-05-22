@@ -65,7 +65,7 @@
               <label for="{{ form.prefix }}-PProduct_image" class="mx-3">Image:</label>
               <input type="file" class="my-files" name="{{ form.prefix }}-PProduct_image" accept="image/*"
                 id="{{ form.prefix }}-PProduct_image">
-              <!-- <span>{{form.PProduct_image}}</span>-->
+       
             </div>
           </div>
           <div class=" d-flex mb-3">
@@ -575,18 +575,20 @@
        
           <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button>  
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-6">
         <div class="d-flex">
-          <div class="mx-4">
-            <label for="setProduction">
-              <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/128/Downloads-icon.png" style="width: 50px; height: 50px"/>
+          <div class="d-flex mx-4">
+            <lable class="mt-2 me-2">Download File:</lable>
+            <label for="setProduction"> 
+              <img src="../static/images/file down.png" style="width: 40px; height: 40px"/>
             </label>
             <input type="button" class="add_btn"  onclick="redirectSetProduction()" id="setProduction" value="Set Production" style="display: none;" download>
           </div>
          
           <div class="image-upload">
-            <label for="file-input">
-              <img src="../static/images/up-loading.png" style="width: 50px; height: 50px"/>
+            <lable class="mt-2 me-2">Upload File:</lable>
+            <label for="file-input"> 
+              <img src="../static/images/file.png" style="width: 40px; height: 40px"/>
             </label>
             <input id="file-input" type="file" id="formFile"name="excel_file" />
           </div>
