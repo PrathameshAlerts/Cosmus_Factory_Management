@@ -29,8 +29,7 @@
                 <tr>
                     <td>{{forloop.counter}}</td>
                     <td>
-                        
-                        <select class="item-select" name="{{form.prefix}}-Item_pk" id="{{form.prefix}}-Item_pk">
+                        <select class=" custom-select" name="{{form.prefix}}-Item_pk" id="{{form.prefix}}-Item_pk">
                             
                             <option value="{{form.instance.Item_pk.id}}">{{form.instance.Item_pk.item_name}}</option>
                             {% for item in items %}
@@ -62,13 +61,38 @@
     <button type="button" class="add_btn" id="addForm">Add</button>  
     <input type="submit" class="add_btn" >
     </form>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener for change event on select elements with the 'custom-select' class
+    document.querySelectorAll('.custom-select').forEach(function(select) {
+        select.addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var selectedText = selectedOption.text.trim();
+            
+            // Collect all input values into an array
+            var inputValues = [];
+            document.querySelectorAll('input[name^="product_2_item_through_table_set-"][name$="-product_item_name"]').forEach(function(input) {
+                inputValues.push(input.value.trim());
+            });
+            
+            // Check if selectedText is in the array of inputValues
+            var matchFound = inputValues.includes(selectedText);
+            
+            // Change background color of selected option based on matchFound
+            if (matchFound) {
+                selectedOption.style.backgroundColor = 'red';
+                //select.style.boreder = '1px solid red'; // Change background color to red
+            } else {
+                selectedOption.style.backgroundColor = ''; // Reset background color
+            }
+        });
+    });
+});
 
 
-    <style>
-        .duplicate {
-            border: 2px solid red;
-        }
-    </style>
+</script>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

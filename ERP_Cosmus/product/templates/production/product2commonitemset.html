@@ -4,16 +4,59 @@
 <h3 class="mb-3">Add items to Common Product</h3>
 
    <h5 class="me-5">Product Name : <span class="text-capitalize text-danger">{{product_name}}</span></h5>
+   <h5>Product Color : <span class="text-capitalize text-danger">{{product_color}}</span></h5> 
    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ formset.management_form }}
-   
+    <table class="table table-responsive table-striped table-bordered" >
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Product Sku</th>
+                <th>Item Name</th>
+                <th>No of Rows</th>
+                <th>Remark</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+       
+        <tbody class="mainTableList">
+            <tr>
+                <td>1</td>
+               
+                <td>
+                    <select class="item-select" name="{{forms.prefix}}-Item_pk" id="{{forms.prefix}}-Item_pk">
+                        
+                        <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
+                        {% for item in items %}
+                        <option value="{{item.id}}">{{item.item_name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </td>
+                <td>
+                    <select class="item-select" name="{{forms.prefix}}-Item_pk" id="{{forms.prefix}}-Item_pk">
+                        
+                        <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
+                        {% for item in items %}
+                        <option value="{{item.id}}">{{item.item_name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </td>
+                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name"></td>
+                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
+                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+            </tr>
+        </tbody>
+        
+    </table>
     <table class="table table-responsive table-striped table-bordered" id="productForm">
         <thead>
             <tr>
                 <th>No</th>
                 <th>Item Select</th>
-                <th>Selected Item</th>
+                <th>No of Rows</th>
                 <th>Remark</th>
                 <th>Delete</th>
             </tr>
@@ -34,9 +77,11 @@
                     </select>
 
                 </td>
-                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" readonly></td>
-                <td><input type="text" class="item-select me-3" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:'' }}"  maxlength="255" id="{{form.prefix}}-Remark"></td>
-                    <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+              
+                    <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
+              
+                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-product_common_item_name" value="{{forms.instance.Item_pk.item_name}}"  maxlength="255" id="{{forms.prefix}}-product_common_item_name" ></td>
+                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
             {% endfor %}
         </tbody>
