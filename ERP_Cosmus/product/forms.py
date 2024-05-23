@@ -35,8 +35,8 @@ ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fie
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
 
 
-
-Product2ItemFormset = modelformset_factory(product_2_item_through_table, fields= ['PProduct_pk','Item_pk','Remark','no_of_rows'],extra=1)
+# when using modelformset need to add can_delete = True or delete wont be added in form
+Product2ItemFormset = modelformset_factory(product_2_item_through_table, fields= ['PProduct_pk','Item_pk','Remark','no_of_rows'],extra=1, can_delete=True)
 
 Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, fields= ['Item_pk','Remark','no_of_rows'], extra=1, can_delete=True)
 class PProductAddForm(forms.ModelForm):
