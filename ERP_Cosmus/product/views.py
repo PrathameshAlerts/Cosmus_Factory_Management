@@ -558,8 +558,8 @@ def product2item(request,product_refrence_id):
 
     # query for filtering common to all products fields for formset_common 
     # filter all records of the products with the ref_id which is marked as commonfields (this queryset is used in
-    # post request bcs we want to create or update item with all the products in the filtered qs while
-    # 'distinct_product2item_commmon_instances' has only distinct records of duplicate item instances(specifically
+    # post request bcs we want to create or update item with all the products in the filtered qs, while
+    # 'distinct_product2item_commmon_instances' has only distinct records of same item instances(specifically
     # 1st record of unique item of the filtered qs ))
     product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True)
 
@@ -569,9 +569,7 @@ def product2item(request,product_refrence_id):
     formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
     
 
-
     if request.method == 'POST':
-
         formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
         formset_common = Product2CommonItemFormSet(request.POST, queryset=product2item_common_instances, prefix='product2itemcommonformset') 
 
@@ -2508,7 +2506,7 @@ def login(request):
                 
                 return redirect('index')
     context = {'form':form}
-    return render(request, 'product/login.html', context=context)
+    return render(request, 'misc/login.html', context=context)
 
 
 
