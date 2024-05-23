@@ -7,15 +7,15 @@
 
 <div class="row mt-4">
   <div class="col-lg-5">
-    <h2 >{{title}}</h2>
+    <h2 class="mb-3" >{{title}}</h2>
   <form action="" method="POST">
        {% csrf_token %}
    <div class="d-flex mb-3">
-  <label for="id_account_sub_group" class="form-label create_color_lable">Name:</label>
+  <label for="id_account_sub_group" class=" create_color_lable">Name:</label>
   <input type="text" class="stock-Input " value="{{ form.instance.stock_item_name }}" name="stock_item_name" maxlength="150" required id="id_stock_item_name">
 </div>
 <div class="d-flex mb-3">
-  <label for="id_acc_sub_grp" class="form-label create_color_lable">Sub Group:</label>
+  <label for="id_acc_sub_grp" class=" create_color_lable">Sub Group:</label>
 
   <select name="acc_sub_grp" class="stock-Input " required id="id_acc_sub_grp">
 
