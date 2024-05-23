@@ -544,23 +544,38 @@ def product2subcategoryajax(request):
 
 
 def product2item(request,product_refrence_id):
-    print(request.POST)
+    
     items = Item_Creation.objects.all()
     product_refrence_no = product_refrence_id
     Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id)
 
+
+    #query for filtering unique to product fields for formset_single
+    #filter all record of the products with the ref_id which is marked as unique fields
     product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False)
     formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
-    product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True) #.values('Item_pk').distinct()
 
-    print('product2item_common_instances',product2item_common_instances)
-    formset_common = Product2CommonItemFormSet(queryset=product2item_common_instances,prefix='product2itemcommonformset')
+    # query for filtering common to all products fields for formset_common 
+    # filter all records of the products with the ref_id which is marked as commonfields (this queryset is used in
+    # post request bcs we want to create or update item with all the products in the filtered qs while
+    # 'distinct_product2item_commmon_instances' has only distinct records of duplicate item instances(specifically
+    # 1st record of unique item of the filtered qs ))
+    product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True)
+
+    # order the filtered queryset in asc order and get distinct records based on Item_pk (this queryset is used in get request)
+    distinct_product2item_commmon_instances = product2item_common_instances.order_by('Item_pk', 'id').distinct('Item_pk')
+
+    formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
+    
 
 
     if request.method == 'POST':
+
         formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
-    
+        formset_common = Product2CommonItemFormSet(request.POST, queryset=product2item_common_instances, prefix='product2itemcommonformset') 
+
+        # for unique records
         if formset_single.is_valid():
             # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted 
             for form in formset_single.deleted_forms:
@@ -576,7 +591,7 @@ def product2item(request,product_refrence_id):
             
         
 
-        formset_common = Product2CommonItemFormSet(request.POST, queryset=product2item_common_instances, prefix='product2itemcommonformset')    
+        # for common records
         if formset_common.is_valid():
             for form in formset_common:
                 if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 

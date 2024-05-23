@@ -94,14 +94,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+#'ENGINE': 'django.db.backends.mysql',
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'erp',
         'HOST': 'localhost',
-        'USER': 'root', 
-        'PASSWORD': 'root'
+        'USER': 'postgres', 
+        'PASSWORD': 'root',
     }
 }
 
