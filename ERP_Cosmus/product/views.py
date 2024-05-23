@@ -2492,6 +2492,7 @@ def creditdebitreport(request):
 #__________________________reports-end____________________________________
 
 
+
 #_______________________authentication View start___________________________
 def login(request):
     form = LoginForm()
