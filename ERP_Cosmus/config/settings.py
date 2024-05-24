@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     #'returns',
     #'tax',
     'bootstrap5',
-    'cities_light',
+    #'cities_light',
     'django_htmx',
 ]
 
@@ -162,10 +162,3 @@ MEDIA_URL = '/Media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
-
-
-
-CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
-CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR']
-CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
