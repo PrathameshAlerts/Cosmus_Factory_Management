@@ -1263,9 +1263,18 @@ input[type=number] {
     overflow: hidden;
     text-overflow: ellipsis;  
 }
-.itemName-div-suggestion{
+/* .itemName-div-suggestion{
     direction: ltr;
     text-align: left;
+} */
+
+.itemName-div-suggestion {
+    padding: 5px;
+    cursor: pointer;
+}
+.itemName-div-suggestion:hover, .itemName-div-suggestion.selected {
+    background-color: red;
+    color: white;
 }
 .s-suggestion-container {
     font-size: 14px;

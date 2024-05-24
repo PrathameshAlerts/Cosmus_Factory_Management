@@ -39,14 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "debug_toolbar",
-    'inventory',
+    #'inventory',
     # 'core',
-    'discount',
-    'logistics',
-    'order',
+    #'discount',
+    #'logistics',
+    #'order',
     'product',
-    'returns',
-    'tax',
+    #'returns',
+    #'tax',
     'bootstrap5',
     'cities_light',
     'django_htmx',
@@ -97,11 +97,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #'ENGINE': 'django.db.backends.mysql',
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'erp',
-        'HOST': 'localhost',
-        'USER': 'postgres', 
-        'PASSWORD': 'root',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Erp_Demo',
+        'HOST': 'ls-0a4a12e61141e080e36c98611d70d507edb73974.cngg2wc2avrd.ap-south-1.rds.amazonaws.com',
+        'USER': 'dbmasteruser', 
+        'PASSWORD': 'ftt_DH,|36{QO+E3U$sAp;6|8QO78z2t',
+        'PORT': '5432'
     }
 }
 

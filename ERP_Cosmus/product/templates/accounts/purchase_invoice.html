@@ -89,12 +89,14 @@
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade" value="{{forms.instance.item_shade.id}}" name="{{forms.prefix}}-old_item_shade">
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade_for_dropdown_change" value="{{forms.instance.item_shade}}" name="{{forms.prefix}}-old_item_shade_for_dropdown_change">
                     <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
-                    <td> <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" id="select_item_name_{{forloop.counter0}}" style="display: none; height: 100px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                    <td>
+                        <div class="custom-dropdown-container">
+                         <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" id="select_item_name_{{forloop.counter0}}" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                            
                         
                           </div>
-                          
+                        </div> 
                     </td>
                     <td>
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input"readonly>
@@ -173,20 +175,20 @@
             <div class="table-left-transport mb-3">
                 <lable class="purchase-lable fw-bold">Fright & Transport</lable>
                 <span class="purchase-span">
-                    <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" >
+                    <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
                 </span>
             </div>
             <div class="table-left-roundOf mb-3">
                 <input type="hidden" id="temp_grand_total" value="">
                 <label class="purchase-lable fw-bold">Round Of </label>
                 <span class="purchase-span">
-                    <input type="number" class="ms-5  purchase-amount" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" readonly>
+                    <input type="number" class="ms-5  purchase-amount" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" readonly required>
                 </span> 
             </div>
         
             <div class="table-left-grandTotal mb-3">
                 <label class="purchase-lable fw-bold">Grand total</label>
-                <span class="purchase-span"><input type="number" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" step=".01" readonly></span> 
+                <span class="purchase-span"><input type="number" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" step=".01" readonly required></span> 
             </div>
         </div>
 
@@ -451,7 +453,7 @@ function randomValue (){
               
 
             $('.search-input').on('keyup', function () {
-                    var select = $('#' + selectName);
+                var select = $('#' + selectName);
                     
             var searchQuery = $(this).val();
              var filteredOptions =Object.entries(searched_item_name_dict).filter(([key, value]) =>
@@ -462,13 +464,13 @@ function randomValue (){
                 // Clear and repopulate options
                 select.empty();
                    
-            if (filteredOptions.length > 0) {
-                        select.show();
+            // if (filteredOptions.length > 0) {
+            //             select.show();
                     
-                    } else { 
+            //         } else { 
                         
-                        select.hide();
-                    }
+            //             select.hide();
+            //         }
                 
           
                     $.each(filteredOptions, function(key, value) {
@@ -640,10 +642,11 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
            
         }
 
-        $(document).on('click','[name^="item_name_"]', function(event) {
+        $(document).on('click','#itemName-div_', function(event) {
           
                 event.preventDefault();
-                select.hide()
+                var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
+                console.log(itemEnterValue)
                        
         })
        
