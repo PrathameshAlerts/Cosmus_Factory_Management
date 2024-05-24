@@ -211,8 +211,6 @@ def product2subcategoryproductajax(request):
         sub_cat_dict[sub_cat.id] = sub_cat.product_sub_category_name 
 
 
-
-   
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         return JsonResponse({'sub_cat_dict':sub_cat_dict})
 
@@ -684,7 +682,7 @@ def export_Product2Item_excel(request,product_ref_id):
     print(queryset)
 
     # Define the headers based on model fields
-    headers = ['ID', 'Product SKU', 'Item','Common/Unique']  # replace with your model fields
+    headers = ['ID', 'Product SKU', 'Item','Common/Unique'] 
     ws.append(headers)
 
 

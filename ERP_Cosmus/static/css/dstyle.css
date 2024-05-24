@@ -1163,6 +1163,21 @@ input[type=number] {
     height: 33px;  
 }
 
+.product_row{
+    width: 50px;
+    border: 1px solid #cecdcd ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px; 
+}
+
+.product_remark{
+    width: 79px;
+    border: 1px solid #cecdcd ;
+    border-radius: 2px;
+    padding-left: 5px; 
+    height: 33px;
+}
 .purchase-itemName{
     width: 158px;
     border: none;
