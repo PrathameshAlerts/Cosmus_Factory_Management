@@ -93,58 +93,50 @@ def edit_production_product(request,pk):
     formset = CustomPProductaddFormSet(instance=pproduct)
 
     if request.method == 'POST':
-
-        # try:
-        #     excel_file = request.FILES['excel_file']
-        #     file_name = excel_file.name
-        #     product_ref_id = file_name.split('_')[-1].split('.')[0]
+        product_ref_id = pk
+        print(request.POST)
+        try:
+            excel_file = request.FILES['excel_file']
+            file_name = excel_file.name
+            product_ref_id_file = file_name.split('_')[-1].split('.')[0]
+            print(type(product_ref_id_file))
+            if not excel_file.name.endswith('.xlsx'):
+                messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
+                return redirect('pproductlist')
             
-        #     if not excel_file.name.endswith('.xlsx'):
-        #         messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
-        #         return redirect('pproductlist')
+            if int(product_ref_id_file) == product_ref_id:
+                with transaction.atomic():
+                    wb = load_workbook(excel_file)
+                    ws1 = wb['product_special_configs']
+                    ws2 = wb['product_common_configs']
+
+                    for row in ws1.iter_rows(min_row=2,min_col=1):
+                        id = row[0].value
+                        product_sku = row[1].value
+                        item_name = row[2].value
+                        part_name = row[3].value
+                        part_dimention = row[4].value
+                        dimention_total = row[5].value
+                        part_pieces = row[6].value
+                        print(id,product_sku,item_name,part_name,part_dimention,dimention_total)
+
+
+                        if id == None:
+                            if product_sku != None and item_name != None and part_name != None and part_dimention != None:
+                                p2i_instance = product_2_item_through_table.objects.get(PProduct_pk__PProduct_SKU= product_sku,Item_pk__item_name= item_name,common_unique=False)
+                                set_prod_item_part_name.objects.create(producttoitem=p2i_instance,part_name=part_name,part_dimentions=part_dimention,dimention_total=dimention_total,part_pieces=part_pieces)
+
+                        
+
+    
+            else:
+
+                messages.error(request, 'File with invalid Product Refrence Id uploaded')
+                return redirect('pproductlist')
             
-        #     with transaction.atomic():
-        #         wb = load_workbook(excel_file)
-        #         ws1 = wb['product_special_items']
-        #         ws2 = wb['product_special_configs']
-        #         Number_of_items = 0
-
-        #         for row in ws1.iter_rows(min_row=2,min_col=1):
-        #             product_sku = row[0]
-        #             Number_of_items = Number_of_items + 1
-                    
-        #             for cell in row:
-        #                 cell_value_item = cell.value   #get the cell value
-        #                 column_letter = get_column_letter(cell.column)  # get the letter of that column 
-        #                 if column_letter != 'A': 
-
-        #                     found_rows = []
-        #                     search_column = 'B'   # column with the locations
-        #                     search_value = column_letter #column letter of that item from w1
-        #                     for cell in ws2[search_column]: #search 
-        #                         if cell.value == search_value: # if cell value in column B in ws2 == column of the item in ws1 
-
-        #                             # If the condition is met, get the entire row's data
-        #                             row_data = [cell.value for cell in ws2[cell.row]] # value of each cell in ws2[cell row number ex 5]
-
-        #                             item_id = Item_Creation.objects.get(item_name=cell_value_item)
-        #                             product_instance = PProduct_Creation.objects.get(PProduct_SKU=product_sku.value)
-        #                             obj , created = set_prod_item_part_name.objects.get_or_create(id = row_data[0])
-        #                             obj.location = row_data[1]
-        #                             obj.part_name = row_data[2]
-        #                             obj.part_dimentions = row_data[3] 
-        #                             obj.dimention_total = row_data[4]
-        #                             obj.part_pieces = row_data[5]
-        #                             obj.part_type = row_data[6]
-        #                             obj.save()
-                                                              
-        #                             obj1, created = product_2_item_through_table.objects.get_or_create(PProduct_pk =product_instance,Item_pk=item_id)
-        #                             obj1.set_prod_config.add(obj.id)
-        #                             obj1.save()
-                         
-                            
-        # except Exception as e:
-        #     messages.error(request, f'Error uploading Excel file: {str(e)}')
+        except Exception as e:
+            messages.error(request, f'Error uploading Excel file: {str(e)}')
+        
 
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
@@ -590,9 +582,11 @@ def product2item(request,product_refrence_id):
             for form in formset_single:
                 if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
                     if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        
                         p2i_instance = form.save(commit = False)
                         p2i_instance.common_unique = False
                         p2i_instance.save()
+
             
         
 
@@ -627,10 +621,10 @@ def product2item(request,product_refrence_id):
 
 
 
-
 def export_Product2Item_excel(request,product_ref_id):
     
-    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID =product_ref_id,common_unique = False)
+    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False)
+
 
     wb = Workbook()
 
@@ -648,18 +642,31 @@ def export_Product2Item_excel(request,product_ref_id):
     sheet1.append(headers)
 
     
-    initial_row = 2
-    max_rows = 1
+    initial_row = 2   # start row
+    max_rows = 1  # max rows
     for products_items in products_in_i2p_special:
-        no_of_rows = products_items.no_of_rows
+
+        no_of_rows = products_items.no_of_rows  # eg : 17   eg : 5
         item_name = products_items.Item_pk.item_name 
         product_name = products_items.PProduct_pk.PProduct_SKU
-        max_rows = max_rows + no_of_rows
-
-        for row in sheet1.iter_rows(min_row=initial_row, max_row= max_rows,min_col=2, max_col=7):
+        max_rows = max_rows + no_of_rows  # max rows + input rows    1 + 17 = 18,   19 + 5 = 24
+        
+        for row in sheet1.iter_rows(min_row=initial_row, max_row=max_rows,min_col=2, max_col=7):  # intial = 2 max_row = 18 , intial = 20, max_row = 24
             row[0].value = product_name
             row[1].value = item_name
-        initial_row =  initial_row + no_of_rows
+
+
+        blank_row_number =  initial_row + no_of_rows  # blank row no = 2 + 17  = 19 , 20 + 5 = 25
+        sheet1.insert_rows(blank_row_number) # Insert a blank row at the specified position
+        initial_row = blank_row_number + 1   # update inital = 19 + 1 = 20  , 25 + 1 = 26
+        max_rows = max_rows + 1    # update max rows = 18 + 1 = 19 , 24 + 1 = 25
+
+        p2i_configs = products_items.product_item_configs.all()
+        
+        
+            
+
+        
 
 
     fileoutput = BytesIO()
@@ -729,7 +736,7 @@ def item_create(request):
 def item_list(request):
     g_search = request.GET.get('item_search')
     #select related for loading forward FK relationships and prefetch related for reverse relationship  
-    #annotate to make a temp table in item_creation for the sum of all item and its related shades in all godowns 
+    #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
     queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item',
                                                     'Fabric_Group','Item_Creation_GST','Item_Fabric_Finishes',
                                                     'Item_Packing').prefetch_related('shades',
@@ -2194,8 +2201,7 @@ def gst_create_update(request, pk = None):
         instance = None
         title = 'Create'
 
-    print(f'gstupdate/{pk}')
-    print(request.path)
+
     if request.path == '/gstpopup/':
         template_name = 'accounts/gst_popup.html'
     

@@ -574,7 +574,7 @@
             <label for="setProduction"> 
               <img src="../static/images/file down.png" style="width: 40px; height: 40px"/>
             </label>
-            <input type="button" class="add_btn"  onclick="redirectSetProduction()" id="setProduction" value="Set Production" style="display: none;" download>
+            <input type="button" class="add_btn"  onclick="redirectDownloadSetProduction()" id="setProduction" value="Set Production" style="display: none;" download>
           </div>
          
           <div class="image-upload">
@@ -582,7 +582,7 @@
             <label for="file-input"> 
               <img src="../static/images/file.png" style="width: 40px; height: 40px"/>
             </label>
-            <input id="file-input" type="file" id="formFile"name="excel_file" />
+            <input id="file-input" type="file" id="formFile" name="excel_file" />
           </div>
         </div>
         
@@ -674,9 +674,8 @@
 
 
 <script>
-  function redirectSetProduction(){
+  function redirectDownloadSetProduction(){
     var ref_id = document.getElementById('id_Product_Refrence_ID').value
-    console.log(ref_id)
     window.location.href = '/export_Product2Item_excel/' + encodeURIComponent(ref_id)
   }
 
