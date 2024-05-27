@@ -582,10 +582,24 @@ def product2item(request,product_refrence_id):
             for form in formset_single:
                 if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
                     if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        
+                        if form.instance.pk:  # This line checks if the form instance has a primary key (pk), which means it corresponds to an existing record in the database.
+                            existing_instance = product_2_item_through_table.objects.get(pk=form.instance.pk)  # fetch the existing instance from DB 
+                            initial_rows = existing_instance.no_of_rows # get the existing no of rows form DB
+                        else:
+                            initial_rows = 0
+
                         p2i_instance = form.save(commit = False)
                         p2i_instance.common_unique = False
                         p2i_instance.save()
-            
+
+                        no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
+
+                        if no_of_rows_to_create > 0:
+                            for row in range(no_of_rows_to_create):
+                                set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
+
+                        p2i_instance.save()
         
 
         # for common records
@@ -626,7 +640,6 @@ def export_Product2Item_excel(request,product_ref_id):
     
     products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False)
 
-
     wb = Workbook()
 
     ##delete the default workbook
@@ -649,6 +662,7 @@ def export_Product2Item_excel(request,product_ref_id):
         
         no_of_rows = products_items.no_of_rows  # eg : 17   eg : 5
         item_name = products_items.Item_pk.item_name 
+        item_pk = products_items.Item_pk
         product_name = products_items.PProduct_pk.PProduct_SKU
         max_rows = max_rows + no_of_rows  # max rows + input rows    1 + 17 = 18,   19 + 5 = 24
         
@@ -656,8 +670,9 @@ def export_Product2Item_excel(request,product_ref_id):
             row[0].value = product_name
             row[1].value = item_name
 
-            product2itempk = product_2_item_through_table.objects.filter(PProduct_pk=product_name,Item_pk=item_name)
-            set_product_instance = set_prod_item_part_name.objects.get(producttoitem = product2itempk)
+            product2itempk = product_2_item_through_table.objects.filter(PProduct_pk=product_name,Item_pk=item_pk)
+            print(product2itempk)
+            set_product_instance = set_prod_item_part_name.objects.filter(producttoitem__in = product2itempk)
             print(set_product_instance)
 
         blank_row_number =  initial_row + no_of_rows  # blank row no = 2 + 17  = 19 , 20 + 5 = 25
