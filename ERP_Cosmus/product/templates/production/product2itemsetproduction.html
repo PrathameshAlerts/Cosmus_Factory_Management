@@ -26,7 +26,7 @@
             {% for form in formset_single %}
             {{ form.id }}
             <tr>
-                <td><span  class="row_number" name="{{form.prefix}}-row_number" value="{{form.instance.row_number}}" maxlength="255" id="id_{{form.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{form.instance.row_number}}</span></td>
+                <td><input type="number" class="product_id"  name="{{form.prefix}}-row_number" value="{{forloop.counter}}" maxlength="255" id="id_{{form.prefix}}-row_number" readonly ></td>
                
                 <td>
                     <select class=" product2Select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
@@ -76,7 +76,7 @@
                    {{ forms.id }}
         
                     <tr>
-                        <td><span  name="{{forms.prefix}}-row_number" value="{{forms.instance.row_number}}" id="id_{{forms.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{forms.instance.row_number}}</span></td>
+                        <td><input type="number" class="product_id common_product"  name="{{forms.prefix}}-row_number" value="{{forloop.counter}}" id="id_{{forms.prefix}}-row_number" readonly ></td>
         
                         <td>
                             <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
@@ -94,9 +94,9 @@
                         <td> <input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}"  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
                         <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
                     </tr>
-                   
+                    {% endfor %} 
                 </tbody>
-                {% endfor %}
+                
             </table>
             
                     
@@ -154,10 +154,10 @@
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.value = '';
 
-            const inputRowNumber = newTable.querySelector('span[name^="product2itemuniqueformset-"][name$="row_number"]');
+            const inputRowNumber = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="row_number"]');
             inputRowNumber.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
             inputRowNumber.name = `product2itemuniqueformset-${newFormCount}-row_number`;
-            inputRowNumber.value = '';
+            inputRowNumber.value = `${newFormCount + 1}`;
 
 
 
@@ -223,44 +223,45 @@ deleteRow();
         });
         if (lastVisibleRow) {
             var tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
-            var newFormCount = parseInt(tableRow.value) ;
-            var newTable = lastVisibleRow.cloneNode(true);
-            newTable.querySelectorAll("input select").forEach(function(e) {
+            console.log(tableRow);
+            var newCount = parseInt(tableRow.value) ;
+            var lastRow = lastVisibleRow.cloneNode(true);
+            lastRow.querySelectorAll("input select").forEach(function(e) {
             e.value= "";
           });
 
-          const inputRow = newTable.querySelector('span[name^="product2itemcommonformset-"][name$="row_number"]');
-          inputRow.id = `id_product2itemcommonformset-${newFormCount}-row_number`;
-          inputRow.name = `product2itemuniqueformset-${newFormCount}-row_number`;
-          inputRow.value = '';
+          const newInputRow = lastRow.querySelector('.common_product[name^="product2itemcommonformset-"][name$="row_number"]');
+          newInputRow.id = `id_product2itemcommonformset-${newCount}-row_number`;
+          newInputRow.name = `product2itemcommonformset-${newCount}-row_number`;
+          newInputRow.value = `${newCount + 1}`;
 
-            const selectElement = newTable.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
-            selectElement.id = `id_product2itemcommonformset-${newFormCount}-Item_pk`;
-            selectElement.name = `product2itemcommonformset-${newFormCount}-Item_pk`;
+            const selectElement = lastRow.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
+            selectElement.id = `id_product2itemcommonformset-${newCount}-Item_pk`;
+            selectElement.name = `product2itemcommonformset-${newCount}-Item_pk`;
             selectElement.value = '';
 
 
-            const inputNameValue = newTable.querySelector('input[name^="product2itemcommonformset-"][name$="no_of_rows"]');
-            inputNameValue.id = `id_product2itemcommonformset-${newFormCount}-no_of_rows`;
-            inputNameValue.name = `product2itemcommonformset-${newFormCount}-no_of_rows`;
+            const inputNameValue = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="no_of_rows"]');
+            inputNameValue.id = `id_product2itemcommonformset-${newCount}-no_of_rows`;
+            inputNameValue.name = `product2itemcommonformset-${newCount}-no_of_rows`;
             inputNameValue.value = '';
 
 
-            const inputElement = newTable.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
-            inputElement.id = `id_product2itemcommonformset-${newFormCount}-Remark`;
-            inputElement.name = `product2itemcommonformset-${newFormCount}-Remark`;
+            const inputElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
+            inputElement.id = `id_product2itemcommonformset-${newCount}-Remark`;
+            inputElement.name = `product2itemcommonformset-${newCount}-Remark`;
             inputElement.value = '';
 
-            const deleteElement = newTable.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
-            deleteElement.id = `id_product2itemcommonformset-${newFormCount}-DELETE`;
-            deleteElement.name = `product2itemcommonformset-${newFormCount}-DELETE`;
+            const deleteElement = lastRow.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
+            deleteElement.id = `id_product2itemcommonformset-${newCount}-DELETE`;
+            deleteElement.name = `product2itemcommonformset-${newCount}-DELETE`;
             deleteElement.value = '';
             deleteElement.checked = false;
 
 
-            tableRow.value = newFormCount + 1;
+            tableRow.value = newCount + 1;
 
-            tableBody.appendChild(newTable);
+            tableBody.appendChild(lastRow);
             deletedRow();
 
         }else {

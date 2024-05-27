@@ -425,7 +425,7 @@ function randomValue (){
 
   var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
- $(document).on(' keyup enter ', 'input[name^="item_name_"]', function(e) {
+ $(document).on(' keyup ', 'input[name^="item_name_"]', function(e) {
 
    
 
@@ -476,7 +476,7 @@ function randomValue (){
             error: function (xhr) {
                 console.log(xhr.status + ": " + xhr.responseText);
                 if (xhr.status === 404) {
-                    //suggestionsContainer.empty();
+                    suggestionsContainer.empty();
                     suggestionsContainer.hide();
                 }
             }
@@ -494,7 +494,9 @@ function randomValue (){
     });
     
    
-    suggestionsContainer.on('click', '.selected', function() {
+    suggestionsContainer.on('click keydown', '.selected', function(e) {
+
+        
         $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
 
         var item_value = $(this).data('key');
@@ -561,6 +563,7 @@ function randomValue (){
             });  
             }
             suggestionsContainer.hide();
+        
     });
   
 });
@@ -577,9 +580,6 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
   
     if (event.key === 'ArrowDown') {
         event.preventDefault();
-
-        var inputElement = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
-        console.log(inputElement)
       
        if(index <= selectLength){
         
@@ -588,7 +588,6 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             var nameDataKey= selectedItem.text();
             var nameKey = selectedItem.data('key');
            
-          
             
             $(this).attr('data-key', nameKey);
             selectedItem.addClass("bg-highlight");
@@ -659,12 +658,17 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         
         event.preventDefault();
        
-        console.log("suggestionsContainerDown",suggestionsContainerDown)
+        select.hide();
+        
         var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
         var  item_value = itemEnterValue.getAttribute('data-key');
-       
+        console.log("item_value", item_value)
+        var itemValue = itemEnterValue.setAttribute('data-key', '');
+        console.log("itemValue", itemValue)
+        console.log('itemEnterValue',itemEnterValue)
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
-    
+        select.empty();
+        console.log('select',select)
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
         var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change').value
         if(newData == '' && itemShadeValue != ''){
@@ -720,6 +724,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
                         }
                     });
                    
+                
                 },
                 error: function (xhr, errmsg, err) {
                     console.log('Error sending value to the backend');
@@ -729,12 +734,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             }
          
         }
-        if(event.key === 'enter'){
-            var selectNameValue = `select_item_name_${purchaseValue}`;
-    var suggestionsContainerDown = $(`#${selectNameValue}`);
-    suggestionsContainerDown.empty();
-        }
-     
+        
    });  
  
   // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
