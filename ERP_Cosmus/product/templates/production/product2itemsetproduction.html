@@ -75,7 +75,8 @@
            {{ forms.id }}
 
             <tr>
-                <td>{{forloop.counter}}</td>
+                <td><input type="text" class="row_number" name="{{form.prefix}}-row_number" value="{{form.instance.row_number}}" maxlength="255" id="id_{{form.prefix}}-row_number"></td>
+
                 <td>
                     <select class="item-select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
                         
