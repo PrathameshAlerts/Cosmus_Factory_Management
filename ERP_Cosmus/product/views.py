@@ -597,7 +597,6 @@ def product2item(request,product_refrence_id):
                             #loop through all the products for each form and get the instance with
                             # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
                             item = form.cleaned_data['Item_pk']
-                            print(form.cleaned_data)
                             obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
                             obj.no_of_rows =  form.cleaned_data['no_of_rows']
                             obj.Remark = form.cleaned_data['Remark']
