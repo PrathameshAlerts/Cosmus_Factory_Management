@@ -582,11 +582,9 @@ def product2item(request,product_refrence_id):
             for form in formset_single:
                 if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
                     if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-                        
                         p2i_instance = form.save(commit = False)
                         p2i_instance.common_unique = False
                         p2i_instance.save()
-
             
         
 
@@ -645,7 +643,7 @@ def export_Product2Item_excel(request,product_ref_id):
     initial_row = 2   # start row
     max_rows = 1  # max rows
     for products_items in products_in_i2p_special:
-
+        
         no_of_rows = products_items.no_of_rows  # eg : 17   eg : 5
         item_name = products_items.Item_pk.item_name 
         product_name = products_items.PProduct_pk.PProduct_SKU
@@ -655,18 +653,10 @@ def export_Product2Item_excel(request,product_ref_id):
             row[0].value = product_name
             row[1].value = item_name
 
-
         blank_row_number =  initial_row + no_of_rows  # blank row no = 2 + 17  = 19 , 20 + 5 = 25
         sheet1.insert_rows(blank_row_number) # Insert a blank row at the specified position
         initial_row = blank_row_number + 1   # update inital = 19 + 1 = 20  , 25 + 1 = 26
         max_rows = max_rows + 1    # update max rows = 18 + 1 = 19 , 24 + 1 = 25
-
-        p2i_configs = products_items.product_item_configs.all()
-        
-        
-            
-
-        
 
 
     fileoutput = BytesIO()
@@ -1685,7 +1675,7 @@ def purchasevouchercreateupdate(request, pk=None):
             party_names = ''
     
     try:
-        
+
         party_gst_no = ''
         selected_party_name = request.GET.get('selected_party_name')
         if selected_party_name is not None:
@@ -1914,7 +1904,6 @@ def purchasevouchercreateupdate(request, pk=None):
                                         #function to update popup data on main submit only 
                                         purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade)
                                         
-                                
                         else:
                             print('form1',form.errors)
                             

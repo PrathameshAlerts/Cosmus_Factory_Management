@@ -116,18 +116,24 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
 
 
 # @receiver(pre_save, sender=product_2_item_through_table)
-# def create_item_product_config_rows(sender, instance, created, **kwargs):
+# def create_item_product_config_rows(sender,instance, **kwargs):
 
+    
 #     if instance.common_unique == False:
-#     # Check if the instance is being created or updated
-#         if instance.pk:
-#             # The instance already has a primary key, so it is being updated
-#             # Fetch the existing instance from the database
-#             existing_instance = sender.objects.get(pk=instance.pk)
-#             no_of_rows = existing_instance.no_of_rows
-#             rows_to_create = instance.no_of_rows - no_of_rows
+            
+#             if instance.pk:
+#                 existing_instance = sender.objects.get(pk=instance.pk)
+#                 no_of_rows = existing_instance.no_of_rows
+#             else:
+#                 no_of_rows = 0
+#             print('1st',no_of_rows)
+#             print('2nd',instance.no_of_rows)
+#             if no_of_rows != instance.no_of_rows:
+#                 if no_of_rows < instance.no_of_rows:
+#                     rows_to_create = instance.no_of_rows - no_of_rows
 
-#             set_prod_item_part_name.objects.create(producttoitem=instance)
+#                     for row in range(rows_to_create):
+#                         set_prod_item_part_name.objects.create(producttoitem=instance)
 
 
 
