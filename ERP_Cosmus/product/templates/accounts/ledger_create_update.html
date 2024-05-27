@@ -83,7 +83,7 @@
        {% elif not form.instance.id %}
        <input type="number" placeholder="Rs" class="item-select me-2" value="" name="opening_balance" required id="id_opening_balance">
        {% endif %}
-        <select class="item-select w-25" name="Debit_Credit" id="id_Debit_Credit">
+        <select class="item-select w-25" name="Debit_Credit" id="id_Debit_Credit" required>
       <option value="{{form.instance.Debit_Credit}}">{{form.instance.Debit_Credit}}</option>
       <option value="Debit">Debit</option>
       <option value="Credit">Credit</option>

@@ -1,6 +1,6 @@
-from django.db.models.signals import pre_delete , post_save
+from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
-from .models import Ledger, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, purchase_voucher_items, shade_godown_items
+from .models import Ledger, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
 
 
 
@@ -113,6 +113,45 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
         quantity_after_save = instance.quantity
         if quantity_after_save == 0:
             instance.delete()
+
+
+# @receiver(pre_save, sender=product_2_item_through_table)
+# def create_item_product_config_rows(sender,instance, **kwargs):
+
+    
+#     if instance.common_unique == False:
+            
+#             if instance.pk:
+#                 existing_instance = sender.objects.get(pk=instance.pk)
+#                 no_of_rows = existing_instance.no_of_rows
+#             else:
+#                 no_of_rows = 0
+#             print('1st',no_of_rows)
+#             print('2nd',instance.no_of_rows)
+#             if no_of_rows != instance.no_of_rows:
+#                 if no_of_rows < instance.no_of_rows:
+#                     rows_to_create = instance.no_of_rows - no_of_rows
+
+#                     for row in range(rows_to_create):
+#                         set_prod_item_part_name.objects.create(producttoitem=instance)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

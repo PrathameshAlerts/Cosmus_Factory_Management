@@ -550,25 +550,23 @@ class item_godown_quantity_through_table(models.Model):
             
 
 
-class set_prod_item_part_name(models.Model):
-    part_name = models.CharField(max_length=100)
-    part_dimentions = models.CharField(max_length=100)
-    dimention_total = models.CharField(max_length=100)
-    part_pieces = models.IntegerField(default=0)
-    
-
 
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
-    set_prod_config = models.ManyToManyField(set_prod_item_part_name)
+    row_number = models.IntegerField()
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     common_unique = models.BooleanField(default=False)  #True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1)
     Remark = models.CharField(max_length=100, blank = True, null=True)
 
-
     class Meta:
         unique_together = [['PProduct_pk','Item_pk']]
     
 
+class set_prod_item_part_name(models.Model):
+    producttoitem = models.ForeignKey("product_2_item_through_table", on_delete=models.CASCADE, related_name='product_item_configs')
+    part_name = models.CharField(max_length=100)
+    part_dimentions = models.CharField(max_length=100)
+    dimention_total = models.CharField(max_length=100)
+    part_pieces = models.IntegerField(default=0, null= True)

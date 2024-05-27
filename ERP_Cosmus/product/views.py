@@ -1,4 +1,6 @@
+from email import header
 from io import BytesIO
+from sys import exception
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError
 import json
@@ -87,93 +89,93 @@ def edit_production_product(request,pk):
     colors = Color.objects.all()
     main_categories = MainCategory.objects.all()
 
+    form = PProductAddForm(instance=pproduct)
+    formset = CustomPProductaddFormSet(instance=pproduct)
+
     if request.method == 'POST':
-
-        # try:
-        #     excel_file = request.FILES['excel_file']
-        #     file_name = excel_file.name
-        #     product_ref_id = file_name.split('_')[-1].split('.')[0]
+        product_ref_id = pk
+        print(request.POST)
+        try:
+            excel_file = request.FILES['excel_file']
+            file_name = excel_file.name
+            product_ref_id_file = file_name.split('_')[-1].split('.')[0]
+            print(type(product_ref_id_file))
+            if not excel_file.name.endswith('.xlsx'):
+                messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
+                return redirect('pproductlist')
             
-        #     if not excel_file.name.endswith('.xlsx'):
-        #         messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
-        #         return redirect('pproductlist')
+            if int(product_ref_id_file) == product_ref_id:
+                with transaction.atomic():
+                    wb = load_workbook(excel_file)
+                    ws1 = wb['product_special_configs']
+                    ws2 = wb['product_common_configs']
+
+                    for row in ws1.iter_rows(min_row=2,min_col=1):
+                        id = row[0].value
+                        product_sku = row[1].value
+                        item_name = row[2].value
+                        part_name = row[3].value
+                        part_dimention = row[4].value
+                        dimention_total = row[5].value
+                        part_pieces = row[6].value
+                        print(id,product_sku,item_name,part_name,part_dimention,dimention_total)
+
+
+                        if id == None:
+                            if product_sku != None and item_name != None and part_name != None and part_dimention != None:
+                                p2i_instance = product_2_item_through_table.objects.get(PProduct_pk__PProduct_SKU= product_sku,Item_pk__item_name= item_name,common_unique=False)
+                                set_prod_item_part_name.objects.create(producttoitem=p2i_instance,part_name=part_name,part_dimentions=part_dimention,dimention_total=dimention_total,part_pieces=part_pieces)
+
+                        
+
+    
+            else:
+
+                messages.error(request, 'File with invalid Product Refrence Id uploaded')
+                return redirect('pproductlist')
             
-        #     with transaction.atomic():
-        #         wb = load_workbook(excel_file)
-        #         ws1 = wb['product_special_items']
-        #         ws2 = wb['product_special_configs']
-        #         Number_of_items = 0
-
-        #         for row in ws1.iter_rows(min_row=2,min_col=1):
-        #             product_sku = row[0]
-        #             Number_of_items = Number_of_items + 1
-                    
-        #             for cell in row:
-        #                 cell_value_item = cell.value   #get the cell value
-        #                 column_letter = get_column_letter(cell.column)  # get the letter of that column 
-        #                 if column_letter != 'A': 
-
-        #                     found_rows = []
-        #                     search_column = 'B'   # column with the locations
-        #                     search_value = column_letter #column letter of that item from w1
-        #                     for cell in ws2[search_column]: #search 
-        #                         if cell.value == search_value: # if cell value in column B in ws2 == column of the item in ws1 
-
-        #                             # If the condition is met, get the entire row's data
-        #                             row_data = [cell.value for cell in ws2[cell.row]] # value of each cell in ws2[cell row number ex 5]
-
-        #                             item_id = Item_Creation.objects.get(item_name=cell_value_item)
-        #                             product_instance = PProduct_Creation.objects.get(PProduct_SKU=product_sku.value)
-        #                             obj , created = set_prod_item_part_name.objects.get_or_create(id = row_data[0])
-        #                             obj.location = row_data[1]
-        #                             obj.part_name = row_data[2]
-        #                             obj.part_dimentions = row_data[3] 
-        #                             obj.dimention_total = row_data[4]
-        #                             obj.part_pieces = row_data[5]
-        #                             obj.part_type = row_data[6]
-        #                             obj.save()
-                                                              
-        #                             obj1, created = product_2_item_through_table.objects.get_or_create(PProduct_pk =product_instance,Item_pk=item_id)
-        #                             obj1.set_prod_config.add(obj.id)
-        #                             obj1.save()
-                         
-                            
-        # except Exception as e:
-        #     messages.error(request, f'Error uploading Excel file: {str(e)}')
+        except Exception as e:
+            messages.error(request, f'Error uploading Excel file: {str(e)}')
+        
 
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
+
         if form.is_valid() and formset.is_valid():
-            form.save(commit=False)
-            formset.save()
+            try:
+                with transaction.atomic():
+                    form.save(commit=False)
+                    formset.save()
             
-            #p_id has the id of the product
-            p_id = form.instance
-            print(p_id)
-            #get the ids of subcats selected from the frontend 
-            sub_category_ids = request.POST.getlist('Product_Sub_catagory')
+                    #p_id has the id of the product
+                    p_id = form.instance
+        
+                    #get the ids of subcats selected from the frontend 
+                    sub_category_ids = request.POST.getlist('Product_Sub_catagory')
             
-            #filter only all the subcats from table sent from the frontend with respect to pid
-            sub_cat_front_listcomp = [Product2SubCategory.objects.filter(Product_id=p_id,SubCategory_id=sub_cat_id).first() for sub_cat_id in sub_category_ids]
+                    #filter only all the subcats from table sent from the frontend with respect to pid
+                    sub_cat_front_listcomp = [Product2SubCategory.objects.filter(Product_id=p_id,SubCategory_id=sub_cat_id).first() for sub_cat_id in sub_category_ids]
             
-            #filter all the subcats from table of the product
-            sub_cat_backend = [x for x in Product2SubCategory.objects.filter(Product_id=p_id)]
+                    #filter all the subcats from table of the product
+                    sub_cat_backend = [x for x in Product2SubCategory.objects.filter(Product_id=p_id)]
 
-            #delete the subcats from DB if subcat in the db is not sent from the frontend
-            objects_to_delete = [obj for obj in sub_cat_backend if obj not in sub_cat_front_listcomp]
+                    #delete the subcats from DB if subcat in the db is not sent from the frontend
+                    objects_to_delete = [obj for obj in sub_cat_backend if obj not in sub_cat_front_listcomp]
             
-            for obj in objects_to_delete:
-                obj.delete()
+                    for obj in objects_to_delete:
+                        obj.delete()
 
 
-            #loop through the sub cats sent from the front end and get or create new subcats for the product
-            for sub_cat_id in sub_category_ids:
-                sub_cat = SubCategory.objects.get(id = sub_cat_id)
-                p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
+                    #loop through the sub cats sent from the front end and get or create new subcats for the product
+                    for sub_cat_id in sub_category_ids:
+                        sub_cat = SubCategory.objects.get(id = sub_cat_id)
+                        p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
 
-            # form.Number_of_items = Number_of_items
-            form.save()
-            return redirect('pproductlist')
+                    # form.Number_of_items = Number_of_items
+                    form.save()
+                    return redirect('pproductlist')
+            except exception as e:
+                messages.error(request, f'An exception occured - {e}')
         
         else:
             print(form.errors)
@@ -188,8 +190,7 @@ def edit_production_product(request,pk):
                                                                             'prod_main_cat_id':prod_main_cat_id,
                                                                             'prod_sub_cat_dict':prod_sub_cat_dict,
                                                                             'prod_sub_cat_dict_all':prod_sub_cat_dict_all})
-    form = PProductAddForm(instance=pproduct)
-    formset = CustomPProductaddFormSet(instance=pproduct)
+
 
     return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors,
                                                                    'products_sku_counts':products_sku_counts,
@@ -545,12 +546,12 @@ def product2item(request,product_refrence_id):
     
     items = Item_Creation.objects.all()
     product_refrence_no = product_refrence_id
-    Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id)
+    Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
 
 
     #query for filtering unique to product fields for formset_single
     #filter all record of the products with the ref_id which is marked as unique fields
-    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False)
+    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color')
     formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
 
@@ -562,7 +563,7 @@ def product2item(request,product_refrence_id):
     product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True)
 
     # order the filtered queryset in asc order and get distinct records based on Item_pk (this queryset is used in get request)
-    distinct_product2item_commmon_instances = product2item_common_instances.order_by('Item_pk', 'id').distinct('Item_pk')
+    distinct_product2item_commmon_instances = product2item_common_instances.order_by('Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
 
     formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
     
@@ -573,7 +574,7 @@ def product2item(request,product_refrence_id):
 
         # for unique records
         if formset_single.is_valid():
-            # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted 
+            # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
             for form in formset_single.deleted_forms:
                 if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
                     form.instance.delete()
@@ -618,78 +619,45 @@ def product2item(request,product_refrence_id):
 
 
 
-
-def product2commonitem(request,product_id): 
-    items = Item_Creation.objects.all()
-    product_refrence_no = product_id
-    product = get_object_or_404(Product, Product_Refrence_ID=product_id) #get the product of the refrence id
-    product_name = product.Model_Name
-    
-    product_instance = PProduct_Creation.objects.filter(Product=product).first()
-    print('product',product)
-    pproducts = PProduct_Creation.objects.filter(Product=product) #filter all instances related to the product
-
-
-    # Fetch the queryset of product_2_item_through_table instances related to the filtered PProduct_Creation instances of a product ref id 
-    # common_unique represents True if its common in all products and False it its unique to a product
-    product_items_qs = product_2_item_through_table.objects.filter(PProduct_pk__in=pproducts).filter(common_unique=True)
-    print('product_items_qs',product_items_qs)
-
-    #instance and queryset params explained in file #formsets_for_accessing_reverse_relations.txt
-    formset = Product2CommonItemFormSet(instance=product_instance,queryset=product_items_qs) # queryset of all the instannces of productcreation binded to form 
-    
-
-    if request.method == 'POST':
-        formset = Product2CommonItemFormSet(request.POST, instance=product_instance, queryset=product_items_qs)
-        formset.forms = [form for form in  formset if form.has_changed()]
-        if formset.is_valid():
-            # when using form.save(commit=False) we need to  explicitly delete forms marked in has_deleted
-            for form in formset.deleted_forms:
-                if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
-                    form.instance.delete()
-
-            for form in formset:
-                p2i_instance = form.save(commit = False)
-                p2i_instance.common_unique = True
-                p2i_instance.save()
-
-            messages.success(request,'Items to Product sucessfully added.')
-            close_window_script = """
-            <script>
-            window.opener.location.reload(true);  // Reload parent window if needed
-            window.close();  // Close current window
-            </script>
-            """
-            return HttpResponse(close_window_script)
-        
-        else:
-            return render(request, 'production/product2commonitemset.html', {'formset': formset,
-                                                                       'product_name':product_name,
-                                                                       'items':items,'product_refrence_no':product_refrence_no})
-
-    return render(request, 'production/product2commonitemset.html', {'formset': formset,
-                                                               'product_name':product_name,
-                                                               'items':items,'product_refrence_no':product_refrence_no})
-
-
 def export_Product2Item_excel(request,product_ref_id):
-    # Create an in-memory workbook
-    wb = Workbook()
-    ws = wb.active
     
-    # Define the queryset
-    queryset = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_ref_id)
-    print(queryset)
-
-    # Define the headers based on model fields
-    headers = ['ID', 'Product SKU', 'Item','Common/Unique'] 
-    ws.append(headers)
+    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False)
 
 
-    # Append the data rows
-    for obj in queryset:
-        row = [obj.id, obj.PProduct_pk.PProduct_SKU, obj.Item_pk.item_name, obj.common_unique]  # replace with your model fields
-        ws.append(row)
+    wb = Workbook()
+
+    ##delete the default workbook
+    default_sheet = wb['Sheet']
+    wb.remove(default_sheet)    
+
+    wb.create_sheet('product_special_configs')
+    wb.create_sheet('product_common_configs')
+
+    sheet1 = wb.worksheets[0]
+    sheet2 = wb.worksheets[1]
+
+    headers =  ['id','product sku', 'item name','part name', 'part  dimention','dimention total','part pieces']
+    sheet1.append(headers)
+
+    
+    initial_row = 2   # start row
+    max_rows = 1  # max rows
+    for products_items in products_in_i2p_special:
+        
+        no_of_rows = products_items.no_of_rows  # eg : 17   eg : 5
+        item_name = products_items.Item_pk.item_name 
+        product_name = products_items.PProduct_pk.PProduct_SKU
+        max_rows = max_rows + no_of_rows  # max rows + input rows    1 + 17 = 18,   19 + 5 = 24
+        
+        for row in sheet1.iter_rows(min_row=initial_row, max_row=max_rows,min_col=2, max_col=7):  # intial = 2 max_row = 18 , intial = 20, max_row = 24
+            row[0].value = product_name
+            row[1].value = item_name
+
+        blank_row_number =  initial_row + no_of_rows  # blank row no = 2 + 17  = 19 , 20 + 5 = 25
+        sheet1.insert_rows(blank_row_number) # Insert a blank row at the specified position
+        initial_row = blank_row_number + 1   # update inital = 19 + 1 = 20  , 25 + 1 = 26
+        max_rows = max_rows + 1    # update max rows = 18 + 1 = 19 , 24 + 1 = 25
+
 
     fileoutput = BytesIO()
     wb.save(fileoutput)
@@ -757,11 +725,12 @@ def item_create(request):
     
 def item_list(request):
     g_search = request.GET.get('item_search')
-    #select related for loading forward FK relationships and select related for reverse relationship  
-    #annotate to make a temp table in item_creation for the sum of all item and its related shades in all godowns 
+    #select related for loading forward FK relationships and prefetch related for reverse relationship  
+    #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
     queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item',
-                                                    'Fabric_Group',
-                                                    'Item_Creation_GST','Item_Fabric_Finishes','Item_Packing').prefetch_related('shades','shades__godown_shades').all().annotate(total_quantity=Sum('shades__godown_shades__quantity'))
+                                                    'Fabric_Group','Item_Creation_GST','Item_Fabric_Finishes',
+                                                    'Item_Packing').prefetch_related('shades',
+                                                    'shades__godown_shades').all().annotate(total_quantity=Sum('shades__godown_shades__quantity'))
 
 
 # cannot use icontains on foreignkey fields even if it has data in the fields
@@ -1293,10 +1262,8 @@ def stock_item_delete(request, pk):
     return redirect('stock-item-create')
 
 
-
+@transaction.atomic
 def ledgercreate(request):
-    print(request.POST)
-    current_date = now().date()
     under_groups = AccountSubGroup.objects.all()
     form = LedgerForm()
     if request.method == 'POST':
@@ -1312,23 +1279,22 @@ def ledgercreate(request):
 
             elif debit_credit_value == 'Credit':
                 account_credit_debit_master_table.objects.create(ledger = ledger_instance, voucher_type = 'Ledger',credit= open_bal_value)
-            else:
-                print(form.errors)
+            
             messages.success(request,'Ledger Created')
             return redirect('ledger-list')
         
         else:
-            
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
+
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
 
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create','current_date':current_date})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
 
-
+@transaction.atomic
 def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
-    current_date = now().date()
+    
     Ledger_pk = get_object_or_404(Ledger,pk = pk)
     ledgers = Ledger_pk.transaction_entry.all() #get all transactions related instances to the ledger
 
@@ -1348,7 +1314,7 @@ def ledgerupdate(request,pk):
         messages.error(request,' Error with Credit Debit ')
     
     if request.method == 'POST':
-        print(request.POST)
+        
         form = LedgerForm(request.POST, instance = Ledger_pk)
         name_for_message = request.POST['name']
         if form.is_valid():
@@ -1368,9 +1334,9 @@ def ledgerupdate(request,pk):
             return redirect('ledger-list')
         else:
             
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date , 'open_bal':opening_balance})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance})
     
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update','current_date':current_date, 'open_bal':opening_balance})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance})
 
 
 
@@ -1709,7 +1675,7 @@ def purchasevouchercreateupdate(request, pk=None):
             party_names = ''
     
     try:
-        
+
         party_gst_no = ''
         selected_party_name = request.GET.get('selected_party_name')
         if selected_party_name is not None:
@@ -1938,7 +1904,6 @@ def purchasevouchercreateupdate(request, pk=None):
                                         #function to update popup data on main submit only 
                                         purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade)
                                         
-                                
                         else:
                             print('form1',form.errors)
                             
@@ -2225,8 +2190,7 @@ def gst_create_update(request, pk = None):
         instance = None
         title = 'Create'
 
-    print(f'gstupdate/{pk}')
-    print(request.path)
+
     if request.path == '/gstpopup/':
         template_name = 'accounts/gst_popup.html'
     
