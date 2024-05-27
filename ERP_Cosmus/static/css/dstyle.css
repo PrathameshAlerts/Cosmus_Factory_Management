@@ -164,6 +164,10 @@ input[type=number] {
     font-size: 13px;
     font-family: "poppins", sans-serif;
   }
+  .mainTable{
+    font-size: 13px;
+    font-family: "poppins", sans-serif;
+  }
   .name_icons{
     position: absolute;
     top: 10px;

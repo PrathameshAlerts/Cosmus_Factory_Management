@@ -57,49 +57,52 @@
     </table>
     <button type="button" class="add_btn mb-4" id="addForm">Add</button>  
   
-    <h4 class="mb-3">Add common Product</h3>
-    <table class="table table-responsive table-striped table-bordered" id="productForm">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Item Name</th>
-                <th>Rows</th>
-                <th>Remark</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-       
-        <tbody class="mainTableList">
-           {{formset_common.management_form}}
-           {% for forms in formset_common %}
-           {{ forms.id }}
-
-            <tr>
-                <td><span class="row_number" name="{{forms.prefix}}-row_number" value="{{forms.instance.row_number}}" id="id_{{forms.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{forms.instance.row_number}}</span></td>
-
-                <td>
-                    <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
-                        
-                        <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
-                        {% for item in items %}
-                        <option value="{{item.id}}">{{item.item_name}}</option>
-                        {% endfor %}
-                    </select>
-
-                </td>
-              
-                <td> <input type="text" class="product_row" name="{{forms.prefix}}-no_of_rows" value="{{forms.instance.no_of_rows}}"  maxlength="255" id="id_{{forms.prefix}}-no_of_rows" ></td>
-              
-                <td> <input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}"  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
-                <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
-            </tr>
-           
-        </tbody>
-        {% endfor %}
-    </table>
-    
+    <div>
+        <h4 class="mb-3">Add common Product</h3>
+            <table class="table table-responsive table-striped table-bordered" id="myProduct">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Item Name</th>
+                        <th>Rows</th>
+                        <th>Remark</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+               
+                <tbody class="mainTable">
+                   {{formset_common.management_form}}
+                   {% for forms in formset_common %}
+                   {{ forms.id }}
+        
+                    <tr>
+                        <td><span  name="{{forms.prefix}}-row_number" value="{{forms.instance.row_number}}" id="id_{{forms.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{forms.instance.row_number}}</span></td>
+        
+                        <td>
+                            <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
+                                
+                                <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
+                                {% for item in items %}
+                                <option value="{{item.id}}">{{item.item_name}}</option>
+                                {% endfor %}
+                            </select>
+        
+                        </td>
+                      
+                        <td> <input type="text" class="product_row" name="{{forms.prefix}}-no_of_rows" value="{{forms.instance.no_of_rows}}"  maxlength="255" id="id_{{forms.prefix}}-no_of_rows" ></td>
+                      
+                        <td> <input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}"  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
+                        <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
+                    </tr>
+                   
+                </tbody>
+                {% endfor %}
+            </table>
             
-<button type="button" class="add_btn mb-3" id="addNewRow">Add</button>  
+                    
+        <button type="button" class="add_btn mb-3" id="addNewRow">Add</button>  
+    </div>
+    
 <div>
     <input type="submit" class="add_btn" >
 </div>
@@ -151,6 +154,13 @@
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.value = '';
 
+            const inputRowNumber = newTable.querySelector('span[name^="product2itemuniqueformset-"][name$="row_number"]');
+            inputRowNumber.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
+            inputRowNumber.name = `product2itemuniqueformset-${newFormCount}-row_number`;
+            inputRowNumber.value = '';
+
+
+
 
             const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
             deleteElement.id = `id_product2itemuniqueformset-${newFormCount}-DELETE`;
@@ -200,11 +210,11 @@ deleteRow();
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const addFormButton = document.getElementById('addNewRow');
-        const tableBody = document.querySelector('#productForm tbody');
+        const addNewButton = document.getElementById('addNewRow');
+        const tableBody = document.querySelector('#myProduct tbody');
 
-        if( addFormButton && tableBody) {
-        addFormButton.addEventListener('click', function() {
+        if( addNewButton && tableBody) {
+            addNewButton.addEventListener('click', function() {
         let lastVisibleRow = null;
         tableBody.querySelectorAll('tr').forEach(row => {
             if (window.getComputedStyle(row).display !== 'none') {
@@ -212,12 +222,17 @@ deleteRow();
             }
         });
         if (lastVisibleRow) {
-            var forms = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
-            var newFormCount = parseInt(forms.value) ;
+            var tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
+            var newFormCount = parseInt(tableRow.value) ;
             var newTable = lastVisibleRow.cloneNode(true);
             newTable.querySelectorAll("input select").forEach(function(e) {
             e.value= "";
           });
+
+          const inputRow = newTable.querySelector('span[name^="product2itemcommonformset-"][name$="row_number"]');
+          inputRow.id = `id_product2itemcommonformset-${newFormCount}-row_number`;
+          inputRow.name = `product2itemuniqueformset-${newFormCount}-row_number`;
+          inputRow.value = '';
 
             const selectElement = newTable.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
             selectElement.id = `id_product2itemcommonformset-${newFormCount}-Item_pk`;
@@ -243,7 +258,7 @@ deleteRow();
             deleteElement.checked = false;
 
 
-            forms.value = newFormCount + 1;
+            tableRow.value = newFormCount + 1;
 
             tableBody.appendChild(newTable);
             deletedRow();
@@ -261,7 +276,7 @@ document.querySelectorAll('.delete').forEach(function(button) {
         // Find the row containing the clicked delete button
         var row = this.closest('tr');
         console.log("row",row);
-        var checkRow = row.querySelector('.product_deleteId[name^="-"][name$="-DELETE"]');
+        var checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
         if (checkRow) {
             checkRow.checked = true; // Mark as checked
             checkRow.value = 'true'; // Set the value to 'true'

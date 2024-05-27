@@ -543,7 +543,7 @@ def product2subcategoryajax(request):
 
 
 def product2item(request,product_refrence_id):
-    
+    print(request.POST)
     items = Item_Creation.objects.all()
     product_refrence_no = product_refrence_id
     Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
@@ -594,10 +594,13 @@ def product2item(request,product_refrence_id):
                 if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
                     if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
                         for product in Products_all:
-                            item = form.instance.Item_pk
-                            obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product,Item_pk=item, common_unique=True)
-                            obj.no_of_rows =  form.instance.no_of_rows
-                            obj.Remark = form.instance.Remark
+                            #loop through all the products for each form and get the instance with
+                            # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
+                            item = form.cleaned_data['Item_pk']
+                            obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
+                            obj.no_of_rows =  form.cleaned_data['no_of_rows']
+                            obj.Remark = form.cleaned_data['Remark']
+                            obj.row_number = form.cleaned_data['row_number']
                             obj.save()
 
 
@@ -652,6 +655,10 @@ def export_Product2Item_excel(request,product_ref_id):
         for row in sheet1.iter_rows(min_row=initial_row, max_row=max_rows,min_col=2, max_col=7):  # intial = 2 max_row = 18 , intial = 20, max_row = 24
             row[0].value = product_name
             row[1].value = item_name
+
+            product2itempk = product_2_item_through_table.objects.filter(PProduct_pk=product_name,Item_pk=item_name)
+            set_product_instance = set_prod_item_part_name.objects.get(producttoitem = product2itempk)
+            print(set_product_instance)
 
         blank_row_number =  initial_row + no_of_rows  # blank row no = 2 + 17  = 19 , 20 + 5 = 25
         sheet1.insert_rows(blank_row_number) # Insert a blank row at the specified position
@@ -2337,13 +2344,6 @@ def packaging_delete(request,pk):
 
 #_________________________production-end______________________________
 
-def set_production_popup(request,p_name,p_reference_id):
-    context = {'product_name':p_name,'product_ref_id':p_reference_id}
-
-    if request.method == 'POST':
-        return HttpResponse('<script>window.close();</script>')
-    
-    return render(request,'production/set_production.html', context=context)
 
 
 
