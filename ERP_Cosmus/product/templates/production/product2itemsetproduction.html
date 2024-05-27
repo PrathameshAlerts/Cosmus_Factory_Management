@@ -75,7 +75,7 @@
            {{ forms.id }}
 
             <tr>
-                <td><input type="text" class="row_number" name="{{form.prefix}}-row_number" value="{{form.instance.row_number}}" maxlength="255" id="id_{{form.prefix}}-row_number"></td>
+                <td><input type="text" class="row_number" name="{{forms.prefix}}-row_number" value="{{forms.instance.row_number}}" maxlength="255" id="id_{{forms.prefix}}-row_number"></td>
 
                 <td>
                     <select class="item-select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
@@ -150,6 +150,13 @@
             inputRemark.id = `id_product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.value = '';
+
+            const inputRowNumber = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="row_number"]');
+            inputRowNumber.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
+            inputRowNumber.name = `product2itemuniqueformset-${newFormCount}-row_number`;
+            inputRowNumber.value = '';
+
+
 
 
             const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
@@ -235,6 +242,11 @@ deleteRow();
             inputElement.id = `id_product2itemcommonformset-${newFormCount}-Remark`;
             inputElement.name = `product2itemcommonformset-${newFormCount}-Remark`;
             inputElement.value = '';
+
+            const inputRowNumber = newTable.querySelector('input[name^="product2itemcommonformset-"][name$="row_number"]');
+            inputRowNumber.id = `id_product2itemcommonformset-${newFormCount}-row_number`;
+            inputRowNumber.name = `product2itemcommonformset-${newFormCount}-row_number`;
+            inputRowNumber.value = '';
 
             const deleteElement = newTable.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
             deleteElement.id = `id_product2itemcommonformset-${newFormCount}-DELETE`;

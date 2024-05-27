@@ -142,8 +142,7 @@ urlpatterns = [
 
     #Production
     path('product2item/<int:product_refrence_id>',views.product2item, name = 'product-2-item'),
-    #path('setproductiondownload/<int:product_ref_id>/<int:item_number>',views.set_production_upload, name = 'set-production-upload'),
-    #path('setproductionpopup/<str:p_name>/<int:p_reference_id>',views.set_production_popup, name = 'set-production-popup'),
+
     path('export_Product2Item_excel/<int:product_ref_id>',views.export_Product2Item_excel, name = 'export-Product2Item-excel'),
 
     #reports
