@@ -1,7 +1,7 @@
 {% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
-<h3 class="mb-3">Add items Product</h3>
+<h4 class="mb-3">Add Unique Product</h3>
 
    <h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
    <form method="post" enctype="multipart/form-data">
@@ -15,7 +15,7 @@
                 <th>No</th>
                 <th>Product Sku</th>
                 <th>Item Name</th>
-                <th>No of Rows</th>
+                <th>Rows</th>
                 <th>Remark</th>
                 <th>Delete</th>
             </tr>
@@ -30,9 +30,9 @@
                
                 <td>
                     <select class="item-select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
-                        <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">{{form.instance.PProduct_pk.PProduct_SKU}}  {{form.instance.PProduct_pk.PProduct_color}}</option>
+                        <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">{{form.instance.PProduct_pk.PProduct_SKU}} &nbsp; &nbsp; {{form.instance.PProduct_pk.PProduct_color}}</option>
                         {% for product in Products_all %}
-                        <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} - {{product.PProduct_color}}</option>
+                        <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp; &nbsp;{{product.PProduct_color}}</option>
                         {% endfor %}
                     </select>
 
@@ -47,8 +47,8 @@
                     </select>
 
                 </td>
-                <td> <input type="text" class="item-select me-3" name="{{form.prefix}}-no_of_rows" value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
-                <td> <input type="text" class="item-select me-3" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}"  maxlength="255" id="id_{{form.prefix}}-Remark"></td>
+                <td> <input type="text" class="product_row" name="{{form.prefix}}-no_of_rows" value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
+                <td> <input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}"  maxlength="255" id="id_{{form.prefix}}-Remark"></td>
                 <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
             {% endfor %}
@@ -57,13 +57,13 @@
     </table>
     <button type="button" class="add_btn mb-4" id="addForm">Add</button>  
   
-
+    <h4 class="mb-3">Add common Product</h3>
     <table class="table table-responsive table-striped table-bordered" id="productForm">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Item Select</th>
-                <th>No of Rows</th>
+                <th>Item Name</th>
+                <th>Rows</th>
                 <th>Remark</th>
                 <th>Delete</th>
             </tr>
@@ -87,9 +87,9 @@
 
                 </td>
               
-                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-no_of_rows" value="{{forms.instance.no_of_rows}}"  maxlength="255" id="id_{{forms.prefix}}-no_of_rows" ></td>
+                <td> <input type="text" class="product_row" name="{{forms.prefix}}-no_of_rows" value="{{forms.instance.no_of_rows}}"  maxlength="255" id="id_{{forms.prefix}}-no_of_rows" ></td>
               
-                <td> <input type="text" class="item-select me-3" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}"  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
+                <td> <input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}"  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
                 <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
            
@@ -217,8 +217,6 @@ deleteRow();
             newTable.querySelectorAll("input select").forEach(function(e) {
             e.value= "";
           });
-
-
 
             const selectElement = newTable.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
             selectElement.id = `id_product2itemcommonformset-${newFormCount}-Item_pk`;
