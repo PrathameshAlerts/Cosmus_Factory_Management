@@ -26,10 +26,10 @@
             {% for form in formset_single %}
             {{ form.id }}
             <tr>
-                <td><input type="text" class="row_number" name="{{form.prefix}}-row_number" value="{{form.instance.row_number}}" maxlength="255" id="id_{{form.prefix}}-row_number"></td>
+                <td><span  class="row_number" name="{{form.prefix}}-row_number" value="{{form.instance.row_number}}" maxlength="255" id="id_{{form.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{form.instance.row_number}}</span></td>
                
                 <td>
-                    <select class="item-select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
+                    <select class=" product2Select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
                         <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">{{form.instance.PProduct_pk.PProduct_SKU}} &nbsp; &nbsp; {{form.instance.PProduct_pk.PProduct_color}}</option>
                         {% for product in Products_all %}
                         <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp; &nbsp;{{product.PProduct_color}}</option>
@@ -38,7 +38,7 @@
 
                 </td>
                 <td>
-                    <select class="item-select" name="{{form.prefix}}-Item_pk" id="{{form.prefix}}-Item_pk">
+                    <select class="product2Select" name="{{form.prefix}}-Item_pk" id="{{form.prefix}}-Item_pk">
                         
                         <option value="{{form.instance.Item_pk.id}}">{{form.instance.Item_pk.item_name}}</option>
                         {% for item in items %}
@@ -75,10 +75,10 @@
            {{ forms.id }}
 
             <tr>
-                <td><input type="text" class="row_number" name="{{form.prefix}}-row_number" value="{{form.instance.row_number}}" maxlength="255" id="id_{{form.prefix}}-row_number"></td>
+                <td><span class="row_number" name="{{forms.prefix}}-row_number" value="{{forms.instance.row_number}}" id="id_{{forms.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{forms.instance.row_number}}</span></td>
 
                 <td>
-                    <select class="item-select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
+                    <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
                         
                         <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
                         {% for item in items %}
@@ -128,7 +128,7 @@
             e.value= "";
           });
 
-    
+         
          
             const newSelectElement = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
             newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;

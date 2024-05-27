@@ -1332,14 +1332,19 @@ input[type=number] {
     color: #fff;
 }
 
-.image-upload>input {
-    display: none;
-  }
 
  
   .custom-select {
     background-color: white;
     width: 180px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+}
+
+.product2Select{
+    width: 300px;
     border: 1px solid #cecdcd;
     border-radius: 3px;
     padding-left: 5px;
