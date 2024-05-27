@@ -26,7 +26,7 @@
             {% for form in formset_single %}
             {{ form.id }}
             <tr>
-                <td><span  class="row_number" name="{{form.prefix}}-row_number" value="{{form.instance.row_number}}" maxlength="255" id="id_{{form.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{form.instance.row_number}}</span></td>
+                <td><input type="number" class="row_number" name="{{form.prefix}}-row_number" value="{{forms.instance.row_number|default_if_none:forloop.counter }}" maxlength="255" id="id_{{form.prefix}}-row_number" ></td>
                
                 <td>
                     <select class=" product2Select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
@@ -76,7 +76,7 @@
                    {{ forms.id }}
         
                     <tr>
-                        <td><span  name="{{forms.prefix}}-row_number" value="{{forms.instance.row_number}}" id="id_{{forms.prefix}}-row_number" readonly style="border: none; background-color: transparent ;">{{forms.instance.row_number}}</span></td>
+                        <td><input type="number" name="{{forms.prefix}}-row_number" value="{{forms.instance.row_number|default_if_none:forloop.counter }}"  id="id_{{forms.prefix}}-row_number"></td>
         
                         <td>
                             <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">

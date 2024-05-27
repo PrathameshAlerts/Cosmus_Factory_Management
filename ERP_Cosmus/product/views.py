@@ -571,7 +571,10 @@ def product2item(request,product_refrence_id):
     if request.method == 'POST':
         formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
         formset_common = Product2CommonItemFormSet(request.POST, queryset=product2item_common_instances, prefix='product2itemcommonformset') 
-
+        formset_single_valid = False
+        formset_common_valid = False
+        print(formset_common_valid)
+        print(formset_single_valid)
         # for unique records
         if formset_single.is_valid():
             # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
@@ -593,13 +596,14 @@ def product2item(request,product_refrence_id):
                         p2i_instance.common_unique = False
                         p2i_instance.save()
 
-                        no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
+                        no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
 
                         if no_of_rows_to_create > 0:
                             for row in range(no_of_rows_to_create):
                                 set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
 
                         p2i_instance.save()
+                        formset_single_valid = True
         
 
         # for common records
@@ -616,18 +620,27 @@ def product2item(request,product_refrence_id):
                             obj.Remark = form.cleaned_data['Remark']
                             obj.row_number = form.cleaned_data['row_number']
                             obj.save()
+                            formset_common_valid = True
 
+      
+
+        if formset_common_valid and formset_single_valid:
 
             messages.success(request,'Items to Product sucessfully added.')
             close_window_script = """
-                            <script>
-                        window.opener.location.reload(true);  // Reload parent window if needed
-                        window.close();  // Close current window
-                        </script>
-                        """
-            return HttpResponse(close_window_script)    
+                                            <script>
+                                            window.opener.location.reload(true);  // Reload parent window if needed
+                                            window.close();  // Close current window
+                                            </script>
+                                            """
+            return HttpResponse(close_window_script)
         else:
+            print(formset_common.errors)
             print(formset_single.errors)
+            return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
+                                                               'Products_all':Products_all,
+                                                               'items':items,'product_refrence_no': product_refrence_no})
+
 
     return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
                                                                'Products_all':Products_all,
