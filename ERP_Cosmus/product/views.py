@@ -2111,7 +2111,7 @@ def purchasevoucheritemsearchajax(request):
             raise ValidationError("No partial name provided.")
 
         item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
-
+       
         if item_name_searched:
             # Prepare a dictionary of searched items with IDs as keys and names as values
             searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
@@ -2125,7 +2125,7 @@ def purchasevoucheritemsearchajax(request):
                 searched_item_name_dict[item_id] = item_name
 
             """
-            return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict})
+            return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
         else:
             return JsonResponse({'error': 'No items found.'}, status=404)
 

@@ -7,7 +7,7 @@
    
   <form action="" method="POST">
        {% csrf_token %}
-       <h2>{{title}}</h2> 
+       <h2 class="mb-3">{{title}}</h2> 
    <div class="d-flex">
      <label for="id_unit_name" class="form-label px-2">Units:</label>
      <input type="text" class="item-select" value="{{ form.instance.unit_name }}" name="unit_name" maxlength="255" required id="id_unit_name">

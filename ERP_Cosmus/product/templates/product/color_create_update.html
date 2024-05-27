@@ -10,7 +10,7 @@
         <h2 class="mb-3">{{title}}</h2>
         {% csrf_token %}  
        <div class="d-flex">
-        <label for="id_color_name" class="form-label create_color_lable">Color </label>
+        <label for="id_color_name" class="form-label create_color_lable">Color Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
        </div>
 

@@ -92,8 +92,8 @@
     </div>
     <div class="col-lg-6">
       <div class="d-flex mb-3">
-        <label for="id_address" class="form-label item-form">Address:</label> <!--for textarea value = '' doesent work -->
-           <textarea name="address" class="ledger-input" cols="35" rows="3" id="id_address">{{form.instance.address}}</textarea> 
+        <label for="id_address" class="item-form">Address:</label> <!--for textarea value = '' doesent work -->
+           <textarea name="address" class="" cols="35" rows="3" id="id_address">{{form.instance.address}}</textarea> 
          </div>
          <div class="d-flex mb-3">
            <label for="id_state" class="form-label item-form">State:</label>
@@ -117,17 +117,17 @@
          </div>  
          <div class="d-flex mb-3">
            <label for="id_landline_no" class="form-label item-form">Landline no:</label>
-           <input type="number" class="ledger-input" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no"> 
+           <input type="number" class="item-select" value="{{form.instance.landline_no}}" name="landline_no" required id="id_landline_no"> 
          </div>
          <div class="d-flex mb-3">
            <label for="id_bank_details" class="form-label item-form">Bank details:</label>
-           <textarea name="bank_details" class="ledger-input" cols="25" rows="3" id="id_bank_details">{{form.instance.bank_details}}</textarea>  
+           <textarea name="bank_details" class="" cols="33" rows="3" id="id_bank_details">{{form.instance.bank_details}}</textarea>  
          </div>
 
     </div>
     
   </div>
-<input type="submit" class="add_btn mx-5 px-2">
+<input type="submit" class="create-btn mx-5 px-2">
 </form>
 </div>
 {% endblock body %}

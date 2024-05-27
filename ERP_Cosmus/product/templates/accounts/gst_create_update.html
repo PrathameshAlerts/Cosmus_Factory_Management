@@ -2,12 +2,12 @@
 {% load static %} 
  {% block body %}
 
-    <div class="row ps-3 mt-5">
+    <div class="row ps-3 mt-4">
         <div class="col-lg-5">
             <form action="" method="POST">
 
                 {% csrf_token %}
-               <h2>GST - {{title}}</h2>
+               <h2 class="mb-3">GST - {{title}}</h2>
                 <div class="d-flex my-4">
                     <label for="id_gst_percentage" class="item-form">Gst percentage :</label>
                     <input type="number" name="gst_percentage" class="item-select" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}">    
