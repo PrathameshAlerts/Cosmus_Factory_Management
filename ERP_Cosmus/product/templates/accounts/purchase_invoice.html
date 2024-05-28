@@ -126,13 +126,13 @@
                         <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" readonly>
                     </td>
                     <td>
-                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-input" readonly>
+                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-mark" readonly>
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-input purchase-gst mb-2" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage}}" readonly >
+                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-mark purchase-gst mb-2" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage}}" readonly >
                     </td>
                     <td>
                     <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value=""readonly >
@@ -160,9 +160,9 @@
                 <tbody>
                 <tr>
                         <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
-                        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 363px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
-                        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 192px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
-                        <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 96px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
+                        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 527px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
+                        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 152px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
+                        <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 69px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
                         <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
                         <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
                     </tr>
@@ -425,7 +425,7 @@ function randomValue (){
 
   var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
- $(document).on(' keyup focus ', 'input[name^="item_name_"]', function(e) {
+ $(document).on(' keyup focus click ', 'input[name^="item_name_"]', function(e) {
 
    
 
@@ -461,20 +461,19 @@ function randomValue (){
                 $.each(filteredOptions, function(index, [key, value]) {
                     suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
                 });
-                suggestionsContainer.show();
-                // if (filteredOptions.length > 0) {
-                //     suggestionsContainer.show();
+                
+                if (filteredOptions.length > 0) {
+                    suggestionsContainer.show();
                    
-                // } else {
-                //     suggestionsContainer.hide();
-                //     suggestionsContainer.empty();
+                } else {
+                    suggestionsContainer.hide();
                     
-                // }
+                }
             },
             error: function (xhr) {
                 console.log(xhr.status + ": " + xhr.responseText);
                 if (xhr.status === 404) {
-                    suggestionsContainer.empty();
+                    
                     suggestionsContainer.hide();
                 }
             }
@@ -1071,7 +1070,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             rateInputElement.name = `purchase_voucher_items_set-${formIndex}-rate`;
             rateInputElement.value="";
 
-            const perInputElement = lastRow.querySelector('.purchase-input[name^="item_per"]');
+            const perInputElement = lastRow.querySelector('.purchase-mark[name^="item_per"]');
             perInputElement.id = `item_per_${formIndex}`;
             perInputElement.name = `item_per_${formIndex}`;
             perInputElement.value="";

@@ -1160,7 +1160,13 @@ input[type=number] {
     padding-left: 5px; 
     height: 33px;
 }
-
+.purchase-mark{
+    width: 50px;
+    border: 1px solid #cecdcd ;
+    border-radius: 2px;
+    padding-left: 5px; 
+    height: 33px;
+}
 .purchase-amount{
     width: 115px;
     border: 1px solid #cecdcd ;
@@ -1258,7 +1264,7 @@ input[type=number] {
     float: left;
 }
 .table-left-transport {
-    padding-left: 970px; 
+    padding-left: 964px; 
 }
 
 .table-left-roundOf{
