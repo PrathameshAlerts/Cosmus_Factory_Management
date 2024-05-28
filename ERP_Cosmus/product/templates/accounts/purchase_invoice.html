@@ -425,7 +425,7 @@ function randomValue (){
 
   var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
- $(document).on(' keyup ', 'input[name^="item_name_"]', function(e) {
+ $(document).on(' keyup focus ', 'input[name^="item_name_"]', function(e) {
 
    
 
@@ -461,15 +461,15 @@ function randomValue (){
                 $.each(filteredOptions, function(index, [key, value]) {
                     suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
                 });
-
-                if (filteredOptions.length > 0) {
-                    suggestionsContainer.show();
+                suggestionsContainer.show();
+                // if (filteredOptions.length > 0) {
+                //     suggestionsContainer.show();
                    
-                } else {
-                    suggestionsContainer.hide();
-                    suggestionsContainer.empty();
+                // } else {
+                //     suggestionsContainer.hide();
+                //     suggestionsContainer.empty();
                     
-                }
+                // }
             },
             error: function (xhr) {
                 console.log(xhr.status + ": " + xhr.responseText);
@@ -487,84 +487,89 @@ function randomValue (){
     }
 
         
-    suggestionsContainer.on('mouseover', '.itemName-div-suggestion', function() {
-        $(this).addClass('selected').siblings().removeClass('selected');
-    });
-    
-   console.log('suggestionsContainer',suggestionsContainer);
-    suggestionsContainer.on('click', '.selected', function(e) {
-
-        $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
+    // suggestionsContainer.on('mouseover', '.itemName-div-suggestion', function() {
+    //     $(this).addClass('selected').siblings().removeClass('selected');
+    // });
+    suggestionsContainer.on('keydown', 'input[name^="item_name_"]', function(e){
+        if(e.type == 'Enter'){
+            console.log("Enter key pressed");
+            suggestionsContainer.hide();
+        }
+    })
+  
+    suggestionsContainer.on('click', '.itemName-div-suggestion', function(e) {
 
         var item_value = $(this).data('key');
-        var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
-    
-        var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
-        var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change').value
-        if(newData == '' && itemShadeValue != ''){
-            itemShade.value = itemShadeValue;
-            itemShade.style = "display : block";
-        }
+        var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+        var itemShade = $('#input_item_shade_' + purchaseValue);
+        var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
 
-            if (item_value !== undefined) {
-                var selectedValue = searchedItemNameDict[item_value];
-                $(this).val(selectedValue);
-               
-                $.ajax({
-                url: '/purchasevouchercreate/',
-                method: 'GET',
-                data: {
-                    'item_value': item_value,
-                },
-                success: function (response) {
-                    console.log('Data sent successfully')
-                    itemrownameid = itemName.split('-')[1];
-                    console.log('itemrownameid',itemrownameid);
-                   
-                    $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
-                    
-                    
-                    var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
-                    var item_color = response.item_color;
-                 
-                    var itemperinput = document.querySelector('#item_per_' +itemrownameid);
-                    var itemperinput_response = response.item_per;
-                    
-                    itemcolorinput.value = item_color;
-                    itemperinput.value = itemperinput_response;
-                    
-                    var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst')
-                    var item_gst_value_response = response.item_gst_out;
-                    itemgstinput.value = item_gst_value_response
-                   
-                    var item_shade_response = response.item_shade;
-                    
-                    var item_shade__quantity = response.item_shades_total_quantity_dict;
-                 
-                 
-                 //once we get the response then we need to append it to the select box as a option with check the key and value
-                    // if it is equal to key then append it to the select box else append it to the select box
-                    $.each(item_shade_response, function (key, value) { 
-                  
-                        $.each(item_shade__quantity, function (key, value) { });
-                        if (key == key) {
-                            $('#' + itemName).append('<option value="' + key + '">' + value +  ' -  '  + item_shade__quantity[key]+ '</option>');
-                          
-                        }else{
-                            $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
-                        }
-                    });
-                },
-                error: function (xhr, errmsg, err) {
-                    console.log('Error sending value to the backend');
-                }
-            });  
-            }
+        handleSelection(purchaseValue,itemName, item_value);
+    
+        $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
+        $(this).addClass('selected').siblings().removeClass('selected');
+       
+
+        if (newData == '' && itemShadeValue != '') {
+            itemShade.val(itemShadeValue);
+            itemShade.show();
+        }
             suggestionsContainer.hide();
         
     });
   
 });
+// Function to handle the AJAX request and UI updates
+function handleSelection(purchaseValue,itemName, item_value) {
+
+    if (item_value !== undefined) {
+        var selectedValue = searchedItemNameDict[item_value];
+         $(`input[name^="item_name_${purchaseValue}"]`).val(selectedValue);
+
+        $.ajax({
+            url: '/purchasevouchercreate/',
+            method: 'GET',
+            data: {
+                'item_value': item_value,
+            },
+            success: function (response) {
+                console.log('Data sent successfully');
+                var itemrownameid = itemName.split('-')[1];
+                console.log('itemrownameid ', itemrownameid);
+                console.log('itemName2 ', itemName);
+                $('#' + itemName).empty().append('<option value="">Select Shade</option>');
+
+                var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
+                var item_color = response.item_color;
+
+                var itemperinput = document.querySelector('#item_per_' + itemrownameid);
+                var itemperinput_response = response.item_per;
+
+                itemcolorinput.value = item_color;
+                itemperinput.value = itemperinput_response;
+
+                var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst');
+                var item_gst_value_response = response.item_gst_out;
+                itemgstinput.value = item_gst_value_response;
+
+                var item_shade_response = response.item_shade;
+                var item_shade__quantity = response.item_shades_total_quantity_dict;
+
+                $.each(item_shade_response, function (key, value) {
+                    if (item_shade__quantity.hasOwnProperty(key)) {
+                        $('#' +itemName).append('<option value="' + key + '">' + value + ' - ' + item_shade__quantity[key] + '</option>');
+                    } else {
+                        $('#' +itemName).append('<option value="' + key + '">' + value + '</option>');
+                    }
+                });
+            },
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+            }
+        });
+    }
+}
+
 
    var index = 0; // Declare index outside of the event listener
    var indexbool = false
@@ -574,58 +579,43 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
     var nameKey;
     var select = $(this).next('.item-name');
     var selectLength = select.find('.itemName-div').length-1;
-    var inputName = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
     var nameData = $(this).val().trim();
-    console.log('ArrowDown',nameData);
-   
-    console.log('index',index);
+
     if(nameData == ''){
-        console.log('ArrowDown');
           index = 0;
-          console.log('indexafter', index);
-          return;
-         
+          return;    
       }
 
+     
     if (event.key === 'ArrowDown') {
         event.preventDefault();
       
        if(index <= selectLength){
-        //select.find('.bg-highlight').removeClass('bg-highlight');
             var selectedItem = select.find('#itemName-div_' + index);
             var nextItem = selectedItem.next();
              nameDataKey= selectedItem.text();
              nameKey = selectedItem.data('key');
-            console.log('nameDataKey',nameDataKey);
-            console.log('nameKey',nameKey);
-
-           
-            
+        
             $(this).attr('data-key', nameKey);
             selectedItem.addClass("bg-highlight");
-          
-          
-          //itemName.value = nameKey; 
+ 
             var itemOffsetTop = nextItem.position().top;
             var itemHeight = nextItem.outerHeight();
             var selectScrollTop = select.scrollTop();
             var selectHeight = select.height();
             
             if (itemOffsetTop + itemHeight > selectHeight) {
-              
                 select.scrollTop(selectScrollTop + itemHeight);
+
             } else if (itemOffsetTop < 0) {
                 select.scrollTop(selectScrollTop - itemHeight);
             }
-
-            
+           
             if(index != selectLength ){
                 index += 1; 
-             indexbool = true;
-             
+             indexbool = true;        
             }     
-            
-            
+               
        }else{
            index = 0;
        }
@@ -633,8 +623,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
       if(event.key === 'ArrowUp'){
            event.preventDefault();
            if (index != 0 && indexbool == true)
-           {
-           
+           {           
                 index = index - 1;
            }
           
@@ -642,12 +631,12 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
          
             var selectedItem = select.find('#itemName-div_' + index);
             var prevItem = selectedItem.prev();
-             nameDataKey= selectedItem.text();
-              nameKey = selectedItem.data('key');
-
-         
+            nameDataKey= selectedItem.text();
+            nameKey = selectedItem.data('key');
+        
             $(this).attr('data-key', nameKey);
             selectedItem.addClass("bg-highlight");
+           
           
             var itemOffsetTop = prevItem.position().top;
             var itemHeight = prevItem.outerHeight();
@@ -661,103 +650,33 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             }
             }
             else{
-                    index=0
+                    index = 0;
             }   
-     
         }
-         if (event.key === 'Enter') {
-
-        
+        if (event.key === 'Enter') {
         event.preventDefault();
-       
         select.hide();
-        
-        var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
-        var  item_value = itemEnterValue.getAttribute('data-key');
-   
-        var itemValue = itemEnterValue.setAttribute('data-key', '');
 
-       const divRow = $('#select_item_name_'+purchaseValue);
-   
-       var selectedRow = divRow.find('.selected');
-      
-      
-       nameDataKey = '';
+        var itemEnterValue = $(this);
+        var item_value = itemEnterValue.attr('data-key');
+
+        nameDataKey = '';
         nameKey = '';
         index = 0;
         indexbool = false;
-        $(this).attr('data-key', '');
-      
-        divRow.hide();
-        selectedRow.hide();
-        var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
-        select.empty();
-       
-        var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
-        var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change').value
-        if(newData == '' && itemShadeValue != ''){
-            itemShade.value = itemShadeValue;
-            itemShade.style = "display : block";
-        }
 
-            if (item_value !== undefined) {
-                var selectedValue = searchedItemNameDict[item_value];
-                $(this).val(selectedValue);
-               
-                $.ajax({
-                url: '/purchasevouchercreate/',
-                method: 'GET',
-                data: {
-                    'item_value': item_value,
-                },
-                success: function (response) {
-                    console.log('Data sent successfully')
-                    itemrownameid = itemName.split('-')[1];
-                   
-                    $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
-                    
-                    
-                    var itemcolorinput = document.querySelector('#item_color_' +itemrownameid);
-                    var item_color = response.item_color;
-                 
-                    var itemperinput = document.querySelector('#item_per_' +itemrownameid);
-                    var itemperinput_response = response.item_per;
-                    
-                    itemcolorinput.value = item_color;
-                    itemperinput.value = itemperinput_response;
-                    
-                    var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst')
-                    var item_gst_value_response = response.item_gst_out;
-                    itemgstinput.value = item_gst_value_response
-                   
-                    var item_shade_response = response.item_shade;
-                    
-                    var item_shade__quantity = response.item_shades_total_quantity_dict;
-                 
-                 
-                 //once we get the response then we need to append it to the select box as a option with check the key and value
-                    // if it is equal to key then append it to the select box else append it to the select box
-                    $.each(item_shade_response, function (key, value) { 
-                  
-                        $.each(item_shade__quantity, function (key, value) { });
-                        if (key == key) {
-                            $('#' + itemName).append('<option value="' + key + '">' + value +  ' -  '  + item_shade__quantity[key]+ '</option>');
-                          
-                        }else{
-                            $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
-                        }
-                    });
-                   
-                
-                },
-                error: function (xhr, errmsg, err) {
-                    console.log('Error sending value to the backend');
-                }
-            });  
-          
-            }
-         
+        var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+        var itemShade = $('#input_item_shade_' + purchaseValue);
+        var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+
+        if (newData == '' && itemShadeValue != '') {
+            itemShade.val(itemShadeValue);
+            itemShade.show();
         }
+        
+        
+        handleSelection(purchaseValue,itemName, item_value);
+    }
         
    });  
  

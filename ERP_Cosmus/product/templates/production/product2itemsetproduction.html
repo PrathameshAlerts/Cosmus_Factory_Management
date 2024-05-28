@@ -50,7 +50,7 @@
                 </td>
                 <td> <input type="text" class="product_row" name="{{form.prefix}}-no_of_rows" value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
                 <td> <input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}"  maxlength="255" id="id_{{form.prefix}}-Remark"></td>
-                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
+                <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -81,6 +81,7 @@
                         <!-- <td><input type="number" class="product_id common_product"  name="{{forms.prefix}}-row_number" value="{{forloop.counter}}" id="id_{{forms.prefix}}-row_number" ></td> -->
         
                         <td>
+                            <input type="text" class="product2Select" name="{{forms.prefix}}-Item_input" value="" maxlength="255" id="id_{{forms.prefix}}-Item_input" placeholder="Item Name">
                             <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
                                 
                                 <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
@@ -113,6 +114,36 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+        function deletedRow(){
+document.querySelectorAll('.delete').forEach(function(button) {
+    button.addEventListener('click', function() {
+        // Find the row containing the clicked delete button
+        var row = this.closest('tr');
+         // Handle common formset deletion
+                var commonDeleteCheckbox = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
+                if (commonDeleteCheckbox) {
+                    commonDeleteCheckbox.checked = true; // Mark as checked
+                    commonDeleteCheckbox.value = 'true'; // Set the value to 'true'
+                    row.style.display = 'none'; // Hide the row
+                }
+
+                // Handle unique formset deletion
+                var uniqueDeleteCheckbox = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
+                if (uniqueDeleteCheckbox) {
+                    uniqueDeleteCheckbox.checked = true; // Mark as checked
+                    uniqueDeleteCheckbox.value = 'true'; // Set the value to 'true'
+                    row.style.display = 'none'; // Hide the row
+                }
+
+                if (!commonDeleteCheckbox && !uniqueDeleteCheckbox) {
+                    console.error("Checkbox for deletion not found in this row");
+                }
+    });
+});
+
+};
+ 
         const addFormButton = document.getElementById('addForm');
         const tableBody = document.querySelector('#mainProductForm tbody');
 
@@ -156,10 +187,10 @@
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.value = '';
 
-            const inputRowNumber = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="row_number"]');
-            inputRowNumber.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
-            inputRowNumber.name = `product2itemuniqueformset-${newFormCount}-row_number`;
-            inputRowNumber.value = `${newFormCount + 1}`;
+            // const inputRowNumber = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="row_number"]');
+            // inputRowNumber.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
+            // inputRowNumber.name = `product2itemuniqueformset-${newFormCount}-row_number`;
+            // inputRowNumber.value = `${newFormCount + 1}`;
 
 
 
@@ -174,7 +205,7 @@
             forms.value = newFormCount + 1;
 
             tableBody.appendChild(newTable);
-            deleteRow();
+            deletedRow();
 
         }else {
             console.error("No visible rows found to clone.");
@@ -182,43 +213,13 @@
         });
     }
 
-    function deleteRow(){
-// Add click event listener to all delete buttons
-document.querySelectorAll('.delete-btn').forEach(function(button) {
-    button.addEventListener('click', function() {
-        // Find the row containing the clicked delete button
-        var row = this.closest('tr');
-        console.log("row",row);
-        var checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
-        if (checkRow) {
-            checkRow.checked = true; // Mark as checked
-            checkRow.value = 'true'; // Set the value to 'true'
-
-            row.style.display = 'none';
-
-        } else {
-            console.error("Checkbox for deletion not found in this row");
-        }
-    });
-});
-
-};
-deleteRow();
-    });
-
- 
-
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
         const addNewButton = document.getElementById('addNewRow');
-        const tableBody = document.querySelector('#myProduct tbody');
+        const tableNewBody = document.querySelector('#myProduct tbody');
 
-        if( addNewButton && tableBody) {
+        if( addNewButton && tableNewBody) {
             addNewButton.addEventListener('click', function() {
         let lastVisibleRow = null;
-        tableBody.querySelectorAll('tr').forEach(row => {
+        tableNewBody.querySelectorAll('tr').forEach(row => {
             if (window.getComputedStyle(row).display !== 'none') {
                 lastVisibleRow = row;
             }
@@ -232,10 +233,10 @@ deleteRow();
             e.value= "";
           });
 
-          const newInputRow = lastRow.querySelector('.common_product[name^="product2itemcommonformset-"][name$="row_number"]');
-          newInputRow.id = `id_product2itemcommonformset-${newCount}-row_number`;
-          newInputRow.name = `product2itemcommonformset-${newCount}-row_number`;
-          newInputRow.value = `${newCount + 1}`;
+        //   const newInputRow = lastRow.querySelector('.common_product[name^="product2itemcommonformset-"][name$="row_number"]');
+        //   newInputRow.id = `id_product2itemcommonformset-${newCount}-row_number`;
+        //   newInputRow.name = `product2itemcommonformset-${newCount}-row_number`;
+        //   newInputRow.value = `${newCount + 1}`;
 
             const selectElement = lastRow.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
             selectElement.id = `id_product2itemcommonformset-${newCount}-Item_pk`;
@@ -263,7 +264,7 @@ deleteRow();
 
             tableRow.value = newCount + 1;
 
-            tableBody.appendChild(lastRow);
+            tableNewBody.appendChild(lastRow);
             deletedRow();
 
         }else {
@@ -271,32 +272,10 @@ deleteRow();
         }   
         });
     }
-
-    function deletedRow(){
-// Add click event listener to all delete buttons
-document.querySelectorAll('.delete').forEach(function(button) {
-    button.addEventListener('click', function() {
-        // Find the row containing the clicked delete button
-        var row = this.closest('tr');
-        console.log("row",row);
-        var checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
-        if (checkRow) {
-            checkRow.checked = true; // Mark as checked
-            checkRow.value = 'true'; // Set the value to 'true'
-
-            row.style.display = 'none';
-
-        } else {
-            console.error("Checkbox for deletion not found in this row");
-        }
+    deletedRow();
     });
-});
-
-};
-deletedRow();
-    });
-
- 
 
 </script>
+
+
     {% endblock body %} 
