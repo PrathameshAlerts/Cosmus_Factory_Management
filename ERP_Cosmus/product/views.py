@@ -2292,7 +2292,8 @@ def product2item(request,product_refrence_id):
 
                         p2i_instance = form.save(commit = False)
                         p2i_instance.common_unique = False
-                        p2i_instance.row_number = form.prefix[-1]
+                        p2i_instance.row_number = form.prefix[-1]  #get the prefix no of the form
+                        print(form.prefix)
                         p2i_instance.save()
 
                         no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
@@ -2333,7 +2334,7 @@ def product2item(request,product_refrence_id):
 
                             obj.no_of_rows =  form.cleaned_data['no_of_rows']
                             obj.Remark = form.cleaned_data['Remark']
-                            obj.row_number = form.prefix[-1]
+                            obj.row_number = form.prefix[-1]   #get the prefix no of the form
                             obj.save()
 
 
@@ -2375,8 +2376,8 @@ def product2item(request,product_refrence_id):
 
 def export_Product2Item_excel(request,product_ref_id):
     
-    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False)
-    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True)
+    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False).order_by('row_number')
+    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by('row_number')
 
     wb = Workbook()
 
