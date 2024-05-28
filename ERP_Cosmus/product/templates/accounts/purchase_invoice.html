@@ -462,14 +462,12 @@ function randomValue (){
                     suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
                 });
 
-                console.log("filteredOptions",filteredOptions.length);
-              
-                console.log('search',searchQuery)
                 if (filteredOptions.length > 0) {
                     suggestionsContainer.show();
                    
                 } else {
                     suggestionsContainer.hide();
+                    suggestionsContainer.empty();
                     
                 }
             },
@@ -493,10 +491,9 @@ function randomValue (){
         $(this).addClass('selected').siblings().removeClass('selected');
     });
     
-   
-    suggestionsContainer.on('click keydown', '.selected', function(e) {
+   console.log('suggestionsContainer',suggestionsContainer);
+    suggestionsContainer.on('click', '.selected', function(e) {
 
-        
         $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
 
         var item_value = $(this).data('key');
@@ -522,6 +519,7 @@ function randomValue (){
                 success: function (response) {
                     console.log('Data sent successfully')
                     itemrownameid = itemName.split('-')[1];
+                    console.log('itemrownameid',itemrownameid);
                    
                     $('#' + itemName).empty().append('<option value="">Select Shade</option>'); 
                     
@@ -572,33 +570,47 @@ function randomValue (){
    var indexbool = false
    
 $(document).on('keydown','input[name^="item_name_"]', function(event) {
-
+    var nameDataKey;
+    var nameKey;
     var select = $(this).next('.item-name');
     var selectLength = select.find('.itemName-div').length-1;
     var inputName = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
+    var nameData = $(this).val().trim();
+    console.log('ArrowDown',nameData);
+   
+    console.log('index',index);
+    if(nameData == ''){
+        console.log('ArrowDown');
+          index = 0;
+          console.log('indexafter', index);
+          return;
+         
+      }
 
-  
     if (event.key === 'ArrowDown') {
         event.preventDefault();
       
        if(index <= selectLength){
-        
+        //select.find('.bg-highlight').removeClass('bg-highlight');
             var selectedItem = select.find('#itemName-div_' + index);
             var nextItem = selectedItem.next();
-            var nameDataKey= selectedItem.text();
-            var nameKey = selectedItem.data('key');
+             nameDataKey= selectedItem.text();
+             nameKey = selectedItem.data('key');
+            console.log('nameDataKey',nameDataKey);
+            console.log('nameKey',nameKey);
+
            
             
             $(this).attr('data-key', nameKey);
             selectedItem.addClass("bg-highlight");
           
           
-            //itemName.value = nameDataKey; 
+          //itemName.value = nameKey; 
             var itemOffsetTop = nextItem.position().top;
             var itemHeight = nextItem.outerHeight();
             var selectScrollTop = select.scrollTop();
             var selectHeight = select.height();
-          
+            
             if (itemOffsetTop + itemHeight > selectHeight) {
               
                 select.scrollTop(selectScrollTop + itemHeight);
@@ -627,13 +639,13 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
            }
           
            if(index <= selectLength){
- 
+         
             var selectedItem = select.find('#itemName-div_' + index);
             var prevItem = selectedItem.prev();
-            var nameDataKey= selectedItem.text();
-            var nameKey = selectedItem.data('key');
+             nameDataKey= selectedItem.text();
+              nameKey = selectedItem.data('key');
 
-            //inputName.value = nameDataKey;
+         
             $(this).attr('data-key', nameKey);
             selectedItem.addClass("bg-highlight");
           
@@ -662,13 +674,25 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         
         var itemEnterValue = document.querySelector(`.search-input[name^="item_name_${purchaseValue}"]`);
         var  item_value = itemEnterValue.getAttribute('data-key');
-        console.log("item_value", item_value)
+   
         var itemValue = itemEnterValue.setAttribute('data-key', '');
-        console.log("itemValue", itemValue)
-        console.log('itemEnterValue',itemEnterValue)
+
+       const divRow = $('#select_item_name_'+purchaseValue);
+   
+       var selectedRow = divRow.find('.selected');
+      
+      
+       nameDataKey = '';
+        nameKey = '';
+        index = 0;
+        indexbool = false;
+        $(this).attr('data-key', '');
+      
+        divRow.hide();
+        selectedRow.hide();
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         select.empty();
-        console.log('select',select)
+       
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
         var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change').value
         if(newData == '' && itemShadeValue != ''){
