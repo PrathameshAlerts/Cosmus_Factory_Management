@@ -1343,7 +1343,12 @@ input[type=number] {
     color: #fff;
 }
 
-
+.bg-highlight::after ,
+.bg-highlight::before{
+    background-color: #5c5c5c;
+    color: #fff;
+}
+ 
  
   .custom-select {
     background-color: white;
