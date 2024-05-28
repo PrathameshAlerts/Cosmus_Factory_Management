@@ -534,8 +534,7 @@ function handleSelection(purchaseValue,itemName, item_value) {
             success: function (response) {
                 console.log('Data sent successfully');
                 var itemrownameid = itemName.split('-')[1];
-                console.log('itemrownameid ', itemrownameid);
-                console.log('itemName2 ', itemName);
+             
                 $('#' + itemName).empty().append('<option value="">Select Shade</option>');
 
                 var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
