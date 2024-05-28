@@ -2388,12 +2388,33 @@ def export_Product2Item_excel(request,product_ref_id):
     sheet1 = wb.worksheets[0]
     sheet2 = wb.worksheets[1]
 
+
+    #fix the column width  of sheet1
+    
+    column_widths = [10, 40, 20, 30, 20, 15, 10, 10]  # Adjust these values as needed
+
+    for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+        col_letter = get_column_letter(i)
+        sheet1.column_dimensions[col_letter].width = column_width
+
+    #fix the column width  of sheet2
+
+    for i, column_width in enumerate(column_widths, start=1):
+        col_letter = get_column_letter(i)
+        sheet2.column_dimensions[col_letter].width = column_width
+
+
+
+
+
     #for product_special_configs
     headers =  ['id','product sku', 'item name','part name', 'part dimention','dimention total','part pieces','grand_total']
     sheet1.append(headers)
 
+    row_count_to_unlock_total = 1
     for product in products_in_i2p_special:
         grand_total_parent = product.grand_total
+
         rows_to_insert_s1 = []
         for product_configs in product.product_item_configs.all():
             rows_to_insert_s1.append([
@@ -2407,21 +2428,38 @@ def export_Product2Item_excel(request,product_ref_id):
         
         ])
         
+        row_count_to_unlock = 1
+
         for row in rows_to_insert_s1:
             sheet1.append(row)
+            row_count_to_unlock = row_count_to_unlock + 1
+        row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
+
 
         # Insert a blank row and grand total from parent model in sheet after every product data has inserted
         sheet1.append(['','','','','','','', grand_total_parent])
+    
         rows_to_insert_s1.clear()
+
+    # unlock the rows ment for editing 
+    for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=8):
+        for cell in row:
+            cell.protection = Protection(locked = False)
+
+
+
 
 
     # for product_common_configs
     headers =  ['id','product sku', 'item name','part name', 'part dimention','dimention total','part pieces', 'grand_total']
     sheet2.append(headers)
 
+
+    row_count_to_unlock_total_common = 1
     for product in products_in_i2p_common:
-        rows_to_insert_s2 = []
         grand_total_parent = product.grand_total
+
+        rows_to_insert_s2 = []
         for product_configs in product.product_item_configs.all():
             rows_to_insert_s2.append([
             product_configs.id,
@@ -2434,13 +2472,29 @@ def export_Product2Item_excel(request,product_ref_id):
             
         ])
 
+        row_count_to_unlock = 1
+
         for row in rows_to_insert_s2:
             sheet2.append(row)
+            row_count_to_unlock = row_count_to_unlock + 1
+        row_count_to_unlock_total_common =  row_count_to_unlock_total_common + row_count_to_unlock
+
 
         # Insert a blank row and grant total from parent in sheet after every product data has inserted
         sheet2.append(['','','','','','','', grand_total_parent])
-        
+
         rows_to_insert_s2.clear()
+
+    # unlock the rows ment for editing 
+    for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=4, max_col=8):
+        for cell in row:
+            cell.protection = Protection(locked = False)
+
+
+
+    # Protect the entire worksheet
+    sheet1.protection.sheet = True
+    sheet2.protection.sheet = True
 
     fileoutput = BytesIO()
     wb.save(fileoutput)
