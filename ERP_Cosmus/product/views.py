@@ -2411,10 +2411,8 @@ def export_Product2Item_excel(request,product_ref_id):
             sheet1.append(row)
 
         # Insert a blank row and grand total from parent model in sheet after every product data has inserted
-        sheet2.append(['','','','','','','', grand_total_parent])
+        sheet1.append(['','','','','','','', grand_total_parent])
         rows_to_insert_s1.clear()
-
-
 
 
     # for product_common_configs
@@ -2441,6 +2439,7 @@ def export_Product2Item_excel(request,product_ref_id):
 
         # Insert a blank row and grant total from parent in sheet after every product data has inserted
         sheet2.append(['','','','','','','', grand_total_parent])
+        
         rows_to_insert_s2.clear()
 
     fileoutput = BytesIO()
