@@ -35,10 +35,58 @@ ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fie
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
 
 
-# when using modelformset need to add can_delete = True or delete wont be added in form
-Product2ItemFormset = modelformset_factory(product_2_item_through_table, fields= ['row_number','PProduct_pk','Item_pk','Remark','no_of_rows'],extra=1, can_delete=True)
 
-Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, fields= ['row_number','Item_pk','Remark','no_of_rows'], extra=1, can_delete=True)
+
+
+class Product2ItemForm(forms.ModelForm):
+    class Meta:
+        model = product_2_item_through_table
+        fields= ['PProduct_pk','Item_pk','Remark','no_of_rows']# 'row_number',
+
+    def clean_no_of_rows(self):
+        new_value = self.cleaned_data.get('no_of_rows')
+
+        if self.instance.pk:
+            existing_instance = product_2_item_through_table.objects.get(pk=self.instance.pk)
+            existing_value = existing_instance.no_of_rows
+
+            # Compare new value with the existing value
+            if new_value < existing_value:
+                raise forms.ValidationError(f'The number of rows cannot be less than the current value of {existing_value}.')
+
+        return new_value
+
+# when using modelformset need to add can_delete = True or delete wont be added in form
+Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=1, can_delete=True)
+
+
+class Product2CommonItem(forms.ModelForm):
+    class Meta:
+        model = product_2_item_through_table
+        fields= ['Item_pk','Remark','no_of_rows'] #'row_number',
+    
+    def clean_no_of_rows(self):
+        new_value = self.cleaned_data.get('no_of_rows')
+
+        if self.instance.pk:
+            existing_instance = product_2_item_through_table.objects.get(pk=self.instance.pk)
+            existing_value = existing_instance.no_of_rows
+
+            # Compare new value with the existing value
+            if new_value < existing_value:
+                raise forms.ValidationError(f'The number of rows cannot be less than the current value of {existing_value}.')
+
+        return new_value
+
+
+Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=1, can_delete=True)
+
+
+
+
+
+
+
 class PProductAddForm(forms.ModelForm):
 
     widgets = {

@@ -554,7 +554,7 @@ class item_godown_quantity_through_table(models.Model):
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
-    row_number = models.IntegerField(null = True)
+    #row_number = models.IntegerField(null = True, blank=True)
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     common_unique = models.BooleanField(default=False)  #True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1)
@@ -562,7 +562,7 @@ class product_2_item_through_table(models.Model):
 
     class Meta:
         unique_together = [['PProduct_pk','Item_pk']]
-        ordering = ['row_number']
+        # ordering = ['row_number']
     
 
 class set_prod_item_part_name(models.Model):

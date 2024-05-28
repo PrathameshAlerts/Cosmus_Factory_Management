@@ -174,7 +174,51 @@
 
 
       </div>
+      <div>
 
+        {% for form in formset_common %}
+        {% if form.errors %}
+    <ul class="errorlist" id="errorform">
+      {% for field, error_list in form.errors.items %}
+        {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+              {{ error }}
+            {% else %}
+              {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% endfor %}
+
+
+      </div>
+
+      <div>
+
+        {% for form in formset_single %}
+        {% if form.errors %}
+    <ul class="errorlist" id="errorform">
+      {% for field, error_list in form.errors.items %}
+        {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+              {{ error }}
+            {% else %}
+              {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% endfor %}
+
+
+      </div>
 
 
       {% for message in messages %}

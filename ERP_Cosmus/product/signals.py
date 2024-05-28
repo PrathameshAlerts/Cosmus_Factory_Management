@@ -118,7 +118,6 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
 # @receiver(pre_save, sender=product_2_item_through_table)
 # def create_item_product_config_rows(sender,instance, **kwargs):
 
-    
 #     if instance.common_unique == False:
             
 #             if instance.pk:
@@ -133,8 +132,8 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
 #                     rows_to_create = instance.no_of_rows - no_of_rows
 
 #                     for row in range(rows_to_create):
-#                         set_prod_item_part_name.objects.create(producttoitem=instance)
-
+#                         p2i_part_name = set_prod_item_part_name.objects.create(producttoitem=instance)
+#                         p2i_part_name.save()
 
 
 
