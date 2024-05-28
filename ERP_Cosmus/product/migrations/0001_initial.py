@@ -211,7 +211,7 @@ class Migration(migrations.Migration):
             name='product_2_item_through_table',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('row_number', models.IntegerField()),
+                
                 ('grand_total', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
                 ('common_unique', models.BooleanField(default=False)),
                 ('no_of_rows', models.IntegerField(default=1)),
