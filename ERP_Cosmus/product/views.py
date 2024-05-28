@@ -99,36 +99,67 @@ def edit_production_product(request,pk):
             excel_file = request.FILES['excel_file']
             file_name = excel_file.name
             product_ref_id_file = file_name.split('_')[-1].split('.')[0]
-            print(type(product_ref_id_file))
+            
             if not excel_file.name.endswith('.xlsx'):
                 messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
                 return redirect('pproductlist')
             
             if int(product_ref_id_file) == product_ref_id:
                 with transaction.atomic():
-                    wb = load_workbook(excel_file)
+                    wb = load_workbook(excel_file, data_only=True)
                     ws1 = wb['product_special_configs']
                     ws2 = wb['product_common_configs']
 
+                    #ws1
+                    grand_total = 0
                     for row in ws1.iter_rows(min_row=2,min_col=1):
                         id = row[0].value
                         product_sku = row[1].value
                         item_name = row[2].value
-                        part_name = row[3].value
-                        part_dimention = row[4].value
-                        dimention_total = row[5].value
-                        part_pieces = row[6].value
-                        print(id,product_sku,item_name,part_name,part_dimention,dimention_total)
 
+                        if id != None:
+                            if product_sku != None and item_name != None:
+                                part_name = row[3].value
+                                part_dimention = row[4].value
+                                dimention_total = row[5].value
+                                part_pieces = row[6].value
+                                grand_total = grand_total + float(dimention_total)
 
-                        if id == None:
-                            if product_sku != None and item_name != None and part_name != None and part_dimention != None:
-                                p2i_instance = product_2_item_through_table.objects.get(PProduct_pk__PProduct_SKU= product_sku,Item_pk__item_name= item_name,common_unique=False)
-                                set_prod_item_part_name.objects.create(producttoitem=p2i_instance,part_name=part_name,part_dimentions=part_dimention,dimention_total=dimention_total,part_pieces=part_pieces)
+                                p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
-                        
+                                p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
+                                p2i_config_instance.part_name = part_name
+                                p2i_config_instance.part_dimentions = part_dimention
+                                p2i_config_instance.dimention_total = dimention_total
+                                p2i_config_instance.part_pieces = part_pieces
+                                p2i_config_instance.save()   # save model
+                                p2i_config_instance.producttoitem.save()  # save the parent model
 
-    
+                    #ws2
+                    grand_total = 0
+                    for row in ws2.iter_rows(min_row=2,min_col=1):
+                        id = row[0].value
+                        product_sku = row[1].value
+                        item_name = row[2].value
+
+                        if id != None:
+                            if product_sku != None and item_name != None:
+                                part_name = row[3].value
+                                part_dimention = row[4].value
+                                dimention_total = row[5].value
+                                part_pieces = row[6].value
+                                grand_total = grand_total + float(dimention_total)
+
+                                p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
+                                
+                                p2i_config_instance.producttoitem.grand_total = grand_total     # assign grand_total value to grand_total of parent model
+                                p2i_config_instance.part_name = part_name
+                                p2i_config_instance.part_dimentions = part_dimention
+                                p2i_config_instance.dimention_total = dimention_total
+                                p2i_config_instance.part_pieces = part_pieces
+                                p2i_config_instance.save() # save model
+                                p2i_config_instance.producttoitem.save() # save the parent model
+
             else:
 
                 messages.error(request, 'File with invalid Product Refrence Id uploaded')
@@ -671,65 +702,6 @@ def product2item(request,product_refrence_id):
     return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
                                                                'Products_all':Products_all,
                                                                'items':items,'product_refrence_no': product_refrence_no})
-
-
-
-
-def export_Product2Item_excel(request,product_ref_id):
-    
-    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False)
-
-    wb = Workbook()
-
-    ##delete the default workbook
-    default_sheet = wb['Sheet']
-    wb.remove(default_sheet)    
-
-    wb.create_sheet('product_special_configs')
-    wb.create_sheet('product_common_configs')
-
-    sheet1 = wb.worksheets[0]
-    sheet2 = wb.worksheets[1]
-
-    headers =  ['id','product sku', 'item name','part name', 'part  dimention','dimention total','part pieces']
-    sheet1.append(headers)
-
-    
-    initial_row = 2   # start row
-    max_rows = 1  # max rows
-    for products_items in products_in_i2p_special:
-        
-        no_of_rows = products_items.no_of_rows  # eg : 17   eg : 5
-        item_name = products_items.Item_pk.item_name 
-        item_pk = products_items.Item_pk
-        product_name = products_items.PProduct_pk.PProduct_SKU
-        max_rows = max_rows + no_of_rows  # max rows + input rows    1 + 17 = 18,   19 + 5 = 24
-        
-        for row in sheet1.iter_rows(min_row=initial_row, max_row=max_rows,min_col=2, max_col=7):  # intial = 2 max_row = 18 , intial = 20, max_row = 24
-            row[0].value = product_name
-            row[1].value = item_name
-
-            product2itempk = product_2_item_through_table.objects.filter(PProduct_pk=product_name,Item_pk=item_pk)
-            print(product2itempk)
-            set_product_instance = set_prod_item_part_name.objects.filter(producttoitem__in = product2itempk)
-            print(set_product_instance)
-
-        blank_row_number =  initial_row + no_of_rows  # blank row no = 2 + 17  = 19 , 20 + 5 = 25
-        sheet1.insert_rows(blank_row_number) # Insert a blank row at the specified position
-        initial_row = blank_row_number + 1   # update inital = 19 + 1 = 20  , 25 + 1 = 26
-        max_rows = max_rows + 1    # update max rows = 18 + 1 = 19 , 24 + 1 = 25
-
-
-    fileoutput = BytesIO()
-    wb.save(fileoutput)
-    
-    # Prepare the HTTP response with the Excel file content
-    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    file_name_with_pk = f'product_reference_id_{product_ref_id}'
-    response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
-
-    return response
-
 
 
 
@@ -2396,107 +2368,97 @@ def packaging_delete(request,pk):
 
 
 
-#_________________________production-end______________________________
+#_________________________production-start______________________________
 
 
-
-
-# def set_production_upload(request,product_ref_id,item_number):
-#     number_of_items = int(item_number)
-#     product_products = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_ref_id)
-
-#     #check if product has any set productions
-#     product_2_items_exists = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id).first()
-
-#     workbook = Workbook()
+def export_Product2Item_excel(request,product_ref_id):
     
-#     #delete the default workbook
-#     default_sheet = workbook['Sheet']
-#     workbook.remove(default_sheet)
+    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False)
+    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True)
 
-#     workbook.create_sheet('product_special_items')
-#     workbook.create_sheet('product_special_configs')
-#     workbook.create_sheet('product_common_items')
-#     workbook.create_sheet('product_common_configs')
-    
-#     sheet1 = workbook.worksheets[0]
-#     sheet2 = workbook.worksheets[1]
-#     sheet3 = workbook.worksheets[2]
-#     sheet4 = workbook.worksheets[3]
+    wb = Workbook()
 
-#     # wb1 product_sku
-#     firstcell = sheet1.cell(row=1, column=1)
-#     firstcell.value = "product_sku"
-#     sheet1.column_dimensions['A'].width = 30  # Adjust the width as needed
+    ##delete the default workbook
+    default_sheet = wb['Sheet']
+    wb.remove(default_sheet)    
 
-#     #for entering the products
-#     col_num = 2
-#     for products in product_products:
-#         product_sku = products.PProduct_SKU
-#         sheet1[f'A{col_num}'] = product_sku
-#         col_num = col_num + 1
+    wb.create_sheet('product_special_configs')
+    wb.create_sheet('product_common_configs')
 
+    sheet1 = wb.worksheets[0]
+    sheet2 = wb.worksheets[1]
 
-#     #for creating columns for fabric group
-#     row_num = 1
-#     for row in sheet1.iter_rows(min_row=1, max_row=1, min_col=2, max_col = number_of_items + 1):
-#         for cell in row:
-#             cell.value = f"fabric_{row_num}"
+    #for product_special_configs
+    headers =  ['id','product sku', 'item name','part name', 'part dimention','dimention total','part pieces','grand_total']
+    sheet1.append(headers)
 
-#             # Set the width of the current column (function to get the column letter from cell)
-#             col_letter = get_column_letter(cell.column)
-#             sheet1.column_dimensions[col_letter].width = 20  # Adjust the width
-#             row_num = row_num + 1
-
-
-#     #unlock the editable part of the sheet 
-#     for row in sheet1.iter_rows(min_row=2, max_row = len(product_products) + 1 ,min_col=2, max_col= number_of_items + 1):
-#         for cell in row:
-#             cell.protection = Protection(locked =False)
-
-#         if product_2_items_exists:
-#             pass
-
-#     # wb2
-#     for row in sheet2.iter_rows(min_row=1, max_row=1, min_col=1, max_col=7):
-#         row[0].value = 'id'
-#         row[1].value = 'location'
-#         row[2].value = 'name'
-#         row[3].value = 'calculation'
-#         row[4].value = 'total'
-#         row[5].value = 'cut_part'
-#         row[6].value = 'type'
+    for product in products_in_i2p_special:
+        grand_total_parent = product.grand_total
+        rows_to_insert_s1 = []
+        for product_configs in product.product_item_configs.all():
+            rows_to_insert_s1.append([
+            product_configs.id,
+            product_configs.producttoitem.Item_pk.item_name,
+            product_configs.producttoitem.PProduct_pk.PProduct_SKU,
+            product_configs.part_name,
+            product_configs.part_dimentions,
+            product_configs.dimention_total,
+            product_configs.part_pieces
         
+        ])
+        
+        for row in rows_to_insert_s1:
+            sheet1.append(row)
 
-#         #get the column letter of the above and change the width 
-#         for cell in row:
-#             column_letter = get_column_letter(cell.column)
-#             sheet2.column_dimensions[column_letter].width = 20
+        # Insert a blank row and grand total from parent model in sheet after every product data has inserted
+        sheet2.append(['','','','','','','', grand_total_parent])
+        rows_to_insert_s1.clear()
 
-#     #unlock the editable part of the sheet
-#     for col in sheet2.iter_cols(min_row=2,max_row=10000,min_col=2, max_col=7):    
-#         for cell in col:
-#             cell.protection = Protection(locked = False)
 
-#     # Protect the entire worksheet
-#     sheet1.protection.sheet = True
-#     sheet2.protection.sheet = True
+
+
+    # for product_common_configs
+    headers =  ['id','product sku', 'item name','part name', 'part dimention','dimention total','part pieces', 'grand_total']
+    sheet2.append(headers)
+
+    for product in products_in_i2p_common:
+        rows_to_insert_s2 = []
+        grand_total_parent = product.grand_total
+        for product_configs in product.product_item_configs.all():
+            rows_to_insert_s2.append([
+            product_configs.id,
+            product_configs.producttoitem.Item_pk.item_name,
+            product_configs.producttoitem.PProduct_pk.PProduct_SKU,
+            product_configs.part_name,
+            product_configs.part_dimentions,
+            product_configs.dimention_total,
+            product_configs.part_pieces
+            
+        ])
+
+        for row in rows_to_insert_s2:
+            sheet2.append(row)
+
+        # Insert a blank row and grant total from parent in sheet after every product data has inserted
+        sheet2.append(['','','','','','','', grand_total_parent])
+        rows_to_insert_s2.clear()
+
+    fileoutput = BytesIO()
+    wb.save(fileoutput)
     
+    # Prepare the HTTP response with the Excel file content
+    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    file_name_with_pk = f'product_reference_id_{product_ref_id}'
+    response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
 
-#     fileoutput = BytesIO()
-#     workbook.save(fileoutput)
-    
-#     # Prepare the HTTP response with the Excel file content
-#     response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-#     file_name_with_pk = f'product_reference_id_{product_ref_id}'
-#     response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
-
-#     return response
+    return response
 
 
 
 
-#_________________________production-send______________________________
+
+
+#_________________________production-end______________________________
 
 #__________________________reports-start_________________________________
 
