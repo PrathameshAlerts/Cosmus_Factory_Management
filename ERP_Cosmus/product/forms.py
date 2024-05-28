@@ -41,7 +41,7 @@ ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, 
 class Product2ItemForm(forms.ModelForm):
     class Meta:
         model = product_2_item_through_table
-        fields= ['PProduct_pk','Item_pk','Remark','no_of_rows']# 'row_number',
+        fields= ['PProduct_pk','Item_pk','Remark','no_of_rows','row_number']
 
     def clean_no_of_rows(self):
         new_value = self.cleaned_data.get('no_of_rows')
@@ -63,7 +63,7 @@ Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = P
 class Product2CommonItem(forms.ModelForm):
     class Meta:
         model = product_2_item_through_table
-        fields= ['Item_pk','Remark','no_of_rows'] #'row_number',
+        fields= ['Item_pk','Remark','no_of_rows','row_number']
     
     def clean_no_of_rows(self):
         new_value = self.cleaned_data.get('no_of_rows')

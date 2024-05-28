@@ -573,138 +573,6 @@ def product2subcategoryajax(request):
     
 
 
-def product2item(request,product_refrence_id):
-    print(request.POST)
-    items = Item_Creation.objects.all()
-    product_refrence_no = product_refrence_id
-    Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
-
-
-    #query for filtering unique to product fields for formset_single
-    #filter all record of the products with the ref_id which is marked as unique fields
-    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color')
-    formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
-
-
-    # query for filtering common to all products fields for formset_common 
-    # filter all records of the products with the ref_id which is marked as commonfields (this queryset is used in
-    # post request bcs we want to create or update item with all the products in the filtered qs, while
-    # 'distinct_product2item_commmon_instances' has only distinct records of same item instances(specifically
-    # 1st record of unique item of the filtered qs ))
-    product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True)
-
-    # order the filtered queryset in asc order and get distinct records based on Item_pk
-    distinct_product2item_commmon_instances = product2item_common_instances.order_by('Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
-
-    formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
-    
-
-    if request.method == 'POST':
-
-        formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
-        formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
-        
-        formset_single_valid = False
-        formset_common_valid = False
-
-        #for unique records
-        if formset_single.is_valid():
-            # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
-            for form in formset_single.deleted_forms:
-                if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
-                    form.instance.delete()
-            
-            for form in formset_single:
-                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
-                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-                        
-                        if form.instance.pk:  # This line checks if the form instance has a primary key (pk), which means it corresponds to an existing record in the database.
-                            existing_instance = product_2_item_through_table.objects.get(pk=form.instance.pk)  # fetch the existing instance from DB 
-                            initial_rows = existing_instance.no_of_rows # get the existing no of rows form DB
-                        else:
-                            initial_rows = 0
-
-                        p2i_instance = form.save(commit = False)
-                        p2i_instance.common_unique = False
-                        p2i_instance.save()
-
-                        no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
-
-                        if no_of_rows_to_create > 0:
-                            for row in range(no_of_rows_to_create):
-                                set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
-
-                        p2i_instance.save()
-                        formset_single_valid = True
-        
-
-        #for common records
-        if formset_common.is_valid():
-            for form in formset_common.deleted_forms:
-                deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
-
-                for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
-                    p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
-                    p2i_to_delete.delete()
-                    
-            for form in formset_common:
-                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
-
-                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-
-                        for product in Products_all:
-                            #loop through all the products for each form and get the instance with
-                            # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
-                            item = form.cleaned_data['Item_pk']
-                            obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
-
-                            # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
-                            if created:
-                                initial_rows = 0
-                            if not created:
-                                initial_rows = obj.no_of_rows
-
-                            obj.no_of_rows =  form.cleaned_data['no_of_rows']
-                            obj.Remark = form.cleaned_data['Remark']
-                            # obj.row_number = form.cleaned_data['row_number']
-                            obj.save()
-
-
-                            # create records in set_prod_item_part_name table with the saved obj as FK 
-                            rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
-                            if rows_to_create > 0:
-                                    for row in range(rows_to_create):
-                                        set_prod_item_part_name.objects.create(producttoitem = obj)
-
-
-                            formset_common_valid = True
-
-      
-
-        if formset_common_valid and formset_single_valid:
-
-            messages.success(request,'Items to Product sucessfully added.')
-            close_window_script = """
-                                            <script>
-                                            window.opener.location.reload(true);  // Reload parent window if needed
-                                            window.close();  // Close current window
-                                            </script>
-                                            """
-            return HttpResponse(close_window_script)
-        else:
-            print(formset_common.errors)
-            print(formset_single.errors)
-            return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
-                                                               'Products_all':Products_all,
-                                                               'items':items,'product_refrence_no': product_refrence_no})
-
-
-    return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
-                                                               'Products_all':Products_all,
-                                                               'items':items,'product_refrence_no': product_refrence_no})
-
-
-
 
 #____________________________Product-View-End__________________________________
 
@@ -2371,6 +2239,140 @@ def packaging_delete(request,pk):
 #_________________________production-start______________________________
 
 
+def product2item(request,product_refrence_id):
+    
+    items = Item_Creation.objects.all()
+    product_refrence_no = product_refrence_id
+    Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
+
+
+    #query for filtering unique to product fields for formset_single
+    #filter all record of the products with the ref_id which is marked as unique fields
+    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color')
+    formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
+
+
+    # query for filtering common to all products fields for formset_common 
+    # filter all records of the products with the ref_id which is marked as commonfields (this queryset is used in
+    # post request bcs we want to create or update item with all the products in the filtered qs, while
+    # 'distinct_product2item_commmon_instances' has only distinct records of same item instances(specifically
+    # 1st record of unique item of the filtered qs ))
+    product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True)
+
+    # order the filtered queryset in asc order and get distinct records based on Item_pk
+    distinct_product2item_commmon_instances = product2item_common_instances.order_by('Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
+
+    formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
+    
+
+    if request.method == 'POST':
+
+        formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
+        formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
+        
+        formset_single_valid = False
+        formset_common_valid = False
+
+        #for unique records
+        if formset_single.is_valid():
+            # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
+            for form in formset_single.deleted_forms:
+                if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
+                    form.instance.delete()
+            
+            for form in formset_single:
+                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        
+                        if form.instance.pk:  # This line checks if the form instance has a primary key (pk), which means it corresponds to an existing record in the database.
+                            existing_instance = product_2_item_through_table.objects.get(pk=form.instance.pk)  # fetch the existing instance from DB 
+                            initial_rows = existing_instance.no_of_rows # get the existing no of rows form DB
+                        else:
+                            initial_rows = 0
+
+                        p2i_instance = form.save(commit = False)
+                        p2i_instance.common_unique = False
+                        p2i_instance.row_number = form.prefix[-1]
+                        p2i_instance.save()
+
+                        no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
+
+                        if no_of_rows_to_create > 0:
+                            for row in range(no_of_rows_to_create):
+                                set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
+
+                        p2i_instance.save()
+                        formset_single_valid = True
+        
+
+        #for common records
+        if formset_common.is_valid():
+            for form in formset_common.deleted_forms:
+                deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
+
+                for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
+                    p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
+                    p2i_to_delete.delete()
+                    
+            for form in formset_common:
+                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+
+                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+
+                        for product in Products_all:
+                            #loop through all the products for each form and get the instance with
+                            # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
+                            item = form.cleaned_data['Item_pk']
+                            obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
+
+                            # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
+                            if created:
+                                initial_rows = 0
+                            if not created:
+                                initial_rows = obj.no_of_rows
+
+                            obj.no_of_rows =  form.cleaned_data['no_of_rows']
+                            obj.Remark = form.cleaned_data['Remark']
+                            obj.row_number = form.prefix[-1]
+                            obj.save()
+
+
+                            # create records in set_prod_item_part_name table with the saved obj as FK 
+                            rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
+                            if rows_to_create > 0:
+                                    for row in range(rows_to_create):
+                                        set_prod_item_part_name.objects.create(producttoitem = obj)
+
+
+                            formset_common_valid = True
+
+      
+
+        if formset_common_valid and formset_single_valid:
+
+            messages.success(request,'Items to Product sucessfully added.')
+            close_window_script = """
+                                            <script>
+                                            window.opener.location.reload(true);  // Reload parent window if needed
+                                            window.close();  // Close current window
+                                            </script>
+                                            """
+            return HttpResponse(close_window_script)
+        else:
+            print(formset_common.errors)
+            print(formset_single.errors)
+            return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
+                                                               'Products_all':Products_all,
+                                                               'items':items,'product_refrence_no': product_refrence_no})
+
+
+    return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
+                                                               'Products_all':Products_all,
+                                                               'items':items,'product_refrence_no': product_refrence_no})
+
+
+
+
 def export_Product2Item_excel(request,product_ref_id):
     
     products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False)
@@ -2402,8 +2404,6 @@ def export_Product2Item_excel(request,product_ref_id):
     for i, column_width in enumerate(column_widths, start=1):
         col_letter = get_column_letter(i)
         sheet2.column_dimensions[col_letter].width = column_width
-
-
 
 
 
