@@ -425,10 +425,7 @@ function randomValue (){
 
   var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
- $(document).on(' keyup focus click ', 'input[name^="item_name_"]', function(e) {
-
-   
-
+ $(document).on(' keyup', 'input[name^="item_name_"]', function(e) {
     var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
     var nameValue = $(this).val().trim();
     var selectNameValue = `select_item_name_${purchaseValue}`;
@@ -489,12 +486,8 @@ function randomValue (){
     // suggestionsContainer.on('mouseover', '.itemName-div-suggestion', function() {
     //     $(this).addClass('selected').siblings().removeClass('selected');
     // });
-    suggestionsContainer.on('keydown', 'input[name^="item_name_"]', function(e){
-        if(e.type == 'Enter'){
-            console.log("Enter key pressed");
-            suggestionsContainer.hide();
-        }
-    })
+    console.log("suggestionsContainer",suggestionsContainer)
+  
   
     suggestionsContainer.on('click', '.itemName-div-suggestion', function(e) {
 
@@ -518,7 +511,17 @@ function randomValue (){
     });
   
 });
-// Function to handle the AJAX request and UI updates
+
+// $(document).on('keydown', '.search-input', function(e){
+//         if(e.type === 'Enter'){
+//             console.log("Enter key pressed");
+//             e.preventDefault();
+//             var newItemsValue = $(`#item_name ${purchaseValue}`).val();
+//             console.log("newItemsValue",newItemsValue)
+//             suggestionsContainer.hide();
+//         }
+//     })
+// // Function to handle the AJAX request and UI updates
 function handleSelection(purchaseValue,itemName, item_value) {
 
     if (item_value !== undefined) {
@@ -667,6 +670,8 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         var itemShade = $('#input_item_shade_' + purchaseValue);
         var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
 
+        // var newItemsValue = $(`#item_name_${purchaseValue}`).val();
+        //    console.log("newItemsValue",newItemsValue)
         if (newData == '' && itemShadeValue != '') {
             itemShade.val(itemShadeValue);
             itemShade.show();
