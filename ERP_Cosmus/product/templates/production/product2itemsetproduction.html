@@ -77,9 +77,16 @@
                    {{ forms.id }}
         
                     <tr>
-                        <td></td>
-                        <!-- <td><input type="number" class="product_id common_product"  name="{{forms.prefix}}-row_number" value="{{forloop.counter}}" id="id_{{forms.prefix}}-row_number" ></td> -->
-        
+                        
+                        <td>
+                        <div class="custom-dropdown-container">
+                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                            <div name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="item-select item-name s-suggestion-container" style="display: none; height: 130px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                              
+                           
+                             </div>
+                           </div> 
+                        </td>
                         <td>
                             <!-- <input type="text" class="product2Select" name="{{forms.prefix}}-Item_input" value="" maxlength="255" id="id_{{forms.prefix}}-Item_input" placeholder="Item Name"> -->
                             <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
@@ -111,6 +118,36 @@
 </div>
 
 </form>
+
+<script>
+   
+   $(document).ready( function() {
+
+    
+    
+$(document).on('keyup focus keydown', 'input[name^="item_name_"]', function () {
+
+    var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
+    var nameValue = $(this).val().trim();
+    console.log(nameValue);
+
+    $.ajax({
+        url:'/purchasevoucheritemsearchajax/',
+        method: 'GET',
+        data:{
+            'nameValue': nameValue
+        },
+        success:function(response){
+            console.log("success");
+        }
+    })
+
+})
+
+})
+   
+
+    </script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
