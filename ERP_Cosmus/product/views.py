@@ -117,23 +117,29 @@ def edit_production_product(request,pk):
                         product_sku = row[1].value
                         item_name = row[2].value
 
-                        if id != None:
-                            if product_sku != None and item_name != None:
+                        if id is not None:
+                            if product_sku is not None and item_name is not None:
                                 part_name = row[3].value
                                 part_dimention = row[4].value
                                 dimention_total = row[5].value
                                 part_pieces = row[6].value
-                                grand_total = grand_total + float(dimention_total)
+                                grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
 
-                                p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
+                                if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
+                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
-                                p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
-                                p2i_config_instance.part_name = part_name
-                                p2i_config_instance.part_dimentions = part_dimention
-                                p2i_config_instance.dimention_total = dimention_total
-                                p2i_config_instance.part_pieces = part_pieces
-                                p2i_config_instance.save()   # save model
-                                p2i_config_instance.producttoitem.save()  # save the parent model
+                                    p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
+                                    p2i_config_instance.part_name = part_name
+                                    p2i_config_instance.part_dimentions = part_dimention
+                                    p2i_config_instance.dimention_total = dimention_total
+                                    p2i_config_instance.part_pieces = part_pieces
+                                    p2i_config_instance.save()   # save model
+                                    p2i_config_instance.producttoitem.save()  # save the parent model
+                                else:
+                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
+                                    p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
+                                    p2i_config_instance.delete()
+                                    p2i_config_instance.producttoitem.save()
 
                     #ws2
                     grand_total = 0
@@ -142,24 +148,29 @@ def edit_production_product(request,pk):
                         product_sku = row[1].value
                         item_name = row[2].value
 
-                        if id != None:
-                            if product_sku != None and item_name != None:
+                        if id is not None:
+                            if product_sku is not None and item_name is not None:
                                 part_name = row[3].value
                                 part_dimention = row[4].value
                                 dimention_total = row[5].value
                                 part_pieces = row[6].value
-                                grand_total = grand_total + float(dimention_total)
+                                grand_total = grand_total + float(dimention_total)   # calucate grand_total by adding all dimention_totals
 
-                                p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
-                                
-                                p2i_config_instance.producttoitem.grand_total = grand_total     # assign grand_total value to grand_total of parent model
-                                p2i_config_instance.part_name = part_name
-                                p2i_config_instance.part_dimentions = part_dimention
-                                p2i_config_instance.dimention_total = dimention_total
-                                p2i_config_instance.part_pieces = part_pieces
-                                p2i_config_instance.save() # save model
-                                p2i_config_instance.producttoitem.save() # save the parent model
+                                if part_name is not None and part_dimention is not None:  # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
 
+                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id) 
+                                    p2i_config_instance.producttoitem.grand_total = grand_total     # assign grand_total value to grand_total of parent model
+                                    p2i_config_instance.part_name = part_name
+                                    p2i_config_instance.part_dimentions = part_dimention
+                                    p2i_config_instance.dimention_total = dimention_total
+                                    p2i_config_instance.part_pieces = part_pieces
+                                    p2i_config_instance.save() # save model
+                                    p2i_config_instance.producttoitem.save() # save the parent model
+                                else:
+                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
+                                    p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
+                                    p2i_config_instance.delete()
+                                    p2i_config_instance.producttoitem.save()
             else:
 
                 messages.error(request, 'File with invalid Product Refrence Id uploaded')
@@ -1982,7 +1993,7 @@ def purchasevouchercreategodownpopupurl(request):
 
 
 
-def purchasevoucheritemsearchajax(request):
+def itemdynamicsearchajax(request):
     try:
         # Retrieve the partial name typed by the user from the GET request
         item_name_typed = request.GET.get('nameValue')
@@ -2293,7 +2304,7 @@ def product2item(request,product_refrence_id):
                         p2i_instance = form.save(commit = False)
                         p2i_instance.common_unique = False
                         p2i_instance.row_number = form.prefix[-1]  #get the prefix no of the form
-                        print(form.prefix)
+                        
                         p2i_instance.save()
 
                         no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
@@ -2377,7 +2388,7 @@ def product2item(request,product_refrence_id):
 def export_Product2Item_excel(request,product_ref_id):
     
     products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False).order_by('row_number')
-    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by('row_number')
+    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by('row_number')  #.order_by('Item_pk', 'id').distinct('Item_pk')
 
     wb = Workbook()
 
@@ -2434,6 +2445,7 @@ def export_Product2Item_excel(request,product_ref_id):
         for row in rows_to_insert_s1:
             sheet1.append(row)
             row_count_to_unlock = row_count_to_unlock + 1
+
         row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
 
 
@@ -2446,8 +2458,6 @@ def export_Product2Item_excel(request,product_ref_id):
     for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=8):
         for cell in row:
             cell.protection = Protection(locked = False)
-
-
 
 
 
@@ -2470,7 +2480,6 @@ def export_Product2Item_excel(request,product_ref_id):
             product_configs.part_dimentions,
             product_configs.dimention_total,
             product_configs.part_pieces
-            
         ])
 
         row_count_to_unlock = 1

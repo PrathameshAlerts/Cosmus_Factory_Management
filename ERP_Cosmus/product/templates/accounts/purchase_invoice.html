@@ -443,7 +443,7 @@ function randomValue (){
 
     if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
         $.ajax({
-            url: '/purchasevoucheritemsearchajax/',
+            url: '/itemdynamicsearchajax/',
             method: 'GET',
             data: { 'nameValue': nameValue },
             success: function (response) {

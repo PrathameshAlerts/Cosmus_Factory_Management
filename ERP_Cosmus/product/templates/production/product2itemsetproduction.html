@@ -26,8 +26,7 @@
             {% for form in formset_single %}
             {{ form.id }}
             <tr>
-                <td></td>
-                <!-- <td><input type="number" class="product_id"  name="{{form.prefix}}-row_number" value="{{forloop.counter}}" maxlength="255" id="id_{{form.prefix}}-row_number" ></td> -->
+                <td><span>{{forloop.counter}}</span></td>
                
                 <td>
                     <select class=" product2Select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
@@ -77,8 +76,7 @@
                    {{ forms.id }}
         
                     <tr>
-                        <td></td>
-                        <!-- <td><input type="number" class="product_id common_product"  name="{{forms.prefix}}-row_number" value="{{forloop.counter}}" id="id_{{forms.prefix}}-row_number" ></td> -->
+                        <td><span>{{forloop.counter}}</span></td>
         
                         <td>
                             <!-- <input type="text" class="product2Select" name="{{forms.prefix}}-Item_input" value="" maxlength="255" id="id_{{forms.prefix}}-Item_input" placeholder="Item Name"> -->
@@ -187,13 +185,6 @@ document.querySelectorAll('.delete').forEach(function(button) {
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.value = '';
 
-            // const inputRowNumber = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="row_number"]');
-            // inputRowNumber.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
-            // inputRowNumber.name = `product2itemuniqueformset-${newFormCount}-row_number`;
-            // inputRowNumber.value = `${newFormCount + 1}`;
-
-
-
 
             const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
             deleteElement.id = `id_product2itemuniqueformset-${newFormCount}-DELETE`;
@@ -233,10 +224,6 @@ document.querySelectorAll('.delete').forEach(function(button) {
             e.value= "";
           });
 
-        //   const newInputRow = lastRow.querySelector('.common_product[name^="product2itemcommonformset-"][name$="row_number"]');
-        //   newInputRow.id = `id_product2itemcommonformset-${newCount}-row_number`;
-        //   newInputRow.name = `product2itemcommonformset-${newCount}-row_number`;
-        //   newInputRow.value = `${newCount + 1}`;
 
             const selectElement = lastRow.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
             selectElement.id = `id_product2itemcommonformset-${newCount}-Item_pk`;
