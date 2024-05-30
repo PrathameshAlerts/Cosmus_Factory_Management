@@ -93,7 +93,7 @@ def edit_production_product(request,pk):
 
     if request.method == 'POST':
         product_ref_id = pk
-        print(request.POST)
+        
         try:
             excel_file = request.FILES['excel_file']
             file_name = excel_file.name
@@ -637,7 +637,7 @@ def item_create(request):
 
 def item_clone_ajax(request):
     selected_item_name_value = int(request.GET.get('itemValue'))
-    print(selected_item_name_value)
+    
     if selected_item_name_value:
         selected_item = get_object_or_404(Item_Creation, pk=selected_item_name_value)
 
@@ -649,7 +649,7 @@ def item_clone_ajax(request):
                         'fab_finishes':{'fab_finishes_key':selected_item.Item_Fabric_Finishes.id,'fab_finishes_value':selected_item.Item_Fabric_Finishes.fabric_finish},
                         'gst':{'gst_key':selected_item.Item_Creation_GST.id,'gst_value':selected_item.Item_Creation_GST.gst_percentage},
                         'hsn_code':selected_item.HSN_Code,'status':selected_item.status}
-        print(response_data)
+    
     return JsonResponse({'response_data':response_data})
 
 

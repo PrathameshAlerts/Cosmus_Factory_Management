@@ -303,7 +303,7 @@
                 var r_color = item_data_response.color
                 var r_m_code = item_data_response.material_code
                 var r_packing = item_data_response.packing
-                var r_unit_name = item_data_response.item_name
+                var r_unit_name = item_data_response.unit.name
                 var r_panha = item_data_response.panha
                 var r_fab_non_fab = item_data_response.fab_non_fab
                 var r_fab_finishes = item_data_response.fab_finishes
@@ -311,8 +311,6 @@
                 var r_hsn_code = item_data_response.hsn_code
                 var r_status = item_data_response.status
                 
-                
-
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
@@ -320,7 +318,6 @@
         })
     })
 })
-
 
 
 </script>

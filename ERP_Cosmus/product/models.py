@@ -321,7 +321,7 @@ class Item_Creation(models.Model):
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status= models.CharField(max_length = 50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
-    created_date = models.DateTimeField(auto_now= True)
+    created_date = models.DateTimeField(auto_now =True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
     
 # these functions are used to show related attributes instead of PK id in listview
@@ -548,8 +548,6 @@ class item_godown_quantity_through_table(models.Model):
         return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
     
             
-
-
 
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
