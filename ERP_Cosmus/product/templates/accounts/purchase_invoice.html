@@ -425,21 +425,24 @@ function randomValue (){
 
   var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
- $(document).on(' keyup', 'input[name^="item_name_"]', function(e) {
+ $(document).on(' keyup focus keydown', 'input[name^="item_name_"]', function(e) {
     var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
     var nameValue = $(this).val().trim();
     var selectNameValue = `select_item_name_${purchaseValue}`;
     var suggestionsContainer = $(`#${selectNameValue}`);
+    var purchaseData = $(`#purchase_voucher_items_set-${purchaseValue}-popupData`).val();
+    var jsonData = $(`#purchase_voucher_items_set-${purchaseValue}-jsonDataInputquantity`).val();
+    var uniqueValue = $(`#item_unique_id_${purchaseValue}`).val();
   
     if (nameValue === '') {
-        suggestionsContainer.hide();
+        var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+             
+        selectNameValue.css('display', 'none');
         $(this).attr('data-key', '');
         return;
     }
 
-    var purchaseData = $(`#purchase_voucher_items_set-${purchaseValue}-popupData`).val();
-    var jsonData = $(`#purchase_voucher_items_set-${purchaseValue}-jsonDataInputquantity`).val();
-    var uniqueValue = $(`#item_unique_id_${purchaseValue}`).val();
+
 
     if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
         $.ajax({
@@ -482,47 +485,33 @@ function randomValue (){
         shadeNameData.prop('disabled', true);
     }
 
-        
-    // suggestionsContainer.on('mouseover', '.itemName-div-suggestion', function() {
-    //     $(this).addClass('selected').siblings().removeClass('selected');
-    // });
-    console.log("suggestionsContainer",suggestionsContainer)
-  
-  
-    suggestionsContainer.on('click', '.itemName-div-suggestion', function(e) {
+   
+    
+    suggestionsContainer.on('click', '.itemName-div', function(e) {
 
         var item_value = $(this).data('key');
         var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
         var itemShade = $('#input_item_shade_' + purchaseValue);
         var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
-
-        handleSelection(purchaseValue,itemName, item_value);
-    
+      
         $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
         $(this).addClass('selected').siblings().removeClass('selected');
-       
 
         if (newData == '' && itemShadeValue != '') {
             itemShade.val(itemShadeValue);
             itemShade.show();
         }
-            suggestionsContainer.hide();
-        
+        handleSelection(purchaseValue,itemName, item_value)
+        suggestionsContainer.hide();
     });
+   
   
 });
 
-// $(document).on('keydown', '.search-input', function(e){
-//         if(e.type === 'Enter'){
-//             console.log("Enter key pressed");
-//             e.preventDefault();
-//             var newItemsValue = $(`#item_name ${purchaseValue}`).val();
-//             console.log("newItemsValue",newItemsValue)
-//             suggestionsContainer.hide();
-//         }
-//     })
 // // Function to handle the AJAX request and UI updates
 function handleSelection(purchaseValue,itemName, item_value) {
+
+
 
     if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
@@ -563,17 +552,29 @@ function handleSelection(purchaseValue,itemName, item_value) {
                         $('#' +itemName).append('<option value="' + key + '">' + value + '</option>');
                     }
                 });
+                ajaxInProgress = false;
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
+                ajaxInProgress = false;
             }
         });
     }
 }
 
+$(document).on('click','[name^="item_name_"]', function(event) {
+          event.preventDefault();
+          var  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
+         var selectItem = $(`#${selectName}`);
+          selectItem.css("display" ,"none");
+                      
+  })
+
+
 
    var index = 0; // Declare index outside of the event listener
-   var indexbool = false
+   var indexbool = false;
+   var ajaxInProgress = false;
    
 $(document).on('keydown','input[name^="item_name_"]', function(event) {
     var nameDataKey;
@@ -581,13 +582,18 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
     var select = $(this).next('.item-name');
     var selectLength = select.find('.itemName-div').length-1;
     var nameData = $(this).val().trim();
+    var  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
+    var selectItem = $(`#${selectName}`);
+ 
+ 
 
     if(nameData == ''){
           index = 0;
           return;    
       }
 
-     
+   
+  
     if (event.key === 'ArrowDown') {
         event.preventDefault();
       
@@ -656,7 +662,11 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         }
         if (event.key === 'Enter') {
         event.preventDefault();
-        select.hide();
+        if (ajaxInProgress) return;
+
+        ajaxInProgress = true;
+
+        selectItem.hide();
 
         var itemEnterValue = $(this);
         var item_value = itemEnterValue.attr('data-key');
@@ -670,14 +680,13 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         var itemShade = $('#input_item_shade_' + purchaseValue);
         var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
 
-        // var newItemsValue = $(`#item_name_${purchaseValue}`).val();
-        //    console.log("newItemsValue",newItemsValue)
         if (newData == '' && itemShadeValue != '') {
             itemShade.val(itemShadeValue);
             itemShade.show();
         }
-        
-        
+              
+       selectItem.hide();
+
         handleSelection(purchaseValue,itemName, item_value);
     }
         
