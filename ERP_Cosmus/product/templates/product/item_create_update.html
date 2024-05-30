@@ -299,20 +299,43 @@
             success: function (response) {
                 item_data_response = response.response_data
                 console.log(item_data_response)
+              
                 var r_fab_group = item_data_response.fabric_group
                 var r_color = item_data_response.color
                 var r_m_code = item_data_response.material_code
                 var r_packing = item_data_response.packing
-                var r_unit_name = item_data_response.item_name
+                var r_unit_name = item_data_response.unit_name
                 var r_panha = item_data_response.panha
                 var r_fab_non_fab = item_data_response.fab_non_fab
                 var r_fab_finishes = item_data_response.fab_finishes
                 var r_gst = item_data_response.gst
                 var r_hsn_code = item_data_response.hsn_code
                 var r_status = item_data_response.status
+              
+                $('#id_Fabric_Group').val(r_fab_group.fab_g_key);
+            
+                $('#id_Item_Color').val(r_color.color_key);
                 
-                
+                $('#id_Material_code').val(r_m_code);
 
+                $('#Item_Packing').val(r_packing.packing_key);
+  
+                $('#id_unit_name_item').val(r_unit_name.unit_name_key);
+
+                $('#id_Panha').val(r_panha);
+              
+                $('#id_Fabric_nonfabric').val(r_fab_non_fab);
+              
+                $('#id_Item_Fabric_Finishes').val(r_fab_finishes.fab_finishes_key);
+              
+                $('#id_Item_Creation_GST').val(r_gst.gst_key);
+              
+                $('#id_HSN_Code').val(r_hsn_code);
+                
+                $('#id_status').val(r_status);
+
+              
+                
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
