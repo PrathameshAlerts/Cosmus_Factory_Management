@@ -312,7 +312,7 @@ class Item_Creation(models.Model):
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Item_Packing = models.ForeignKey(packaging, on_delete=models.PROTECT)
     unit_name_item = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False) 
-    Units = models.DecimalField(max_digits=10, decimal_places=2)
+    Units = models.DecimalField(max_digits=10, decimal_places=2, default=39.37)
     Panha = models.DecimalField(max_digits=10, decimal_places=2)
     Fabric_nonfabric = models.CharField(max_length = 255, choices = FandNFB)
     Item_Fabric_Finishes = models.ForeignKey(FabricFinishes, on_delete = models.PROTECT)
@@ -354,7 +354,7 @@ class item_color_shade(models.Model):
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades')
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null = True, blank = True)
-    item_color_image = models.ImageField(upload_to ='rawmaterial/images', null=True , blank=True)
+    item_color_image = models.ImageField(upload_to ='rawmaterial/images')
     created_date = models.DateTimeField(auto_now = True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
@@ -559,6 +559,7 @@ class product_2_item_through_table(models.Model):
     common_unique = models.BooleanField(default=False)  #True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1)
     Remark = models.CharField(max_length=100, blank = True, null=True)
+
 
     class Meta:
         unique_together = [['PProduct_pk','Item_pk']]

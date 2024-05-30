@@ -1,5 +1,5 @@
-from email import header
 from io import BytesIO
+import logging
 from sys import exception
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError
@@ -14,7 +14,6 @@ from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 from django.contrib import messages
 from django.db.models import Sum
-from numpy import single
 from openpyxl.utils import get_column_letter 
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
@@ -596,7 +595,7 @@ def item_create(request):
     unit_name = Unit_Name_Create.objects.all()
     packaging_material_all = packaging.objects.all()
     fab_finishes = FabricFinishes.objects.all()
-    print(request.POST)
+    items_to_clone = Item_Creation.objects.all()
     colors = Color.objects.all()
 
     
@@ -617,7 +616,7 @@ def item_create(request):
                                                                       'colors':colors,
                                                                       'packaging_material_all':packaging_material_all,
                                                                       'fab_finishes':fab_finishes,
-                                                                      'title':title,'form':form})
+                                                                      'title':title,'form':form,'items_to_clone':items_to_clone})
     
     form = Itemform()
     return render(request,'product/item_create_update.html',{'gsts':gsts,
@@ -627,7 +626,7 @@ def item_create(request):
                                                                  'title':title,
                                                                  'packaging_material_all':packaging_material_all,
                                                                     'fab_finishes':fab_finishes,
-                                                                 'form':form})
+                                                                 'form':form,'items_to_clone':items_to_clone})
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
 # which has ?namevaraible = data data from the querystring
@@ -635,6 +634,25 @@ def item_create(request):
 # in request.POST u can access data sent to server with name varaible which has data from the
 # name= as a key and value=  which has the value from the form
     
+
+def item_clone_ajax(request):
+    selected_item_name_value = int(request.GET.get('itemValue'))
+    print(selected_item_name_value)
+    if selected_item_name_value:
+        selected_item = get_object_or_404(Item_Creation, pk=selected_item_name_value)
+
+        response_data = {'fabric_group':{'fab_g_key':selected_item.Fabric_Group.id,'fab_g_value':selected_item.Fabric_Group.fab_grp_name},
+                         'color':{'color_key':selected_item.Item_Color.id,'color_value':selected_item.Item_Color.color_name}, 
+                         'material_code':selected_item.Material_code,'packing':{'packing_key':selected_item.Item_Packing.id ,'packing_value':selected_item.Item_Packing.packing_material},
+                        'unit_name':{'unit_name_key':selected_item.unit_name_item.id,'unit_name_value':selected_item.unit_name_item.unit_name},
+                        'panha':selected_item.Panha,'fab_non_fab':selected_item.Fabric_nonfabric,
+                        'fab_finishes':{'fab_finishes_key':selected_item.Item_Fabric_Finishes.id,'fab_finishes_value':selected_item.Item_Fabric_Finishes.fabric_finish},
+                        'gst':{'gst_key':selected_item.Item_Creation_GST.id,'gst_value':selected_item.Item_Creation_GST.gst_percentage},
+                        'hsn_code':selected_item.HSN_Code,'status':selected_item.status}
+        print(response_data)
+    return JsonResponse({'response_data':response_data})
+
+
 def item_list(request):
     g_search = request.GET.get('item_search')
     #select related for loading forward FK relationships and prefetch related for reverse relationship  
@@ -688,7 +706,7 @@ def item_list(request):
             queryset = Item_Creation.objects.filter(item_name__exact=exact_desc)
 
     return render(request,'product/list_item.html', {"items":queryset})
-
+    
 
 
 def item_edit(request,pk): 
@@ -1986,46 +2004,9 @@ def purchasevouchercreategodownpopupurl(request):
     else:
         popup_url = None
 
-    print('popupurl', popup_url)
     return JsonResponse({'popup_url':popup_url})
 
 
-
-
-
-def itemdynamicsearchajax(request):
-    try:
-        # Retrieve the partial name typed by the user from the GET request
-        item_name_typed = request.GET.get('nameValue')
-        if not item_name_typed:
-            raise ValidationError("No partial name provided.")
-
-        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
-       
-        if item_name_searched:
-            # Prepare a dictionary of searched items with IDs as keys and names as values
-            searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
-
-            """
-            or 
-            searched_item_name_dict = {}
-            for queryset in item_name_searched:
-                item_name = queryset.item_name
-                item_id = queryset.id
-                searched_item_name_dict[item_id] = item_name
-
-            """
-            return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
-        else:
-            return JsonResponse({'error': 'No items found.'}, status=404)
-
-    except ValidationError as ve:
-        error_message = str(ve)
-        return JsonResponse({'error': error_message}, status=400)
-    
-    except Exception as e:
-        error_message = f"An error occurred: {str(e)}"
-        return JsonResponse({'error': error_message}, status=500)
     
 
 def purchasevoucherlist(request):
@@ -2523,7 +2504,48 @@ def export_Product2Item_excel(request,product_ref_id):
 
 #_________________________production-end______________________________
 
-#__________________________reports-start_________________________________
+
+#__________________________common-functions-start____________________________
+
+
+def itemdynamicsearchajax(request):
+    try:
+        # Retrieve the partial name typed by the user from the GET request
+        item_name_typed = request.GET.get('nameValue')
+        if not item_name_typed:
+            raise ValidationError("No partial name provided.")
+
+        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
+       
+        if item_name_searched:
+            # Prepare a dictionary of searched items with IDs as keys and names as values
+            searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
+
+            """
+            or 
+            searched_item_name_dict = {}
+            for queryset in item_name_searched:
+                item_name = queryset.item_name
+                item_id = queryset.id
+                searched_item_name_dict[item_id] = item_name
+            """
+
+            return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
+        else:
+            return JsonResponse({'error': 'No items found.'}, status=404)
+
+    except ValidationError as ve:
+        error_message = str(ve)
+        return JsonResponse({'error': error_message}, status=400)
+    
+    
+    except Exception as e:
+        error_message = f"An error occurred: {str(e)}"
+        return JsonResponse({'error': error_message}, status=500)
+
+
+
+#__________________________reports-start-end_________________________________
 
 def creditdebitreport(request):
     all_reports = account_credit_debit_master_table.objects.all()

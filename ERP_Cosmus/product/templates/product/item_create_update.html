@@ -8,6 +8,20 @@
 <div class="col-lg-4">
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
+
+    <div class="d-flex mb-3">
+      {% if not form.instance.id %}
+      <label for="id_item-to-clone">Clone Item: </label>
+      <select class="search-input" name="item-to-clone" required id="id_item-to-clone" >
+        <option value="">Select Item</option>
+        {% for item in items_to_clone %}
+        <option value="{{item.id}}">{{item.item_name}}</option>
+        {% endfor %}
+      </select>
+      
+      
+      {% endif %}
+    </div>
     <div class=" d-flex my-3">
       <label for="id_item_name" class="item-form">Name:</label>
       <input type="text" class="item-select" value="{{form.instance.item_name}}" name="item_name" maxlength="255"
@@ -18,7 +32,7 @@
 
     <div class="d-flex my-3">
       <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
-      <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
+      <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group" required>
 
         {% if form.instance.id %}
         <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.fab_grp }}</option>
@@ -36,7 +50,7 @@
 
     <div class=" d-flex my-3">
       <label for="id_Item_Color" class="form-label item-form">Color:</label>
-      <select class="item-select" name="Item_Color" required id="id_Item_Color">
+      <select class="item-select" name="Item_Color" required id="id_Item_Color" required>
 
         <!-- form.instance.Color_Name got from (def Color_Name(self):) which returns Item_Color.color_name the actual color
                   When you access a foreign key field in Django templates, by default, it returns the related object, not just its ID.
@@ -160,8 +174,7 @@
     </div>
     <div class=" d-flex my-3">
       <label for="id_Units" class="form-label item-form">Units:</label>
-      <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required
-        id="id_Units">
+      <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required id="id_Units">
     </div>
 
     <div class=" d-flex my-3">
@@ -230,7 +243,7 @@
       
       <div class="">
         <img id="iFrame" src="..." class="py-1" alt="..." style="width: 10rem; height: 10rem;">
-        <input type="file" class=" " style="width: 201px;" name="item_shade_image" required id="item_shade_image" onchange="preview()">
+        <input type="file" class=" " style="width: 201px;" name="item_shade_image" id="item_shade_image" onchange="preview()">
       </div>
       
       
@@ -268,23 +281,37 @@
 </div>
 
 
-<!-- <script>
+<script>
   
   $(document).ready(function () {
 
-    $(document).on('change', 'hiddeninput', function () {
+    $(document).on('change', '[name^="item-to-clone"]', function () {
 
-        var selected_party_name = $(this).val()
-        var int_selected_party_name = parseInt(selected_party_name)
+       var itemValue = $(this).val()
+       console.log('itemValue',itemValue)
 
         $.ajax({
-            url: '/item_create_dropdown_refresh_ajax/',
+            url: '/itemcreatecloneajax/',
             method: 'GET',
             data: {
-                'selected_party_name': selected_party_name,
+                'itemValue': itemValue
             },
             success: function (response) {
-                console.log('Data sent successfully')
+                item_data_response = response.response_data
+                console.log(item_data_response)
+                var r_fab_group = item_data_response.fabric_group
+                var r_color = item_data_response.color
+                var r_m_code = item_data_response.material_code
+                var r_packing = item_data_response.packing
+                var r_unit_name = item_data_response.item_name
+                var r_panha = item_data_response.panha
+                var r_fab_non_fab = item_data_response.fab_non_fab
+                var r_fab_finishes = item_data_response.fab_finishes
+                var r_gst = item_data_response.gst
+                var r_hsn_code = item_data_response.hsn_code
+                var r_status = item_data_response.status
+                
+                
 
             },
             error: function (xhr, errmsg, err) {
@@ -296,7 +323,7 @@
 
 
 
-</script> -->
+</script>
 
 <script>
 
