@@ -446,7 +446,7 @@ function randomValue (){
 
     if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
         $.ajax({
-            url: '/purchasevoucheritemsearchajax/',
+            url: '/itemdynamicsearchajax/',
             method: 'GET',
             data: { 'nameValue': nameValue },
             success: function (response) {
@@ -493,9 +493,7 @@ function randomValue (){
         var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
         var itemShade = $('#input_item_shade_' + purchaseValue);
         var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
-        console.log(newData);
-        console.log(itemShade);
-        console.log(itemShadeValue);
+      
         $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
         $(this).addClass('selected').siblings().removeClass('selected');
 
@@ -569,7 +567,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
           var  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
          var selectItem = $(`#${selectName}`);
           selectItem.css("display" ,"none");
-          console.log("test");            
+                      
   })
 
 
@@ -586,7 +584,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
     var nameData = $(this).val().trim();
     var  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
     var selectItem = $(`#${selectName}`);
-    console.log('selectItem',selectItem);
+ 
  
 
     if(nameData == ''){

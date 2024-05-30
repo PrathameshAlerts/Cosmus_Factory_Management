@@ -26,8 +26,7 @@
             {% for form in formset_single %}
             {{ form.id }}
             <tr>
-                <td></td>
-                <!-- <td><input type="number" class="product_id"  name="{{form.prefix}}-row_number" value="{{forloop.counter}}" maxlength="255" id="id_{{form.prefix}}-row_number" ></td> -->
+                <td><span>{{forloop.counter}}</span></td>
                
                 <td>
                     <select class=" product2Select" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
@@ -39,15 +38,14 @@
 
                 </td>
                 <td>
-                    <select class="product2Select" name="{{form.prefix}}-Item_pk" id="{{form.prefix}}-Item_pk">
+                    <div class="custom-dropdown-container">
+                            <input  type="text" name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="product2Select input_text"  placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.item_shade.items.item_name }}{% endif %}"  > 
+                            <div name="{{form.prefix}}-Item_pk" id="id_{{form.prefix}}-Item_pk" class="item-select item-name s-suggestion-container" style="display: none; height: 130px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                            
                         
-                        <option value="{{form.instance.Item_pk.id}}">{{form.instance.Item_pk.item_name}}</option>
-                        {% for item in items %}
-                        <option value="{{item.id}}">{{item.item_name}}</option>
-                        {% endfor %}
-                    </select>
-
-                </td>
+                        </div>
+                    </div> 
+                </td>  
                 <td> <input type="text" class="product_row" name="{{form.prefix}}-no_of_rows" value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
                 <td> <input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}"  maxlength="255" id="id_{{form.prefix}}-Remark"></td>
                 <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
@@ -77,28 +75,16 @@
                    {{ forms.id }}
         
                     <tr>
-                        
+                        <td><span>{{forloop.counter}}</span></td>
                         <td>
-                        <div class="custom-dropdown-container">
-                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                            <div name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="item-select item-name s-suggestion-container" style="display: none; height: 130px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
-                              
-                           
-                             </div>
-                           </div> 
-                        </td>
-                        <td>
-                            <!-- <input type="text" class="product2Select" name="{{forms.prefix}}-Item_input" value="" maxlength="255" id="id_{{forms.prefix}}-Item_input" placeholder="Item Name"> -->
-                            <select class="product2Select" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk">
+                            <div class="custom-dropdown-container">
+                                    <input  type="text" name="item_input_Name_{{forloop.counter0}}" id="id_item_input_Name_{{forloop.counter0}}" class="product2Select commom_item"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                                    <div name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="item-select item-name s-suggestion-container" style="display: none; height: 130px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                                    
                                 
-                                <option value="{{forms.instance.Item_pk.id}}">{{forms.instance.Item_pk.item_name}}</option>
-                                {% for item in items %}
-                                <option value="{{item.id}}">{{item.item_name}}</option>
-                                {% endfor %}
-                            </select>
-        
-                        </td>
-                      
+                                    </div>
+                            </div> 
+                        </td>                     
                         <td> <input type="text" class="product_row" name="{{forms.prefix}}-no_of_rows" value="{{forms.instance.no_of_rows}}"  maxlength="255" id="id_{{forms.prefix}}-no_of_rows" ></td>
                       
                         <td> <input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}"  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
@@ -121,33 +107,351 @@
 
 <script>
    
-   $(document).ready( function() {
+$(document).ready( function() {
 
-    
-    
-$(document).on('keyup focus keydown', 'input[name^="item_name_"]', function () {
-
-    var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
+// this ajax reuest to product to uniuque item list
+$(document).on ('keyup ','input[name^="itemName_"]', function(){
+    var newValueKey = $(this).attr('name').match(/\d+/)[0];
     var nameValue = $(this).val().trim();
-    console.log(nameValue);
+    var suggestionsContainerUniqueId = $(`#id_product2itemuniqueformset-${newValueKey}-Item_pk`);
+  
+
+   if(nameValue === '') {
+
+        suggestionsContainerUniqueId.css('display', 'none');
+        $(this).attr('data-key', '');
+        return;
+   }
+
+   $.ajax({
+    url:'/itemdynamicsearchajax/',
+    method: 'GET',
+    data:{
+        'nameValue': nameValue
+    },
+    success:function(response){
+        var searchData = response.searched_item_name_dict;
+        var searchQuery = nameValue.toLowerCase();
+        var filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+        
+        suggestionsContainerUniqueId.empty();
+
+        $.each(filteredOptions, function(index, [key, value]) {
+            suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
+        });
+        if (filteredOptions.length > 0) {
+            suggestionsContainerUniqueId.show();
+        } else {
+            suggestionsContainerUniqueId.hide();
+        }
+
+    },
+     error:function(xhr){
+            console.log(xhr.status + ": " + xhr.responseText);
+                if (xhr.status === 404 || xhr.status === 400) {
+                    
+                    suggestionsContainerUniqueId.hide();
+                }
+
+        }
+   })
+
+   suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function() {
+       
+       $(this).closest('.custom-dropdown-container').find('.input_text').val($(this).text().trim());
+       $(this).addClass('selected').siblings().removeClass('selected');
+       suggestionsContainerUniqueId.hide();
+   })
+
+
+})  
+
+$(document).on('click', '.input_text',function(){
+        var selectValue = $(this).next('.s-suggestion-container');
+        selectValue.hide();
+    })
+
+var index = 0; //  index outside of the event listener
+   var indexbool = false;
+$(document).on('keydown','input[name^="itemName_"]',function(e){
+         var nameDataKey;
+        var nameKey;
+        var selectValue = $(this).next('.s-suggestion-container');
+    
+        var selectLength = selectValue.find('.itemName-div').length-1;
+        var nameData = $(this).val().trim();
+      
+        if(nameData === ''){
+            selectValue.hide();
+            index = 0;
+            indexbool = false;
+            return;
+        }
+
+    if(e.key=== 'ArrowDown'){
+
+        e.preventDefault();
+
+        if(index <= selectLength){
+            var selectedItem = selectValue.find('#itemName-div_' + index);
+            var nextItem = selectedItem.next();
+             nameDataKey= selectedItem.text();
+            
+             nameKey = selectedItem.data('key');
+           
+            $(this).attr('data-key', nameKey);
+            $(this).text(nameDataKey);
+            selectValue.find('.itemName-div').removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
+ 
+            var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
+            var itemHeight = nextItem.outerHeight();
+            var selectScrollTop = selectValue.scrollTop();
+            var selectHeight = selectValue.height();
+
+            if (itemOffsetTop + itemHeight > selectHeight) {
+                selectValue.scrollTop(selectScrollTop + itemHeight);
+
+            } else if (itemOffsetTop < 0) {
+                selectValue.scrollTop(selectScrollTop - itemHeight);
+            }
+           
+            if(index != selectLength ){
+                index += 1; 
+             indexbool = true;        
+            }     
+               
+       }else{
+           index = 0;
+       }
+
+    }
+    if(e.key === 'ArrowUp'){
+           event.preventDefault();
+           if (index != 0 && indexbool == true)
+           {           
+                index = index - 1;
+           }
+          
+           if(index <= selectLength){
+         
+            var selectedItem = selectValue.find('#itemName-div_' + index);
+            var prevItem = selectedItem.prev();
+             nameDataKey= selectedItem.text();
+              nameKey = selectedItem.data('key');
+        
+            $(this).attr('data-key', nameKey);
+            $(this).text(nameDataKey);
+            selectValue.find('.itemName-div').removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
+           
+          
+            var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
+            var itemHeight = prevItem.outerHeight();
+            var selectScrollTop = selectValue.scrollTop();
+            var selectHeight = selectValue.height();
+
+            if (itemOffsetTop < 0) {
+                selectValue.scrollTop(selectScrollTop - itemHeight);
+            } else if (itemOffsetTop + itemHeight > selectHeight) {
+                selectValue.scrollTop(selectScrollTop + itemHeight);
+            }
+            }
+            else{
+                    index = 0;
+            }   
+        }
+        if(e.key === 'Enter'){
+            e.preventDefault();
+        var selectedItem = $(this).text().trim();
+       
+        if (selectedItem.length > 0) {
+            $(this).val(selectedItem);
+         
+        }
+        selectValue.hide();
+        index = 0;
+        indexbool = false;
+        }
+})  
+  
+    
+$(document).on('keyup', 'input[name^="item_input_Name_"]', function () {
+
+    var purchaseData = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
+    var nameValue = $(this).val().trim();
+   var suggestionsContainerCommon= $(`#id_product2itemcommonformset-${purchaseData}-Item_pk`);
+ 
+   
+    if(nameValue === '') {
+             
+        suggestionsContainerCommon.css('display', 'none');
+        $(this).attr('data-key', '');
+        return;
+    }
 
     $.ajax({
-        url:'/purchasevoucheritemsearchajax/',
+        url:'/itemdynamicsearchajax/',
         method: 'GET',
         data:{
             'nameValue': nameValue
         },
         success:function(response){
-            console.log("success");
+          var searchedItemData = response.searched_item_name_dict;
+         
+          
+          var searchQuery = nameValue.toLowerCase();
+                var filteredOptions = Object.entries(searchedItemData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+         
+                // Clear and repopulate options
+                suggestionsContainerCommon.empty();
+             
+
+                $.each(filteredOptions, function(index, [key, value]) {
+                    suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
+                });
+                
+                if (filteredOptions.length > 0) {
+                    suggestionsContainerCommon.show();
+                   
+                } else {
+                    suggestionsContainerCommon.hide();
+                    
+                }
+        },
+        error:function(xhr){
+            console.log(xhr.status + ": " + xhr.responseText);
+                if (xhr.status === 404 || xhr.status === 400) {
+                    
+                    suggestionsContainerCommon.hide();
+                }
+
         }
     })
 
+    suggestionsContainerCommon.on('click', '.itemName-div-suggestion', function() {
+       
+        $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
+        $(this).addClass('selected').siblings().removeClass('selected');
+        suggestionsContainerCommon.hide();
+    })
+
+
+
+})
+$(document).on('click', '.commom_item',function(){
+        var selectValue = $(this).next('.s-suggestion-container');
+        selectValue.hide();
+    })
+
+   var index = 0; //  index outside of the event listener
+   var indexbool = false;
+$(document).on('keydown','input[name^="item_input_Name_"]',function(e){
+        var nameDataKey;
+         var nameKey;
+        var selectValue = $(this).next('.s-suggestion-container');
+     
+        var selectLength = selectValue.find('.itemName-div').length-1;
+        var nameData = $(this).val().trim();
+     
+        if(nameData === ''){
+            selectValue.hide();
+            index = 0;
+            indexbool = false;
+            return;
+        }
+
+    if(e.key=== 'ArrowDown'){
+
+        e.preventDefault();
+
+        if(index <= selectLength){
+            var selectedItem = selectValue.find('#itemName-div_' + index);
+            var nextItem = selectedItem.next();
+             nameDataKey= selectedItem.text();
+            
+             nameKey = selectedItem.data('key');
+           
+            $(this).attr('data-key', nameKey);
+            $(this).text(nameDataKey);
+            selectValue.find('.itemName-div').removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
+ 
+            var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
+            var itemHeight = nextItem.outerHeight();
+            var selectScrollTop = selectValue.scrollTop();
+            var selectHeight = selectValue.height();
+
+            if (itemOffsetTop + itemHeight > selectHeight) {
+                selectValue.scrollTop(selectScrollTop + itemHeight);
+
+            } else if (itemOffsetTop < 0) {
+                selectValue.scrollTop(selectScrollTop - itemHeight);
+            }
+           
+            if(index != selectLength ){
+                index += 1; 
+             indexbool = true;        
+            }     
+               
+       }else{
+           index = 0;
+       }
+
+    }
+    if(e.key === 'ArrowUp'){
+           event.preventDefault();
+           if (index != 0 && indexbool == true)
+           {           
+                index = index - 1;
+           }
+          
+           if(index <= selectLength){
+         
+            var selectedItem = selectValue.find('#itemName-div_' + index);
+            var prevItem = selectedItem.prev();
+             nameDataKey= selectedItem.text();
+              nameKey = selectedItem.data('key');
+        
+            $(this).attr('data-key', nameKey);
+            $(this).text(nameDataKey);
+            selectValue.find('.itemName-div').removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
+           
+          
+            var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
+            var itemHeight = prevItem.outerHeight();
+            var selectScrollTop = selectValue.scrollTop();
+            var selectHeight = selectValue.height();
+
+            if (itemOffsetTop < 0) {
+                selectValue.scrollTop(selectScrollTop - itemHeight);
+            } else if (itemOffsetTop + itemHeight > selectHeight) {
+                selectValue.scrollTop(selectScrollTop + itemHeight);
+            }
+            }
+            else{
+                    index = 0;
+            }   
+        }
+        if(e.key === 'Enter'){
+            e.preventDefault();
+        var selectedItem = $(this).text().trim();
+        
+        if (selectedItem.length > 0) {
+            $(this).val(selectedItem);
+         
+        }
+        selectValue.hide();
+        index = 0;
+        indexbool = false;
+        }
 })
 
 })
    
 
-    </script>
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -208,7 +512,11 @@ document.querySelectorAll('.delete').forEach(function(button) {
             newSelectElement.name = `product2itemuniqueformset-${newFormCount}-PProduct_pk`;
             newSelectElement.value = '';
 
-            const selectValueName = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+            const inputValueElement = newTable.querySelector('[name^="itemName_"]');
+            inputValueElement.id = `id_itemName_${newFormCount}`;
+            inputValueElement.name = `itemName_${newFormCount}`;
+            inputValueElement.value = '';
+            const selectValueName = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
             selectValueName.id = `id_product2itemuniqueformset-${newFormCount}-Item_pk`;
             selectValueName.name = `product2itemuniqueformset-${newFormCount}-Item_pk`;
             selectValueName.value = '';
@@ -223,13 +531,6 @@ document.querySelectorAll('.delete').forEach(function(button) {
             inputRemark.id = `id_product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.value = '';
-
-            // const inputRowNumber = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="row_number"]');
-            // inputRowNumber.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
-            // inputRowNumber.name = `product2itemuniqueformset-${newFormCount}-row_number`;
-            // inputRowNumber.value = `${newFormCount + 1}`;
-
-
 
 
             const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
@@ -270,12 +571,12 @@ document.querySelectorAll('.delete').forEach(function(button) {
             e.value= "";
           });
 
-        //   const newInputRow = lastRow.querySelector('.common_product[name^="product2itemcommonformset-"][name$="row_number"]');
-        //   newInputRow.id = `id_product2itemcommonformset-${newCount}-row_number`;
-        //   newInputRow.name = `product2itemcommonformset-${newCount}-row_number`;
-        //   newInputRow.value = `${newCount + 1}`;
+           const inputnameElement = lastRow.querySelector('input[name^="item_input_Name_"]');
+           inputnameElement.id = `id_item_input_Name_"${newCount}`;
+           inputnameElement.name = `item_input_Name_"${newCount}`;
+           inputnameElement.value = '';
 
-            const selectElement = lastRow.querySelector('select[name^="product2itemcommonformset-"][name$="Item_pk"]');
+            const selectElement = lastRow.querySelector('.item-name[name^="product2itemcommonformset-"][name$="Item_pk"]');
             selectElement.id = `id_product2itemcommonformset-${newCount}-Item_pk`;
             selectElement.name = `product2itemcommonformset-${newCount}-Item_pk`;
             selectElement.value = '';
