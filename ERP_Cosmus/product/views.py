@@ -109,12 +109,13 @@ def edit_production_product(request,pk):
                     ws1 = wb['product_special_configs']
                     ws2 = wb['product_common_configs']
 
-                    #ws1
+                    # ws1
                     grand_total = 0
                     for row in ws1.iter_rows(min_row=2,min_col=1):
                         id = row[0].value
-                        product_sku = row[1].value
-                        item_name = row[2].value
+                        item_name = row[1].value
+                        product_sku = row[2].value
+                        
 
                         if id is not None:
                             if product_sku is not None and item_name is not None:
@@ -140,36 +141,54 @@ def edit_production_product(request,pk):
                                     p2i_config_instance.delete()
                                     p2i_config_instance.producttoitem.save()
 
-                    #ws2
-                    grand_total = 0
-                    for row in ws2.iter_rows(min_row=2,min_col=1):
-                        id = row[0].value
-                        product_sku = row[1].value
-                        item_name = row[2].value
 
-                        if id is not None:
-                            if product_sku is not None and item_name is not None:
-                                part_name = row[3].value
-                                part_dimention = row[4].value
-                                dimention_total = row[5].value
-                                part_pieces = row[6].value
-                                grand_total = grand_total + float(dimention_total)   # calucate grand_total by adding all dimention_totals
 
-                                if part_name is not None and part_dimention is not None:  # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
+                    # ws2        
+                    for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): # loop through all the products in the sku 
+                        product_sku = product_c.PProduct_SKU
+                        
+                        row_no = 0
+                        grand_total = 0
+                        for row in ws2.iter_rows(min_row=2,min_col=1):  # for every loop through each row in the sheet
+                            
+                            id = row[0].value
+                            item_name = row[1].value
+                            part_name = row[2].value
+                            part_dimention = row[3].value
+                            dimention_total = row[4].value
+                            part_pieces = row[5].value
+                            
+                            if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
+                                
+                                grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
 
-                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id) 
-                                    p2i_config_instance.producttoitem.grand_total = grand_total     # assign grand_total value to grand_total of parent model
-                                    p2i_config_instance.part_name = part_name
-                                    p2i_config_instance.part_dimentions = part_dimention
-                                    p2i_config_instance.dimention_total = dimention_total
-                                    p2i_config_instance.part_pieces = part_pieces
-                                    p2i_config_instance.save() # save model
-                                    p2i_config_instance.producttoitem.save() # save the parent model
+                                # get the p2i instance for the product with the item in row 
+                                p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku ,Item_pk__item_name= item_name, common_unique = True)
+                                
+                                # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates with the rows in excel to know which config instance to crud
+                                p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
+
+                                if part_name is not None:  # check if part name it there if its not then delete that instance
+                                    p2i_instances_configs.part_name = part_name
+                                    p2i_instances_configs.part_dimentions = part_dimention
+                                    p2i_instances_configs.part_pieces = part_pieces
+                                    p2i_instances_configs.dimention_total = dimention_total
+                                    p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
+
+                                    p2i_instances_configs.save()
+                                    p2i_instances_configs.producttoitem.save() # save the parent model
+                                    row_no = row_no + 1  # increase the row after save
+
                                 else:
-                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
-                                    p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
-                                    p2i_config_instance.delete()
-                                    p2i_config_instance.producttoitem.save()
+                                    row_no = row_no + 1 # increase the row after save
+                                    p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
+                                    p2i_instances_configs.delete()
+                                    p2i_instances_configs.producttoitem.save()
+
+                            else:
+                                row_no = 0
+
+                        
             else:
 
                 messages.error(request, 'File with invalid Product Refrence Id uploaded')
@@ -346,7 +365,7 @@ def product_color_sku(request,ref_id = None):
 
 def pproduct_list(request):
     
-    queryset = Product.objects.select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color').all()
+    queryset = Product.objects.all().order_by('Product_Name').select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color')
     product_search = request.GET.get('product_search')
   
     if product_search != '' and product_search is not None:
@@ -657,10 +676,10 @@ def item_list(request):
     g_search = request.GET.get('item_search')
     #select related for loading forward FK relationships and prefetch related for reverse relationship  
     #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
-    queryset = Item_Creation.objects.select_related('Item_Color','unit_name_item',
+    queryset = Item_Creation.objects.all().annotate(total_quantity=Sum('shades__godown_shades__quantity')).order_by('item_name').select_related('Item_Color','unit_name_item',
                                                     'Fabric_Group','Item_Creation_GST','Item_Fabric_Finishes',
                                                     'Item_Packing').prefetch_related('shades',
-                                                    'shades__godown_shades').all().annotate(total_quantity=Sum('shades__godown_shades__quantity'))
+                                                    'shades__godown_shades')
 
 
 # cannot use icontains on foreignkey fields even if it has data in the fields
@@ -731,11 +750,9 @@ def item_edit(request,pk):
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
 
         if form.is_valid() and formset.is_valid():
-            print(formset)
-            print('forms',formset.forms)
-            formsethas_changed = [forms for forms in formset if formset.has_changed()]
-            print('has_changed',formsethas_changed)
             form.save()
+
+
             formset.save()
             messages.success(request,'Item updated successfully')
             return redirect('item-list')
@@ -771,7 +788,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
         
         if loaded_data:
-            print('testtt')
+
             new_row_data = loaded_data.get('new_row', {})
             initial_data_backend = []
 
@@ -1831,6 +1848,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                         prefix_id =  int(popup_godown_data.get('prefix_id'))
                                         primarykey = int(popup_godown_data.get('primary_id'))
                                         old_item_shade = int(old_item_shade)
+                                        
                                         #function to update popup data on main submit only 
                                         purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade)
                                         
@@ -2233,7 +2251,7 @@ def packaging_delete(request,pk):
 
 def product2item(request,product_refrence_id):
     
-    items = Item_Creation.objects.all()
+    items = Item_Creation.objects.all().order_by('item_name')
     product_refrence_no = product_refrence_id
     Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
 
@@ -2369,7 +2387,8 @@ def product2item(request,product_refrence_id):
 def export_Product2Item_excel(request,product_ref_id):
     
     products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False).order_by('row_number')
-    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by('row_number')  #.order_by('Item_pk', 'id').distinct('Item_pk')
+    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by('Item_pk', 'id').distinct('Item_pk')
+    print(products_in_i2p_special)
 
     wb = Workbook()
 
@@ -2401,7 +2420,7 @@ def export_Product2Item_excel(request,product_ref_id):
 
 
     #for product_special_configs
-    headers =  ['id','product sku', 'item name','part name', 'part dimention','dimention total','part pieces','grand_total']
+    headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','grand_total']
     sheet1.append(headers)
 
     row_count_to_unlock_total = 1
@@ -2436,14 +2455,14 @@ def export_Product2Item_excel(request,product_ref_id):
         rows_to_insert_s1.clear()
 
     # unlock the rows ment for editing 
-    for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=8):
+    for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=7):
         for cell in row:
             cell.protection = Protection(locked = False)
 
 
 
     # for product_common_configs
-    headers =  ['id','product sku', 'item name','part name', 'part dimention','dimention total','part pieces', 'grand_total']
+    headers =  ['id','item name','part name', 'part dimention','dimention total','part pieces', 'g total']
     sheet2.append(headers)
 
 
@@ -2456,7 +2475,6 @@ def export_Product2Item_excel(request,product_ref_id):
             rows_to_insert_s2.append([
             product_configs.id,
             product_configs.producttoitem.Item_pk.item_name,
-            product_configs.producttoitem.PProduct_pk.PProduct_SKU,
             product_configs.part_name,
             product_configs.part_dimentions,
             product_configs.dimention_total,
@@ -2472,12 +2490,12 @@ def export_Product2Item_excel(request,product_ref_id):
 
 
         # Insert a blank row and grant total from parent in sheet after every product data has inserted
-        sheet2.append(['','','','','','','', grand_total_parent])
+        sheet2.append(['','','','','','', grand_total_parent])
 
         rows_to_insert_s2.clear()
 
     # unlock the rows ment for editing 
-    for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=4, max_col=8):
+    for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=7):
         for cell in row:
             cell.protection = Protection(locked = False)
 

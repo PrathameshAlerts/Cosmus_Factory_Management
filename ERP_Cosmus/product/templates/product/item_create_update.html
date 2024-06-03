@@ -32,21 +32,20 @@
 
     <div class="d-flex my-3">
       <label for="id_Fabric_Group" class="form-label item-form">Fabric Group:</label>
-      <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group" required>
-
-        {% if form.instance.id %}
-        <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.fab_grp }}</option>
-        {% for x in fab_grp %}
-        <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
-        {% endfor %}
-        {% elif not form.instance.id %}
-        <option value=""></option>
-        {% for x in fab_grp %}
-        <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
-        {% endfor %}
-        {% endif %}
+      <select class="item-select" name="Fabric_Group" required id="id_Fabric_Group">
+          {% if form.instance.id %}
+              <option value="{{ form.instance.Fabric_Group.id }}">{{ form.instance.fab_grp }}</option>
+              {% for x in fab_grp %}
+                  <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
+              {% endfor %}
+          {% elif not form.instance.id %}
+              <option value=""></option>
+              {% for x in fab_grp %}
+                  <option value="{{ x.id }}">{{ x.fab_grp_name }}</option>
+              {% endfor %}
+          {% endif %}
       </select>
-    </div>
+  </div>
 
     <div class=" d-flex my-3">
       <label for="id_Item_Color" class="form-label item-form">Color:</label>
@@ -281,10 +280,26 @@
 </div>
 
 
+    <!-- Initialize Select2 -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#id_Fabric_Group').select2({
+              placeholder: 'Select a fabric group',
+              allowClear: true
+          });
+
+          // Check if Select2 is working
+          if ($.fn.select2) {
+              console.log('Select2 is loaded and initialized.');
+          } else {
+              console.error('Select2 is not loaded.');
+          }
+      });
+  </script>
+
 <script>
   
   $(document).ready(function () {
-
     $(document).on('change', '[name^="item-to-clone"]', function () {
 
        var itemValue = $(this).val()

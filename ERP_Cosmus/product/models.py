@@ -549,6 +549,7 @@ class item_godown_quantity_through_table(models.Model):
     
             
 
+
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
