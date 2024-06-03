@@ -1348,12 +1348,6 @@ input[type=number] {
     background-color: #5c5c5c;
     color: #fff;
 }
-
-.bg-highlight::after ,
-.bg-highlight::before{
-    background-color: #5c5c5c;
-    color: #fff;
-}
  
  
   .custom-select {
@@ -1364,13 +1358,25 @@ input[type=number] {
     padding-left: 5px;
     height: 33px;
 }
-
+.productSelect{
+    width: 220px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+}
 .product2Select{
     width: 300px;
     border: 1px solid #cecdcd;
     border-radius: 3px;
     padding-left: 5px;
     height: 33px;
+}
+
+.highlight {
+color: rgb(8, 185, 249); /* or any other style you prefer */
+background-color: #555;
+
 }
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {

@@ -2232,7 +2232,7 @@ def packaging_delete(request,pk):
 
 
 def product2item(request,product_refrence_id):
-    
+    print(request.POST)
     items = Item_Creation.objects.all()
     product_refrence_no = product_refrence_id
     Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')

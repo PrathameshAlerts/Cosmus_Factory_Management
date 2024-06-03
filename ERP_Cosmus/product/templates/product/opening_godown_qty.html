@@ -7,7 +7,7 @@
 
 
 
-<form action="" method="POST">
+<form action="" method="POST" onsubmit="openData()">
     {% csrf_token %}
     <table id="tableItem" class="table table-striped table-hover">
         <thead>
@@ -26,7 +26,7 @@
             <tr>
                 <td>
                     <select name="{{form.prefix}}-opening_godown_id" id="id_{{form.prefix}}-opening_godown_id"
-                        class="purchase-input godown-select">
+                        class="item-select godown-select">
                         {% if form.instance.id %}
                         <option value="{{form.instance.opening_godown_id.id}}">
                             {{form.instance.opening_godown_id.godown_name_raw}}</option>
@@ -56,8 +56,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <button type="button" class="create-btn" id="addRow">Add +</button>
-    <input type="submit" class="add_btn submitBtn">
+    <button type="button" class="create-btn" id="addRow" >Add +</button>
+    <input type="submit" class="add_btn submitBtn" >
 
 </form>
 
@@ -78,7 +78,7 @@
 
                 if (lastVisibleRow) {
                     const newRates = lastVisibleRow.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
-
+                
                     if (newRates != '' && newRates != null) {
                         const index = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS');
                         const indexValue = parseInt(index.value);
@@ -135,8 +135,34 @@
         });
     }
         deleteData();
-    });
 
+
+        
+    });
+    function openData(){
+            var newForm = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS').value;
+            console.log(newForm);
+
+            for(var i = 0; i < newForm; i++){
+                var godownData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_godown_id').value;
+                console.log(godownData);
+                var qtyData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_quantity').value;
+                console.log(qtyData);
+                var rateData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_rate').value;
+                console.log(rateData);
+
+            }
+
+            var newData ={
+                'godownData':godownData,
+                'qtyData':qtyData,
+                'rateData':rateData
+            }
+            var openingValue = JSON.stringify(newData);
+            console.log(openingValue);
+            window.opener.receiveData(openingValue);
+            window.close();
+        }
 
 </script>
 
