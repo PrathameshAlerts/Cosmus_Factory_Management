@@ -116,10 +116,10 @@
    
 $(document).ready( function() {
     var newValueKey;
-    var enterPressed = false;
+    var enterValue = false;
     var index = 0; //  index outside of the event listener
    var indexbool = false;
-   var purchaseData; 
+
 
 // this ajax reuest to product to uniuque item list
 $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_pks"]', function(){
@@ -134,6 +134,10 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
         $(this).attr('data-key', '');
         return;
    }
+   if(!enterValue){             // Show the dropdown only if Enter key was not pressed
+             suggestionsContainerUniqueId.css('display', 'block');
+    }
+    enterValue = false;
  
    $.ajax({
     url:'/itemdynamicsearchajax/',
@@ -158,10 +162,7 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
             suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
         });
      
-        if(!enterPressed){             // Show the dropdown only if Enter key was not pressed
-             suggestionsContainerUniqueId.css('display', 'block');
-        }
-           enterPressed = false;
+       
     
     },
      error:function(xhr){
@@ -175,13 +176,14 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
    })
 
    suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function() {
-       
+       var dataKey= $(this).attr('data-key');
+      
+      var nameData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(dataKey)
+
        $(this).closest('.custom-dropdown-container').find('.input_text').val($(this).text().trim());
        $(this).addClass('selected').siblings().removeClass('selected');
 
-      var dataKey= $(this).attr('data-key');
-      
-     var nameData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(dataKey)
+     
      suggestionsContainerUniqueId.css('display', 'none');
    })
 
@@ -220,16 +222,14 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
         if(index <= selectLength){
             var selectedItem = selectValue.find(`#itemName-div_${index}`);
             var nextItem = selectedItem.next();
-            var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey);
+         
 
-            // console.log('selectedItem',selectedItem)
              nameDataKey= selectedItem.text();
              nameKey = selectedItem.data('key');
-             
+            var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey);
             $(this).text(nameDataKey);
-            // selectValue.find('.itemName-div').removeClass("bg-highlight");
-            // selectedItem.addClass("bg-highlight");
-           selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
+          
+            selectedItem.addClass("bg-highlight");
 
             var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
             var itemHeight = nextItem.outerHeight();
@@ -263,17 +263,16 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
            if(index <= selectLength){      
             var selectedItem = selectValue.find(`#itemName-div_${index}`);
             var prevItem = selectedItem.prev();
-            var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey); 
+           
 
              nameDataKey= selectedItem.text();
              nameKey = selectedItem.data('key');
-        
-            $(this).text(nameDataKey);
-            // selectValue.find('.itemName-div').removeClass("bg-highlight");
-            // selectedItem.addClass("bg-highlight");
-           
-          selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
 
+             var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey); 
+            $(this).text(nameDataKey);
+           
+            selectedItem.addClass("bg-highlight");
+           
             var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
             var itemHeight = prevItem.outerHeight();
             var selectScrollTop = selectValue.scrollTop();
@@ -292,31 +291,29 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
         if(e.key === 'Enter'){
             e.preventDefault();
 
-            enterPressed = true; // Set the flag to true when Enter is pressed
-            suggestionHide.css('display', 'none');
-            suggestionHide.empty();
- 
         var selectedItem = $(this);
         var nameValues = $(this).text().trim();
         var nameKeyValue = selectedItem.attr('data-key');
         var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(); 
-       
+      
         if (selectedItem.length > 0) {
            
         $(this).val(nameValues);
+      
         index = 0;
         indexbool = false;   
         }
+        enterValue = true; // Set the flag to true when Enter is pressed
+            suggestionHide.css('display', 'none');
         }
    
 })  
-$(document).on('keyup', 'input[name^="product2itemuniqueformset-"][name$="Item_pks"]', function(e){
-    var selectValue = $(this).next('.s-suggestion-container');
-    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
-        selectValue.find('.itemName-div').removeClass("bg-highlight");
-            //selectedItem.addClass("bg-highlight");
-    }
-});
+
+var purchaseData; 
+var enterPressed = false;
+
+var index = 0; //  index outside of the event listener
+var indexbool = false;
 $(document).on('keyup', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function () {
 
      purchaseData = $(this).attr('name').split('-')[1]; // Extract the numeric value from the input name
@@ -330,6 +327,12 @@ $(document).on('keyup', '[name^="product2itemcommonformset-"][name$="Item_pks"]'
         $(this).attr('data-key', '');
         return;
     }
+    if(!enterPressed){
+                               // Show the dropdown only if Enter key was not pressed
+        suggestionsContainerCommon.css('display', 'block');
+    }
+    enterPressed = false; // Reset the flag when key is released
+                   
 
     $.ajax({
         url:'/itemdynamicsearchajax/',
@@ -352,12 +355,7 @@ $(document).on('keyup', '[name^="product2itemcommonformset-"][name$="Item_pks"]'
                     suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${value}</div>`);
                 });
                 
-                if(!enterPressed){
-                               // Show the dropdown only if Enter key was not pressed
-                suggestionsContainerCommon.css('display', 'block');
-              }
-             enterPressed = false; // Reset the flag when key is released
-                   
+               
                 
         },
         error:function(xhr){
@@ -387,14 +385,12 @@ $(document).on('click', '.commom_item',function(){
         selectValue.empty();
     })
 
-//    var index = 0; //  index outside of the event listener
-//    var indexbool = false;
 $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]',function(e){
         var nameDataKey;
         var nameKey;
         var selectValue = $(this).next('.s-suggestion-container');
         var selectLength = selectValue.find('.itemName-div').length-1;
-        var commomSugenstionHide = $(this).closest('.custom-dropdown-container').find(`#id_item_input_Name_${purchaseData}`);
+       
         var nameData = $(this).val().trim();
      
         if(nameData === ''){
@@ -411,18 +407,17 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
         if(index <= selectLength){
             var selectedItem = selectValue.find(`#itemName-div_${index}`);
             var nextItem = selectedItem.next();
-            var nameData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
-             
-
+            
             nameDataKey= selectedItem.text();
             nameKey = selectedItem.data('key');
-           
+
+            var nameData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
+
             $(this).attr('data-key', nameKey);
             $(this).text(nameDataKey);
 
-            // selectValue.find('.itemName-div').removeClass("bg-highlight");
-            // selectedItem.addClass("bg-highlight");
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
+    
+            selectedItem.addClass("bg-highlight");
  
             var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
             var itemHeight = nextItem.outerHeight();
@@ -457,17 +452,17 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
          
             var selectedItem = selectValue.find(`#itemName-div_${index}`);
             var prevItem = selectedItem.prev();
-            var nameData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
+         
 
              nameDataKey= selectedItem.text();
              nameKey = selectedItem.data('key');
 
+             var nameData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
             $(this).attr('data-key', nameKey);
             $(this).text(nameDataKey);
 
-            // selectValue.find('.itemName-div').removeClass("bg-highlight");
-            // selectedItem.addClass("bg-highlight");
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
+         
           
             var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
             var itemHeight = prevItem.outerHeight();
@@ -486,11 +481,14 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
         }
         if(e.key === 'Enter'){
         e.preventDefault();
-        enterPressed = true; // Set the flag to true when Enter is pressed
-        commomSugenstionHide.css('display', 'none'); // Hide the dropdown
+        var commomSugenstionHide = $(this).closest('.custom-dropdown-container').find(`#id_item_input_Name_${purchaseData}`);
+     
       
         var selectedItem = $(this);
         var nameValues = $(this).text().trim();
+        var nameKeyValue = selectedItem.attr('data-key');
+        var hiddenData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val();
+
         if (selectedItem.length > 0) {
             
             $(this).val(nameValues);
@@ -498,21 +496,11 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
           indexbool = false;
         
         }
-       
+        enterPressed = true; // Set the flag to true when Enter is pressed
+        commomSugenstionHide.css('display', 'none'); // Hide the dropdown
         }    
         
 })
-
-$(document).on('keyup', 'input[name^="product2itemcommonformset-"][name$="Item_pks"]', function(e){
-    var selectValue = $(this).next('.s-suggestion-container');
-    let selectedItem = selectValue.find(`#itemName-div_${index}`);
-    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
-        console.log('Arrow key pressed');
-        selectValue.find('.itemName-div').removeClass("bg-highlight");
-    
-       
-    }
-});
 })
    
 
