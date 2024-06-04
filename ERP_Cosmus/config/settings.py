@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     #'cities_light',
     'django_htmx',
-    'django_select2',
+    #'django_select2',
 ]
 
 

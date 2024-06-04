@@ -42,9 +42,9 @@
                 <td> 
                     <div class="custom-dropdown-container"> 
                         <input  type="hidden"name="{{form.prefix}}-Item_pk" id="id_{{form.prefix}}-Item_pk"  class="product2Select input_hidden-value"   value="{% if form.instance.id %}{{ form.instance.Item_pk.id }}{% endif %}" > 
-                        <input  type="text"name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks"  class="product2Select input_text"  placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
-                        <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" style="display: none; height: 197px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
-                            
+                        <input  type="text"name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks"  class="product2Select input_text search-input"  placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
+                        <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="item-select item-name s-suggestion-container commom_items " style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                             
                         
                         </div>
                     </div> 
@@ -86,8 +86,8 @@
                         <td>
                             <div class="custom-dropdown-container">
                                 <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk"  class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
-                                    <input  type="text"name="{{forms.prefix}}-Item_pks" id="id_{{forms.prefix}}-Item_pks"  class="product2Select commom_item"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.item_name}}{% endif %}" data-key="" > 
-                                    <div name="item_input_Name_{{forloop.counter0}}" id="id_item_input_Name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" style="display: none; height: 194px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                                    <input  type="text"name="{{forms.prefix}}-Item_pks" id="id_{{forms.prefix}}-Item_pks"  class="product2Select commom_item search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.item_name}}{% endif %}" data-key="" > 
+                                    <div name="item_input_Name_{{forloop.counter0}}" id="id_item_input_Name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container commom_items" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                                     
                                 
                                     </div>
@@ -147,20 +147,23 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
         'nameValue': nameValue
     },
     success:function(response){
+
+        // Function to escape special characters in the search query
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
         var searchData = response.searched_item_name_dict;
         var searchQuery = nameValue.toLowerCase();
+        var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+        var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
         var filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
         
         suggestionsContainerUniqueId.empty();
 
         $.each(filteredOptions, function(index, [key, value]) {
-            var regex = new RegExp(`(${searchQuery})`, 'ig');
-             
-            var highlightedText = value.replace(regex, function(match) {
-                    return `<span class="highlight">${match}</span>`; // Wrap matched text with a highlight span
-                });
-            
-            suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
+           
+            var highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+            suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
         });
      
        
@@ -230,7 +233,7 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
             var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey);
             $(this).text(nameDataKey);
           
-            selectedItem.addClass("bg-highlight");
+            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
 
             var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
             var itemHeight = nextItem.outerHeight();
@@ -272,7 +275,7 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
              var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey); 
             $(this).text(nameDataKey);
            
-            selectedItem.addClass("bg-highlight");
+            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
            
             var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
             var itemHeight = prevItem.outerHeight();
@@ -342,18 +345,20 @@ $(document).on('keyup', '[name^="product2itemcommonformset-"][name$="Item_pks"]'
             'nameValue': nameValue
         },
         success:function(response){
+            function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
           var searchedItemData = response.searched_item_name_dict;
           var searchQuery = nameValue.toLowerCase();
+          var escapedSearchQuery = escapeRegExp(searchQuery); 
+          var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
           var filteredOptions = Object.entries(searchedItemData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
 
             suggestionsContainerCommon.empty();
                
                 $.each(filteredOptions, function(index, [key, value]) {
-                    var regex = new RegExp(`(${searchQuery})`, 'ig');
-                    var highlightedText = value.replace(regex, function(match) {
-                    return `<span class="highlight">${match}</span>`; // Wrap matched text with a highlight span
-                });
-                    suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${value}</div>`);
+                    var highlightedTexts = value.replace(regex, '<span class="highlight">$1</span>');
+                    suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${highlightedTexts}</div>`);
                 });
                 
                
@@ -418,7 +423,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             $(this).text(nameDataKey);
 
     
-            selectedItem.addClass("bg-highlight");
+            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
  
             var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
             var itemHeight = nextItem.outerHeight();
@@ -462,7 +467,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             $(this).attr('data-key', nameKey);
             $(this).text(nameDataKey);
 
-            selectedItem.addClass("bg-highlight");
+            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
          
           
             var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
@@ -708,7 +713,23 @@ document.querySelectorAll('.delete').forEach(function(button) {
 deletedRow();
     });
 
- 
+    document.addEventListener('DOMContentLoaded', function() {
+    const dropdownContainer = document.querySelector('.custom-dropdown-container');
+    const dropdownInput = dropdownContainer.querySelector('.search-input');
+    const dropdown = dropdownContainer.querySelector('.commom_items');
+
+    dropdownInput.addEventListener('focus', adjustDropdownHeight);
+    window.addEventListener('resize', adjustDropdownHeight);
+
+    function adjustDropdownHeight() {
+        dropdown.style.display = 'block';
+        const rect = dropdownInput.getBoundingClientRect();
+        const availableHeightBelow = window.innerHeight - rect.bottom;
+        const maxDropdownHeight = 194;
+        dropdown.style.maxHeight = `${Math.min(availableHeightBelow - 10, maxDropdownHeight)}px`;
+    }
+});
+
 
 </script>
     {% endblock body %} 

@@ -93,7 +93,7 @@
                     <td>
                         <div class="custom-dropdown-container">
                          <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" id="select_item_name_{{forloop.counter0}}" style="display: none; height: 193px;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                            
                         
                           </div>
@@ -435,16 +435,24 @@ function randomValue (){
             method: 'GET',
             data: { 'nameValue': nameValue },
             success: function (response) {
+
+                  // Function to escape special characters in the search query
+                function escapeRegExp(string) {
+                    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                }
                  searchedItemNameDict = response.searched_item_name_dict;
 
                 var searchQuery = nameValue.toLowerCase();
+                var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+                var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
                 var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
          
                 // Clear and repopulate options
                 suggestionsContainer.empty();
 
                 $.each(filteredOptions, function(index, [key, value]) {
-                    suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${value}</div>`);
+                    var highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                    suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${highlightedText}</div>`);
                 });
                 
               
@@ -579,7 +587,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
              nameKey = selectedItem.data('key');
         
             $(this).attr('data-key', nameKey);
-            selectedItem.addClass("bg-highlight");
+            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
  
             var itemOffsetTop = nextItem.position().top;
             var itemHeight = nextItem.outerHeight();
@@ -617,7 +625,7 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
             nameKey = selectedItem.data('key');
         
             $(this).attr('data-key', nameKey);
-            selectedItem.addClass("bg-highlight");
+            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
            
           
             var itemOffsetTop = prevItem.position().top;
@@ -1175,6 +1183,23 @@ addEventListenersToInputs();
     calculateOtherTotal();
     deleteCalculationRow();
     deleteAlltotal();
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const dropdownContainer = document.querySelector('.custom-dropdown-container');
+    const dropdownInput = dropdownContainer.querySelector('.search-input');
+    const dropdown = dropdownContainer.querySelector('.item-select_input');
+
+    dropdownInput.addEventListener('focus', adjustDropdownHeight);
+    window.addEventListener('resize', adjustDropdownHeight);
+
+    function adjustDropdownHeight() {
+        dropdown.style.display = 'block';
+        const rect = dropdownInput.getBoundingClientRect();
+        const availableHeightBelow = window.innerHeight - rect.bottom;
+        const maxDropdownHeight = 194;
+        dropdown.style.maxHeight = `${Math.min(availableHeightBelow - 10, maxDropdownHeight)}px`;
+    }
+});
 
   </script>
 

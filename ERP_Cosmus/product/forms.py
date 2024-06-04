@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from django.forms import modelformset_factory, BaseInlineFormSet
-from django_select2.forms import ModelSelect2Widget
+
 
 
 class PProductCreateForm(forms.ModelForm):
@@ -190,12 +190,6 @@ class Itemform(forms.ModelForm):
                  'Item_Creation_GST','HSN_Code','status','item_shade_image']
         
 
-        widgets = {
-            'items': ModelSelect2Widget(
-                model=Fabric_Group_Model,
-                search_fields=['fab_grp_name__icontains'],  # Adjust the search fields as necessary
-            ),
-        }
 
 ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
 OpeningShadeFormSetupdate = inlineformset_factory(item_color_shade, opening_shade_godown_quantity, fields=('opening_godown_id', 'opening_quantity', 'opening_rate'), extra=1)
