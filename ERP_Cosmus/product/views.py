@@ -190,7 +190,6 @@ def edit_production_product(request,pk):
 
                         
             else:
-
                 messages.error(request, 'File with invalid Product Refrence Id uploaded')
                 return redirect('pproductlist')
             
@@ -2250,270 +2249,311 @@ def packaging_delete(request,pk):
 
 
 def product2item(request,product_refrence_id):
-    
-    items = Item_Creation.objects.all().order_by('item_name')
-    product_refrence_no = product_refrence_id
-    Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
+    try:
+        items = Item_Creation.objects.all().order_by('item_name')
+        product_refrence_no = product_refrence_id
+        Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
 
-
-    #query for filtering unique to product fields for formset_single
-    #filter all record of the products with the ref_id which is marked as unique fields
-    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color')
-    formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
-
-
-    # query for filtering common to all products fields for formset_common 
-    # filter all records of the products with the ref_id which is marked as commonfields (this queryset is used in
-    # post request bcs we want to create or update item with all the products in the filtered qs, while
-    # 'distinct_product2item_commmon_instances' has only distinct records of same item instances(specifically
-    # 1st record of unique item of the filtered qs ))
-    product2item_common_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True)
-
-    # order the filtered queryset in asc order and get distinct records based on Item_pk
-    distinct_product2item_commmon_instances = product2item_common_instances.order_by('Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
-
-    formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
-    
-
-    if request.method == 'POST':
-
-        formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
-        formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
+        if not Products_all.exists():
+                raise ValueError("No products found for the given reference ID.")
         
-        formset_single_valid = False
-        formset_common_valid = False
+        #query for filtering unique to product fields for formset_single
+        #filter all record of the products with the ref_id which is marked as unique fields
+        product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color')
+        formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
-        #for unique records
-        if formset_single.is_valid():
-            # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
-            for form in formset_single.deleted_forms:
-                if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
-                    form.instance.delete()
+
+        # query for filtering all the common items in all the products in the refrence_id after that :
+        #It orders by Item_pk first, so all records with the same Item_pk are grouped together.
+        #Within each group of Item_pk, it orders by id.
+        #distinct('Item_pk') will keep the first record of each group (based on the smallest id within that group).
+        
+        distinct_product2item_commmon_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True).order_by('Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
+
+        formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
+        
+
+        if request.method == 'POST':
+
+            formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
+            formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
             
-            for form in formset_single:
-                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
-                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-                        
-                        if form.instance.pk:  # This line checks if the form instance has a primary key (pk), which means it corresponds to an existing record in the database.
-                            existing_instance = product_2_item_through_table.objects.get(pk=form.instance.pk)  # fetch the existing instance from DB 
-                            initial_rows = existing_instance.no_of_rows # get the existing no of rows form DB
-                        else:
-                            initial_rows = 0
+            formset_single_valid = False
+            formset_common_valid = False
 
-                        p2i_instance = form.save(commit = False)
-                        p2i_instance.common_unique = False
-                        p2i_instance.row_number = form.prefix[-1]  #get the prefix no of the form
-                        
-                        p2i_instance.save()
+            #for unique records
+            if formset_single.is_valid():
+                
+                try:
+                    # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
+                    for form in formset_single.deleted_forms:
+                        if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
+                            form.instance.delete()
+                    
+                    for form in formset_single:
+                        if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+                            if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                                
+                                if form.instance.pk:  # This line checks if the form instance has a primary key (pk), which means it corresponds to an existing record in the database.
+                                    existing_instance = product_2_item_through_table.objects.get(pk=form.instance.pk)  # fetch the existing instance from DB 
+                                    initial_rows = existing_instance.no_of_rows # get the existing no of rows form DB
+                                else:
+                                    initial_rows = 0
 
-                        no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
+                                p2i_instance = form.save(commit = False)
+                                p2i_instance.common_unique = False
+                                p2i_instance.row_number = form.prefix[-1]  #get the prefix no of the form
+                                
+                                p2i_instance.save()
 
-                        if no_of_rows_to_create > 0:
-                            for row in range(no_of_rows_to_create):
-                                set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
+                                no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
 
-                        p2i_instance.save()
-                        formset_single_valid = True
+                                if no_of_rows_to_create > 0:
+                                    for row in range(no_of_rows_to_create):
+                                        set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
+
+                                p2i_instance.save()
+                                formset_single_valid = True
+                except Exception as e:
+                    messages.error(request, 'Error saving unique records.')  
+            
+
+            #for common records
+            if formset_common.is_valid():
+
+                try:
+                    for form in formset_common.deleted_forms:
+                        deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
+
+                        for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
+                            p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
+                            p2i_to_delete.delete()
+                            
+                    for form in formset_common:
+                        if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+
+                            if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+
+                                for product in Products_all:
+                                    #loop through all the products for each form and get the instance with
+                                    # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
+                                    item = form.cleaned_data['Item_pk']
+                                    obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
+
+                                    # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
+                                    if created:
+                                        initial_rows = 0
+
+                                    if not created:
+                                        initial_rows = obj.no_of_rows
+
+                                    obj.no_of_rows =  form.cleaned_data['no_of_rows']
+                                    obj.Remark = form.cleaned_data['Remark']
+                                    obj.row_number = form.prefix[-1]   #get the prefix no of the form
+                                    obj.save()
+
+
+                                    # create records in set_prod_item_part_name table with the saved obj as FK 
+                                    rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
+                                    if rows_to_create > 0:
+                                            for row in range(rows_to_create):
+                                                set_prod_item_part_name.objects.create(producttoitem = obj)
+
+
+                                    formset_common_valid = True
+
+                except Exception as e:
+                    messages.error(request, 'Error saving unique records.') 
         
 
-        #for common records
-        if formset_common.is_valid():
-            for form in formset_common.deleted_forms:
-                deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
+            if formset_common_valid and formset_single_valid:
 
-                for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
-                    p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
-                    p2i_to_delete.delete()
-                    
-            for form in formset_common:
-                if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+                messages.success(request,'Items to Product sucessfully added.')
+                close_window_script = """
+                                                <script>
+                                                window.opener.location.reload(true);  // Reload parent window if needed
+                                                window.close();  // Close current window
+                                                </script>
+                                                """
+                return HttpResponse(close_window_script)
+            
+            else:
+                print(formset_common.errors)
+                print(formset_single.errors)
+                messages.error(request,'Error in Product to Item Forms')
 
-                    if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-
-                        for product in Products_all:
-                            #loop through all the products for each form and get the instance with
-                            # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
-                            item = form.cleaned_data['Item_pk']
-                            obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
-
-                            # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
-                            if created:
-                                initial_rows = 0
-                            if not created:
-                                initial_rows = obj.no_of_rows
-
-                            obj.no_of_rows =  form.cleaned_data['no_of_rows']
-                            obj.Remark = form.cleaned_data['Remark']
-                            obj.row_number = form.prefix[-1]   #get the prefix no of the form
-                            obj.save()
+                close_window_script = """
+                            <script>
+                                                window.opener.location.reload(true);  // Reload parent window if needed
+                                                window.close();  // Close current window
+                                                </script>
+                                                """
+                return HttpResponse(close_window_script)
 
 
-                            # create records in set_prod_item_part_name table with the saved obj as FK 
-                            rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
-                            if rows_to_create > 0:
-                                    for row in range(rows_to_create):
-                                        set_prod_item_part_name.objects.create(producttoitem = obj)
+        return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
+                                                                'Products_all':Products_all,
+                                                                'items':items,'product_refrence_no': product_refrence_no})
 
+    except Exception as e:
 
-                            formset_common_valid = True
-
-      
-
-        if formset_common_valid and formset_single_valid:
-
-            messages.success(request,'Items to Product sucessfully added.')
-            close_window_script = """
-                                            <script>
-                                            window.opener.location.reload(true);  // Reload parent window if needed
-                                            window.close();  // Close current window
-                                            </script>
-                                            """
-            return HttpResponse(close_window_script)
-        else:
-            print(formset_common.errors)
-            print(formset_single.errors)
-            return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
-                                                               'Products_all':Products_all,
-                                                               'items':items,'product_refrence_no': product_refrence_no})
-
-
-    return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
-                                                               'Products_all':Products_all,
-                                                               'items':items,'product_refrence_no': product_refrence_no})
+        messages.error(request, 'An unexpected error occurred. Please try again later.')
+        return render(request, 'production/product2itemsetproduction.html', {
+            'formset_single': formset_single,
+            'formset_common': formset_common,
+            'Products_all': Products_all,
+            'items': items,
+            'product_refrence_no': product_refrence_no
+        })
 
 
 
 
 def export_Product2Item_excel(request,product_ref_id):
     
-    products_in_i2p_special = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False).order_by('row_number')
-    products_in_i2p_common = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by('Item_pk', 'id').distinct('Item_pk')
-    print(products_in_i2p_special)
-
-    wb = Workbook()
-
-    ##delete the default workbook
-    default_sheet = wb['Sheet']
-    wb.remove(default_sheet)    
-
-    wb.create_sheet('product_special_configs')
-    wb.create_sheet('product_common_configs')
-
-    sheet1 = wb.worksheets[0]
-    sheet2 = wb.worksheets[1]
-
-
-    #fix the column width  of sheet1
+    try:
+        # for refrence ORM_query_dump
+        products_in_i2p_special = product_2_item_through_table.objects.filter(
+            PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False).order_by(
+            'row_number')
     
-    column_widths = [10, 40, 20, 30, 20, 15, 10, 10]  # Adjust these values as needed
+        products_in_i2p_common = product_2_item_through_table.objects.filter(
+            PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by(
+            'Item_pk', 'id').distinct('Item_pk')
+    
 
-    for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
-        col_letter = get_column_letter(i)
-        sheet1.column_dimensions[col_letter].width = column_width
+        wb = Workbook()
 
-    #fix the column width  of sheet2
+        ##delete the default workbook
+        default_sheet = wb['Sheet']
+        wb.remove(default_sheet)    
 
-    for i, column_width in enumerate(column_widths, start=1):
-        col_letter = get_column_letter(i)
-        sheet2.column_dimensions[col_letter].width = column_width
+        wb.create_sheet('product_special_configs')
+        wb.create_sheet('product_common_configs')
+
+        sheet1 = wb.worksheets[0]
+        sheet2 = wb.worksheets[1]
 
 
-
-    #for product_special_configs
-    headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','grand_total']
-    sheet1.append(headers)
-
-    row_count_to_unlock_total = 1
-    for product in products_in_i2p_special:
-        grand_total_parent = product.grand_total
-
-        rows_to_insert_s1 = []
-        for product_configs in product.product_item_configs.all():
-            rows_to_insert_s1.append([
-            product_configs.id,
-            product_configs.producttoitem.Item_pk.item_name,
-            product_configs.producttoitem.PProduct_pk.PProduct_SKU,
-            product_configs.part_name,
-            product_configs.part_dimentions,
-            product_configs.dimention_total,
-            product_configs.part_pieces
+        #fix the column width  of sheet1
         
-        ])
+        column_widths = [10, 40, 20, 30, 20, 15, 10, 10]  # Adjust these values as needed
+
+        for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+            col_letter = get_column_letter(i)
+            sheet1.column_dimensions[col_letter].width = column_width
+
+        #fix the column width  of sheet2
+
+        for i, column_width in enumerate(column_widths, start=1):
+            col_letter = get_column_letter(i)
+            sheet2.column_dimensions[col_letter].width = column_width
+
+
+
+        #for product_special_configs
+        headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','grand_total']
+        sheet1.append(headers)
+
+        row_count_to_unlock_total = 1
+        for product in products_in_i2p_special:
+            grand_total_parent = product.grand_total
+
+            rows_to_insert_s1 = []
+            for product_configs in product.product_item_configs.all():
+                rows_to_insert_s1.append([
+                product_configs.id,
+                product_configs.producttoitem.Item_pk.item_name,
+                product_configs.producttoitem.PProduct_pk.PProduct_SKU,
+                product_configs.part_name,
+                product_configs.part_dimentions,
+                product_configs.dimention_total,
+                product_configs.part_pieces
+            
+            ])
+            
+            row_count_to_unlock = 1
+
+            for row in rows_to_insert_s1:
+                sheet1.append(row)
+                row_count_to_unlock = row_count_to_unlock + 1
+
+            row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
+
+
+            # Insert a blank row and grand total from parent model in sheet after every product data has inserted
+            sheet1.append(['','','','','','','', grand_total_parent])
         
-        row_count_to_unlock = 1
+            rows_to_insert_s1.clear()
 
-        for row in rows_to_insert_s1:
-            sheet1.append(row)
-            row_count_to_unlock = row_count_to_unlock + 1
+        # unlock the rows ment for editing 
+        for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=7):
+            for cell in row:
+                cell.protection = Protection(locked = False)
 
-        row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
 
 
-        # Insert a blank row and grand total from parent model in sheet after every product data has inserted
-        sheet1.append(['','','','','','','', grand_total_parent])
+        # for product_common_configs
+        headers =  ['id','item name','part name', 'part dimention','dimention total','part pieces', 'g total']
+        sheet2.append(headers)
+
+
+        row_count_to_unlock_total_common = 1
+        for product in products_in_i2p_common:
+            grand_total_parent = product.grand_total
+
+            rows_to_insert_s2 = []
+            for product_configs in product.product_item_configs.all():
+                rows_to_insert_s2.append([
+                product_configs.id,
+                product_configs.producttoitem.Item_pk.item_name,
+                product_configs.part_name,
+                product_configs.part_dimentions,
+                product_configs.dimention_total,
+                product_configs.part_pieces
+            ])
+
+            row_count_to_unlock = 1
+
+            for row in rows_to_insert_s2:
+                sheet2.append(row)
+                row_count_to_unlock = row_count_to_unlock + 1
+            row_count_to_unlock_total_common =  row_count_to_unlock_total_common + row_count_to_unlock
+
+
+            # Insert a blank row and grant total from parent in sheet after every product data has inserted
+            sheet2.append(['','','','','','', grand_total_parent])
+
+            rows_to_insert_s2.clear()
+
+        # unlock the rows ment for editing 
+        for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=7):
+            for cell in row:
+                cell.protection = Protection(locked = False)
+
+
+
+        # Protect the entire worksheet
+        sheet1.protection.sheet = True
+        sheet2.protection.sheet = True
+
+        fileoutput = BytesIO()
+        wb.save(fileoutput)
+        
+        # Prepare the HTTP response with the Excel file content
+        response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        file_name_with_pk = f'product_reference_id_{product_ref_id}'
+        response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
+
+        return response
     
-        rows_to_insert_s1.clear()
-
-    # unlock the rows ment for editing 
-    for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=7):
-        for cell in row:
-            cell.protection = Protection(locked = False)
-
-
-
-    # for product_common_configs
-    headers =  ['id','item name','part name', 'part dimention','dimention total','part pieces', 'g total']
-    sheet2.append(headers)
-
-
-    row_count_to_unlock_total_common = 1
-    for product in products_in_i2p_common:
-        grand_total_parent = product.grand_total
-
-        rows_to_insert_s2 = []
-        for product_configs in product.product_item_configs.all():
-            rows_to_insert_s2.append([
-            product_configs.id,
-            product_configs.producttoitem.Item_pk.item_name,
-            product_configs.part_name,
-            product_configs.part_dimentions,
-            product_configs.dimention_total,
-            product_configs.part_pieces
-        ])
-
-        row_count_to_unlock = 1
-
-        for row in rows_to_insert_s2:
-            sheet2.append(row)
-            row_count_to_unlock = row_count_to_unlock + 1
-        row_count_to_unlock_total_common =  row_count_to_unlock_total_common + row_count_to_unlock
-
-
-        # Insert a blank row and grant total from parent in sheet after every product data has inserted
-        sheet2.append(['','','','','','', grand_total_parent])
-
-        rows_to_insert_s2.clear()
-
-    # unlock the rows ment for editing 
-    for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=7):
-        for cell in row:
-            cell.protection = Protection(locked = False)
-
-
-
-    # Protect the entire worksheet
-    sheet1.protection.sheet = True
-    sheet2.protection.sheet = True
-
-    fileoutput = BytesIO()
-    wb.save(fileoutput)
+    except product_2_item_through_table.DoesNotExist:
+        messages.error(request, 'No data found for the given product reference ID.')
+        return HttpResponse("No data found for the given product reference ID.", status=404)
     
-    # Prepare the HTTP response with the Excel file content
-    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    file_name_with_pk = f'product_reference_id_{product_ref_id}'
-    response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
-
-    return response
+    except Exception as e:
+        messages.error(request, f'An error occurred while exporting data {e}')
+        return HttpResponse("An error occurred while exporting data.", status=500)
 
 
 
