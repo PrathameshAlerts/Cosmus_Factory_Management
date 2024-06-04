@@ -87,7 +87,7 @@
           {% for shade_form in formset %}
           {{ shade_form.id }}
             <tr>
-             
+             <input type="hidden" name="{{ shade_form.prefix }}-openingValue" id="{{ shade_form.prefix }}-openingValue" value="">
               <!-- Render each field manually -->
               <td>
                 <!-- item_name_rank -->
@@ -346,7 +346,7 @@
                 $('#id_Item_Creation_GST').val(r_gst.gst_key);
               
                 $('#id_HSN_Code').val(r_hsn_code);
-                
+
                 $('#id_status').val(r_status);
 
               
@@ -382,9 +382,21 @@
             }
         });
     });
+
+   
 });
 
-
+function receiveData(openingValue){
+    var totalForm = document.getElementById(id_shades-TOTAL_FORMS).value;
+    console.log(totalForm)
+      var popupData = openingValue;
+      console.log(popupData)
+      // for(var i = 0 ; i<totalForm ; i++){
+        
+      // }
+      document.getElementById('shades-0-openingValue').value = popupData;
+     
+    }
 </script>
 
 <script>
@@ -397,9 +409,7 @@
       var itemValue = itemId.split('-')[1];
       var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
       var primary_key_id = primaryKey.value;
-      console.log('id',primary_key_id)
-      console.log('itemId',itemId)
-      console.log('itemValue',itemValue)
+    
       if (newPopup === null || newPopup.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
@@ -430,29 +440,6 @@
 
 
 <script>
-
-  
-
-// function reladFabricPage(){
-//   $.ajax({
-//     url: '{% url "fabric-popup" %}',
-//     type: 'GET',
-//     success: function (response){
-//       var fabricSelectOption = document.getElementById('id_Fabric_Group');
-//       fabricSelectOption.innerHTML = '';
-//       response.data.forEach(element => {
-//         var options = document.createElement('option');
-//         options.value = element.id;
-//         options.textContent = element.name;
-//         fabricSelectOption.appendChild(options);
-
-//       });
-//     },
-//     error(xhr,msg,err){
-//       console.log('Error submitting form');
-//     }
-//   })
-// }
 
   var popUpWindow = null;
 
