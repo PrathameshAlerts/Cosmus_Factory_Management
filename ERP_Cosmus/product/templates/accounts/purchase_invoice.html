@@ -429,8 +429,10 @@ function randomValue (){
     }
     enterPressed = false;
 
+   
     if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
-        $.ajax({
+        if(nameValue.length >= 3){
+            $.ajax({
             url: '/itemdynamicsearchajax/',
             method: 'GET',
             data: { 'nameValue': nameValue },
@@ -451,7 +453,11 @@ function randomValue (){
                 suggestionsContainer.empty();
 
                 $.each(filteredOptions, function(index, [key, value]) {
-                    var highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                    var highlightedText = value;
+                    if (searchQuery) {
+                        highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                    }
+                   
                     suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${highlightedText}</div>`);
                 });
                 
@@ -465,6 +471,10 @@ function randomValue (){
                 }
             }
         });
+        }else{
+            suggestionsContainer.empty();
+        }
+        
     } else {
         var itemNameData = $(this).closest('tr').find('input[name^="item_name_"]');
         var shadeNameData = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
