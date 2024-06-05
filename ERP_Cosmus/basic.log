@@ -116,3 +116,7 @@
 2024-06-05 17-11-01 WARNING Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
 2024-06-05 17-11-01 WARNING Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
 2024-06-05 17-11-01 WARNING Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-05 17-40-42 DEBUG This is a debug message
+2024-06-05 17-40-42 WARNING This is a warning message
+2024-06-05 17-40-42 CRITICAL This is a critical message
+2024-06-05 17-40-43 WARNING Not Found: /itemcreate/...
