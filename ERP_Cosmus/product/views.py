@@ -55,6 +55,7 @@ def dashboard(request):
 
 #NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
 def edit_production_product(request,pk):
+
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
@@ -111,6 +112,7 @@ def edit_production_product(request,pk):
 
                     # ws1
                     grand_total = 0
+                    print(grand_total)
                     for row in ws1.iter_rows(min_row=2,min_col=1):
                         id = row[0].value
                         item_name = row[1].value
@@ -141,14 +143,18 @@ def edit_production_product(request,pk):
                                     p2i_config_instance.delete()
                                     p2i_config_instance.producttoitem.save()
 
+                        else:
+                            grand_total = 0
+
 
 
                     # ws2        
-                    for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): # loop through all the products in the sku 
+                    for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
                         product_sku = product_c.PProduct_SKU
                         
-                        row_no = 0
+                        row_no = 0  # row_no to co relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
                         grand_total = 0
+                        
                         for row in ws2.iter_rows(min_row=2,min_col=1):  # for every loop through each row in the sheet
                             
                             id = row[0].value
@@ -159,13 +165,14 @@ def edit_production_product(request,pk):
                             part_pieces = row[5].value
                             
                             if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
-                                
-                                grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
 
-                                # get the p2i instance for the product with the item in row 
-                                p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku ,Item_pk__item_name= item_name, common_unique = True)
+                                grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
                                 
-                                # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates with the rows in excel to know which config instance to crud
+                                # get the p2i instance for the product with the item in row 
+                                p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
+                                
+                                # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates
+                                # with the rows in excel to know which config instance to crud
                                 p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
 
                                 if part_name is not None:  # check if part name it there if its not then delete that instance
@@ -187,6 +194,7 @@ def edit_production_product(request,pk):
 
                             else:
                                 row_no = 0
+                                grand_total = 0
 
                         
             else:
