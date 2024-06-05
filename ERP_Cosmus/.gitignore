@@ -2,3 +2,4 @@
 /venv
 /migrations
 /notes
+.product_view_logs.log
