@@ -111,6 +111,7 @@ def edit_production_product(request,pk):
             
             if not excel_file.name.endswith('.xlsx'):
                 messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
+                logger.error('Invalid file format. Please upload a valid Excel file.')
                 return redirect('pproductlist')
             
             if int(product_ref_id_file) == product_ref_id:
@@ -205,12 +206,13 @@ def edit_production_product(request,pk):
                                 row_no = 0
                                 grand_total = 0
 
-                        
             else:
                 messages.error(request, 'File with invalid Product Refrence Id uploaded')
+                logger.error("File with invalid Product Refrence Id uploaded")
                 return redirect('pproductlist')
             
         except Exception as e:
+            logger.error(f"An error occured - {str(e)}")
             messages.error(request, f'Error uploading Excel file: {str(e)}')
         
 
@@ -640,14 +642,15 @@ def item_create(request):
 
         if form.is_valid():
             form_instance = form.save()
-            
+
+
             logger.info("Item Successfully Created")
             messages.success(request,'Item has been created')
             return redirect(reverse('item-edit', args=[form_instance.id]))
-        
+    
         else:
             print(form.errors)
-            logger.error("item Form Not Valid")
+            logger.error(f"item form not valid{form.errors}")
             messages.error(request,'Error with item creation')
             
             return render(request,'product/item_create_update.html', {'gsts':gsts,

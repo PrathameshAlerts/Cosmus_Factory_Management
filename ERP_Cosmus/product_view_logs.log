@@ -43,3 +43,9 @@
 2024-06-05 17:40:07,410 - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
 2024-06-05 17:40:07,628 - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3e0f10c0203a4853971835c3fe54604d HTTP/1.1" 200 9080
 2024-06-05 17:41:03,515 - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\logging_config.py changed, reloading.
+2024-06-05 17:43:55,788 - product_views - INFO - Item Successfully Created
+2024-06-05 18:06:07,655 - product_views - ERROR - item Form Not Valid
+2024-06-05 18:10:52,752 - product_views - ERROR - item form not valid<ul class="errorlist"><li>item_name<ul class="errorlist"><li>Item_ creation with this Item name already exists.</li></ul></li></ul>
+2024-06-05 18:12:51,488 - product_views - ERROR - item form not valid<ul class="errorlist"><li>item_name<ul class="errorlist"><li>Item_ creation with this Item name already exists.</li></ul></li></ul>
+2024-06-05 18:25:32,402 - product_views - ERROR - An error occured - invalid literal for int() with base 10: 'Darwing DX 1036  Set Prod+PO4RM+Cutting+L'
+2024-06-05 18:29:32,896 - product_views - ERROR - Invalid file format. Please upload a valid Excel file.
