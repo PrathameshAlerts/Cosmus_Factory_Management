@@ -1,0 +1,13 @@
+2024-06-04 17-54-07 DEBUG This is a debug message
+2024-06-04 17-54-07 WARNING This is a debug message
+2024-06-04 17-54-07 CRITICAL This is a debug message
+2024-06-04 17-54-07 WARNING Not Found: /itemcreate/...
+2024-06-04 17-54-53 DEBUG This is a debug message
+2024-06-04 17-54-53 WARNING This is a debug message
+2024-06-04 17-54-53 CRITICAL This is a debug message
+2024-06-04 17-54-54 WARNING Not Found: /itemcreate/...
+2024-06-04 17-55-08 DEBUG This is a debug message
+2024-06-04 17-55-08 WARNING This is a debug message
+2024-06-04 17-55-08 CRITICAL This is a debug message
+2024-06-04 17-55-08 WARNING Not Found: /itemcreate/...
+2024-06-04 17-57-07 INFO D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.

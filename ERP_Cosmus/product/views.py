@@ -607,6 +607,18 @@ def product2subcategoryajax(request):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
+
+    logging.basicConfig(level=logging.DEBUG,
+        format= "%(asctime)s %(levelname)s %(message)s",
+        datefmt="%Y-%m-%d %H-%M-%S",
+        filename="basic.log")
+
+    logging.debug('This is a debug message')
+    #logging.info('This is a info message')
+    logging.warning('This is a warning message')
+    logging.critical('This is a critical message')
+    #logging.error('This is a error message')
+
     title = 'Item Create'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
@@ -622,12 +634,14 @@ def item_create(request):
         
         if form.is_valid():
             form_instance = form.save()
-
-            messages.success(request,'Item has been created, Update quantity in godown')
+            logging.info('This is a info message')
+            messages.success(request,'Item has been created')
             return redirect(reverse('item-edit', args=[form_instance.id]))
         
         else:
             print(form.errors)
+            messages.error(request,'Error with item creation')
+            logging.error('This is a debug message')
             return render(request,'product/item_create_update.html', {'gsts':gsts,
                                                                       'fab_grp':fab_grp,
                                                                       'unit_name':unit_name,
