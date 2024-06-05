@@ -181,7 +181,7 @@ def edit_production_product(request,pk):
                                     p2i_instances_configs.part_pieces = part_pieces
                                     p2i_instances_configs.dimention_total = dimention_total
                                     p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
-
+    
                                     p2i_instances_configs.save()
                                     p2i_instances_configs.producttoitem.save() # save the parent model
                                     row_no = row_no + 1  # increase the row after save
