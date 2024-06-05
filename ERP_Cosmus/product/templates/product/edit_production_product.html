@@ -9,7 +9,7 @@
     <input type="hidden" class="product_items" name="Number_of_items" id="id_Number_of_items" value="{{form.instance.Number_of_items | default_if_none:'0'}}">
     <input type="hidden" name="updated_url" id="updated_url" value="">
     <label for="id_Product_Refrence_ID" class="fs-5 fw-bold">Refrence ID :</label>
-    <input type="number" readonly class="product_items fs-5 id text-danger" value={{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID"  id="id_Product_Refrence_ID">
+    <input type="number" readonly class="refrence_item fs-5 id text-danger" value={{form.instance.Product_Refrence_ID}} name="Product_Refrence_ID"  id="id_Product_Refrence_ID">
     <label for="id_Model_Name" class="fw-bold ms-2 fs-5 ">Model Name :</label>
     <span type="text" class="product_items fs-5 text-danger" value="" name="" readonly id="">{{form.instance.Model_Name|default_if_none:''}}</span>
     <label for="" class="fw-bold ms-2 fs-5">Color Count :</label>
