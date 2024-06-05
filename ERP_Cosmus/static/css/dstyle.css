@@ -623,6 +623,22 @@ input[type=number] {
 
 .table th, .table td {
     white-space: nowrap; /* Prevent text from wrapping */
+    vertical-align: middle;
+    text-align: center;
+}
+.inner-table {
+    width: 100%;
+    margin: 0;
+}
+.inner-table td {
+    border: none !important; /* Remove border from inner table cells */
+}
+
+.centered-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Ensure the cell takes the full height of the row */
 }
 /*===========create item form =========*/
 .item-form{
