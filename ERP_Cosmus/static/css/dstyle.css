@@ -624,7 +624,6 @@ input[type=number] {
 .table th, .table td {
     white-space: nowrap; /* Prevent text from wrapping */
     vertical-align: middle;
-    text-align: center;
 }
 .inner-table {
     width: 100%;
@@ -1120,8 +1119,8 @@ input[type=number] {
   }
   /*===popup page ===*/
   .popup_page{
-    margin: 10px;
     padding-top: 70px;
+    padding-left: 10px;
     display: block;
     width: 100%;
   } 

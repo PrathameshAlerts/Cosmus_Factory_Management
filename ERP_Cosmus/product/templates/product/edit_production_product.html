@@ -22,7 +22,7 @@
     <div>
       <label for="" class="fw-bold">Images:</label>
       <div>
-        <button type="button" class="create-btn" onclick="redirectPproduct()">Return</button>
+        <button type="button" class="create-btn" onclick="redirectPproduct()">Add</button>
       </div>
       
     </div>
@@ -562,19 +562,23 @@
     class="fas fa-angle-right arrowBtn"></i></span></button>
 
   <div id="set_production" style="display: none;">
-    <div class="row">
-      <div class="col-lg-3 mx-3">
+    <div class="row mt-3">
+      <div class="col-lg-3 ms-2">
+        <div class="d-flex">
+          <lable>Set Production:</lable>
+          <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Production</button> 
+        </div>
+
        
-          <button type="button" class="add_btn" id="edit_set_production" onclick="editSetProduction(this)">Edit Set Production</button>  
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-4">
         <div class="d-flex">
           <div class="d-flex mx-4">
             <lable class="mt-2 me-2">Download File:</lable>
             <label for="setProduction"> 
               <img src="../static/images/file down.png" style="width: 40px; height: 40px"/>
             </label>
-            <input type="button" class="add_btn"  onclick="redirectDownloadSetProduction()" id="setProduction" value="Set Production" style="display: none;" download>
+            <input type="button" class="edit_btn"  onclick="redirectDownloadSetProduction()" id="setProduction" value="Set Production" style="display: none;" download>
           </div>
          
           <div class="image-upload">
@@ -592,7 +596,7 @@
     
     </div>
 </div>
-<div>
+<div class="mb-5">
   <input type="submit" class="item-btn mx-5" value="submit">
 </div>
   
@@ -767,7 +771,7 @@
      var refrence_id = document.getElementById('id_Product_Refrence_ID').value
     
 
-         var minWidth = 1170; // minimum width
+         var minWidth = 1270; // minimum width
          var minHeight = 700;
  
          // this will generate http://127.0.0.1:8000/ 

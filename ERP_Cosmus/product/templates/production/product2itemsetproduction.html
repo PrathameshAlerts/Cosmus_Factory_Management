@@ -13,12 +13,12 @@
     <table class="table table-striped table-bordered" id="mainProductForm">
         <thead class="table-dark">
             <tr>
-                <th style="width: 0%;">No</th>
-                <th style="width: 30%;">Product Sku</th>
-                <th style="width: 30%;">Item Name</th>
-                <th style="width: 0%;" >Rows</th>
-                <th style="width: 0%;">Total</th>
-                <th style="width: 0%;">Remark</th>
+                <th>No</th>
+                <th>Product Sku</th>
+                <th>Item Name</th>
+                <th>Rows</th>
+                <th>Total</th>
+                <th>Remark</th>
                 <th>Delete</th>
             </tr>
         </thead>
@@ -29,8 +29,6 @@
             {{ form.id }}
             <tr>
                 <td><span>{{forloop.counter}}</span></td>
-                <!-- <td><input type="number" class="product_id"  name="{{form.prefix}}-row_number" value="{{forloop.counter}}" maxlength="255" id="id_{{form.prefix}}-row_number" ></td> -->
-               
                 <td>
                     <select class=" productSelect" name="{{form.prefix}}-PProduct_pk" id="id_{{form.prefix}}-PProduct_pk">
                         <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">{{form.instance.PProduct_pk.PProduct_SKU}} &nbsp; &nbsp; {{form.instance.PProduct_pk.PProduct_color}}</option>
@@ -110,7 +108,7 @@
         <button type="button" class="add_btn mb-3" id="addNewRow">Add</button>  
     </div>
     
-<div>
+<div class="mb-4"> 
     <input type="submit" class="add_btn" >
 </div>
 
@@ -559,7 +557,6 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             selectValueName.name = `product2itemuniqueformset-${newFormCount}-Item_pk`;
             selectValueName.value = '';
 
-
             const inputElement = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
             inputElement.id = `id_product2itemuniqueformset-${newFormCount}-no_of_rows`;
             inputElement.name = `product2itemuniqueformset-${newFormCount}-no_of_rows`;
@@ -574,9 +571,6 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             inputRemark.id = `id_product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.value = '';
-
-
-
 
             const deleteElement = newTable.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
             deleteElement.id = `id_product2itemuniqueformset-${newFormCount}-DELETE`;

@@ -18,14 +18,6 @@
 
         </div>
       </div>
-      <!-- <select class="search-input" name="item-to-clone" required id="id_item-to-clone" >
-        <option value="">Select Item</option>
-        {% for item in items_to_clone %}
-        <option value="{{item.id}}">{{item.item_name}}</option>
-        {% endfor %}
-      </select> -->
-      
-      
       {% endif %}
     </div>
     <div class=" d-flex my-3">
@@ -83,11 +75,11 @@
       <div class="mx-3 mb-3">
         <table class="table table-striped table-hover table-responsive rounded-3" id="shadeTable">
           <tr>
-            <th><label for="{{ shade_form.prefix }}-item_name_rank">Rank</label></th>
-            <th><label for="{{ shade_form.prefix }}-item_shade_name">Name</label></th>
-            <th><label for="{{ shade_form.prefix }}-item_color_image">Shade Image</label></th>
-            <th><lable>Opening Qty</lable></th>
-            <th><label for="{{ shade_form.prefix }}-item_delete">Delete</label></th>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Shade Name</th>
+            <th>Opening Qty</th>
+            <th>Delete</th>
           </tr>
           {{ formset.management_form }}
           {% for shade_form in formset %}
