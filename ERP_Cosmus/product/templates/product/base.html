@@ -100,6 +100,14 @@
           <!-- <a href="{% url 'product-2-subcategory' %}" class="sub-item">Product 2 Category</a> -->
         </div>
       </div>
+      
+      <div class="item">
+        <a class="sub-btn" onclick="changeHeaderTitle('Product - Defination')"><i class="fa-solid fa-file-invoice"></i>Production<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="" class="sub-item">Product</a>
+     
+        </div>
+      </div>
     </div>
 </div> 
 <nav class="navbar navbar-expand-lg coder-navbar navbar-light headerpos-fixed header-blue navbar-fixed-top ">
@@ -197,7 +205,14 @@
            <li class="pro-head"><a href="{% url 'define-sub-category-product' %}" class="navText">Sub Cat Create</a></li>
            <li class="pro-head"><a href="{% url 'product-2-subcategory' %}" class="navText">Product 2 Catagory</a></li>   
          </ul>  
-         </li> 
+         </li>
+         <li class="nav-item my-3 mx-2  dropdown">
+          <span class="nav-link text-white"  data-bs-toggle="dropdown" aria-expanded="false">Production</span> 
+          <ul class="dropdown-menu dropdown-menu-right">
+           <li class="pro-head"><a href="" class="navText"></a></li> 
+      
+         </ul>  
+         </li>  
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown notifiaction">

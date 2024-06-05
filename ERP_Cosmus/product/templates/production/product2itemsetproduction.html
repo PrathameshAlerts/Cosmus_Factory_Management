@@ -17,6 +17,7 @@
                 <th style="width: 30%;">Product Sku</th>
                 <th style="width: 30%;">Item Name</th>
                 <th style="width: 0%;" >Rows</th>
+                <th style="width: 0%;">Grand Total</th>
                 <th style="width: 0%;">Remark</th>
                 <th>Delete</th>
             </tr>
@@ -27,7 +28,7 @@
             {% for form in formset_single %}
             {{ form.id }}
             <tr>
-                <td></td>
+                <td><span>{{forloop.counter}}</span></td>
                 <!-- <td><input type="number" class="product_id"  name="{{form.prefix}}-row_number" value="{{forloop.counter}}" maxlength="255" id="id_{{form.prefix}}-row_number" ></td> -->
                
                 <td>
@@ -50,6 +51,7 @@
                     </div> 
                 </td>  
                 <td> <input type="text" class="product_row" name="{{form.prefix}}-no_of_rows" value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
+                <td> <input type="number" class="product_remark" name="{{form.prefix}}-grand_total" value="{{form.instance.Remark | default_if_none:''}}"  maxlength="255" id="id_{{form.prefix}}-grand_total" readonly></td>
                 <td> <input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}"  maxlength="255" id="id_{{form.prefix}}-Remark"></td>
                 <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
             </tr>
@@ -71,6 +73,7 @@
                         <th>No</th>
                         <th>Item Name</th>
                         <th>Rows</th>
+                        <th>Grand Total</th>
                         <th>Remark</th>
                         <th>Delete</th>
                     </tr>
@@ -94,7 +97,7 @@
                             </div> 
                         </td>                     
                         <td> <input type="text" class="product_row" name="{{forms.prefix}}-no_of_rows" value="{{forms.instance.no_of_rows}}"  maxlength="255" id="id_{{forms.prefix}}-no_of_rows" ></td>
-                      
+                        <td> <input type="number" class="product_remark" name="{{forms.prefix}}-grand_total" value=""  maxlength="255" id="id_{{forms.prefix}}-grand_total" readonly></td>
                         <td> <input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}"  maxlength="255" id="id_{{forms.prefix}}-Remark" ></td>
                         <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE" value="" ></i></span></td>
                     </tr>
@@ -562,6 +565,11 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             inputElement.name = `product2itemuniqueformset-${newFormCount}-no_of_rows`;
             inputElement.value = '';
 
+            const grandElement = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
+            grandElement.id = `id_product2itemuniqueformset-${newFormCount}-grand_total`;
+            grandElement.name = `product2itemuniqueformset-${newFormCount}-grand_total`;
+            grandElement.value = '';
+
             const inputRemark = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
             inputRemark.id = `id_product2itemuniqueformset-${newFormCount}-Remark`;
             inputRemark.name = `product2itemuniqueformset-${newFormCount}-Remark`;
@@ -665,11 +673,16 @@ deleteRow();
             inputNameValue.name = `product2itemcommonformset-${newCount}-no_of_rows`;
             inputNameValue.value = '';
 
+            const grandTotalElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total"]');
+            grandTotalElement.id = `id_product2itemcommonformset-${newCount}-grand_total`;
+            grandTotalElement.name = `product2itemcommonformset-${newCount}-grand_total`;
+            grandTotalElement.value = '';
 
             const inputElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
             inputElement.id = `id_product2itemcommonformset-${newCount}-Remark`;
             inputElement.name = `product2itemcommonformset-${newCount}-Remark`;
             inputElement.value = '';
+
 
             const deleteElement = lastRow.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
             deleteElement.id = `id_product2itemcommonformset-${newCount}-DELETE`;

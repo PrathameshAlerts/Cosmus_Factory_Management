@@ -203,13 +203,13 @@ the input field will be pre-filled with that value when the page is loaded. -->
                                  
                     </tr>
                     {% for shade in item.shades.all %}
-                    <tr style="border-bottom: 1px solid gray;">
+                    <tr>
                        
-                      <td class="text-center justify-content-center">{{shade.item_shade_name}}</td>
+                      <td class="centered-cell">{{shade.item_shade_name}}</td>
                       <td>
                         {% for shade_q in shade.godown_shades.all %}
-                        <table class="table table-bordered">
-                            <tr>
+                        <table class="table inner-table">
+                            <tr  style="border-bottom: 1px solid gray;">
                               <td>{{shade_q.godown_name}}</td>
                               <td >{{shade_q.quantity}}</td>
                               

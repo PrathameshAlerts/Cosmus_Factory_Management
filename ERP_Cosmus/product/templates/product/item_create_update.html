@@ -12,12 +12,18 @@
     <div class="d-flex mb-3">
       {% if not form.instance.id %}
       <label for="id_item-to-clone">Clone Item: </label>
-      <select class="search-input" name="item-to-clone" required id="id_item-to-clone" >
+      <div class="custom-dropdown-container">
+        <input type="text" class="product2Select" name="item-to-clone"  id="id_item-to-clone" maxlength="255" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}" data-key="">
+        <div class="item-select item-name s-suggestion-container" id="search-results" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
+
+        </div>
+      </div>
+      <!-- <select class="search-input" name="item-to-clone" required id="id_item-to-clone" >
         <option value="">Select Item</option>
         {% for item in items_to_clone %}
         <option value="{{item.id}}">{{item.item_name}}</option>
         {% endfor %}
-      </select>
+      </select> -->
       
       
       {% endif %}
@@ -280,83 +286,138 @@
 </div>
 
 
-    <!-- Initialize Select2 -->
-    <script type="text/javascript">
-      $(document).ready(function() {
-          $('#id_Fabric_Group').select2({
-              placeholder: 'Select a fabric group',
-              allowClear: true
-          });
-
-          // Check if Select2 is working
-          if ($.fn.select2) {
-              console.log('Select2 is loaded and initialized.');
-          } else {
-              console.error('Select2 is not loaded.');
-          }
-      });
-  </script>
-
 <script>
   
   $(document).ready(function () {
-    $(document).on('change', '[name^="item-to-clone"]', function () {
+    var enterValue = false;
+    var index = 0; //  index outside of the event listener
+   var indexbool = false;
 
-       var itemValue = $(this).val()
-       console.log('itemValue',itemValue)
 
-        $.ajax({
-            url: '/itemcreatecloneajax/',
+    $(document).on('keyup','#id_item-to-clone',function(){
+
+      var nameValue = $(this).val().trim();
+      var suggestionsContainerUniqueId = $('#search-results')
+      console.log(nameValue)
+      
+   if(nameValue === '') {
+        suggestionsContainerUniqueId.css('display', 'none');
+        $(this).attr('data-key', '');
+        return;
+   }
+   if(!enterValue){             // Show the dropdown only if Enter key was not pressed
+             suggestionsContainerUniqueId.css('display', 'block');
+    }
+    enterValue = false;
+
+      
+      $.ajax({
+            url: '/itemdynamicsearchajax/',
             method: 'GET',
             data: {
-                'itemValue': itemValue
+                'nameValue': nameValue
             },
             success: function (response) {
-                item_data_response = response.response_data
+                item_data_response = response.searched_item_name_dict
                 console.log(item_data_response)
-              
-                var r_fab_group = item_data_response.fabric_group
-                var r_color = item_data_response.color
-                var r_m_code = item_data_response.material_code
-                var r_packing = item_data_response.packing
-                var r_unit_name = item_data_response.unit_name
-                var r_panha = item_data_response.panha
-                var r_fab_non_fab = item_data_response.fab_non_fab
-                var r_fab_finishes = item_data_response.fab_finishes
-                var r_gst = item_data_response.gst
-                var r_hsn_code = item_data_response.hsn_code
-                var r_status = item_data_response.status
-              
-                $('#id_Fabric_Group').val(r_fab_group.fab_g_key);
-            
-                $('#id_Item_Color').val(r_color.color_key);
-                
-                $('#id_Material_code').val(r_m_code);
 
-                $('#Item_Packing').val(r_packing.packing_key);
-  
-                $('#id_unit_name_item').val(r_unit_name.unit_name_key);
+                function escapeRegExp(string) {
+                       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+               }
+                var searchQuery = nameValue.toLowerCase();
+                var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+                var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
 
-                $('#id_Panha').val(r_panha);
-              
-                $('#id_Fabric_nonfabric').val(r_fab_non_fab);
-              
-                $('#id_Item_Fabric_Finishes').val(r_fab_finishes.fab_finishes_key);
-              
-                $('#id_Item_Creation_GST').val(r_gst.gst_key);
-              
-                $('#id_HSN_Code').val(r_hsn_code);
+                var filteredOptions = Object.entries(item_data_response).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+                console.log(filteredOptions)
 
-                $('#id_status').val(r_status);
-
-              
-                
+                suggestionsContainerUniqueId.empty();
+                $.each(filteredOptions, function(index, [key, value]) {
+                  var highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                  suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
+                });
             },
-            error: function (xhr, errmsg, err) {
-                console.log('Error sending value to the backend');
-            }
+            error:function(xhr){
+            console.log(xhr.status + ": " + xhr.responseText);
+                if (xhr.status === 404 || xhr.status === 400) {
+                  suggestionsContainerUniqueId.css('display', 'none');
+                    suggestionsContainerUniqueId.empty();
+                }
+        }
         })
+        suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function() {
+       var dataKey= $(this).attr('data-key');
+      
+      // var nameData = $(this).closest('.custom-dropdown-container').find('.product2Select').val(dataKey)
+
+       $(this).closest('.custom-dropdown-container').find('.product2Select').val($(this).text().trim());
+       $(this).addClass('selected').siblings().removeClass('selected');
+
+     
+     suggestionsContainerUniqueId.css('display', 'none');
+   })
+
     })
+
+    $(document).on()
+
+    // $(document).on('keyUp', '[name^="item-to-clone"]', function () {
+
+    //    var itemValue = $(this).val()
+    //    console.log('itemValue',itemValue)
+
+    //     $.ajax({
+    //         url: '/itemcreatecloneajax/',
+    //         method: 'GET',
+    //         data: {
+    //             'itemValue': itemValue
+    //         },
+    //         success: function (response) {
+    //             item_data_response = response.response_data
+    //             console.log(item_data_response)
+              
+    //             var r_fab_group = item_data_response.fabric_group
+    //             var r_color = item_data_response.color
+    //             var r_m_code = item_data_response.material_code
+    //             var r_packing = item_data_response.packing
+    //             var r_unit_name = item_data_response.unit_name
+    //             var r_panha = item_data_response.panha
+    //             var r_fab_non_fab = item_data_response.fab_non_fab
+    //             var r_fab_finishes = item_data_response.fab_finishes
+    //             var r_gst = item_data_response.gst
+    //             var r_hsn_code = item_data_response.hsn_code
+    //             var r_status = item_data_response.status
+              
+    //             $('#id_Fabric_Group').val(r_fab_group.fab_g_key);
+            
+    //             $('#id_Item_Color').val(r_color.color_key);
+                
+    //             $('#id_Material_code').val(r_m_code);
+
+    //             $('#Item_Packing').val(r_packing.packing_key);
+  
+    //             $('#id_unit_name_item').val(r_unit_name.unit_name_key);
+
+    //             $('#id_Panha').val(r_panha);
+              
+    //             $('#id_Fabric_nonfabric').val(r_fab_non_fab);
+              
+    //             $('#id_Item_Fabric_Finishes').val(r_fab_finishes.fab_finishes_key);
+              
+    //             $('#id_Item_Creation_GST').val(r_gst.gst_key);
+              
+    //             $('#id_HSN_Code').val(r_hsn_code);
+
+    //             $('#id_status').val(r_status);
+
+              
+                
+    //         },
+    //         error: function (xhr, errmsg, err) {
+    //             console.log('Error sending value to the backend');
+    //         }
+    //     })
+    // })
 })
 
 
