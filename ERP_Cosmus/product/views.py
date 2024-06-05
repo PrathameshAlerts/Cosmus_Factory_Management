@@ -55,6 +55,7 @@ def dashboard(request):
 
 #NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
 def edit_production_product(request,pk):
+
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
@@ -111,6 +112,7 @@ def edit_production_product(request,pk):
 
                     # ws1
                     grand_total = 0
+                    print(grand_total)
                     for row in ws1.iter_rows(min_row=2,min_col=1):
                         id = row[0].value
                         item_name = row[1].value
@@ -141,14 +143,18 @@ def edit_production_product(request,pk):
                                     p2i_config_instance.delete()
                                     p2i_config_instance.producttoitem.save()
 
+                        else:
+                            grand_total = 0
+
 
 
                     # ws2        
-                    for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): # loop through all the products in the sku 
+                    for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
                         product_sku = product_c.PProduct_SKU
                         
-                        row_no = 0
+                        row_no = 0  # row_no to co relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
                         grand_total = 0
+                        
                         for row in ws2.iter_rows(min_row=2,min_col=1):  # for every loop through each row in the sheet
                             
                             id = row[0].value
@@ -159,13 +165,14 @@ def edit_production_product(request,pk):
                             part_pieces = row[5].value
                             
                             if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
-                                
-                                grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
 
-                                # get the p2i instance for the product with the item in row 
-                                p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku ,Item_pk__item_name= item_name, common_unique = True)
+                                grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
                                 
-                                # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates with the rows in excel to know which config instance to crud
+                                # get the p2i instance for the product with the item in row 
+                                p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
+                                
+                                # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates
+                                # with the rows in excel to know which config instance to crud
                                 p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
 
                                 if part_name is not None:  # check if part name it there if its not then delete that instance
@@ -174,7 +181,7 @@ def edit_production_product(request,pk):
                                     p2i_instances_configs.part_pieces = part_pieces
                                     p2i_instances_configs.dimention_total = dimention_total
                                     p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
-
+    
                                     p2i_instances_configs.save()
                                     p2i_instances_configs.producttoitem.save() # save the parent model
                                     row_no = row_no + 1  # increase the row after save
@@ -187,6 +194,7 @@ def edit_production_product(request,pk):
 
                             else:
                                 row_no = 0
+                                grand_total = 0
 
                         
             else:
@@ -607,6 +615,18 @@ def product2subcategoryajax(request):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
+
+    logging.basicConfig(level=logging.DEBUG,
+        format= "%(asctime)s %(levelname)s %(message)s",
+        datefmt="%Y-%m-%d %H-%M-%S",
+        filename="basic.log")
+
+    logging.debug('This is a debug message')
+    #logging.info('This is a info message')
+    logging.warning('This is a warning message')
+    logging.critical('This is a critical message')
+    #logging.error('This is a error message')
+
     title = 'Item Create'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
@@ -622,12 +642,14 @@ def item_create(request):
         
         if form.is_valid():
             form_instance = form.save()
-
-            messages.success(request,'Item has been created, Update quantity in godown')
+            logging.info('This is a info message')
+            messages.success(request,'Item has been created')
             return redirect(reverse('item-edit', args=[form_instance.id]))
         
         else:
             print(form.errors)
+            messages.error(request,'Error with item creation')
+            logging.error('This is a debug message')
             return render(request,'product/item_create_update.html', {'gsts':gsts,
                                                                       'fab_grp':fab_grp,
                                                                       'unit_name':unit_name,
