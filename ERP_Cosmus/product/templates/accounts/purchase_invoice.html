@@ -1194,23 +1194,7 @@ addEventListenersToInputs();
     deleteCalculationRow();
     deleteAlltotal();
 
-    document.addEventListener('DOMContentLoaded', function() {
-    const dropdownContainer = document.querySelector('.custom-dropdown-container');
-    const dropdownInput = dropdownContainer.querySelector('.search-input');
-    const dropdown = dropdownContainer.querySelector('.item-select_input');
-
-    dropdownInput.addEventListener('focus', adjustDropdownHeight);
-    window.addEventListener('resize', adjustDropdownHeight);
-
-    function adjustDropdownHeight() {
-        dropdown.style.display = 'block';
-        const rect = dropdownInput.getBoundingClientRect();
-        const availableHeightBelow = window.innerHeight - rect.bottom;
-        const maxDropdownHeight = 194;
-        dropdown.style.maxHeight = `${Math.min(availableHeightBelow - 10, maxDropdownHeight)}px`;
-    }
-});
-
+   
   </script>
 
 {% endblock body %}

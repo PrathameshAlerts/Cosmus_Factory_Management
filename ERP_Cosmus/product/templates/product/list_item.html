@@ -25,10 +25,10 @@ the input field will be pre-filled with that value when the page is loaded. -->
         </div>    
       <div class="">
         <table class="table table-striped table-bordered table-hover table-responsive">
-          <thead>
+          <thead class="name_absolute">
             <tr>
-              <th  class="">No</th>
-              <th  class="name_absolute">Name
+              <th>No</th>
+              <th>Name
                 <!-- <div class="nav-item dropdown name_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu">
@@ -47,7 +47,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">
+              <th>
                 Fabric Group
                 <!-- <div class="nav-item dropdown fabric_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
@@ -67,7 +67,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">Item Color
+              <th>Item Color
                 <!-- <div class="nav-item dropdown Item_color_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -86,7 +86,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">Shades
+              <th>Shades
                 <!-- <div class="nav-item dropdown Item_color_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -105,7 +105,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">Material Code
+              <th>Material Code
                 <!-- <div class="nav-item dropdown material_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -113,7 +113,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div>  -->
               </th>
-              <th class="name_absolute">Packing
+              <th>Packing
                 <!-- <div class="nav-item dropdown packing_icons">
                   <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -121,7 +121,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">Unit Name
+              <th>Unit Name
                 <!-- <div class="nav-item dropdown unit_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -129,9 +129,9 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">Units</th>
-              <th class="name_absolute">Panha</th>
-              <th class="name_absolute">Fabric/Non Fabric
+              <th>Units</th>
+              <th>Panha</th>
+              <th>Fabric/Non Fabric
                 <!-- <div class="nav-item dropdown fn_fabric_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -149,7 +149,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">Fabric Finishes
+              <th>Fabric Finishes
                 <!-- <div class="nav-item dropdown ffabric_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -157,8 +157,8 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">GST</th>
-              <th class="name_absolute">HSN Code
+              <th>GST</th>
+              <th>HSN Code
                 <!-- <div class="nav-item dropdown hsn_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-angle-down mx-2"></i></a>
                 <ul class="dropdown-menu">
@@ -166,7 +166,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
                 </ul>
               </div> -->
               </th>
-              <th class="name_absolute">Status
+              <th >Status
                 <!-- <div class="nav-item dropdown status_icons"><a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-angle-down mx-2"></i></a>
                   <ul class="dropdown-menu">
@@ -177,9 +177,9 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   </ul>
                 </div> -->
               </th>
-              <th class="name_absolute">Edit</th>
-              <th class="name_absolute">Delete</th>
-              <th class="name_absolute">View</th>
+              <th >Edit</th>
+              <th >Delete</th>
+              <th >View</th>
             </tr>
           </thead>
           
@@ -187,39 +187,42 @@ the input field will be pre-filled with that value when the page is loaded. -->
             {% for item in items %}
           </tr>
           <td>{{ forloop.counter}}</td>              
-              <td>{{item.item_name}}</td>
-              <td>{{item.fab_grp}}</td>
-              <td>{{item.Color_Name}}
+              <td class="text-nowrap">{{item.item_name}}</td>
+              <td class="text-nowrap">{{item.fab_grp}}</td>
+              <td class="text-nowrap">{{item.Color_Name}}
               
               <span style="color: rgb(166, 0, 0);">{{item.total_quantity | default_if_none:0}}</span>
               </td>
               <!-- render reverse related fields -->
               <td>
-                <table class="table table-bordered table-striped">
+                <table class="table  table-bordered text-nowrap">
                   <thead>
                     <tr>
-                      <th>Shade</th>
-                      <th >Godown<span style="padding-left: 59px;">Qty</span></th>  
-                                 
+                      <th class="px-2 ">Shade</th>
+                      <th class="px-2">Godown<span style="padding-left: 59px;">Qty</span></th>              
                     </tr>
+                  </thead>
+                  <tbody>
                     {% for shade in item.shades.all %}
                     <tr>
                        
-                      <td class="centered-cell">{{shade.item_shade_name}}</td>
-                      <td>
+                      <td >{{shade.item_shade_name}}</td>
+                      <td  class="">
                         {% for shade_q in shade.godown_shades.all %}
-                        <table class="table inner-table">
-                            <tr style="border-bottom: 1px solid gray;">
-                              <td>{{shade_q.godown_name}}</td>
-                              <td >{{shade_q.quantity}}</td>
-                              
-                          </tr>
-                        </table>
+                   <table class="text-nowrap" style="border-bottom: 1px solid gray;">
+                    <tr >
+                      <td style="padding-bottom: 10px;" class="py-2" >{{shade_q.godown_name}}</td>
+                      <td style="padding-left: 40px;"  class="py-2">{{shade_q.quantity}}</td>
+                      
+                  </tr>
+                   </table>
+                            
+                      
                         {% endfor %}
                       </td>
                       </tr>  
                         {% endfor %} 
-                
+                  </tbody>
                 </table> 
               </td>
               <td>{{item.Material_code}}</td>
