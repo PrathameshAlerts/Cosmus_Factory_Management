@@ -171,27 +171,27 @@
             <div class="table-left mb-3">
                 <lable  class="purchase-lable fw-bold">Gross total</lable>
                 <span class="purchase-span">
-                    <input type="number" class="ms-5  purchase-amount" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total | default_if_none:''}}" maxlength="50" step=".01" readonly >
+                    <input type="number" class="purchaseTableLabel-Gtotal  purchase-amounts" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total | default_if_none:''}}" maxlength="50" step=".01" readonly >
                 </span>           
             </div>
 
             <div class="table-left-transport mb-3">
                 <lable class="purchase-lable fw-bold">Fright & Transport</lable>
                 <span class="purchase-span">
-                    <input type="number" class="ms-3  purchase-amount" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
+                    <input type="number" class="purchaseTableLabel-transport  purchase-amounts" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
                 </span>
             </div>
             <div class="table-left-roundOf mb-3">
                 <input type="hidden" id="temp_grand_total" value="">
                 <label class="purchase-lable fw-bold">Round Of </label>
                 <span class="purchase-span">
-                    <input type="number" class="ms-5  purchase-amount" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" readonly required>
+                    <input type="number" class="purchaseTableLabel-roundOf  purchase-amounts" name="round_off" id ="id_round_off" value="" maxlength="50" step=".01" readonly required>
                 </span> 
             </div>
         
             <div class="table-left-grandTotal mb-3">
                 <label class="purchase-lable fw-bold">Grand total</label>
-                <span class="purchase-span"><input type="number" class="purchaseTableLabel-total purchase-amount" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" step=".01" readonly required></span> 
+                <span class="purchase-span"><input type="number" class="purchaseTableLabel-total purchase-amounts" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" step=".01" readonly required></span> 
             </div>
         </div>
 

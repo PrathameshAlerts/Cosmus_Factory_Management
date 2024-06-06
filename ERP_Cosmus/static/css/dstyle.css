@@ -976,7 +976,7 @@ input[type=number] {
     padding-left: 50px;
 }
 .table-left{
-    padding-left: 988px;
+    padding-left: 924px;
     padding-top: 30px;
 }
 
@@ -1199,6 +1199,13 @@ input[type=number] {
     padding-left: 5px;
     height: 33px;  
 }
+.purchase-amounts{
+    width: 125px;
+    border: 1px solid #cecdcd ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;  
+}
 
 .product_row{
     width: 50px;
@@ -1271,8 +1278,17 @@ input[type=number] {
 .purchaseTableLabel{
     margin-left: 20px;
 }
+.purchaseTableLabel-Gtotal{
+    margin-left: 62px;
+}
+.purchaseTableLabel-transport{
+    margin-left: 6px;
+}
+.purchaseTableLabel-roundOf{
+    margin-left: 72px;
+}
 .purchaseTableLabel-total{
-    margin-left: 49px;
+    margin-left: 53px;
 
 }
 .totalpurchase-cgst{
@@ -1289,14 +1305,14 @@ input[type=number] {
     float: left;
 }
 .table-left-transport {
-    padding-left: 964px; 
+    padding-left: 924px; 
 }
 
 .table-left-roundOf{
-    padding-left: 1005px;
+    padding-left: 924px;
 }
 .table-left-grandTotal{
-    padding-left: 988px;
+    padding-left: 924px;
 }
 
 .custom-dropdown-container {
