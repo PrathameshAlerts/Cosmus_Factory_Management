@@ -1,5 +1,4 @@
 from io import BytesIO
-import logging
 from sys import exception
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError
@@ -12,6 +11,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
 from django.db import IntegrityError, transaction
 from django.utils.timezone import now
+import logging
 from django.contrib import messages
 from django.db.models import Sum
 from openpyxl.utils import get_column_letter 
@@ -41,7 +41,16 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                                 Product2ItemFormset,Product2CommonItemFormSet)
 
 
+logger = logging.getLogger('product_views')
 
+
+"""
+    logger.debug("This is a debug message")
+    logger.info("This is an info message")
+    logger.warning("This is a warning message")
+    logger.error("This is an error message")
+    logger.critical("This is a critical message")
+"""
 
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
@@ -102,6 +111,7 @@ def edit_production_product(request,pk):
             
             if not excel_file.name.endswith('.xlsx'):
                 messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
+                logger.error('Invalid file format. Please upload a valid Excel file.')
                 return redirect('pproductlist')
             
             if int(product_ref_id_file) == product_ref_id:
@@ -181,7 +191,7 @@ def edit_production_product(request,pk):
                                     p2i_instances_configs.part_pieces = part_pieces
                                     p2i_instances_configs.dimention_total = dimention_total
                                     p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
-    
+
                                     p2i_instances_configs.save()
                                     p2i_instances_configs.producttoitem.save() # save the parent model
                                     row_no = row_no + 1  # increase the row after save
@@ -196,12 +206,13 @@ def edit_production_product(request,pk):
                                 row_no = 0
                                 grand_total = 0
 
-                        
             else:
                 messages.error(request, 'File with invalid Product Refrence Id uploaded')
+                logger.error("File with invalid Product Refrence Id uploaded")
                 return redirect('pproductlist')
             
         except Exception as e:
+            logger.error(f"An error occured - {str(e)}")
             messages.error(request, f'Error uploading Excel file: {str(e)}')
         
 
@@ -615,18 +626,6 @@ def product2subcategoryajax(request):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
-
-    logging.basicConfig(level=logging.DEBUG,
-        format= "%(asctime)s %(levelname)s %(message)s",
-        datefmt="%Y-%m-%d %H-%M-%S",
-        filename="basic.log")
-
-    logging.debug('This is a debug message')
-    #logging.info('This is a info message')
-    logging.warning('This is a warning message')
-    logging.critical('This is a critical message')
-    #logging.error('This is a error message')
-
     title = 'Item Create'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
@@ -639,17 +638,21 @@ def item_create(request):
     
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
-        
+
+
         if form.is_valid():
             form_instance = form.save()
-            logging.info('This is a info message')
+
+
+            logger.info("Item Successfully Created")
             messages.success(request,'Item has been created')
             return redirect(reverse('item-edit', args=[form_instance.id]))
-        
+    
         else:
             print(form.errors)
+            logger.error(f"item form not valid{form.errors}")
             messages.error(request,'Error with item creation')
-            logging.error('This is a debug message')
+            
             return render(request,'product/item_create_update.html', {'gsts':gsts,
                                                                       'fab_grp':fab_grp,
                                                                       'unit_name':unit_name,
@@ -2457,16 +2460,16 @@ def export_Product2Item_excel(request,product_ref_id):
         sheet2 = wb.worksheets[1]
 
 
-        #fix the column width  of sheet1
         
         column_widths = [10, 40, 20, 30, 20, 15, 10, 10]  # Adjust these values as needed
 
+        #fix the column width  of sheet1
         for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
             col_letter = get_column_letter(i)
             sheet1.column_dimensions[col_letter].width = column_width
 
-        #fix the column width  of sheet2
 
+        #fix the column width  of sheet2
         for i, column_width in enumerate(column_widths, start=1):
             col_letter = get_column_letter(i)
             sheet2.column_dimensions[col_letter].width = column_width
