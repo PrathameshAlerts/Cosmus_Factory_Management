@@ -1,0 +1,21 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+
+{% block body %}
+
+
+<a href="{% url 'purchase-order-raw-create' %}">Create Purchase Order</a>
+
+{% for po in purchase_orders %}
+
+{{po.purchase_order_number}}
+{{po.product_reference_number}}
+{{po.ledger_party_name}}
+{{po.target_date}}
+{{po.created_date}}
+{{po.number_of_pieces}}
+
+
+{% endfor %}
+
+{% endblock %}

@@ -144,8 +144,12 @@ urlpatterns = [
 
     #Production
     path('product2item/<int:product_refrence_id>',views.product2item, name = 'product-2-item'),
-
     path('export_Product2Item_excel/<int:product_ref_id>',views.export_Product2Item_excel, name = 'export-Product2Item-excel'),
+
+    path('purchaseorderrawcreate/',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-create'),
+    path('purchaseorderrawupdate/<int:pk>',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-update'),
+    path('purchaseorderrawlist/',views.purchaseorderrawlist, name = 'purchase-order-raw-list'),
+    path('purchaseorderrawdelete/',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
 
     #reports
     path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),

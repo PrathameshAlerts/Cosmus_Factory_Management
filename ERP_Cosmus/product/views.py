@@ -25,14 +25,14 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransfer, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
+                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table)
 
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
-                        ProductImagesFormSet, ProductVideoFormSet,purchase_voucher_items_godown_formset_shade_change,
+                        ProductImagesFormSet, ProductVideoFormSet, purchase_order_form,purchase_voucher_items_godown_formset_shade_change,
                          gst_form, item_purchase_voucher_master_form,
                            packaging_form, product_main_category_form, 
                             product_sub_category_form, purchase_voucher_items_formset,
@@ -2611,8 +2611,33 @@ def export_Product2Item_excel(request,product_ref_id):
 
 
 
+def purchaseorderrawcreateupdate(request,pk= None):
+
+    if pk:
+        instance = purchase_order.objects.get(pk=pk)
+    else:
+        instance = None
+
+    form = purchase_order_form(instance=instance)
+
+    if request.method == 'POST':
+        form = purchase_order_form(request.POST, instance=instance)
+
+        if form.is_valid():
+            form.save()
+            return redirect('purchase-order-raw-list')
+    
+    return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form})
 
 
+def purchaseorderrawlist(request):
+    purchase_orders = purchase_order.objects.all()
+
+    return render(request,'production/purchaseorderrawlist.html',{'purchase_orders':purchase_orders})
+
+
+def purchaseorderrawdelete(request,pk):
+    pass
 
 #_________________________production-end______________________________
 
