@@ -158,7 +158,6 @@ input[type=number] {
    position: relative;
    font-size: 14px;
    font-family: "Lato", sans-serif;
-   width: 400px;
   }
   .mainTableList{
     font-size: 13px;
@@ -621,10 +620,10 @@ input[type=number] {
   }
 /*===========create item form =========*/
 
-.table th, .table td {
-    white-space: nowrap; /* Prevent text from wrapping */
+/* .table th, .table td {
+    white-space: nowrap; 
     vertical-align: middle;
-}
+} */
 .inner-table {
     width: 100%;
     margin: 0;
@@ -940,7 +939,7 @@ input[type=number] {
     padding: 7px 15px;
     font-size: 15px;
     border: none;
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer;  
 }
 
@@ -959,7 +958,7 @@ input[type=number] {
     padding: 5px;
     font-size: 15px;
     border: none;
-    border-radius: 40px;
+    border-radius: 10px;
     cursor: pointer;
 }
 
@@ -1304,11 +1303,11 @@ input[type=number] {
     position: relative;
     width: 200px;
 }
-.item-select_input{
-    max-height: 194px; /* Default max height */
+/* .item-select_input{
+    max-height: 194px; 
     overflow-y: auto;
     transition: max-height 0.2s ease-in-out;
-}
+} */
 .search-input {
     width: 300px;
     padding: 10px;
@@ -1317,12 +1316,12 @@ input[type=number] {
 }
 
 
-.commom_items {
+/* .commom_items {
     display: flex;
-    max-height: 130px; /* Default max height */
+    max-height: 130px; 
     overflow-y: auto;
     transition: max-height 0.2s ease-in-out;
-}
+} */
 
 .itemName-div {
     padding: 7px 0 7px 10px;
@@ -1380,7 +1379,7 @@ input[type=number] {
 }
  
  
-  .custom-select {
+.custom-select {
     background-color: white;
     width: 180px;
     border: 1px solid #cecdcd;

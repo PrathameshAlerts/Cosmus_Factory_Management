@@ -279,18 +279,19 @@
 
 
 <script>
-  
+  //This script is to ajax reuest send the data and highlight the searched item in the dropdown and the suggestion will be shown on the screen
   $(document).ready(function () {
     var enterValue = false;
     var index = 0; //  index outside of the event listener
    var indexbool = false;
+   var isHighlighted = false; // flag to track if an item is highlighted
 
    var suggestions = $('#search-results')
     $(document).on('keyup','#id_item-to-clone',function(){
 
       var nameValue = $(this).val().trim();
      
-      console.log('nameValue',nameValue)
+    
       
    if(nameValue === '') {
     suggestions.css('display', 'none');
@@ -301,10 +302,10 @@
     suggestions.css('display', 'block');
     }
     enterValue = false;
-    console.log('nameValueLength',nameValue.length)
+    
    
     if(nameValue.length >= 3){
-      console.log('length is greater than 3')
+ 
       $.ajax({
             url: '/itemdynamicsearchajax/',
             method: 'GET',
@@ -327,7 +328,7 @@
                 suggestions.empty();
                 $.each(filteredOptions, function(index, [key, value]) {
                   var highlightedText = value;
-                  console.log('searchQuery',searchQuery)
+        
                 if (searchQuery) {
                     highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
                 }
@@ -431,6 +432,8 @@ $(document).on('click', '.product2Select',function(){
       var nameDataKey;
         var nameKey;
         var selectValue = $(this).next('.s-suggestion-container');
+
+        var selectedItems = selectValue.find(`#itemName-div_${index}`);
         var selectLength = selectValue.find('.itemName-div').length-1;
        
         var nameData = $(this).val().trim();
@@ -441,22 +444,27 @@ $(document).on('click', '.product2Select',function(){
          indexbool = false;
          return;
      }
+
      if(e.key=== 'ArrowDown'){
 
           e.preventDefault();
 
+            // Remove highlight from previously selected item
+        selectValue.find('.bg-highlight').removeClass('bg-highlight');
+
           if(index <= selectLength){
               var selectedItem = selectValue.find(`#itemName-div_${index}`);
               var nextItem = selectedItem.next();
+
+                // Add highlight to the currently selected item
+                isHighlighted = true; // Set the flag to true when an item is highlighted
+                selectedItem.addClass('bg-highlight');
               
               nameDataKey= selectedItem.text();
               nameKey = selectedItem.data('key');
-
               $(this).attr('data-key', nameKey);
               $(this).text(nameDataKey);
-
-
-              selectedItem.addClass("bg-highlight");
+           
 
               var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
               var itemHeight = nextItem.outerHeight();
@@ -469,7 +477,8 @@ $(document).on('click', '.product2Select',function(){
               } else if (itemOffsetTop < 0) {
                   selectValue.scrollTop(selectScrollTop - itemHeight);
               }
-            
+             
+              selectedItem.toggleClass('bg-highlight', true);
               if(index != selectLength ){
                   index += 1; 
               indexbool = true;        
@@ -478,10 +487,13 @@ $(document).on('click', '.product2Select',function(){
           }else{
             index = 0;
           }
-
+      
           }
           if(e.key === 'ArrowUp'){
             event.preventDefault();
+
+             selectValue.find('.bg-highlight').removeClass('bg-highlight');
+        
             if (index != 0 && indexbool == true)
             {           
                   index = index - 1;
@@ -491,6 +503,10 @@ $(document).on('click', '.product2Select',function(){
           
               var selectedItem = selectValue.find(`#itemName-div_${index}`);
               var prevItem = selectedItem.prev();
+
+                // Add highlight to the currently selected item
+                isHighlighted = true;
+                selectedItem.addClass('bg-highlight');
         
               nameDataKey= selectedItem.text();
               nameKey = selectedItem.data('key');
@@ -498,7 +514,7 @@ $(document).on('click', '.product2Select',function(){
               $(this).attr('data-key', nameKey);
               $(this).text(nameDataKey);
 
-              selectedItem.addClass("bg-highlight");
+      
           
               var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
               var itemHeight = prevItem.outerHeight();
@@ -514,6 +530,7 @@ $(document).on('click', '.product2Select',function(){
               else{
                       index = 0;
               }   
+               // Set the flag to true when an item is highlighted
           }
           if(e.key === 'Enter'){
           e.preventDefault();
@@ -522,12 +539,11 @@ $(document).on('click', '.product2Select',function(){
           var nameValues = $(this).text().trim();
           var itemValue = selectedItem.attr('data-key');
           
-          console.log(itemValue)
           if (selectedItem.length > 0) {
               
               $(this).val(nameValues);
            
-            $.ajax({
+            $.ajax({           // this ajax reuest is to send the data and show the all the option will filed once click on the suggestion on the screen
             url: '/itemcreatecloneajax/',
             method: 'GET',
             data: {
@@ -590,6 +606,7 @@ $(document).on('click', '.product2Select',function(){
           }    
 
     })
+
 })
 
 
@@ -639,7 +656,7 @@ function receiveData(openingValue){
 
     $(document).on ('click','button.itemQty',function(button){
       var itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
-      var itemValue = itemId.split('-')[1];
+       itemValue = itemId.split('-')[1];
       var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
       var primary_key_id = primaryKey.value;
     
@@ -659,7 +676,7 @@ function receiveData(openingValue){
         },
         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
-                        }
+        }
       })
       }
     })
@@ -732,7 +749,7 @@ function receiveData(openingValue){
 
     // Open new page with specified dimensions
     popUpWindow = window.open( path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-    console.log(popUpWindow)
+ 
     // Listen for messages from the popup window
     window.addEventListener('message', function (event) {
       if (event.data === 'popupClosed'|| event.data === 'submit') {
