@@ -1,0 +1,23 @@
+2024-06-06 04:54:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-06 04:55:15 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 32656
+2024-06-06 04:55:24 PM - django.server - INFO - "GET /accsubgrpcreate/ HTTP/1.1" 200 29229
+2024-06-06 04:55:38 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47370
+2024-06-06 04:55:40 PM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33802
+2024-06-06 04:55:41 PM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-06 04:55:41 PM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 29145
+2024-06-06 04:55:45 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 115101
+2024-06-06 04:55:46 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 52812
+2024-06-06 04:55:46 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-06 04:55:46 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 29117
+2024-06-06 04:55:50 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-06 04:55:50 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hiy HTTP/1.1" 404 28
+2024-06-06 04:55:50 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=93f13fe9262c4ba6bfaaa9ff184007cb HTTP/1.1" 200 9080
+2024-06-06 04:55:51 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-06 04:55:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8cc1779d553644c0b1daff9ae0bfb69b HTTP/1.1" 200 9080
+2024-06-06 04:55:52 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-06 04:55:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0991a49ea2ee4bdaa45ec11f0ad26733 HTTP/1.1" 200 9080
+2024-06-06 04:55:52 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=HITLON%205%20MM HTTP/1.1" 200 83
+2024-06-06 04:55:52 PM - django.server - INFO - "GET /itemcreatecloneajax/?itemValue=8 HTTP/1.1" 200 468
+2024-06-06 04:55:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c0a7456c1d0e4317a6100f3edc5d4d6f HTTP/1.1" 200 9072
+2024-06-06 04:58:33 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\logging_config.py changed, reloading.
+2024-06-06 04:58:34 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader

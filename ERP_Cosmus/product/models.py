@@ -571,3 +571,15 @@ class set_prod_item_part_name(models.Model):
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
     dimention_total = models.DecimalField(default=0, max_digits=10, decimal_places=2, blank=True, null= True)
     part_pieces = models.IntegerField(blank=True, null= True)
+
+
+
+class purchase_order(models.Model):
+    purchase_order_number = models.IntegerField(unique=True, blank=False, null=False)
+    product_reference_number = models.ForeignKey(Product, on_delete=models.PROTECT)
+    ledger_party_name = models.ForeignKey(Ledger, on_delete= models.PROTECT)
+    target_date = models.DateField()
+    created_date = models.DateField(auto_now=True)
+    modified_created_date = models.DateField(auto_now_add=True)
+    number_of_pieces = models.IntegerField(default=0)
+    

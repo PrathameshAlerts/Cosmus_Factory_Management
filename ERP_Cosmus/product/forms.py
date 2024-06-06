@@ -42,7 +42,8 @@ class Product2ItemForm(forms.ModelForm):
     class Meta:
         model = product_2_item_through_table
         fields= ['PProduct_pk','Item_pk','Remark','no_of_rows','row_number']
-
+        
+    # validate so that the entered value should not be less then the existing value
     def clean_no_of_rows(self):
         new_value = self.cleaned_data.get('no_of_rows')
 
@@ -65,6 +66,7 @@ class Product2CommonItem(forms.ModelForm):
         model = product_2_item_through_table
         fields= ['Item_pk','Remark','no_of_rows','row_number']
     
+    # validate so that the entered value should not be less then the existing value
     def clean_no_of_rows(self):
         new_value = self.cleaned_data.get('no_of_rows')
 

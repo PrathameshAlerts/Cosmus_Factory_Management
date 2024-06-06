@@ -1,7 +1,7 @@
 from io import BytesIO
 from sys import exception
 from django.contrib.auth.models import User , Group
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
 from django.contrib.auth.models import auth 
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
@@ -105,115 +105,119 @@ def edit_production_product(request,pk):
         product_ref_id = pk
         
         try:
-            excel_file = request.FILES['excel_file']
-            file_name = excel_file.name
-            product_ref_id_file = file_name.split('_')[-1].split('.')[0]
-            
-            if not excel_file.name.endswith('.xlsx'):
-                messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
-                logger.error('Invalid file format. Please upload a valid Excel file.')
-                return redirect('pproductlist')
-            
-            if int(product_ref_id_file) == product_ref_id:
-                with transaction.atomic():
-                    wb = load_workbook(excel_file, data_only=True)
-                    ws1 = wb['product_special_configs']
-                    ws2 = wb['product_common_configs']
+            excel_file = request.FILES.get('excel_file')
 
-                    # ws1
-                    grand_total = 0
-                    print(grand_total)
-                    for row in ws1.iter_rows(min_row=2,min_col=1):
-                        id = row[0].value
-                        item_name = row[1].value
-                        product_sku = row[2].value
-                        
+            if excel_file:
+                file_name = excel_file.name
+                product_ref_id_file = file_name.split('_')[-1].split('.')[0]
+                
+                if not excel_file.name.endswith('.xlsx'):
+                    messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
+                    logger.error('Invalid file format. Please upload a valid Excel file.')
+                    return redirect('pproductlist')
+                
+                if int(product_ref_id_file) == product_ref_id:
+                    with transaction.atomic():
+                        wb = load_workbook(excel_file, data_only=True)
+                        ws1 = wb['product_special_configs']
+                        ws2 = wb['product_common_configs']
 
-                        if id is not None:
-                            if product_sku is not None and item_name is not None:
-                                part_name = row[3].value
-                                part_dimention = row[4].value
-                                dimention_total = row[5].value
-                                part_pieces = row[6].value
-                                grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
-
-                                if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
-                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
-
-                                    p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
-                                    p2i_config_instance.part_name = part_name
-                                    p2i_config_instance.part_dimentions = part_dimention
-                                    p2i_config_instance.dimention_total = dimention_total
-                                    p2i_config_instance.part_pieces = part_pieces
-                                    p2i_config_instance.save()   # save model
-                                    p2i_config_instance.producttoitem.save()  # save the parent model
-                                else:
-                                    p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
-                                    p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
-                                    p2i_config_instance.delete()
-                                    p2i_config_instance.producttoitem.save()
-
-                        else:
-                            grand_total = 0
-
-
-
-                    # ws2        
-                    for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
-                        product_sku = product_c.PProduct_SKU
-                        
-                        row_no = 0  # row_no to co relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
+                        # ws1
                         grand_total = 0
                         
-                        for row in ws2.iter_rows(min_row=2,min_col=1):  # for every loop through each row in the sheet
-                            
+                        for row in ws1.iter_rows(min_row=2,min_col=1):
                             id = row[0].value
                             item_name = row[1].value
-                            part_name = row[2].value
-                            part_dimention = row[3].value
-                            dimention_total = row[4].value
-                            part_pieces = row[5].value
+                            product_sku = row[2].value
                             
-                            if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
 
-                                grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
-                                
-                                # get the p2i instance for the product with the item in row 
-                                p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
-                                
-                                # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates
-                                # with the rows in excel to know which config instance to crud
-                                p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
+                            if id is not None:
+                                if product_sku is not None and item_name is not None:
+                                    part_name = row[3].value
+                                    part_dimention = row[4].value
+                                    dimention_total = row[5].value
+                                    part_pieces = row[6].value
+                                    grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
 
-                                if part_name is not None:  # check if part name it there if its not then delete that instance
-                                    p2i_instances_configs.part_name = part_name
-                                    p2i_instances_configs.part_dimentions = part_dimention
-                                    p2i_instances_configs.part_pieces = part_pieces
-                                    p2i_instances_configs.dimention_total = dimention_total
-                                    p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
+                                    if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
+                                        p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
-                                    p2i_instances_configs.save()
-                                    p2i_instances_configs.producttoitem.save() # save the parent model
-                                    row_no = row_no + 1  # increase the row after save
-
-                                else:
-                                    row_no = row_no + 1 # increase the row after save
-                                    p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
-                                    p2i_instances_configs.delete()
-                                    p2i_instances_configs.producttoitem.save()
+                                        p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
+                                        p2i_config_instance.part_name = part_name
+                                        p2i_config_instance.part_dimentions = part_dimention
+                                        p2i_config_instance.dimention_total = dimention_total
+                                        p2i_config_instance.part_pieces = part_pieces
+                                        p2i_config_instance.save()   # save model
+                                        p2i_config_instance.producttoitem.save()  # save the parent model
+                                    else:
+                                        p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
+                                        p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
+                                        p2i_config_instance.delete()
+                                        p2i_config_instance.producttoitem.save()
 
                             else:
-                                row_no = 0
                                 grand_total = 0
 
-            else:
-                messages.error(request, 'File with invalid Product Refrence Id uploaded')
-                logger.error("File with invalid Product Refrence Id uploaded")
-                return redirect('pproductlist')
+
+
+                        # ws2        
+                        for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
+                            product_sku = product_c.PProduct_SKU
+                            
+                            row_no = 0  # row_no to co relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
+                            grand_total = 0
+                            
+                            for row in ws2.iter_rows(min_row=2,min_col=1):  # for every loop through each row in the sheet
+                                
+                                id = row[0].value
+                                item_name = row[1].value
+                                part_name = row[2].value
+                                part_dimention = row[3].value
+                                dimention_total = row[4].value
+                                part_pieces = row[5].value
+                                
+                                if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
+
+                                    grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
+                                    
+                                    # get the p2i instance for the product with the item in row 
+                                    p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
+                                    
+                                    # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates
+                                    # with the rows in excel to know which config instance to crud
+                                    p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
+
+                                    if part_name is not None:  # check if part name it there if its not then delete that instance
+                                        p2i_instances_configs.part_name = part_name
+                                        p2i_instances_configs.part_dimentions = part_dimention
+                                        p2i_instances_configs.part_pieces = part_pieces
+                                        p2i_instances_configs.dimention_total = dimention_total
+                                        p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
+
+                                        p2i_instances_configs.save()
+                                        p2i_instances_configs.producttoitem.save() # save the parent model
+                                        row_no = row_no + 1  # increase the row after save
+
+                                    else:
+                                        row_no = row_no + 1 # increase the row after save
+                                        p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
+                                        p2i_instances_configs.delete()
+                                        p2i_instances_configs.producttoitem.save()
+
+                                else:
+                                    row_no = 0
+                                    grand_total = 0
+
+                else:
+                    messages.error(request, 'File with invalid Product Refrence Id uploaded')
+                    logger.error("File with invalid Product Refrence Id uploaded")
+                    return redirect('pproductlist')
             
+
         except Exception as e:
-            logger.error(f"An error occured - {str(e)}")
+            logger.error(f"An error occured - {str(e)} - Product-Name - {pproduct}")
             messages.error(request, f'Error uploading Excel file: {str(e)}')
+            return redirect('pproductlist')
         
 
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
@@ -251,13 +255,18 @@ def edit_production_product(request,pk):
 
                     # form.Number_of_items = Number_of_items
                     form.save()
+                    logger.info(f"product-saved product")
+                    logger.info(f"product-formset-saved product")
                     return redirect('pproductlist')
+
             except exception as e:
+                logger.error(f"An exception occured in Product - {e} - Product-name - {pproduct}")
                 messages.error(request, f'An exception occured - {e}')
         
         else:
-            print(form.errors)
-            print(formset.errors)
+            logger.error(f"Productform not valid - {form.errors} - Product-name - {pproduct}")
+            logger.error(f"Product formsets not valid- {formset.errors} - Product-name - {pproduct}")
+
             return render(request, 'product/edit_production_product.html', {'gsts':gsts,
                                                                             'form':form,
                                                                             'formset':formset,
@@ -2313,6 +2322,7 @@ def product2item(request,product_refrence_id):
                     # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
                     for form in formset_single.deleted_forms:
                         if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
+                            logger.info(f"Deleted product to item instace of {form.instance.pk}")
                             form.instance.delete()
                     
                     for form in formset_single:
@@ -2328,33 +2338,35 @@ def product2item(request,product_refrence_id):
                                 p2i_instance = form.save(commit = False)
                                 p2i_instance.common_unique = False
                                 p2i_instance.row_number = form.prefix[-1]  #get the prefix no of the form
-                                
+                                logger.info(f"Product to item created/updated special - {p2i_instance.id}")
                                 p2i_instance.save()
 
                                 no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
 
                                 if no_of_rows_to_create > 0:
                                     for row in range(no_of_rows_to_create):
+                                        logger.info(f" set prod item part name created of p2i instance - {p2i_instance.id}")
                                         set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
 
                                 p2i_instance.save()
                                 formset_single_valid = True
                 except Exception as e:
-                    messages.error(request, 'Error saving unique records.')  
+                    logger.error(f'Error saving unique records - {e}')
+                    messages.error(request, f'Error saving unique records - {e}')  
             
 
             #for common records
             if formset_common.is_valid():
-
                 try:
                     for form in formset_common.deleted_forms:
                         deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
 
                         for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
                             p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
+                            logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
                             p2i_to_delete.delete()
                             
-                    for form in formset_common:
+                    for form in formset_common: # duplicate item for the product in the form wont give validation error as the old product will be updated instead of creating a new one and raising error of unique values  
                         if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
 
                             if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
@@ -2363,8 +2375,9 @@ def product2item(request,product_refrence_id):
                                     #loop through all the products for each form and get the instance with
                                     # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
                                     item = form.cleaned_data['Item_pk']
+                                    
                                     obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
-
+                                    
                                     # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
                                     if created:
                                         initial_rows = 0
@@ -2375,6 +2388,7 @@ def product2item(request,product_refrence_id):
                                     obj.no_of_rows =  form.cleaned_data['no_of_rows']
                                     obj.Remark = form.cleaned_data['Remark']
                                     obj.row_number = form.prefix[-1]   #get the prefix no of the form
+                                    logger.info(f"Product to item created/updated common -  {obj.id}")
                                     obj.save()
 
 
@@ -2383,12 +2397,14 @@ def product2item(request,product_refrence_id):
                                     if rows_to_create > 0:
                                             for row in range(rows_to_create):
                                                 set_prod_item_part_name.objects.create(producttoitem = obj)
+                                                logger.info(f" set prod item part name created of - {obj.id}")
 
 
                                     formset_common_valid = True
 
                 except Exception as e:
-                    messages.error(request, 'Error saving unique records.') 
+                    logger.error(f'Error saving common records - {e}')
+                    messages.error(request, f'Error saving common records{e}.') 
         
 
             if formset_common_valid and formset_single_valid:
@@ -2403,9 +2419,16 @@ def product2item(request,product_refrence_id):
                 return HttpResponse(close_window_script)
             
             else:
-                print(formset_common.errors)
-                print(formset_single.errors)
-                messages.error(request,'Error in Product to Item Forms')
+                for form_errors in formset_common.errors:
+                    if form_errors:
+                        logger.error(f'Error with formset_common form - {product_refrence_id } - {form_errors}')
+                        messages.error(request, f'{form_errors}')
+
+                for form_errors in formset_single.errors:
+                    if form_errors:
+                        logger.error(f'Error with formset_common form - {product_refrence_id } - {form_errors}')
+                        messages.error(request, f'{form_errors}')
+
 
                 close_window_script = """
                             <script>
@@ -2416,12 +2439,12 @@ def product2item(request,product_refrence_id):
                 return HttpResponse(close_window_script)
 
 
-        return render(request, 'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
+        return render(request,'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
                                                                 'Products_all':Products_all,
                                                                 'items':items,'product_refrence_no': product_refrence_no})
 
     except Exception as e:
-
+        logger.error(f'Error with forms - {product_refrence_id } - {e}')
         messages.error(request, 'An unexpected error occurred. Please try again later.')
         return render(request, 'production/product2itemsetproduction.html', {
             'formset_single': formset_single,
@@ -2445,7 +2468,11 @@ def export_Product2Item_excel(request,product_ref_id):
         products_in_i2p_common = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by(
             'Item_pk', 'id').distinct('Item_pk')
-    
+
+        
+        if not products_in_i2p_special and not products_in_i2p_common:
+            logger.error(f"Add Items to the respective Products first - {product_ref_id}")
+            raise ObjectDoesNotExist("Add Items to the respective Products first")
 
         wb = Workbook()
 
@@ -2574,11 +2601,13 @@ def export_Product2Item_excel(request,product_ref_id):
     
     except product_2_item_through_table.DoesNotExist:
         messages.error(request, 'No data found for the given product reference ID.')
-        return HttpResponse("No data found for the given product reference ID.", status=404)
+        logger.error(f"items for product Does not exists for refrence id {product_ref_id}")
+        return redirect(reverse('edit_production_product', args=[product_ref_id]))
     
     except Exception as e:
         messages.error(request, f'An error occurred while exporting data {e}')
-        return HttpResponse("An error occurred while exporting data.", status=500)
+        logger.error(f"An exception occoured while exporting data - {e} for ref id {product_ref_id}")
+        return redirect(reverse('edit_production_product', args=[product_ref_id]))
 
 
 
@@ -2595,15 +2624,17 @@ def itemdynamicsearchajax(request):
     try:
         # Retrieve the partial name typed by the user from the GET request
         item_name_typed = request.GET.get('nameValue')
-        if not item_name_typed:
-            raise ValidationError("No partial name provided.")
 
+        if not item_name_typed:
+            raise ValidationError("partial name provided.")
+        logger.info(f"searched keyword via itemdynamicsearchajax {item_name_typed}")
+        
         item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
-       
+
         if item_name_searched:
             # Prepare a dictionary of searched items with IDs as keys and names as values
             searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
-
+            logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
             """
             or 
             searched_item_name_dict = {}
@@ -2619,6 +2650,7 @@ def itemdynamicsearchajax(request):
 
     except ValidationError as ve:
         error_message = str(ve)
+        logger.error(f"Validaton errorin itemdynamicsearchajax - {ve}")
         return JsonResponse({'error': error_message}, status=400)
     
     

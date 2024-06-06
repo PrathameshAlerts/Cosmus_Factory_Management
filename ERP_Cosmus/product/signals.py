@@ -1,7 +1,9 @@
 from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
 from .models import Ledger, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
+import logging
 
+logger = logging.getLogger('product_signals')
 
 
 #post_save signal for item_color_shade if Item_Creation instance is created 
@@ -9,8 +11,11 @@ from .models import Ledger, account_credit_debit_master_table, item_purchase_vou
 def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
 # data in the instance is from the form which is submitted in the front end 
     if created:
-        #getting the color name attribte instead of object function
-        color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of color
+
+        #getting the color name attribte instead of object
+        color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of 
+        
+        logger.info(f"Item Shade of color- {color_name} -created")
         # Create a new item_color_shade object related to the newly created instance
         primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
                                                             item_name_rank= 1,
@@ -24,7 +29,7 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
 #signal to reduce the quantity from all the godowns in the invoice if it was deleted and delete it form c/d master table
 @receiver(pre_delete, sender=item_purchase_voucher_master)
 def handle_invoice_delete(sender, instance, **kwargs):
-    invoice_item_instance = instance.purchase_voucher_items_set.all()
+    invoice_item_instance = instance.purchase_voucher_items_set.all() # invoice_item_instance carried the deleted instance data before deleting
     
     for items in invoice_item_instance:
         item_shade = items.item_shade
@@ -33,7 +38,8 @@ def handle_invoice_delete(sender, instance, **kwargs):
         for g_items in  item_godowns_instance:
             godown = g_items.godown_id
             quantity = g_items.quantity
-            godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
+            godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)  # godown_quantity_to_delete carries the already present quantity in the table
+            logger.info(f"quantity reduced from c/d table after Invoice Delete -- id - {godown_quantity_to_delete.id} - quantity -  {quantity}")
             godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
             godown_quantity_to_delete.save()
             
@@ -44,8 +50,7 @@ def handle_invoice_delete(sender, instance, **kwargs):
     instance_get.delete()
 
 
-# if 'using' not in kwargs: this check is done to make sure that the deleting request has come directly from delete() and not from
-# models.CASCADE 'using' is set in Kwargs when instance is deleted as a result of models.CASCADE
+
 #signal to reduce the quantity from all the godowns in the invoiceitem was deleted 
 @receiver(pre_delete, sender=purchase_voucher_items)
 def handle_invoice_items_delete(sender, instance, **kwargs):
@@ -58,6 +63,7 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
             godown = g_items.godown_id
             quantity = g_items.quantity
             godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
+            logger.info(f"quantity reduced from c/d table after Invoice Items Delete -- id - {godown_quantity_to_delete.id} - quantity -  {quantity}")
             godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
             godown_quantity_to_delete.save()
             
@@ -79,6 +85,7 @@ def handle_invoice_items_godowns_delete(sender, instance, **kwargs):
             item_shade = instance.purchase_voucher_godown_item.item_shade
         
         godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
+        logger.info(f"quantity reduced from c/d table after Invoice Items godown delete -- id - {godown_quantity_to_delete.id} - quantity -  {quantity}")
         godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
         godown_quantity_to_delete.save()
         
@@ -93,11 +100,13 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
     
     
     if created:
-        instance_create = account_credit_debit_master_table.objects.create(voucher_no = purchase_voucher,ledger=purchase_ledger,voucher_type = ledger_type, particulars= 'Raw Material',debit = grand_total,credit = 0)
+        instance_create = account_credit_debit_master_table.objects.create(voucher_no = purchase_voucher,ledger=purchase_ledger,voucher_type = ledger_type, particulars= 'Raw Material', debit = grand_total, credit = 0)
+        logger.info(f"Purchase Voucher Created with purchase voucher no - {purchase_voucher}, ledger no - {purchase_ledger.name}, Total - {grand_total}")
         instance_create.save()
     
     elif not created:
         instance_get = account_credit_debit_master_table.objects.get(voucher_no = purchase_voucher)
+        logger.info(f"Purchase Voucher Updated with purchase voucher no - {purchase_voucher}, ledger no - {purchase_ledger.name}, Total - {grand_total}")
         instance_get.ledger=purchase_ledger
         instance_get.voucher_type = ledger_type
         instance_get.particulars = 'Raw Material'
@@ -112,28 +121,11 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
     if not created:  # remove this if statement if 0 quantity values are creating issue on creating new model instances
         quantity_after_save = instance.quantity
         if quantity_after_save == 0:
+            logger.info(f"Item Godown quantity instance deleted as quantity is 0, id - {instance.id}, - {instance.godown_name.godown_name_raw}, - {instance.Item_shade_name.item_shade_name}")
             instance.delete()
 
 
-# @receiver(pre_save, sender=product_2_item_through_table)
-# def create_item_product_config_rows(sender,instance, **kwargs):
 
-#     if instance.common_unique == False:
-            
-#             if instance.pk:
-#                 existing_instance = sender.objects.get(pk=instance.pk)
-#                 no_of_rows = existing_instance.no_of_rows
-#             else:
-#                 no_of_rows = 0
-#             print('1st',no_of_rows)
-#             print('2nd',instance.no_of_rows)
-#             if no_of_rows != instance.no_of_rows:
-#                 if no_of_rows < instance.no_of_rows:
-#                     rows_to_create = instance.no_of_rows - no_of_rows
-
-#                     for row in range(rows_to_create):
-#                         p2i_part_name = set_prod_item_part_name.objects.create(producttoitem=instance)
-#                         p2i_part_name.save()
 
 
 
