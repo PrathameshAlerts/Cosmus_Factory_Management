@@ -2,11 +2,11 @@
 {% load static %} 
 
 {% block body %} 
-<div class="mt-4">
+<div class="mt-3">
         
       <form  action="" method="POST">
            {% csrf_token %}
-           <h2 class="mb-3">{{title}}</h2>
+      <h2 class="mb-3">{{title}}</h2>
        <div class="d-flex mb-3">
       <label for="id_account_sub_group" class="form-label px-2">Sub Group</label>
       <input type="text" class="acc-subInput mx-3" value="{{form.instance.account_sub_group}}" name="account_sub_group" maxlength="50" required id="id_account_sub_group">

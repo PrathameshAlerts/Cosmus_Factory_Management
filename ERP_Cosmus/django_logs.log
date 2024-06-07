@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 2024-06-06 04:54:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-06 04:55:15 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 32656
 2024-06-06 04:55:24 PM - django.server - INFO - "GET /accsubgrpcreate/ HTTP/1.1" 200 29229
@@ -1220,3 +1221,366 @@ django.db.utils.OperationalError: connection to server at "ls-0a4a12e61141e080e3
 2024-06-07 03:12:31 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098
 2024-06-07 03:12:50 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098
 2024-06-07 03:15:07 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+=======
+>>>>>>> 375e9bf1df0b0a10107a79116937556ddd8e5c54
+2024-06-07 03:53:05 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 03:53:35 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:55:19 PM - django.server - INFO - "GET / HTTP/1.1" 200 30094
+2024-06-07 03:55:21 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:55:26 PM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33836
+2024-06-07 03:55:26 PM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-07 03:55:26 PM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 29985
+2024-06-07 03:55:33 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119967
+2024-06-07 03:56:31 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119962
+2024-06-07 03:57:15 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119975
+2024-06-07 03:57:23 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119975
+2024-06-07 03:57:38 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:57:43 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119975
+2024-06-07 03:57:51 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:58:35 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47132
+2024-06-07 03:58:40 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119962
+2024-06-07 03:58:46 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47132
+2024-06-07 03:58:58 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36716
+2024-06-07 03:59:27 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31522
+2024-06-07 03:59:59 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31526
+2024-06-07 04:00:07 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31519
+2024-06-07 04:00:18 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31526
+2024-06-07 04:00:33 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31539
+2024-06-07 04:01:14 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31544
+2024-06-07 04:01:15 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31544
+2024-06-07 04:01:35 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31543
+2024-06-07 04:02:18 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31538
+2024-06-07 04:02:44 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31561
+2024-06-07 04:02:58 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31561
+2024-06-07 04:03:20 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31567
+2024-06-07 04:03:33 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31564
+2024-06-07 04:03:44 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36716
+2024-06-07 04:04:19 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36715
+2024-06-07 04:04:23 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 04:04:27 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36715
+2024-06-07 04:04:34 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33103
+2024-06-07 04:04:59 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33103
+2024-06-07 04:05:01 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36710
+2024-06-07 04:05:42 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36710
+2024-06-07 04:05:49 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36710
+2024-06-07 04:06:00 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36705
+2024-06-07 04:06:44 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36701
+2024-06-07 04:06:49 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36705
+2024-06-07 04:07:08 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36696
+2024-06-07 04:07:37 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36713
+2024-06-07 04:07:52 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36696
+2024-06-07 04:08:08 PM - django.server - INFO - "POST /simple_colorcreate_update/ HTTP/1.1" 302 0
+2024-06-07 04:08:08 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37396
+2024-06-07 04:08:17 PM - django.server - INFO - "POST /simple_colorcreate_update/ HTTP/1.1" 302 0
+2024-06-07 04:08:17 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37832
+2024-06-07 04:13:27 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37568
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37568
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33816
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-07 04:13:32 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37568
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33816
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-07 04:13:37 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-07 04:16:13 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37857
+2024-06-07 04:16:13 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:16:14 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37857
+2024-06-07 04:17:07 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:17:07 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:17:19 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:17:31 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:17:32 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:17:32 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:17:41 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:17:51 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:17:58 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:18:21 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:19:17 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:19:17 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:19:21 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40399
+2024-06-07 04:20:07 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40399
+2024-06-07 04:20:07 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33758
+2024-06-07 04:21:46 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40399
+2024-06-07 04:21:46 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:21:47 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30841
+2024-06-07 04:22:03 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30836
+2024-06-07 04:22:03 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:22:09 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40399
+2024-06-07 04:22:59 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40399
+2024-06-07 04:22:59 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:23:02 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:23:06 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:23:07 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40399
+2024-06-07 04:23:18 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:23:18 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:23:23 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:23:54 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37915
+2024-06-07 04:23:54 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:23:57 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:24:05 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:24:14 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:24:40 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:24:40 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:25:40 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:25:40 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:26:20 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:26:20 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:26:22 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47162
+2024-06-07 04:26:49 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47162
+2024-06-07 04:26:54 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119989
+2024-06-07 04:26:56 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119989
+2024-06-07 04:27:01 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:27:01 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:27:07 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119989
+2024-06-07 04:27:24 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:27:45 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47162
+2024-06-07 04:27:45 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:28:12 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47162
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47162
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33758
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-07 04:28:15 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-07 04:28:16 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-07 04:28:23 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47172
+2024-06-07 04:28:36 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47163
+2024-06-07 04:28:45 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47172
+2024-06-07 04:28:47 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119989
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119998
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33758
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-07 04:29:03 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-07 04:29:04 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-07 04:29:08 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:29:13 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:29:16 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:29:20 PM - django.request - ERROR - Internal Server Error: /itemlist/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\base.py", line 187, in _get_session
+    return self._session_cache
+           ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\postgresql\base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "ls-0a4a12e61141e080e36c98611d70d507edb73974.cngg2wc2avrd.ap-south-1.rds.amazonaws.com" (13.202.102.20), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 760, in item_list
+    return render(request,'product/list_item.html', {"items":queryset})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\debug_toolbar\panels\templates\panel.py", line 102, in _store_template_info
+    if isinstance(value, http.HttpRequest):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\functional.py", line 295, in __getattribute__
+    value = super().__getattribute__(name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\functional.py", line 266, in inner
+    self._setup()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\functional.py", line 419, in _setup
+    self._wrapped = self._setupfunc()
+                    ^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\middleware.py", line 25, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+                                            ^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\middleware.py", line 11, in get_user
+    request._cached_user = auth.get_user(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\__init__.py", line 191, in get_user
+    user_id = _get_user_session_key(request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\__init__.py", line 60, in _get_user_session_key
+    return get_user_model()._meta.pk.to_python(request.session[SESSION_KEY])
+                                               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\base.py", line 53, in __getitem__
+    return self._session[key]
+           ^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\base.py", line 192, in _get_session
+    self._session_cache = self.load()
+                          ^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 42, in load
+    s = self._get_session_from_db()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 380, in __len__
+    self._fetch_all()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 59, in cursor
+    cursor = connection._djdt_cursor(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 330, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 306, in _cursor
+    self.ensure_connection()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\postgresql\base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: connection to server at "ls-0a4a12e61141e080e36c98611d70d507edb73974.cngg2wc2avrd.ap-south-1.rds.amazonaws.com" (13.202.102.20), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+
+2024-06-07 04:29:20 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 61001)
+2024-06-07 04:29:20 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40400
+2024-06-07 04:29:28 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:29:49 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:29:52 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40395
+2024-06-07 04:30:07 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40395
+2024-06-07 04:30:07 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:30:36 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40389
+2024-06-07 04:31:36 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40869
+2024-06-07 04:31:36 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:32:01 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40860
+2024-06-07 04:32:08 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:32:41 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 04:39:14 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32288
+2024-06-07 04:39:14 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:40:25 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32283
+2024-06-07 04:40:35 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32283
+2024-06-07 04:40:46 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32288
+2024-06-07 04:41:02 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32288
+2024-06-07 04:41:41 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32468
+2024-06-07 04:41:41 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:42:06 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32468
+2024-06-07 04:42:16 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30142
+2024-06-07 04:42:48 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30137
+2024-06-07 04:44:09 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30264
+2024-06-07 04:44:09 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:44:53 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 36144
+2024-06-07 04:45:27 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 36265
+2024-06-07 04:45:40 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47172
+2024-06-07 04:46:14 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-07 04:46:20 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33103
+2024-06-07 04:46:40 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33103
+2024-06-07 04:46:40 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:47:27 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33115
+2024-06-07 04:47:37 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33115
+2024-06-07 04:47:40 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-07 04:47:48 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33115
+2024-06-07 04:48:04 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33105
+2024-06-07 04:48:12 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33100
+2024-06-07 04:48:27 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33100
+2024-06-07 04:51:07 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33100
+2024-06-07 04:51:07 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:51:11 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30264
+2024-06-07 04:51:50 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30260
+2024-06-07 04:51:58 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 33984
+2024-06-07 04:52:53 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 33394
+2024-06-07 04:53:02 PM - django.server - INFO - "GET /packaging_create/ HTTP/1.1" 200 30563
+2024-06-07 04:53:39 PM - django.server - INFO - "GET /packaging_create/ HTTP/1.1" 200 30681
+2024-06-07 04:53:49 PM - django.server - INFO - "GET /stockitemcreate/ HTTP/1.1" 200 32137
+2024-06-07 05:01:45 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 36265
+2024-06-07 05:01:45 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 05:01:50 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31564
+2024-06-07 05:01:54 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-07 05:01:57 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-07 05:01:59 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31564

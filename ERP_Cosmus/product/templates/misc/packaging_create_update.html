@@ -2,12 +2,12 @@
 {% load static %} 
  {% block body %}
 
-    <div class="row ps-3 mt-4">
+    <div class="row mt-4">
         <div class="col-lg-5">
             <form action="" method="POST">
 
                 {% csrf_token %}
-               <h2>Packaging - {{title}}</h2>
+               <h2 class="mb-4">Packaging - {{title}}</h2>
                 <div class="d-flex my-4">
                     <label for="id_packing_material" class="item-form">Packaging :</label>
                     <input type="text" name="packing_material" class="item-select" required id="id_packing_material" value="{{form.instance.packing_material}}">    
@@ -20,7 +20,8 @@
             
         </div>
         <div class="col-lg-5 mt-5">
-            <table class="table table-striped table-bordered table-hover table-responsive">
+            <div style="width:100%; overflow:auto; max-height:470px;">
+            <table class="table table-striped table-bordered table-hover table-responsive" style="width:100%;">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -40,6 +41,7 @@
                     {% endfor %}
                 </tbody> 
             </table>
+            </div>
         </div>
     </div>
     
