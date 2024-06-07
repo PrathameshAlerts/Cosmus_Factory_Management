@@ -294,16 +294,14 @@ class product_sub_category_form(forms.ModelForm):
 
 
 class purchase_order_form(forms.ModelForm):
+
     class Meta:
         model = purchase_order
 
         fields = ['purchase_order_number','product_reference_number','ledger_party_name',
                   'target_date','number_of_pieces']
         
-        # set the type to date
-        widgets = {
-            'target_date': DateInput(attrs={'type': 'date'})
-        }
+        
             
 
 
