@@ -159,3 +159,103 @@
 2024-06-07 02:55:35 PM - django.server - INFO - "POST /purchaseorderrawupdate/7 HTTP/1.1" 302 0
 2024-06-07 02:55:36 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33821
 2024-06-07 02:55:45 PM - django.server - INFO - "GET /purchaseorderrawupdate/7 HTTP/1.1" 200 29786
+2024-06-07 02:59:36 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:59:38 PM - django.server - INFO - "GET /purchaseorderrawupdate/7 HTTP/1.1" 200 29787
+2024-06-07 02:59:44 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29789
+2024-06-07 02:59:53 PM - django.server - INFO - "GET /purchaseorderrawupdate/4 HTTP/1.1" 200 29785
+2024-06-07 03:00:12 PM - django.request - ERROR - Internal Server Error: /purchaseorderrawupdate/5
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\postgresql\base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "ls-0a4a12e61141e080e36c98611d70d507edb73974.cngg2wc2avrd.ap-south-1.rds.amazonaws.com" (13.202.102.20), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2618, in purchaseorderrawcreateupdate
+    instance = get_object_or_404(purchase_order, pk = pk)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\shortcuts.py", line 85, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\models\query.py", line 380, in __len__
+    self._fetch_all()
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 59, in cursor
+    cursor = connection._djdt_cursor(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\base\base.py", line 330, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\base\base.py", line 306, in _cursor
+    self.ensure_connection()
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\base\base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\backends\postgresql\base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: connection to server at "ls-0a4a12e61141e080e36c98611d70d507edb73974.cngg2wc2avrd.ap-south-1.rds.amazonaws.com" (13.202.102.20), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+
+2024-06-07 03:00:12 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 58034)
+2024-06-07 03:07:13 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33821
+2024-06-07 03:13:48 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29789
+2024-06-07 03:14:24 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29789
+2024-06-07 03:15:10 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\settings.py changed, reloading.
+2024-06-07 03:15:11 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
