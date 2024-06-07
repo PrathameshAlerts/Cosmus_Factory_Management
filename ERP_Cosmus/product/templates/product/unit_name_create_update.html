@@ -3,13 +3,13 @@
 
 {% block body %} 
 <div class="row mt-4">
-  <div class="col-lg-4">
+  <div class="col-lg-5">
    
   <form action="" method="POST">
        {% csrf_token %}
        <h2 class="mb-3">{{title}}</h2> 
    <div class="d-flex">
-     <label for="id_unit_name" class="form-label px-2">Units:</label>
+     <label for="id_unit_name" class=" item-form">Units Name:</label>
      <input type="text" class="item-select" value="{{ form.instance.unit_name }}" name="unit_name" maxlength="255" required id="id_unit_name">
     </div>
    <input type="submit" class="create-btn mt-4" name="save" value="Save">
@@ -30,34 +30,37 @@
     </div>  
     <div class="row ps-3">
       <div class="col-lg-12">
-        <table class="table table-striped table-hover table-responsive table-bordered">
-          <thead>
-              <tr>
-                  <th scope="col" class="name_absolute">No</th>
-                  <th scope="col" class="name_absolute">Unit Name
-                      <!-- <div class="nav-item dropdown unit-list-icons">
-                          <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
-                          <ul class="dropdown-menu">
-                              <li><input type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
-                          </ul>
-                      </div> -->
-                  </th>
-                  <th scope="col" class="name_absolute">Edit</th>
-                  <th scope="col" class="name_absolute">Delete</th>
-              </tr>
-          </thead>
-      
-          <tbody class="mainTableList">
-              {% for unit in unit_name_all %}
-              <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{unit.unit_name}}</td>
-                  <td><a href="{% url 'unit_name-update' unit.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-                  <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ unit.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-              </tr>
-              {% endfor %}                
-          </tbody>
-      </table>
+        <div style="width:100%; overflow:auto; max-height:470px;">
+          <table class="table table-striped table-hover table-responsive table-bordered" style="width:100%;">
+            <thead>
+                <tr>
+                    <th scope="col" class="name_absolute">No</th>
+                    <th scope="col" class="name_absolute">Unit Name
+                        <!-- <div class="nav-item dropdown unit-list-icons">
+                            <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><input type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
+                            </ul>
+                        </div> -->
+                    </th>
+                    <th scope="col" class="name_absolute">Edit</th>
+                    <th scope="col" class="name_absolute">Delete</th>
+                </tr>
+            </thead>
+        
+            <tbody class="mainTableList">
+                {% for unit in unit_name_all %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{unit.unit_name}}</td>
+                    <td><a href="{% url 'unit_name-update' unit.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                    <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ unit.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                </tr>
+                {% endfor %}                
+            </tbody>
+        </table>
+        </div>
+       
           </div>
           
         </div>

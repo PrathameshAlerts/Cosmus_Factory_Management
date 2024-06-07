@@ -571,7 +571,7 @@
 
        
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-7">
         <div class="d-flex">
           <div class="d-flex mx-4">
             <lable class="mt-2 me-2">Download File:</lable>
@@ -589,13 +589,18 @@
             </label>
             <input id="file-input" type="file" id="formFile" name="excel_file" style="display: none;" />
           </div>
-          <select class=" productSelect" name="Products" id="id_Products">
-            <option value="">-------------</option>
-            {% for product in product_skus %}
-            <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp; &nbsp;{{product.PProduct_color}}</option>
-            {% endfor %}
-        </select>
+          <div class="d-flex ms-3">
+            <label for="id_Products" class="form-label px-2">Product:</label>
+            <select class=" productSelect" name="Products" id="id_Products" onchange="productView(this)" >
+              <option value="">-------------</option>
+              {% for product in product_skus %}
+              <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp; &nbsp;{{product.PProduct_color}}</option>
+              {% endfor %}
+          </select>
           </div>
+          </div>
+          
+        
         </div>
         
       </div>
@@ -783,6 +788,29 @@
          // this will generate http://127.0.0.1:8000/ 
          var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
          popupWindow = window.open( baseUrl  + path + refrence_id , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+       
+     } 
+   
+
+     function productView(button){
+     if(popupWindow === null || popupWindow.closed){
+       newViewPopup(button, 'viewproduct2item_configs/');
+     }else{
+       popupWindow.focus();
+     }
+   }
+ 
+   function newViewPopup(button, path) {
+     var sku = document.getElementById('id_Products').value
+     console.log(sku)
+    
+
+         var minWidth = 1270; // minimum width
+         var minHeight = 700;
+ 
+         // this will generate http://127.0.0.1:8000/ 
+         var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+         popupWindow = window.open( baseUrl  + path + sku , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
        
      } 
    

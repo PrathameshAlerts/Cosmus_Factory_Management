@@ -1,14 +1,17 @@
 {% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
-<h1>Add Product Images</h1>
+
 <div class="row">
+
   <div class="col-lg-2">
 <form id="myForm" method="post" enctype="multipart/form-data" >
     {% csrf_token %}
     {{ formset.management_form }}
-    
-      <table class="table table-responsive table-striped table-bordered" id="myTable" >
+    <h2 class="mb-4">Add Product Images</h2>
+    <div style="width:100%; overflow:auto; max-height:470px;">
+
+      <table class="table table-responsive table-striped table-bordered" id="myTable" style="width:100%;" >
         <thead>
           <tr>
             <th>No</th>
@@ -55,6 +58,7 @@
   
         </tbody>
       </table>
+    </div>
 
     
       <button type="button" class="add_btn" id="addForm">Add</button>

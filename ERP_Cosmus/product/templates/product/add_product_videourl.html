@@ -1,11 +1,12 @@
 {% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
-    <h1>Add Product Video Urls</h1>
+ 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ formset.management_form }}
        <div class="row">
+        <h2 class="mb-4">Add Product Video Urls</h2>
         <div class="col-lg-5">
             <table class="table table-striped table-hover table-bordered" id="myTable">
                 <thead>
