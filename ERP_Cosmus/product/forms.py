@@ -1,11 +1,11 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
-from django.forms.widgets import PasswordInput, TextInput
-from django.forms import modelformset_factory, BaseInlineFormSet
+from django.forms.widgets import PasswordInput, TextInput , DateInput
+from django.forms import modelformset_factory, BaseInlineFormSet 
 
 
 
@@ -290,6 +290,22 @@ class product_sub_category_form(forms.ModelForm):
     class Meta:
         model = SubCategory
         fields = ['product_sub_category_name','product_main_category']
+
+
+
+class purchase_order_form(forms.ModelForm):
+    class Meta:
+        model = purchase_order
+
+        fields = ['purchase_order_number','product_reference_number','ledger_party_name',
+                  'target_date','number_of_pieces']
+        
+        # set the type to date
+        widgets = {
+            'target_date': DateInput(attrs={'type': 'date'})
+        }
+            
+
 
 
 
