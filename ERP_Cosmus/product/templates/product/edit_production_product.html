@@ -589,6 +589,12 @@
             </label>
             <input id="file-input" type="file" id="formFile" name="excel_file" style="display: none;" />
           </div>
+          <select class=" productSelect" name="Products" id="id_Products">
+            <option value="">-------------</option>
+            {% for product in product_skus %}
+            <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp; &nbsp;{{product.PProduct_color}}</option>
+            {% endfor %}
+        </select>
           </div>
         </div>
         

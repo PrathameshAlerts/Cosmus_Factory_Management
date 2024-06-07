@@ -2,11 +2,12 @@
 {% load static %}
 {% block body %}
 
+<h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
+
+
    <form method="post" enctype="multipart/form-data">
     <h4 class="mb-3">Add Unique Product</h3>
-
-    <h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
-
+    
     {% csrf_token %}
 
 <div class="">
@@ -42,9 +43,7 @@
                     <div class="custom-dropdown-container"> 
                         <input  type="hidden"name="{{form.prefix}}-Item_pk" id="id_{{form.prefix}}-Item_pk"  class="product2Select input_hidden-value"   value="{% if form.instance.id %}{{ form.instance.Item_pk.id }}{% endif %}" > 
                         <input  type="text"name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks" class="product2Select input_text search-input"  placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
-                        <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="item-select item-name s-suggestion-container " style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
-                             
-                        
+                        <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="item-select item-name s-suggestion-container " style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
                         </div>
                     </div> 
                 </td>  

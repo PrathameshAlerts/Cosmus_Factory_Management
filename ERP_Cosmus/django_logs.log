@@ -1,0 +1,307 @@
+2024-06-07 03:20:45 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 03:20:50 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 30101
+2024-06-07 03:20:50 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 03:21:08 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:21:13 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 81837
+2024-06-07 03:21:13 PM - django.server - INFO - "GET /static/images/Amazon%2001.png HTTP/1.1" 200 87467
+2024-06-07 03:21:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 03:21:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30314
+2024-06-07 03:21:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 03:21:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30304
+2024-06-07 03:21:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 03:21:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30319
+2024-06-07 03:21:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 03:21:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 03:21:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30314
+2024-06-07 03:21:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30314
+2024-06-07 03:21:13 PM - django.server - INFO - "GET /static/images/Cosmus.png HTTP/1.1" 200 36950
+2024-06-07 03:21:13 PM - django.server - INFO - "GET /static/images/FLIPKART%2001.png HTTP/1.1" 200 138362
+2024-06-07 03:21:13 PM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 200 15175
+2024-06-07 03:21:13 PM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 200 15027
+2024-06-07 03:35:32 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81250
+2024-06-07 03:35:44 PM - django.server - INFO - "GET /export_Product2Item_excel/1036 HTTP/1.1" 200 11590
+2024-06-07 03:36:14 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81250
+2024-06-07 03:51:14 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:51:14 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 03:51:17 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33103
+2024-06-07 03:51:54 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40399
+2024-06-07 03:52:03 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:52:31 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119967
+2024-06-07 03:53:06 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30805
+2024-06-07 03:53:14 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30805
+2024-06-07 03:53:20 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36716
+2024-06-07 03:53:23 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 36471
+2024-06-07 03:53:45 PM - django.server - INFO - "GET /packaging_create/ HTTP/1.1" 200 30563
+2024-06-07 03:53:55 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30140
+2024-06-07 03:54:17 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32288
+2024-06-07 03:54:53 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30140
+2024-06-07 03:54:58 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 36716
+2024-06-07 03:55:14 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30805
+2024-06-07 03:55:16 PM - django.server - INFO - "GET /purchasevoucherupdate/4 HTTP/1.1" 200 82715
+2024-06-07 03:55:30 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 36471
+2024-06-07 03:55:33 PM - django.server - INFO - "GET /ledgerupdate/1 HTTP/1.1" 200 33829
+2024-06-07 03:55:54 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 03:56:09 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 34236
+2024-06-07 03:56:21 PM - django.server - INFO - "GET /purchaseorderrawdelete/5 HTTP/1.1" 302 0
+2024-06-07 03:56:21 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33905
+2024-06-07 03:56:27 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47140
+2024-06-07 04:07:55 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
+2024-06-07 04:07:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:08:25 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:08:26 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:08:43 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
+2024-06-07 04:08:44 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:12:30 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 80798
+2024-06-07 04:15:48 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:15:49 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:20:01 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 80846
+2024-06-07 04:22:49 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 61629
+2024-06-07 04:22:49 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 04:23:14 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 82653
+2024-06-07 04:23:15 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:23:15 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:23:15 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:23:15 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:23:15 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:23:15 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:23:15 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:23:15 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:23:15 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:23:15 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:23:29 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 80798
+2024-06-07 04:28:12 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81295
+2024-06-07 04:28:41 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81325
+2024-06-07 04:28:48 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81325
+2024-06-07 04:28:57 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81326
+2024-06-07 04:30:40 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81353
+2024-06-07 04:30:52 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81358
+2024-06-07 04:40:49 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 82759
+2024-06-07 04:40:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:40:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:40:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:40:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:40:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:40:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:40:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:40:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:40:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:40:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:42:26 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:42:28 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:42:29 PM - django.request - ERROR - Internal Server Error: /editpproduct/1036
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 283, in edit_production_product
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\defaulttags.py", line 193, in render
+    values = list(values)
+             ^^^^^^^^^^^^
+TypeError: 'Product' object is not iterable
+2024-06-07 04:42:30 PM - django.server - ERROR - "GET /editpproduct/1036 HTTP/1.1" 500 231784
+2024-06-07 04:43:26 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:43:27 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:43:29 PM - django.request - ERROR - Internal Server Error: /editpproduct/1036
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 284, in edit_production_product
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\defaulttags.py", line 193, in render
+    values = list(values)
+             ^^^^^^^^^^^^
+TypeError: 'Product' object is not iterable
+2024-06-07 04:43:29 PM - django.server - ERROR - "GET /editpproduct/1036 HTTP/1.1" 500 231814
+2024-06-07 04:43:42 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 82655
+2024-06-07 04:43:42 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:43:42 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:43:42 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:43:42 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:43:42 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:43:42 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:43:42 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:43:42 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:43:42 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:43:42 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:48:10 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:48:11 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:48:13 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 82655
+2024-06-07 04:48:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:48:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:48:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:48:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:48:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:48:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:48:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:48:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:48:13 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:48:13 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:49:11 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:49:12 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:49:41 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:49:42 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:49:44 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 82655
+2024-06-07 04:49:44 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:49:45 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:49:45 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:49:45 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:49:45 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:49:45 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:49:45 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:49:45 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:49:45 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:49:45 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:00 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83322
+2024-06-07 04:50:01 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:50:01 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:50:01 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:50:01 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:01 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:50:01 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:50:01 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:50:01 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:50:01 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:01 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:40 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83374
+2024-06-07 04:50:40 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:50:40 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:50:40 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:50:40 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:40 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:50:40 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:50:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:50:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:50:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:48 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83374
+2024-06-07 04:50:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 04:50:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 04:50:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30768
+2024-06-07 04:50:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 04:50:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 04:50:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30783
+2024-06-07 04:50:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 04:50:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30778
+2024-06-07 04:50:54 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 80747
+2024-06-07 04:51:49 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
+2024-06-07 04:51:50 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:52:30 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 04:52:31 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:52:40 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
+2024-06-07 04:52:41 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:53:05 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
+2024-06-07 04:53:07 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
