@@ -21,3 +21,100 @@
 2024-06-06 04:55:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c0a7456c1d0e4317a6100f3edc5d4d6f HTTP/1.1" 200 9072
 2024-06-06 04:58:33 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\logging_config.py changed, reloading.
 2024-06-06 04:58:34 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-06 05:31:22 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /purchasevoucherupdate/4 HTTP/1.1" 200 82681
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33756
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-06 05:31:26 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-06 05:31:27 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-06 05:31:27 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-06 05:31:27 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-06 06:03:45 PM - django.server - INFO - "GET /purchasevouchercreate/ HTTP/1.1" 200 82596
+2024-06-06 06:03:46 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-06 06:03:49 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47106
+2024-06-06 06:03:53 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 81803
+2024-06-06 06:03:53 PM - django.server - INFO - "GET /static/images/Amazon%2001.png HTTP/1.1" 200 87467
+2024-06-06 06:03:53 PM - django.server - INFO - "GET /static/images/FLIPKART%2001.png HTTP/1.1" 200 138362
+2024-06-06 06:03:53 PM - django.server - INFO - "GET /static/images/Cosmus.png HTTP/1.1" 200 36950
+2024-06-06 06:03:53 PM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 200 15175
+2024-06-06 06:03:53 PM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 200 15027
+2024-06-06 06:03:53 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-06 06:03:53 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 29484
+2024-06-06 06:03:53 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-06 06:03:53 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-06 06:03:53 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 29484
+2024-06-06 06:03:53 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 29474
+2024-06-06 06:03:53 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-06 06:03:53 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-06 06:03:53 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 29489
+2024-06-06 06:03:53 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 29484
+2024-06-06 06:03:56 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 89282
+2024-06-06 06:04:02 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:04:02 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3cc75775ecb0468182d0ff23bdeb16f0 HTTP/1.1" 200 9080
+2024-06-06 06:04:03 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-06 06:04:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b502653e6c394767bbdcc1619b0459de HTTP/1.1" 200 9108
+2024-06-06 06:04:04 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-06 06:04:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9b8c92383cbf4a43aaea4cc8eca696b6 HTTP/1.1" 200 9107
+2024-06-06 06:04:05 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GRE HTTP/1.1" 200 110
+2024-06-06 06:04:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7c72ed2974324116b528b1af0717994c HTTP/1.1" 200 9107
+2024-06-06 06:04:06 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GR HTTP/1.1" 200 109
+2024-06-06 06:04:06 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.G HTTP/1.1" 200 108
+2024-06-06 06:04:06 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4daa32ede10f41c8bfcbd26f733465d9 HTTP/1.1" 200 9105
+2024-06-06 06:04:09 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:04:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f892fc3cd1b249a8a1798db644c7f848 HTTP/1.1" 200 9080
+2024-06-06 06:04:10 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-06 06:04:10 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fc688fdbd480452ba9a0840e135ede7d HTTP/1.1" 200 9107
+2024-06-06 06:04:11 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-06 06:04:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a43aec5d0f2c49458c6c0340f613a469 HTTP/1.1" 200 9108
+2024-06-06 06:04:12 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-06 06:04:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=643cefda040941f68c5717eabe01d7ff HTTP/1.1" 200 9108
+2024-06-06 06:04:16 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:04:16 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:04:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bf726a51549a45189a31b54ef9134d58 HTTP/1.1" 200 9080
+2024-06-06 06:04:24 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:04:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5af8a8c584a340d8ba16d469c5eec028 HTTP/1.1" 200 9080
+2024-06-06 06:04:25 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-06 06:04:26 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9c3682706eba4714902392993b903533 HTTP/1.1" 200 9108
+2024-06-06 06:05:11 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 89282
+2024-06-06 06:05:16 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:05:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=12d759ec45b04075b4f78ffcf845e355 HTTP/1.1" 200 9080
+2024-06-06 06:05:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-06 06:05:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2477ecf36d18444aa84d0676508a4c32 HTTP/1.1" 200 9107
+2024-06-06 06:05:26 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:05:26 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:05:27 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=da3b1f9f821941f2ab4bfb785fcef75f HTTP/1.1" 200 9079
+2024-06-06 06:05:28 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20L.GREY HTTP/1.1" 200 111
+2024-06-06 06:05:28 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=46a7e57734cb4f598f9e63c230cae686 HTTP/1.1" 200 9108
+2024-06-06 06:05:58 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 81328
+2024-06-06 06:06:01 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:01 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d4559a5805e74d52ba9dfd1978350635 HTTP/1.1" 200 9080
+2024-06-06 06:06:02 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:02 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5f1f93678bf048c9a5fca0ca4bc5d696 HTTP/1.1" 200 9078
+2024-06-06 06:06:02 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:02 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e56abb45c1be4a50b6657c17ed95e599 HTTP/1.1" 200 9080
+2024-06-06 06:06:02 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:03 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=639db79208fc4597b93f487e019f3d97 HTTP/1.1" 200 9080
+2024-06-06 06:06:03 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:03 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=35f8adb6b5a747efbdcb091363fa6b56 HTTP/1.1" 200 9080
+2024-06-06 06:06:04 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9d35809bb7334c7aba260dac05caaa68 HTTP/1.1" 200 9080
+2024-06-06 06:06:04 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d190d9aca70946a9a4708bf507345c2f HTTP/1.1" 200 9080
+2024-06-06 06:06:04 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-06 06:06:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=41547f6fb8894b489beec1e49e2322fa HTTP/1.1" 200 9080
+2024-06-07 10:36:57 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 81803
+2024-06-07 10:36:57 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 10:36:57 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 10:36:57 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 29484
+2024-06-07 10:36:58 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 10:36:58 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 10:36:58 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 29474
+2024-06-07 10:36:58 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 29484
+2024-06-07 10:36:58 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 10:36:58 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 29489
+2024-06-07 10:36:58 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 10:36:58 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 29484
