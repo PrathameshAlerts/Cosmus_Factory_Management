@@ -1219,3 +1219,4 @@ django.db.utils.OperationalError: connection to server at "ls-0a4a12e61141e080e3
 2024-06-07 03:11:49 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098
 2024-06-07 03:12:31 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098
 2024-06-07 03:12:50 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098
+2024-06-07 03:15:07 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
