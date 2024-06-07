@@ -4,13 +4,50 @@
 {% block body %}
 
 <form action="" method="POST">
+    <h3 class="my-4">Create new Purchase Order</h3>
 
-{% csrf_token %}
-
-{{form.as_p}}
-
-<input type="submit">
-</form>
+    {% csrf_token %}
+    
+    <div class="d-flex mb-3">
+        <label for="id_purchase_order_number" class="item-form">Order Number:</label>
+        <input type="number" name="purchase_order_number" class="item-select" required id="id_purchase_order_number">
+    </div>
+    
+      
+      <div class="d-flex mb-3">
+        <label for="id_product_reference_number" class="item-form">Reference Number:</label>
+        <select name="product_reference_number" class="item-select" required id="id_product_reference_number">
+      <option value="" selected>---------</option>
+    
+      <option value="2">Product object (2)</option>
+    
+      <option value="1">Product object (1)</option>
+    
+      <option value="3">Product object (3)</option>
+    
+    </select> 
+      </div>
+      <div class="d-flex mb-3">
+        <label for="id_ledger_party_name" class="item-form">Ledger party name:</label>
+        <select name="ledger_party_name" class="item-select" required id="id_ledger_party_name">
+      <option value="" selected>---------</option>
+    
+      <option value="1">Ledger object (1)</option>
+    
+    </select>
+      </div>
+      <div class="d-flex mb-3">
+        <label for="id_target_date" class="item-form">Target date:</label>
+        <input type="date" name="target_date" class="item-select" required id="id_target_date">  
+      </div> 
+      <div class="d-flex mb-3">
+        <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
+        <input type="number" name="number_of_pieces" value="0" class="item-select" required id="id_number_of_pieces">
+      </div>
+    
+    <input type="submit" class="create-btn mt-4 mx-3"  value="submit">
+    </form>
+    
 
 
 {% endblock %}

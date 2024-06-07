@@ -114,6 +114,7 @@
 
 </form>
 
+
 <script>
    
 $(document).ready( function() {
@@ -242,7 +243,7 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
             var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey);
             $(this).text(nameDataKey);
           
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
 
             var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
             var itemHeight = nextItem.outerHeight();
@@ -284,7 +285,7 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
              var hiddenData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey); 
             $(this).text(nameDataKey);
            
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
            
             var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
             var itemHeight = prevItem.outerHeight();
