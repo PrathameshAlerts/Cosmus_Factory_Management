@@ -67,6 +67,11 @@ def edit_production_product(request,pk):
 
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
+    
+    #get all the product skus from reverse related model of the ref id 
+    product_skus = pproduct.productdetails.all()
+    
+
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
 
     #filter all product2cat instances 
@@ -269,6 +274,7 @@ def edit_production_product(request,pk):
 
             return render(request, 'product/edit_production_product.html', {'gsts':gsts,
                                                                             'form':form,
+                                                                            'product_skus':product_skus,
                                                                             'formset':formset,
                                                                             'colors':colors,
                                                                             'products_sku_counts':products_sku_counts,
@@ -279,7 +285,11 @@ def edit_production_product(request,pk):
                                                                             'prod_sub_cat_dict_all':prod_sub_cat_dict_all})
 
 
-    return render(request, 'product/edit_production_product.html',{'gsts':gsts,'form': form,'formset':formset,'colors':colors,
+    return render(request, 'product/edit_production_product.html',{'gsts':gsts,
+                                                                   'form': form,
+                                                                   'product_skus':product_skus,
+                                                                   'formset':formset,
+                                                                   'colors':colors,
                                                                    'products_sku_counts':products_sku_counts,
                                                                    'main_categories':main_categories,
                                                                    'prod_main_cat_name':prod_main_cat_name,
@@ -2609,6 +2619,11 @@ def export_Product2Item_excel(request,product_ref_id):
         logger.error(f"An exception occoured while exporting data - {e} for ref id {product_ref_id}")
         return redirect(reverse('edit_production_product', args=[product_ref_id]))
 
+
+
+def viewproduct2items_configs(request,product_sku):
+    pass
+    
 
 
 def purchaseorderrawcreateupdate(request,pk= None):

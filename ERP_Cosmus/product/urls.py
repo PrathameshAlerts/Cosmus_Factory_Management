@@ -146,11 +146,14 @@ urlpatterns = [
     path('product2item/<int:product_refrence_id>',views.product2item, name = 'product-2-item'),
     path('export_Product2Item_excel/<int:product_ref_id>',views.export_Product2Item_excel, name = 'export-Product2Item-excel'),
 
+    path('viewproduct2item_configs/<int:product_sku>',views.viewproduct2items_configs,name ='view-product-2-item-configs'),
+    
+
     path('purchaseorderrawcreate/',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-create'),
     path('purchaseorderrawupdate/<int:pk>',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-update'),
     path('purchaseorderrawlist/',views.purchaseorderrawlist, name = 'purchase-order-raw-list'),
     path('purchaseorderrawdelete/<int:pk>',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
-
+    
     #reports
     path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
