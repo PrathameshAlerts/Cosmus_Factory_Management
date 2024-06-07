@@ -54,7 +54,7 @@
       </div>
       <div class="d-flex mb-3">
         <label for="id_target_date" class="item-form">Target date:</label>
-        <input type="date" name="target_date" class="item-select" value="{{form.instance.target_date}}" required id="id_target_date">  
+        <input type="date" name="target_date" class="item-select" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date">  
       </div> 
       <div class="d-flex mb-3">
         <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
@@ -63,7 +63,14 @@
     
     <input type="submit" class="create-btn mt-4 mx-3"  value="submit">
     </form>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dateInput = document.getElementById('id_target_date');
+            var today = new Date().toISOString().split('T')[0];
+             var date= dateInput.value;
+             dateInput.min = today;
+        });
+    </script>
 
 
 {% endblock %}
