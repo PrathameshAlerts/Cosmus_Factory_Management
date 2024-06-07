@@ -149,7 +149,7 @@ urlpatterns = [
     path('purchaseorderrawcreate/',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-create'),
     path('purchaseorderrawupdate/<int:pk>',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-update'),
     path('purchaseorderrawlist/',views.purchaseorderrawlist, name = 'purchase-order-raw-list'),
-    path('purchaseorderrawdelete/',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
+    path('purchaseorderrawdelete/<int:pk>',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
 
     #reports
     path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),

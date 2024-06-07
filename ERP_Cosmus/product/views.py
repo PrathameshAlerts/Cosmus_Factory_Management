@@ -2614,7 +2614,8 @@ def export_Product2Item_excel(request,product_ref_id):
 def purchaseorderrawcreateupdate(request,pk= None):
 
     if pk:
-        instance = purchase_order.objects.get(pk=pk)
+        instance = get_object_or_404(purchase_order, pk = pk)
+
     else:
         instance = None
 
@@ -2630,14 +2631,29 @@ def purchaseorderrawcreateupdate(request,pk= None):
     return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form})
 
 
+
 def purchaseorderrawlist(request):
+
     purchase_orders = purchase_order.objects.all()
 
     return render(request,'production/purchaseorderrawlist.html',{'purchase_orders':purchase_orders})
 
 
+
 def purchaseorderrawdelete(request,pk):
-    pass
+     
+    try:
+        instance = get_object_or_404(purchase_order, pk = pk)
+        instance.delete()
+        logger.info(f"Purchase Order with order no - {instance.purchase_order_number} was deleted")
+        messages.success(request,f'Purchase Order with order no - {instance.purchase_order_number} was deleted')
+        
+    
+    except exception as e:
+        messages.error(request,f'Cannot delete {instance.purchase_order_number} - {e}.')
+        logger.error(f"Cannot delete {instance.purchase_order_number} - {e}.")
+    return redirect('purchase-order-raw-list')
+     
 
 #_________________________production-end______________________________
 

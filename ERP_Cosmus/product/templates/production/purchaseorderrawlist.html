@@ -9,11 +9,14 @@
 {% for po in purchase_orders %}
 
 {{po.purchase_order_number}}
-{{po.product_reference_number}}
-{{po.ledger_party_name}}
+{{po.product_reference_number.Product_Refrence_ID}}
+{{po.ledger_party_name.name}}
 {{po.target_date}}
 {{po.created_date}}
 {{po.number_of_pieces}}
+
+<a href="{% url 'purchase-order-raw-update' po.id %}">Update Purchase Order</a>
+<a href="{% url 'purchase-order-raw-delete' po.id %}">Delete Purchase Order</a>
 
 
 {% endfor %}
