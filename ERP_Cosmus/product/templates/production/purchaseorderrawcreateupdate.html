@@ -10,35 +10,27 @@
     
     <div class="d-flex mb-3">
         <label for="id_purchase_order_number" class="item-form">Order Number:</label>
-        <input type="number" name="purchase_order_number" class="item-select" required id="id_purchase_order_number">
+        <input type="number" name="purchase_order_number" class="item-select" required id="id_purchase_order_number" value="{{master_form.instance.purchase_order_number}}">
     </div>
     
       
       <div class="d-flex mb-3">
         <label for="id_product_reference_number" class="item-form">Reference Number:</label>
-        <select name="product_reference_number" class="item-select" required id="id_product_reference_number">
-      <option value="" selected>---------</option>
-    
-      <option value="2">Product object (2)</option>
-    
-      <option value="1">Product object (1)</option>
-    
-      <option value="3">Product object (3)</option>
+        <select name="product_reference_number" class="item-select" required id="id_product_reference_number" value="{{master_form.instance.product_reference_number}}">
+  
     
     </select> 
       </div>
       <div class="d-flex mb-3">
         <label for="id_ledger_party_name" class="item-form">Ledger party name:</label>
-        <select name="ledger_party_name" class="item-select" required id="id_ledger_party_name">
-      <option value="" selected>---------</option>
-    
-      <option value="1">Ledger object (1)</option>
+        <select name="ledger_party_name" class="item-select" required id="id_ledger_party_name" value="{{master_form.instance.ledger_party_name}}">
+   
     
     </select>
       </div>
       <div class="d-flex mb-3">
         <label for="id_target_date" class="item-form">Target date:</label>
-        <input type="date" name="target_date" class="item-select" required id="id_target_date">  
+        <input type="date" name="target_date" class="item-select" required id="id_target_date" value="">  
       </div> 
       <div class="d-flex mb-3">
         <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
@@ -47,7 +39,15 @@
     
     <input type="submit" class="create-btn mt-4 mx-3"  value="submit">
     </form>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dateInput = document.getElementById('id_target_date');
+            var today = new Date().toISOString().split('T')[0];
+            console.log(today)
+            dateInput.value = today;
+            dateInput.min = today;
+        });
+    </script>
 
 
 {% endblock %}

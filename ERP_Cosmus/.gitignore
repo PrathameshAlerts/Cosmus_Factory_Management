@@ -3,3 +3,4 @@
 /migrations
 /notes
 .product_view_logs.log
+.django_logs.log
