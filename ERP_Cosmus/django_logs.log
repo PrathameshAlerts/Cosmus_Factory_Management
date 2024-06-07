@@ -305,3 +305,10 @@ TypeError: 'Product' object is not iterable
 2024-06-07 04:52:41 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-07 04:53:05 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
 2024-06-07 04:53:07 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 04:53:38 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 05:17:55 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 05:17:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 05:25:46 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 05:25:48 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 05:26:11 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 05:26:12 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader

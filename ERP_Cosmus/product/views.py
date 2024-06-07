@@ -2622,7 +2622,9 @@ def export_Product2Item_excel(request,product_ref_id):
 
 
 def viewproduct2items_configs(request,product_sku):
-    pass
+    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
+    print(product2item_instances)
+    return render(request,'production/product2itemsconfigview.html',{'product2item_instances' : product2item_instances})
     
 
 
