@@ -2613,22 +2613,31 @@ def export_Product2Item_excel(request,product_ref_id):
 
 def purchaseorderrawcreateupdate(request,pk= None):
 
+    print(request.POST)
     if pk:
         instance = get_object_or_404(purchase_order, pk = pk)
 
     else:
         instance = None
 
-    form = purchase_order_form(instance=instance)
+    ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
+    
+    products = Product.objects.all()
 
+    form = purchase_order_form(instance=instance)
+    
     if request.method == 'POST':
         form = purchase_order_form(request.POST, instance=instance)
 
         if form.is_valid():
+            print(form.cleaned_data['target_date'])
             form.save()
             return redirect('purchase-order-raw-list')
     
-    return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form})
+
+    return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
+                                                                          'ledger_party_names':ledger_party_names,
+                                                                          "products":products})
 
 
 

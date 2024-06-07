@@ -163,7 +163,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/Media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+USE_L10N = False
 
+DATE_INPUT_FORMATS = [
+    '%d-%m-%Y',  # '25-12-2024'
+    '%Y-%m-%d',  # '2024-12-25'
+]
+
+DATE_FORMAT = 'd-m-Y'
 
 # logging configs
 LOGGING_CONFIG = None

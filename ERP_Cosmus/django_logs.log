@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2024-06-06 04:54:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-06 04:55:15 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 32656
 2024-06-06 04:55:24 PM - django.server - INFO - "GET /accsubgrpcreate/ HTTP/1.1" 200 29229
@@ -866,3 +867,355 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'purchase-order-raw-update' w
 2024-06-07 02:45:37 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 34195
 2024-06-07 02:46:06 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 34195
 2024-06-07 02:47:19 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 34266
+=======
+2024-06-07 11:44:30 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 11:44:48 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 81837
+2024-06-07 11:44:49 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-07 11:44:49 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30314
+2024-06-07 11:44:49 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-07 11:44:49 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-07 11:44:49 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30314
+2024-06-07 11:44:49 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30304
+2024-06-07 11:44:49 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-07 11:44:49 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30319
+2024-06-07 11:44:49 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-07 11:44:49 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30314
+2024-06-07 11:44:55 AM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 30988
+2024-06-07 11:44:57 AM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29716
+2024-06-07 12:10:36 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 35906
+2024-06-07 12:10:41 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 32633
+2024-06-07 12:10:45 PM - django.server - INFO - "GET /accsubgrpcreate/ HTTP/1.1" 200 29263
+2024-06-07 12:21:21 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 12:21:22 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 12:31:02 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 31564
+2024-06-07 12:31:04 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29735
+2024-06-07 12:31:09 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29735
+2024-06-07 12:32:04 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29758
+2024-06-07 12:32:07 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29758
+2024-06-07 12:34:27 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29786
+2024-06-07 12:34:30 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29786
+2024-06-07 12:34:42 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29786
+2024-06-07 12:34:47 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29786
+2024-06-07 12:34:54 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29786
+2024-06-07 12:34:58 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29786
+2024-06-07 12:34:58 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-07 12:34:58 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-07 12:34:58 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33756
+2024-06-07 12:34:58 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-07 12:34:58 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-07 12:34:59 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-07 12:34:59 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-07 12:34:59 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-07 12:34:59 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-07 12:34:59 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-07 12:36:13 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29750
+2024-06-07 12:36:19 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 31564
+2024-06-07 12:36:21 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29750
+2024-06-07 12:36:31 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29750
+2024-06-07 12:36:41 PM - django.server - INFO - "POST /purchaseorderrawupdate/1 HTTP/1.1" 302 0
+2024-06-07 12:36:41 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 31563
+2024-06-07 12:36:44 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29750
+2024-06-07 12:36:59 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29727
+2024-06-07 12:37:36 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29733
+2024-06-07 12:46:28 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29687
+2024-06-07 12:46:28 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 12:46:36 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29687
+2024-06-07 12:46:43 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29659
+2024-06-07 12:50:50 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 32633
+2024-06-07 12:50:52 PM - django.server - INFO - "GET /accsubgrpcreate/ HTTP/1.1" 200 29263
+2024-06-07 12:50:57 PM - django.server - INFO - "POST /accsubgrpcreate/ HTTP/1.1" 302 0
+2024-06-07 12:50:57 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33375
+2024-06-07 12:51:05 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 31563
+2024-06-07 12:51:08 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29659
+2024-06-07 12:51:31 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 12:51:32 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 12:51:45 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29659
+2024-06-07 12:52:42 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33103
+2024-06-07 12:53:08 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 12:53:09 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 12:53:14 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29659
+2024-06-07 12:53:48 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 12:53:50 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 12:53:51 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29697
+2024-06-07 12:53:57 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 12:53:58 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 12:54:00 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29659
+2024-06-07 12:54:07 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33103
+2024-06-07 12:54:21 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 12:54:22 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 12:54:24 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29659
+2024-06-07 12:57:30 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 35906
+2024-06-07 12:57:31 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 12:57:32 PM - django.server - INFO - "GET /ledgercreate/ HTTP/1.1" 200 33407
+2024-06-07 12:58:26 PM - django.server - INFO - "POST /ledgercreate/ HTTP/1.1" 302 0
+2024-06-07 12:58:26 PM - django.server - INFO - "GET /ledgerlist/ HTTP/1.1" 200 36720
+2024-06-07 12:58:32 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 31563
+2024-06-07 12:58:34 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29697
+2024-06-07 12:58:50 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 12:58:51 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 12:59:04 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29713
+2024-06-07 01:02:05 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29728
+2024-06-07 01:02:09 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29756
+2024-06-07 02:08:38 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29756
+2024-06-07 02:08:38 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 02:09:31 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29770
+2024-06-07 02:09:59 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29789
+2024-06-07 02:11:16 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29804
+2024-06-07 02:11:25 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29804
+2024-06-07 02:11:29 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29801
+2024-06-07 02:11:34 PM - django.server - INFO - "POST /purchaseorderrawupdate/1 HTTP/1.1" 302 0
+2024-06-07 02:11:34 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 31564
+2024-06-07 02:11:36 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29802
+2024-06-07 02:12:12 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29804
+2024-06-07 02:12:23 PM - django.server - INFO - "POST /purchaseorderrawupdate/3 HTTP/1.1" 302 0
+2024-06-07 02:12:23 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 31565
+2024-06-07 02:12:24 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 29802
+2024-06-07 02:12:27 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29805
+2024-06-07 02:13:56 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29795
+2024-06-07 02:14:08 PM - django.request - WARNING - Not Found: /favicon.ico
+2024-06-07 02:14:08 PM - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 29945
+2024-06-07 02:15:31 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\forms.py changed, reloading.
+2024-06-07 02:15:33 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:15:35 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29795
+2024-06-07 02:16:27 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 02:16:28 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:16:31 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29795
+2024-06-07 02:19:17 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\settings.py changed, reloading.
+2024-06-07 02:19:18 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:19:22 PM - django.server - INFO - "GET /purchaseorderrawupdate/3 HTTP/1.1" 200 29795
+2024-06-07 02:19:26 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29755
+2024-06-07 02:19:44 PM - django.server - INFO - "POST /purchaseorderrawcreate/ HTTP/1.1" 302 0
+2024-06-07 02:19:44 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 32135
+2024-06-07 02:19:48 PM - django.server - INFO - "GET /purchaseorderrawupdate/4 HTTP/1.1" 200 29788
+2024-06-07 02:20:18 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\settings.py changed, reloading.
+2024-06-07 02:20:19 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:20:30 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\settings.py changed, reloading.
+2024-06-07 02:20:31 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:21:38 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\settings.py changed, reloading.
+2024-06-07 02:21:39 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:21:44 PM - django.server - INFO - "GET /purchaseorderrawupdate/4 HTTP/1.1" 200 29788
+2024-06-07 02:21:57 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 32135
+2024-06-07 02:21:59 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29755
+2024-06-07 02:22:09 PM - django.server - INFO - "POST /purchaseorderrawcreate/ HTTP/1.1" 302 0
+2024-06-07 02:22:09 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 32708
+2024-06-07 02:22:15 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 29790
+2024-06-07 02:28:34 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\settings.py changed, reloading.
+2024-06-07 02:28:35 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:28:37 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 29790
+2024-06-07 02:28:37 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 02:29:11 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29755
+2024-06-07 02:30:32 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-07 02:30:33 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:30:38 PM - django.server - INFO - "POST /purchaseorderrawcreate/ HTTP/1.1" 302 0
+2024-06-07 02:30:38 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33280
+2024-06-07 02:30:43 PM - django.server - INFO - "GET /purchaseorderrawupdate/6 HTTP/1.1" 200 29789
+2024-06-07 02:33:31 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:37:45 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\forms.py changed, reloading.
+2024-06-07 02:37:46 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:37:53 PM - django.server - INFO - "GET /purchaseorderrawupdate/6 HTTP/1.1" 200 29789
+2024-06-07 02:37:57 PM - django.server - INFO - "POST /purchaseorderrawupdate/6 HTTP/1.1" 302 0
+2024-06-07 02:37:58 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33279
+2024-06-07 02:38:11 PM - django.server - INFO - "GET /purchaseorderrawupdate/6 HTTP/1.1" 200 29789
+2024-06-07 02:38:16 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 29755
+2024-06-07 02:38:23 PM - django.server - INFO - "POST /purchaseorderrawcreate/ HTTP/1.1" 302 0
+2024-06-07 02:38:23 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33851
+2024-06-07 02:38:33 PM - django.server - INFO - "GET /purchaseorderrawupdate/7 HTTP/1.1" 200 29789
+2024-06-07 02:39:32 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\forms.py changed, reloading.
+2024-06-07 02:39:34 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:55:24 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\config\settings.py changed, reloading.
+2024-06-07 02:55:26 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:55:30 PM - django.server - INFO - "GET /purchaseorderrawupdate/7 HTTP/1.1" 200 29786
+2024-06-07 02:55:30 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-07 02:55:35 PM - django.server - INFO - "POST /purchaseorderrawupdate/7 HTTP/1.1" 302 0
+2024-06-07 02:55:36 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33821
+2024-06-07 02:55:45 PM - django.server - INFO - "GET /purchaseorderrawupdate/7 HTTP/1.1" 200 29786
+>>>>>>> 12bdf131217d3c26277edb67638121fdb0971d6f
+2024-06-07 02:58:17 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 02:59:07 PM - django.server - INFO - "GET /purchaseorderrawupdate/7 HTTP/1.1" 200 30125
+2024-06-07 02:59:17 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30126
+2024-06-07 03:01:01 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-07 03:01:05 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30126
+2024-06-07 03:01:13 PM - django.server - INFO - "POST /purchaseorderrawupdate/5 HTTP/1.1" 302 0
+2024-06-07 03:01:35 PM - django.request - ERROR - Internal Server Error: /purchaseorderrawlist/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\base.py", line 187, in _get_session
+    return self._session_cache
+           ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\postgresql\base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "ls-0a4a12e61141e080e36c98611d70d507edb73974.cngg2wc2avrd.ap-south-1.rds.amazonaws.com" (13.202.102.20), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2648, in purchaseorderrawlist
+    return render(request,'production/purchaseorderrawlist.html',{'purchase_orders':purchase_orders})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    template_rendered.send(sender=self, template=self, context=context)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\dispatch\dispatcher.py", line 177, in send
+    (receiver, receiver(signal=self, sender=sender, **named))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\debug_toolbar\panels\templates\panel.py", line 102, in _store_template_info
+    if isinstance(value, http.HttpRequest):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\functional.py", line 295, in __getattribute__
+    value = super().__getattribute__(name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\functional.py", line 266, in inner
+    self._setup()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\functional.py", line 419, in _setup
+    self._wrapped = self._setupfunc()
+                    ^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\middleware.py", line 25, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+                                            ^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\middleware.py", line 11, in get_user
+    request._cached_user = auth.get_user(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\__init__.py", line 191, in get_user
+    user_id = _get_user_session_key(request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\auth\__init__.py", line 60, in _get_user_session_key
+    return get_user_model()._meta.pk.to_python(request.session[SESSION_KEY])
+                                               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\base.py", line 53, in __getitem__
+    return self._session[key]
+           ^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\base.py", line 192, in _get_session
+    self._session_cache = self.load()
+                          ^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 42, in load
+    s = self._get_session_from_db()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\contrib\sessions\backends\db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 380, in __len__
+    self._fetch_all()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor = self.connection.cursor()
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 59, in cursor
+    cursor = connection._djdt_cursor(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 330, in cursor
+    return self._cursor()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 306, in _cursor
+    self.ensure_connection()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\backends\postgresql\base.py", line 275, in get_new_connection
+    connection = self.Database.connect(**conn_params)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\psycopg2\__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: connection to server at "ls-0a4a12e61141e080e36c98611d70d507edb73974.cngg2wc2avrd.ap-south-1.rds.amazonaws.com" (13.202.102.20), port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+
+2024-06-07 03:01:35 PM - django.server - ERROR - "GET /purchaseorderrawlist/ HTTP/1.1" 500 277207
+2024-06-07 03:01:50 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30126
+2024-06-07 03:01:57 PM - django.server - INFO - "POST /purchaseorderrawupdate/5 HTTP/1.1" 302 0
+2024-06-07 03:01:57 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 34236
+2024-06-07 03:02:10 PM - django.server - INFO - "GET /purchaseorderrawupdate/1 HTTP/1.1" 200 30128
+2024-06-07 03:02:18 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30126
+2024-06-07 03:03:26 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30059
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30059
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 33756
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-07 03:03:30 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-07 03:03:54 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30087
+2024-06-07 03:03:57 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30087
+2024-06-07 03:04:40 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30106
+2024-06-07 03:04:42 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30106
+2024-06-07 03:04:43 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30107
+2024-06-07 03:06:09 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30143
+2024-06-07 03:07:05 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30184
+2024-06-07 03:08:33 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30185
+2024-06-07 03:08:48 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30191
+2024-06-07 03:10:53 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30184
+2024-06-07 03:11:46 PM - django.server - INFO - "POST /purchaseorderrawupdate/5 HTTP/1.1" 302 0
+2024-06-07 03:11:46 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 34236
+2024-06-07 03:11:49 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098
+2024-06-07 03:12:31 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098
+2024-06-07 03:12:50 PM - django.server - INFO - "GET /purchaseorderrawupdate/5 HTTP/1.1" 200 30098

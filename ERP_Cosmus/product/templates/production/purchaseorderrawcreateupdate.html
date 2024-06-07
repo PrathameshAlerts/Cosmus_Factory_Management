@@ -10,31 +10,55 @@
     
     <div class="d-flex mb-3">
         <label for="id_purchase_order_number" class="item-form">Order Number:</label>
-        <input type="number" name="purchase_order_number" class="item-select" required id="id_purchase_order_number" value="{{master_form.instance.purchase_order_number}}">
+        <input type="number" name="purchase_order_number" class="item-select" value="{{form.instance.purchase_order_number}}" required id="id_purchase_order_number">
     </div>
     
       
       <div class="d-flex mb-3">
         <label for="id_product_reference_number" class="item-form">Reference Number:</label>
-        <select name="product_reference_number" class="item-select" required id="id_product_reference_number" value="{{master_form.instance.product_reference_number}}">
-  
+        <select name="product_reference_number" class="item-select" required id="id_product_reference_number">
+        {% if form.instance.id %}
+        <option value="{{form.instance.product_reference_number.id}}">{{form.instance.product_reference_number.Product_Refrence_ID}}</option>
+        {% for product in products %}      
+        <option value="{{product.id}}">{{product.Product_Refrence_ID}}</option>
+        {% endfor %}
+        {% elif not form.instance.id %}
+        <option value=""></option>
+        {% for product in products %}      
+        <option value="{{product.id}}">{{product.Product_Refrence_ID}}</option>
+        {% endfor %}
+        {% endif %}
+    
     
     </select> 
       </div>
       <div class="d-flex mb-3">
         <label for="id_ledger_party_name" class="item-form">Ledger party name:</label>
-        <select name="ledger_party_name" class="item-select" required id="id_ledger_party_name" value="{{master_form.instance.ledger_party_name}}">
-   
+        <select name="ledger_party_name" class="item-select" id="id_ledger_party_name">
+        
+    {% if form.instance.id %}
+    <option value="{{form.instance.ledger_party_name.id}}">{{form.instance.ledger_party_name.name}}</option>
+    {% for party_name in ledger_party_names %}
+      <option value="{{party_name.id}}">{{party_name.name}}</option>
+    {% endfor %}
+    {% elif not form.instance.id %}
+    <option value=""></option>
+    {% for party_name in ledger_party_names %}
+      <option value="{{party_name.id}}">{{party_name.name}}</option>
+    {% endfor %}
+    {% endif %}
+
+      
     
     </select>
       </div>
       <div class="d-flex mb-3">
         <label for="id_target_date" class="item-form">Target date:</label>
-        <input type="date" name="target_date" class="item-select" required id="id_target_date" value="">  
+        <input type="date" name="target_date" class="item-select" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date">  
       </div> 
       <div class="d-flex mb-3">
         <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
-        <input type="number" name="number_of_pieces" value="0" class="item-select" required id="id_number_of_pieces">
+        <input type="number" name="number_of_pieces" class="item-select"  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces">
       </div>
     
     <input type="submit" class="create-btn mt-4 mx-3"  value="submit">
@@ -43,9 +67,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             var dateInput = document.getElementById('id_target_date');
             var today = new Date().toISOString().split('T')[0];
-            console.log(today)
-            dateInput.value = today;
-            dateInput.min = today;
+             var date= dateInput.value;
+             dateInput.min = today;
         });
     </script>
 
