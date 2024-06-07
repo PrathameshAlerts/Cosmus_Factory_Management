@@ -163,8 +163,6 @@ def edit_production_product(request,pk):
                             else:
                                 grand_total = 0
 
-
-
                         # ws2        
                         for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
                             product_sku = product_c.PProduct_SKU
@@ -2623,8 +2621,11 @@ def export_Product2Item_excel(request,product_ref_id):
 
 def viewproduct2items_configs(request,product_sku):
     product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
-    print(product2item_instances)
-    return render(request,'production/product2itemsconfigview.html',{'product2item_instances' : product2item_instances})
+
+    product2item_instances_first = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku).first()
+
+    return render(request,'production/product2itemsconfigview.html',{'product2item_instances' : product2item_instances,
+                                                                     "product2item_instances_first":product2item_instances_first})
     
 
 

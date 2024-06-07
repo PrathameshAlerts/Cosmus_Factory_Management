@@ -1,0 +1,46 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
+<div class="row">
+    <div class="col-lg-10">
+        <h5>Model Name: {{product2item_instances_first.PProduct_pk.Product.Model_Name}} </h5>  <h5>Product SKU: {{product2item_instances_first.PProduct_pk.PProduct_SKU}}</h5> <h5>product Color: {{product2item_instances_first.PProduct_pk.PProduct_color}}</h5>
+        <table class="table table-striped table-hover table-responsive table-bordered">
+            <thead>
+                <tr>
+                    <th>Item Name </th>
+                    <th>part_name</th>
+                    <th>part_dimentions</th>
+                    <th>dimention_total</th>
+                    <th>part_pieces</th>
+                </tr>
+            </thead>
+            
+        <tbody class="mainTableList">
+            {% for Items in product2item_instances %}
+            <tr>
+                <td class="text-nowrap">{{Items.Item_pk.item_name}}
+                    {% for item_config in Items.product_item_configs.all %}
+                    <tr>
+                        <td></td>
+                        <td class="text-nowrap">{{item_config.part_name}}</td>
+                        <td class="text-nowrap">{{item_config.part_dimentions}}</td>
+                        <td>{{item_config.dimention_total}}</td>
+                        <td>{{item_config.part_pieces}}</td>
+                    </tr>
+                    {% endfor %}
+        
+                </td>
+                    
+            </tr>
+            {% endfor %}
+        
+        </tbody>
+            
+        
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}
