@@ -842,7 +842,7 @@ input[type=number] {
     border: none;
     border-radius: 6px;
     padding: 3px 10px;
-    margin-top: 65px;
+    margin-top: 98px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Color group item======*/
@@ -857,7 +857,7 @@ input[type=number] {
     border: none;
     border-radius: 6px;
     padding: 3px 10px;
-    margin-top: 20px;
+    margin-top: 18px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Unit group item======*/
@@ -872,7 +872,7 @@ input[type=number] {
     border: none;
     border-radius: 6px;
     padding: 3px 10px;
-    margin-top: 21px;
+    margin-top: 19px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Package group item======*/
@@ -1423,6 +1423,25 @@ input[type=number] {
     background-color:yellow;
     color: black;
   }
+
+  .print-button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+ 
+}
+
+@media print {
+    /* Hide elements that you don't want to print */
+    .print-button {
+        display: none;
+    }
+}
+
+
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {

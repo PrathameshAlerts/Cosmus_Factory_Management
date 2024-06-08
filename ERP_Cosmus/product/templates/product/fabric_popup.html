@@ -3,43 +3,18 @@
 
 {% block body %} 
 <div>
-        <h2>Create Fabric Group</h2>
-      <form class="mt-5" action="" method="POST">
+      
+      <form  id ="myForm" action="" method="POST">
            {% csrf_token %}
-           
+       <h2 class="mb-3 mt-4">Create Fabric Group</h2>   
        <div class="d-flex">
-      <label for="id_fab_grp_name" class="form-label px-2">Fabric Group Name:</label>
+      <label for="id_fab_grp_name" class="item-form px-2">Fabric Name:</label>
       <input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">
     </div>
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
   </div>
 
-  <script>
-
-
-    $.ajax({
-        url: "{% url 'item-create' %}",
-        type: 'POST',
-        method: POST,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            // Handle success response
-            
-            // Trigger page refresh in the parent window
-            if (window.opener && !window.opener.closed) {
-               
-        // Reload the parent window if necessary
-        window.opener.reladFabricPage();
-            }
-        },
-        error: function(xhr, errmsg, err) {
-            // Handle error
-            console.log('Error submitting form');
-        }
-    });
-    </script>
+ 
 
 {% endblock body %}

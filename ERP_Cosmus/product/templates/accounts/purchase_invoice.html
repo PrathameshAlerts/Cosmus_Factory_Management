@@ -467,7 +467,9 @@ function randomValue (){
                 console.log(xhr.status + ": " + xhr.responseText);
                 if (xhr.status === 404) {
                     
-                    suggestionsContainer.hide();
+                    suggestionsContainer.show();
+                    suggestionsContainer.empty();
+                    suggestionsContainer.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
                 }
             }
         });

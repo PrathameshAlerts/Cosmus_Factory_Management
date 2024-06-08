@@ -345,3 +345,1311 @@ django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 35: 'e
 2024-06-07 06:27:28 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-07 06:27:29 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-07 06:27:31 PM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 28114
+2024-06-08 10:15:08 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-08 10:20:36 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84259
+2024-06-08 10:20:36 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 10:20:37 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:20:37 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:20:37 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:20:37 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:20:37 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:20:37 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:20:37 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:20:37 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:20:37 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:20:37 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:20 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84258
+2024-06-08 10:34:20 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:34:20 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:20 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:34:20 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:34:20 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:34:20 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:20 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:34:20 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:34:20 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:34:20 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:28 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84258
+2024-06-08 10:34:28 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:34:28 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:34:29 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:34:29 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:29 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:34:29 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:29 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:34:29 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:34:29 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:34:29 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:44 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84271
+2024-06-08 10:34:44 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:34:44 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:44 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:34:44 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:34:44 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:34:44 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:34:44 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:34:44 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:34:44 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:34:44 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:35:38 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 10:35:40 AM - django.server - INFO - "GET / HTTP/1.1" 200 30094
+2024-06-08 10:35:50 AM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 10:35:54 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84271
+2024-06-08 10:35:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:35:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:35:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:35:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:35:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:35:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:35:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:35:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:35:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:35:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:12 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84274
+2024-06-08 10:36:12 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:36:12 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:12 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:36:12 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:36:12 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:36:12 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:12 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:36:12 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:12 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:36:12 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:36:23 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84279
+2024-06-08 10:36:24 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:36:24 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:24 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:36:24 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:36:24 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:36:24 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:36:24 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:36:24 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:24 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:36:24 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:33 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84279
+2024-06-08 10:36:33 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:36:33 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:33 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:36:33 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:36:33 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:36:33 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:36:33 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:36:33 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:33 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:36:33 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:47 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84279
+2024-06-08 10:36:47 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:36:47 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:47 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:36:47 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:36:47 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:36:47 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:36:47 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:36:47 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:36:47 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:36:47 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:37:11 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28118
+2024-06-08 10:40:13 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28293
+2024-06-08 10:41:05 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28557
+2024-06-08 10:41:19 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28566
+2024-06-08 10:41:30 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28571
+2024-06-08 10:43:58 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28668
+2024-06-08 10:45:55 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28948
+2024-06-08 10:47:15 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28969
+2024-06-08 10:47:45 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 28988
+2024-06-08 10:49:35 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 29083
+2024-06-08 10:52:18 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84279
+2024-06-08 10:52:18 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:52:18 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:52:18 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:52:18 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:52:18 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:52:18 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:52:18 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:52:18 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:52:18 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:52:18 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:52:24 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29313
+2024-06-08 10:53:09 AM - django.server - INFO - "GET /viewproduct2item_configs/40051511036 HTTP/1.1" 200 24338
+2024-06-08 10:53:56 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 30939
+2024-06-08 10:57:42 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84279
+2024-06-08 10:57:42 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 10:57:42 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 10:57:42 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 10:57:42 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 10:57:42 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:57:42 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 10:57:42 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 10:57:42 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 10:57:42 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 10:57:42 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 10:57:48 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31615
+2024-06-08 11:03:05 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31641
+2024-06-08 11:03:05 AM - django.server - WARNING - "GET /static/images/print.png HTTP/1.1" 404 1807
+2024-06-08 11:03:23 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31667
+2024-06-08 11:03:23 AM - django.server - WARNING - "GET /static/images/print.png HTTP/1.1" 404 1807
+2024-06-08 11:03:36 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31672
+2024-06-08 11:03:36 AM - django.server - WARNING - "GET /static/images/print.png HTTP/1.1" 404 1807
+2024-06-08 11:03:40 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31672
+2024-06-08 11:03:40 AM - django.server - WARNING - "GET /static/images/print.png HTTP/1.1" 404 1807
+2024-06-08 11:04:20 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31677
+2024-06-08 11:04:20 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 200 9288
+2024-06-08 11:04:33 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31677
+2024-06-08 11:04:49 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31677
+2024-06-08 11:04:49 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:07:53 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31638
+2024-06-08 11:08:36 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31659
+2024-06-08 11:09:34 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31633
+2024-06-08 11:09:49 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31624
+2024-06-08 11:10:10 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31650
+2024-06-08 11:10:10 AM - django.server - WARNING - "GET /static/images/icons/print.png HTTP/1.1" 404 1825
+2024-06-08 11:10:39 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31654
+2024-06-08 11:10:39 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 200 10365
+2024-06-08 11:10:55 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31667
+2024-06-08 11:10:55 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:11:07 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31681
+2024-06-08 11:11:07 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:11:52 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31716
+2024-06-08 11:11:52 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:12:11 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31696
+2024-06-08 11:12:11 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:12:28 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31699
+2024-06-08 11:12:51 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31713
+2024-06-08 11:12:51 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:12:54 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31713
+2024-06-08 11:13:21 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31706
+2024-06-08 11:13:21 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:14:03 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31706
+2024-06-08 11:14:03 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:14:14 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31706
+2024-06-08 11:15:25 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31662
+2024-06-08 11:15:25 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:15:43 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31662
+2024-06-08 11:16:24 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 31662
+2024-06-08 11:16:24 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:17:16 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26339
+2024-06-08 11:17:16 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:18:23 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26340
+2024-06-08 11:18:24 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:18:32 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26345
+2024-06-08 11:18:39 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26345
+2024-06-08 11:18:54 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26345
+2024-06-08 11:19:10 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26345
+2024-06-08 11:19:21 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26345
+2024-06-08 11:19:21 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:19:33 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26345
+2024-06-08 11:19:50 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26340
+2024-06-08 11:21:03 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26340
+2024-06-08 11:21:03 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:23:22 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26340
+2024-06-08 11:23:22 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:26:03 AM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78505
+2024-06-08 11:28:02 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29798
+2024-06-08 11:28:02 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:29:55 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29800
+2024-06-08 11:30:19 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29801
+2024-06-08 11:30:19 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:30:33 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29801
+2024-06-08 11:30:40 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29801
+2024-06-08 11:30:55 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29801
+2024-06-08 11:31:35 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 31277
+2024-06-08 11:31:38 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 31277
+2024-06-08 11:32:12 AM - django.server - INFO - "GET /viewproduct2item_configs/40051511036 HTTP/1.1" 200 24843
+2024-06-08 11:34:27 AM - django.server - INFO - "GET /viewproduct2item_configs/40051511036 HTTP/1.1" 200 24837
+2024-06-08 11:34:27 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:34:37 AM - django.server - INFO - "GET /viewproduct2item_configs/40051511036 HTTP/1.1" 200 24837
+2024-06-08 11:41:15 AM - django.server - INFO - "GET /viewproduct2item_configs/40051171036 HTTP/1.1" 200 26092
+2024-06-08 11:41:15 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-08 11:42:19 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 11:42:24 AM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40861
+2024-06-08 11:42:27 AM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 11:42:30 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33980
+2024-06-08 11:42:30 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:42:30 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:43:06 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33983
+2024-06-08 11:43:06 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:43:06 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:43:22 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33988
+2024-06-08 11:43:22 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:43:22 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:43:35 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33988
+2024-06-08 11:43:35 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:43:35 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:43:39 AM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 11:43:43 AM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 11:43:44 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33988
+2024-06-08 11:43:44 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:43:44 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:43:54 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33983
+2024-06-08 11:43:54 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:43:54 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:44:10 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33966
+2024-06-08 11:44:10 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:44:10 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33966
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-08 11:44:16 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:44:16 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-08 11:44:16 AM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-08 11:44:22 AM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-08 11:44:37 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33968
+2024-06-08 11:44:37 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:44:37 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:45:00 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33973
+2024-06-08 11:45:01 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:45:01 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:45:11 AM - django.server - INFO - "GET /pproduct_creation/ HTTP/1.1" 200 33973
+2024-06-08 11:45:12 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:45:12 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:45:18 AM - django.request - WARNING - Not Found: /pproduct_creation/...
+2024-06-08 11:45:18 AM - django.server - WARNING - "GET /pproduct_creation/... HTTP/1.1" 404 30216
+2024-06-08 11:45:26 AM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119980
+2024-06-08 11:45:27 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:45:27 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:45:27 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:46:07 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53757
+2024-06-08 11:46:07 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:46:07 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:46:29 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53753
+2024-06-08 11:46:29 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:46:29 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-08 11:46:44 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53759
+2024-06-08 11:46:44 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:46:44 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:46:48 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:46:48 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:46:48 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-08 11:46:50 AM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-08 11:46:51 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:46:51 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:46:51 AM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-08 11:46:51 AM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-08 11:46:51 AM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-08 11:47:11 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53753
+2024-06-08 11:47:11 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:47:11 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:47:20 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53759
+2024-06-08 11:47:20 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:47:20 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-08 11:47:27 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:47:27 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:47:27 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:49:04 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:49:04 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:49:04 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34058
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-08 11:49:12 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:49:12 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-08 11:49:12 AM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-08 11:49:17 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15950
+2024-06-08 11:49:17 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:49:52 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:49:52 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 11:49:52 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:49:52 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:50:15 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:50:15 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 11:50:15 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:50:15 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:50:35 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:50:35 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 11:50:36 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:50:36 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:50:53 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:50:53 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:50:53 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:50:53 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:51:12 AM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 16697
+2024-06-08 11:51:12 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:51:52 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 11:51:52 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:51:52 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 11:51:52 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 11:51:56 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15960
+2024-06-08 11:52:10 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15960
+2024-06-08 11:52:10 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:54:18 AM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30836
+2024-06-08 11:54:18 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:54:19 AM - django.server - INFO - "GET /purchasevouchercreate/ HTTP/1.1" 200 82630
+2024-06-08 11:54:22 AM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 11:54:22 AM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 11:54:22 AM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mela HTTP/1.1" 200 382
+2024-06-08 11:54:22 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=39d39355b85c4f60a0ed97abf594abe7 HTTP/1.1" 200 9081
+2024-06-08 11:54:23 AM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mela HTTP/1.1" 200 382
+2024-06-08 11:54:23 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9612000e2b5b44b48e1406dc0b0cd02d HTTP/1.1" 200 9081
+2024-06-08 11:54:23 AM - django.server - INFO - "GET /purchasevouchercreate/?item_value=1 HTTP/1.1" 200 186
+2024-06-08 11:54:23 AM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20D.GREY HTTP/1.1" 200 111
+2024-06-08 11:54:23 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a63bf5d64f8e4b7babd88982b62b7e4f HTTP/1.1" 200 9108
+2024-06-08 11:54:26 AM - django.server - INFO - "GET /purchasevouchercreategodownpopupurl/?selected_shade=1&unique_invoice_row_id=89ca800f-2a6a-44cd-945a-909d9986ed22&prefix_id=0 HTTP/1.1" 200 85
+2024-06-08 11:54:26 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=900444063f844778842546af039b8633 HTTP/1.1" 200 9192
+2024-06-08 11:54:26 AM - django.server - INFO - "GET /purchasevoucherpopupcreate/1/0/89ca800f-2a6a-44cd-945a-909d9986ed22 HTTP/1.1" 200 38225
+2024-06-08 11:55:01 AM - django.server - INFO - "GET /purchasevoucherpopupcreate/1/0/89ca800f-2a6a-44cd-945a-909d9986ed22 HTTP/1.1" 200 38234
+2024-06-08 11:55:01 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:55:12 AM - django.server - INFO - "GET /purchasevoucherpopupcreate/1/0/89ca800f-2a6a-44cd-945a-909d9986ed22 HTTP/1.1" 200 38243
+2024-06-08 11:55:23 AM - django.server - INFO - "GET /purchasevoucherpopupcreate/1/0/89ca800f-2a6a-44cd-945a-909d9986ed22 HTTP/1.1" 200 38249
+2024-06-08 11:55:34 AM - django.server - INFO - "GET /purchasevoucherpopupcreate/1/0/89ca800f-2a6a-44cd-945a-909d9986ed22 HTTP/1.1" 200 38249
+2024-06-08 11:55:34 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:55:43 AM - django.server - INFO - "GET /purchasevoucherpopupcreate/1/0/89ca800f-2a6a-44cd-945a-909d9986ed22 HTTP/1.1" 200 38253
+2024-06-08 11:56:28 AM - django.server - INFO - "GET /purchasevouchercreate/ HTTP/1.1" 200 82630
+2024-06-08 11:56:28 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 11:56:32 AM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 33394
+2024-06-08 11:56:39 AM - django.server - INFO - "GET /fabricfinishespopup/ HTTP/1.1" 200 16065
+2024-06-08 11:56:46 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15960
+2024-06-08 12:01:04 PM - django.server - INFO - "GET /units_popup/ HTTP/1.1" 200 16010
+2024-06-08 12:01:04 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:01:26 PM - django.server - INFO - "GET /units_popup/ HTTP/1.1" 200 16015
+2024-06-08 12:01:57 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53758
+2024-06-08 12:01:57 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 12:01:57 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 12:02:11 PM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 16045
+2024-06-08 12:02:11 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:02:26 PM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 16045
+2024-06-08 12:02:45 PM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 16038
+2024-06-08 12:33:32 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53674
+2024-06-08 12:33:32 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:33:32 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 12:33:32 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 12:34:01 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53664
+2024-06-08 12:34:01 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 12:34:01 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 12:34:21 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53653
+2024-06-08 12:34:21 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 12:34:21 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 12:35:12 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53654
+2024-06-08 12:35:12 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-08 12:35:12 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-08 12:38:46 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 12:38:46 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:38:50 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62749
+2024-06-08 12:38:50 PM - django.server - INFO - "GET /static/images/Amazon%2001.png HTTP/1.1" 200 87467
+2024-06-08 12:38:50 PM - django.server - INFO - "GET /static/images/FLIPKART%2001.png HTTP/1.1" 200 138362
+2024-06-08 12:38:50 PM - django.server - INFO - "GET /static/images/Cosmus.png HTTP/1.1" 200 36950
+2024-06-08 12:38:50 PM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 200 15175
+2024-06-08 12:38:50 PM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 200 15027
+2024-06-08 12:38:54 PM - django.server - INFO - "GET /pproduct_creation_ref_id/324234 HTTP/1.1" 200 33992
+2024-06-08 12:38:54 PM - django.request - WARNING - Not Found: /pproduct_creation_ref_id/...
+2024-06-08 12:38:54 PM - django.server - WARNING - "GET /pproduct_creation_ref_id/... HTTP/1.1" 404 30244
+2024-06-08 12:40:46 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62737
+2024-06-08 12:41:28 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62775
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62775
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/Amazon%2001.png HTTP/1.1" 200 87467
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/FLIPKART%2001.png HTTP/1.1" 200 138362
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 200 15027
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 200 15175
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/Cosmus.png HTTP/1.1" 200 36950
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-08 12:41:34 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-08 12:41:53 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62755
+2024-06-08 12:43:01 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62755
+2024-06-08 12:46:00 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62670
+2024-06-08 12:46:41 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62679
+2024-06-08 12:46:41 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 12:47:20 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62682
+2024-06-08 12:47:20 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:47:35 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62682
+2024-06-08 12:47:53 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62682
+2024-06-08 12:47:53 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:48:02 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62682
+2024-06-08 12:48:26 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62693
+2024-06-08 12:48:26 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:48:59 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62693
+2024-06-08 12:48:59 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 12:49:13 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62693
+2024-06-08 02:02:55 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62280
+2024-06-08 02:02:55 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 02:03:44 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17818
+2024-06-08 02:03:44 PM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 200 10365
+2024-06-08 02:04:52 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17838
+2024-06-08 02:05:30 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17865
+2024-06-08 02:05:56 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17866
+2024-06-08 02:05:59 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17866
+2024-06-08 02:06:33 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17866
+2024-06-08 02:07:12 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17866
+2024-06-08 02:07:24 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17785
+2024-06-08 02:08:26 PM - django.server - INFO - "GET /viewproduct2item_configs/234 HTTP/1.1" 200 17802
+2024-06-08 02:08:41 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 02:08:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 02:08:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 02:08:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 02:08:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:08:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 02:08:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 02:08:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 02:08:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 02:08:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 02:08:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:08:45 PM - django.server - INFO - "GET /viewproduct2item_configs/40051041036 HTTP/1.1" 200 24819
+2024-06-08 02:09:48 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 02:09:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 02:09:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 02:09:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 02:09:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 02:09:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 02:09:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:09:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 02:09:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:09:49 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 02:09:49 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 02:09:51 PM - django.server - INFO - "GET /viewproduct2item_configs/40051041036 HTTP/1.1" 200 24819
+2024-06-08 02:15:23 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 02:15:23 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 02:15:23 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 02:15:23 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 02:15:23 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 02:15:23 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:15:23 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 02:15:23 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 02:15:23 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 02:15:23 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 02:15:23 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 02:15:23 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:15:50 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 02:15:50 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 02:15:50 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:15:50 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 02:15:50 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 02:15:50 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 02:15:50 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 02:15:50 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 02:15:50 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:15:50 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 02:15:50 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 02:16:41 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 02:16:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 02:16:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:16:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 02:16:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 02:16:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:16:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 02:16:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 02:16:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 02:16:41 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 02:16:41 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 02:17:19 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 02:17:19 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 02:17:19 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 02:17:19 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 02:17:19 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:17:19 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 02:17:19 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 02:17:19 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 02:17:19 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:17:19 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 02:17:19 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 02:18:11 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 02:18:18 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119980
+2024-06-08 02:20:19 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120535
+2024-06-08 02:20:20 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120535
+2024-06-08 02:20:27 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120711
+2024-06-08 02:20:28 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120711
+2024-06-08 02:20:29 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120711
+2024-06-08 02:20:53 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120623
+2024-06-08 02:21:12 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120037
+2024-06-08 02:21:34 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120049
+2024-06-08 02:22:08 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120019
+2024-06-08 02:27:47 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-08 02:27:47 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 02:28:25 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 02:42:56 PM - django.server - INFO - "GET /admin/login/?next=/admin/product/accountgroup/ HTTP/1.1" 302 0
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /admin/ HTTP/1.1" 200 20957
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/css/base.css HTTP/1.1" 200 21207
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2929
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2694
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/css/responsive.css HTTP/1.1" 200 18533
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+2024-06-08 02:42:57 PM - django.server - INFO - "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+2024-06-08 02:42:57 PM - django.request - WARNING - Not Found: /favicon.ico
+2024-06-08 02:42:57 PM - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 30176
+2024-06-08 02:44:15 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 30063
+2024-06-08 02:51:31 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 02:51:31 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 02:51:41 PM - django.server - INFO - "GET / HTTP/1.1" 200 30094
+2024-06-08 02:51:43 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 02:51:47 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 02:51:47 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 02:51:47 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:51:47 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 02:51:47 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 02:51:47 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 02:51:47 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 02:51:47 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 02:51:47 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 02:51:47 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 02:51:47 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 02:51:50 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78548
+2024-06-08 02:51:56 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 02:51:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1589017115244180a49ae40309d5d25c HTTP/1.1" 200 9080
+2024-06-08 02:52:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:52:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:52:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c4915a1b302b47878cbcad2997ca0c11 HTTP/1.1" 200 9080
+2024-06-08 02:54:10 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78707
+2024-06-08 02:54:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:54:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:54:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e95bba257697411faccbd4f6b252059c HTTP/1.1" 200 9079
+2024-06-08 02:54:19 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:54:19 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:54:19 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7bc74a27cecb4be1a47d10a239f38c6c HTTP/1.1" 200 9080
+2024-06-08 02:55:07 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:55:07 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:55:07 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=854dfe1601454b5597597ec3e91ba4f2 HTTP/1.1" 200 9080
+2024-06-08 02:55:08 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78644
+2024-06-08 02:55:14 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:55:14 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:55:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4e4943b9e5314f5d972c65a61c88cb0a HTTP/1.1" 200 9080
+2024-06-08 02:55:27 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:55:27 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:55:28 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=953845880a3948169560ff44024a40a5 HTTP/1.1" 200 9080
+2024-06-08 02:55:58 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:55:58 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:55:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a16e2aa352ba458dab97c67b8df4d690 HTTP/1.1" 200 9080
+2024-06-08 02:56:01 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78702
+2024-06-08 02:56:05 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:05 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mal HTTP/1.1" 404 28
+2024-06-08 02:56:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9c1ba7f5e88143399ae14eaa496ffc51 HTTP/1.1" 200 9079
+2024-06-08 02:56:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=ley HTTP/1.1" 404 28
+2024-06-08 02:56:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=cb98255db55143eca0b56da1e7bdd845 HTTP/1.1" 200 9080
+2024-06-08 02:56:14 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:14 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=let HTTP/1.1" 404 28
+2024-06-08 02:56:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=298f3c6142b34d588bb603c147a7b2c1 HTTP/1.1" 200 9079
+2024-06-08 02:56:24 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78704
+2024-06-08 02:56:31 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:31 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a7e6a703b5ac482c912b2f0e2ad333bb HTTP/1.1" 200 9080
+2024-06-08 02:56:33 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:33 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:33 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=913ce101247d4e119ce82b180c083705 HTTP/1.1" 200 9079
+2024-06-08 02:56:34 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:34 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:34 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2a8d06fb819d4d6786c4cea2ea0cb0b4 HTTP/1.1" 200 9079
+2024-06-08 02:56:35 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:35 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:35 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c61980ac3de74a2ab6adf5e6e11a4b3d HTTP/1.1" 200 9079
+2024-06-08 02:56:36 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:36 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a5a64e8c7a2a4440bb10f0b2cd2e1da0 HTTP/1.1" 200 9079
+2024-06-08 02:56:37 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:37 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c3fbb9f851ab46c08a8fe51ac0bb1927 HTTP/1.1" 200 9079
+2024-06-08 02:56:37 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:37 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=38c48b7a9de34d67ba9a7852690d4878 HTTP/1.1" 200 9078
+2024-06-08 02:56:38 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:38 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a0b93593d2174adeb9c3165f82e9bcf4 HTTP/1.1" 200 9080
+2024-06-08 02:56:38 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:38 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a7cdf0682fc344e1a4626093d428f015 HTTP/1.1" 200 9079
+2024-06-08 02:56:38 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:38 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d6f6e2c9c9374a6b9f4b2f9182faecdf HTTP/1.1" 200 9080
+2024-06-08 02:56:39 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:39 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:39 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:39 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=db21b93c93a84bce9888ef3252bbe1e8 HTTP/1.1" 200 9079
+2024-06-08 02:56:39 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:39 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d307bfe2227b4ab5a98f2b5123894a8b HTTP/1.1" 200 9079
+2024-06-08 02:56:39 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:39 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c796862298ef4b47b2be7a4157afa9c2 HTTP/1.1" 200 9079
+2024-06-08 02:56:39 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:39 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:40 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c18de7c46863495b922c6e3279fab8d0 HTTP/1.1" 200 9079
+2024-06-08 02:56:40 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:40 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:40 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8fc333dca6154186ad1175cf712679eb HTTP/1.1" 200 9080
+2024-06-08 02:56:40 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:40 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:40 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:40 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:40 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:40 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:41 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:41 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:41 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:41 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=41bb9d342c184d4d948f039f6d419ac9 HTTP/1.1" 200 9078
+2024-06-08 02:56:41 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:41 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:41 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:41 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:41 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:41 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:42 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:42 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:42 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fc98adb5dd6e4647b97e7aafd8dcfb93 HTTP/1.1" 200 9080
+2024-06-08 02:56:42 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:42 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:42 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:42 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:42 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:42 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:42 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:56:42 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:56:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d8034b5fcdda46619c41e9cee15d8e0b HTTP/1.1" 200 9078
+2024-06-08 02:57:05 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:05 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=med HTTP/1.1" 404 28
+2024-06-08 02:57:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ae5869d4c3b849fa922d534190da096a HTTP/1.1" 200 9080
+2024-06-08 02:57:07 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78704
+2024-06-08 02:57:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=xal HTTP/1.1" 404 28
+2024-06-08 02:57:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b3d47a19c78c402f8d1c856c3232a581 HTTP/1.1" 200 9079
+2024-06-08 02:57:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:57:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8c2e5591f2c94852b541470b2c4977d5 HTTP/1.1" 200 9080
+2024-06-08 02:57:19 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:19 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 02:57:19 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ba399f11d2e2481d839e4603cfda9ca7 HTTP/1.1" 200 9080
+2024-06-08 02:57:44 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:44 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 02:57:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c21c417151674f60a3bfdebaa29cbf78 HTTP/1.1" 200 9080
+2024-06-08 02:57:49 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78702
+2024-06-08 02:57:52 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:52 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 02:57:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=04f713f2348a480eb70ccf4e2afa1e61 HTTP/1.1" 200 9080
+2024-06-08 02:57:54 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:54 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilt HTTP/1.1" 404 28
+2024-06-08 02:57:54 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3ec6487157db498ba4225a38ecbefaba HTTP/1.1" 200 9081
+2024-06-08 02:57:54 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:54 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilto HTTP/1.1" 404 28
+2024-06-08 02:57:55 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c71d5291045e41188e37836796bf1336 HTTP/1.1" 200 9082
+2024-06-08 02:57:55 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:55 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilt HTTP/1.1" 404 28
+2024-06-08 02:57:55 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:57:55 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 02:57:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b950480d943d4736b3c8338437912a2e HTTP/1.1" 200 9080
+2024-06-08 02:58:18 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78716
+2024-06-08 02:58:22 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:58:22 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 02:58:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0cf0deeba6234013b669bdaf9653d88f HTTP/1.1" 200 9079
+2024-06-08 02:58:24 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:58:24 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilt HTTP/1.1" 404 28
+2024-06-08 02:58:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5dae07b22b954fb9b93930cb794208bf HTTP/1.1" 200 9080
+2024-06-08 02:58:24 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:58:24 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilto HTTP/1.1" 404 28
+2024-06-08 02:58:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=468a7a62448b4630adb28023c10920f3 HTTP/1.1" 200 9081
+2024-06-08 02:58:25 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:58:25 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilt HTTP/1.1" 404 28
+2024-06-08 02:58:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b7a80e7c6e154de28617376d0aaa967c HTTP/1.1" 200 9081
+2024-06-08 02:58:25 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:58:25 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 02:58:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=28eb639b302f48619d37a0555317a10a HTTP/1.1" 200 9080
+2024-06-08 02:58:27 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:58:27 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=622f33ebe3094d8f8464117e376bd3cb HTTP/1.1" 200 9080
+2024-06-08 02:59:00 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:00 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:01 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4c9b0ef2cd5243dfb064b3a41c6541b0 HTTP/1.1" 200 9079
+2024-06-08 02:59:06 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78726
+2024-06-08 02:59:08 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:08 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=01838c132adf44a393453b005d1866dc HTTP/1.1" 200 9080
+2024-06-08 02:59:12 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:12 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hek HTTP/1.1" 404 28
+2024-06-08 02:59:12 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:12 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hek HTTP/1.1" 404 28
+2024-06-08 02:59:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=873d0e7823ad4892ab19f8c70e577af6 HTTP/1.1" 200 9080
+2024-06-08 02:59:15 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:15 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=207f89ad86b9405692260c187c0803e8 HTTP/1.1" 200 9080
+2024-06-08 02:59:16 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:16 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5eede2e58c454b3ca3a64fc54b7462f2 HTTP/1.1" 200 9079
+2024-06-08 02:59:16 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:16 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f9041aa653fe4f9fa56d9ddaeb3db195 HTTP/1.1" 200 9080
+2024-06-08 02:59:17 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:17 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e27e5704221249c092442c89df0440a9 HTTP/1.1" 200 9080
+2024-06-08 02:59:18 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:18 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=adf34209b5db42abb11ab53bfe8e4076 HTTP/1.1" 200 9079
+2024-06-08 02:59:18 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:18 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:19 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a0f1bd088bc44f40bf4d762593a381f2 HTTP/1.1" 200 9080
+2024-06-08 02:59:19 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:19 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:20 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7b6b13e7dfe843d18d10370504d29b9f HTTP/1.1" 200 9080
+2024-06-08 02:59:21 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:21 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:21 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=110781e59a4e48d1a29fe11ddbf71d98 HTTP/1.1" 200 9079
+2024-06-08 02:59:21 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:21 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=299cbe4625d649bdb330817ff252eb21 HTTP/1.1" 200 9080
+2024-06-08 02:59:22 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:22 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7099ce47fa6f4b0fbb0b48e159cbded4 HTTP/1.1" 200 9080
+2024-06-08 02:59:22 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:22 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3d970c14ee084ce19f6bbf8fd4574282 HTTP/1.1" 200 9079
+2024-06-08 02:59:25 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:25 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=010efd6b154645c6a978102c5b145dc0 HTTP/1.1" 200 9079
+2024-06-08 02:59:26 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:26 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:26 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=57dd2faeb12a451eb97499bd5a57a22d HTTP/1.1" 200 9080
+2024-06-08 02:59:26 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:26 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:26 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6b73245bf9f646278e7b1ae5bafd4f53 HTTP/1.1" 200 9080
+2024-06-08 02:59:27 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:27 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:27 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:27 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=24031b32cd954fbe8ae4133256e390ec HTTP/1.1" 200 9079
+2024-06-08 02:59:27 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:27 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:27 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:27 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:27 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:27 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=27f4112400414e369f200ee18bdb8708 HTTP/1.1" 200 9078
+2024-06-08 02:59:27 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:27 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:28 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f6fb69a23d5848658c35e18d62c97a36 HTTP/1.1" 200 9080
+2024-06-08 02:59:28 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:28 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:28 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=54cb73e9db174b2dac6b24db83c7b7d3 HTTP/1.1" 200 9079
+2024-06-08 02:59:28 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:28 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:28 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=133173a71b2648e19dc3e9d7def73001 HTTP/1.1" 200 9079
+2024-06-08 02:59:28 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:28 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 02:59:28 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8e1704ef15294ea3ab3e437b16bf4868 HTTP/1.1" 200 9079
+2024-06-08 02:59:30 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:30 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hei HTTP/1.1" 404 28
+2024-06-08 02:59:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8303b3cb11014c37bd62b0b586243b10 HTTP/1.1" 200 9080
+2024-06-08 02:59:30 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:30 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=heit HTTP/1.1" 404 28
+2024-06-08 02:59:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ec44907a89264acc90b43bcddcb05e16 HTTP/1.1" 200 9081
+2024-06-08 02:59:31 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 02:59:31 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hei HTTP/1.1" 404 28
+2024-06-08 02:59:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a2e1aa768446449094379cb37dcba2b9 HTTP/1.1" 200 9080
+2024-06-08 02:59:33 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:33 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ea89ecd147d54c709c4afe327520dee0 HTTP/1.1" 200 9080
+2024-06-08 02:59:33 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:34 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:34 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=36b330a6e1014b9891add3fe8192eddb HTTP/1.1" 200 9079
+2024-06-08 02:59:35 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:35 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=44161786f4fa44fd96d966be90be5cd9 HTTP/1.1" 200 9080
+2024-06-08 02:59:35 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=dc63890f13aa49b0af3fba439760166b HTTP/1.1" 200 9080
+2024-06-08 02:59:37 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9f7cfcd6a03a4c04b37fcb486a10b82b HTTP/1.1" 200 9080
+2024-06-08 02:59:37 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=83c6a1adeedf4e1f89f3e925fcfd9487 HTTP/1.1" 200 9080
+2024-06-08 02:59:38 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=79ec382960384253bcb52b52331b8f6b HTTP/1.1" 200 9080
+2024-06-08 02:59:39 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0b43fff9998d461e8278cb276f28ce22 HTTP/1.1" 200 9079
+2024-06-08 02:59:40 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:40 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3d5c0ab2b5ae471c94c717d5b03b9cfd HTTP/1.1" 200 9079
+2024-06-08 02:59:40 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=25bef8dd9a7c474bbb93fdf176fc524d HTTP/1.1" 200 9080
+2024-06-08 02:59:47 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:47 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=aee8c9a849d546a3a4ee179ca2af1471 HTTP/1.1" 200 9080
+2024-06-08 02:59:49 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78686
+2024-06-08 02:59:54 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78686
+2024-06-08 02:59:57 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a393aa43ccfe43b193ea5af22febe983 HTTP/1.1" 200 9080
+2024-06-08 02:59:58 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=12ba8c4443b6490a9980a69f5c1b8d9a HTTP/1.1" 200 9080
+2024-06-08 02:59:58 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:59 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1ae0b3874a714e369e3ac4b1d0e5f217 HTTP/1.1" 200 9080
+2024-06-08 02:59:59 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 02:59:59 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=024df087be964799993ee16e636beb5e HTTP/1.1" 200 9080
+2024-06-08 03:00:00 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 03:00:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c8a9c7470424427f8af28f0bf6ed7354 HTTP/1.1" 200 9080
+2024-06-08 03:00:00 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 03:00:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3980288aaea2410f8ef7c1a9564588a5 HTTP/1.1" 200 9080
+2024-06-08 03:00:01 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 03:00:01 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=42741099d02c4038b8685ca84e256c37 HTTP/1.1" 200 9080
+2024-06-08 03:00:05 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:05 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c5e075230f4243e69f510f4c37c23309 HTTP/1.1" 200 9079
+2024-06-08 03:00:06 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:06 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:06 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2cba35d7cd524659951d835ebfbbca7d HTTP/1.1" 200 9079
+2024-06-08 03:00:08 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:08 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:08 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d52c3dbbfc024266af2906464ab622a7 HTTP/1.1" 200 9079
+2024-06-08 03:00:08 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:08 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4a8b363624324c6f837a23388b221ad1 HTTP/1.1" 200 9080
+2024-06-08 03:00:09 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:09 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:09 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:09 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c2280808669542fd838bfd9499e28ad5 HTTP/1.1" 200 9079
+2024-06-08 03:00:10 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:10 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:10 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:10 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:10 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:10 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:10 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2de8392ec05a4a71bdeac0e58b332723 HTTP/1.1" 200 9080
+2024-06-08 03:00:10 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:10 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:10 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:10 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:10 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c2516e9fe4e54821af912544758801f4 HTTP/1.1" 200 9080
+2024-06-08 03:00:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d8be005e877843099e731849623635e2 HTTP/1.1" 200 9080
+2024-06-08 03:00:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ad2198a0cea44fc889a9e42b9e8fdf66 HTTP/1.1" 200 9080
+2024-06-08 03:00:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:12 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:12 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=070999cc39004a08a34b8914c2ecfb8a HTTP/1.1" 200 9080
+2024-06-08 03:00:12 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:12 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=934e602a7d1749dab26aec81bf7d99e2 HTTP/1.1" 200 9080
+2024-06-08 03:00:12 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:12 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:12 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:12 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:12 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:12 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:00:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:00:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d2b8ead04cbf4105b3d99efc646b346e HTTP/1.1" 200 9080
+2024-06-08 03:01:12 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78668
+2024-06-08 03:01:16 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:16 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=meal HTTP/1.1" 404 28
+2024-06-08 03:01:16 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:16 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=meal HTTP/1.1" 404 28
+2024-06-08 03:01:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a03fbdfc461c43eb8fc5bd96c0a69e6e HTTP/1.1" 200 9081
+2024-06-08 03:01:20 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:20 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mea HTTP/1.1" 404 28
+2024-06-08 03:01:20 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f37a57c44caf4280837c7eca03c0fd72 HTTP/1.1" 200 9079
+2024-06-08 03:01:23 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:01:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0098d971da444f1c9c08dc99d8112957 HTTP/1.1" 200 9080
+2024-06-08 03:01:31 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:31 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=nir HTTP/1.1" 404 28
+2024-06-08 03:01:32 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9290986b908d4a9f8ec12a28afcc083c HTTP/1.1" 200 9080
+2024-06-08 03:01:33 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:33 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=nirt HTTP/1.1" 404 28
+2024-06-08 03:01:33 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=794389a006c64d618e438014af8d8cf1 HTTP/1.1" 200 9081
+2024-06-08 03:01:35 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:35 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=nirtl HTTP/1.1" 404 28
+2024-06-08 03:01:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3adad98021684e36802dc79bce0d61a1 HTTP/1.1" 200 9082
+2024-06-08 03:01:36 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:36 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=nirt HTTP/1.1" 404 28
+2024-06-08 03:01:37 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:01:37 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=nir HTTP/1.1" 404 28
+2024-06-08 03:01:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=459d625c769f4b4680eaff581294d086 HTTP/1.1" 200 9080
+2024-06-08 03:04:05 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78726
+2024-06-08 03:04:09 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:09 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:04:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0c9a44d4742a48c2821ef3928e1c4766 HTTP/1.1" 200 9080
+2024-06-08 03:04:09 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:09 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hela HTTP/1.1" 404 28
+2024-06-08 03:04:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=06c4fbef41364d7d97cbe5b5c53d3d53 HTTP/1.1" 200 9081
+2024-06-08 03:04:10 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:10 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=helan HTTP/1.1" 404 28
+2024-06-08 03:04:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4496d14e9d0c46ec96a0b7847cf75a85 HTTP/1.1" 200 9082
+2024-06-08 03:04:14 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:14 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hela HTTP/1.1" 404 28
+2024-06-08 03:04:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2d85f172661a4f5fb1ac3812e9e76c0c HTTP/1.1" 200 9081
+2024-06-08 03:04:14 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:14 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:04:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c260a315cc224c2c81e83096134acb19 HTTP/1.1" 200 9079
+2024-06-08 03:04:15 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:15 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hme HTTP/1.1" 404 28
+2024-06-08 03:04:15 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:15 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hmel HTTP/1.1" 404 28
+2024-06-08 03:04:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=33e0da1d7eca4673bf465c8f19e6698f HTTP/1.1" 200 9081
+2024-06-08 03:04:18 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:18 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hmelt HTTP/1.1" 404 28
+2024-06-08 03:04:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=54971d0a242a41f8b9d64cef954fa69f HTTP/1.1" 200 9082
+2024-06-08 03:04:18 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:04:18 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hmelta HTTP/1.1" 404 28
+2024-06-08 03:04:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=22b932109dc248c594b60d0d759c0df3 HTTP/1.1" 200 9083
+2024-06-08 03:06:05 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78914
+2024-06-08 03:06:05 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 03:07:01 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:07:01 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:07:02 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0bde94c7a5564af59a58d348cda57d00 HTTP/1.1" 200 9080
+2024-06-08 03:07:02 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:07:02 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hela HTTP/1.1" 404 28
+2024-06-08 03:07:03 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=50200177420f46d79e60b1c0a9c5a954 HTTP/1.1" 200 9081
+2024-06-08 03:07:03 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:07:03 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:07:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fccaea71d2ce4e3ba9e0b7115fe1166e HTTP/1.1" 200 9079
+2024-06-08 03:07:05 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:07:05 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hela HTTP/1.1" 404 28
+2024-06-08 03:07:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bca0d51628b945e1a2b8b9df543f4db8 HTTP/1.1" 200 9081
+2024-06-08 03:07:07 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:07:07 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hel HTTP/1.1" 404 28
+2024-06-08 03:07:07 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ef14d711d02842e596ad5e57efd78d79 HTTP/1.1" 200 9079
+2024-06-08 03:07:11 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 03:07:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3f642773cb6a43b2a315b186a9eaaf89 HTTP/1.1" 200 9080
+2024-06-08 03:07:13 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:07:13 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=him HTTP/1.1" 404 28
+2024-06-08 03:07:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=cd49893dc9444b14bf44602a313ee634 HTTP/1.1" 200 9080
+2024-06-08 03:08:11 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:11 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=him HTTP/1.1" 404 28
+2024-06-08 03:08:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c75ff60015ab405e901c891df4434f38 HTTP/1.1" 200 9080
+2024-06-08 03:08:15 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:15 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 03:08:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=34f910c934df4772a42db36729ad0d3b HTTP/1.1" 200 9080
+2024-06-08 03:08:15 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:15 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilo HTTP/1.1" 404 28
+2024-06-08 03:08:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=403ad06572364ae08b9b7161c663095d HTTP/1.1" 200 9080
+2024-06-08 03:08:17 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:17 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilon HTTP/1.1" 404 28
+2024-06-08 03:08:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=db75d707cc0e42aba5156d229041ada7 HTTP/1.1" 200 9081
+2024-06-08 03:08:18 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:18 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilo HTTP/1.1" 404 28
+2024-06-08 03:08:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=88230d3e37614d7d82e5fcad2e4ceff0 HTTP/1.1" 200 9081
+2024-06-08 03:08:18 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:18 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 03:08:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0e7cea1d6c914b278a15ac8f8a5dc518 HTTP/1.1" 200 9080
+2024-06-08 03:08:23 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=hit HTTP/1.1" 200 228
+2024-06-08 03:08:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=efe88faa5c094ca4bb3c0c985c1fa2e1 HTTP/1.1" 200 9079
+2024-06-08 03:08:25 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:25 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 03:08:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1f0fefd2fc134cd9bd3af0c7d40a99b9 HTTP/1.1" 200 9079
+2024-06-08 03:08:27 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:27 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilo HTTP/1.1" 404 28
+2024-06-08 03:08:27 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a20d146218d340e48095ed27182e86eb HTTP/1.1" 200 9081
+2024-06-08 03:08:28 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:28 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilon HTTP/1.1" 404 28
+2024-06-08 03:08:29 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5441b8a489684961b563a2a597a82a74 HTTP/1.1" 200 9082
+2024-06-08 03:08:51 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:51 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilon HTTP/1.1" 404 28
+2024-06-08 03:08:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=23e4286be5d843a4a6e0ca48f5674c90 HTTP/1.1" 200 9082
+2024-06-08 03:08:52 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78915
+2024-06-08 03:08:56 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:56 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 03:08:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4988e50939fa4c49a30c2c765523da51 HTTP/1.1" 200 9080
+2024-06-08 03:08:56 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:56 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilo HTTP/1.1" 404 28
+2024-06-08 03:08:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=94430675b00c4a3891ddf907e9db51bd HTTP/1.1" 200 9081
+2024-06-08 03:08:57 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:08:57 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 03:08:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fd4f123b64f647b3bf1c73cdb69408b4 HTTP/1.1" 200 9080
+2024-06-08 03:09:14 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30836
+2024-06-08 03:09:16 PM - django.server - INFO - "GET /purchasevouchercreate/ HTTP/1.1" 200 82804
+2024-06-08 03:09:19 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:09:19 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hil HTTP/1.1" 404 28
+2024-06-08 03:09:19 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9bbf26ff334e494e93fc7d8fe30366ae HTTP/1.1" 200 9079
+2024-06-08 03:09:20 PM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-08 03:09:20 PM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=hilo HTTP/1.1" 404 28
+2024-06-08 03:09:20 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6e3c6f5e595948e7b09e0c05d9ecce78 HTTP/1.1" 200 9081
+2024-06-08 03:09:57 PM - django.server - INFO - "GET /purchasevouchercreate/ HTTP/1.1" 200 82804
+2024-06-08 03:21:10 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:10 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2fd59f68a09147c198e15f3815e93b24 HTTP/1.1" 200 9080
+2024-06-08 03:21:12 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=baf0870a028c4ceba8c74d94d1e870e6 HTTP/1.1" 200 9079
+2024-06-08 03:21:13 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=770ea7af2a8f4ae3afc3c5695f2bc1c1 HTTP/1.1" 200 9080
+2024-06-08 03:21:14 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9556da6594f04a6db27908afe82a6a20 HTTP/1.1" 200 9079
+2024-06-08 03:21:15 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2fb44195e8474de7969480a509d8c179 HTTP/1.1" 200 9079
+2024-06-08 03:21:16 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8c03f46b524442619a4a6783688369b2 HTTP/1.1" 200 9079
+2024-06-08 03:21:16 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3b66ab6e0e814fcd83a20e6e195e8329 HTTP/1.1" 200 9079
+2024-06-08 03:21:17 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=512745344a6e422c94f54dddc9be00e4 HTTP/1.1" 200 9078
+2024-06-08 03:21:17 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9a8739536d904cf3b69bcba276223709 HTTP/1.1" 200 9079
+2024-06-08 03:21:17 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ae06e83ec3d04a9cad10930ba4c71084 HTTP/1.1" 200 9079
+2024-06-08 03:21:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d0087f15d6194e9d9cd519de2d26ff8a HTTP/1.1" 200 9080
+2024-06-08 03:21:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2c8869a638ba42f591c7f7d2ac5fbd69 HTTP/1.1" 200 9080
+2024-06-08 03:21:28 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:28 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=42c9c0a22cdb4c0fb48a2a688c41170c HTTP/1.1" 200 9080
+2024-06-08 03:21:29 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:29 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9f2807ae296040dca1d70fad002feda6 HTTP/1.1" 200 9078
+2024-06-08 03:21:30 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6298c95e1e8d441db3ff086dd40f0663 HTTP/1.1" 200 9080
+2024-06-08 03:21:30 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=51bb9d55458d426f8f87cb569328cbba HTTP/1.1" 200 9080
+2024-06-08 03:21:37 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ff015ff5dbda4b01b2660d2553e8677e HTTP/1.1" 200 9080
+2024-06-08 03:21:42 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:42 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7886760d16814656af26e0fab5360f65 HTTP/1.1" 200 9080
+2024-06-08 03:21:45 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 03:21:46 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b1cfc0854c104943b454b8a1353758d4 HTTP/1.1" 200 9079
+2024-06-08 03:23:49 PM - django.server - INFO - "GET /purchasevouchercreate/ HTTP/1.1" 200 82805
+2024-06-08 03:23:49 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 03:23:56 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119904
+2024-06-08 03:24:00 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31564
+2024-06-08 03:24:33 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31569
+2024-06-08 03:24:40 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33100
+2024-06-08 03:25:26 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33100
+2024-06-08 03:25:28 PM - django.server - INFO - "GET /godownlist/ HTTP/1.1" 200 31562
+2024-06-08 03:26:03 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 03:26:06 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119904
+2024-06-08 03:26:19 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 03:26:22 PM - django.server - INFO - "GET /accsubgrplist/ HTTP/1.1" 200 33100
+2024-06-08 03:26:31 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30836
+2024-06-08 03:26:38 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30836
+2024-06-08 03:29:06 PM - django.server - INFO - "GET /purchaseorderrawlist/ HTTP/1.1" 200 33623
+2024-06-08 03:29:39 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31243
+2024-06-08 03:32:42 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31243
+2024-06-08 03:33:34 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31258
+2024-06-08 03:34:34 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31151
+2024-06-08 03:36:43 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 30952
+2024-06-08 03:37:33 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31151
+2024-06-08 03:38:33 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31151
+2024-06-08 03:39:18 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31200
+2024-06-08 03:39:29 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31219
+2024-06-08 03:40:06 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31299
+2024-06-08 03:40:06 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 03:40:26 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31379
+2024-06-08 03:40:39 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31459
+2024-06-08 03:42:12 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31474
+2024-06-08 03:44:37 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31471
+2024-06-08 03:44:56 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31472
+2024-06-08 03:45:23 PM - django.server - INFO - "GET /creditdebitreport/ HTTP/1.1" 200 31472
+2024-06-08 03:45:30 PM - django.server - INFO - "GET /stocktransferreport/ HTTP/1.1" 200 28358
+2024-06-08 03:45:38 PM - django.server - INFO - "GET /stocktransferreport/ HTTP/1.1" 200 28358
+2024-06-08 03:45:41 PM - django.server - INFO - "GET /stocktransferreport/ HTTP/1.1" 200 28358
+2024-06-08 03:45:51 PM - django.server - INFO - "GET /stocktransferreport/ HTTP/1.1" 200 28358
+2024-06-08 03:45:58 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 03:46:10 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32468
+2024-06-08 03:46:16 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 03:46:20 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40861
+2024-06-08 03:46:26 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 03:46:55 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 40861
+2024-06-08 03:47:10 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37916
+2024-06-08 03:48:55 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37921
+2024-06-08 03:49:02 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32468
+2024-06-08 03:49:07 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30260
+2024-06-08 03:49:14 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 33394
+2024-06-08 03:51:33 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 33394
+2024-06-08 03:51:37 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 33394
+2024-06-08 04:03:05 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 33394
+2024-06-08 04:03:05 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 04:03:10 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-08 04:03:16 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 04:03:16 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 04:03:16 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 04:03:16 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 04:03:16 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 04:03:16 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 04:03:16 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 04:03:16 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 04:03:16 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 04:03:16 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 04:03:16 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 04:03:19 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 79176
+2024-06-08 04:03:36 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=97c060eeac8241c7b7bd16c337e82a7d HTTP/1.1" 200 9080
+2024-06-08 04:03:40 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:40 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=51afd893a41e4b609ce49111c014684d HTTP/1.1" 200 9080
+2024-06-08 04:03:41 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=56b61be9419c4cbf89ead3860968d78c HTTP/1.1" 200 9080
+2024-06-08 04:03:42 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:42 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3d7c07b76d7f4cf297600a6357624239 HTTP/1.1" 200 9079
+2024-06-08 04:03:42 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:42 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4e42c90955204c3d94834bffa9d2dd74 HTTP/1.1" 200 9080
+2024-06-08 04:03:42 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a08fa33242b24c0d9297063094a29b30 HTTP/1.1" 200 9080
+2024-06-08 04:03:43 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3be0d33c04dd494b864826eadae44460 HTTP/1.1" 200 9080
+2024-06-08 04:03:43 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:03:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=dff5f022e52447419648f5943a27f882 HTTP/1.1" 200 9080
+2024-06-08 04:11:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e3499d329a5f4cadb4ff857da915d6a4 HTTP/1.1" 200 9080
+2024-06-08 04:11:20 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 79196
+2024-06-08 04:11:23 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=872b7b95b91e4dd2b078182c75ba4780 HTTP/1.1" 200 9080
+2024-06-08 04:11:24 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=be1aa6dd6e2446beaeb6baa7f1e0366d HTTP/1.1" 200 9080
+2024-06-08 04:11:41 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=efc26f1efde742289d3188b624bf80e8 HTTP/1.1" 200 9080
+2024-06-08 04:11:42 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:42 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=df4a9d0bc3ab4a538d5a02b09e07ae1f HTTP/1.1" 200 9080
+2024-06-08 04:11:43 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=93cb90945f6f4fcfb8ae432c3b081eae HTTP/1.1" 200 9080
+2024-06-08 04:11:44 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b0d36125a9124900bed963a48dcbc4b4 HTTP/1.1" 200 9080
+2024-06-08 04:11:44 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=aaf04c79a947475596a22449bba61e64 HTTP/1.1" 200 9080
+2024-06-08 04:11:45 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:45 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=84100a3188aa4053905d6e808ba69def HTTP/1.1" 200 9079
+2024-06-08 04:11:45 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:11:45 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=cf541db3adae4eee8e710f3ac184c74e HTTP/1.1" 200 9080
+2024-06-08 04:14:44 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=dc550d6bea4844bd84d493f4fd4fbc18 HTTP/1.1" 200 9079
+2024-06-08 04:14:45 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 79309
+2024-06-08 04:14:48 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:49 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a7ba630767354bdebc95311bb40634ce HTTP/1.1" 200 9080
+2024-06-08 04:14:50 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:50 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=012120539629474cb7c572803b09c071 HTTP/1.1" 200 9080
+2024-06-08 04:14:51 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=20d81e9ebd5d49da9f27e3d58f5b5f83 HTTP/1.1" 200 9080
+2024-06-08 04:14:51 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=61a8e9b3474b4810a6aa2cfb7517244c HTTP/1.1" 200 9080
+2024-06-08 04:14:51 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:52 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c5d379218c2a4759974a3c10d9302419 HTTP/1.1" 200 9080
+2024-06-08 04:14:52 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=28870e81c9f34119b4e4b4bf213082d7 HTTP/1.1" 200 9080
+2024-06-08 04:14:52 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:52 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:53 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a758f0e92a77445ea76168ce3126dd50 HTTP/1.1" 200 9080
+2024-06-08 04:14:53 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:53 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d351f1a64fd047e7b770ddb5db2dd156 HTTP/1.1" 200 9080
+2024-06-08 04:14:54 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:54 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0aabcde82ce94e0384b5f1565e2bcfeb HTTP/1.1" 200 9080
+2024-06-08 04:14:54 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:55 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e3202d3b0b904caea151d5bc7a26d79c HTTP/1.1" 200 9079
+2024-06-08 04:14:56 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6010a1fef6c14eb59f3955ad44fb01a4 HTTP/1.1" 200 9079
+2024-06-08 04:14:56 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e5320725d3b74279b2c3c2cd207ed68e HTTP/1.1" 200 9080
+2024-06-08 04:14:56 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6e7d6092ec17455fbce9f8feec4c8997 HTTP/1.1" 200 9080
+2024-06-08 04:14:56 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7ee81e8dd7204e20987718d1f48729e9 HTTP/1.1" 200 9080
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4ccfcfc580ed4d8cadb42ac31117689c HTTP/1.1" 200 9079
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=35a2cc8bcf6f4bf6bb21dc13c0ae9b77 HTTP/1.1" 200 9080
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=50dec7873afe4c3b82db78984f5698a6 HTTP/1.1" 200 9080
+2024-06-08 04:14:57 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:58 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ba3a2a702359400f98a0cfb3a71a12ef HTTP/1.1" 200 9080
+2024-06-08 04:14:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ae1b3aaa5ce24ded9551b1ef4a494717 HTTP/1.1" 200 9080
+2024-06-08 04:14:58 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b4f3176d99794501810c3726706db3ba HTTP/1.1" 200 9080
+2024-06-08 04:14:58 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:14:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1601b5ad7fbc4f8ba9ea2236c4187182 HTTP/1.1" 200 9079
+2024-06-08 04:15:06 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83812
+2024-06-08 04:15:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 04:15:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 04:15:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 04:15:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 04:15:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 04:15:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 04:15:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 04:15:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 04:15:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 04:15:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 04:15:09 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-08 04:15:10 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 04:15:10 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 04:15:10 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 04:15:10 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-08 04:15:10 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-08 04:15:10 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/images/Amazon%2001.png HTTP/1.1" 200 87467
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/images/Cosmus.png HTTP/1.1" 200 36950
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/images/FLIPKART%2001.png HTTP/1.1" 200 138362
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 200 15027
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 200 15175
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-08 04:15:10 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-08 04:15:10 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-08 04:15:10 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-08 04:15:10 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-08 04:15:10 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-08 04:15:10 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-08 04:15:10 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-08 04:15:10 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-08 04:15:10 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-08 04:15:12 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 79309
+2024-06-08 04:15:12 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-08 04:15:15 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a8f64cba627b4145a5f44e8641d305f1 HTTP/1.1" 200 9080
+2024-06-08 04:15:16 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a3c5f393d4c742008934318215f42050 HTTP/1.1" 200 9079
+2024-06-08 04:15:17 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bf87ebc68d834d1d972c34ca1ebf2313 HTTP/1.1" 200 9080
+2024-06-08 04:15:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=732d186d2bb4435fafda5c33dc9271ba HTTP/1.1" 200 9080
+2024-06-08 04:15:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:18 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c042e79a82e04c20849a4aecb873cd3b HTTP/1.1" 200 9080
+2024-06-08 04:15:20 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:20 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ce65124429014f6d8ea3f4bebc747ba4 HTTP/1.1" 200 9080
+2024-06-08 04:15:34 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:34 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1475e5149f2e454ca25b51a36f4d8d27 HTTP/1.1" 200 9080
+2024-06-08 04:15:35 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:35 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1dc13ed42012409eb3f6bb8ead6e86ff HTTP/1.1" 200 9080
+2024-06-08 04:15:35 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6f4b07ecea4d4c61b476123a2995e112 HTTP/1.1" 200 9080
+2024-06-08 04:15:36 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=865c5570d3b541fb87b30c7b22fca444 HTTP/1.1" 200 9080
+2024-06-08 04:15:36 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=053ceaae848c46ddbc06aa8bda96927d HTTP/1.1" 200 9079
+2024-06-08 04:15:36 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=27228bc1135f464a8f672a770b677099 HTTP/1.1" 200 9080
+2024-06-08 04:15:37 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bb8617995372483b9e42d72b89d840ea HTTP/1.1" 200 9080
+2024-06-08 04:15:37 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:37 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=db05b8581752471cb251cf093f69fa06 HTTP/1.1" 200 9079
+2024-06-08 04:15:38 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d2a1552bc65d41a28cfb397f5add8af2 HTTP/1.1" 200 9080
+2024-06-08 04:15:38 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=df671eb7cbe1423281cff2150d0f640c HTTP/1.1" 200 9080
+2024-06-08 04:15:43 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:15:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=585e33d8f1ab424b95890c4467da8fc8 HTTP/1.1" 200 9080
+2024-06-08 04:16:41 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-08 04:16:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d9c304909a0d4ddaad10dbef472a86a1 HTTP/1.1" 200 9080
+2024-06-08 04:16:44 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78915
+2024-06-08 05:22:20 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78837
+2024-06-08 05:22:20 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0

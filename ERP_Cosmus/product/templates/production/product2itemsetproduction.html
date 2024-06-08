@@ -161,12 +161,13 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
         var filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
         
         suggestionsContainerUniqueId.empty();
-
+        console.log(filteredOptions)
         $.each(filteredOptions, function(index, [key, value]) {
             var highlightedText = value;
             if (searchQuery) {
                 highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
             }
+      
             suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
         });
      
@@ -177,10 +178,14 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
             console.log(xhr.status + ": " + xhr.responseText);
                 if (xhr.status === 404 || xhr.status === 400) {
                     
-                    suggestionsContainerUniqueId.css('display', 'none');
+                    suggestionsContainerUniqueId.css('display', 'block');
                     suggestionsContainerUniqueId.empty();
+                    suggestionsContainerUniqueId.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
+                    
                 }
+               
         }
+       
    })
 
     }else{
@@ -379,7 +384,9 @@ if(nameValue.length >= 3){
         error:function(xhr){
             console.log(xhr.status + ": " + xhr.responseText);
                 if (xhr.status === 404 || xhr.status === 400) {
-                     suggestionsContainerCommon.css('display', 'none');
+                     suggestionsContainerCommon.css('display', 'block');
+                     suggestionsContainerCommon.empty();
+                     suggestionsContainerCommon.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
                  
                 }
 
@@ -440,7 +447,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             $(this).text(nameDataKey);
 
     
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
  
             var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
             var itemHeight = nextItem.outerHeight();
@@ -484,7 +491,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             $(this).attr('data-key', nameKey);
             $(this).text(nameDataKey);
 
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
+            selectedItem.addClass("bg-highlight");
          
           
             var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
