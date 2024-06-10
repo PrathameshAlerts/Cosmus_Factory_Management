@@ -1653,3 +1653,65 @@ django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 35: 'e
 2024-06-08 04:16:44 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78915
 2024-06-08 05:22:20 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78837
 2024-06-08 05:22:20 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-08 05:35:24 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 10:47:54 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83811
+2024-06-10 10:47:54 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 304 0
+2024-06-10 10:47:54 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 10:47:54 AM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 304 0
+2024-06-10 10:47:54 AM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 304 0
+2024-06-10 10:47:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-10 10:47:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-10 10:47:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-10 10:47:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:47:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-10 10:47:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-10 10:47:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-10 10:47:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-10 10:47:55 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-10 10:47:55 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:54:01 AM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 29815
+2024-06-10 10:54:01 AM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 304 0
+2024-06-10 10:54:45 AM - django.server - INFO - "GET /viewproduct2item_configs/40051511036 HTTP/1.1" 200 24821
+2024-06-10 10:55:15 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-10 10:55:15 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-10 10:55:15 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:55:15 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-10 10:55:15 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-10 10:55:15 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-10 10:55:15 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:55:15 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-10 10:55:15 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-10 10:55:15 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-10 10:55:15 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-10 10:55:20 AM - django.server - INFO - "GET /viewproduct2item_configs/40051141036 HTTP/1.1" 200 29867
+2024-06-10 10:56:30 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-10 10:56:31 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-10 10:56:31 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-10 10:56:31 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-10 10:56:31 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:56:31 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-10 10:56:31 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-10 10:56:31 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-10 10:56:31 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:56:31 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-10 10:56:31 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-10 10:56:33 AM - django.server - INFO - "GET /viewproduct2item_configs/40051041036 HTTP/1.1" 200 24881
+2024-06-10 10:57:03 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 83810
+2024-06-10 10:57:03 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-10 10:57:03 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-10 10:57:03 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-10 10:57:03 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-10 10:57:03 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-10 10:57:03 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:57:03 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-10 10:57:03 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-10 10:57:03 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-10 10:57:03 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-10 10:57:26 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37921
+2024-06-10 11:04:49 AM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 11:04:54 AM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 56488
+2024-06-10 11:04:56 AM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=43 HTTP/1.1" 200 46
+2024-06-10 11:04:56 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=15952318367e430694352807bc411544 HTTP/1.1" 200 9116
+2024-06-10 11:04:56 AM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 23467
+2024-06-10 11:05:07 AM - django.server - INFO - "POST /openinggodownquantitypk/43/0 HTTP/1.1" 200 25202
+2024-06-10 11:10:20 AM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78837
