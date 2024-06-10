@@ -1715,3 +1715,25 @@ django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 35: 'e
 2024-06-10 11:04:56 AM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 23467
 2024-06-10 11:05:07 AM - django.server - INFO - "POST /openinggodownquantitypk/43/0 HTTP/1.1" 200 25202
 2024-06-10 11:10:20 AM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78837
+2024-06-10 11:24:55 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 11:53:57 AM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119904
+2024-06-10 11:53:58 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53755
+2024-06-10 11:53:58 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 11:53:58 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 11:54:01 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16467
+2024-06-10 11:54:07 AM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 11:54:07 AM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 11:54:08 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ad97afbcd7bc480a8ac74c2ae90c800e HTTP/1.1" 200 9093
+2024-06-10 11:55:23 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53755
+2024-06-10 11:55:24 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 11:55:24 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 11:55:26 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16492
+2024-06-10 11:55:31 AM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 11:55:31 AM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 11:55:31 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f9281c95021e4b9cafcff7b69dc4546b HTTP/1.1" 200 9093
+2024-06-10 11:56:30 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16494
+2024-06-10 11:56:34 AM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 11:56:34 AM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 11:56:35 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6a28a761db5342a38309fc8b85288209 HTTP/1.1" 200 9093
+2024-06-10 11:56:37 AM - django.request - WARNING - Not Found: /favicon.ico
+2024-06-10 11:56:37 AM - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 30176
