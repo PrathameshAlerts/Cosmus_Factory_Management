@@ -4,9 +4,12 @@
 <div id="printableArea">
     
 <div class="mb-4 mt-3">
-    <lable  class="fw-bold fs-5">Model Name: <span class="mx-2 fs-5 text-danger"> {{product2item_instances_first.PProduct_pk.Product.Model_Name}}</span></lable>
-    <label class="fw-bold ms-5 fs-5">Product Sku: <span class="mx-2 fs-5 text-danger"> {{product2item_instances_first.PProduct_pk.PProduct_SKU}}</span></label>
-    <label class="fw-bold ms-5 fs-5">Product Color: <span class="mx-2 fs-5 text-danger"> {{product2item_instances_first.PProduct_pk.PProduct_color}}</span></label>
+    <lable  class="fw-bold fs-5">Model Name: </lable>
+    <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.Product.Model_Name}}</span>
+    <label class="fw-bold ms-5 fs-5">Product Sku:</label>
+    <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_SKU}}</span>
+    <label class="fw-bold ms-5 fs-5">Product Color: </label>
+    <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_color}}</span>
     <button class="print-button bg-transparent border-0" style="padding-left: 200px;" id="printButton"><img src="../../../static/images/printer.png" alt="Print" width="25px" height="25px" ></button>
 </div>
 <div class="row" >
@@ -25,7 +28,7 @@
         <tbody class="mainTableList">
             {% for Items in product2item_instances %}
             <tr>
-                <td class="text-nowrap">{{Items.Item_pk.item_name}}
+                <td class="text-nowrap text-danger">{{Items.Item_pk.item_name}}
                     {% for item_config in Items.product_item_configs.all %}
                     <tr>
                         <td></td>
