@@ -2,9 +2,10 @@
 {% load static %}
 {% block body %}
 
-<h2>Update Product</h2>
+
 <form method="POST" enctype="multipart/form-data" action="" id="newForm">
   {% csrf_token %}
+  <h2 class="mb-3 mt-4">Update Product</h2>
   <div class="d-flex mb-3 productItem">
     <input type="hidden" class="product_items" name="Number_of_items" id="id_Number_of_items" value="{{form.instance.Number_of_items | default_if_none:'0'}}">
     <input type="hidden" name="updated_url" id="updated_url" value="">
@@ -115,25 +116,25 @@
 
   <div id="aditional_details" style="display: none;">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-5">
         <div class="d-flex mb-3">
-          <label for="id_Model_Name" class="form-label item-form">Model Name:</label>
+          <label for="id_Model_Name" class="item-form">Model Name:</label>
           <input type="text" class="item-select" value="{{form.instance.Model_Name  | default_if_none:''}}"
             name="Model_Name" required id="id_Model_Name">
         </div>
         <div class=" d-flex my-3">
-          <label for="id_Product_Name" class="form-label item-form">Name:</label>
+          <label for="id_Product_Name" class="item-form">Name:</label>
           <input type="text" class="item-select" value="{{ form.instance.Product_Name  | default_if_none:''}}"
             name="Product_Name" required id="id_Product_Name">
         </div>
         <div class=" d-flex my-3">
-          <label for="" class="form-label item-form">ShortName:</label>
+          <label for="" class="item-form">ShortName:</label>
           <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}"
             name="Product_ShortName" required id="">
         </div>
 
         <div class=" d-flex mb-3">
-          <label for="id_Product_Brand" class="form-label item-form">Brand:</label>
+          <label for="id_Product_Brand" class="item-form">Brand:</label>
           <select name="Product_Brand" class="item-select" id="id_Product_Brand">
             {% if form.instance.id %}
             <option value="{{form.instance.Product_Brand}}">{{form.instance.Product_Brand | default_if_none:''}}
@@ -150,7 +151,7 @@
           </select>
         </div>
         <div class=" d-flex mb-3">
-          <label for="id_Product_Status" class="form-label item-form">Status:</label>
+          <label for="id_Product_Status" class="item-form">Status:</label>
           <select name="Product_Status" class="item-select" id="id_Product_Status">
             {% if form.instance.id %}
             <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status | default_if_none:''}}</option>
@@ -164,7 +165,7 @@
           </select>
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Gender</label>
+          <label for="" class="item-form">Gender</label>
           <select name="Product_Gender" class="item-select" required id="id_Gender">
             {% if form.instance.id %}
 
@@ -182,7 +183,7 @@
       <div class="col-lg-4">
 
         <div class="d-flex mb-3">
-          <label for="id_Product_Channel" class="form-label item-form">Channel:</label>
+          <label for="id_Product_Channel" class="item-form">Channel:</label>
           <div class=" ms-5">
             <label for="id_Product_Channel_All" class="px-2">All</label>
             <input type="checkbox" class="mx-1" name="Product_Channel_All" value="All" id="id_Product_Channel_All"
@@ -199,7 +200,7 @@
           </div>
         </div>
         <div class="d-flex mb-3">
-          <label for="id_GST" class="form-label item-form">GST:</label>
+          <label for="id_GST" class="item-form">GST:</label>
           <select name="Product_GST" class="item-select" required id="id_GST">
 
 
@@ -219,12 +220,12 @@
           </select>
         </div>
         <div class=" d-flex mb-3">
-          <label for="id_Product_HSNCode" class="form-label item-form">HSN Code:</label>
+          <label for="id_Product_HSNCode" class="item-form">HSN Code:</label>
           <input type="text" class="item-select" name="Product_HSNCode"
             value="{{form.instance.Product_HSNCode  | default_if_none:''}}" id="id_Product_HSNCode">
         </div>
         <div class="d-flex mb-3">
-          <label for="id_Product_WarrantyTime" class="form-label item-form">WarrantyTime:</label>
+          <label for="id_Product_WarrantyTime" class="item-form">WarrantyTime:</label>
           <select name="Product_WarrantyTime" class="item-select" id="id_Product_WarrantyTime">
             {% if form.instance.id %}
             <option value="{{form.instance.Product_WarrantyTime}}">
@@ -253,10 +254,10 @@
       class="category-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_category" style="display: none;">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <div class="d-flex my-3">
 
-          <label for="" class="form-label item-form">Main Category:</label>
+          <label for="" class="item-form">Main Category:</label>
           <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
 
             {% if form.instance.id %}
@@ -272,7 +273,7 @@
       </div>
     </div>
     <div class="d-flex my-3">
-      <label for="" class=" item-form">Sub Category:</label>
+      <label for="" class="item-form">Sub Category:</label>
       <div class="d-flex " id="id_Product_subCatagory">
 
         {% if form.instance.id %}
@@ -297,11 +298,11 @@
         class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_capacity" style="display: none;">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-5">
 
 
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Compartment:</label>
+          <label for="" class=" item-form">Compartment:</label>
           <select name="Product_Compartments" required id="" class="item-select">
             {% if form.instance.id %}
             <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments| default_if_none:''}}</option>
@@ -323,7 +324,7 @@
         <div class="d-flex my-3">
 
 
-          <label for="" class="form-label item-form">Acc Compartment:</label>
+          <label for="" class=" item-form">Acc Compartment:</label>
           <select class="item-select" name="Product_Accessory_Compartments" required id="">
 
             {% if form.instance.id %}
@@ -348,14 +349,14 @@
 
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Capacity:</label>
+          <label for="" class=" item-form">Capacity:</label>
           <input type="number" class="item-select" value="{{form.instance.Product_CapacityLtrs |default_if_none:'' }}"
             name="Product_CapacityLtrs" required id="">
         </div>
       </div>
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">Material:</label>
+          <label for="" class=" item-form">Material:</label>
           <select class="item-select" name="Product_Material" required id="">
             {% if form.instance.id %}
             <option value="{{form.instance.Product_Material}}">{{form.instance.Product_Material | default_if_none:''}}
@@ -374,7 +375,7 @@
 
         </div>
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">UOM:</label>
+          <label for="" class=" item-form">UOM:</label>
 
           <select class="item-select" name="Product_UOM" id="">
 
@@ -391,7 +392,7 @@
         </div>
 
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">Qty Per Box:</label>
+          <label for="" class=" item-form">Qty Per Box:</label>
           <input type="number" class="item-select" name="Product_QtyPerBox"
             value="{{form.instance.Product_QtyPerBox  | default_if_none:''}}" id="">
         </div>
@@ -404,90 +405,86 @@
       class="discription-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_description" style="display: none;">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-5">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">BulletPoint1:</label>
+          <label for="" class="item-form">BulletPoint1:</label>
           <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint1  | default_if_none:''}}"
             name="Product_BulletPoint1" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">BulletPoint2:</label>
+          <label for="" class="item-form">BulletPoint2:</label>
           <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint2  | default_if_none:''}}"
             name="Product_BulletPoint2" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">BulletPoint3:</label>
+          <label for="" class="item-form">BulletPoint3:</label>
           <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint3  | default_if_none:''}}"
             name="Product_BulletPoint3" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">BulletPoint4:</label>
+          <label for="" class="item-form">BulletPoint4:</label>
           <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint4  | default_if_none:''}}"
             name="Product_BulletPoint4" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">BulletPoint5:</label>
+          <label for="" class="item-form">BulletPoint5:</label>
           <input type="text" class="item-inputs" value="{{form.instance.Product_BulletPoint5  | default_if_none:''}}"
             name="Product_BulletPoint5" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">ShortDescription:</label>
-          <textarea type="text" class="item-inputs"
-            value="{{form.instance.Product_ShortDescription | default_if_none:''}}" name="Product_ShortDescription"
-            required id="">{{form.instance.Product_ShortDescription | default_if_none:''}}</textarea>
+          <label class="item-form">ShortDescription:</label>
+          <textarea class="border gray" cols="24" rows="2"  value="{{form.instance.Product_ShortDescription | default_if_none:''}}" name="Product_ShortDescription" required id="">{{form.instance.Product_ShortDescription | default_if_none:''}}</textarea>
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">LongDescription:</label>
-          <textarea class="item-inputs" value="{{form.instance.Product_LongDescription | default_if_none:''}}"
-            name="Product_LongDescription" required
-            id="">{{form.instance.Product_LongDescription | default_if_none:''}}</textarea>
+          <label class=" item-form">Longescription:</label>
+          <textarea class="border gray" cols="24" rows="3" value="{{form.instance.Product_LongDescription | default_if_none:''}}" name="Product_LongDescription" required  id="">{{form.instance.Product_LongDescription | default_if_none:''}}</textarea>
         </div>
       </div>
       <div class="col-lg-4">
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WOP Length(cm):</label>
+          <label for="" class="item-form">WOP Length(cm):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Length | default_if_none:''}}"
             name="Product_Dimensions_WOP_Length" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WOP Width(In):</label>
+          <label for="" class="item-form">WOP Width(In):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Width | default_if_none:''}}"
             name="Product_Dimensions_WOP_Width" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WOP Height(In):</label>
+          <label for="" class="item-form">WOP Height(In):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Height | default_if_none:''}}"
             name="Product_Dimensions_WOP_Height" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WOP Weight(Gm):</label>
+          <label for="" class="item-form">WOP Weight(Gm):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WOP_Weight | default_if_none:''}}"
             name="Product_Dimensions_WOP_Weight" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Length(cm):</label>
+          <label for="" class="item-form">WP Length(cm):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Length | default_if_none:''}}"
             name="Product_Dimensions_WP_Length" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Width(In):</label>
+          <label for="" class="item-form">WP Width(In):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Width | default_if_none:''}}"
             name="Product_Dimensions_WP_Width" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Height(In):</label>
+          <label for="" class="item-form">WP Height(In):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Height | default_if_none:''}}"
             name="Product_Dimensions_WP_Height" required id="">
         </div>
         <div class="d-flex my-3">
-          <label for="" class="form-label item-form">WP Weight(Gm):</label>
+          <label for="" class="item-form">WP Weight(Gm):</label>
           <input type="number" class="item-select"
             value="{{form.instance.Product_Dimensions_WP_Weight | default_if_none:''}}"
             name="Product_Dimensions_WP_Weight" required id="">
@@ -500,25 +497,25 @@
 
   <div id="product_pricing" style="display: none;">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-5">
         <div class="d-flex mb-3">
-          <label for="id_Product_Cost_price" class="form-label item-form">Cost price:</label>
+          <label for="id_Product_Cost_price" class="item-form">Cost price:</label>
           <input type="number" class="item-select" value="{{form.instance.Product_Cost_price  | default_if_none:''}}"
             name="Product_Cost_price" id="id_Product_Cost_price">
         </div>
         <div class="d-flex mb-3">
-          <label for="id_Product_MRP" class="form-label item-form"> MRP:</label>
+          <label for="id_Product_MRP" class="item-form"> MRP:</label>
           <input type="number" class="item-select" value="{{form.instance.Product_MRP | default_if_none:''}}"
             name="Product_MRP" id="id_Product_MRP">
         </div>
         <div class="d-flex mb-3">
-          <label for="id_Product_SalePrice_CustomerPrice" class="form-label item-form">Sale & Customer Price</label>
+          <label for="id_Product_SalePrice_CustomerPrice" class="item-form">Sale & Customer Price</label>
           <input type="number" class="item-select" name="Product_SalePrice_CustomerPrice"
             value="{{form.instance.Product_SalePrice_CustomerPrice  | default_if_none:''}}"
             id="id_Product_SalePrice_CustomerPrice">
         </div>
         <div class="d-flex mb-3">
-          <label for="id_Product_BulkPrice" class="form-label item-form">BulkPrice:</label>
+          <label for="id_Product_BulkPrice" class="item-form">BulkPrice:</label>
           <input type="number" class="item-select" value="{{form.instance.Product_BulkPrice | default_if_none:''}}"
             name="Product_BulkPrice" id="id_Product_BulkPrice">
         </div>
@@ -526,22 +523,22 @@
       </div>
       <div class="col-lg-4">
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">WRP</label>
+          <label for="" class="item-form">WRP</label>
           <input type="number" class="item-select" name="Product_WRP"
             value="{{form.instance.Product_WRP | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">CounterPrice:</label>
+          <label for="" class="item-form">CounterPrice:</label>
           <input type="number" class="item-select" name="Product_CashCounterPrice"
             value="{{form.instance.Product_CashCounterPrice | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">IndiaMart:</label>
+          <label for="" class="item-form">IndiaMart:</label>
           <input type="number" class="item-select" name="Product_IndiaMartPrice"
             value="{{form.instance.Product_IndiaMartPrice | default_if_none:''}}" id="">
         </div>
         <div class=" d-flex mb-3">
-          <label for="" class="form-label item-form">Retailer/Dealer:</label>
+          <label for="" class="item-form">Retailer/Dealer:</label>
           <input type="number" class="item-select" name="Product_Retailer_dealer_Price"
             value="{{form.instance.Product_Retailer_dealer_Price | default_if_none:''}}" id="">
         </div>

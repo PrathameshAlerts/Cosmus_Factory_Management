@@ -2,10 +2,11 @@
 {% load static %}
 {% block body %}
 
-        <div class="">
-          <h5 class="" id="">Item Name: {{item}}</h5> 
-          <h5 class="" id="">shade Name: {{item_shade}}</h5>
-        
+        <div class="mb-4">
+        <lable  class="fw-bold fs-5">Item Name: </lable>
+        <span class="mx-2 fs-5 text-danger">{{item}}</span>
+        <lable  class="fw-bold fs-5 ms-4" >shade Name: </lable>
+        <span class="mx-2 fs-5 text-danger">{{item_shade}}</span>
           </div>
         <div class="">
             <form method="post" id="childform" onsubmit="submitData()">

@@ -1,15 +1,14 @@
 {% extends 'product/base.html' %} {% load static %} {% block body %}
 
-<h2>Create Product</h2>
 
-  <div>
-    <button class="add_btn ms-5" onclick="openNewColor()">Add Color +</button>
-  </div>
-
-<form class="mb-3" method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
+  <h2 class="mb-3 mt-4">Create Product</h2>
+    <button class="add_btn" onclick="openNewColor()">Add Color +</button>
+
+
   <div class="d-flex mt-4 mb-4">
-    <label for="id_Product_Refrence_ID" class="form-label">Refrence ID :
+    <label for="id_Product_Refrence_ID" class="item-form fw-bold">Refrence ID :
     </label>
     <input type="text" class="item-select px-2 mx-2" name="Product_Refrence_ID" required id="id_Product_Refrence_ID"
       value="{{ref_id  | default_if_none:''}}" />
