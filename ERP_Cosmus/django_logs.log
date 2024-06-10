@@ -345,3 +345,21 @@ django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 35: 'e
 2024-06-07 06:27:28 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-07 06:27:29 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-07 06:27:31 PM - django.server - INFO - "GET /viewproduct2item_configs/40051021036 HTTP/1.1" 200 28114
+2024-06-10 10:32:56 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 10:34:39 AM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84259
+2024-06-10 10:34:39 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 304 0
+2024-06-10 10:34:39 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 10:34:39 AM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 304 0
+2024-06-10 10:34:39 AM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 304 0
+2024-06-10 10:34:39 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-10 10:34:39 AM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30545
+2024-06-10 10:34:39 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-10 10:34:39 AM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30550
+2024-06-10 10:34:39 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-10 10:34:39 AM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30545
+2024-06-10 10:34:39 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-10 10:34:39 AM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30545
+2024-06-10 10:34:39 AM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-10 10:34:39 AM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30535
+2024-06-10 10:36:03 AM - django.server - INFO - "GET /viewproduct2item_configs/40051811036 HTTP/1.1" 200 29738
+2024-06-10 10:38:00 AM - django.server - INFO - "GET /viewproduct2item_configs/40051511036 HTTP/1.1" 200 23136
