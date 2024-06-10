@@ -2,7 +2,7 @@
 {% load static %} 
 {% block body %}
 
-<form  id ="myForm" action="" method="POST" >
+<form  action="" method="POST" >
     {% csrf_token %}
     <h2 class="mb-3 mt-3">GST</h2>
  <div class="d-flex my-4">
@@ -14,25 +14,6 @@
 
 </form>
 
-<script>
-    $(document).ready(function(){
 
-        $('#myForm').on('submit',function(e){
-            e.preventDefault();
-            var gst_change = $('#id_gst_percentage').val();
-            console.log(gst_change)
-            $.ajax({
-                type:'POST',
-                url:'/item_create_dropdown_refresh_ajax/',
-                data: {'gst_change' : gst_change } ,
-                success:function(response){
-                    console.log(response)
-                }
-            })
-        })
-
-    })
-
-</script>
 
 {% endblock body %}

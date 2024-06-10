@@ -1,0 +1,124 @@
+2024-06-10 11:58:36 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:00:09 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:00:10 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:00:16 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:00:17 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:00:26 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53755
+2024-06-10 12:00:26 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 12:00:26 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 12:00:26 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 12:00:28 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16491
+2024-06-10 12:00:30 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:00:31 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:00:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=77b58edcfea2401a92d5999b1d1c70ae HTTP/1.1" 200 9093
+2024-06-10 12:00:32 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:00:32 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:00:33 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2fe1d270c4ec4459b2ffce1acd8f6072 HTTP/1.1" 200 9093
+2024-06-10 12:00:38 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:00:38 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:00:38 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:00:38 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:00:38 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:00:38 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:00:38 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:00:38 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:00:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=899b9981945a44cc8278fd7a546cb3ff HTTP/1.1" 200 9093
+2024-06-10 12:00:40 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:00:40 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11506
+2024-06-10 12:00:40 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=298912488c304086b646af73538b333d HTTP/1.1" 200 9092
+2024-06-10 12:01:12 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:12 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:01:12 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:12 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11506
+2024-06-10 12:01:12 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:12 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11506
+2024-06-10 12:01:12 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:12 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11506
+2024-06-10 12:01:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7873c67ac9cd4edc8ee6dd4f3b82742f HTTP/1.1" 200 9092
+2024-06-10 12:01:14 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:14 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:01:14 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0384b6dbe67e40eba049bf122dc236a2 HTTP/1.1" 200 9093
+2024-06-10 12:01:14 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:01:14 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:14 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11506
+2024-06-10 12:01:14 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:14 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:01:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=dd9139e9f29d4749bd0504db11083560 HTTP/1.1" 200 9093
+2024-06-10 12:01:32 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16491
+2024-06-10 12:01:38 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:01:39 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:01:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=32c10e0c511d4bf78b090e5bf84e6d26 HTTP/1.1" 200 9093
+2024-06-10 12:03:12 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:03:12 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:03:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=822d57794ad94657a460467e808de6d0 HTTP/1.1" 200 9093
+2024-06-10 12:03:58 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:03:58 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11506
+2024-06-10 12:03:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=accc91fef751497d8da6dbfdd1ed8e1c HTTP/1.1" 200 9092
+2024-06-10 12:04:41 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:04:42 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:04:47 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:04:47 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11507
+2024-06-10 12:04:47 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=09eae576c3d84ccf811ccc3c27bc2477 HTTP/1.1" 200 9093
+2024-06-10 12:04:56 PM - django.security.csrf - WARNING - Forbidden (CSRF token missing.): /item_create_dropdown_refresh_ajax/
+2024-06-10 12:04:56 PM - django.server - WARNING - "POST /item_create_dropdown_refresh_ajax/ HTTP/1.1" 403 11506
+2024-06-10 12:04:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2c6b3a26926648adbe8d0ed1d168f0db HTTP/1.1" 200 9092
+2024-06-10 12:08:00 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16490
+2024-06-10 12:08:01 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 32
+2024-06-10 12:08:19 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:08:20 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:08:21 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16782
+2024-06-10 12:08:25 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 32
+2024-06-10 12:18:07 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:18:08 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:18:19 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:18:20 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:18:41 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54110
+2024-06-10 12:18:41 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 12:18:41 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 12:18:41 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 12:18:51 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15951
+2024-06-10 12:18:54 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2175, in gst_create_update
+    return JsonResponse({"gst_updated":gst_updated})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\http\response.py", line 731, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type QuerySet is not JSON serializable
+2024-06-10 12:18:54 PM - django.server - ERROR - "POST /gstpopup/ HTTP/1.1" 500 109227
+2024-06-10 12:18:55 PM - django.request - WARNING - Not Found: /favicon.ico
+2024-06-10 12:18:55 PM - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 30176
+2024-06-10 12:19:22 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:19:23 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:19:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16242
+2024-06-10 12:19:28 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 11
+2024-06-10 12:19:48 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16243
+2024-06-10 12:24:57 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:24:58 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:25:11 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:25:12 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:25:17 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 284
+2024-06-10 12:25:51 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:25:52 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
