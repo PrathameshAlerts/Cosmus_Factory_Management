@@ -2,27 +2,27 @@
 {% load static %} 
 {% block body %}
 
-<form  id ="myForm" action="" method="POST" >
+<form  id ="myForm" action="" >
     {% csrf_token %}
     <h2 class="mb-3 mt-3">GST</h2>
- <div class="d-flex my-4">
+  <div class="d-flex my-4">
      <label for="id_gst_percentage" class="item-form px-2">Gst percentage :</label>
      <input type="number" name="gst_percentage" class="item-select" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}">    
  </div>
 
- <input type="submit" class="create-btn mt-4" name="save" value="Save">
+ <input type="submit" class="create-btn mt-4" name="save" value="Save" id="mySubmit">
 
 </form>
 
 <script>
     $(document).ready(function(){
 
-        $('#myForm').on('submit',function(e){
+        $('#mySubmit').on('submit',function(e){
             e.preventDefault();
             var gst_change = $('#id_gst_percentage').val();
             console.log(gst_change)
             $.ajax({
-                type:'POST',
+                type:'GET',
                 url:'/item_create_dropdown_refresh_ajax/',
                 data: {'gst_change' : gst_change } ,
                 success:function(response){
