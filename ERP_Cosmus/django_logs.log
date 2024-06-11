@@ -2169,3 +2169,19 @@ product.models.gst.DoesNotExist: gst matching query does not exist.
 2024-06-11 10:48:49 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 401
 2024-06-11 10:48:59 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17319
 2024-06-11 10:49:03 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 437
+2024-06-11 10:53:16 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:14:33 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55168
+2024-06-11 11:14:33 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:14:33 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:14:45 AM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-11 11:14:45 AM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=afb HTTP/1.1" 404 28
+2024-06-11 11:14:45 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0213e838ad294fc3ada5089ca17504af HTTP/1.1" 200 9080
+2024-06-11 11:15:41 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54921
+2024-06-11 11:15:42 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:15:42 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:15:45 AM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-11 11:15:45 AM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mfs HTTP/1.1" 404 28
+2024-06-11 11:15:46 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2b46cc5f0b7a48869002102fafa5b217 HTTP/1.1" 200 9080
+2024-06-11 11:15:48 AM - django.request - WARNING - Not Found: /itemdynamicsearchajax/
+2024-06-11 11:15:48 AM - django.server - WARNING - "GET /itemdynamicsearchajax/?nameValue=mfd HTTP/1.1" 404 28
+2024-06-11 11:15:48 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b4519257ee834bd1bb35bb7bc4a0af54 HTTP/1.1" 200 9080
