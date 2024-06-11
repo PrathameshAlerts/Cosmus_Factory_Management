@@ -1,3 +1,5 @@
+# Virtual environment
+venv/
 *.env
 /venv
 /migrations
