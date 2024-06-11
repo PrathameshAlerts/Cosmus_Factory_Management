@@ -794,8 +794,6 @@ def item_edit(request,pk):
 
         if form.is_valid() and formset.is_valid():
             form.save()
-
-
             formset.save()
             messages.success(request,'Item updated successfully')
             return redirect('item-list')
@@ -824,6 +822,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     elif primary_key is None and parent_row_id is not None:
 
         loaded_data = False
+
         #get data from session
         if 'openingquantitytemp' in request.session:
             session_quantity_data = request.session['openingquantitytemp']
@@ -835,14 +834,14 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             new_row_data = loaded_data.get('new_row', {})
             initial_data_backend = []
 
-            count = 0 
+            
             for key, value in new_row_data.items():
                 initial_data_backend.append({
                         "opening_godown_id": int(value['gid']),
                         "opening_quantity": float(value['quantity']),
                         "opening_rate": float(loaded_data['all_rate'])})
 
-                count = count + 1
+                
 
             total_forms = len(initial_data_backend)
             opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)            
@@ -2179,7 +2178,7 @@ def gst_create_update(request, pk = None):
             elif template_name == 'accounts/gst_popup.html':
                 # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
                 gst_updated = gst.objects.all().values('id', 'gst_percentage')
-
+                print(list(gst_updated))
                 return JsonResponse({"gst_updated": list(gst_updated)})
         else:
             print(form.errors)

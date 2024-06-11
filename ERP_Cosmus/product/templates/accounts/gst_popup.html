@@ -2,13 +2,6 @@
 {% load static %} 
 {% block body %}
 
-<<<<<<< HEAD
-<form id="gstForm" method="POST">
-    {% csrf_token %}
-    <label for="gst_percentage">GST Percentage:</label>
-    <input type="text" id="gst_percentage" name="gst_percentage">
-    <button type="submit" name="save">Save</button>
-=======
 <form id="gstForm" action="" method="POST" >
     {% csrf_token %}
     <h2 class="mb-3 mt-3">GST</h2>
@@ -20,7 +13,6 @@
 
  <input type="submit" class="create-btn mt-4" name="save" value="Save" >
 
->>>>>>> c4be137c6046cb770f6064c34ed0076a083d4167
 </form>
 
 <script>
