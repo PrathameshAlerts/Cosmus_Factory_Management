@@ -1,4 +1,5 @@
 *.env
 /venv
 /notes
-*.log
+product_logs.log
+django_logs.log
