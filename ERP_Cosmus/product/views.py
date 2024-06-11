@@ -810,7 +810,7 @@ def item_edit(request,pk):
 
 
 def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
-    print(request.POST)
+    print('POST',request.POST)
 
     godowns =  Godown_raw_material.objects.all()
 
