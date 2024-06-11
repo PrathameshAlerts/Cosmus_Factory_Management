@@ -887,7 +887,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             request.session['openingquantitytemp'] = data_json_string
 
 
-    return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns })
+    return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key})
 
 
 
