@@ -295,8 +295,18 @@ for(var i = 0; i < gstDatas.length; i++){
             gst_data.append('<option value="'+gstDatas[i][key]+'">'+gstDatas[i][key] +'</option>'); // Log the value
         }
       }
-  }    
+  }  
+  
+  
+
 });
+
+window.addEventListener('message', function(event) {
+
+  const colorData = event.data;
+  const colorDatas = colorData.color_updated;
+  console.log("colorData",colorDatas.length);
+})
 
 
   </script>
@@ -803,6 +813,13 @@ function receiveData(openingValue){
 </script>
 
 
+<script>
 
+  window.addEventListener('message', function(event) {
+    const data = event.gst_data;
+    console.log("data",data)
+
+});
+</script>
 
 {% endblock body %}

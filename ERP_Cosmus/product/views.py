@@ -3,6 +3,8 @@ from sys import exception
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
+from pandas import json_normalize
+import requests
 from django.contrib.auth.models import auth 
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
@@ -974,8 +976,10 @@ def color_create_update(request, pk=None):
                 return redirect('simplecolorlist')
             
             elif 'save' in request.POST and template_name == "product/color_popup.html":
+                
+                color_all = Color.objects.all().values('id','color_name')
                 messages.success(request, 'Color created successfully.')
-                return HttpResponse('<script>window.close();</script>') 
+                return JsonResponse({'color_all':list(color_all)}) 
         else:
             print(form.errors)
             return render(request, template_name,{'title': title,'form': form,'colors':color})
@@ -2154,15 +2158,14 @@ def gst_create_update(request, pk = None):
 
     elif request.path == f'/gstupdate/{pk}':
         template_name = 'accounts/gst_create_update.html'
-
+ 
 
     form = gst_form(instance = instance)
     if request.method == 'POST':
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
-            print(request.POST)
-            print(template_name)
+
             if pk:
                 messages.success(request,'GST updated successfully.')
             else:
@@ -2172,16 +2175,17 @@ def gst_create_update(request, pk = None):
                 return redirect('gst-create-list')
 
             elif template_name == 'accounts/gst_popup.html':
-                # return HttpResponse('<script>window.close();</script>')
+                # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
                 gst_updated = gst.objects.all().values('id', 'gst_percentage')
-                print('list',{"gst_updated": list(gst_updated)})
+
                 return JsonResponse({"gst_updated": list(gst_updated)})
         else:
-            print('TESTT')
             print(form.errors)
             messages.success(request,'An error occured.')
 
-    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
+
+
 
 
 
@@ -2225,7 +2229,9 @@ def fabric_finishes_create_update(request, pk = None):
                 return redirect('fabric-finishes-create-list')
             
             elif 'save' in request.POST and template_name == 'misc/fabric_finishes_popup.html':
-                return HttpResponse('<script>window.close();</script>')
+                fabric_finishes_all = FabricFinishes.objects.all().values('id', 'fabric_finish')
+                
+                return JsonResponse({"fabric_finishes_all": list(fabric_finishes_all)})
         else:
             messages.error(request,'An error occured.')
 
@@ -2274,7 +2280,10 @@ def packaging_create_update(request, pk = None):
                 return redirect('packaging-create-list')
 
             elif 'save' in request.POST and template_name == 'misc/packaging_popup.html':
-                return HttpResponse('<script>window.close();</script>')
+
+                packaging_all = packaging.objects.all().values('id','packing_material')
+
+                return JsonResponse({'packaging_all': list('packaging_all')})
         else:
             messages.error(request, 'An error accoured.')  
 
@@ -2627,7 +2636,7 @@ def export_Product2Item_excel(request,product_ref_id):
         return redirect(reverse('edit_production_product', args=[product_ref_id]))
 
 
-
+# view configs of single products
 def viewproduct2items_configs(request,product_sku):
     product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
 
