@@ -2877,3 +2877,24 @@ product.models.gst.DoesNotExist: gst matching query does not exist.
 2024-06-11 10:48:59 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17319
 2024-06-11 10:49:03 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 437
 >>>>>>> c4be137c6046cb770f6064c34ed0076a083d4167
+2024-06-11 10:59:25 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 10:59:55 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 10:59:56 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:03:08 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:03:09 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:03:19 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55259
+2024-06-11 11:03:19 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-11 11:03:19 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:03:19 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:03:22 AM - django.server - INFO - "GET /fabricfinishespopup/ HTTP/1.1" 200 16057
+2024-06-11 11:03:25 AM - django.server - INFO - "POST /fabricfinishespopup/ HTTP/1.1" 200 32
+2024-06-11 11:04:29 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:04:30 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:07:55 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:07:56 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:08:10 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:08:11 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:12:49 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:12:50 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:12:58 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:12:59 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader

@@ -3,6 +3,7 @@ from sys import exception
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
+from pandas import json_normalize
 import requests
 from django.contrib.auth.models import auth 
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
@@ -975,8 +976,10 @@ def color_create_update(request, pk=None):
                 return redirect('simplecolorlist')
             
             elif 'save' in request.POST and template_name == "product/color_popup.html":
+                
+                color_all = Color.objects.all().values('id','color_name')
                 messages.success(request, 'Color created successfully.')
-                return HttpResponse('<script>window.close();</script>') 
+                return JsonResponse({'color_all':list(color_all)}) 
         else:
             print(form.errors)
             return render(request, template_name,{'title': title,'form': form,'colors':color})
@@ -2177,7 +2180,6 @@ def gst_create_update(request, pk = None):
 
                 return JsonResponse({"gst_updated": list(gst_updated)})
         else:
-            print('TESTT')
             print(form.errors)
             messages.success(request,'An error occured.')
 
@@ -2227,7 +2229,9 @@ def fabric_finishes_create_update(request, pk = None):
                 return redirect('fabric-finishes-create-list')
             
             elif 'save' in request.POST and template_name == 'misc/fabric_finishes_popup.html':
-                return HttpResponse('<script>window.close();</script>')
+                fabric_finishes_all = FabricFinishes.objects.all().values('id', 'fabric_finish')
+                
+                return JsonResponse({"fabric_finishes_all": list(fabric_finishes_all)})
         else:
             messages.error(request,'An error occured.')
 
@@ -2276,7 +2280,10 @@ def packaging_create_update(request, pk = None):
                 return redirect('packaging-create-list')
 
             elif 'save' in request.POST and template_name == 'misc/packaging_popup.html':
-                return HttpResponse('<script>window.close();</script>')
+
+                packaging_all = packaging.objects.all().values('id','packing_material')
+
+                return JsonResponse({'packaging_all': list('packaging_all')})
         else:
             messages.error(request, 'An error accoured.')  
 
@@ -2629,7 +2636,7 @@ def export_Product2Item_excel(request,product_ref_id):
         return redirect(reverse('edit_production_product', args=[product_ref_id]))
 
 
-
+# view configs of single products
 def viewproduct2items_configs(request,product_sku):
     product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
 
