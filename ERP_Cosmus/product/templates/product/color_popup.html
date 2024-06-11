@@ -24,7 +24,7 @@
     
     const form = event.target;
     const formData = new FormData(form);
-
+    formData.append('save', 'Save');
     try {
 
       const response = await fetch(form.action ,{
@@ -37,15 +37,18 @@
        
       if(response.ok){
 
-        const colorData = await response.json();  // Await the response.json() call
-        console.log('Response data:', colorData);
-        window.opener.postMessage(colorData, '*');
+        const data = await response.json();  // Await the response.json() call
+        console.log('Response data:', data);
+        window.opener.postMessage(data, '*');
 
           window.close();  // Now you can access the JSON data
+      }else{
+
+        console.error('Failed to create color.');
       }
       
     } catch (error) {
-      
+      console.error('Error:', error);
     }
   });
 </script>

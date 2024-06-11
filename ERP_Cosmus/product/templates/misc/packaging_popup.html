@@ -4,7 +4,7 @@
 {% block body %} 
   <div>
         <h2>Create Packing</h2>
-      <form  id ="myForm" class="mt-5" action="" method="POST">
+      <form  id ="packingForm" class="mt-5" action="" method="POST">
            {% csrf_token %}
            
        <div class="d-flex">
@@ -16,4 +16,39 @@
        
   </div>
 
+  <script>
+    document.getElementById('packingForm').addEventListener('submit', async function(event) {
+        event.preventDefault();  // Prevent the default form submission
+    
+    const form = event.target;
+    const formData = new FormData(form);
+
+    formData.append('save', 'Save');
+  
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();  // Await the response.json() call
+            console.log('Response data:', data);  // Now you can access the JSON data
+
+           window.opener.postMessage(data, '*');
+
+            window.close();
+        } else {
+            console.error('Failed to update Packing.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+      
+    });
+    </script>
+    
 {% endblock body %}

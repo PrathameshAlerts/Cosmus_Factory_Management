@@ -2916,6 +2916,372 @@ product.models.gst.DoesNotExist: gst matching query does not exist.
 2024-06-11 11:12:50 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-11 11:12:58 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-11 11:12:59 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+<<<<<<< HEAD
 >>>>>>> be9995263695870e84ba1b785dbe9d5d28639a69
 2024-06-11 11:24:02 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-11 11:25:10 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+=======
+2024-06-11 11:13:55 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:15:47 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:15:48 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:17:42 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:17:43 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:19:07 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:19:08 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:20:42 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+>>>>>>> ce764cbd73adde359eb6ef3f6d221a4e70810f26
+2024-06-11 11:25:34 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:25:39 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55249
+2024-06-11 11:25:39 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:25:39 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:25:42 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16883
+2024-06-11 11:25:50 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 16885
+2024-06-11 11:25:51 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ebf8af16a2c74775bc0f223a892bf56c HTTP/1.1" 200 9099
+2024-06-11 11:26:56 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:27:00 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 17267
+2024-06-11 11:27:00 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f150bc9b1322477f89636a3d649b1634 HTTP/1.1" 200 9112
+2024-06-11 11:27:12 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 16965
+2024-06-11 11:27:13 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4e1d9dc48f9f4e43a8ba22ace1c97123 HTTP/1.1" 200 9099
+2024-06-11 11:28:20 AM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:28:21 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:28:22 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:28:26 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 611
+2024-06-11 11:29:03 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55652
+2024-06-11 11:29:03 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:29:03 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:29:06 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:29:13 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 643
+2024-06-11 11:30:28 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 17256
+2024-06-11 11:31:07 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55742
+2024-06-11 11:31:08 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:31:08 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:31:09 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16962
+2024-06-11 11:31:13 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 675
+2024-06-11 11:32:12 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56057
+2024-06-11 11:32:12 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:32:12 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:32:13 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:32:17 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 707
+2024-06-11 11:33:34 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56058
+2024-06-11 11:33:34 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:33:34 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 11:33:35 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:33:39 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 740
+2024-06-11 11:36:17 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56107
+2024-06-11 11:36:17 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:36:17 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:36:22 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16962
+2024-06-11 11:36:30 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 772
+2024-06-11 11:37:22 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56155
+2024-06-11 11:37:22 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:37:22 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:37:23 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-11 11:37:29 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55893
+2024-06-11 11:37:30 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:37:30 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:37:40 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:37:45 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 17267
+2024-06-11 11:37:46 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bcfc93fbaa614b468d1ec120c5de50e9 HTTP/1.1" 200 9112
+2024-06-11 11:37:47 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 17267
+2024-06-11 11:37:47 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3b70a54be324417ea212ab9df9a212ca HTTP/1.1" 200 9112
+2024-06-11 11:37:51 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 804
+2024-06-11 11:38:26 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56196
+2024-06-11 11:38:26 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:38:26 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:38:30 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:38:33 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 836
+2024-06-11 11:41:32 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56256
+2024-06-11 11:41:32 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:41:32 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:41:33 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:41:39 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 868
+2024-06-11 11:42:04 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56308
+2024-06-11 11:42:04 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:42:04 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:42:09 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:42:16 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 900
+2024-06-11 11:57:38 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 43501
+2024-06-11 11:57:45 AM - django.server - INFO - "GET /colordelete/21 HTTP/1.1" 302 0
+2024-06-11 11:57:45 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 43051
+2024-06-11 11:57:49 AM - django.server - INFO - "GET /colordelete/26 HTTP/1.1" 302 0
+2024-06-11 11:57:49 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 42607
+2024-06-11 11:57:53 AM - django.server - INFO - "GET /colordelete/17 HTTP/1.1" 302 0
+2024-06-11 11:57:53 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 42164
+2024-06-11 11:57:57 AM - django.server - INFO - "GET /colordelete/16 HTTP/1.1" 302 0
+2024-06-11 11:57:57 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 41720
+2024-06-11 11:58:07 AM - django.server - INFO - "GET /colordelete/25 HTTP/1.1" 302 0
+2024-06-11 11:58:07 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 41277
+2024-06-11 11:58:11 AM - django.server - INFO - "GET /colordelete/24 HTTP/1.1" 302 0
+2024-06-11 11:58:11 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 40834
+2024-06-11 11:58:15 AM - django.server - INFO - "GET /colordelete/23 HTTP/1.1" 302 0
+2024-06-11 11:58:15 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 40391
+2024-06-11 11:58:18 AM - django.server - INFO - "GET /colordelete/22 HTTP/1.1" 302 0
+2024-06-11 11:58:18 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 39948
+2024-06-11 11:58:23 AM - django.server - INFO - "GET /colordelete/15 HTTP/1.1" 302 0
+2024-06-11 11:58:23 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 39505
+2024-06-11 11:58:27 AM - django.server - INFO - "GET /colordelete/20 HTTP/1.1" 302 0
+2024-06-11 11:58:27 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 39062
+2024-06-11 11:58:31 AM - django.server - INFO - "GET /colordelete/19 HTTP/1.1" 302 0
+2024-06-11 11:58:31 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 38619
+2024-06-11 11:58:34 AM - django.server - INFO - "GET /colordelete/18 HTTP/1.1" 302 0
+2024-06-11 11:58:34 AM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 38176
+2024-06-11 11:58:43 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55022
+2024-06-11 11:58:43 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:58:43 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:58:59 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55064
+2024-06-11 11:58:59 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 11:58:59 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 11:59:03 AM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 16039
+2024-06-11 11:59:05 AM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 11:59:52 AM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 551
+2024-06-11 12:01:46 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55420
+2024-06-11 12:01:46 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:01:46 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:02:23 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55158
+2024-06-11 12:02:23 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:02:23 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:03:01 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55161
+2024-06-11 12:03:01 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:03:01 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:03:03 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-11 12:03:07 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 153
+2024-06-11 12:03:35 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55489
+2024-06-11 12:03:35 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:03:35 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:03:36 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-11 12:03:43 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17615
+2024-06-11 12:03:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7775b7b9f08546f5b05b43b8e1586128 HTTP/1.1" 200 9107
+2024-06-11 12:04:11 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55220
+2024-06-11 12:04:11 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:04:11 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:04:13 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-11 12:04:16 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 188
+2024-06-11 12:04:27 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55535
+2024-06-11 12:04:27 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:04:27 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:04:28 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-11 12:04:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 224
+2024-06-11 12:06:16 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55611
+2024-06-11 12:06:17 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:06:17 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:06:17 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17024
+2024-06-11 12:06:21 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 260
+2024-06-11 12:06:41 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55664
+2024-06-11 12:06:41 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:06:41 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:06:42 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17024
+2024-06-11 12:06:46 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 297
+2024-06-11 12:07:13 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55778
+2024-06-11 12:07:13 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:07:13 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:07:13 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17023
+2024-06-11 12:07:16 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 333
+2024-06-11 12:08:16 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55864
+2024-06-11 12:08:16 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:08:16 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:08:17 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17023
+2024-06-11 12:08:20 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 370
+2024-06-11 12:09:20 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55897
+2024-06-11 12:09:20 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:09:20 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:09:22 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17023
+2024-06-11 12:09:25 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 405
+2024-06-11 12:10:22 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55919
+2024-06-11 12:10:22 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:10:22 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:10:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17023
+2024-06-11 12:10:28 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 441
+2024-06-11 12:11:23 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55992
+2024-06-11 12:11:23 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:11:23 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:11:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17023
+2024-06-11 12:11:27 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 478
+2024-06-11 12:12:02 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55990
+2024-06-11 12:12:02 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:12:02 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:12:03 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17024
+2024-06-11 12:12:06 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 514
+2024-06-11 12:12:41 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55987
+2024-06-11 12:12:41 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:12:41 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:12:42 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17023
+2024-06-11 12:12:45 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 551
+2024-06-11 12:13:09 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55968
+2024-06-11 12:13:09 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:13:09 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:13:13 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17024
+2024-06-11 12:13:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 588
+2024-06-11 12:14:47 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55860
+2024-06-11 12:14:47 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:14:47 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:14:50 PM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 12:14:56 PM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 583
+2024-06-11 12:15:28 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55906
+2024-06-11 12:15:28 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:15:28 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:15:29 PM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16963
+2024-06-11 12:15:34 PM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 616
+2024-06-11 12:17:46 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55596
+2024-06-11 12:17:46 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:17:46 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:17:48 PM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 16962
+2024-06-11 12:17:54 PM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 650
+2024-06-11 12:18:58 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 12:18:58 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 12:22:07 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55793
+2024-06-11 12:22:07 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:22:07 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:22:10 PM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 17088
+2024-06-11 12:22:14 PM - django.server - INFO - "POST /fabric_popup/ HTTP/1.1" 200 997
+2024-06-11 12:23:55 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 12:23:55 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 12:26:20 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56023
+2024-06-11 12:26:20 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:26:20 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:26:22 PM - django.server - INFO - "GET /packagingpop/ HTTP/1.1" 200 17026
+2024-06-11 12:26:27 PM - django.server - INFO - "POST /packagingpop/ HTTP/1.1" 200 225
+2024-06-11 12:29:52 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56214
+2024-06-11 12:29:53 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:29:53 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:29:54 PM - django.server - INFO - "GET /units_popup/ HTTP/1.1" 200 16989
+2024-06-11 12:29:58 PM - django.request - ERROR - Internal Server Error: /units_popup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view product.views.unit_name_create_update didn't return an HttpResponse object. It returned None instead.
+2024-06-11 12:29:58 PM - django.server - ERROR - "POST /units_popup/ HTTP/1.1" 500 81125
+2024-06-11 12:29:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c13240b7d3e8454c88f067d9bea8ce8c HTTP/1.1" 200 9060
+2024-06-11 12:30:00 PM - django.server - INFO - "POST /units_popup/ HTTP/1.1" 200 17600
+2024-06-11 12:30:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7aded2b9e2b94e8d9b944acbbfa6be62 HTTP/1.1" 200 9116
+2024-06-11 12:30:10 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 12:30:11 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 12:30:13 PM - django.server - INFO - "GET /units_popup/ HTTP/1.1" 200 16990
+2024-06-11 12:30:17 PM - django.server - INFO - "POST /units_popup/ HTTP/1.1" 200 156
+2024-06-11 12:31:14 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 12:31:14 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 12:33:06 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56476
+2024-06-11 12:33:06 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:33:06 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:33:08 PM - django.server - INFO - "GET /fabricfinishespopup/ HTTP/1.1" 200 17050
+2024-06-11 12:33:12 PM - django.server - INFO - "POST /fabricfinishespopup/ HTTP/1.1" 200 551
+2024-06-11 12:33:28 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56541
+2024-06-11 12:33:28 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:33:28 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:33:54 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56273
+2024-06-11 12:33:54 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:33:54 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:34:32 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56273
+2024-06-11 12:34:32 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:34:32 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 12:36:18 PM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 17089
+2024-06-11 12:36:24 PM - django.server - INFO - "POST /fabric_popup/ HTTP/1.1" 200 1036
+2024-06-11 12:36:38 PM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 17263
+2024-06-11 12:37:13 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mel HTTP/1.1" 200 381
+2024-06-11 12:37:13 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mela HTTP/1.1" 200 382
+2024-06-11 12:37:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b10547744cdb42bfb159b61ef955000f HTTP/1.1" 200 9080
+2024-06-11 12:37:14 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mela HTTP/1.1" 200 382
+2024-06-11 12:37:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a288def5f6ff46d8b55d08132531a4f5 HTTP/1.1" 200 9080
+2024-06-11 12:37:14 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mela HTTP/1.1" 200 382
+2024-06-11 12:37:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=009cb7e46a1a4700a4b30dfe8c25a564 HTTP/1.1" 200 9079
+2024-06-11 12:37:15 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mela HTTP/1.1" 200 382
+2024-06-11 12:37:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a121b51c03524955a123dbaee0c39f03 HTTP/1.1" 200 9080
+2024-06-11 12:37:15 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=mela HTTP/1.1" 200 382
+2024-06-11 12:37:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4e8e15afc1fe407b9301ab4abe78a0fa HTTP/1.1" 200 9080
+2024-06-11 12:37:15 PM - django.server - INFO - "GET /itemcreatecloneajax/?itemValue=4 HTTP/1.1" 200 471
+2024-06-11 12:37:15 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=MELANGE%20(CTC)%20BLGS%20T.GREEN HTTP/1.1" 200 113
+2024-06-11 12:37:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ebcfff308db5411c83090415a0187d70 HTTP/1.1" 200 9108
+2024-06-11 12:37:38 PM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 693
+2024-06-11 12:37:57 PM - django.server - INFO - "POST /itemcreate/ HTTP/1.1" 302 0
+2024-06-11 12:37:57 PM - django.server - INFO - "GET /itemedit/47 HTTP/1.1" 200 59659
+2024-06-11 12:38:11 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 121697
+2024-06-11 12:38:24 PM - django.server - INFO - "GET /itemdelete/47 HTTP/1.1" 302 0
+2024-06-11 12:38:24 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 120174
+2024-06-11 12:52:06 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 12:52:07 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 12:52:14 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 40155
+2024-06-11 12:52:18 PM - django.server - INFO - "GET /colordelete/31 HTTP/1.1" 302 0
+2024-06-11 12:52:18 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 39967
+2024-06-11 12:52:22 PM - django.server - INFO - "GET /colordelete/30 HTTP/1.1" 302 0
+2024-06-11 12:52:22 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 39513
+2024-06-11 12:52:25 PM - django.server - INFO - "GET /colordelete/29 HTTP/1.1" 302 0
+2024-06-11 12:52:26 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 39068
+2024-06-11 12:52:30 PM - django.server - INFO - "GET /colordelete/28 HTTP/1.1" 302 0
+2024-06-11 12:52:30 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 38624
+2024-06-11 12:52:33 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 41651
+2024-06-11 12:52:37 PM - django.server - INFO - "GET /itemfabricgroupdelete/28 HTTP/1.1" 302 0
+2024-06-11 12:52:37 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 41524
+2024-06-11 12:52:40 PM - django.server - INFO - "GET /itemfabricgroupdelete/27 HTTP/1.1" 302 0
+2024-06-11 12:52:40 PM - django.server - INFO - "GET /itemfabricgroupcreateupdate/ HTTP/1.1" 200 41130
+2024-06-11 12:52:49 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 33351
+2024-06-11 12:52:52 PM - django.server - INFO - "GET /unitnamedelete/5 HTTP/1.1" 302 0
+2024-06-11 12:52:52 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 33173
+2024-06-11 12:52:54 PM - django.server - INFO - "GET /unitnamedelete/4 HTTP/1.1" 302 0
+2024-06-11 12:52:54 PM - django.server - INFO - "GET /unitnamecreate/ HTTP/1.1" 200 32731
+2024-06-11 12:53:01 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35005
+2024-06-11 12:53:04 PM - django.server - INFO - "GET /gstdelete/217 HTTP/1.1" 302 0
+2024-06-11 12:53:04 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34886
+2024-06-11 12:53:05 PM - django.server - INFO - "GET /gstdelete/206 HTTP/1.1" 302 0
+2024-06-11 12:53:05 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34523
+2024-06-11 12:53:06 PM - django.server - INFO - "GET /gstdelete/207 HTTP/1.1" 302 0
+2024-06-11 12:53:06 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34159
+2024-06-11 12:53:07 PM - django.server - INFO - "GET /gstdelete/208 HTTP/1.1" 302 0
+2024-06-11 12:53:08 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33795
+2024-06-11 12:53:08 PM - django.server - INFO - "GET /gstdelete/209 HTTP/1.1" 302 0
+2024-06-11 12:53:08 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33430
+2024-06-11 12:53:11 PM - django.server - INFO - "GET /gstdelete/210 HTTP/1.1" 302 0
+2024-06-11 12:53:11 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33066
+2024-06-11 12:53:12 PM - django.server - INFO - "GET /gstdelete/211 HTTP/1.1" 302 0
+2024-06-11 12:53:12 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32701
+2024-06-11 12:53:12 PM - django.server - INFO - "GET /gstdelete/212 HTTP/1.1" 302 0
+2024-06-11 12:53:13 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32339
+2024-06-11 12:53:13 PM - django.server - INFO - "GET /gstdelete/213 HTTP/1.1" 302 0
+2024-06-11 12:53:14 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31976
+2024-06-11 12:53:14 PM - django.server - INFO - "GET /gstdelete/214 HTTP/1.1" 302 0
+2024-06-11 12:53:14 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31612
+2024-06-11 12:53:15 PM - django.server - INFO - "GET /gstdelete/215 HTTP/1.1" 302 0
+2024-06-11 12:53:15 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31249
+2024-06-11 12:53:16 PM - django.server - INFO - "GET /gstdelete/216 HTTP/1.1" 302 0
+2024-06-11 12:53:16 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30885
+2024-06-11 12:53:17 PM - django.server - INFO - "GET /gstdelete/205 HTTP/1.1" 302 0
+2024-06-11 12:53:17 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30523
+2024-06-11 12:53:18 PM - django.server - INFO - "GET /gstdelete/204 HTTP/1.1" 302 0
+2024-06-11 12:53:18 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-11 12:53:21 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 34159
+2024-06-11 12:53:26 PM - django.server - INFO - "GET /fabricfinishesdelete/13 HTTP/1.1" 302 0
+2024-06-11 12:53:26 PM - django.server - INFO - "GET /fabricfinishesscreate/ HTTP/1.1" 200 34030
+2024-06-11 12:53:29 PM - django.server - INFO - "GET /packaging_create/ HTTP/1.1" 200 31048
+2024-06-11 12:53:32 PM - django.server - INFO - "GET /packagingdelete/5 HTTP/1.1" 302 0
+2024-06-11 12:53:32 PM - django.server - INFO - "GET /packaging_create/ HTTP/1.1" 200 30932
+2024-06-11 12:53:40 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 12:53:41 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55147
+2024-06-11 12:53:41 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:53:41 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:53:43 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17024
+2024-06-11 12:53:47 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 119
+2024-06-11 12:55:15 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55457
+2024-06-11 12:55:15 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:55:15 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:56:35 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55197
+2024-06-11 12:56:35 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 12:56:35 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 12:56:37 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16983
+2024-06-11 12:56:41 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 155
+2024-06-11 12:59:44 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 12:59:45 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 12:59:56 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 12:59:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:12:04 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 02:12:05 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:12:22 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 02:12:23 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:12:36 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 02:12:37 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:12:52 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55507
+2024-06-11 02:12:52 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 02:12:52 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 02:13:25 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
