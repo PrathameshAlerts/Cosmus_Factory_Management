@@ -3285,3 +3285,135 @@ ValueError: The view product.views.unit_name_create_update didn't return an Http
 2024-06-11 02:12:52 PM - django.request - WARNING - Not Found: /itemcreate/...
 2024-06-11 02:12:52 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
 2024-06-11 02:13:25 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 02:13:58 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:34:14 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 02:34:19 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58223
+2024-06-11 02:34:44 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:34:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0d01006977c54bb68f7b7a8a5e05841c HTTP/1.1" 200 9115
+2024-06-11 02:34:44 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 841, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:34:44 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
+2024-06-11 02:34:44 PM - django.request - WARNING - Not Found: /favicon.ico
+2024-06-11 02:34:44 PM - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 30176
+2024-06-11 02:36:36 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:36:36 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 841, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:36:36 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
+2024-06-11 02:36:36 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e2b80e262e1246b0b46d0c0412167bf2 HTTP/1.1" 200 9115
+2024-06-11 02:38:12 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:38:12 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 841, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:38:12 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
+2024-06-11 02:38:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c0edc9c091e54073afc97feb9f756c3e HTTP/1.1" 200 9115
+2024-06-11 02:38:14 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=43 HTTP/1.1" 200 46
+2024-06-11 02:38:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=507e784f6db54d5c9cd774ed57f371a5 HTTP/1.1" 200 9116
+2024-06-11 02:38:15 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 26859
+2024-06-11 02:38:24 PM - django.server - INFO - "POST /openinggodownquantitypk/43/0 HTTP/1.1" 200 27147
+2024-06-11 02:39:53 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:39:53 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 841, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:39:53 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
+2024-06-11 02:39:53 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e0ec17ea33c249ea9d6b774942ac7817 HTTP/1.1" 200 9114
+2024-06-11 02:40:01 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=43 HTTP/1.1" 200 46
+2024-06-11 02:40:01 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=23e2d00f8c554551ae3e7f414fa6a32c HTTP/1.1" 200 9117
+2024-06-11 02:40:01 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 26859
+2024-06-11 02:42:27 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 26880
+2024-06-11 02:45:01 PM - django.server - INFO - "POST /openinggodownquantitypk/43/0 HTTP/1.1" 200 28824
+2024-06-11 02:45:12 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:45:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=19ddca585265429791ba9cff2017c780 HTTP/1.1" 200 9115
+2024-06-11 02:45:12 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 841, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:45:12 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
+2024-06-11 02:45:15 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=43 HTTP/1.1" 200 46
+2024-06-11 02:45:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=59e3dc11ffd94cdf9ab4496d794ac0d1 HTTP/1.1" 200 9116
+2024-06-11 02:45:15 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 26880
+2024-06-11 02:52:22 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 27353
+2024-06-11 02:52:52 PM - django.server - INFO - "POST /openinggodownquantitypk/43/0 HTTP/1.1" 200 29233
+2024-06-11 02:55:08 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 31050
+2024-06-11 02:55:14 PM - django.server - INFO - "POST /openinggodownquantitypk/43/0 HTTP/1.1" 200 31094
+2024-06-11 02:55:51 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 32878
+2024-06-11 02:55:58 PM - django.server - INFO - "POST /openinggodownquantitypk/43/0 HTTP/1.1" 200 32921
+2024-06-11 02:56:05 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58217
+2024-06-11 02:56:06 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:56:06 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 841, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:56:06 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
+2024-06-11 02:56:06 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c3160c255b264bc09868a424b4acfdfe HTTP/1.1" 200 9114
+2024-06-11 02:56:31 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=43 HTTP/1.1" 200 46
+2024-06-11 02:56:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=36dd1ec1ed084e5e827bfb918255c5ed HTTP/1.1" 200 9117
+2024-06-11 02:56:31 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 34726
+2024-06-11 02:56:43 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:56:43 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 841, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:56:43 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
+2024-06-11 02:56:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=31ffb2e120f64f03921a69885d36df56 HTTP/1.1" 200 9114

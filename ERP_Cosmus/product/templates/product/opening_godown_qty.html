@@ -23,7 +23,9 @@
             {{formset.management_form}}
 
             {% for form in formset %}
+         
             <tr>
+                {{ form.id }}
                 <td>
                     <select name="{{form.prefix}}-opening_godown_id" id="id_{{form.prefix}}-opening_godown_id"
                         class="item-select godown-select">
@@ -56,7 +58,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <button type="button" class="create-btn" id="addRow" >Add +</button>
+    <button type="button" class="create-btn" id="addRow">Add +</button>
     <input type="submit" class="add_btn submitBtn" >
 
 </form>
@@ -143,6 +145,7 @@
             var newForm = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS').value;
             console.log(newForm);
 
+            var newData = [];
             for(var i = 0; i < newForm; i++){
                 var godownData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_godown_id').value;
                 console.log(godownData);
@@ -153,7 +156,7 @@
 
             }
 
-            var newData ={
+            newData.push ={
                 'godownData':godownData,
                 'qtyData':qtyData,
                 'rateData':rateData
