@@ -1,5 +1,15 @@
 *.env
 /venv
+<<<<<<< HEAD
+/migrations
+*.log
+.django_logs.log
+=======
 /notes
+<<<<<<< HEAD
 product_logs.log
 django_logs.log
+=======
+*.log
+>>>>>>> 2b9f7b68906acb344e10cfd36f9672dbb3550908
+>>>>>>> 01333267a1e7fe05d8b86b83404f96496db02836
