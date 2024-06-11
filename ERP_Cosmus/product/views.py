@@ -2175,7 +2175,7 @@ def gst_create_update(request, pk = None):
             if 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
                 return redirect('gst-create-list')
 
-            elif template_name == 'accounts/gst_popup.html':
+            elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
                 # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
                 gst_updated = gst.objects.all().values('id', 'gst_percentage')
                 print(list(gst_updated))

@@ -4,7 +4,7 @@
 {% block body %} 
 <div>
 
-      <form  action="" method="POST">
+      <form id="colorForm"  action="" method="POST">
         {% csrf_token %}  
         <h2 class="mb-3 mt-4">Create Color</h2>
        <div class="d-flex">
@@ -12,20 +12,45 @@
         <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
        </div>
 
-    <input type="submit" id="saveButton"  onsubmit="onSubmit()" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" id="saveButton" class="create-btn mt-4" name="save" value="Save">
       </form>
 </div>
 
 
 
 <script>
-  // After form submission
-  function onSubmit() {
-      // Send a message to the parent window indicating form submission
-      window.opener.postMessage('formSubmitted', '*');
-      // Close the popup window
-      window.close();
-  }
+  document.getElementById('colorForm').addEventListener('submit', async function(event) {
+    event.preventDefault();  // Prevent the default form submission
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    formData.append('save', 'Save');
+    try {
+
+      const response = await fetch(form.action ,{
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+        }
+      });
+       
+      if(response.ok){
+
+        const data = await response.json();  // Await the response.json() call
+        console.log('Response data:', data);
+        window.opener.postMessage(data, '*');
+
+          window.close();  // Now you can access the JSON data
+      }else{
+
+        console.error('Failed to create color.');
+      }
+      
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
 </script>
 
 

@@ -4,7 +4,7 @@
 {% block body %} 
 <div>
       
-      <form  id ="myForm" action="" method="POST">
+      <form  id = "fabricForm" action="" method="POST">
            {% csrf_token %}
        <h2 class="mb-3 mt-4">Create Fabric Group</h2>   
        <div class="d-flex">
@@ -15,6 +15,38 @@
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
   </div>
 
- 
+  <script>
+    document.getElementById('fabricForm').addEventListener('submit', async function(event) {
+        event.preventDefault();  // Prevent the default form submission
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    formData.append('save', 'Save');
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();  // Await the response.json() call
+            console.log('Response data:', data);  // Now you can access the JSON data
+
+           window.opener.postMessage(data, '*');
+
+            window.close();
+        } else {
+            console.error('Failed to update Fabric.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+      
+    });
+    </script>
 
 {% endblock body %}

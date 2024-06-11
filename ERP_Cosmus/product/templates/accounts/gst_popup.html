@@ -17,13 +17,12 @@
 
 <script>
     document.getElementById('gstForm').addEventListener('submit', async function(event) {
-        event.preventDefault();  // Prevent the default form submission
+    event.preventDefault();  // Prevent the default form submission
     
-        const form = event.target;
+    const form = event.target;
     const formData = new FormData(form);
-    console.log('FormData:', formData);
-    console.log('Form:', form);
 
+   formData.append('save', 'Save');
     try {
         const response = await fetch(form.action, {
             method: 'POST',
