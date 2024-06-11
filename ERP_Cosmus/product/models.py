@@ -57,13 +57,18 @@ class Product2SubCategory(models.Model):
 
 class Color(models.Model):
     color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
+    
+    class Meta:
+        ordering = ["color_name"]
 
     def __str__(self):
         return self.color_name
     
+    
 class gst(models.Model):
     gst_percentage = models.IntegerField(unique=True)
-    ordering = ["gst_percentage"]
+    class Meta:
+        ordering = ["gst_percentage"]
 
 
 class Product(models.Model):
@@ -278,21 +283,27 @@ class Fabric_Group_Model(models.Model):
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
+    class Meta:
+        ordering = ['fab_grp_name']
 
 class Unit_Name_Create(models.Model):
     unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
-
+    class Meta:
+        ordering = ['unit_name']
 
 class FabricFinishes(models.Model):
     fabric_finish =  models.CharField(max_length = 100, unique=True)
 
+    class Meta:
+        ordering = ['fabric_finish']
 class packaging(models.Model):
     packing_material = models.CharField(max_length = 100, unique=True)
     
-
+    class Meta:
+        ordering = ['packing_material']
 class Item_Creation(models.Model):
     STATUS =  [
         ("Unused","Unused"),
