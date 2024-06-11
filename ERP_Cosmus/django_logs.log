@@ -60,3 +60,5 @@
 2024-06-11 04:17:18 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-11 04:17:29 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-11 04:17:30 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 04:18:27 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 04:18:28 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
