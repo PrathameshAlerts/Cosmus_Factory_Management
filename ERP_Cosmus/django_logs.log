@@ -2898,3 +2898,11 @@ product.models.gst.DoesNotExist: gst matching query does not exist.
 2024-06-11 11:12:50 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-11 11:12:58 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-11 11:12:59 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:13:55 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:15:47 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:15:48 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:17:42 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:17:43 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:19:07 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 11:19:08 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 11:20:42 AM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.

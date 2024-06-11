@@ -976,7 +976,7 @@ def color_create_update(request, pk=None):
                 return redirect('simplecolorlist')
             
             elif 'save' in request.POST and template_name == "product/color_popup.html":
-                
+
                 color_all = Color.objects.all().values('id','color_name')
                 messages.success(request, 'Color created successfully.')
                 return JsonResponse({'color_all':list(color_all)}) 
@@ -1044,7 +1044,8 @@ def item_fabric_group_create_update(request, pk = None):
                 return redirect('item-fabgroup-create-list')
 
             elif 'save' in request.POST and template_name == 'product/fabric_popup.html':
-                return HttpResponse('<script>window.close();</script>')
+                Fabric_Group_all = Fabric_Group_Model.objects.all().values('id','fab_grp_name')
+                return JsonResponse({'Fabric_Group_all':list(Fabric_Group_all)})
 
         else:
             print(form.errors)
@@ -1113,7 +1114,8 @@ def unit_name_create_update(request,pk=None):
                 return redirect('unit_name-create_list')
 
             elif 'save' in request.POST and template_name == 'product/units_popup.html':
-                return HttpResponse('<script>window.close();</script>')
+                Unit_Name_all_values = Unit_Name_Create.objects.all().values('id','unit_name')
+                return JsonResponse({'Unit_Name_all_values':list(Unit_Name_all_values)})
 
         else:
             print(form.errors)
@@ -2281,9 +2283,9 @@ def packaging_create_update(request, pk = None):
 
             elif 'save' in request.POST and template_name == 'misc/packaging_popup.html':
 
-                packaging_all = packaging.objects.all().values('id','packing_material')
+                packaging_all_values = packaging.objects.all().values('id','packing_material')
 
-                return JsonResponse({'packaging_all': list('packaging_all')})
+                return JsonResponse({'packaging_all_values': list(packaging_all_values)})
         else:
             messages.error(request, 'An error accoured.')  
 
