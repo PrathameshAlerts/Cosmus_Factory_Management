@@ -1,5 +1,4 @@
 *.env
 /venv
-/migrations
+/notes
 *.log
-/django_logs.log

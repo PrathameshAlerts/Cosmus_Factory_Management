@@ -816,7 +816,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
     formset = None
     if parent_row_id is not None and primary_key is not None:
-        shade_instance =  get_object_or_404(item_color_shade,pk=primary_key)
+        shade_instance = get_object_or_404(item_color_shade,pk=primary_key)
         formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
 
     elif primary_key is None and parent_row_id is not None:
@@ -847,6 +847,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)            
             formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend,prefix = "opening_shade_godown_quantity_set")
             print(formset.forms)
+
         else:
             opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=1)            
             formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
@@ -2001,7 +2002,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
     elif primarykey is not None:
 
         godowns_for_selected_shade = shade_godown_items.objects.filter(purchase_voucher_godown_item__item_shade = shade_id,purchase_voucher_godown_item = primarykey)
-        print('TESTT',godowns_for_selected_shade)
+        
         voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
         if godowns_for_selected_shade:
             formsets = purchase_voucher_items_godown_formset(instance = voucher_item_instance,prefix='shade_godown_items_set')
