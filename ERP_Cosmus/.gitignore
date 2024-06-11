@@ -6,8 +6,8 @@ venv/
 .vscode/
 
 # Django logs
-.product_logs.log
-.django_logs.log
+product_logs.log
+django_logs.log
 
 # Local notes
 notes/
