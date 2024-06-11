@@ -47,3 +47,8 @@
 2024-06-11 02:57:00 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
 2024-06-11 02:57:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=518448d664e943848f990d2f6bc2401a HTTP/1.1" 200 9115
 2024-06-11 02:57:01 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23462
+2024-06-11 02:58:15 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 03:25:47 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 03:25:47 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 03:25:48 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 03:25:48 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader

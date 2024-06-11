@@ -823,7 +823,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
         loaded_data = False
 
-        #get data from session
+        #get data from session # change or remove this part
         if 'openingquantitytemp' in request.session:
             session_quantity_data = request.session['openingquantitytemp']
             loaded_data = json.loads(session_quantity_data)
@@ -860,7 +860,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                         form.save()
 
         else:
-
+            # change or remove this part
             total_forms = int(request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS'))
             all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
             
