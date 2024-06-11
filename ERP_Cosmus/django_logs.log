@@ -1,0 +1,8 @@
+
+2024-06-11 04:40:32 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24085
+2024-06-11 04:40:37 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58349
+2024-06-11 04:40:38 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 04:40:38 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30575
+2024-06-11 04:42:42 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58349
+2024-06-11 04:42:42 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 04:42:42 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574

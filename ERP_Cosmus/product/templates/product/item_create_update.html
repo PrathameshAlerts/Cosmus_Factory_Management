@@ -676,14 +676,14 @@ $(document).on('click', '.product2Select',function(){
 });
 
 function receiveData(openingValue){
-     var totalForm = document.getElementById(id_shades-TOTAL_FORMS);
+     var totalForm = document.getElementById('id_shades-TOTAL_FORMS');
     console.log(totalForm)
       var popupData = openingValue;
       console.log(popupData)
-      // for(var i = 0 ; i<totalForm ; i++){
-        
-      // }
-      document.getElementById('shades-0-openingValue').value = popupData;
+      for(var i = 0 ; i<totalForm ; i++){
+        document.getElementById('shades-'+i+'-openingValue').value = popupData;
+      }
+      
      
     }
 </script>
