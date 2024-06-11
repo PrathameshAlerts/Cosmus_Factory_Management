@@ -1,5 +1,10 @@
 *.env
 /venv
+<<<<<<< HEAD
 /migrations
 *.log
 .django_logs.log
+=======
+/notes
+*.log
+>>>>>>> 2b9f7b68906acb344e10cfd36f9672dbb3550908

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 2024-06-10 12:03:58 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-10 12:04:08 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53755
@@ -3417,3 +3418,530 @@ Traceback (most recent call last):
 ValueError: invalid literal for int() with base 10: ''
 2024-06-11 02:56:43 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82984
 2024-06-11 02:56:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=31ffb2e120f64f03921a69885d36df56 HTTP/1.1" 200 9114
+=======
+2024-06-11 02:15:15 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:16:50 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:19:17 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30641
+2024-06-11 02:19:17 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-11 02:19:19 PM - django.server - INFO - "GET /gstdelete/219 HTTP/1.1" 302 0
+2024-06-11 02:19:19 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30524
+2024-06-11 02:19:21 PM - django.server - INFO - "GET /gstdelete/218 HTTP/1.1" 302 0
+2024-06-11 02:19:21 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-11 02:19:24 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 02:19:25 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55147
+2024-06-11 02:19:25 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 02:19:25 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 02:19:30 PM - django.server - INFO - "GET /fabric_popup/ HTTP/1.1" 200 17051
+2024-06-11 02:19:35 PM - django.server - INFO - "POST /fabric_popup/ HTTP/1.1" 200 996
+2024-06-11 02:19:47 PM - django.server - INFO - "GET /color_popup/ HTTP/1.1" 200 17296
+2024-06-11 02:19:52 PM - django.server - INFO - "POST /color_popup/ HTTP/1.1" 200 590
+2024-06-11 02:19:57 PM - django.server - INFO - "GET /packagingpop/ HTTP/1.1" 200 17355
+2024-06-11 02:20:03 PM - django.server - INFO - "POST /packagingpop/ HTTP/1.1" 200 231
+2024-06-11 02:20:09 PM - django.server - INFO - "GET /units_popup/ HTTP/1.1" 200 17316
+2024-06-11 02:20:14 PM - django.server - INFO - "POST /units_popup/ HTTP/1.1" 200 127
+2024-06-11 02:20:17 PM - django.server - INFO - "GET /fabricfinishespopup/ HTTP/1.1" 200 17376
+2024-06-11 02:20:22 PM - django.server - INFO - "POST /fabricfinishespopup/ HTTP/1.1" 200 550
+2024-06-11 02:20:27 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17280
+2024-06-11 02:20:32 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 121
+2024-06-11 02:20:38 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=zip HTTP/1.1" 200 241
+2024-06-11 02:20:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9f8d3494451c4a54a660137b829e4c7a HTTP/1.1" 200 9080
+2024-06-11 02:20:39 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=zip HTTP/1.1" 200 241
+2024-06-11 02:20:39 PM - django.server - INFO - "GET /itemdynamicsearchajax/?nameValue=ZIP8%20H%20MELANGE%20D.GREY HTTP/1.1" 200 104
+2024-06-11 02:20:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c196573a903744308d8d0b7ea8a45814 HTTP/1.1" 200 9080
+2024-06-11 02:20:39 PM - django.server - INFO - "GET /itemcreatecloneajax/?itemValue=15 HTTP/1.1" 200 477
+2024-06-11 02:20:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=cc1b6043e8d447c78cc3d94354d03a7d HTTP/1.1" 200 9073
+2024-06-11 02:24:41 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58483
+2024-06-11 02:25:31 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 02:25:32 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:33:10 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:37:29 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:37:29 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1b52b93d45db4176a829eeca30378822 HTTP/1.1" 200 9115
+2024-06-11 02:37:30 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23462
+2024-06-11 02:37:34 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 23462
+2024-06-11 02:49:34 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=43 HTTP/1.1" 200 46
+2024-06-11 02:49:34 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2e8d83d13f00477ba3c5c2bb8ead4f93 HTTP/1.1" 200 9116
+2024-06-11 02:49:34 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 26859
+2024-06-11 02:56:54 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 02:56:55 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 02:56:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:56:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:57:00 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:57:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=518448d664e943848f990d2f6bc2401a HTTP/1.1" 200 9115
+2024-06-11 02:57:01 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23462
+>>>>>>> 2b9f7b68906acb344e10cfd36f9672dbb3550908
+2024-06-11 02:59:00 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 02:59:02 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58217
+2024-06-11 02:59:05 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58217
+2024-06-11 02:59:07 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:59:07 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:59:07 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82803
+2024-06-11 02:59:08 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f3f32cc3e6f8454fbab62006f85e43b1 HTTP/1.1" 200 9114
+2024-06-11 02:59:11 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:59:11 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82778
+2024-06-11 02:59:16 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 02:59:21 PM - django.server - INFO - "GET /itemedit/33 HTTP/1.1" 200 58372
+2024-06-11 02:59:21 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_eccZtwi.jpg
+2024-06-11 02:59:21 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_eccZtwi.jpg HTTP/1.1" 404 30574
+2024-06-11 02:59:23 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 02:59:23 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 02:59:23 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82803
+2024-06-11 02:59:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=988acb42ad6a49b0893a5fbad787c7f4 HTTP/1.1" 200 9114
+2024-06-11 03:00:21 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:00:22 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:00:22 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82803
+2024-06-11 03:00:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4cdfa78b2bca42ea9afc9947ef0ae469 HTTP/1.1" 200 9115
+2024-06-11 03:00:46 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:00:46 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82778
+2024-06-11 03:02:56 PM - django.server - INFO - "GET / HTTP/1.1" 200 30094
+2024-06-11 03:02:56 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 03:02:56 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 03:02:56 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 03:02:56 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 03:02:56 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 03:02:56 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 03:02:56 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 03:02:57 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 03:02:57 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 03:02:57 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 03:03:00 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-11 03:03:07 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84608
+2024-06-11 03:03:07 PM - django.server - INFO - "GET /static/images/Amazon%2001.png HTTP/1.1" 200 87467
+2024-06-11 03:03:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-11 03:03:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30555
+2024-06-11 03:03:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-11 03:03:07 PM - django.server - INFO - "GET /static/images/FLIPKART%2001.png HTTP/1.1" 200 138362
+2024-06-11 03:03:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30545
+2024-06-11 03:03:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-11 03:03:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30555
+2024-06-11 03:03:07 PM - django.server - INFO - "GET /static/images/Cosmus.png HTTP/1.1" 200 36950
+2024-06-11 03:03:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-11 03:03:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30555
+2024-06-11 03:03:07 PM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 200 15175
+2024-06-11 03:03:07 PM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 200 15027
+2024-06-11 03:03:07 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-11 03:03:07 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30560
+2024-06-11 03:03:09 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 03:03:12 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58217
+2024-06-11 03:03:14 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:03:14 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23631
+2024-06-11 03:03:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=84b32864d3e04ad1904423e9509c8aae HTTP/1.1" 200 9113
+2024-06-11 03:03:17 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=43 HTTP/1.1" 200 46
+2024-06-11 03:03:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3a546e13ea6a401e965ce862fa6c2188 HTTP/1.1" 200 9115
+2024-06-11 03:03:17 PM - django.server - INFO - "GET /openinggodownquantitypk/43/0 HTTP/1.1" 200 34725
+2024-06-11 03:03:25 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:03:25 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:03:25 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82803
+2024-06-11 03:03:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=52b600c3d6f14e66abf6c6f7f420448f HTTP/1.1" 200 9115
+2024-06-11 03:04:07 PM - django.request - WARNING - Not Found: /itemedit/testsession/
+2024-06-11 03:04:07 PM - django.server - WARNING - "GET /itemedit/testsession/ HTTP/1.1" 404 30216
+2024-06-11 03:05:00 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:05:00 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23630
+2024-06-11 03:05:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1e84a57be6ff43f5bb5d1a411135b10f HTTP/1.1" 200 9114
+2024-06-11 03:05:07 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 23630
+2024-06-11 03:06:27 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23654
+2024-06-11 03:06:32 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 23654
+2024-06-11 03:07:06 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23654
+2024-06-11 03:07:20 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58223
+2024-06-11 03:07:22 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58223
+2024-06-11 03:07:24 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:07:24 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23653
+2024-06-11 03:07:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3356b46bc43745559a649a92f0f7cf52 HTTP/1.1" 200 9115
+2024-06-11 03:08:14 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:08:15 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23657
+2024-06-11 03:08:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6bd3dd56468141d9a88bfdd5655eb545 HTTP/1.1" 200 9115
+2024-06-11 03:09:18 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23634
+2024-06-11 03:11:18 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 23634
+2024-06-11 03:16:50 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 03:16:51 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 03:17:10 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:17:10 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 83753
+2024-06-11 03:17:37 PM - django.server - INFO - "GET / HTTP/1.1" 200 30094
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 03:17:37 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 03:17:40 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 03:17:45 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58222
+2024-06-11 03:17:47 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:17:47 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23680
+2024-06-11 03:17:47 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e8c96ffadb0e4e5aa7526268ef393973 HTTP/1.1" 200 9113
+2024-06-11 03:20:44 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:20:44 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23816
+2024-06-11 03:20:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bb8d4c9215e649c79dfd26a377dc539a HTTP/1.1" 200 9114
+2024-06-11 03:21:05 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 23815
+2024-06-11 03:28:52 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24141
+2024-06-11 03:30:14 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24098
+2024-06-11 03:30:33 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 24098
+2024-06-11 03:31:19 PM - django.server - INFO - "GET /itemedit/41 HTTP/1.1" 200 58223
+2024-06-11 03:31:21 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:31:21 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:31:21 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 83422
+2024-06-11 03:31:21 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=127d7c82b5e44d1697407f2afa818323 HTTP/1.1" 200 9114
+2024-06-11 03:31:23 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:31:24 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 83397
+2024-06-11 03:31:40 PM - django.server - INFO - "GET / HTTP/1.1" 200 30091
+2024-06-11 03:31:45 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119904
+2024-06-11 03:31:49 PM - django.server - INFO - "GET /itemedit/12 HTTP/1.1" 200 58377
+2024-06-11 03:31:49 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/Black_2KB_RapUOJm.jpg
+2024-06-11 03:31:49 PM - django.server - WARNING - "GET /Media/rawmaterial/images/Black_2KB_RapUOJm.jpg HTTP/1.1" 404 30565
+2024-06-11 03:31:51 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:31:51 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:31:51 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 83422
+2024-06-11 03:31:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5f3f6cab89f44495940eb574623634ef HTTP/1.1" 200 9115
+2024-06-11 03:32:05 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:32:06 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 83260
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /admin/ HTTP/1.1" 200 20957
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2694
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/css/base.css HTTP/1.1" 200 21207
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2929
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/css/responsive.css HTTP/1.1" 200 18533
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+2024-06-11 03:32:46 PM - django.server - INFO - "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+2024-06-11 03:32:56 PM - django.server - INFO - "GET /product2item/1036 HTTP/1.1" 200 78837
+2024-06-11 03:33:02 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16984
+2024-06-11 03:33:14 PM - django.server - INFO - "GET / HTTP/1.1" 200 30094
+2024-06-11 03:33:17 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-11 03:33:21 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58354
+2024-06-11 03:33:22 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:33:22 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30575
+2024-06-11 03:33:23 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:33:23 PM - django.request - ERROR - Internal Server Error: /openinggodownquantity/1
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 840, in openingquantityformsetpopup
+    "opening_godown_id": int(value['gid']),
+                         ^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+2024-06-11 03:33:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9645826055484f6587632bb75b323f11 HTTP/1.1" 200 9115
+2024-06-11 03:33:23 PM - django.server - ERROR - "GET /openinggodownquantity/1 HTTP/1.1" 500 82803
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 03:33:41 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:33:41 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 03:33:41 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 03:33:46 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 03:33:49 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:33:49 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 03:33:49 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 03:33:50 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:33:50 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23953
+2024-06-11 03:33:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f2ed1bad16a34db4a1e3bc8766a14ea1 HTTP/1.1" 200 9113
+2024-06-11 03:35:26 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23894
+2024-06-11 03:37:29 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23978
+2024-06-11 03:38:01 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23990
+2024-06-11 03:38:45 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23989
+2024-06-11 03:39:29 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:39:29 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:39:29 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:39:31 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:39:31 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23968
+2024-06-11 03:39:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7634dd80d02b4ca583a0b8141de3235b HTTP/1.1" 200 9113
+2024-06-11 03:44:28 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58362
+2024-06-11 03:44:28 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:44:28 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:44:29 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:44:29 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23854
+2024-06-11 03:44:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ec38bba87205444f8bea15a71692dfa1 HTTP/1.1" 200 9113
+2024-06-11 03:44:44 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:44:44 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:44:44 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:44:46 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:44:46 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23854
+2024-06-11 03:44:46 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b3519f06412843a2bd53890098b42ee3 HTTP/1.1" 200 9113
+2024-06-11 03:44:59 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:45:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=37b5fd4729a44d5cb6619c78dc856034 HTTP/1.1" 200 9113
+2024-06-11 03:45:00 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23855
+2024-06-11 03:45:49 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:45:49 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:45:49 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:45:49 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:45:50 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23864
+2024-06-11 03:45:50 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8358836cba31423283b09d0bda42d8fa HTTP/1.1" 200 9113
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 03:46:20 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:46:20 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 03:46:20 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 03:46:22 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:46:22 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 03:46:22 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 03:46:22 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 03:46:22 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 03:46:22 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 03:46:23 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:46:23 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23864
+2024-06-11 03:46:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5d6b773a362241609f39c124b834f940 HTTP/1.1" 200 9114
+2024-06-11 03:48:57 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58354
+2024-06-11 03:48:57 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:48:57 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:48:58 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:48:59 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23877
+2024-06-11 03:48:59 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7eb07dcc0c2142998ef5ac42bdb231b3 HTTP/1.1" 200 9113
+2024-06-11 03:49:42 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:49:42 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:49:42 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:49:44 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:49:44 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23880
+2024-06-11 03:49:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6cff76558c19495cb80ba545204fb8aa HTTP/1.1" 200 9113
+2024-06-11 03:52:11 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:52:11 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:52:11 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:52:13 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:52:13 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23924
+2024-06-11 03:52:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=925cefbd47bf41529938ea1c9d3fecd6 HTTP/1.1" 200 9113
+2024-06-11 03:52:29 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 03:52:29 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 03:52:29 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 03:52:30 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 03:52:30 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 23926
+2024-06-11 03:52:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a99bfaa720c5419697e68cefc13a860c HTTP/1.1" 200 9113
+2024-06-11 03:55:45 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=40 HTTP/1.1" 200 46
+2024-06-11 03:55:45 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 23815
+2024-06-11 03:55:45 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=dab9a623bb4b4858aa276e382bfd4115 HTTP/1.1" 200 9115
+2024-06-11 03:57:25 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-11 03:57:26 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-11 04:04:50 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 23994
+2024-06-11 04:05:03 PM - django.server - INFO - "POST /openinggodownquantitypk/40/0 HTTP/1.1" 200 24036
+2024-06-11 04:06:09 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 26095
+2024-06-11 04:07:02 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 26097
+2024-06-11 04:07:20 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 04:07:20 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24075
+2024-06-11 04:07:20 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ebe8c0121d0f43dcaa8ca65f1ebd9822 HTTP/1.1" 200 9113
+2024-06-11 04:07:32 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 04:07:32 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24075
+2024-06-11 04:07:32 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=70d4bd2dc52d427fb96d054f03789009 HTTP/1.1" 200 9113
+2024-06-11 04:08:01 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 04:08:02 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 04:08:02 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 04:08:03 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=40 HTTP/1.1" 200 46
+2024-06-11 04:08:03 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 26118
+2024-06-11 04:08:03 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b8b01c8311ca4a698eb4db0da9d49f8c HTTP/1.1" 200 9115
+2024-06-11 04:08:24 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 04:08:24 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24097
+2024-06-11 04:08:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=3f3b1196f6cd4245ad634a1a384d5ed0 HTTP/1.1" 200 9113
+2024-06-11 04:08:58 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24091
+2024-06-11 04:09:04 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 24091
+2024-06-11 04:09:23 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 04:09:24 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24095
+2024-06-11 04:09:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7ec75ba6fd9e480a8e3e92d884b6f46c HTTP/1.1" 200 9115
+2024-06-11 04:09:29 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 24095
+2024-06-11 04:09:38 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24092
+2024-06-11 04:09:43 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 24092
+2024-06-11 04:09:51 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=40 HTTP/1.1" 200 46
+2024-06-11 04:09:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b7c5f517aafc430391cab2e915c152f8 HTTP/1.1" 200 9117
+2024-06-11 04:09:52 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 26110
+2024-06-11 04:09:57 PM - django.server - INFO - "POST /openinggodownquantitypk/40/0 HTTP/1.1" 200 26156
+2024-06-11 04:10:00 PM - django.server - INFO - "POST /openinggodownquantitypk/40/0 HTTP/1.1" 200 26157
+2024-06-11 04:10:29 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 30150
+2024-06-11 04:10:43 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58354
+2024-06-11 04:10:43 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 04:10:43 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30575
+2024-06-11 04:10:45 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=40 HTTP/1.1" 200 46
+2024-06-11 04:10:45 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9b30832e4ea34d81816f2351b0db6181 HTTP/1.1" 200 9116
+2024-06-11 04:10:46 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 30150
+2024-06-11 04:10:52 PM - django.server - INFO - "POST /openinggodownquantitypk/40/0 HTTP/1.1" 200 30195
+2024-06-11 04:11:10 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 32147
+2024-06-11 04:11:20 PM - django.server - INFO - "POST /openinggodownquantitypk/40/0 HTTP/1.1" 200 32194
+2024-06-11 04:11:26 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 04:11:26 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 04:11:26 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 04:11:26 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 04:11:26 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 04:11:26 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 04:11:27 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 04:11:27 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 04:11:27 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 04:11:27 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30575
+2024-06-11 04:11:27 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 04:11:27 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 04:11:27 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /itemedit/38 HTTP/1.1" 200 58353
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 04:11:37 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg
+2024-06-11 04:11:37 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_kAYSp3O.jpg HTTP/1.1" 404 30574
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 04:11:37 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 04:11:39 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id= HTTP/1.1" 200 41
+2024-06-11 04:11:39 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24071
+2024-06-11 04:11:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bd1c9fa77e9e40d6b03c0a601e65170c HTTP/1.1" 200 9114
+2024-06-11 04:11:47 PM - django.server - INFO - "POST /openinggodownquantity/1 HTTP/1.1" 200 24071
+2024-06-11 04:13:13 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24071
+2024-06-11 04:13:51 PM - django.server - INFO - "GET /openinggodownquantity/1 HTTP/1.1" 200 24073
+2024-06-11 04:14:00 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 50638)
+2024-06-11 04:14:05 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=0&primary_key_id=40 HTTP/1.1" 200 46
+2024-06-11 04:14:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5a1b9ce74d0a4bbeba8d14003e8669cd HTTP/1.1" 200 9117
+2024-06-11 04:14:05 PM - django.server - INFO - "GET /openinggodownquantitypk/40/0 HTTP/1.1" 200 34169

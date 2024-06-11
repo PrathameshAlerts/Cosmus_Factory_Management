@@ -1,19 +1,6 @@
-2024-06-11 11:14:44 AM - product_views - INFO - searched keyword via itemdynamicsearchajax afb
-2024-06-11 11:15:45 AM - product_views - INFO - searched keyword via itemdynamicsearchajax mfs
-2024-06-11 11:15:48 AM - product_views - INFO - searched keyword via itemdynamicsearchajax mfd
-2024-06-11 12:37:13 PM - product_views - INFO - searched keyword via itemdynamicsearchajax mel
-2024-06-11 12:37:13 PM - product_views - INFO - searched result via itemdynamicsearchajax {5: 'MELANGE (CTC) BLGS MAROON', 2: 'MELANGE (CTC) BLGS L.GREY', 3: 'MELANGE (CTC) BLGS NAVY', 4: 'MELANGE (CTC) BLGS T.GREEN', 1: 'MELANGE (CTC) BLGS D.GREY', 16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 19: 'ZIP8 H MELANGE MAROON', 15: 'ZIP8 H MELANGE D.GREY', 43: 'MELANGE (ctc) BLGS YELLOW'}
-2024-06-11 12:37:13 PM - product_views - INFO - searched keyword via itemdynamicsearchajax mela
-2024-06-11 12:37:13 PM - product_views - INFO - searched result via itemdynamicsearchajax {5: 'MELANGE (CTC) BLGS MAROON', 2: 'MELANGE (CTC) BLGS L.GREY', 3: 'MELANGE (CTC) BLGS NAVY', 4: 'MELANGE (CTC) BLGS T.GREEN', 1: 'MELANGE (CTC) BLGS D.GREY', 16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 19: 'ZIP8 H MELANGE MAROON', 15: 'ZIP8 H MELANGE D.GREY', 43: 'MELANGE (ctc) BLGS YELLOW'}
-2024-06-11 12:37:14 PM - product_views - INFO - searched keyword via itemdynamicsearchajax mela
-2024-06-11 12:37:14 PM - product_views - INFO - searched result via itemdynamicsearchajax {5: 'MELANGE (CTC) BLGS MAROON', 2: 'MELANGE (CTC) BLGS L.GREY', 3: 'MELANGE (CTC) BLGS NAVY', 4: 'MELANGE (CTC) BLGS T.GREEN', 1: 'MELANGE (CTC) BLGS D.GREY', 16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 19: 'ZIP8 H MELANGE MAROON', 15: 'ZIP8 H MELANGE D.GREY', 43: 'MELANGE (ctc) BLGS YELLOW'}
-2024-06-11 12:37:14 PM - product_views - INFO - searched keyword via itemdynamicsearchajax mela
-2024-06-11 12:37:14 PM - product_views - INFO - searched result via itemdynamicsearchajax {5: 'MELANGE (CTC) BLGS MAROON', 2: 'MELANGE (CTC) BLGS L.GREY', 3: 'MELANGE (CTC) BLGS NAVY', 4: 'MELANGE (CTC) BLGS T.GREEN', 1: 'MELANGE (CTC) BLGS D.GREY', 16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 19: 'ZIP8 H MELANGE MAROON', 15: 'ZIP8 H MELANGE D.GREY', 43: 'MELANGE (ctc) BLGS YELLOW'}
-2024-06-11 12:37:15 PM - product_views - INFO - searched keyword via itemdynamicsearchajax mela
-2024-06-11 12:37:15 PM - product_views - INFO - searched result via itemdynamicsearchajax {5: 'MELANGE (CTC) BLGS MAROON', 2: 'MELANGE (CTC) BLGS L.GREY', 3: 'MELANGE (CTC) BLGS NAVY', 4: 'MELANGE (CTC) BLGS T.GREEN', 1: 'MELANGE (CTC) BLGS D.GREY', 16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 19: 'ZIP8 H MELANGE MAROON', 15: 'ZIP8 H MELANGE D.GREY', 43: 'MELANGE (ctc) BLGS YELLOW'}
-2024-06-11 12:37:15 PM - product_views - INFO - searched keyword via itemdynamicsearchajax mela
-2024-06-11 12:37:15 PM - product_views - INFO - searched result via itemdynamicsearchajax {5: 'MELANGE (CTC) BLGS MAROON', 2: 'MELANGE (CTC) BLGS L.GREY', 3: 'MELANGE (CTC) BLGS NAVY', 4: 'MELANGE (CTC) BLGS T.GREEN', 1: 'MELANGE (CTC) BLGS D.GREY', 16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 19: 'ZIP8 H MELANGE MAROON', 15: 'ZIP8 H MELANGE D.GREY', 43: 'MELANGE (ctc) BLGS YELLOW'}
-2024-06-11 12:37:15 PM - product_views - INFO - searched keyword via itemdynamicsearchajax MELANGE (CTC) BLGS T.GREEN
-2024-06-11 12:37:15 PM - product_views - INFO - searched result via itemdynamicsearchajax {4: 'MELANGE (CTC) BLGS T.GREEN'}
-2024-06-11 12:37:56 PM - product_signals - INFO - Item Shade of color- greeenyellowb -created
-2024-06-11 12:37:56 PM - product_views - INFO - Item Successfully Created
+2024-06-11 02:20:38 PM - product_views - INFO - searched keyword via itemdynamicsearchajax zip
+2024-06-11 02:20:38 PM - product_views - INFO - searched result via itemdynamicsearchajax {16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 18: 'ZIP8 H T.GREEN DMD', 19: 'ZIP8 H MELANGE MAROON', 20: 'ZIP5 H BK', 15: 'ZIP8 H MELANGE D.GREY', 45: 'ziptest'}
+2024-06-11 02:20:39 PM - product_views - INFO - searched keyword via itemdynamicsearchajax zip
+2024-06-11 02:20:39 PM - product_views - INFO - searched result via itemdynamicsearchajax {16: 'ZIP8 H MELANGE L.GREY', 17: 'ZIP8 H MELANGE NAVY', 18: 'ZIP8 H T.GREEN DMD', 19: 'ZIP8 H MELANGE MAROON', 20: 'ZIP5 H BK', 15: 'ZIP8 H MELANGE D.GREY', 45: 'ziptest'}
+2024-06-11 02:20:39 PM - product_views - INFO - searched keyword via itemdynamicsearchajax ZIP8 H MELANGE D.GREY
+2024-06-11 02:20:39 PM - product_views - INFO - searched result via itemdynamicsearchajax {15: 'ZIP8 H MELANGE D.GREY'}
