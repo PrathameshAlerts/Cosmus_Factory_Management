@@ -122,3 +122,708 @@ TypeError: Object of type QuerySet is not JSON serializable
 2024-06-10 12:25:17 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 284
 2024-06-10 12:25:51 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-10 12:25:52 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:39:47 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:39:48 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16242
+2024-06-10 12:39:48 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 12:39:48 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54488
+2024-06-10 12:39:49 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 12:39:49 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 12:42:11 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 528
+2024-06-10 12:42:32 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:42:33 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:46:26 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16242
+2024-06-10 12:46:28 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 564
+2024-06-10 12:47:01 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:47:02 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:51:45 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:51:46 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:52:56 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 12:52:57 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 02:22:48 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54375
+2024-06-10 02:22:48 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 02:22:49 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:22:49 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:22:52 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17393
+2024-06-10 02:23:00 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17689
+2024-06-10 02:23:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=50f1101e81554c578b64b4d479877631 HTTP/1.1" 200 9093
+2024-06-10 02:23:59 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17972
+2024-06-10 02:23:59 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e8ade9d20b004a27b50d8b18968f12a2 HTTP/1.1" 200 9093
+2024-06-10 02:25:16 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54268
+2024-06-10 02:25:16 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:25:16 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:25:24 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54319
+2024-06-10 02:25:24 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:25:24 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:25:26 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2180, in gst_create_update
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 64: 'endblock'. Did you forget to register or load this tag?
+2024-06-10 02:25:26 PM - django.server - ERROR - "GET /gstpopup/ HTTP/1.1" 500 171211
+2024-06-10 02:25:37 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17392
+2024-06-10 02:25:39 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17689
+2024-06-10 02:25:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8b274c504c8c473a8c733df020cfcef7 HTTP/1.1" 200 9093
+2024-06-10 02:31:11 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30265
+2024-06-10 02:31:16 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-10 02:31:18 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 02:31:20 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53759
+2024-06-10 02:31:20 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:31:20 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:31:23 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2180, in gst_create_update
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'your_view_url_name' not found. 'your_view_url_name' is not a valid view function or pattern name.
+2024-06-10 02:31:23 PM - django.server - ERROR - "GET /gstpopup/ HTTP/1.1" 500 180320
+2024-06-10 02:31:49 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16610
+2024-06-10 02:31:56 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16905
+2024-06-10 02:31:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=665e2c8810544359b54043223dacfb35 HTTP/1.1" 200 9093
+2024-06-10 02:32:35 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16570
+2024-06-10 02:32:58 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16865
+2024-06-10 02:32:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a08e6c228dbd494982dd35d7cd538a87 HTTP/1.1" 200 9093
+2024-06-10 02:34:45 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16572
+2024-06-10 02:34:51 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17149
+2024-06-10 02:34:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5b50942be91240f1acd0538e18db3388 HTTP/1.1" 200 9093
+2024-06-10 02:36:14 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16572
+2024-06-10 02:36:18 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 261
+2024-06-10 02:37:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16865
+2024-06-10 02:37:29 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 298
+2024-06-10 02:42:16 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54562
+2024-06-10 02:42:16 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:42:16 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:42:20 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16607
+2024-06-10 02:42:22 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 335
+2024-06-10 02:43:57 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16883
+2024-06-10 02:44:00 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 372
+2024-06-10 02:51:05 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16898
+2024-06-10 02:51:06 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 02:51:10 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 482
+2024-06-10 03:01:49 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2180, in gst_create_update
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'your_view_url_name' not found. 'your_view_url_name' is not a valid view function or pattern name.
+2024-06-10 03:01:49 PM - django.server - ERROR - "GET /gstpopup/ HTTP/1.1" 500 187062
+2024-06-10 03:02:26 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17922
+2024-06-10 03:02:28 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 626
+2024-06-10 03:04:06 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36330
+2024-06-10 03:04:09 PM - django.server - INFO - "GET /gstdelete/49 HTTP/1.1" 302 0
+2024-06-10 03:04:09 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35954
+2024-06-10 03:04:11 PM - django.server - INFO - "GET /gstdelete/40 HTTP/1.1" 302 0
+2024-06-10 03:04:11 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 57628)
+2024-06-10 03:04:11 PM - django.request - ERROR - Internal Server Error: /gstdelete/40
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2186, in gst_delete
+    gst_pk = gst.objects.get(pk=pk)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+product.models.gst.DoesNotExist: gst matching query does not exist.
+2024-06-10 03:04:11 PM - django.server - ERROR - "GET /gstdelete/40 HTTP/1.1" 500 88610
+2024-06-10 03:04:13 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35592
+2024-06-10 03:04:15 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35346
+2024-06-10 03:04:18 PM - django.server - INFO - "GET /gstdelete/52 HTTP/1.1" 302 0
+2024-06-10 03:04:18 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35228
+2024-06-10 03:04:19 PM - django.server - INFO - "GET /gstdelete/44 HTTP/1.1" 302 0
+2024-06-10 03:04:19 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34865
+2024-06-10 03:04:20 PM - django.server - INFO - "GET /gstdelete/46 HTTP/1.1" 302 0
+2024-06-10 03:04:20 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34499
+2024-06-10 03:04:21 PM - django.server - INFO - "GET /gstdelete/45 HTTP/1.1" 302 0
+2024-06-10 03:04:21 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34137
+2024-06-10 03:04:22 PM - django.server - INFO - "GET /gstdelete/43 HTTP/1.1" 302 0
+2024-06-10 03:04:22 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33773
+2024-06-10 03:04:23 PM - django.server - INFO - "GET /gstdelete/42 HTTP/1.1" 302 0
+2024-06-10 03:04:23 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33409
+2024-06-10 03:04:24 PM - django.server - INFO - "GET /gstdelete/47 HTTP/1.1" 302 0
+2024-06-10 03:04:24 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33047
+2024-06-10 03:04:25 PM - django.server - INFO - "GET /gstdelete/48 HTTP/1.1" 302 0
+2024-06-10 03:04:25 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32684
+2024-06-10 03:04:26 PM - django.server - INFO - "GET /gstdelete/50 HTTP/1.1" 302 0
+2024-06-10 03:04:26 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32320
+2024-06-10 03:04:27 PM - django.server - INFO - "GET /gstdelete/51 HTTP/1.1" 302 0
+2024-06-10 03:04:27 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31959
+2024-06-10 03:04:28 PM - django.server - INFO - "GET /gstdelete/41 HTTP/1.1" 302 0
+2024-06-10 03:04:28 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31596
+2024-06-10 03:04:29 PM - django.server - INFO - "GET /gstdelete/39 HTTP/1.1" 302 0
+2024-06-10 03:04:29 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31233
+2024-06-10 03:04:29 PM - django.server - INFO - "GET /gstdelete/38 HTTP/1.1" 302 0
+2024-06-10 03:04:30 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30872
+2024-06-10 03:04:30 PM - django.server - INFO - "GET /gstdelete/37 HTTP/1.1" 302 0
+2024-06-10 03:04:30 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30511
+2024-06-10 03:04:31 PM - django.server - INFO - "GET /gstdelete/36 HTTP/1.1" 302 0
+2024-06-10 03:04:31 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30149
+2024-06-10 03:04:41 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 03:04:42 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53850
+2024-06-10 03:04:42 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:04:42 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 03:04:44 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2180, in gst_create_update
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'your_view_url_name' not found. 'your_view_url_name' is not a valid view function or pattern name.
+2024-06-10 03:04:44 PM - django.server - ERROR - "GET /gstpopup/ HTTP/1.1" 500 178946
+2024-06-10 03:05:03 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17880
+2024-06-10 03:05:06 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18175
+2024-06-10 03:05:06 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=452aa6e0efae424b9c9e38f6f52c7483 HTTP/1.1" 200 9093
+2024-06-10 03:05:07 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18458
+2024-06-10 03:05:08 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c9a9a4c59c9f41fc8cfc6baae96b6056 HTTP/1.1" 200 9093
+2024-06-10 03:21:24 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:21:26 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:21:33 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18176
+2024-06-10 03:21:33 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7ed78477ca304abcb7ff8aee68b2e0c2 HTTP/1.1" 200 9093
+2024-06-10 03:21:34 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18459
+2024-06-10 03:21:34 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d055a18fa3104e6b8271c3a160a5e0e1 HTTP/1.1" 200 9093
+2024-06-10 03:22:20 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16075
+2024-06-10 03:22:20 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0048782de13345b1982dd07b9a467210 HTTP/1.1" 200 9093
+2024-06-10 03:22:22 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16358
+2024-06-10 03:22:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a7fd430115ba4273b3cfb074bd9cd0cc HTTP/1.1" 200 9093
+2024-06-10 03:22:41 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54151
+2024-06-10 03:22:41 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 03:22:42 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:22:42 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 03:22:43 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15780
+2024-06-10 03:22:47 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2176, in gst_create_update
+    return JsonResponse({"gst_updated": gst_updated})  # list converts the queryset to a list
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\http\response.py", line 731, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type QuerySet is not JSON serializable
+2024-06-10 03:22:47 PM - django.server - ERROR - "POST /gstpopup/ HTTP/1.1" 500 112338
+2024-06-10 03:23:20 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:23:21 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:23:27 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54462
+2024-06-10 03:23:27 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:23:27 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 03:24:04 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:24:05 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:24:07 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15780
+2024-06-10 03:24:10 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16366
+2024-06-10 03:24:15 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 372
+2024-06-10 03:30:20 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:30:21 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:30:28 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16072
+2024-06-10 03:30:31 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 480
+2024-06-10 03:33:36 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:33:52 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:34:39 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:34:41 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:34:47 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16072
+2024-06-10 03:34:50 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 623
+2024-06-10 03:35:13 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:35:15 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:35:54 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16072
+2024-06-10 03:35:57 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16358
+2024-06-10 03:35:59 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 659
+2024-06-10 03:43:00 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
+2024-06-10 03:43:01 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:43:29 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:43:36 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15783
+2024-06-10 03:43:36 PM - django.request - ERROR - Internal Server Error: /gstfront/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\requests\models.py", line 974, in json
+    return complexjson.loads(self.text, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 4 column 1 (char 3)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2190, in gst_front
+    gst_data = response.json()
+               ^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\requests\models.py", line 978, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 4 column 1 (char 3)
+2024-06-10 03:43:36 PM - django.server - ERROR - "GET /gstfront/ HTTP/1.1" 500 118793
+2024-06-10 03:45:49 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:45:50 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:45:52 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15783
+2024-06-10 03:45:52 PM - django.request - ERROR - Internal Server Error: /gstfront/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\requests\models.py", line 974, in json
+    return complexjson.loads(self.text, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 4 column 1 (char 3)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2191, in gst_front
+    gst_data = response.json()
+               ^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\requests\models.py", line 978, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 4 column 1 (char 3)
+2024-06-10 03:45:52 PM - django.server - ERROR - "GET /gstfront/ HTTP/1.1" 500 118949
+2024-06-10 03:46:13 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:46:14 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:46:16 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15783
+2024-06-10 03:46:16 PM - django.request - ERROR - Internal Server Error: /gstfront/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\requests\models.py", line 974, in json
+    return complexjson.loads(self.text, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\win 11\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 4 column 1 (char 3)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2189, in gst_front
+    print(response.json())
+          ^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\requests\models.py", line 978, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 4 column 1 (char 3)
+2024-06-10 03:46:16 PM - django.server - ERROR - "GET /gstfront/ HTTP/1.1" 500 118996
+2024-06-10 03:46:32 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:46:33 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:48:03 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:48:04 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:48:06 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:48:07 PM - django.request - ERROR - Internal Server Error: /gstfront/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view product.views.gst_front didn't return an HttpResponse object. It returned None instead.
+2024-06-10 03:48:07 PM - django.server - ERROR - "GET /gstfront/ HTTP/1.1" 500 80398
+2024-06-10 03:52:04 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55058
+2024-06-10 03:52:06 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54798
+2024-06-10 03:52:06 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 03:52:06 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:52:06 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30362
+2024-06-10 03:53:26 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:53:44 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:53:53 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:53:58 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:54:01 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:54:08 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54798
+2024-06-10 03:54:08 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:54:08 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30362
+2024-06-10 03:54:10 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:54:51 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:54:51 PM - django.request - ERROR - Internal Server Error: /gstfront/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view product.views.gst_front didn't return an HttpResponse object. It returned None instead.
+2024-06-10 03:54:51 PM - django.server - ERROR - "GET /gstfront/ HTTP/1.1" 500 80005
+2024-06-10 03:55:07 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 765
+2024-06-10 03:55:07 PM - django.request - ERROR - Internal Server Error: /gstfront/
+Traceback (most recent call last):
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view product.views.gst_front didn't return an HttpResponse object. It returned None instead.
+2024-06-10 03:55:07 PM - django.server - ERROR - "GET /gstfront/ HTTP/1.1" 500 80142
+2024-06-10 03:55:25 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\urls.py changed, reloading.
+2024-06-10 03:55:26 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:55:41 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:55:42 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:55:46 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:55:47 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:55:52 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 58635)
+2024-06-10 03:55:52 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 30063
+2024-06-10 05:00:40 PM - django.server - INFO - "GET /purchaseorderrawcreate/ HTTP/1.1" 200 30063
+2024-06-10 05:00:40 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 05:04:33 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 05:04:34 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54247
+2024-06-10 05:04:35 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 05:04:35 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 05:04:41 PM - django.server - INFO - "GET /purchasevoucherlist/ HTTP/1.1" 200 30836
+2024-06-10 05:05:01 PM - django.server - INFO - "GET /purchasevoucherupdate/5 HTTP/1.1" 200 82903
+2024-06-10 05:05:18 PM - django.server - INFO - "GET /purchasevoucherupdate/5 HTTP/1.1" 200 82903
+2024-06-10 05:05:22 PM - django.server - INFO - "GET /purchasevoucherupdate/5 HTTP/1.1" 200 82904
+2024-06-10 05:05:31 PM - django.server - INFO - "GET /definesubcategoryproduct/ HTTP/1.1" 200 35641
+2024-06-10 05:06:10 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-10 05:06:17 PM - django.server - INFO - "GET /editpproduct/1036 HTTP/1.1" 200 84217
+2024-06-10 05:06:17 PM - django.server - INFO - "GET /static/images/Amazon%2001.png HTTP/1.1" 200 87467
+2024-06-10 05:06:17 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051021036_Navy.jpg
+2024-06-10 05:06:17 PM - django.server - WARNING - "GET /Media/pproduct/images/40051021036_Navy.jpg HTTP/1.1" 404 30535
+2024-06-10 05:06:17 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051041036_L_Grey.jpg
+2024-06-10 05:06:17 PM - django.server - WARNING - "GET /Media/pproduct/images/40051041036_L_Grey.jpg HTTP/1.1" 404 30545
+2024-06-10 05:06:17 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051811036_Maroon.jpg
+2024-06-10 05:06:17 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051511036_T_Green.jpg
+2024-06-10 05:06:17 PM - django.server - WARNING - "GET /Media/pproduct/images/40051811036_Maroon.jpg HTTP/1.1" 404 30545
+2024-06-10 05:06:17 PM - django.server - WARNING - "GET /Media/pproduct/images/40051511036_T_Green.jpg HTTP/1.1" 404 30550
+2024-06-10 05:06:17 PM - django.request - WARNING - Not Found: /Media/pproduct/images/40051141036_D_Grey.jpg
+2024-06-10 05:06:17 PM - django.server - WARNING - "GET /Media/pproduct/images/40051141036_D_Grey.jpg HTTP/1.1" 404 30545
+2024-06-10 05:06:17 PM - django.server - INFO - "GET /static/images/file%20down.png HTTP/1.1" 200 15175
+2024-06-10 05:06:17 PM - django.server - INFO - "GET /static/images/file.png HTTP/1.1" 200 15027
+2024-06-10 05:06:17 PM - django.server - INFO - "GET /static/images/Cosmus.png HTTP/1.1" 200 36950
+2024-06-10 05:06:17 PM - django.server - INFO - "GET /static/images/FLIPKART%2001.png HTTP/1.1" 200 138362
+2024-06-10 05:16:22 PM - django.server - INFO - "GET /viewproduct2item_configs/40051511036 HTTP/1.1" 200 24880
+2024-06-10 05:16:22 PM - django.server - INFO - "GET /static/images/printer.png HTTP/1.1" 200 10365
+2024-06-10 05:18:55 PM - django.server - INFO - "GET /pproductlist/ HTTP/1.1" 200 47164
+2024-06-10 05:18:59 PM - django.server - INFO - "GET /editpproduct/324234 HTTP/1.1" 200 62687
+2024-06-10 05:19:03 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 05:19:13 PM - django.server - INFO - "GET /itemedit/15 HTTP/1.1" 200 58943
+2024-06-10 05:19:13 PM - django.server - INFO - "GET /Media/rawmaterial/images/download.jpg HTTP/1.1" 200 3766
+2024-06-10 05:19:13 PM - django.request - WARNING - Not Found: /Media/rawmaterial/images/A_Black_2KB_CZLfchz.jpg
+2024-06-10 05:19:13 PM - django.server - WARNING - "GET /Media/rawmaterial/images/A_Black_2KB_CZLfchz.jpg HTTP/1.1" 404 30565
+2024-06-10 05:19:20 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id=17 HTTP/1.1" 200 46
+2024-06-10 05:19:20 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e51237d9f4834cbe98769185976a3f4d HTTP/1.1" 200 9116
+2024-06-10 05:19:20 PM - django.server - INFO - "GET /openinggodownquantitypk/17/1 HTTP/1.1" 200 23467
+2024-06-10 05:54:34 PM - django.server - INFO - "GET /openinggodownquantityajax/?itemValue=1&primary_key_id=17 HTTP/1.1" 200 46
+2024-06-10 05:54:35 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9a542ed02078447fac390048ba979c48 HTTP/1.1" 200 9116
+2024-06-10 05:54:35 PM - django.server - INFO - "GET /openinggodownquantitypk/17/1 HTTP/1.1" 200 23467
+2024-06-10 05:54:35 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 06:03:39 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 06:03:40 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 06:03:56 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54000
+2024-06-10 06:03:56 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:03:56 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:04:00 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15780
+2024-06-10 06:04:03 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 91
+2024-06-10 06:04:28 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 06:04:30 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 06:04:39 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 06:04:40 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 06:04:43 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 06:04:44 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 06:11:07 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 06:11:08 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 06:18:31 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 06:18:33 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader

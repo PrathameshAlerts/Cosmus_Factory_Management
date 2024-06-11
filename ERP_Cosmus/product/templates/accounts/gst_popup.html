@@ -2,17 +2,13 @@
 {% load static %} 
 {% block body %}
 
-<form  action="" method="POST" >
+<form id="gstForm" method="POST">
     {% csrf_token %}
-    <h2 class="mb-3 mt-3">GST</h2>
- <div class="d-flex my-4">
-     <label for="id_gst_percentage" class="item-form px-2">Gst percentage :</label>
-     <input type="number" name="gst_percentage" class="item-select" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}">    
- </div>
-
- <input type="submit" class="create-btn mt-4" name="save" value="Save">
-
+    <label for="gst_percentage">GST Percentage:</label>
+    <input type="text" id="gst_percentage" name="gst_percentage">
+    <button type="submit" name="save">Save</button>
 </form>
+
 
 
 

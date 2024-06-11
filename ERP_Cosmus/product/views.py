@@ -3,6 +3,7 @@ from sys import exception
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
+import requests
 from django.contrib.auth.models import auth 
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
@@ -2154,7 +2155,7 @@ def gst_create_update(request, pk = None):
 
     elif request.path == f'/gstupdate/{pk}':
         template_name = 'accounts/gst_create_update.html'
-
+ 
 
     form = gst_form(instance = instance)
     if request.method == 'POST':
@@ -2170,13 +2171,16 @@ def gst_create_update(request, pk = None):
                 return redirect('gst-create-list')
 
             elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
-                # return HttpResponse('<script>window.close();</script>')
-                gst_updated = gst.objects.all().values('id', 'gst_percentage')
-                return JsonResponse({"gst_updated": list(gst_updated)})
+                
+                gst_updated = gst.objects.all().values('id', 'gst_percentage')  # all id and gst_percentage 
+                
+                return JsonResponse({"gst_updated": list(gst_updated)})  # list converts the queryset to a list
         else:
             messages.success(request,'An error occured.')
 
-    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
+
+
 
 
 
