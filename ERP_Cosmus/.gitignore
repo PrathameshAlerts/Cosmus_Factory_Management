@@ -1,0 +1,6 @@
+*.env
+/venv
+/migrations
+product_logs.logs
+django_logs.log
+
