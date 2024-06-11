@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+
+2024-06-10 12:03:58 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:04:08 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 53755
+2024-06-10 12:04:08 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 12:04:08 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 12:04:09 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16479
+2024-06-10 12:04:15 PM - django.request - ERROR - Internal Server Error: /item_create_dropdown_refresh_ajax/
+=======
 2024-06-10 11:58:36 AM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-10 12:00:09 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-10 12:00:10 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
@@ -79,13 +88,26 @@
 2024-06-10 12:18:41 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
 2024-06-10 12:18:51 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15951
 2024-06-10 12:18:54 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+>>>>>>> 56f14b221c608930120767012198b7e4c5495df6
 Traceback (most recent call last):
-  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
     response = get_response(request)
                ^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Cosmus-projects\cosmus-factory-website\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
     response = wrapped_callback(request, *callback_args, **callback_kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<<<<<<< HEAD
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 924, in item_create_dropdown_refresh_ajax
+    return JsonResponse('test')
+           ^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\http\response.py", line 724, in __init__
+    raise TypeError(
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2024-06-10 12:04:15 PM - django.server - ERROR - "GET /item_create_dropdown_refresh_ajax/?gst_change=23 HTTP/1.1" 500 84938
+2024-06-10 12:04:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f9ecaea7a49c42b19a7aeececcc72ef0 HTTP/1.1" 200 9106
+2024-06-10 12:07:26 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16495
+2024-06-10 12:07:31 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 16616
+=======
   File "D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py", line 2175, in gst_create_update
     return JsonResponse({"gst_updated":gst_updated})
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -122,6 +144,7 @@ TypeError: Object of type QuerySet is not JSON serializable
 2024-06-10 12:25:17 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 284
 2024-06-10 12:25:51 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-10 12:25:52 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+<<<<<<< HEAD
 2024-06-10 12:39:47 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-10 12:39:48 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16242
 2024-06-10 12:39:48 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
@@ -827,3 +850,2030 @@ ValueError: The view product.views.gst_front didn't return an HttpResponse objec
 2024-06-10 06:11:08 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
 2024-06-10 06:18:31 PM - django.utils.autoreload - INFO - D:\Cosmus-projects\cosmus-factory-website\ERP_Cosmus\product\views.py changed, reloading.
 2024-06-10 06:18:33 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+=======
+>>>>>>> 56f14b221c608930120767012198b7e4c5495df6
+2024-06-10 12:32:36 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 12:32:40 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17441
+2024-06-10 12:32:44 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 317
+2024-06-10 12:33:13 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17733
+2024-06-10 12:33:39 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 352
+2024-06-10 12:34:34 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17727
+2024-06-10 12:35:32 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17435
+2024-06-10 12:35:41 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 18008
+2024-06-10 12:35:47 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 386
+2024-06-10 12:38:15 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17923
+2024-06-10 12:38:30 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 420
+2024-06-10 12:38:40 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17923
+2024-06-10 12:38:45 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 456
+2024-06-10 12:40:26 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17972
+2024-06-10 12:40:29 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 492
+2024-06-10 12:54:20 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17984
+2024-06-10 12:54:25 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17984
+2024-06-10 12:54:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f4f575cec9184c31bb206fb00ae833a8 HTTP/1.1" 200 9214
+2024-06-10 12:55:44 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 200 17704
+2024-06-10 12:56:13 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2179, in gst_create_update
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 484, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 482, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 699, in __init__
+    self.args_check(filter_name, filter_func, args)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 761, in args_check
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: default_if_none requires 2 arguments, 1 provided
+2024-06-10 12:56:13 PM - django.server - ERROR - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 500 202778
+2024-06-10 12:56:23 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2179, in gst_create_update
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 484, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 482, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 699, in __init__
+    self.args_check(filter_name, filter_func, args)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 761, in args_check
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: default_if_none requires 2 arguments, 1 provided
+2024-06-10 12:56:23 PM - django.server - ERROR - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 500 202788
+2024-06-10 12:56:30 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2179, in gst_create_update
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 484, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 482, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 699, in __init__
+    self.args_check(filter_name, filter_func, args)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 761, in args_check
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: default_if_none requires 2 arguments, 1 provided
+2024-06-10 12:56:30 PM - django.server - ERROR - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 500 202788
+2024-06-10 12:56:40 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2179, in gst_create_update
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 484, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 482, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 699, in __init__
+    self.args_check(filter_name, filter_func, args)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 761, in args_check
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: default_if_none requires 2 arguments, 1 provided
+2024-06-10 12:56:40 PM - django.server - ERROR - "GET /gstpopup/?csrfmiddlewaretoken=5AYi5eTcqtWvPIIUvxFl8c9Dal8upHwe6DPsDKiNFo3g4TvYejHn2YX3DvYPD13s&gst_percentage=29&save=Save HTTP/1.1" 500 202869
+2024-06-10 12:56:47 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2179, in gst_create_update
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 484, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 482, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 699, in __init__
+    self.args_check(filter_name, filter_func, args)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 761, in args_check
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: default_if_none requires 2 arguments, 1 provided
+2024-06-10 12:56:47 PM - django.server - ERROR - "GET /gstpopup/ HTTP/1.1" 500 201178
+2024-06-10 12:57:07 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54436
+2024-06-10 12:57:07 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 12:57:07 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 12:57:08 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2179, in gst_create_update
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 484, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 482, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 699, in __init__
+    self.args_check(filter_name, filter_func, args)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 761, in args_check
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: default_if_none requires 2 arguments, 1 provided
+2024-06-10 12:57:08 PM - django.server - ERROR - "GET /gstpopup/ HTTP/1.1" 500 200977
+2024-06-10 12:57:26 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17572
+2024-06-10 01:57:02 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18145
+2024-06-10 01:57:03 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5ae0b837ab144993b77f89a23a466760 HTTP/1.1" 200 9093
+2024-06-10 01:57:30 PM - django.request - ERROR - Internal Server Error: /gstpopup/
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2179, in gst_create_update
+    return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 484, in parse
+    raise self.error(token, e)
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 482, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\template\base.py", line 673, in __init__
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: Could not parse some characters: form.instance.gst_percentage| ||| 0
+2024-06-10 01:57:30 PM - django.server - ERROR - "GET /gstpopup/ HTTP/1.1" 500 194989
+2024-06-10 01:57:42 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17583
+2024-06-10 01:57:46 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17875
+2024-06-10 01:57:46 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4d1d74d67ca0422f82844642f6810519 HTTP/1.1" 200 9093
+2024-06-10 01:57:47 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18158
+2024-06-10 01:57:47 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=201feb221c9344a193a9db980d15d067 HTTP/1.1" 200 9093
+2024-06-10 01:57:55 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17583
+2024-06-10 01:57:59 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17583
+2024-06-10 01:58:03 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17877
+2024-06-10 01:58:03 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5c1d136ee86a4e9f9ef64e2aeeb92814 HTTP/1.1" 200 9093
+2024-06-10 01:58:35 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17570
+2024-06-10 01:58:38 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 711
+2024-06-10 02:04:00 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17455
+2024-06-10 02:04:10 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36415
+2024-06-10 02:04:14 PM - django.server - INFO - "GET /gstdelete/15 HTTP/1.1" 302 0
+2024-06-10 02:04:14 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36298
+2024-06-10 02:04:15 PM - django.server - INFO - "GET /gstdelete/5 HTTP/1.1" 302 0
+2024-06-10 02:04:15 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35938
+2024-06-10 02:04:16 PM - django.server - INFO - "GET /gstdelete/6 HTTP/1.1" 302 0
+2024-06-10 02:04:16 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35578
+2024-06-10 02:04:17 PM - django.server - INFO - "GET /gstdelete/7 HTTP/1.1" 302 0
+2024-06-10 02:04:17 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35218
+2024-06-10 02:04:18 PM - django.server - INFO - "GET /gstdelete/8 HTTP/1.1" 302 0
+2024-06-10 02:04:18 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34858
+2024-06-10 02:04:18 PM - django.server - INFO - "GET /gstdelete/9 HTTP/1.1" 302 0
+2024-06-10 02:04:18 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34499
+2024-06-10 02:04:19 PM - django.server - INFO - "GET /gstdelete/10 HTTP/1.1" 302 0
+2024-06-10 02:04:19 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34137
+2024-06-10 02:04:20 PM - django.server - INFO - "GET /gstdelete/11 HTTP/1.1" 302 0
+2024-06-10 02:04:20 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33776
+2024-06-10 02:04:21 PM - django.server - INFO - "GET /gstdelete/12 HTTP/1.1" 302 0
+2024-06-10 02:04:21 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33415
+2024-06-10 02:04:21 PM - django.server - INFO - "GET /gstdelete/13 HTTP/1.1" 302 0
+2024-06-10 02:04:22 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33052
+2024-06-10 02:04:22 PM - django.server - INFO - "GET /gstdelete/14 HTTP/1.1" 302 0
+2024-06-10 02:04:22 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32689
+2024-06-10 02:04:23 PM - django.server - INFO - "GET /gstdelete/16 HTTP/1.1" 302 0
+2024-06-10 02:04:23 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32327
+2024-06-10 02:04:23 PM - django.server - INFO - "GET /gstdelete/17 HTTP/1.1" 302 0
+2024-06-10 02:04:23 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31965
+2024-06-10 02:04:24 PM - django.server - INFO - "GET /gstdelete/18 HTTP/1.1" 302 0
+2024-06-10 02:04:24 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31603
+2024-06-10 02:04:25 PM - django.server - INFO - "GET /gstdelete/19 HTTP/1.1" 302 0
+2024-06-10 02:04:25 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31239
+2024-06-10 02:04:25 PM - django.server - INFO - "GET /gstdelete/20 HTTP/1.1" 302 0
+2024-06-10 02:04:25 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30876
+2024-06-10 02:04:27 PM - django.server - INFO - "GET /gstdelete/4 HTTP/1.1" 302 0
+2024-06-10 02:04:27 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30518
+2024-06-10 02:04:28 PM - django.server - INFO - "GET /gstdelete/3 HTTP/1.1" 302 0
+2024-06-10 02:04:29 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-10 02:04:36 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 02:04:37 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54059
+2024-06-10 02:04:37 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:04:37 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:04:40 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17162
+2024-06-10 02:04:42 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 117
+2024-06-10 02:05:55 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17455
+2024-06-10 02:06:00 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 153
+2024-06-10 02:06:09 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17455
+2024-06-10 02:06:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 189
+2024-06-10 02:06:35 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54473
+2024-06-10 02:06:35 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:06:35 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 02:08:17 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54213
+2024-06-10 02:08:18 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:08:18 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:08:22 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17174
+2024-06-10 02:08:25 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 225
+2024-06-10 02:09:44 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54523
+2024-06-10 02:09:44 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:09:44 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:09:49 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17096
+2024-06-10 02:09:53 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 263
+2024-06-10 02:10:16 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17388
+2024-06-10 02:11:33 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17096
+2024-06-10 02:11:39 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 301
+2024-06-10 02:13:31 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54656
+2024-06-10 02:13:31 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:13:31 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:15:05 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17095
+2024-06-10 02:15:38 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16998
+2024-06-10 02:15:42 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 340
+2024-06-10 02:20:21 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54709
+2024-06-10 02:20:21 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:20:21 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:20:29 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17150
+2024-06-10 02:20:33 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 377
+2024-06-10 02:21:29 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17442
+2024-06-10 02:23:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17173
+2024-06-10 02:23:32 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17466
+2024-06-10 02:23:53 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17172
+2024-06-10 02:24:09 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17172
+2024-06-10 02:24:43 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17173
+2024-06-10 02:25:02 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17465
+2024-06-10 02:25:12 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17748
+2024-06-10 02:25:19 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17466
+2024-06-10 02:25:24 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17749
+2024-06-10 02:25:32 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 562
+2024-06-10 02:25:53 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17324
+2024-06-10 02:25:58 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 636
+2024-06-10 02:26:06 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17324
+2024-06-10 02:26:13 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35366
+2024-06-10 02:26:16 PM - django.server - INFO - "GET /gstdelete/30 HTTP/1.1" 302 0
+2024-06-10 02:26:16 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35247
+2024-06-10 02:26:17 PM - django.server - INFO - "GET /gstdelete/22 HTTP/1.1" 302 0
+2024-06-10 02:26:17 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34885
+2024-06-10 02:26:17 PM - django.server - INFO - "GET /gstdelete/23 HTTP/1.1" 302 0
+2024-06-10 02:26:18 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34522
+2024-06-10 02:26:18 PM - django.server - INFO - "GET /gstdelete/24 HTTP/1.1" 302 0
+2024-06-10 02:26:18 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 49368)
+2024-06-10 02:26:18 PM - django.request - ERROR - Internal Server Error: /gstdelete/24
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2185, in gst_delete
+    gst_pk = gst.objects.get(pk=pk)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+product.models.gst.DoesNotExist: gst matching query does not exist.
+2024-06-10 02:26:18 PM - django.server - ERROR - "GET /gstdelete/24 HTTP/1.1" 500 88876
+2024-06-10 02:26:23 PM - django.server - INFO - "GET /gstdelete/28 HTTP/1.1" 302 0
+2024-06-10 02:26:23 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34041
+2024-06-10 02:26:24 PM - django.server - INFO - "GET /gstdelete/25 HTTP/1.1" 302 0
+2024-06-10 02:26:24 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33430
+2024-06-10 02:26:26 PM - django.server - INFO - "GET /gstdelete/29 HTTP/1.1" 302 0
+2024-06-10 02:26:26 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33065
+2024-06-10 02:26:27 PM - django.server - INFO - "GET /gstdelete/31 HTTP/1.1" 302 0
+2024-06-10 02:26:27 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32702
+2024-06-10 02:26:28 PM - django.server - INFO - "GET /gstdelete/32 HTTP/1.1" 302 0
+2024-06-10 02:26:28 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32339
+2024-06-10 02:26:29 PM - django.server - INFO - "GET /gstdelete/33 HTTP/1.1" 302 0
+2024-06-10 02:26:29 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31976
+2024-06-10 02:26:29 PM - django.server - INFO - "GET /gstdelete/34 HTTP/1.1" 302 0
+2024-06-10 02:26:30 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31612
+2024-06-10 02:26:30 PM - django.server - INFO - "GET /gstdelete/35 HTTP/1.1" 302 0
+2024-06-10 02:26:30 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31250
+2024-06-10 02:26:32 PM - django.server - INFO - "GET /gstdelete/27 HTTP/1.1" 302 0
+2024-06-10 02:26:32 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30885
+2024-06-10 02:26:33 PM - django.server - INFO - "GET /gstdelete/26 HTTP/1.1" 302 0
+2024-06-10 02:26:33 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30520
+2024-06-10 02:26:34 PM - django.server - INFO - "GET /gstdelete/21 HTTP/1.1" 302 0
+2024-06-10 02:26:34 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-10 02:26:40 PM - django.server - INFO - "GET /simple_colorcreate_update/ HTTP/1.1" 200 37921
+2024-06-10 02:26:42 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 02:26:44 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54094
+2024-06-10 02:26:44 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:26:44 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:26:50 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17032
+2024-06-10 02:30:30 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16842
+2024-06-10 02:30:33 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 119
+2024-06-10 02:31:17 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17139
+2024-06-10 02:31:19 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 154
+2024-06-10 02:47:23 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54755
+2024-06-10 02:47:23 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 02:47:23 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 02:47:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17037
+2024-06-10 02:47:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17329
+2024-06-10 02:47:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=a45415547c604f4bb39deacf40dc95f8 HTTP/1.1" 200 9093
+2024-06-10 02:47:31 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17612
+2024-06-10 02:47:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ddff8c391852434f913db74f815090a0 HTTP/1.1" 200 9093
+2024-06-10 02:47:33 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17036
+2024-06-10 02:48:17 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17037
+2024-06-10 02:48:21 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 443
+2024-06-10 02:52:04 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17315
+2024-06-10 02:52:09 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17314
+2024-06-10 02:52:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b990e3c236784faba7178615f66681cf HTTP/1.1" 200 9093
+2024-06-10 02:54:37 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17681
+2024-06-10 02:54:46 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17973
+2024-06-10 02:54:46 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1510a3f0d1244720a2ad01c0a10d7f75 HTTP/1.1" 200 9093
+2024-06-10 02:55:11 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17681
+2024-06-10 02:55:19 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17972
+2024-06-10 02:55:19 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b053d7c8d2f646d5809292f98f2ed487 HTTP/1.1" 200 9093
+2024-06-10 02:58:32 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18392
+2024-06-10 02:58:32 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fee869bc64f34373916602b41b7bd6d8 HTTP/1.1" 200 9093
+2024-06-10 02:58:34 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17818
+2024-06-10 02:59:41 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17849
+2024-06-10 03:00:52 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17849
+2024-06-10 03:00:55 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=BFAe8U5EtQxE3uL0bJvUF44vPJFIjPUcCIroGqufILEpiFy4UvxWzQSViTv3x9rq&gst_percentage=232&save=Save HTTP/1.1" 200 17971
+2024-06-10 03:01:07 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=BFAe8U5EtQxE3uL0bJvUF44vPJFIjPUcCIroGqufILEpiFy4UvxWzQSViTv3x9rq&gst_percentage=232&save=Save HTTP/1.1" 200 17971
+2024-06-10 03:01:10 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=8bZ6l9lPNmcrRCVql9Maxp0zSGpCfz3e9eQgTFKq2hjc6NIu4VOcrbOZlQfXtTAs&gst_percentage=23425&save=Save HTTP/1.1" 200 17973
+2024-06-10 03:01:16 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 17971
+2024-06-10 03:02:31 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 17995
+2024-06-10 03:02:34 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18286
+2024-06-10 03:02:34 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=120afc82f17f40f29b2b26c2c08664ae HTTP/1.1" 200 9215
+2024-06-10 03:03:13 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18002
+2024-06-10 03:03:16 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18295
+2024-06-10 03:03:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=65834d7f3da74d70904855a505cbd843 HTTP/1.1" 200 9215
+2024-06-10 03:04:28 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18106
+2024-06-10 03:04:31 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18679
+2024-06-10 03:04:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=15f3d8c0d52f433c8c6c3dcb21339ff9 HTTP/1.1" 200 9215
+2024-06-10 03:04:46 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18100
+2024-06-10 03:04:50 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18390
+2024-06-10 03:04:50 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9620fcca1ee04452a839ce4357d79c03 HTTP/1.1" 200 9215
+2024-06-10 03:05:22 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18106
+2024-06-10 03:05:25 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18679
+2024-06-10 03:05:26 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0154fb50451440d8bfedf9990c8652af HTTP/1.1" 200 9215
+2024-06-10 03:09:45 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:09:46 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:09:50 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18254
+2024-06-10 03:09:53 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18827
+2024-06-10 03:09:53 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fdce4c93bd0e4122987f8e680250c0a6 HTTP/1.1" 200 9215
+2024-06-10 03:10:28 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18261
+2024-06-10 03:10:32 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18835
+2024-06-10 03:10:33 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9e2772c8d9f24c60ba4dd1e004b407b8 HTTP/1.1" 200 9215
+2024-06-10 03:11:59 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:12:00 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:12:03 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18261
+2024-06-10 03:12:07 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18553
+2024-06-10 03:12:07 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f357e88dbf914b5790cf60ad04c5d489 HTTP/1.1" 200 9215
+2024-06-10 03:12:25 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18254
+2024-06-10 03:12:28 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18546
+2024-06-10 03:12:29 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ca59b9c180d042c2b14b28ba82b3c734 HTTP/1.1" 200 9215
+2024-06-10 03:21:12 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=2vCJkM0PTes4BfKi3VEmeApRIYEmFzFF3ytTSipq89zPQqxmMHGo8mdhb8uHTTcT&gst_percentage=111&save=Save HTTP/1.1" 200 18254
+2024-06-10 03:21:15 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=EEZbQn2x6XmB1fTTScKIOl127YnA0XB3FHQloTr8lStmgqGXBYMKI7PsA8dVeh8h&gst_percentage=2242&save=Save HTTP/1.1" 200 18255
+2024-06-10 03:23:44 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=cJEKoENquXd0q2HsNiFvUjaYKethKFDNdMvUWac1JSkLFduww4HxO5YodojCYZa1&gst_percentage=342&save=Save HTTP/1.1" 200 16461
+2024-06-10 03:23:56 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54447
+2024-06-10 03:23:56 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:23:56 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 03:23:59 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16339
+2024-06-10 03:25:40 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 03:25:41 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 03:26:55 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16339
+2024-06-10 03:26:55 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-10 03:27:34 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16540
+2024-06-10 03:28:20 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16534
+2024-06-10 03:28:23 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16826
+2024-06-10 03:28:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7b1e5697544247718b5d6c5c2aa7ee9a HTTP/1.1" 200 9093
+2024-06-10 03:28:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17109
+2024-06-10 03:28:26 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f125535a71f746219eaebf8d35e7fd1a HTTP/1.1" 200 9093
+2024-06-10 03:28:46 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16540
+2024-06-10 03:28:48 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16831
+2024-06-10 03:28:49 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=daecc2401e9144408b5fa30b6ec903ae HTTP/1.1" 200 9093
+2024-06-10 03:31:03 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16535
+2024-06-10 03:31:05 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16826
+2024-06-10 03:31:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=93d35985be7d4aefa7370938e1f98b97 HTTP/1.1" 200 9093
+2024-06-10 03:31:10 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17109
+2024-06-10 03:31:10 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=cc213fcd6e16479a9ff199581f1de116 HTTP/1.1" 200 9093
+2024-06-10 03:31:18 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16529
+2024-06-10 03:31:20 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17103
+2024-06-10 03:31:21 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bfd2febb38204999a897b08a8de552da HTTP/1.1" 200 9093
+2024-06-10 03:32:29 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16536
+2024-06-10 03:32:32 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16827
+2024-06-10 03:32:32 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c6382d22d3ec4be7a012e3ee56b5aa78 HTTP/1.1" 200 9093
+2024-06-10 03:33:01 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16586
+2024-06-10 03:33:04 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16878
+2024-06-10 03:33:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6ab4f3654fb441e68f81eb2b0649d827 HTTP/1.1" 200 9093
+2024-06-10 03:33:44 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16597
+2024-06-10 03:35:20 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16594
+2024-06-10 03:35:23 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17168
+2024-06-10 03:35:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9a5de1dd54014ee2894ff327f3dab6bf HTTP/1.1" 200 9093
+2024-06-10 03:36:14 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16689
+2024-06-10 03:36:17 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 16979
+2024-06-10 03:36:17 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=dccc81fa63064a53b0f83084cda96861 HTTP/1.1" 200 9093
+2024-06-10 03:36:43 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17227
+2024-06-10 03:36:43 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8283a5db26304d98afa3e8ca0792174b HTTP/1.1" 200 9093
+2024-06-10 03:36:47 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16654
+2024-06-10 03:39:04 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16654
+2024-06-10 03:39:07 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=On2DulRxx3V6hcmiD6UD9t63wFThS2r0PqTN2Rg8MY2Rwn9mmSWF3fUtZPJC6mYe&gst_percentage=21&save=Save HTTP/1.1" 200 16775
+2024-06-10 03:39:12 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=nOFtIvePvdDHIXWv9IJOwQ9L4vzy6aYjoRwDg1DqK8KsX8JzSuLQqCXbxFpTkuvx&gst_percentage=4243&save=Save HTTP/1.1" 200 16777
+2024-06-10 03:39:36 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=nOFtIvePvdDHIXWv9IJOwQ9L4vzy6aYjoRwDg1DqK8KsX8JzSuLQqCXbxFpTkuvx&gst_percentage=4243&save=Save HTTP/1.1" 200 16784
+2024-06-10 03:39:39 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=wLnJPittE9KXDUtaiPsWm1YgvVfTJS2oxOeTnOS4T4RIS5ge1BuYgNMGY55eXczC&gst_percentage=213&save=Save HTTP/1.1" 200 16783
+2024-06-10 03:39:43 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=JN3jhnYS2VOPA4nfNyR0gXPT0jPpUGUFKQUtPTnthQVAPfajwkT2aJDjttFK80rT&gst_percentage=242&save=Save HTTP/1.1" 200 16783
+2024-06-10 03:41:41 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=JN3jhnYS2VOPA4nfNyR0gXPT0jPpUGUFKQUtPTnthQVAPfajwkT2aJDjttFK80rT&gst_percentage=242&save=Save HTTP/1.1" 200 17331
+2024-06-10 03:41:43 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=1QWKD81nMVzQ4JviPMv586bhnPgEgveb2TNUbEqY1QGBjUimyyx72SZHQZ6ZuPLp&gst_percentage=31&save=Save HTTP/1.1" 200 17330
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54850
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 03:41:52 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:41:52 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 03:41:52 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 03:41:54 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17209
+2024-06-10 03:41:59 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=W2u9OQ2U6UzOMoDjmt8XrKofcNfpI2TPX5ljmmrvlPGz1zqn5faZlwcFFX5KWmq3&gst_percentage=213&save=Save HTTP/1.1" 200 17331
+2024-06-10 03:42:04 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=Kv8yD61QVO85H2LFQcCvtHirP3J9VM8oLyZIbCqraJfQWdyJzYExnt6Ridzu96FC&gst_percentage=32323&save=Save HTTP/1.1" 200 17333
+2024-06-10 03:43:50 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54850
+2024-06-10 03:43:50 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 03:43:50 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 03:43:53 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=Kv8yD61QVO85H2LFQcCvtHirP3J9VM8oLyZIbCqraJfQWdyJzYExnt6Ridzu96FC&gst_percentage=32323&save=Save HTTP/1.1" 200 17053
+2024-06-10 03:43:56 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=Y6kN29nKH8x1zL8fhj2NkOIlZimsFO9xZ9bXAFMlW3EMOWVj054PeAwLsscNT8GL&gst_percentage=123&save=Save HTTP/1.1" 200 17051
+2024-06-10 03:44:45 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=Y6kN29nKH8x1zL8fhj2NkOIlZimsFO9xZ9bXAFMlW3EMOWVj054PeAwLsscNT8GL&gst_percentage=123&save=Save HTTP/1.1" 200 17067
+2024-06-10 03:44:48 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 17067
+2024-06-10 03:45:13 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 17067
+2024-06-10 03:45:16 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 17359
+2024-06-10 03:45:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fc5e447559f04685b6e0d5fa0f5454fc HTTP/1.1" 200 9215
+2024-06-10 03:45:52 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 17102
+2024-06-10 03:45:55 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 17394
+2024-06-10 03:45:55 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=17286ec642424d62abd027416cce901a HTTP/1.1" 200 9215
+2024-06-10 03:55:47 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 17101
+2024-06-10 03:56:46 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 16963
+2024-06-10 03:57:04 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 16963
+2024-06-10 03:57:57 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=mM1GEMiCZk2834tuKweFB8OBHlRkzOGBnPSQciHdef9TifgytigHvUC1avHFN8dP&gst_percentage=324&save=Save HTTP/1.1" 200 17101
+2024-06-10 03:58:01 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=nw1tPAiOATNxN04u1U9sbfccSKnm00AEozSDn6HpPOUi2bRyKGbu510ClUdHek7S&gst_percentage=32&save=Save HTTP/1.1" 200 17100
+2024-06-10 03:58:06 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=blNRplkDyvNYPIcQxJgCDzWnYpUXK4FtcoE1XRJeNqUJ4TZUgviExlKNrzKiYocH&gst_percentage=234&save=Save HTTP/1.1" 200 17101
+2024-06-10 03:58:20 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=blNRplkDyvNYPIcQxJgCDzWnYpUXK4FtcoE1XRJeNqUJ4TZUgviExlKNrzKiYocH&gst_percentage=234&save=Save HTTP/1.1" 200 17102
+2024-06-10 03:58:23 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=LYih4XFkxYMpYJWws1BQAJlMXQngogoaM19rCt4VMTTadUJAbNDSuv9cq0dBCAVo&gst_percentage=425&save=Save HTTP/1.1" 200 17102
+2024-06-10 03:58:52 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=LYih4XFkxYMpYJWws1BQAJlMXQngogoaM19rCt4VMTTadUJAbNDSuv9cq0dBCAVo&gst_percentage=425&save=Save HTTP/1.1" 200 16964
+2024-06-10 03:58:56 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=LYih4XFkxYMpYJWws1BQAJlMXQngogoaM19rCt4VMTTadUJAbNDSuv9cq0dBCAVo&gst_percentage=425&save=Save HTTP/1.1" 200 17255
+2024-06-10 03:58:56 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=07f5fffa93394c2a9c930fa50fa17f3b HTTP/1.1" 200 9215
+2024-06-10 03:58:57 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=LYih4XFkxYMpYJWws1BQAJlMXQngogoaM19rCt4VMTTadUJAbNDSuv9cq0dBCAVo&gst_percentage=425&save=Save HTTP/1.1" 200 17538
+2024-06-10 03:58:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=100dac523d6c448daa1c5e0381f69d38 HTTP/1.1" 200 9215
+2024-06-10 04:01:11 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=LYih4XFkxYMpYJWws1BQAJlMXQngogoaM19rCt4VMTTadUJAbNDSuv9cq0dBCAVo&gst_percentage=425&save=Save HTTP/1.1" 200 16973
+2024-06-10 04:01:14 PM - django.server - INFO - "POST /gstpopup/?csrfmiddlewaretoken=LYih4XFkxYMpYJWws1BQAJlMXQngogoaM19rCt4VMTTadUJAbNDSuv9cq0dBCAVo&gst_percentage=425&save=Save HTTP/1.1" 200 17263
+2024-06-10 04:01:14 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e1fa8afb031f4cfa9167ac11fe73dcfc HTTP/1.1" 200 9215
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55047
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 04:02:25 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:02:25 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 04:02:25 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 04:02:28 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55047
+2024-06-10 04:02:28 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 04:02:28 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 04:02:28 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 04:02:28 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 04:02:28 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 04:02:28 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 04:02:29 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 04:02:29 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:02:29 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:02:29 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 04:02:29 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 04:02:29 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 04:02:37 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16851
+2024-06-10 04:02:44 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17425
+2024-06-10 04:02:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=554557a8f6164abaafc3808dbf1727bb HTTP/1.1" 200 9093
+2024-06-10 04:03:18 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16986
+2024-06-10 04:03:22 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17276
+2024-06-10 04:03:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=45131950619844cc89a73936994cda59 HTTP/1.1" 200 9093
+2024-06-10 04:04:06 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55095
+2024-06-10 04:04:06 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:04:06 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55095
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 04:04:10 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:04:10 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 04:04:10 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55095
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 04:04:12 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:04:12 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 04:04:12 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 04:04:13 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16986
+2024-06-10 04:04:24 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17560
+2024-06-10 04:04:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=69eb155338584b708e59928ceb661c86 HTTP/1.1" 200 9093
+2024-06-10 04:05:58 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17033
+2024-06-10 04:06:07 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17606
+2024-06-10 04:06:08 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=178b15a80ebb40f984dccfcb432612c5 HTTP/1.1" 200 9093
+2024-06-10 04:07:27 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17040
+2024-06-10 04:07:31 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17330
+2024-06-10 04:07:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=cac9065b7ca048979521775370239dec HTTP/1.1" 200 9093
+2024-06-10 04:07:32 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17613
+2024-06-10 04:07:32 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=af746e1999d44de18bd5af417c1e8c46 HTTP/1.1" 200 9093
+2024-06-10 04:09:19 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55143
+2024-06-10 04:09:19 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:09:19 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 04:09:24 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17045
+2024-06-10 04:09:27 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17339
+2024-06-10 04:09:27 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fb00aa17e47648a9bda7fad70fa0399d HTTP/1.1" 200 9093
+2024-06-10 04:10:08 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17014
+2024-06-10 04:10:11 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17308
+2024-06-10 04:10:11 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f5f864644217478e92eca12ace41c4d3 HTTP/1.1" 200 9093
+2024-06-10 04:10:48 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17014
+2024-06-10 04:10:51 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17309
+2024-06-10 04:10:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=43208c06542643acaadca690aacbb2bc HTTP/1.1" 200 9093
+2024-06-10 04:13:18 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:13:19 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:13:24 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17311
+2024-06-10 04:13:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=cdc8dde163184f249b5d9a7b5a372c23 HTTP/1.1" 200 9093
+2024-06-10 04:14:17 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:14:18 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:14:24 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17014
+2024-06-10 04:14:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17308
+2024-06-10 04:14:26 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b63a3626cb1a42b989fb51deb4b9f801 HTTP/1.1" 200 9093
+2024-06-10 04:14:58 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:14:59 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:15:06 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17014
+2024-06-10 04:15:09 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17309
+2024-06-10 04:15:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=973dcee2b0864fbdb0da365423eed9da HTTP/1.1" 200 9093
+2024-06-10 04:15:31 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:15:31 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:15:35 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17014
+2024-06-10 04:15:38 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17312
+2024-06-10 04:15:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=dd4499d2d31f4db0aca0f73f0f4e2928 HTTP/1.1" 200 9093
+2024-06-10 04:16:02 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:16:03 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:16:05 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17014
+2024-06-10 04:16:07 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17307
+2024-06-10 04:16:08 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8723a7feb76746fd881c1efa9a22b100 HTTP/1.1" 200 9093
+2024-06-10 04:16:47 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:16:48 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:16:50 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17014
+2024-06-10 04:16:52 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17307
+2024-06-10 04:16:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e7de79b1683145ee9bf2e06dd5822eb3 HTTP/1.1" 200 9093
+2024-06-10 04:17:29 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15984
+2024-06-10 04:17:31 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=B8yBtYW45uQ0TkPdu0OFa0qFrNknzh4JCbpL1ulFkpXL8vChdMQH4Me5UXaINBBX&gst_percentage=545454&save=Save HTTP/1.1" 200 16108
+2024-06-10 04:17:39 PM - django.server - INFO - "GET /gstpopup/?csrfmiddlewaretoken=19yDMmjvkQkOEGqiUASA3ukhv9HTx3RJ2cpNkSI6zLrzTRdmDmUCXg8HYjxeLnoX&gst_percentage=12121&save=Save HTTP/1.1" 200 16108
+2024-06-10 04:18:19 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55618
+2024-06-10 04:18:19 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:18:19 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:18:20 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 15997
+2024-06-10 04:18:22 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1288
+2024-06-10 04:18:22 PM - django.request - WARNING - Not Found: /favicon.ico
+2024-06-10 04:18:22 PM - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 30175
+2024-06-10 04:19:20 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:19:24 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55929
+2024-06-10 04:19:24 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:19:24 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:19:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-10 04:19:27 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17320
+2024-06-10 04:19:27 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=230223b8f11b42d9800dc680b4425dc9 HTTP/1.1" 200 9093
+2024-06-10 04:21:27 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:21:28 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:21:32 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-10 04:21:35 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17604
+2024-06-10 04:21:35 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9a21a753d07f4076b0609d878a226dfe HTTP/1.1" 200 9093
+2024-06-10 04:22:21 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-10 04:22:23 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17604
+2024-06-10 04:22:23 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=788ab4aecfaf41a08260233af46c0bb3 HTTP/1.1" 200 9093
+2024-06-10 04:22:45 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:22:46 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:22:50 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17028
+2024-06-10 04:22:52 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17617
+2024-06-10 04:22:52 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=21c60f35b57744089c8b4864381a0510 HTTP/1.1" 200 9107
+2024-06-10 04:22:57 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17618
+2024-06-10 04:22:57 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=260d45acda864cb982bc9dbb15ee5bad HTTP/1.1" 200 9107
+2024-06-10 04:23:00 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1360
+2024-06-10 04:23:01 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=97fe2bd023454e178298363af8a0b184 HTTP/1.1" 200 9051
+2024-06-10 04:23:49 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:23:49 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:24:03 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17320
+2024-06-10 04:24:07 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1399
+2024-06-10 04:24:08 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d88112e20255405b8e8189b226f352c5 HTTP/1.1" 200 9051
+2024-06-10 04:24:54 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17817
+2024-06-10 04:24:54 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=2c3fbb433b814d918fa68b9bbcf8679d HTTP/1.1" 200 9107
+2024-06-10 04:24:58 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1437
+2024-06-10 04:24:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=17c4475cf8824e87a9c9742e07b9ac15 HTTP/1.1" 200 9051
+2024-06-10 04:25:08 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56134
+2024-06-10 04:25:08 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:25:08 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:25:10 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16934
+2024-06-10 04:25:13 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1475
+2024-06-10 04:25:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=64b2bdb5c020403eb1cf69cb68fe39fe HTTP/1.1" 200 9051
+2024-06-10 04:25:13 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17818
+2024-06-10 04:25:13 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e24fa4b483ee4924865aa7526556ecd2 HTTP/1.1" 200 9107
+2024-06-10 04:25:37 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16928
+2024-06-10 04:25:40 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1510
+2024-06-10 04:25:40 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4d61efdc1b97433fbc8899c91932d35c HTTP/1.1" 200 9051
+2024-06-10 04:26:29 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:26:30 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:28:14 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:28:15 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:28:17 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17216
+2024-06-10 04:28:21 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 24
+2024-06-10 04:28:22 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8bf6c15497e34248be44fed433074b53 HTTP/1.1" 200 9051
+2024-06-10 04:29:27 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17230
+2024-06-10 04:29:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17527
+2024-06-10 04:29:31 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=67c2d59e38cf4db28dcf10612f23d9a6 HTTP/1.1" 200 9107
+2024-06-10 04:29:46 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 24
+2024-06-10 04:29:46 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=426e58f02e17492c8de5e8185061d0ec HTTP/1.1" 200 9051
+2024-06-10 04:30:08 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 45077
+2024-06-10 04:30:11 PM - django.server - INFO - "GET /gstdelete/53 HTTP/1.1" 302 0
+2024-06-10 04:30:11 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 44702
+2024-06-10 04:30:11 PM - django.server - INFO - "GET /gstdelete/54 HTTP/1.1" 302 0
+2024-06-10 04:30:11 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 64880)
+2024-06-10 04:30:11 PM - django.request - ERROR - Internal Server Error: /gstdelete/54
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2190, in gst_delete
+    gst_pk = gst.objects.get(pk=pk)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+product.models.gst.DoesNotExist: gst matching query does not exist.
+2024-06-10 04:30:11 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 49789)
+2024-06-10 04:30:12 PM - django.request - ERROR - Internal Server Error: /gstdelete/54
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2190, in gst_delete
+    gst_pk = gst.objects.get(pk=pk)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+product.models.gst.DoesNotExist: gst matching query does not exist.
+2024-06-10 04:30:12 PM - django.server - ERROR - "GET /gstdelete/54 HTTP/1.1" 500 89136
+2024-06-10 04:30:16 PM - django.server - INFO - "GET /gstdelete/55 HTTP/1.1" 302 0
+2024-06-10 04:30:16 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 44223
+2024-06-10 04:30:18 PM - django.server - INFO - "GET /gstdelete/57 HTTP/1.1" 302 0
+2024-06-10 04:30:18 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 43613
+2024-06-10 04:30:18 PM - django.server - INFO - "GET /gstdelete/59 HTTP/1.1" 302 0
+2024-06-10 04:30:18 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 43249
+2024-06-10 04:30:19 PM - django.server - INFO - "GET /gstdelete/60 HTTP/1.1" 302 0
+2024-06-10 04:30:19 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 42887
+2024-06-10 04:30:20 PM - django.server - INFO - "GET /gstdelete/61 HTTP/1.1" 302 0
+2024-06-10 04:30:20 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 42524
+2024-06-10 04:30:20 PM - django.server - INFO - "GET /gstdelete/62 HTTP/1.1" 302 0
+2024-06-10 04:30:20 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 42162
+2024-06-10 04:30:21 PM - django.server - INFO - "GET /gstdelete/63 HTTP/1.1" 302 0
+2024-06-10 04:30:22 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 41798
+2024-06-10 04:30:22 PM - django.server - INFO - "GET /gstdelete/64 HTTP/1.1" 302 0
+2024-06-10 04:30:22 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 41436
+2024-06-10 04:30:23 PM - django.server - INFO - "GET /gstdelete/65 HTTP/1.1" 302 0
+2024-06-10 04:30:23 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 41074
+2024-06-10 04:30:24 PM - django.server - INFO - "GET /gstdelete/66 HTTP/1.1" 302 0
+2024-06-10 04:30:24 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 40711
+2024-06-10 04:30:25 PM - django.server - INFO - "GET /gstdelete/58 HTTP/1.1" 302 0
+2024-06-10 04:30:25 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 40345
+2024-06-10 04:30:25 PM - django.server - INFO - "GET /gstdelete/67 HTTP/1.1" 302 0
+2024-06-10 04:30:26 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 39981
+2024-06-10 04:30:26 PM - django.server - INFO - "GET /gstdelete/68 HTTP/1.1" 302 0
+2024-06-10 04:30:27 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 39618
+2024-06-10 04:30:27 PM - django.server - INFO - "GET /gstdelete/69 HTTP/1.1" 302 0
+2024-06-10 04:30:27 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 39257
+2024-06-10 04:30:28 PM - django.server - INFO - "GET /gstdelete/70 HTTP/1.1" 302 0
+2024-06-10 04:30:28 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38894
+2024-06-10 04:30:29 PM - django.server - INFO - "GET /gstdelete/71 HTTP/1.1" 302 0
+2024-06-10 04:30:29 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38531
+2024-06-10 04:30:29 PM - django.server - INFO - "GET /gstdelete/72 HTTP/1.1" 302 0
+2024-06-10 04:30:30 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38169
+2024-06-10 04:30:30 PM - django.server - INFO - "GET /gstdelete/56 HTTP/1.1" 302 0
+2024-06-10 04:30:31 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37806
+2024-06-10 04:30:31 PM - django.server - INFO - "GET /gstdelete/74 HTTP/1.1" 302 0
+2024-06-10 04:30:31 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37445
+2024-06-10 04:30:32 PM - django.server - INFO - "GET /gstdelete/73 HTTP/1.1" 302 0
+2024-06-10 04:30:32 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37084
+2024-06-10 04:30:33 PM - django.server - INFO - "GET /gstdelete/76 HTTP/1.1" 302 0
+2024-06-10 04:30:33 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36719
+2024-06-10 04:30:33 PM - django.server - INFO - "GET /gstdelete/75 HTTP/1.1" 302 0
+2024-06-10 04:30:34 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36358
+2024-06-10 04:30:34 PM - django.server - INFO - "GET /gstdelete/78 HTTP/1.1" 302 0
+2024-06-10 04:30:34 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35992
+2024-06-10 04:30:35 PM - django.server - INFO - "GET /gstdelete/77 HTTP/1.1" 302 0
+2024-06-10 04:30:35 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35627
+2024-06-10 04:30:35 PM - django.server - INFO - "GET /gstdelete/80 HTTP/1.1" 302 0
+2024-06-10 04:30:35 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35262
+2024-06-10 04:30:36 PM - django.server - INFO - "GET /gstdelete/79 HTTP/1.1" 302 0
+2024-06-10 04:30:36 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34894
+2024-06-10 04:30:36 PM - django.server - INFO - "GET /gstdelete/82 HTTP/1.1" 302 0
+2024-06-10 04:30:37 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34525
+2024-06-10 04:30:37 PM - django.server - INFO - "GET /gstdelete/81 HTTP/1.1" 302 0
+2024-06-10 04:30:37 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34159
+2024-06-10 04:30:38 PM - django.server - INFO - "GET /gstdelete/84 HTTP/1.1" 302 0
+2024-06-10 04:30:38 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 50336)
+2024-06-10 04:30:38 PM - django.request - ERROR - Internal Server Error: /gstdelete/84
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2190, in gst_delete
+    gst_pk = gst.objects.get(pk=pk)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+product.models.gst.DoesNotExist: gst matching query does not exist.
+2024-06-10 04:30:38 PM - django.server - ERROR - "GET /gstdelete/84 HTTP/1.1" 500 88882
+2024-06-10 04:30:42 PM - django.server - INFO - "GET /gstdelete/86 HTTP/1.1" 302 0
+2024-06-10 04:30:42 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33678
+2024-06-10 04:30:43 PM - django.server - INFO - "GET /gstdelete/87 HTTP/1.1" 302 0
+2024-06-10 04:30:44 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33069
+2024-06-10 04:30:45 PM - django.server - INFO - "GET /gstdelete/89 HTTP/1.1" 302 0
+2024-06-10 04:30:45 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32704
+2024-06-10 04:30:46 PM - django.server - INFO - "GET /gstdelete/88 HTTP/1.1" 302 0
+2024-06-10 04:30:46 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32339
+2024-06-10 04:30:47 PM - django.server - INFO - "GET /gstdelete/85 HTTP/1.1" 302 0
+2024-06-10 04:30:47 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31976
+2024-06-10 04:30:48 PM - django.server - INFO - "GET /gstdelete/91 HTTP/1.1" 302 0
+2024-06-10 04:30:49 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31615
+2024-06-10 04:30:49 PM - django.server - INFO - "GET /gstdelete/93 HTTP/1.1" 302 0
+2024-06-10 04:30:49 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31251
+2024-06-10 04:30:50 PM - django.server - INFO - "GET /gstdelete/90 HTTP/1.1" 302 0
+2024-06-10 04:30:50 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30887
+2024-06-10 04:30:51 PM - django.server - INFO - "GET /gstdelete/83 HTTP/1.1" 302 0
+2024-06-10 04:30:51 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30524
+2024-06-10 04:30:52 PM - django.server - INFO - "GET /gstdelete/92 HTTP/1.1" 302 0
+2024-06-10 04:30:52 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-10 04:30:56 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54002
+2024-06-10 04:30:56 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:30:56 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:30:58 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16938
+2024-06-10 04:31:25 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 24
+2024-06-10 04:31:25 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=04ba3f5ef98f48e98b90b28e142403a5 HTTP/1.1" 200 9051
+2024-06-10 04:32:10 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17233
+2024-06-10 04:32:15 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 24
+2024-06-10 04:32:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0b9aad85f6454cb3bde2c2e6d3f88ab2 HTTP/1.1" 200 9051
+2024-06-10 04:32:56 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17245
+2024-06-10 04:32:59 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 24
+2024-06-10 04:32:59 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=00845d9999e64a339331ec4da4a450ce HTTP/1.1" 200 9051
+2024-06-10 04:34:23 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17233
+2024-06-10 04:34:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 24
+2024-06-10 04:34:55 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:34:56 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:35:06 PM - django.utils.autoreload - INFO - D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py changed, reloading.
+2024-06-10 04:35:07 PM - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-06-10 04:35:09 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17233
+2024-06-10 04:35:16 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 257
+2024-06-10 04:36:12 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17240
+2024-06-10 04:36:17 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16948
+2024-06-10 04:36:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 293
+2024-06-10 04:37:45 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17221
+2024-06-10 04:37:48 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 329
+2024-06-10 04:37:48 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=367ab07377ac4dfb80f13a6c33a5e79f HTTP/1.1" 200 9051
+2024-06-10 04:38:40 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17228
+2024-06-10 04:38:45 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 364
+2024-06-10 04:38:45 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fb50065db6e54dda895358812b764a79 HTTP/1.1" 200 9051
+2024-06-10 04:40:12 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17280
+2024-06-10 04:40:15 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 399
+2024-06-10 04:40:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9784867f71fe40d2866a76cb48243674 HTTP/1.1" 200 9051
+2024-06-10 04:41:02 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17329
+2024-06-10 04:41:06 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 436
+2024-06-10 04:41:06 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bd37295263944bd9a62faed939e83634 HTTP/1.1" 200 9051
+2024-06-10 04:42:00 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17327
+2024-06-10 04:42:02 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 471
+2024-06-10 04:42:03 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7899b0aa14464af389e31e7910d9ca36 HTTP/1.1" 200 9051
+2024-06-10 04:42:27 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17336
+2024-06-10 04:42:32 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 508
+2024-06-10 04:42:32 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=9ae44635d85c4dea90f4e3ff7f4df95e HTTP/1.1" 200 9051
+2024-06-10 04:45:48 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17348
+2024-06-10 04:45:51 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 544
+2024-06-10 04:45:51 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=58d0acbde9c34ce48c1fa1c13805a5b4 HTTP/1.1" 200 9051
+2024-06-10 04:46:00 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 582
+2024-06-10 04:46:00 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b8db1ff6de5746229c32ed20c7f22345 HTTP/1.1" 200 9051
+2024-06-10 04:47:52 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17946
+2024-06-10 04:48:05 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 619
+2024-06-10 04:48:05 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5e542fbfa49e464eb6f10536f382718c HTTP/1.1" 200 9051
+2024-06-10 04:49:09 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 655
+2024-06-10 04:49:09 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=837559d2cfb5495c8d625221885e71cc HTTP/1.1" 200 9051
+2024-06-10 04:51:23 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 18134
+2024-06-10 04:51:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 693
+2024-06-10 04:51:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ad061c8fc36249b083870d877d911e5d HTTP/1.1" 200 9051
+2024-06-10 04:51:54 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36348
+2024-06-10 04:51:57 PM - django.server - INFO - "GET /gstdelete/94 HTTP/1.1" 302 0
+2024-06-10 04:51:57 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35973
+2024-06-10 04:51:57 PM - django.server - INFO - "GET /gstdelete/95 HTTP/1.1" 302 0
+2024-06-10 04:51:58 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35612
+2024-06-10 04:51:58 PM - django.server - INFO - "GET /gstdelete/96 HTTP/1.1" 302 0
+2024-06-10 04:51:58 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35250
+2024-06-10 04:51:59 PM - django.server - INFO - "GET /gstdelete/97 HTTP/1.1" 302 0
+2024-06-10 04:51:59 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34887
+2024-06-10 04:52:00 PM - django.server - INFO - "GET /gstdelete/98 HTTP/1.1" 302 0
+2024-06-10 04:52:00 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34525
+2024-06-10 04:52:01 PM - django.server - INFO - "GET /gstdelete/99 HTTP/1.1" 302 0
+2024-06-10 04:52:01 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34162
+2024-06-10 04:52:01 PM - django.server - INFO - "GET /gstdelete/100 HTTP/1.1" 302 0
+2024-06-10 04:52:01 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33798
+2024-06-10 04:52:02 PM - django.server - INFO - "GET /gstdelete/101 HTTP/1.1" 302 0
+2024-06-10 04:52:02 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33435
+2024-06-10 04:52:02 PM - django.server - INFO - "GET /gstdelete/102 HTTP/1.1" 302 0
+2024-06-10 04:52:02 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33072
+2024-06-10 04:52:03 PM - django.server - INFO - "GET /gstdelete/103 HTTP/1.1" 302 0
+2024-06-10 04:52:03 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32707
+2024-06-10 04:52:04 PM - django.server - INFO - "GET /gstdelete/104 HTTP/1.1" 302 0
+2024-06-10 04:52:04 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32345
+2024-06-10 04:52:04 PM - django.server - INFO - "GET /gstdelete/105 HTTP/1.1" 302 0
+2024-06-10 04:52:05 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31981
+2024-06-10 04:52:05 PM - django.server - INFO - "GET /gstdelete/106 HTTP/1.1" 302 0
+2024-06-10 04:52:05 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31618
+2024-06-10 04:52:06 PM - django.server - INFO - "GET /gstdelete/107 HTTP/1.1" 302 0
+2024-06-10 04:52:06 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31253
+2024-06-10 04:52:06 PM - django.server - INFO - "GET /gstdelete/108 HTTP/1.1" 302 0
+2024-06-10 04:52:06 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30889
+2024-06-10 04:52:06 PM - django.server - INFO - "GET /gstdelete/109 HTTP/1.1" 302 0
+2024-06-10 04:52:07 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30526
+2024-06-10 04:52:07 PM - django.server - INFO - "GET /gstdelete/110 HTTP/1.1" 302 0
+2024-06-10 04:52:07 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-10 04:52:11 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54002
+2024-06-10 04:52:11 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:52:11 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54002
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 04:52:13 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:52:13 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 04:52:13 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 04:52:19 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54002
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 04:52:30 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 04:52:30 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 04:52:30 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 04:52:34 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17549
+2024-06-10 04:52:41 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 118
+2024-06-10 04:52:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=1b1ce6237df24306922952d6e8062b26 HTTP/1.1" 200 9051
+2024-06-10 04:53:11 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17829
+2024-06-10 04:53:15 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 154
+2024-06-10 04:53:15 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=98f041a310434a90abb5abead47286c7 HTTP/1.1" 200 9051
+2024-06-10 04:53:56 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17829
+2024-06-10 04:54:01 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 18124
+2024-06-10 04:54:01 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ed2b3d68f2a14227b1b6747411617fc8 HTTP/1.1" 200 9107
+2024-06-10 04:54:34 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17050
+2024-06-10 04:54:38 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 190
+2024-06-10 04:54:38 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=062a6b6dcc1a41db967c0c94f2ae6853 HTTP/1.1" 200 9051
+2024-06-10 04:57:36 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17584
+2024-06-10 04:57:41 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 225
+2024-06-10 04:57:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=aa19da02c2c44d73bad6544a3fb79525 HTTP/1.1" 200 9051
+2024-06-10 04:59:06 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17484
+2024-06-10 04:59:10 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 261
+2024-06-10 04:59:10 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=53984d77868c4c8f9e483f1ec0c2037e HTTP/1.1" 200 9051
+2024-06-10 04:59:19 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17484
+2024-06-10 04:59:23 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 298
+2024-06-10 04:59:24 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=ed78273bb34c472b9826f31fd95ac896 HTTP/1.1" 200 9051
+2024-06-10 04:59:54 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17489
+2024-06-10 04:59:58 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 333
+2024-06-10 04:59:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=206f401c0ef64b49b36d1e9044436a2f HTTP/1.1" 200 9051
+2024-06-10 05:03:34 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17431
+2024-06-10 05:03:38 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 368
+2024-06-10 05:03:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=4a1d543d77e74061a2c1c01fe02f71cb HTTP/1.1" 200 9051
+2024-06-10 05:24:48 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17118
+2024-06-10 05:24:50 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 405
+2024-06-10 05:24:50 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=12244ff0211d4a908c5495ab3d4f6bcc HTTP/1.1" 200 9051
+2024-06-10 05:25:40 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 443
+2024-06-10 05:25:41 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e1a81371f42f44cb9cfd1e6b68e817dd HTTP/1.1" 200 9051
+2024-06-10 05:25:58 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17443
+2024-06-10 05:26:01 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 480
+2024-06-10 05:26:02 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=e5f12a7350fa42ca88c87eeffe4ae5ec HTTP/1.1" 200 9051
+2024-06-10 05:26:39 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17194
+2024-06-10 05:26:44 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 517
+2024-06-10 05:26:44 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f0c260838fbc47c8b0b7f35b362c44c2 HTTP/1.1" 200 9051
+2024-06-10 05:27:07 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17196
+2024-06-10 05:27:16 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 555
+2024-06-10 05:27:16 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=09bf4c4bc49e4315843be86824ac956c HTTP/1.1" 200 9051
+2024-06-10 05:28:35 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17212
+2024-06-10 05:28:39 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 594
+2024-06-10 05:28:39 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=fee11f9c67b744e5b17b19adb5736a84 HTTP/1.1" 200 9051
+2024-06-10 05:29:08 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17212
+2024-06-10 05:29:12 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 630
+2024-06-10 05:29:12 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=53443a3af93342e8b31f686a855228e8 HTTP/1.1" 200 9051
+2024-06-10 05:32:44 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17284
+2024-06-10 05:32:48 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17580
+2024-06-10 05:32:48 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=7754d17a866f4af4b3c088cba27bb353 HTTP/1.1" 200 9107
+2024-06-10 05:34:50 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16870
+2024-06-10 05:34:53 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 666
+2024-06-10 05:34:53 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5e28325102f44893a533903b9600d3e9 HTTP/1.1" 200 9051
+2024-06-10 05:34:54 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17750
+2024-06-10 05:34:54 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=f123760c0fc3460f8bd79483bc75c5c2 HTTP/1.1" 200 9107
+2024-06-10 05:34:59 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16870
+2024-06-10 05:35:04 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 702
+2024-06-10 05:35:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=8d7bb29452c04eefbd37a515e4b56cae HTTP/1.1" 200 9051
+2024-06-10 05:38:13 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17330
+2024-06-10 05:38:17 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 738
+2024-06-10 05:38:18 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0977e8c9f3b9447faed39740e27fec17 HTTP/1.1" 200 9051
+2024-06-10 05:44:29 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17194
+2024-06-10 05:44:33 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 774
+2024-06-10 05:44:33 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=660d0dbe927c4effac6b22181587d6e4 HTTP/1.1" 200 9051
+2024-06-10 05:45:31 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17276
+2024-06-10 05:45:34 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 811
+2024-06-10 05:45:34 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b5eedb9c2a9f41a78ede9b9d4fbc080f HTTP/1.1" 200 9051
+2024-06-10 05:45:47 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55270
+2024-06-10 05:45:47 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 05:45:47 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55010
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 05:45:49 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 05:45:49 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 05:45:49 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 05:45:50 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 16984
+2024-06-10 05:45:58 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 847
+2024-06-10 05:45:58 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=bb588e5bfa654e1ab385fb6fdb5b4914 HTTP/1.1" 200 9051
+2024-06-10 05:47:56 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17353
+2024-06-10 05:48:02 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 884
+2024-06-10 05:48:02 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=6ff714df84304c36bab9d3aa1334e4da HTTP/1.1" 200 9051
+2024-06-10 05:49:12 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17290
+2024-06-10 05:49:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 922
+2024-06-10 05:49:30 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=b1de10ffcd334bdaadb3e8db08ccec64 HTTP/1.1" 200 9051
+2024-06-10 05:53:05 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55559
+2024-06-10 05:53:05 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 05:53:05 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 05:53:07 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 05:53:14 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 958
+2024-06-10 05:53:47 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38915
+2024-06-10 05:53:49 PM - django.server - INFO - "GET /gstdelete/111 HTTP/1.1" 302 0
+2024-06-10 05:53:49 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38538
+2024-06-10 05:53:49 PM - django.server - INFO - "GET /gstdelete/112 HTTP/1.1" 302 0
+2024-06-10 05:53:50 PM - django.server - INFO - - Broken pipe from ('127.0.0.1', 59684)
+2024-06-10 05:53:50 PM - django.request - ERROR - Internal Server Error: /gstdelete/112
+Traceback (most recent call last):
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\ERP_Cosmus\product\views.py", line 2190, in gst_delete
+    gst_pk = gst.objects.get(pk=pk)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\cosmus-factory-website\Cosmus_Factory_Management\venv\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+product.models.gst.DoesNotExist: gst matching query does not exist.
+2024-06-10 05:53:50 PM - django.server - ERROR - "GET /gstdelete/112 HTTP/1.1" 500 89205
+2024-06-10 05:53:50 PM - django.request - WARNING - Not Found: /favicon.ico
+2024-06-10 05:53:50 PM - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 30175
+2024-06-10 05:53:53 PM - django.server - INFO - "GET /gstdelete/113 HTTP/1.1" 302 0
+2024-06-10 05:53:53 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38056
+2024-06-10 05:53:55 PM - django.server - INFO - "GET /gstdelete/114 HTTP/1.1" 302 0
+2024-06-10 05:53:55 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37447
+2024-06-10 05:53:56 PM - django.server - INFO - "GET /gstdelete/116 HTTP/1.1" 302 0
+2024-06-10 05:53:56 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37082
+2024-06-10 05:53:57 PM - django.server - INFO - "GET /gstdelete/117 HTTP/1.1" 302 0
+2024-06-10 05:53:57 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36719
+2024-06-10 05:53:58 PM - django.server - INFO - "GET /gstdelete/118 HTTP/1.1" 302 0
+2024-06-10 05:53:58 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36356
+2024-06-10 05:53:59 PM - django.server - INFO - "GET /gstdelete/115 HTTP/1.1" 302 0
+2024-06-10 05:53:59 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35992
+2024-06-10 05:54:00 PM - django.server - INFO - "GET /gstdelete/120 HTTP/1.1" 302 0
+2024-06-10 05:54:00 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35626
+2024-06-10 05:54:01 PM - django.server - INFO - "GET /gstdelete/119 HTTP/1.1" 302 0
+2024-06-10 05:54:01 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35261
+2024-06-10 05:54:02 PM - django.server - INFO - "GET /gstdelete/122 HTTP/1.1" 302 0
+2024-06-10 05:54:03 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34896
+2024-06-10 05:54:03 PM - django.server - INFO - "GET /gstdelete/123 HTTP/1.1" 302 0
+2024-06-10 05:54:03 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34530
+2024-06-10 05:54:04 PM - django.server - INFO - "GET /gstdelete/124 HTTP/1.1" 302 0
+2024-06-10 05:54:04 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34163
+2024-06-10 05:54:05 PM - django.server - INFO - "GET /gstdelete/126 HTTP/1.1" 302 0
+2024-06-10 05:54:05 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33799
+2024-06-10 05:54:06 PM - django.server - INFO - "GET /gstdelete/125 HTTP/1.1" 302 0
+2024-06-10 05:54:06 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33435
+2024-06-10 05:54:07 PM - django.server - INFO - "GET /gstdelete/128 HTTP/1.1" 302 0
+2024-06-10 05:54:07 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33071
+2024-06-10 05:54:08 PM - django.server - INFO - "GET /gstdelete/127 HTTP/1.1" 302 0
+2024-06-10 05:54:08 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32707
+2024-06-10 05:54:08 PM - django.server - INFO - "GET /gstdelete/130 HTTP/1.1" 302 0
+2024-06-10 05:54:08 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32343
+2024-06-10 05:54:09 PM - django.server - INFO - "GET /gstdelete/129 HTTP/1.1" 302 0
+2024-06-10 05:54:09 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31980
+2024-06-10 05:54:10 PM - django.server - INFO - "GET /gstdelete/132 HTTP/1.1" 302 0
+2024-06-10 05:54:10 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31616
+2024-06-10 05:54:11 PM - django.server - INFO - "GET /gstdelete/131 HTTP/1.1" 302 0
+2024-06-10 05:54:11 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31252
+2024-06-10 05:54:12 PM - django.server - INFO - "GET /gstdelete/134 HTTP/1.1" 302 0
+2024-06-10 05:54:12 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30890
+2024-06-10 05:54:13 PM - django.server - INFO - "GET /gstdelete/133 HTTP/1.1" 302 0
+2024-06-10 05:54:13 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30525
+2024-06-10 05:54:14 PM - django.server - INFO - "GET /gstdelete/121 HTTP/1.1" 302 0
+2024-06-10 05:54:14 PM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-10 05:57:37 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54175
+2024-06-10 05:57:37 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 05:57:37 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 05:57:39 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 05:57:41 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 119
+2024-06-10 05:58:56 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54468
+2024-06-10 05:58:56 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 05:58:56 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 05:58:58 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 05:59:02 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17615
+2024-06-10 05:59:02 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=5fd15eddb8fe4576bfee61b3b4d75318 HTTP/1.1" 200 9107
+2024-06-10 05:59:04 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17615
+2024-06-10 05:59:04 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c5602db50ed847e6874fb00d40a82d65 HTTP/1.1" 200 9107
+2024-06-10 05:59:45 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 05:59:48 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 155
+2024-06-10 06:03:00 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54693
+2024-06-10 06:03:00 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:03:00 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:03:02 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:03:11 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 191
+2024-06-10 06:04:05 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54778
+2024-06-10 06:04:06 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:04:06 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:04:13 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:04:17 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 263
+2024-06-10 06:06:47 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54989
+2024-06-10 06:06:47 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:06:47 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:06:49 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:06:52 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 299
+2024-06-10 06:07:48 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54783
+2024-06-10 06:07:48 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:07:48 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:07:49 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:07:53 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 335
+2024-06-10 06:09:00 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54891
+2024-06-10 06:09:00 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:09:00 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:09:01 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:09:06 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 371
+2024-06-10 06:11:13 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55058
+2024-06-10 06:11:13 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:11:13 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54798
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 06:11:14 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:11:14 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 06:11:14 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 06:11:15 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 06:11:16 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:11:23 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 407
+2024-06-10 06:12:16 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55117
+2024-06-10 06:12:16 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:12:16 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:12:21 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:12:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 443
+2024-06-10 06:13:02 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55370
+2024-06-10 06:13:02 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:13:02 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55110
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 06:13:04 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:13:04 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 06:13:04 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55110
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 06:13:06 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:13:06 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 06:13:06 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 06:13:08 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:13:11 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 479
+2024-06-10 06:13:20 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55408
+2024-06-10 06:13:20 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:13:20 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:13:22 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:13:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 515
+2024-06-10 06:14:03 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55470
+2024-06-10 06:14:03 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:14:03 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:14:04 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:14:08 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 550
+2024-06-10 06:15:01 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55508
+2024-06-10 06:15:01 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:15:01 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:15:03 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:15:08 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 585
+2024-06-10 06:17:49 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55537
+2024-06-10 06:17:49 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:17:49 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:17:50 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:17:54 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 620
+2024-06-10 06:18:24 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55126
+2024-06-10 06:18:24 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:18:24 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:18:25 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:18:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 655
+2024-06-10 06:18:35 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55175
+2024-06-10 06:18:35 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:18:35 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54915
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 06:18:36 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:18:36 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 06:18:36 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 06:19:46 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54930
+2024-06-10 06:19:46 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:19:46 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 06:19:47 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:19:51 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 691
+2024-06-10 06:21:49 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55250
+2024-06-10 06:21:49 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:21:49 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:21:50 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:21:56 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 727
+2024-06-10 06:26:19 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55442
+2024-06-10 06:26:19 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:26:19 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:26:21 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:26:27 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 764
+2024-06-10 06:26:46 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55493
+2024-06-10 06:26:46 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:26:46 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:26:56 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:27:03 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 803
+2024-06-10 06:27:28 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55567
+2024-06-10 06:27:28 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:27:28 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 06:27:30 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:27:35 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 840
+2024-06-10 06:28:25 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55649
+2024-06-10 06:28:25 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:28:25 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:28:26 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:28:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 874
+2024-06-10 06:28:52 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55706
+2024-06-10 06:28:52 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:28:52 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:30:09 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55441
+2024-06-10 06:30:09 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:30:09 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:30:10 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:30:17 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 911
+2024-06-10 06:30:50 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55783
+2024-06-10 06:30:51 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:30:51 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 06:30:52 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:30:58 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 948
+2024-06-10 06:31:46 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55780
+2024-06-10 06:31:46 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:31:46 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:31:48 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:31:54 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 984
+2024-06-10 06:32:40 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55851
+2024-06-10 06:32:40 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:32:40 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:32:42 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:32:46 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1021
+2024-06-10 06:34:23 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55951
+2024-06-10 06:34:23 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:34:23 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:34:26 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:34:30 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1061
+2024-06-10 06:35:12 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55960
+2024-06-10 06:35:13 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:35:13 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:36:07 PM - django.server - INFO - "GET /itemlist/ HTTP/1.1" 200 119903
+2024-06-10 06:36:09 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55730
+2024-06-10 06:36:09 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:36:09 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:36:13 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:36:15 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1102
+2024-06-10 06:36:57 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17319
+2024-06-10 06:37:00 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55783
+2024-06-10 06:37:00 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:37:00 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 06:37:01 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:37:05 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1142
+2024-06-10 06:37:55 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56091
+2024-06-10 06:37:55 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:37:55 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:37:57 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:38:00 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1183
+2024-06-10 06:38:09 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56146
+2024-06-10 06:38:09 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:38:09 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:38:10 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:38:15 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1222
+2024-06-10 06:38:22 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56199
+2024-06-10 06:38:22 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:38:22 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:39:04 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:39:06 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1260
+2024-06-10 06:39:09 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17319
+2024-06-10 06:39:13 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1295
+2024-06-10 06:39:31 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17319
+2024-06-10 06:39:35 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1332
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56371
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-10 06:39:39 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:39:39 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-10 06:39:39 PM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-10 06:39:40 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:39:44 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1369
+2024-06-10 06:40:15 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56429
+2024-06-10 06:40:15 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:40:15 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-10 06:40:16 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-10 06:40:19 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17614
+2024-06-10 06:40:19 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=0688abcf62744fcab19d51aa8f65adfe HTTP/1.1" 200 9107
+2024-06-10 06:40:20 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17614
+2024-06-10 06:40:21 PM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=48c682127fd84fcb938b47e5647aa566 HTTP/1.1" 200 9107
+2024-06-10 06:40:26 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1407
+2024-06-10 06:41:10 PM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56446
+2024-06-10 06:41:10 PM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-10 06:41:10 PM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-10 06:41:11 PM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-10 06:41:15 PM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 1448
+2024-06-11 10:18:58 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 56673
+2024-06-11 10:18:58 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 304 0
+2024-06-11 10:18:58 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:18:58 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:19:08 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 43409
+2024-06-11 10:19:11 AM - django.server - INFO - "GET /gstdelete/136 HTTP/1.1" 302 0
+2024-06-11 10:19:11 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 43291
+2024-06-11 10:19:13 AM - django.server - INFO - "GET /gstdelete/137 HTTP/1.1" 302 0
+2024-06-11 10:19:14 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 42927
+2024-06-11 10:19:15 AM - django.server - INFO - "GET /gstdelete/138 HTTP/1.1" 302 0
+2024-06-11 10:19:15 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 42563
+2024-06-11 10:19:17 AM - django.server - INFO - "GET /gstdelete/139 HTTP/1.1" 302 0
+2024-06-11 10:19:17 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 42199
+2024-06-11 10:19:18 AM - django.server - INFO - "GET /gstdelete/140 HTTP/1.1" 302 0
+2024-06-11 10:19:18 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 41835
+2024-06-11 10:19:19 AM - django.server - INFO - "GET /gstdelete/141 HTTP/1.1" 302 0
+2024-06-11 10:19:19 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 41471
+2024-06-11 10:19:21 AM - django.server - INFO - "GET /gstdelete/142 HTTP/1.1" 302 0
+2024-06-11 10:19:21 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 41107
+2024-06-11 10:19:22 AM - django.server - INFO - "GET /gstdelete/143 HTTP/1.1" 302 0
+2024-06-11 10:19:22 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 40743
+2024-06-11 10:19:23 AM - django.server - INFO - "GET /gstdelete/144 HTTP/1.1" 302 0
+2024-06-11 10:19:24 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 40379
+2024-06-11 10:19:25 AM - django.server - INFO - "GET /gstdelete/145 HTTP/1.1" 302 0
+2024-06-11 10:19:25 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 40015
+2024-06-11 10:19:26 AM - django.server - INFO - "GET /gstdelete/146 HTTP/1.1" 302 0
+2024-06-11 10:19:26 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 39651
+2024-06-11 10:19:27 AM - django.server - INFO - "GET /gstdelete/147 HTTP/1.1" 302 0
+2024-06-11 10:19:27 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 39288
+2024-06-11 10:19:28 AM - django.server - INFO - "GET /gstdelete/148 HTTP/1.1" 302 0
+2024-06-11 10:19:28 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38925
+2024-06-11 10:19:29 AM - django.server - INFO - "GET /gstdelete/149 HTTP/1.1" 302 0
+2024-06-11 10:19:29 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38562
+2024-06-11 10:19:30 AM - django.server - INFO - "GET /gstdelete/150 HTTP/1.1" 302 0
+2024-06-11 10:19:30 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 38199
+2024-06-11 10:19:31 AM - django.server - INFO - "GET /gstdelete/151 HTTP/1.1" 302 0
+2024-06-11 10:19:31 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37835
+2024-06-11 10:19:32 AM - django.server - INFO - "GET /gstdelete/152 HTTP/1.1" 302 0
+2024-06-11 10:19:32 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37471
+2024-06-11 10:19:32 AM - django.server - INFO - "GET /gstdelete/153 HTTP/1.1" 302 0
+2024-06-11 10:19:33 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37106
+2024-06-11 10:19:33 AM - django.server - INFO - "GET /gstdelete/154 HTTP/1.1" 302 0
+2024-06-11 10:19:34 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36739
+2024-06-11 10:19:34 AM - django.server - INFO - "GET /gstdelete/155 HTTP/1.1" 302 0
+2024-06-11 10:19:34 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36374
+2024-06-11 10:19:35 AM - django.server - INFO - "GET /gstdelete/156 HTTP/1.1" 302 0
+2024-06-11 10:19:36 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36012
+2024-06-11 10:19:36 AM - django.server - INFO - "GET /gstdelete/157 HTTP/1.1" 302 0
+2024-06-11 10:19:36 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35647
+2024-06-11 10:19:37 AM - django.server - INFO - "GET /gstdelete/158 HTTP/1.1" 302 0
+2024-06-11 10:19:37 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35282
+2024-06-11 10:19:38 AM - django.server - INFO - "GET /gstdelete/159 HTTP/1.1" 302 0
+2024-06-11 10:19:38 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34918
+2024-06-11 10:19:39 AM - django.server - INFO - "GET /gstdelete/160 HTTP/1.1" 302 0
+2024-06-11 10:19:39 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34553
+2024-06-11 10:19:40 AM - django.server - INFO - "GET /gstdelete/161 HTTP/1.1" 302 0
+2024-06-11 10:19:40 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34185
+2024-06-11 10:19:41 AM - django.server - INFO - "GET /gstdelete/162 HTTP/1.1" 302 0
+2024-06-11 10:19:41 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33816
+2024-06-11 10:19:42 AM - django.server - INFO - "GET /gstdelete/163 HTTP/1.1" 302 0
+2024-06-11 10:19:42 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33447
+2024-06-11 10:19:43 AM - django.server - INFO - "GET /gstdelete/164 HTTP/1.1" 302 0
+2024-06-11 10:19:43 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33079
+2024-06-11 10:19:44 AM - django.server - INFO - "GET /gstdelete/165 HTTP/1.1" 302 0
+2024-06-11 10:19:45 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32712
+2024-06-11 10:19:45 AM - django.server - INFO - "GET /gstdelete/166 HTTP/1.1" 302 0
+2024-06-11 10:19:45 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32347
+2024-06-11 10:19:46 AM - django.server - INFO - "GET /gstdelete/167 HTTP/1.1" 302 0
+2024-06-11 10:19:46 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31985
+2024-06-11 10:19:47 AM - django.server - INFO - "GET /gstdelete/168 HTTP/1.1" 302 0
+2024-06-11 10:19:47 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31621
+2024-06-11 10:19:48 AM - django.server - INFO - "GET /gstdelete/169 HTTP/1.1" 302 0
+2024-06-11 10:19:48 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31257
+2024-06-11 10:19:49 AM - django.server - INFO - "GET /gstdelete/170 HTTP/1.1" 302 0
+2024-06-11 10:19:49 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30892
+2024-06-11 10:19:50 AM - django.server - INFO - "GET /gstdelete/171 HTTP/1.1" 302 0
+2024-06-11 10:19:50 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30524
+2024-06-11 10:19:51 AM - django.server - INFO - "GET /gstdelete/135 HTTP/1.1" 302 0
+2024-06-11 10:19:52 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-11 10:19:57 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54530
+2024-06-11 10:19:57 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:19:57 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:20:00 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:20:15 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 119
+2024-06-11 10:20:29 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54861
+2024-06-11 10:20:29 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:20:29 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:20:32 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:20:38 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 155
+2024-06-11 10:21:01 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54905
+2024-06-11 10:21:01 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:21:01 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:21:03 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:21:07 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 191
+2024-06-11 10:21:38 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54958
+2024-06-11 10:21:38 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:21:38 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:21:42 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:21:47 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 227
+2024-06-11 10:23:36 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55048
+2024-06-11 10:23:36 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:23:36 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:23:39 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:23:44 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 262
+2024-06-11 10:24:27 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55097
+2024-06-11 10:24:27 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:24:27 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:24:29 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:24:34 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 299
+2024-06-11 10:24:48 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55155
+2024-06-11 10:24:48 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:24:48 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:24:50 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:24:54 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 335
+2024-06-11 10:25:17 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55184
+2024-06-11 10:25:17 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:25:17 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:25:18 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:25:23 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 371
+2024-06-11 10:25:43 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55235
+2024-06-11 10:25:43 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:25:43 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:25:46 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:25:51 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 406
+2024-06-11 10:26:00 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55284
+2024-06-11 10:26:00 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:26:00 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:26:04 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55024
+2024-06-11 10:26:04 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:26:04 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55024
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 10:26:07 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:26:07 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 10:26:07 AM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 10:26:31 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55022
+2024-06-11 10:26:31 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:26:31 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:26:34 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:26:38 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 441
+2024-06-11 10:27:29 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55074
+2024-06-11 10:27:29 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:27:29 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:27:30 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:27:34 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 477
+2024-06-11 10:28:33 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55376
+2024-06-11 10:28:33 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:28:33 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55116
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 10:28:34 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:28:34 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 10:28:34 AM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55116
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/css/style.css HTTP/1.1" 200 1070
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/css/dstyle.css HTTP/1.1" 200 34057
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/images/logo.jpg HTTP/1.1" 200 28948
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/images/CosmusTechLogo_White-p-1600.png HTTP/1.1" 200 62741
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/js/script.js HTTP/1.1" 200 5870
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+2024-06-11 10:28:37 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:28:37 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+2024-06-11 10:28:37 AM - django.server - INFO - "GET /static/images/favicon.ico HTTP/1.1" 200 15406
+2024-06-11 10:29:03 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55106
+2024-06-11 10:29:03 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:29:03 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:29:06 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:29:09 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 512
+2024-06-11 10:29:21 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55427
+2024-06-11 10:29:21 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:29:21 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:29:22 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:29:26 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 547
+2024-06-11 10:30:15 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55474
+2024-06-11 10:30:15 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:30:15 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:30:51 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55210
+2024-06-11 10:30:51 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:30:51 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:30:53 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:30:56 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 583
+2024-06-11 10:31:47 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55689
+2024-06-11 10:31:47 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:31:47 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:31:49 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:31:53 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 620
+2024-06-11 10:32:25 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55707
+2024-06-11 10:32:25 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:32:25 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:32:28 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:32:32 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17615
+2024-06-11 10:32:32 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=c064f116cc464fb99c533e81da8438bc HTTP/1.1" 200 9107
+2024-06-11 10:32:34 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 17615
+2024-06-11 10:32:34 AM - django.server - INFO - "GET /__debug__/history_sidebar/?store_id=d9008fe701964c0fb71371f49067531b HTTP/1.1" 200 9107
+2024-06-11 10:35:05 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55325
+2024-06-11 10:35:05 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:35:05 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:35:07 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:35:10 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 656
+2024-06-11 10:38:18 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55640
+2024-06-11 10:38:18 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:38:18 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:39:00 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55378
+2024-06-11 10:39:01 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:39:01 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:39:25 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55372
+2024-06-11 10:39:25 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:39:25 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:39:26 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:39:29 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 693
+2024-06-11 10:39:41 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55685
+2024-06-11 10:39:41 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:39:41 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:39:44 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:39:49 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 730
+2024-06-11 10:40:18 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55750
+2024-06-11 10:40:19 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:40:19 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:40:20 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:40:23 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 768
+2024-06-11 10:40:34 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55804
+2024-06-11 10:40:34 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:40:34 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:40:35 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:40:38 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 805
+2024-06-11 10:42:00 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55962
+2024-06-11 10:42:00 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:42:00 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:42:03 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37190
+2024-06-11 10:42:04 AM - django.server - INFO - "GET /gstdelete/173 HTTP/1.1" 302 0
+2024-06-11 10:42:05 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 37072
+2024-06-11 10:42:06 AM - django.server - INFO - "GET /gstdelete/174 HTTP/1.1" 302 0
+2024-06-11 10:42:06 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36708
+2024-06-11 10:42:07 AM - django.server - INFO - "GET /gstdelete/175 HTTP/1.1" 302 0
+2024-06-11 10:42:07 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 36344
+2024-06-11 10:42:08 AM - django.server - INFO - "GET /gstdelete/176 HTTP/1.1" 302 0
+2024-06-11 10:42:08 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35981
+2024-06-11 10:42:09 AM - django.server - INFO - "GET /gstdelete/177 HTTP/1.1" 302 0
+2024-06-11 10:42:09 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35616
+2024-06-11 10:42:10 AM - django.server - INFO - "GET /gstdelete/178 HTTP/1.1" 302 0
+2024-06-11 10:42:10 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 35252
+2024-06-11 10:42:11 AM - django.server - INFO - "GET /gstdelete/179 HTTP/1.1" 302 0
+2024-06-11 10:42:11 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34888
+2024-06-11 10:42:12 AM - django.server - INFO - "GET /gstdelete/180 HTTP/1.1" 302 0
+2024-06-11 10:42:12 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34525
+2024-06-11 10:42:13 AM - django.server - INFO - "GET /gstdelete/181 HTTP/1.1" 302 0
+2024-06-11 10:42:13 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 34162
+2024-06-11 10:42:14 AM - django.server - INFO - "GET /gstdelete/172 HTTP/1.1" 302 0
+2024-06-11 10:42:14 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33798
+2024-06-11 10:42:15 AM - django.server - INFO - "GET /gstdelete/183 HTTP/1.1" 302 0
+2024-06-11 10:42:15 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33434
+2024-06-11 10:42:16 AM - django.server - INFO - "GET /gstdelete/182 HTTP/1.1" 302 0
+2024-06-11 10:42:16 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 33071
+2024-06-11 10:42:17 AM - django.server - INFO - "GET /gstdelete/185 HTTP/1.1" 302 0
+2024-06-11 10:42:17 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32707
+2024-06-11 10:42:18 AM - django.server - INFO - "GET /gstdelete/184 HTTP/1.1" 302 0
+2024-06-11 10:42:18 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 32345
+2024-06-11 10:42:18 AM - django.server - INFO - "GET /gstdelete/187 HTTP/1.1" 302 0
+2024-06-11 10:42:18 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31982
+2024-06-11 10:42:19 AM - django.server - INFO - "GET /gstdelete/186 HTTP/1.1" 302 0
+2024-06-11 10:42:19 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31618
+2024-06-11 10:42:20 AM - django.server - INFO - "GET /gstdelete/189 HTTP/1.1" 302 0
+2024-06-11 10:42:20 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 31253
+2024-06-11 10:42:21 AM - django.server - INFO - "GET /gstdelete/188 HTTP/1.1" 302 0
+2024-06-11 10:42:21 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30890
+2024-06-11 10:42:21 AM - django.server - INFO - "GET /gstdelete/191 HTTP/1.1" 302 0
+2024-06-11 10:42:22 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30526
+2024-06-11 10:42:22 AM - django.server - INFO - "GET /gstdelete/190 HTTP/1.1" 302 0
+2024-06-11 10:42:23 AM - django.server - INFO - "GET /gstcreate/ HTTP/1.1" 200 30161
+2024-06-11 10:42:26 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 54700
+2024-06-11 10:42:26 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:42:26 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:42:27 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:42:32 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 118
+2024-06-11 10:43:18 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55006
+2024-06-11 10:43:18 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:43:18 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:43:21 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:43:24 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 154
+2024-06-11 10:43:35 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55041
+2024-06-11 10:43:35 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:43:35 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:43:37 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:43:39 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 189
+2024-06-11 10:44:19 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55012
+2024-06-11 10:44:19 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:44:19 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:44:22 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:44:24 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 224
+2024-06-11 10:45:31 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55168
+2024-06-11 10:45:31 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:45:31 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30187
+2024-06-11 10:45:32 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:45:35 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 259
+2024-06-11 10:46:38 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55214
+2024-06-11 10:46:38 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:46:38 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:46:39 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:46:41 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 294
+2024-06-11 10:46:55 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55364
+2024-06-11 10:46:55 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:46:55 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:46:56 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17026
+2024-06-11 10:47:00 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 330
+2024-06-11 10:47:04 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17319
+2024-06-11 10:47:08 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 365
+2024-06-11 10:48:43 AM - django.server - INFO - "GET /itemcreate/ HTTP/1.1" 200 55128
+2024-06-11 10:48:43 AM - django.request - WARNING - Not Found: /itemcreate/...
+2024-06-11 10:48:43 AM - django.server - WARNING - "GET /itemcreate/... HTTP/1.1" 404 30188
+2024-06-11 10:48:44 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17027
+2024-06-11 10:48:49 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 401
+2024-06-11 10:48:59 AM - django.server - INFO - "GET /gstpopup/ HTTP/1.1" 200 17319
+2024-06-11 10:49:03 AM - django.server - INFO - "POST /gstpopup/ HTTP/1.1" 200 437
+>>>>>>> c4be137c6046cb770f6064c34ed0076a083d4167

@@ -2162,6 +2162,7 @@ def gst_create_update(request, pk = None):
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
+
             if pk:
                 messages.success(request,'GST updated successfully.')
             else:
@@ -2170,12 +2171,14 @@ def gst_create_update(request, pk = None):
             if 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
                 return redirect('gst-create-list')
 
-            elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
-                
-                gst_updated = gst.objects.all().values('id', 'gst_percentage')  # all id and gst_percentage 
-                
-                return JsonResponse({"gst_updated": list(gst_updated)})  # list converts the queryset to a list
+            elif template_name == 'accounts/gst_popup.html':
+                # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
+                gst_updated = gst.objects.all().values('id', 'gst_percentage')
+
+                return JsonResponse({"gst_updated": list(gst_updated)})
         else:
+            print('TESTT')
+            print(form.errors)
             messages.success(request,'An error occured.')
 
     return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
