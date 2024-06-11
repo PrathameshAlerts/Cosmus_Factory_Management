@@ -56,6 +56,8 @@ urlpatterns = [
     path('itemcreate/',views.item_create , name= 'item-create'),
     path('itemlist/',views.item_list ,name= 'item-list'),
     path('itemdelete/<int:pk>',views.item_delete , name= 'item-delete'),
+
+    
     path('item_create_dropdown_refresh_ajax/',views.item_create_dropdown_refresh_ajax, name = 'item-create-dropdown-refresh-ajax'),
     path('itemcreatecloneajax/',views.item_clone_ajax , name= 'item-create-clone-ajax'),
 

@@ -921,7 +921,9 @@ def item_delete(request, pk):
 
 
 def item_create_dropdown_refresh_ajax(request):
-    return JsonResponse('test')
+    print(request.GET.get('gst_change'))
+    print('TEST')
+    return JsonResponse('TEST')
 
 #_____________________Item-Views-end_______________________
 
@@ -2159,6 +2161,8 @@ def gst_create_update(request, pk = None):
         form = gst_form(request.POST, instance = instance)
         if form.is_valid():
             form.save()
+            print(request.POST)
+            print(template_name)
             if pk:
                 messages.success(request,'GST updated successfully.')
             else:
@@ -2167,9 +2171,14 @@ def gst_create_update(request, pk = None):
             if 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
                 return redirect('gst-create-list')
 
-            elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
-                return HttpResponse('<script>window.close();</script>')
+            elif template_name == 'accounts/gst_popup.html':
+                # return HttpResponse('<script>window.close();</script>')
+                gst_updated = gst.objects.all().values('id', 'gst_percentage')
+                print('list',{"gst_updated": list(gst_updated)})
+                return JsonResponse({"gst_updated": list(gst_updated)})
         else:
+            print('TESTT')
+            print(form.errors)
             messages.success(request,'An error occured.')
 
     return render(request,template_name,{'form' : form, 'title':title,'gsts':gsts})

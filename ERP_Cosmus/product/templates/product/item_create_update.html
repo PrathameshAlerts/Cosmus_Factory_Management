@@ -276,6 +276,30 @@
 
 {% endif %}
 </div>
+<script>
+  window.addEventListener('message', function(event) {
+
+    const gstData = event.data;
+    
+    const gstDatas = gstData.gst_updated;
+    console.log("gstData",gstDatas.length);
+    var gst_data = $('#id_Item_Creation_GST');
+    gst_data.empty();
+    gst_data.append('<option value="">Select GST</option>');
+
+
+for(var i = 0; i < gstDatas.length; i++){
+
+   for( key in gstDatas[i]){
+        if (gstDatas[i].hasOwnProperty(key)) {  // Ensure the key is a direct property of the object 
+            gst_data.append('<option value="'+gstDatas[i][key]+'">'+gstDatas[i][key] +'</option>'); // Log the value
+        }
+      }
+  }    
+});
+
+
+  </script>
 
 
 <script>
