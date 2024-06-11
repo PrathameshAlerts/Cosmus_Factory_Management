@@ -676,13 +676,15 @@ $(document).on('click', '.product2Select',function(){
 });
 
 function receiveData(openingValue){
-     var totalForm = document.getElementById('id_shades-TOTAL_FORMS');
-    console.log(totalForm)
+     //var itemName = document.getElementById('shadeTable').closest('tr').querySelector('select[name^="shades-"]').getAttribute('name');
+     
+      //var nameValue = itemName.split('-')[1];
+   // console.log(nameValue)
       var popupData = openingValue;
       console.log(popupData)
-      for(var i = 0 ; i<totalForm ; i++){
-        document.getElementById('shades-'+i+'-openingValue').value = popupData;
-      }
+
+    //     document.getElementById('shades-'+ i+'-openingValue').value = popupData;
+      
       
      
     }
