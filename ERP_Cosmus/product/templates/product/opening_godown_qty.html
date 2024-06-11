@@ -150,25 +150,26 @@
 
             var newData = {};
             var parentKey = document.getElementById('id_parentId').value;
+            var primaryKey = document.getElementById('id_primary_key').value;
+                console.log('primaryKey',primaryKey);
             
             for(var i = 0; i < newForm; i++){
                 var Row = 'childRow_' + i;
                 var godownData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_godown_id').value;
                 var qtyData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_quantity').value;
                 var rateData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_rate').value;
-                var primaryKey = document.getElementById('id_primary_key').value;
-                console.log('primaryKey',primaryKey);
+            
 
-                if(primaryKey == '' || primaryKey == "None"){
+               
                 newData[Row] = { godownData , qtyData , rateData }
-                 }
+               
             }
-       
+            if(primaryKey == '' || primaryKey == "None"){
             var newValueData = {
                 parentKey: parentKey,
                 newData: newData
             }
-           
+            }
             var openingValue = JSON.stringify(newValueData);
             console.log(openingValue);
             window.opener.receiveData(openingValue);
