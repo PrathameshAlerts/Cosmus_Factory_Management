@@ -684,16 +684,8 @@ $(document).on('click', '.product2Select',function(){
 function receiveData(openingValue){
   var popupData = JSON.parse(openingValue);
   var primeKey = popupData.parentKey;
-
-
- 
-      console.log(popupData)
-      console.log(primeKey)
-      
-       var openingData= document.getElementById('shades-'+primeKey+'-openingValue')
-       openingData.value = JSON.stringify(popupData); // Set the value of the input field to the popupData;
-      
-     
+  var openingData= document.getElementById('shades-'+primeKey+'-openingValue')
+  openingData.value = JSON.stringify(popupData); // Set the value of the input field to the popupData;   
     }
 </script>
 
@@ -701,12 +693,14 @@ function receiveData(openingValue){
   $(document).ready(function(){
     var newPopup = null;
     var itemValue;
+    var itemId;
 
     $(document).on ('click','button.itemQty',function(button){
       var itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
        itemValue = itemId.split('-')[1];
       var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
       var primary_key_id = primaryKey.value;
+     
     
       if (newPopup === null || newPopup.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
@@ -716,19 +710,35 @@ function receiveData(openingValue){
         type: 'GET',
         data:{
           itemValue:itemValue,
-          primary_key_id:primary_key_id
+          primary_key_id:primary_key_id,
+        
         },
         success: function (response){
           console.log('Data sent successfully')
+          var itemValues  = itemId.split('-')[1];
+          var qtyData =document.getElementById('shades-'+itemValues+'-openingValue').value
+
+      
+          console.log('qtyData',qtyData)
+          if(response.popup_url === '/openinggodownquantity/'+itemValue){
+            const url = response.popup_url; 
+            const newUrl = encodeURIComponent(qtyData);
+            const fullUrl = `${url}${newUrl}`;
+           
+            popupWindow = window.open(fullUrl , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+          }else{
           popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-         
+          }
         },
         error: function (xhr, errmsg, err) {
-                            console.log('Error getting popup URL');
+               console.log('Error getting popup URL');
         }
       })
       }
     })
+
+
+    
 
   })
   
