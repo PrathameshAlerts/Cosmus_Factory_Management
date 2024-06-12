@@ -5,7 +5,6 @@ like GitsApp
 
 """
 
-# autopush test
 <!DOCTYPE html>
 <html>
 <head>
