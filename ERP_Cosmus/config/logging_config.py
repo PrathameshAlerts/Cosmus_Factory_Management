@@ -40,7 +40,7 @@ LOGGING = {
 
     'loggers': {
         'django': {
-            'handlers': ['django_file'],          # 'console',
+            'handlers': ['django_file','console'],
             'level': 'INFO',
             'propagate': False,
         },
