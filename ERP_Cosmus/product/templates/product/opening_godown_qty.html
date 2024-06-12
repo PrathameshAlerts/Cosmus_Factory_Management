@@ -8,7 +8,7 @@
 {{parent_row_id}}
 {{primary_key}}
 
-<form action="" method="POST" onsubmit="openData()">
+<form action="" method="POST">
     {% csrf_token %}
     <table id="tableItem" class="table table-striped table-hover">
         <thead>
@@ -22,11 +22,10 @@
         <tbody class="mainTableList">
 
             {{formset.management_form}}
-
             {% for form in formset %}
-         
+            {{ form.id }}
             <tr>
-                {{ form.id }}
+               
                 <input type="hidden" name="parentId" value="{{parent_row_id}}" id="id_parentId">
                 <input type="hidden" name="primary_key" value="{{primary_key}}" id="id_primary_key">
                 <td>
@@ -61,8 +60,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <button type="button" class="create-btn" id="addRow" onclick="openData()" >Add +</button>
-    <input type="submit" class="add_btn submitBtn" >
+    <button type="button" class="create-btn" id="addRow" >Add +</button>
+    <input type="submit" class="add_btn" id="submitButton">
 
 </form>
 
@@ -144,10 +143,13 @@
 
         
     });
-    function openData(){
-            var newForm = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS').value;
-           
 
+    var primaryKey = document.getElementById('id_primary_key').value;
+    console.log('primaryKey',primaryKey);
+
+    if(primaryKey == '' || primaryKey == "None"){
+    document.getElementById('submitButton').addEventListener('click' , function(){
+        var newForm = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS').value;
             var newData = {};
             var parentKey = document.getElementById('id_parentId').value;
            
@@ -157,12 +159,11 @@
                 var godownData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_godown_id').value;
                 var qtyData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_quantity').value;
                 var rateData = document.getElementById('id_opening_shade_godown_quantity_set-'+i+'-opening_rate').value;
-                var primaryKey = document.getElementById('id_primary_key').value;
-                console.log('primaryKey',primaryKey);
+             
 
-                if(primaryKey == '' || primaryKey == "None"){
+               
                 newData[Row] = { godownData , qtyData , rateData }
-            }
+        
            
                 
             }
@@ -175,8 +176,13 @@
             var openingValue = JSON.stringify(newValueData);
             console.log(openingValue);
             window.opener.receiveData(openingValue);
+      
             window.close();
-        }
+      
+    })
+}else{
+   
+}
 
 </script>
 
