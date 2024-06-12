@@ -718,10 +718,14 @@ function receiveData(openingValue){
           var itemValues  = itemId.split('-')[1];
           var qtyData =document.getElementById('shades-'+itemValues+'-openingValue').value
 
-          var newUrl = response.popup_url
+      
           console.log('qtyData',qtyData)
           if(response.popup_url === '/openinggodownquantity/'+itemValue){
-            popupWindow = window.open(response.popup_url + qtyData , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+            const url = response.popup_url; 
+            const newUrl = encodeURIComponent(qtyData);
+            const fullUrl = `${url}${newUrl}`;
+           
+            popupWindow = window.open(fullUrl , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }else{
           popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }
