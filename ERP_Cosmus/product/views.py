@@ -794,7 +794,57 @@ def item_edit(request,pk):
 
         if form.is_valid() and formset.is_valid():
             form.save()
-            formset.save()
+
+            for form in formset.deleted_forms:
+                if form.instance.pk:
+                    form.instance.delete()
+
+            for form in formset:
+                if form.is_valid():
+                    if form.instance.pk:
+                        form.save()
+
+                    else:  
+                        if not form.cleaned_data.get('DELETE'): # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
+                            shade_form_instance = form.save(commit=False)
+                            shade_form_instance.save()
+
+                            form_prefix_number = form.prefix[-1] # gives the prefix number of the current iteration of the form
+                            opening_godown_quantity = request.POST.get(f'shades-{form_prefix_number}-openingValue')
+
+                            if opening_godown_quantity != '':
+                                opening_godown_quantity_dict = json.loads(opening_godown_quantity)
+                                opening_godown_qty_data = opening_godown_quantity_dict.get('newData')
+                                
+                                item_godown_formset_data = {}
+                                for key , value in opening_godown_qty_data.items():
+                                    form_set_id = key.split('_')[-1]
+
+                                    new_data_get = opening_godown_qty_data.get(key)
+                                    print(new_data_get)
+
+                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-TOTAL_FORMS'] = str(len(opening_godown_qty_data))
+                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-INITIAL_FORMS'] =  str(0)
+                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-MIN_NUM_FORMS'] =  str(0)
+                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-MAX_NUM_FORMS'] =  str(1000)
+                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_godown_id'] = new_data_get.get('godownData')
+                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_quantity'] = new_data_get.get('qtyData')
+                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_rate'] = new_data_get.get('rateData')
+                                
+                                new_godown_opening_formsets = OpeningShadeFormSetupdate(item_godown_formset_data, prefix='opening_shade_godown_quantity_set')
+
+                                for form in new_godown_opening_formsets:
+                                    if form.is_valid():
+                                        form_instance = form.save(commit = False)
+                                        
+                                        form_instance.opening_purchase_voucher_godown_item = shade_form_instance
+                                        form_instance.save()
+                                
+                                    
+
+                            form_instance = form.save(commit = False)
+                            form_instance.save()
+
             messages.success(request,'Item updated successfully')
             return redirect('item-list')
         
@@ -847,7 +897,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             total_forms = len(initial_data_backend)
             opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)            
             formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend,prefix = "opening_shade_godown_quantity_set")
-            print(formset.forms)
+            
 
         else:
             opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=1)            
@@ -860,32 +910,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                     if form.is_valid():
                         form.save()
 
-        else:
-            # change or remove this part
-            total_forms = int(request.POST.get('opening_shade_godown_quantity_set-TOTAL_FORMS'))
-            all_rate = request.POST.get('opening_shade_godown_quantity_set-0-opening_rate')
-            
-            new_row = {}
-            for form_prefix_id in range(total_forms):
-                
-                godown_id =  f"opening_shade_godown_quantity_set-{form_prefix_id}-opening_godown_id"
-                quantity =  f"opening_shade_godown_quantity_set-{form_prefix_id}-opening_quantity"
-
-                difference_quantity =  f"opening_shade_godown_quantity_set-{form_prefix_id}-old_opening_quantity"
-
-                godown_id_get = request.POST.get(godown_id)
-                quantity = request.POST.get(quantity)
-                difference_quantity_get = request.POST.get(difference_quantity)
-
-                new_row[f'row_{form_prefix_id}'] = {'gid':godown_id_get,'quantity':quantity,"updateqty":difference_quantity_get} 
-
-            data_to_store = {'parent_row_prefix_id': parent_row_id, 'all_rate':all_rate, 'new_row':new_row}
-            # Convert the data to JSON string
-            
-            data_json_string = json.dumps(data_to_store)
-            
-            # Store the JSON string in the session
-            request.session['openingquantitytemp'] = data_json_string
+        
 
 
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key})
@@ -1789,7 +1814,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                     for godown_form in godown_items_formset:
                                         if godown_form.is_valid():
                                             godown_instance = godown_form.save(commit = False)
-                                            godown_instance.purchase_voucher_godown_item = items_instance #save form to permanant table with link to parent table 
+                                            godown_instance.purchase_voucher_godown_item = items_instance #save form to permanant table with link to parent table pk
                                             godown_instance.save()
                                             saved_data_to_delete = saved_data_to_delete + 1
                                             print('Data-saved')
