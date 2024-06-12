@@ -802,8 +802,10 @@ def item_edit(request,pk):
             for form in formset:
                 if form.is_valid():
                     if form.instance.pk:
-                        form.save()
-
+                        old_opening_quantity = form.instance.opening_quantity
+                        form_instance = form.save(commit=False)
+                        form_instance.old_opening_g_quantity = old_opening_quantity
+                        form_instance.save()
                     else:  
                         if not form.cleaned_data.get('DELETE'): # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
                             shade_form_instance = form.save(commit=False)
@@ -831,6 +833,7 @@ def item_edit(request,pk):
                                     item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_quantity'] = new_data_get.get('qtyData')
                                     item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_rate'] = new_data_get.get('rateData')
                                 
+                                #formset
                                 new_godown_opening_formsets = OpeningShadeFormSetupdate(item_godown_formset_data, prefix='opening_shade_godown_quantity_set')
 
                                 for form in new_godown_opening_formsets:
@@ -1992,7 +1995,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
                         items.extra_data_old_shade = old_item_shade
                         items.delete()
 
-            formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
+            formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance ,prefix='shade_godown_items_set')
             
             if formset.is_valid():
                 for form in formset.deleted_forms:

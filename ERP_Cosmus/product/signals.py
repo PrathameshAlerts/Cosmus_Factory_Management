@@ -1,6 +1,7 @@
+
 from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
-from .models import Ledger, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
+from .models import Ledger, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, opening_shade_godown_quantity, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
 import logging
 
 logger = logging.getLogger('product_signals')
@@ -118,11 +119,61 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
 # signal to delete  0 quantity on update of model instance 
 @receiver(post_save, sender=item_godown_quantity_through_table)
 def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
+    
     if not created:  # remove this if statement if 0 quantity values are creating issue on creating new model instances
         quantity_after_save = instance.quantity
         if quantity_after_save == 0:
             logger.info(f"Item Godown quantity instance deleted as quantity is 0, id - {instance.id}, - {instance.godown_name.godown_name_raw}, - {instance.Item_shade_name.item_shade_name}")
             instance.delete()
+
+
+
+
+@receiver(post_save, sender= opening_shade_godown_quantity)
+def created_updated_opening_item_godown(sender, instance, created, **kwargs):
+    opening_godown = instance.opening_godown_id
+    opening_rate = instance.opening_rate
+    item_shade = instance.opening_purchase_voucher_godown_item.id
+
+    
+    if created:
+        opening_quantity_created = True
+        opening_quantity = instance.opening_quantity
+
+    if not created:
+        opening_quantity_created = False
+        old_opening_quantity = getattr(instance, 'old_opening_g_quantity', None)
+
+        if old_opening_quantity is not None:
+            opening_quantity = instance.opening_quantity - old_opening_quantity
+        
+    
+
+
+    if opening_quantity_created:
+        obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=opening_godown,Item_shade_name=item_shade)
+
+        if created:
+            obj.quantity = opening_quantity
+            obj.item_rate = opening_rate
+
+        else:
+            obj.item_rate = opening_rate
+            obj.quantity = obj.quantity + opening_quantity
+
+    if not opening_quantity_created:
+
+        get_obj = item_godown_quantity_through_table.objects.get(godown_name=opening_godown,Item_shade_name=item_shade)
+        get_obj.item_rate = opening_rate
+        get_obj.quantity = get_obj.quantity + opening_quantity
+
+
+
+
+
+
+
+
 
 
 
