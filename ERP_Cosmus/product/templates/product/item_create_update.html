@@ -682,15 +682,16 @@ $(document).on('click', '.product2Select',function(){
 });
 
 function receiveData(openingValue){
-  var popupData = openingValue;
+  var popupData = JSON.parse(openingValue);
+  var primeKey = popupData.parentKey;
 
-  var newPopupData = popupData.parentKey;
+
  
       console.log(popupData)
-      console.log(newPopupData)
+      console.log(primeKey)
       
-        document.getElementById('shades-0-openingValue').value = popupData;
-      
+       var openingData= document.getElementById('shades-'+primeKey+'-openingValue')
+       openingData.value = JSON.stringify(popupData); // Set the value of the input field to the popupData;
       
      
     }
