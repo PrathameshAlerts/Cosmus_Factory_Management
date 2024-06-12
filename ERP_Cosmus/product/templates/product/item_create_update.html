@@ -683,8 +683,11 @@ $(document).on('click', '.product2Select',function(){
 
 function receiveData(openingValue){
   var popupData = openingValue;
+
+  var newPopupData = popupData.parentKey;
  
       console.log(popupData)
+      console.log(newPopupData)
       
         document.getElementById('shades-0-openingValue').value = popupData;
       
@@ -717,6 +720,7 @@ function receiveData(openingValue){
         success: function (response){
           console.log('Data sent successfully')
           popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+         
         },
         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
