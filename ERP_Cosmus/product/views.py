@@ -819,6 +819,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
         shade_instance = get_object_or_404(item_color_shade,pk=primary_key)
         formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
 
+
     elif primary_key is None and parent_row_id is not None:
 
         loaded_data = False
