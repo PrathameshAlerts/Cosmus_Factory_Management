@@ -72,9 +72,9 @@
     <div class="d-flex mb-3">
       <label for="id_Item_shades" class="item-form">Shades:</label>
       <!-- Render reverse related relationship fields dynamically using formset factory  -->
-      <div class="mx-3 mb-3">
-        <table class="table table-striped table-hover table-responsive rounded-3" id="shadeTable">
-          <thead >
+      <div class="item-form">
+        <table class="table table-striped table-hover table-responsive table-bordered" id="shadeTable">
+          <thead class="text-nowrap">
             <tr>
               <th>Rank</th>
               <th>Name</th>
@@ -93,13 +93,11 @@
                <td>
                  <!-- item_name_rank -->
                  {% if forloop.first %}
-                 <input type="number" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
-                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}"readonly>
-                   <!-- <td>{{shade_form.item_name_rank}}</td> -->
+                 <input type="number" class="purchase-mark" name="{{ shade_form.prefix }}-item_name_rank"  id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank }}"readonly>
+                
                  {% else %}
-                  <input type="number" class="item-select" name="{{ shade_form.prefix }}-item_name_rank"
-                   id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank | default_if_none:''}}">
-                   <!-- <td>{{shade_form.item_name_rank}}</td> -->
+                  <input type="number" class="purchase-mark" name="{{ shade_form.prefix }}-item_name_rank" id="{{ shade_form.prefix }}-item_name_rank" value="{{ shade_form.instance.item_name_rank | default_if_none:''}}">
+                  
                  {% endif %}
  
                </td>        
