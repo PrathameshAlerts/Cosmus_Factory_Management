@@ -866,6 +866,8 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     godowns =  Godown_raw_material.objects.all()
 
     formset = None
+    shade_instance = None
+    
     if parent_row_id is not None and primary_key is not None:
         shade_instance = get_object_or_404(item_color_shade,pk=primary_key)
         formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
@@ -915,7 +917,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
         
 
     print(formset)
-    return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key})
+    return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key,'shade_instance':shade_instance})
 
 
 

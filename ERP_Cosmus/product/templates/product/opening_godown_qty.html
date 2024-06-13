@@ -3,10 +3,7 @@
 
 {% block body %}
 
-<h2>Shade Name :</h2>
-
-{{parent_row_id}}
-{{primary_key}}
+<h2>Shade Name :{{shade_instance.item_shade_name}}</h2> 
 
 <form action="" method="POST">
     {% csrf_token %}
@@ -31,32 +28,28 @@
                 <td>
                     <select name="{{ form.prefix }}-opening_godown_id" id="id_{{ form.prefix }}-opening_godown_id" class="item-select godown-select">
                         {% if form.instance.id %}
-
                             <option value="{{ form.instance.opening_godown_id.id }}" selected>{{ form.instance.opening_godown_id.godown_name_raw }}</option>
-
-                            {% for godown in godowns %}
-
-                            {% if godown.id != form.instance.opening_godown_id.id %}
-                                <option value="{{ godown.id }}">{{ godown.godown_name_raw }}</option>
-                            {% endif %}
-                            
-                        {% endfor %}
-
                         {% else %}
+
                             {% if form.initial.opening_godown_id %}
-
                                 {% for godown in godowns %}
-
                                     {% if godown.id == form.initial.opening_godown_id %}
                                         <option value="{{ godown.id }}" selected>{{ godown.godown_name_raw }}</option>
                                     {% endif %}
-
                                 {% endfor %}
                             {% else %}
                                 <option value="" selected></option>
                             {% endif %}
-
                         {% endif %}
+                        
+                        {% for godown in godowns %}
+
+                            <!-- {% if not form.instance.id or godown.id != form.instance.opening_godown_id.id %} -->
+                                <option value="{{ godown.id }}">{{ godown.godown_name_raw }}</option>
+                            <!-- {% endif %} -->
+
+                        {% endfor %}
+                    </select>
 
                         
                     </select>
