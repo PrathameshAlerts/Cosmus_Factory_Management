@@ -893,7 +893,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             print(initial_data_backend)
 
             total_forms = len(initial_data_backend)
-            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)            
+            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)   # when using modelformset need to add can_delete = True or delete wont be added in for
             formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend, prefix = "opening_shade_godown_quantity_set")
             
 
