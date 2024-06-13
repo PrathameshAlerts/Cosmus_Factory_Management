@@ -14,6 +14,7 @@ from django.db.models import Q
 from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 import logging
+import urllib.parse
 from django.contrib import messages
 from django.db.models import Sum
 from openpyxl.utils import get_column_letter 
@@ -803,7 +804,6 @@ def item_edit(request,pk):
                 if form.is_valid():
                     if form.instance.pk:
                         form.save()
-
                     else:  
                         if not form.cleaned_data.get('DELETE'): # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
                             shade_form_instance = form.save(commit=False)
@@ -831,6 +831,7 @@ def item_edit(request,pk):
                                     item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_quantity'] = new_data_get.get('qtyData')
                                     item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_rate'] = new_data_get.get('rateData')
                                 
+                                #formset
                                 new_godown_opening_formsets = OpeningShadeFormSetupdate(item_godown_formset_data, prefix='opening_shade_godown_quantity_set')
 
                                 for form in new_godown_opening_formsets:
@@ -872,31 +873,28 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
     elif primary_key is None and parent_row_id is not None:
 
-        loaded_data = False
+        decoded_data = False
 
         #get data from session # change or remove this part
-        if 'openingquantitytemp' in request.session:
-            session_quantity_data = request.session['openingquantitytemp']
-            loaded_data = json.loads(session_quantity_data)
-
+        encoded_data = request.GET.get('data')
         
-        if loaded_data:
-
-            new_row_data = loaded_data.get('new_row', {})
+        if encoded_data:
+            decoded_data = json.loads(urllib.parse.unquote(encoded_data))
+            new_row_data = decoded_data.get('newData', {})
             initial_data_backend = []
-
+            print('new_row_data',new_row_data)
             
             for key, value in new_row_data.items():
                 initial_data_backend.append({
-                        "opening_godown_id": int(value['gid']),
-                        "opening_quantity": float(value['quantity']),
-                        "opening_rate": float(loaded_data['all_rate'])})
+                        "opening_godown_id": int(value['godownData']),
+                        "opening_quantity": float(value['qtyData']),
+                        "opening_rate": float(value['rateData'])})
 
-                
+            print(initial_data_backend)
 
             total_forms = len(initial_data_backend)
-            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)            
-            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend,prefix = "opening_shade_godown_quantity_set")
+            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms)            
+            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend, prefix = "opening_shade_godown_quantity_set")
             
 
         else:
@@ -908,11 +906,15 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             if formset.is_valid():
                 for form in formset:
                     if form.is_valid():
-                        form.save()
+                        print(form.cleaned_data)
+                        old_opening_quantity = form.instance.opening_quantity
+                        form_instance = form.save(commit=False)
+                        form_instance.old_opening_g_quantity = old_opening_quantity 
+                        form_instance.save()
 
         
 
-
+    print(formset)
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key})
 
 
@@ -1992,7 +1994,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
                         items.extra_data_old_shade = old_item_shade
                         items.delete()
 
-            formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance,prefix='shade_godown_items_set')
+            formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance ,prefix='shade_godown_items_set')
             
             if formset.is_valid():
                 for form in formset.deleted_forms:

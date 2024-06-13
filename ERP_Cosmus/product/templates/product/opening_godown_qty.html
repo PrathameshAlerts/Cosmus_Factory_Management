@@ -26,9 +26,9 @@
 
             {{formset.management_form}}
             {% for form in formset %}
-            {{ form.id }}
+      
             <tr>
-               
+                {{ form.id }}
                 <input type="hidden" name="parentId" value="{{parent_row_id}}" id="id_parentId">
                 <input type="hidden" name="primary_key" value="{{primary_key}}" id="id_primary_key">
                 <td>
@@ -183,4 +183,4 @@
 
 </script>
 
-{%endblock %}
+{% endblock %}
