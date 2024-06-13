@@ -722,7 +722,7 @@ function receiveData(openingValue){
           console.log('qtyData',qtyData)
           if(response.popup_url === '/openinggodownquantity/'+itemValue){
             const url = response.popup_url; 
-            const newUrl = encodeURIComponent(JSON.stringify(qtyData));
+            const newUrl = encodeURIComponent(qtyData);
             const fullUrl = `${url}?data=${newUrl}`;
 
        
