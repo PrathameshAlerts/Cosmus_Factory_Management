@@ -14,6 +14,7 @@ from django.db.models import Q
 from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 import logging
+import urllib.parse
 from django.contrib import messages
 from django.db.models import Sum
 from openpyxl.utils import get_column_letter 
@@ -875,10 +876,9 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
         loaded_data = False
 
         #get data from session # change or remove this part
-        if 'openingquantitytemp' in request.session:
-            session_quantity_data = request.session['openingquantitytemp']
-            loaded_data = json.loads(session_quantity_data)
-
+        encoded_data = "Hello%2C%20World%21"
+        decoded_data = urllib.parse.unquote(encoded_data)
+        print(decoded_data)
         
         if loaded_data:
 
