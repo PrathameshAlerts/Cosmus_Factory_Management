@@ -873,30 +873,28 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
     elif primary_key is None and parent_row_id is not None:
 
-        loaded_data = False
+        decoded_data = False
 
         #get data from session # change or remove this part
-        encoded_data = "Hello%2C%20World%21"
-        decoded_data = urllib.parse.unquote(encoded_data)
-        print(decoded_data)
+        encoded_data = request.GET.get('data')
         
-        if loaded_data:
-
-            new_row_data = loaded_data.get('new_row', {})
+        if encoded_data:
+            decoded_data = json.loads(urllib.parse.unquote(encoded_data))
+            new_row_data = decoded_data.get('newData', {})
             initial_data_backend = []
-
+            print('new_row_data',new_row_data)
             
             for key, value in new_row_data.items():
                 initial_data_backend.append({
-                        "opening_godown_id": int(value['gid']),
-                        "opening_quantity": float(value['quantity']),
-                        "opening_rate": float(loaded_data['all_rate'])})
+                        "opening_godown_id": int(value['godownData']),
+                        "opening_quantity": float(value['qtyData']),
+                        "opening_rate": float(value['rateData'])})
 
-                
+            print(initial_data_backend)
 
             total_forms = len(initial_data_backend)
-            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=total_forms)            
-            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend,prefix = "opening_shade_godown_quantity_set")
+            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms)            
+            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend, prefix = "opening_shade_godown_quantity_set")
             
 
         else:
@@ -916,7 +914,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
         
 
-
+    print(formset)
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key})
 
 
