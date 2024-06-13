@@ -722,8 +722,10 @@ function receiveData(openingValue){
           console.log('qtyData',qtyData)
           if(response.popup_url === '/openinggodownquantity/'+itemValue){
             const url = response.popup_url; 
-            const newUrl = encodeURIComponent(qtyData);
-            const fullUrl = `${url}${newUrl}`;
+            const newUrl = encodeURIComponent(JSON.stringify(qtyData));
+            const fullUrl = `${url}?data=${newUrl}`;
+
+       
            
             popupWindow = window.open(fullUrl , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }else{
