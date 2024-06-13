@@ -133,39 +133,48 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
 def created_updated_opening_item_godown(sender, instance, created, **kwargs):
     opening_godown = instance.opening_godown_id
     opening_rate = instance.opening_rate
-    item_shade = instance.opening_purchase_voucher_godown_item.id
-
+    item_shade_id = instance.opening_purchase_voucher_godown_item.id
+    
+    item_shade_instance = item_color_shade.objects.get(id = item_shade_id)
     
     if created:
         opening_quantity_created = True
         opening_quantity = instance.opening_quantity
+        print('Created',opening_godown,opening_rate,item_shade_id,opening_quantity)
 
     if not created:
         opening_quantity_created = False
         old_opening_quantity = getattr(instance, 'old_opening_g_quantity', None)
-
+        print('old-quantity',old_opening_quantity)
         if old_opening_quantity is not None:
             opening_quantity = instance.opening_quantity - old_opening_quantity
+
+        print('Not Created',opening_godown,opening_rate,item_shade_id,opening_quantity)
         
     
 
 
     if opening_quantity_created:
-        obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=opening_godown,Item_shade_name=item_shade)
+        obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=opening_godown,Item_shade_name=item_shade_instance)
 
         if created:
             obj.quantity = opening_quantity
             obj.item_rate = opening_rate
+            obj.save()
+            print(obj.quantity,opening_quantity)
+            print(obj.item_rate,opening_rate)
 
         else:
             obj.item_rate = opening_rate
             obj.quantity = obj.quantity + opening_quantity
+            obj.save()
 
     if not opening_quantity_created:
 
-        get_obj = item_godown_quantity_through_table.objects.get(godown_name=opening_godown,Item_shade_name=item_shade)
+        get_obj = item_godown_quantity_through_table.objects.get(godown_name=opening_godown,Item_shade_name=item_shade_instance)
         get_obj.item_rate = opening_rate
         get_obj.quantity = get_obj.quantity + opening_quantity
+        get_obj.save()
 
 
 

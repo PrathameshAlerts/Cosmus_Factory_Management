@@ -802,10 +802,7 @@ def item_edit(request,pk):
             for form in formset:
                 if form.is_valid():
                     if form.instance.pk:
-                        old_opening_quantity = form.instance.opening_quantity
-                        form_instance = form.save(commit=False)
-                        form_instance.old_opening_g_quantity = old_opening_quantity
-                        form_instance.save()
+                        form.save()
                     else:  
                         if not form.cleaned_data.get('DELETE'): # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
                             shade_form_instance = form.save(commit=False)
@@ -911,7 +908,11 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
             if formset.is_valid():
                 for form in formset:
                     if form.is_valid():
-                        form.save()
+                        print(form.cleaned_data)
+                        old_opening_quantity = form.instance.opening_quantity
+                        form_instance = form.save(commit=False)
+                        form_instance.old_opening_g_quantity = old_opening_quantity 
+                        form_instance.save()
 
         
 
