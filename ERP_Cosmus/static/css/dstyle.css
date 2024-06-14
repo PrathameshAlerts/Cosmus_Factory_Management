@@ -1315,30 +1315,54 @@ input[type=number] {
     padding-left: 924px;
 }
 
+/* styles.css */
 .custom-dropdown-container {
     position: relative;
-    width: 200px;
+    width: 300px;
 }
 
-/* .item-select_input{
-    max-height: 194px; 
+.search-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.custom-dropdown-options {
+    position: absolute;
+    z-index: 1000;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
     overflow-y: auto;
-    transition: max-height 0.2s ease-in-out;
-} */
+    display: none;
+}
+
+.dropdown-option {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.dropdown-option:hover,
+.dropdown-option.highlighted {
+    background-color: #5c5c5c;
+    
+}
+/* styles.css */
+
 .search-input {
     width: 300px;
     padding: 10px;
     border: 1px solid #ccc;
     margin-right: 10px;
 }
-
-
-/* .commom_items {
-    display: flex;
-    max-height: 130px; 
-    overflow-y: auto;
-    transition: max-height 0.2s ease-in-out;
-} */
 
 .itemName-div {
     padding: 7px 0 7px 10px;
@@ -1362,15 +1386,18 @@ input[type=number] {
 }
 
 .s-suggestion-container {
-    font-size: 14px;
-    height: auto;
-    display: block;
-    width: 300px;
     position: absolute;
-    background-color: #f1f1f1;
-    z-index: 9999;
-    cursor: pointer;
-    overflow-y: scroll;
+    z-index: 1000;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .s-suggestion-container::-webkit-scrollbar {
@@ -1420,9 +1447,9 @@ input[type=number] {
 }
 
 .highlight {
-    background-color:yellow;
-    color: black;
-  }
+    background-color: yellow; /* Example: Highlight with yellow background */
+    font-weight: bold; 
+}
 
   .print-button {
     padding: 0.5rem 1rem;
