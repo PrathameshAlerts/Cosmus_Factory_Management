@@ -10,13 +10,12 @@ from django.contrib.auth import  update_session_auth_hash ,authenticate # help u
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q
+from django.db.models import Q, Sum, ProtectedError
 from django.db import IntegrityError, transaction
 from django.utils.timezone import now
 import logging
 import urllib.parse
 from django.contrib import messages
-from django.db.models import Sum
 from openpyxl.utils import get_column_letter 
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
@@ -455,6 +454,7 @@ def add_product_images(request, pk):
 
 
 def add_product_video_url(request,pk):
+    print(request.POST)
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductVideoFormSet(instance= product)  # pass the instance to the formset
     if request.method == 'POST':
@@ -792,62 +792,78 @@ def item_edit(request,pk):
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES , instance=item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
+        formset.forms = [form for form in formset if form.has_changed()] # check for changed forms in shadeformset
+        try:
+            if form.is_valid() and formset.is_valid():
+                form.save()  # save the item form
 
-        if form.is_valid() and formset.is_valid():
-            form.save()
-
-            for form in formset.deleted_forms:
-                if form.instance.pk:
-                    form.instance.delete()
-
-            for form in formset:
-                if form.is_valid():
+                for form in formset.deleted_forms: # delete forms marked for deleting in shade formset
                     if form.instance.pk:
-                        form.save()
-                    else:  
-                        if not form.cleaned_data.get('DELETE'): # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
-                            shade_form_instance = form.save(commit=False)
-                            shade_form_instance.save()
+                        form.instance.delete()
 
-                            form_prefix_number = form.prefix[-1] # gives the prefix number of the current iteration of the form
-                            opening_godown_quantity = request.POST.get(f'shades-{form_prefix_number}-openingValue')
+                for form in formset: #shade form
+                    if form.is_valid():
 
-                            if opening_godown_quantity != '':
-                                opening_godown_quantity_dict = json.loads(opening_godown_quantity)
-                                opening_godown_qty_data = opening_godown_quantity_dict.get('newData')
-                                
-                                item_godown_formset_data = {}
-                                for key , value in opening_godown_qty_data.items():
-                                    form_set_id = key.split('_')[-1]
+                        if form.instance.pk: # if form has already created save it 
+                            form.save()
 
-                                    new_data_get = opening_godown_qty_data.get(key)
-                                    print(new_data_get)
+                        else:  # if form is not already created then save the form and create forms of opening godown from request.POST and save them with the form instance
+                            # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
+                            if not form.cleaned_data.get('DELETE'):
+                                shade_form_instance = form.save(commit=False) # save the form with commit = False
+                                shade_form_instance.save() # save the form
 
-                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-TOTAL_FORMS'] = str(len(opening_godown_qty_data))
-                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-INITIAL_FORMS'] =  str(0)
-                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-MIN_NUM_FORMS'] =  str(0)
-                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-MAX_NUM_FORMS'] =  str(1000)
-                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_godown_id'] = new_data_get.get('godownData')
-                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_quantity'] = new_data_get.get('qtyData')
-                                    item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_rate'] = new_data_get.get('rateData')
-                                
-                                #formset
-                                new_godown_opening_formsets = OpeningShadeFormSetupdate(item_godown_formset_data, prefix='opening_shade_godown_quantity_set')
+                                form_prefix_number = form.prefix[-1] # gives the prefix number of the current iteration of the form
+                                opening_godown_quantity = request.POST.get(f'shades-{form_prefix_number}-openingValue') # get the opening godown data of the form instance from POST request 
 
-                                for form in new_godown_opening_formsets:
-                                    if form.is_valid():
-                                        form_instance = form.save(commit = False)
-                                        
-                                        form_instance.opening_purchase_voucher_godown_item = shade_form_instance
-                                        form_instance.save()
-                                
+                                if opening_godown_quantity != '':
+                                    opening_godown_quantity_dict = json.loads(opening_godown_quantity)
+                                    opening_godown_qty_data = opening_godown_quantity_dict.get('newData')
                                     
+                                    # create forms with data from post of opening godown form
+                                    item_godown_formset_data = {}
+                                    for key , value in opening_godown_qty_data.items():
+                                        form_set_id = key.split('_')[-1]
 
-                            form_instance = form.save(commit = False)
-                            form_instance.save()
+                                        new_data_get = opening_godown_qty_data.get(key)
+                                        
+                                        item_godown_formset_data[f'opening_shade_godown_quantity_set-TOTAL_FORMS'] = str(len(opening_godown_qty_data))
+                                        item_godown_formset_data[f'opening_shade_godown_quantity_set-INITIAL_FORMS'] =  str(0)
+                                        item_godown_formset_data[f'opening_shade_godown_quantity_set-MIN_NUM_FORMS'] =  str(0)
+                                        item_godown_formset_data[f'opening_shade_godown_quantity_set-MAX_NUM_FORMS'] =  str(1000)
+                                        item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_godown_id'] = new_data_get.get('godownData')
+                                        item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_quantity'] = new_data_get.get('qtyData')
+                                        item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_rate'] = new_data_get.get('rateData')
+                                    
+                                    #formset for saving opening godown data  from request.post
+                                    new_godown_opening_formsets = OpeningShadeFormSetupdate(item_godown_formset_data, prefix='opening_shade_godown_quantity_set')
 
-            messages.success(request,'Item updated successfully')
-            return redirect('item-list')
+                                    for form in new_godown_opening_formsets:
+                                        if form.is_valid():
+                                            form_instance = form.save(commit = False)
+                                            form_instance.opening_purchase_voucher_godown_item = shade_form_instance
+                                            form_instance.save()
+                                    
+                messages.success(request,'Item updated successfully')
+                return redirect('item-list')
+            
+        except ProtectedError as e:
+            # Handle the specific ProtectedError exception
+            messages.error(request,f"Cannot delete item_color_shade due to protected foreign keys: {e}")
+            logger.error(f"Cannot delete item_color_shade due to protected foreign keys: {e}")
+            print(f"Cannot delete item_color_shade due to protected foreign keys: {e}")
+
+        except exception as e:
+             logger.error(f'An exception occured in item edit - {e}')
+             return render(request,'product/item_create_update.html',{'gsts':gsts,
+                                                                 'fab_grp':fab_grp,
+                                                                 'unit_name':unit_name,
+                                                                 'colors':colors,
+                                                                 'title':title,
+                                                                 'packaging_material_all':packaging_material_all,
+                                                                 'fab_finishes':fab_finishes,
+                                                                 'form':form,
+                                                                 'formset': formset})
         
     return render(request,'product/item_create_update.html',{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
@@ -867,56 +883,85 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
     formset = None
     shade_instance = None
-    
-    if parent_row_id is not None and primary_key is not None:
-        shade_instance = get_object_or_404(item_color_shade,pk=primary_key)
-        formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
-
-
-    elif primary_key is None and parent_row_id is not None:
-
-        decoded_data = False
-
-        #get data from session # change or remove this part
-        encoded_data = request.GET.get('data')
-        
-        if encoded_data:
-            decoded_data = json.loads(urllib.parse.unquote(encoded_data))
-            new_row_data = decoded_data.get('newData', {})
-            initial_data_backend = []
-            print('new_row_data',new_row_data)
+    try:
+        # if shade form is already created
+        if parent_row_id is not None and primary_key is not None:
+            shade_instance = get_object_or_404(item_color_shade,pk=primary_key)
+            formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
             
-            for key, value in new_row_data.items():
-                initial_data_backend.append({
-                        "opening_godown_id": int(value['godownData']),
-                        "opening_quantity": float(value['qtyData']),
-                        "opening_rate": float(value['rateData'])})
+        # if shade form is not created and opening godown is also not created 
+        elif primary_key is None and parent_row_id is not None:
 
-            print(initial_data_backend)
-
-            total_forms = len(initial_data_backend)
-            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)   # when using modelformset need to add can_delete = True or delete wont be added in for
-            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend, prefix = "opening_shade_godown_quantity_set")
+            decoded_data = False
+            encoded_data = request.GET.get('data')
             
+            # if data in url get the data saved in url params 
+            if encoded_data:
+                decoded_data = json.loads(urllib.parse.unquote(encoded_data))
+                new_row_data = decoded_data.get('newData', {})
+                initial_data_backend = []
+                
+                
+                for key, value in new_row_data.items():
+                    initial_data_backend.append({
+                            "opening_godown_id": int(value['godownData']),
+                            "opening_quantity": float(value['qtyData']),
+                            "opening_rate": float(value['rateData'])})
 
-        else:
-            opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=1, can_delete=True)            
-            formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
-    
-    if request.method == 'POST':
-        if primary_key is not None:
-            if formset.is_valid():
-                for form in formset:
-                    if form.is_valid():
-                        print(form.cleaned_data)
-                        old_opening_quantity = form.instance.opening_quantity
-                        form_instance = form.save(commit=False)
-                        form_instance.old_opening_g_quantity = old_opening_quantity 
-                        form_instance.save()
-
+                
+                # create form with that data with initial data 
+                total_forms = len(initial_data_backend)
+                opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)   # when using modelformset need to add can_delete = True or delete wont be added in for
+                formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend, prefix = "opening_shade_godown_quantity_set")
+                
+            else:
+                # if no data in url create an empty form
+                opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=1, can_delete=True)            
+                formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
         
+        if request.method == 'POST':
+            # save the data only if shade instance is already created, if its not created then the data is sent to parent 
+            # in json format for rendering it again if required as initial data or saving it with the parent(item_edit) form submission with the shade instance
+            if primary_key is not None:
 
-    print(formset)
+                for form in formset.deleted_forms: # delete forms marked for deleting in shade formset
+                    if form.instance.pk:
+                        try:
+                            form.instance.delete()
+                        except Exception as e:
+                            # Handle other exceptions
+                            return JsonResponse({"error": str(e)}, status=400)
+
+                formset.forms = [form for form in formset if form.has_changed()] # has_changed() It will return True if any form in the formset has changed, otherwise, it returns False.
+                if formset.is_valid():
+                    for form in formset:
+                        if form.is_valid():
+                            if not form.cleaned_data.get('DELETE'):
+                                try:
+                                    old_opening_quantity = opening_shade_godown_quantity.objects.get(id= form.instance.id) # old quantity for signal purpose
+                                    form_instance = form.save(commit=False)
+
+                                    form_instance.old_opening_g_quantity = old_opening_quantity.opening_quantity # old quantity for signal purpose 
+                                    form_instance.save()
+
+                                except opening_shade_godown_quantity.DoesNotExist:
+                                    form_instance = form.save(commit=False)
+                                    form_instance.old_opening_g_quantity = 0 # set the old opening quantity to 0 if instance is not there (which can be the case if shade is created but godown opening instances are not )
+                                    form_instance.save()
+                                
+                                except Exception as e:
+                                    # Handle other exceptions
+                                    return JsonResponse({"error": str(e)}, status=400)
+
+                    return HttpResponse('<script>window.close();</script>') 
+                
+                else:
+                    logging.error(f'Error in item opening godown formset{formset.error})')
+                    return JsonResponse({"errors": formset.errors}, status=400)
+                
+    except exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return JsonResponse({"error": str(e)}, status=500)     
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key,'shade_instance':shade_instance})
 
 
