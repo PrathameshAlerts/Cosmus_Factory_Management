@@ -28,11 +28,9 @@
                         <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
                         <input type="hidden" id="primary_id" name="primary_id" value=" {{primary_key}}">
                     
-                       
-                        
                         {{ formset.management_form }}
                         
-                    {% for form in formset %}
+                        {% for form in formset %}
                     
                         <tr>
                             {{ form.id }}
