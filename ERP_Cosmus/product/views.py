@@ -929,7 +929,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                         try:
                             form.instance.delete()
                         except Exception as e:
-                            # Handle other exceptions
+
                             return JsonResponse({"error": str(e)}, status=400)
 
                 formset.forms = [form for form in formset if form.has_changed()] # has_changed() It will return True if any form in the formset has changed, otherwise, it returns False.
@@ -938,10 +938,12 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                         if form.is_valid():
                             if not form.cleaned_data.get('DELETE'):
                                 try:
-                                    old_opening_quantity = opening_shade_godown_quantity.objects.get(id= form.instance.id) # old quantity for signal purpose
+                                    old_opening_instance = opening_shade_godown_quantity.objects.get(id= form.instance.id) # old quantity for signal purpose
+                                    
                                     form_instance = form.save(commit=False)
 
-                                    form_instance.old_opening_g_quantity = old_opening_quantity.opening_quantity # old quantity for signal purpose 
+                                    form_instance.old_opening_godown_id = old_opening_instance.opening_godown_id # old godown id to check if godown has changed or not for signal
+                                    form_instance.old_opening_g_quantity = old_opening_instance.opening_quantity # old quantity for signal purpose 
                                     form_instance.save()
 
                                 except opening_shade_godown_quantity.DoesNotExist:
