@@ -116,11 +116,11 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
         instance_get.save()
     
 
-# signal to delete  0 quantity on update of model instance 
+# signal to delete record from item_godown_quantity_through_table if qty = 0 after saving the record in the table 
 @receiver(post_save, sender=item_godown_quantity_through_table)
 def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
     
-    if not created:  # remove this if statement if 0 quantity values are creating issue on creating new model instances
+    if not created:  #FIXME remove this if statement if 0 quantity values are creating issue on creating new model instances
         quantity_after_save = instance.quantity
         if quantity_after_save == 0:
             logger.info(f"Item Godown quantity instance deleted as quantity is 0, id - {instance.id}, - {instance.godown_name.godown_name_raw}, - {instance.Item_shade_name.item_shade_name}")
@@ -131,32 +131,37 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender= opening_shade_godown_quantity)
 def created_updated_opening_item_godown(sender, instance, created, **kwargs):
-    opening_godown = instance.opening_godown_id
+
+    new_opening_godown = instance.opening_godown_id
     opening_rate = instance.opening_rate
     item_shade_id = instance.opening_purchase_voucher_godown_item.id
     
     item_shade_instance = item_color_shade.objects.get(id = item_shade_id)
-    
+
+    opening_quantity_created = False
+    opening_quantity_updated = False
+
+    # if created
     if created:
         opening_quantity_created = True
         opening_quantity = instance.opening_quantity
-        print('Created',opening_godown,opening_rate,item_shade_id,opening_quantity)
 
-    if not created:
-        opening_quantity_created = False
+        print('Created',new_opening_godown,opening_rate,item_shade_id,opening_quantity)
+
+
+    # if updated 
+    elif not created:
+        opening_quantity_updated = True
         old_opening_quantity = getattr(instance, 'old_opening_g_quantity', None)
-        print('old-quantity',old_opening_quantity)
+
         if old_opening_quantity is not None:
             opening_quantity = instance.opening_quantity - old_opening_quantity
-
-        print('Not Created',opening_godown,opening_rate,item_shade_id,opening_quantity)
         
-    
 
 
+    # if created 
     if opening_quantity_created:
-        obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=opening_godown,Item_shade_name=item_shade_instance)
-
+        obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
         if created:
             obj.quantity = opening_quantity
             obj.item_rate = opening_rate
@@ -169,14 +174,79 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
             obj.quantity = obj.quantity + opening_quantity
             obj.save()
 
-    if not opening_quantity_created:
+    # if updated 
+    if opening_quantity_updated:
+        
+        old_opening_godown_id = getattr(instance, 'old_opening_godown_id', None) # old godown id to check if godown has changed or not 
+        print('GODOWN_IDS',old_opening_godown_id,new_opening_godown)
 
-        get_obj = item_godown_quantity_through_table.objects.get(godown_name=opening_godown,Item_shade_name=item_shade_instance)
-        get_obj.item_rate = opening_rate
-        get_obj.quantity = get_obj.quantity + opening_quantity
-        get_obj.save()
+        if old_opening_godown_id:
+            #
+            if old_opening_godown_id == new_opening_godown:
+                get_obj = item_godown_quantity_through_table.objects.get(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
+                
+                get_obj.item_rate = opening_rate
+                get_obj.quantity = get_obj.quantity + opening_quantity
+                get_obj.save()
+
+            #
+            elif old_opening_godown_id != new_opening_godown and instance.opening_quantity == old_opening_quantity:
+                
+                decrease_obj_q = item_godown_quantity_through_table.objects.get(godown_name=old_opening_godown_id,Item_shade_name=item_shade_instance)
+                decrease_obj_q.item_rate = opening_rate
+                decrease_obj_q.quantity = decrease_obj_q.quantity - instance.opening_quantity
+                decrease_obj_q.save()
+
+                
+                get_obj , created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
+                get_obj.item_rate = opening_rate
+                get_obj.quantity = get_obj.quantity + instance.opening_quantity
+                get_obj.save()
+        
+
+            #
+            elif old_opening_godown_id != new_opening_godown and instance.opening_quantity != old_opening_quantity:
+
+                decrease_obj_q = item_godown_quantity_through_table.objects.get(godown_name=old_opening_godown_id, Item_shade_name=item_shade_instance)
+                decrease_obj_q.item_rate = opening_rate
+                decrease_obj_q.quantity = decrease_obj_q.quantity - old_opening_quantity
+                decrease_obj_q.save()
 
 
+                get_obj , created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
+                get_obj.item_rate = opening_rate
+                get_obj.quantity = get_obj.quantity + instance.opening_quantity
+                get_obj.save()
+
+
+
+
+
+
+# decrese quantity from item_godown_quantity_through_table if opening_shade_godown_quantity instance is deleted 
+@receiver(pre_delete, sender= opening_shade_godown_quantity)
+def handle_opening_godown_deleted(sender, instance, **kwargs):
+    item_id = instance.opening_purchase_voucher_godown_item.id
+    godown_id = instance.opening_godown_id
+    quantity = instance.opening_quantity
+    
+    try:
+        godown_item_through = item_godown_quantity_through_table.objects.get(Item_shade_name = item_id,godown_name = godown_id)
+
+        if godown_item_through:
+            godown_item_through.quantity = godown_item_through.quantity - quantity
+            godown_item_through.save()
+
+    except item_godown_quantity_through_table.DoesNotExist:
+        # Log a message if the entry does not exist
+        logger.error(f"No item_godown_quantity_through_table entry found for item_id {item_id} and godown_id {godown_id}")
+        print(f"No item_godown_quantity_through_table entry found for item_id {item_id} and godown_id {godown_id}")
+
+    except Exception as e:
+        # Log any other exceptions that occur
+        logger.error(f"An error occurred: {e}")
+        print(f"An error occurred: {e}")
+        
 
 
 
@@ -213,7 +283,7 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
 #     instance.Description = f"{instance.Fabric_Group} - {instance.Name} - {instance.Item_Color}"
 
 
-    """
+"""
         or in forms
             def clean(self):
         cleaned_data = super().clean()
@@ -228,4 +298,4 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
             cleaned_data['autofill_field'] = autofill_value
 
         return cleaned_data
-    """
+"""
