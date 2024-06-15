@@ -1545,7 +1545,7 @@ def godowndelete(request,str,pk):
 #__________________________stock transfer start__________________________
 
 def stockTrasferRaw(request, pk=None):
-
+    print(request.POST)
     godowns = Godown_raw_material.objects.all()
     Items = Item_Creation.objects.all()
 
@@ -1562,7 +1562,30 @@ def stockTrasferRaw(request, pk=None):
 
 
     if request.method == 'POST':
-        pass
+        
+        if masterstockform.is_valid() and formset.is_valid():
+            masterforminstance = masterstockform.save(commit=False)
+            masterforminstance.save()
+
+            # check and delete forms marked for deleting 
+            for form in formset.deleted_forms:
+                if form.instance.pk:
+                    form.instance.delete()
+
+            
+            for form in formset:
+                if form.is_valid():
+                    if not form.cleaned_data.get('DELETE'):  # to check if form is not marked for deleting, not checked forms that are marked for deleting will be saved again 
+                        transfer_instance = form.save(commit=False)
+                        transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
+                        transfer_instance.save()
+                  
+
+            
+
+
+
+
 
     context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'Items':Items}
 
@@ -1678,8 +1701,8 @@ def purchasevouchercreateupdate(request, pk=None):
                 #filter out only the forms which are changed or added 
                 items_formset.forms = [form for form in items_formset.forms] # if form.has_changed()  
 
-                print('items_formset.forms',items_formset.deleted_forms)
                 if master_form.is_valid() and items_formset.is_valid():
+
                     # Save the master form
                     master_instance = master_form.save()
 
@@ -2625,7 +2648,6 @@ def purchaseorderrawcreateupdate(request,pk= None):
 
 
 def purchaseorderrawlist(request):
-
     purchase_orders = purchase_order.objects.all()
 
     return render(request,'production/purchaseorderrawlist.html',{'purchase_orders':purchase_orders})
