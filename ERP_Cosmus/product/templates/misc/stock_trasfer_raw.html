@@ -2,10 +2,11 @@
 {% load static %}
 
 {% block body %}
-<h2>Stock Transfer<span>(Raw material)</span></h2>
 
-<div action="" method="post">
+
+<form action="" method="post">
     {% csrf_token %}
+   <h2>Stock Transfer<span>(Raw material)</span></h2>
     <div class="d-flex mb-3">
         <label for="id_voucher_no" class="item-form">Voucher No:</label>
         <input  class="item-select mx-3" type="number" name="voucher_no" required id="id_voucher_no">
@@ -22,8 +23,9 @@
   
           <select name="source_godown" class="item-select" id="id_source_godown">
             <option value=""></option>
-            
-  
+            {% for godown in godowns %}
+            <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+            {% endfor %}
           </select>
         </div>
         <span class="pt-3 pe-4 mx-3 ">To</span>
@@ -34,13 +36,16 @@
         <div class=" d-flex mb-3 my-3">
           <select class="item-select" name="destination_godown"  id="id_destination_godown">
             <option value=""></option>
+            {% for godown in godowns %}
+            <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+            {% endfor %}
             
           </select>
         </div>
       </div>
     </div>
-    <div>
-        <table class="table table-striped table-hover table-responsive">
+    <div class="table-responsive ms-3">
+        <table class="table table-striped table-hover table-responsive table-bordered">
             <thead>
                 <tr>
                     <th>Item Name</th>
@@ -51,40 +56,46 @@
                     <th>Delete</th>
                 </tr>
             </thead>
-            <tbody class="mainTableList">
+            <tbody class="mainTableList text-nowrap">
+                {{ formset.management_form}}
+                {% for form in formset %}
+
                 <tr>
-    
                     <td>
-                        <select class="stock_input" name="rawstocktrasferrecords_set-0-item_shade_transfer" id="id_rawstocktrasferrecords_set-0-item_shade_transfer"></select>
+                        <select class="stock_input" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
+                            <option></option>
+                            {% for item in Items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %}
+                        </select>
                     </td>
                     <td>
                         <input type="text" name="color" id="color" class="purchase-amount" readonly>
                     </td>
                     <td>
-                        <input type="text" name="rawstocktrasferrecords_set-0-item_quantity_transfer" maxlength="200" id="id_rawstocktrasferrecords_set-0-item_quantity_transfer">
+                        <input type="text" class="purchase-amount" name="{{form.prefix}}-item_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-item_quantity_transfer">
                     </td>
                     <td>
                         <input type="text" name='per' id="per" class="purchase-amount" readonly>
                     </td>
                     <td>
-                        <input type="text" name="rawstocktrasferrecords_set-0-remarks" maxlength="255" id="id_rawstocktrasferrecords_set-0-remarks">
+                        <input type="text" class="purchase-amount" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
                     </td>
-                    
-       
+                
                     <td>
-                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
+                        <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class=" px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span>
                     </td>
+                   
 
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
+        <button type="button" class="create-btn" id="addRowButton">Add +</button>
     </div>
-    {{ masterstockform.as_p }}
-    {{ formset.management_form}}
-    {% for form in formset %}
-        {{ form.as_p }}
-    {% endfor %}
-    <button type="submit">Save</button>
+ 
+  
+    <input type="submit" type="submit" class="create-btn mt-4" name="save" value="Save">
 
 
 </form>
