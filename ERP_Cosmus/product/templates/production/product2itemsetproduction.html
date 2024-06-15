@@ -216,12 +216,12 @@ $(document).on('click', '.input_text',function(){
 
 
 $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_pks"]',function(e){
-
-        var selectValue = $(this).next('.s-suggestion-container');
-        var selectLength = selectValue.find('.itemName-div').length-1;
-        var suggestionHide = $(this).closest('.custom-dropdown-container').find('#id_itemName_' + newValueKey);
-        var nameData = $(this).val().trim();
-        var selectedItem, prevItem, nextItem, nameDataKey, nameKey;
+        const $inputField = $(this);
+        const $dropdownOptions = $inputField.next('.s-suggestion-container');
+        const $options = $dropdownOptions.find('.itemName-div');
+        const optionsCount = $options.length - 1;
+        const suggestionHide = $inputField.closest('.custom-dropdown-container').find('#id_itemName_' + newValueKey);
+        const nameData = $inputField.val().trim();
         if(nameData === ''){
             suggestionHide.css('display', 'none');
             suggestionHide.empty();
@@ -229,36 +229,45 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
             indexbool = false;
             return;
         }
+        
+// Calculate available space and set max height
+    const newHeight = $inputField.offset();
+    const windowHeight = $(window).height();
+    const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+    $dropdownOptions.css({
+        'max-height': availableSpace + 'px',
+        'overflow-y': 'auto'
+    });
+
 
     if(e.key=== 'ArrowDown'){
 
         e.preventDefault();
 
-        if(index <= selectLength){
-            selectValue.find('.bg-highlight').removeClass('bg-highlight'); // Remove highlight from previously selected item
-            selectedItem = selectValue.find(`#itemName-div_${index}`);
-            nextItem = selectedItem.next();
-         
-
-            nameDataKey= selectedItem.text();
-            nameKey = selectedItem.data('key');
-            $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey);
-            $(this).text(nameDataKey);
+        if(index <= optionsCount){
           
+            const selectedItem = $options.eq(index);
+            const nextItem = selectedItem.next();
+            const nameDataKey= selectedItem.text();
+            const nameKey = selectedItem.data('key');
+
+            $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey);
+            $inputField.text(nameDataKey);
+            $options.removeClass('bg-highlight');
             selectedItem.addClass("bg-highlight");
 
-            var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
-            var itemHeight = nextItem.outerHeight();
-            var selectScrollTop = selectValue.scrollTop();
-            var selectHeight = selectValue.height();
+            const itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
+            const itemHeight = nextItem.outerHeight();
+            const selectScrollTop = $dropdownOptions.scrollTop();
+            const selectHeight = $dropdownOptions.height();
 
             if (itemOffsetTop + itemHeight > selectHeight) {
-                selectValue.scrollTop(selectScrollTop + itemHeight);
+                $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
             } else if (itemOffsetTop < 0) {
-                selectValue.scrollTop(selectScrollTop - itemHeight);
+                $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
             }
            
-            if(index != selectLength ){
+            if(index !== optionsCount ){
                 index += 1; 
              indexbool = true;        
             }     
@@ -275,29 +284,26 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
                 index = index - 1;
            }
           
-           if(index <= selectLength){    
-            selectValue.find('.bg-highlight').removeClass('bg-highlight'); // Remove highlight from previously selected item  
-            selectedItem = selectValue.find(`#itemName-div_${index}`);
-            prevItem = selectedItem.prev();
-           
+           if(index <= optionsCount){     
+           const selectedItem = $options.eq(index);
+           const prevItem = selectedItem.prev();
+           const nameDataKey= selectedItem.text();
+           const nameKey = selectedItem.data('key');
 
-            nameDataKey= selectedItem.text();
-            nameKey = selectedItem.data('key');
-
-            $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey); 
-            $(this).text(nameDataKey);
+           $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey); 
+           $inputField.text(nameDataKey);
+           $options.removeClass('bg-highlight');
+           selectedItem.addClass("bg-highlight");
            
-            selectedItem.addClass("bg-highlight");
-           
-            var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
-            var itemHeight = prevItem.outerHeight();
-            var selectScrollTop = selectValue.scrollTop();
-            var selectHeight = selectValue.height();
+            const itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
+            const itemHeight = prevItem.outerHeight();
+            const selectScrollTop = $dropdownOptions.scrollTop();
+            const selectHeight = $dropdownOptions.height();
 
             if (itemOffsetTop < 0) {
-                selectValue.scrollTop(selectScrollTop - itemHeight);
+                $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
             } else if (itemOffsetTop + itemHeight > selectHeight) {
-                selectValue.scrollTop(selectScrollTop + itemHeight);
+                $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
             }
             }
             else{
@@ -306,21 +312,17 @@ $(document).on('keydown','input[name^="product2itemuniqueformset-"][name$="Item_
         }
         if(e.key === 'Enter'){
             e.preventDefault();
-
-        selectedItem = $(this);
-        var nameValues = $(this).text().trim();
-        var nameKeyValue = selectedItem.attr('data-key');
-        
-      
-        if (selectedItem.length > 0) {
-        $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val();   
-        $(this).val(nameValues);
+        const nameValues = $inputField.text().trim();
+        const nameKeyValue = $inputField.attr('data-key');
+        if ($inputField.length > 0) {
+            $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val();   
+            $inputField.val(nameValues);
         index = 0;
         indexbool = false; 
         suggestionHide.css('display', 'none')  
         }
         enterValue = true; // Set the flag to true when Enter is pressed
-           ;
+           
         }
    
 })  
@@ -331,14 +333,10 @@ var enterPressed = false;
 var index = 0; //  index outside of the event listener
 var indexbool = false;
 $(document).on('keyup', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function () {
-
      purchaseData = $(this).attr('name').split('-')[1]; // Extract the numeric value from the input name
      var nameValue = $(this).val().trim();
      var suggestionsContainerCommon= $(`#id_item_input_Name_${purchaseData}`);
-
-   
-    if(nameValue === '') {
-             
+    if(nameValue === '') {    
         suggestionsContainerCommon.css('display', 'none');
         $(this).attr('data-key', '');
         return;
@@ -407,52 +405,64 @@ $(document).on('click', '.commom_item',function(){
         selectValue.empty();
     })
 
-$(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]',function(e){
-        var selectValue = $(this).next('.s-suggestion-container');
-        var selectLength = selectValue.find('.itemName-div').length-1;
-        var commomSugenstionHide = $(this).closest('.custom-dropdown-container').find(`#id_item_input_Name_${purchaseData}`);
-        var nameData = $(this).val().trim();
-        var selectedItem, prevItem, nextItem, nameDataKey, nameKey;
-     
+$(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]',function(e){  
+        const $inputField = $(this);
+        const $dropdownOptions = $inputField.next('.s-suggestion-container');
+        const $options = $dropdownOptions.find('.itemName-div');
+        const optionsCount = $options.length - 1;
+        const nameData = $inputField.val().trim();
+        const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#id_item_input_Name_${purchaseData}`);
         if(nameData === ''){
-         
             index = 0;
             indexbool = false;
             return;
         }
 
+    // Calculate available space and set max height
+    const inputOffset = $inputField.offset();
+    const windowHeight = $(window).height();
+    const inputHeight = $inputField.outerHeight();
+    const inputBottomOffset = inputOffset.top + inputHeight;
+    const availableSpaceBelow = windowHeight - inputBottomOffset;
+    const maxHeight = Math.max(availableSpaceBelow,120); 
+
+
+    $dropdownOptions.css({
+        'max-height': maxHeight + 'px',
+        'overflow-y': 'auto'
+    });
+
+
     if(e.key=== 'ArrowDown'){
-
         e.preventDefault();
+        if(index <= optionsCount){
+          
+        const selectedItem = $options.eq(index);
+        const  nextItem = selectedItem.next();   
+        const nameDataKey= selectedItem.text();
+        const nameKey = selectedItem.data('key');
 
-        if(index <= selectLength){
-          selectValue.find('.bg-highlight').removeClass('bg-highlight'); // Remove highlight from previously selected item
-          selectedItem = selectValue.find(`#itemName-div_${index}`);
-          nextItem = selectedItem.next();
-            
-            nameDataKey= selectedItem.text();
-            nameKey = selectedItem.data('key');
-
-            $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
-            $(this).attr('data-key', nameKey);
-            $(this).text(nameDataKey);
+        $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
+        $inputField.attr('data-key', nameKey);
+        $inputField.text(nameDataKey);
 
     
-            selectedItem.addClass("bg-highlight");
+        $options.removeClass('bg-highlight');
+        selectedItem.addClass("bg-highlight");
  
-            var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
-            var itemHeight = nextItem.outerHeight();
-            var selectScrollTop = selectValue.scrollTop();
-            var selectHeight = selectValue.height();
+        const itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
+        const itemHeight = nextItem.outerHeight();
+        const selectScrollTop = $dropdownOptions.scrollTop();
+        const selectHeight = $dropdownOptions.height();
 
-            if (itemOffsetTop + itemHeight > selectHeight) {
-                selectValue.scrollTop(selectScrollTop + itemHeight);
+        if (itemOffsetTop + itemHeight > selectHeight) {
+             $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
 
-            } else if (itemOffsetTop < 0) {
-                selectValue.scrollTop(selectScrollTop - itemHeight);
-            }
+        } else if (itemOffsetTop < 0) {
+            $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+        }
            
-            if(index != selectLength ){
+         if(index !== optionsCount) {
                 index += 1; 
              indexbool = true;        
             }     
@@ -469,30 +479,29 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
                 index = index - 1;
            }
           
-           if(index <= selectLength){
-           selectValue.find('.bg-highlight').removeClass('bg-highlight'); // Remove highlight from previously selected item
-           selectedItem = selectValue.find(`#itemName-div_${index}`);
-           prevItem = selectedItem.prev();
-          
-             nameDataKey= selectedItem.text();
-             nameKey = selectedItem.data('key');
+           if(index <= optionsCount){
+           
+           const selectedItem = $options.eq(index);
+           const prevItem = selectedItem.prev();
+           const nameDataKey= selectedItem.text();
+           const nameKey = selectedItem.data('key');
 
-            $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
-            $(this).attr('data-key', nameKey);
-            $(this).text(nameDataKey);
+            $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
+            $inputField.attr('data-key', nameKey);
+            $inputField.text(nameDataKey);
 
+            $options.removeClass('bg-highlight');
             selectedItem.addClass("bg-highlight");
          
-          
             var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
             var itemHeight = prevItem.outerHeight();
-            var selectScrollTop = selectValue.scrollTop();
-            var selectHeight = selectValue.height();
+            var selectScrollTop = $dropdownOptions.scrollTop();
+            var selectHeight = $dropdownOptions.height();
 
             if (itemOffsetTop < 0) {
-                selectValue.scrollTop(selectScrollTop - itemHeight);
+                $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
             } else if (itemOffsetTop + itemHeight > selectHeight) {
-                selectValue.scrollTop(selectScrollTop + itemHeight);
+                $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
             }
             }
             else{
@@ -501,15 +510,12 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
         }
         if(e.key === 'Enter'){
         e.preventDefault();
-   
-         selectedItem = $(this);
-        var nameValues = $(this).text().trim();
-        var nameKeyValue = selectedItem.attr('data-key');
-        
-
-        if (selectedItem.length > 0) {
-            $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(); 
-            $(this).val(nameValues);
+        const nameValues = $inputField.text().trim();
+        const nameKeyValue = $inputField.attr('data-key');
+    
+        if ($inputField.length > 0) {
+            $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val(); 
+            $inputField.val(nameValues);
             index = 0;
           indexbool = false;
           commomSugenstionHide.css('display', 'none'); // Hide the dropdown

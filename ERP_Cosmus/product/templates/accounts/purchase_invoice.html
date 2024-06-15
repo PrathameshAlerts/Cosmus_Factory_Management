@@ -92,16 +92,12 @@
                     <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
                     <td>
                         <div class="custom-dropdown-container">
-                            <input type="text" name="item_name_{{ forloop.counter0 }}" id="item_name_{{ forloop.counter0 }}" class="item-select search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}">
-                             <select name="select_item_name_{{ forloop.counter0 }}" id="select_item_name_{{ forloop.counter0 }}" class="item-select item-name s-suggestion-container" style="display: none; ">
-                                {% if forms.instance.id %}
-                                    <option value="{{ forms.instance.item_shade.items.item_name }}" selected>{{ forms.instance.item_shade.items.item_name }}</option>
-                                {% else %}
-                                    <option value="" disabled selected>Item Name</option>
-                                {% endif %}
-                                <!-- Options will be populated dynamically via JavaScript -->
-                            </select>
-                        </div>
+                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                            <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                              
+                           
+                             </div>
+                           </div> 
 
                         
                     </td>
@@ -374,7 +370,6 @@ function randomValue (){
     //This ajax call is to populate the shade and color based on the selected item once retrive the value
     // When click the item name then append the shades with the color, per 
     $(document).ready(function () {
-       
         var itemName;
         var uniqueIdValue;
         var purchaseValue;
@@ -386,8 +381,6 @@ function randomValue (){
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
         var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change')
-       console.log('itemShadeValue',itemShadeValue)
-       console.log('itemShade',itemShade)
         var selectElementValue = itemShadeValue.value;
        
         if(newData == ''){
@@ -410,137 +403,151 @@ function randomValue (){
     
     })
 
-    // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
     var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
- $(document).on('keyup focus', 'input[name^="item_name_"]', function(e) {
-    var purchaseValue = $(this).attr('name').match(/\d+/)[0];
+ $(document).on(' keyup', 'input[name^="item_name_"]', function(e) {
+    var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
     var nameValue = $(this).val().trim();
-    var selectElement = $(`#select_item_name_${purchaseValue}`);
+    var selectNameValue = `select_item_name_${purchaseValue}`;
+    var suggestionsContainer = $(`#${selectNameValue}`);
     var purchaseData = $(`#purchase_voucher_items_set-${purchaseValue}-popupData`).val();
     var jsonData = $(`#purchase_voucher_items_set-${purchaseValue}-jsonDataInputquantity`).val();
     var uniqueValue = $(`#item_unique_id_${purchaseValue}`).val();
-
+  
     if (nameValue === '') {
-        selectElement.empty().hide();
-        $(this).val('');
+        var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+             
+        selectNameValue.css('display', 'none');
+        $(this).attr('data-key', '');
         return;
     }
 
-    if (!enterPressed) {
-        selectElement.show();
+    if(!enterPressed){
+        suggestionsContainer.css('display', 'block');
     }
     enterPressed = false;
 
+   
     if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
-        if (nameValue.length >= 3) {
+        if(nameValue.length >= 3){
             $.ajax({
-                url: '/itemdynamicsearchajax/',
-                method: 'GET',
-                data: { 'nameValue': nameValue },
-                success: function(response) {
-                    function escapeRegExp(string) {
-                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    }
-                    searchedItemNameDict = response.searched_item_name_dict;
+            url: '/itemdynamicsearchajax/',
+            method: 'GET',
+            data: { 'nameValue': nameValue },
+            success: function (response) {
 
-                  
-                    var searchQuery = nameValue.toLowerCase();
-                    var escapedSearchQuery = escapeRegExp(searchQuery);
-                    var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
-                    var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
-
-                    selectElement.empty().append('<option value=""></option>');
-            
-                    // Create an optgroup for highlighting purposes
-                    $.each(filteredOptions, function(index, [key, value]) {
-                        if (searchQuery) {
-                            var highlightedText = value.replace(regex, '<span style="color: yellow;">$1</span>');
-                            console.log('highlightedText',highlightedText)
-                        }
-                        selectElement.append(`<option value="${key}" class="itemName-div itemName-div-suggestion" >${highlightedText}</option>`);
-                    });
-                    selectElement.find('option').each(function() {
-                        $(this).show(); // Show each option
-                    });
-                },
-                error: function(xhr) {
-                    console.log(xhr.status + ": " + xhr.responseText);
-                    if (xhr.status === 404) {
-                        selectElement.html('<option value="" >No item found</option>').show();
-                    }
+                  // Function to escape special characters in the search query
+                function escapeRegExp(string) {
+                    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 }
-            });
-        } else {
-            selectElement.empty().hide();
+                 searchedItemNameDict = response.searched_item_name_dict;
+
+                var searchQuery = nameValue.toLowerCase();
+                var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+                var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+                var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+         
+                // Clear and repopulate options
+                suggestionsContainer.empty();
+
+                $.each(filteredOptions, function(index, [key, value]) {
+                    var highlightedText = value;
+                    if (searchQuery) {
+                        highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                    }
+                   
+                    suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${highlightedText}</div>`);
+                });
+                
+              
+            },
+            error: function (xhr) {
+                console.log(xhr.status + ": " + xhr.responseText);
+                if (xhr.status === 404) {
+                    
+                    suggestionsContainer.show();
+                    suggestionsContainer.empty();
+                    suggestionsContainer.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
+                }
+            }
+        });
+        }else{
+            suggestionsContainer.empty();
         }
+        
     } else {
- 
         var itemNameData = $(this).closest('tr').find('input[name^="item_name_"]');
         var shadeNameData = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
         itemNameData.attr('readonly', true);
         shadeNameData.prop('disabled', true);
     }
+  
+    suggestionsContainer.on('click', '.itemName-div', function(e) {
 
-    selectElement.on('change', function() {
-        var selectedOption = $(this).find('option:selected');
-        var item_value = selectedOption.val();
-        var itemNames = selectedOption.text().trim();
-       
-        $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNames);
+        var item_value = $(this).data('key');
         var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
         var itemShade = $('#input_item_shade_' + purchaseValue);
         var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
-   
+      
+        $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
+        $(this).addClass('selected').siblings().removeClass('selected');
 
         if (newData == '' && itemShadeValue != '') {
             itemShade.val(itemShadeValue);
             itemShade.show();
         }
-        handleSelection(purchaseValue, itemName, item_value);
-        selectElement.hide();
+        handleSelection(purchaseValue,itemName, item_value)
+        suggestionsContainer.css('display', 'none');
     });
+   
+  
 });
 
-function handleSelection(purchaseValue, itemName, item_value) {
-    if (item_value !== undefined) {
+// // Function to handle the AJAX request and UI updates
+function handleSelection(purchaseValue,itemName, item_value) {
 
+    if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
-        $(`input[name^="item_name_${purchaseValue}"]`).val(selectedValue);
+         $(`input[name^="item_name_${purchaseValue}"]`).val(selectedValue);
 
         $.ajax({
             url: '/purchasevouchercreate/',
             method: 'GET',
-            data: { 'item_value': item_value },
-            success: function(response) {
-            
+            data: {
+                'item_value': item_value,
+            },
+            success: function (response) {
+                console.log('Data sent successfully');
+                var itemrownameid = itemName.split('-')[1];
+             
                 $('#' + itemName).empty().append('<option value="">Select Shade</option>');
 
-                var itemcolorinput = document.querySelector(`#item_color_${purchaseValue}`);
+                var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
                 var item_color = response.item_color;
-                itemcolorinput.value = item_color;
 
-                var itemperinput = document.querySelector(`#item_per_${purchaseValue}`);
+                var itemperinput = document.querySelector('#item_per_' + itemrownameid);
                 var itemperinput_response = response.item_per;
+
+                itemcolorinput.value = item_color;
                 itemperinput.value = itemperinput_response;
 
-                var itemgstinput = document.querySelector(`#purchase_voucher_items_set-${purchaseValue}-gst`);
+                var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst');
                 var item_gst_value_response = response.item_gst_out;
                 itemgstinput.value = item_gst_value_response;
 
                 var item_shade_response = response.item_shade;
                 var item_shade__quantity = response.item_shades_total_quantity_dict;
 
-                $.each(item_shade_response, function(key, value) {
+                $.each(item_shade_response, function (key, value) {
                     if (item_shade__quantity.hasOwnProperty(key)) {
-                        $('#' + itemName).append('<option value="' + key + '">' + value + ' - ' + item_shade__quantity[key] + '</option>');
+                        $('#' +itemName).append('<option value="' + key + '">' + value + ' - ' + item_shade__quantity[key] + '</option>');
                     } else {
-                        $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
+                        $('#' +itemName).append('<option value="' + key + '">' + value + '</option>');
                     }
                 });
                 ajaxInProgress = false;
             },
-            error: function(xhr, errmsg, err) {
+            error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
                 ajaxInProgress = false;
             }
@@ -548,51 +555,129 @@ function handleSelection(purchaseValue, itemName, item_value) {
     }
 }
 
-$(document).on('click', 'input[name^="item_name_"]', function(event) {
-    event.preventDefault();
-    var selectName = $(this).closest('tr').find('select[id^="select_item_name_"]').attr('id');
-    var selectItem = $(`#${selectName}`);
-    // var itemNameData = $(this).closest('tr').find('input[name^="item_name_"]');
-    // var shadeNameData = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
-    //     itemNameData.attr('readonly', true);
-    //     shadeNameData.prop('disabled', true);
-    selectItem.hide();
-});
+$(document).on('click','[name^="item_name_"]', function(event) {
+          event.preventDefault();
+          var  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
+         var selectItem = $(`#${selectName}`);
+          selectItem.css("display" ,"none");
+                      
+  })
 
+   var index = 0; // Declare index outside of the event listener
+   var indexbool = true;
 
-$(document).on('keydown', 'input[name^="item_name_"]', function(event) {
-    var select = $(this).next('.item-name');
-     var nameData = $(this).val().trim();
-    var selectName = $(this).closest('tr').find('select[id^="select_item_name_"]').attr('id');
-    var selectItem = $(`#${selectName}`);
-    
-    console.log('select',selectItem)
+   $(document).on('keydown', 'input[name^="item_name_"]', function(event) {
+        const $inputField = $(this);
+        const $dropdownOptions = $inputField.next('.item-name');
+        const $options = $dropdownOptions.find('.itemName-div');
+        const optionsCount = $options.length - 1;
+        const searchText = $inputField.val().trim();
+        const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_item_name_${purchaseValue}`);
+        if (searchText === '') {
+            index = 0;
+            return;
+        }
 
-   
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
 
+            if (index <= optionsCount) {
+                const $selectedItem = $options.eq(index);
+                const $nextItem = $selectedItem.next();
+                const nameDataKey = $selectedItem.text();
+                const nameKey = $selectedItem.data('key');
 
-    if (nameData == '') {
+                $inputField.attr('data-key', nameKey);
+                $options.removeClass('bg-highlight');
+                $selectedItem.addClass('bg-highlight');
+
+                const itemOffsetTop = $nextItem.position().top;
+                const itemHeight = $nextItem.outerHeight();
+                const selectScrollTop = $dropdownOptions.scrollTop();
+                const selectHeight = $dropdownOptions.height();
+
+                if (itemOffsetTop + itemHeight > selectHeight) {
+                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                } else if (itemOffsetTop < 0) {
+                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                }
+
+                if (index !== optionsCount) {
+                    index += 1;
+                    indexbool = true;
+                }
+            } else {
+                index = 0;
+            }
+        }
+
+        if (event.key === 'ArrowUp') {
+            event.preventDefault();
+
+            if (index != 0 && indexbool == true) {
+                index -= 1;
+            }
+
+            if (index <= optionsCount) {
+                const $selectedItem = $options.eq(index);
+                const $prevItem = $selectedItem.prev();
+                const nameDataKey = $selectedItem.text();
+                const nameKey = $selectedItem.data('key');
+
+                $inputField.attr('data-key', nameKey);
+                $options.removeClass('bg-highlight');
+                $selectedItem.addClass('bg-highlight');
+
+                const itemOffsetTop = $prevItem.position().top;
+                const itemHeight = $prevItem.outerHeight();
+                const selectScrollTop = $dropdownOptions.scrollTop();
+                const selectHeight = $dropdownOptions.height();
+
+                if (itemOffsetTop < 0) {
+                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                } else if (itemOffsetTop + itemHeight > selectHeight) {
+                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                }
+            } else {
+                index = 0;
+            }
+        }
+
+        if (event.key === 'Enter') {
+            event.preventDefault();
+     
+        const itemEnterValue = $(this);
+        const item_value = itemEnterValue.attr('data-key');
+
+        nameDataKey = '';
+        nameKey = '';
         index = 0;
-        return;
-    }
+        indexbool = false;
 
-});
+        const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+        const itemShade = $('#input_item_shade_' + purchaseValue);
+        const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+
+        if (newData == '' && itemShadeValue != '') {
+            itemShade.val(itemShadeValue);
+            itemShade.show();
+        }
+        handleSelection(purchaseValue,itemName, item_value);
+        enterPressed = true;
+        hiddenValue.css("display" ,"none");
+        }
+    });
 
 
-   
+
+    // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
+
         var popupWindow = null; // Variable to hold the reference to the popup window
-       
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-           
-
         var selectedShade = $(this).val();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-      
         var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
         var prefix_id = purchaseValue;
-
-        
-    
         var primary_id = null;
         var test = null;
         if(purchaseId ){
@@ -1092,31 +1177,7 @@ addEventListenersToInputs();
     deleteAlltotal();
 
 
-//     document.addEventListener('DOMContentLoaded', function() {
-//     const dropdownContainers = document.querySelectorAll('.custom-dropdown-container');
 
-//     dropdownContainers.forEach(container => {
-//         const dropdownInput = container.querySelector('.search-input');
-//         const dropdown = container.querySelector('.item-name');
-
-//         dropdownInput.addEventListener('focus', adjustDropdownHeight);
-//         window.addEventListener('resize', adjustDropdownHeight);
-
-//         function adjustDropdownHeight() {
-//             dropdown.style.display = 'block';
-//             const rect = dropdownInput.getBoundingClientRect();
-//             const availableHeightBelow = window.innerHeight - rect.bottom;
-//             const maxDropdownHeight = 194;
-//             dropdown.style.maxHeight = `${Math.min(availableHeightBelow - 10, maxDropdownHeight)}px`;
-//         }
-
-//         dropdownInput.addEventListener('blur', () => {
-//             setTimeout(() => {
-//                 dropdown.style.display = 'none';
-//             }, 100);
-//         });
-//     });
-// });
 
    
   </script>
