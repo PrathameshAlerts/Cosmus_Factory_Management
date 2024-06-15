@@ -24,13 +24,13 @@ from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryD
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
-                           Product2SubCategory,  ProductImage, RawStockTransfer, StockItem,
+                           Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table)
 
-from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
+from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -38,7 +38,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,
                          gst_form, item_purchase_voucher_master_form,
                            packaging_form, product_main_category_form, 
                             product_sub_category_form, purchase_voucher_items_formset,
-                             purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update,
+                             purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet)
 
@@ -1500,7 +1500,7 @@ def godownupdate(request,str,pk):
         'instance_data': instance_data,
         'godown_type': godown_type
     }
-    print(context)
+    
     return render(request,'misc/godown_update.html', context)
 
 
@@ -1544,170 +1544,29 @@ def godowndelete(request,str,pk):
 
 #__________________________stock transfer start__________________________
 
+def stockTrasferRaw(request, pk = None):
 
+    
 
-# RawStockTransfer
-def stocktransfer(request):
-    print(request.POST)
-    current_date = now().date()
-    raw_godowns = Godown_raw_material.objects.all()
-    rawstocktransferlist = RawStockTransfer.objects.all()
-    #godowns - one to many - godownitems - many to one - item_shades - many to one - items
-
-    if request.method == 'GET':
-        selected_source_godown_id = request.GET.get('selected_godown_id') 
-        selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
-
-        # items in the selected godown 
-        items_in_godown = {}
-        for items in selected_source_godown_items:
-            item = items.Item_shade_name
-            item_name =  item.items.item_name
-            item_id = item.items.id
-            items_in_godown[item_id] = item_name
-
-        # shades of the selected item from the godown 
-            
-        #get the selected item
-        item_name_value = request.GET.get('item_value')
-
-        #selected godown
-        item_color_godown = request.GET.get('selectedValueGodown')
-
-        # get the shade of the selected item
-        item_shades_of_selected_item = item_color_shade.objects.filter(items=item_name_value)
-
-        item_shades = {}
-        items_shade_quantity_in_godown = {}
-
-        #loop through the itemshade of item   
-        for x in item_shades_of_selected_item:
-
-            # in the through table to with the selected shade of the selected item and selected godown
-            shades_of_item_in_selected_godown = item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name=x.id)
-
-            # loop through the filtered queryset of shades in the godown and make 
-            # item_shade dict to send in front end 
-            for x in shades_of_item_in_selected_godown:
-                shade_name = x.Item_shade_name.item_shade_name
-                shade_id = x.Item_shade_name.id
-                item_shades[shade_id] = shade_name
-
-                #quantity of shade in godown
-                item_id = x.Item_shade_name.id
-                items_shade_quantity_in_godown[item_id] = x.quantity
-
-        item_color = None
-        item_per = None
-
-        if item_name_value is not None:
-            item_name_value = int(item_name_value)
-
-            # get the item 
-            items =  get_object_or_404(Item_Creation ,id = item_name_value)
-        
-            item_color = items.Item_Color.color_name
-            item_per = items.unit_name_item.unit_name
+    if pk:
+        raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
+        formset  = raw_material_stock_trasfer_items_formset(request.POST or None,instance = raw_transfer_instance)
 
         
-        shade_quantity = 0
-        selected_shade = request.GET.get('selected_shade_id')
-        selected_godown = request.GET.get('godown_id')
-       
-        if selected_shade is not None and selected_godown is not None:
-            selected_shade = int(selected_shade)
-            selected_source_godown_id = int(selected_godown)
-
-            quantity_get = item_godown_quantity_through_table.objects.filter(Item_shade_name = selected_shade, godown_name =selected_source_godown_id).first()
-            shade_quantity  = quantity_get.quantity
+    else:
+        raw_transfer_instance = None
+        formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
 
 
-        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
-                                'item_color':item_color,'item_per':item_per, 'shade_quantity':shade_quantity,'items_shade_quantity_in_godown':items_shade_quantity_in_godown })
-        
+    masterstockform =   raw_material_stock_trasfer_master_form(request.POST or None, instance=raw_transfer_instance)
 
-        else:
-             return render(request,'misc/stock_transfer.html',{'raw_godowns':raw_godowns,'transferlist':rawstocktransferlist,'current_date':current_date})
+    return render(request,'misc/stock_trasfer_raw.html',{'masterstockform':masterstockform,'formset':formset})
 
 
-    if request.method == 'POST':
-        source_godown =request.POST.get('source_godown')
-        target_godown = request.POST.get('target_godown')
-        item_name_transfer = request.POST.get('name')
-        item_color_transfer = request.POST.get('color')
-        item_shade_transfer = request.POST.get('shades')
-        item_quantity_transfer = int(request.POST.get('quantity'))
-        item_unit_transfer = request.POST.get('per')
-        remarks = request.POST.get('remark')
+def stockTrasferRawList(request):
+    stocktrasferall = RawStockTransferMaster.objects.all()
+    return render(request,'misc/stock_trasfer_raw_list.html',{'stocktrasferall':stocktrasferall})
 
-        if source_godown is not None and target_godown is not None and source_godown != target_godown :
-            try:
-                source_godown_raw =  Godown_raw_material.objects.get(id=source_godown)
-                target_godown_raw = Godown_raw_material.objects.get(id=target_godown)
-                item_name_transfer_raw = Item_Creation.objects.get(id=item_name_transfer)
-                item_shade_transfer_raw = item_color_shade.objects.get(id=item_shade_transfer)
-
-                # filter the source godown
-                source_g = item_godown_quantity_through_table.objects.get(godown_name=source_godown, Item_shade_name=item_shade_transfer)
-
-                #filter the destination godown
-                destination_g = item_godown_quantity_through_table.objects.get(godown_name=target_godown, Item_shade_name=item_shade_transfer)
-            
-                with transaction.atomic():
-                    #substract the quantity from source 
-                    source_g.quantity = source_g.quantity - item_quantity_transfer  
-                    source_g.save()
-
-                    # add the quantity to the destination
-                    destination_g.quantity = destination_g.quantity + item_quantity_transfer
-                    destination_g.save()
-
-            
-                    RawStockTransfer.objects.create(source_godown=source_godown_raw,destination_godown=target_godown_raw,
-                                            item_name_transfer=item_name_transfer_raw,item_color_transfer=item_color_transfer,
-                                            item_shade_transfer=item_shade_transfer_raw,
-                                            item_quantity_transfer=item_quantity_transfer,
-                                            item_unit_transfer=item_unit_transfer, remarks=remarks)
-                messages.success(request,f' Item {item_name_transfer_raw}(Quantity->{item_quantity_transfer}) transfered from {source_godown_raw} to {target_godown_raw}.')
-                return redirect('stock-transfer') 
-        
-            
-
-            except item_godown_quantity_through_table.DoesNotExist:
-
-                with transaction.atomic():
-                    #substract the quantity from source 
-                    source_g.quantity = source_g.quantity - item_quantity_transfer
-                    source_g.save()
-            
-                    # Retrieve the godown instances
-                    target_godown_instance = Godown_raw_material.objects.get(id=target_godown)
-                    item_shade_transfer_instance = item_color_shade.objects.get(id=item_shade_transfer)
-            
-
-                    # Create a new entry for the item shade in the destination godown
-                    new_entry = item_godown_quantity_through_table.objects.create(
-                    godown_name=target_godown_instance,
-                    Item_shade_name=item_shade_transfer_instance,
-                    quantity=item_quantity_transfer)
-            
-                    RawStockTransfer.objects.create(source_godown=source_godown_raw,destination_godown=target_godown_raw,
-                                            item_name_transfer=item_name_transfer_raw,item_color_transfer=item_color_transfer,
-                                            item_shade_transfer=item_shade_transfer_raw,
-                                            item_quantity_transfer=item_quantity_transfer,
-                                            item_unit_transfer=item_unit_transfer, remarks=remarks)
-                    
-                    messages.success(request,f' Item {item_name_transfer_raw}(Quantity->{item_quantity_transfer}) created and transfered from {source_godown_raw} to {target_godown_raw}')
-                    return redirect('stock-transfer') #add message new item added in godown with quanitiy
-        else:
-            messages.error(request, 'Source and Target godown is same.')
-            return redirect('stock-transfer')           
-        
-
-def stocktransferreport(request):
-    rawstocktransferlist = RawStockTransfer.objects.all()
-    return render(request,'misc/stock_transfer_list.html',{'transferlist':rawstocktransferlist})
 
 
 #__________________________stock transfer end__________________________
@@ -1798,7 +1657,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                   'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,})
 
     if request.method == 'POST':
-        print(request.POST)
+        
         try:
             with transaction.atomic(): #start a database transaction
                 #create a form instance for main form

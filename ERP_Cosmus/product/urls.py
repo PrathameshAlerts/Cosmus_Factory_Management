@@ -106,8 +106,10 @@ urlpatterns = [
     path('godowndelete/<str:str>/<int:pk>', views.godowndelete, name = 'godown-delete'),
 
 
-    #stocktransfer
-    path('stocktransfer/', views.stocktransfer, name = 'stock-transfer'),
+    # #stocktransfer
+    path('stocktransferrawcreate/', views.stockTrasferRaw, name = 'stock-transfer-raw-create'),
+    path('stocktransferrawupdate/<int:pk>', views.stockTrasferRaw, name = 'stock-transfer-raw-update'),
+    path('stocktransferrawlist/', views.stockTrasferRawList, name = 'stock-transfer-raw-list'),
 
 
     #PurchaseVoucher
@@ -157,7 +159,7 @@ urlpatterns = [
     path('purchaseorderrawdelete/<int:pk>',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
     
     #reports
-    path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
+    # path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
 
     #common Routes

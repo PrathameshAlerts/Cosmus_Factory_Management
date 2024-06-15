@@ -74,7 +74,7 @@
         <div class="sub-menu">
           <a href="{% url 'purchase-voucher-list' %}" class="sub-item">Purchase Invoice</a>
           <a href="" class="sub-item">Sales Invoice</a>
-          <a href="{% url 'stock-transfer' %}" class="sub-item">Stock Transfer</a>
+          <a href="{% url 'stock-transfer-raw-list' %}" class="sub-item">Stock Transfer</a>
           <a href="" class="sub-item">Sales Return</a>
           <a href="" class="sub-item">Purchase Return</a>
           <a href="" class="sub-item">Payment</a>
@@ -85,7 +85,7 @@
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Reports')"><i class="fa-solid fa-file-invoice"></i>Reports<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'stock-transfer-report' %}" class="sub-item">Stock Transfer Report</a>
+          <a href="" class="sub-item">Stock Transfer Report</a>
           <a href="{% url 'credit-debit-report' %}" class="sub-item">Purchase Report</a>
           <a href="" class="sub-item">Sales Report</a>
           <a href="" class="sub-item">Stock Report</a>
@@ -182,7 +182,7 @@
           <ul class="dropdown-menu dropdown-menu-right">
           <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice</a></li> 
           <li class="pro-head"><a href="" class="navText">Sales Invoice</a></li>  
-          <li class="pro-head"><a href="{% url 'stock-transfer' %}" class="navText">Stock Transfer</a></li>   
+          <li class="pro-head"><a href="{% url 'stock-transfer-raw-list' %}" class="navText">Stock Transfer</a></li>   
           <li class="pro-head"><a href="" class="navText">Sales Return</a></li>   
           <li class="pro-head"><a href="" class="navText">Purchase Return</a></li>   
           <li class="pro-head"><a href="" class="navText">Payment</a></li>   

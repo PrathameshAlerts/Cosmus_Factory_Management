@@ -1,0 +1,21 @@
+{% extends 'product/base.html' %}
+{% load static %}
+
+{% block body %}
+<h2>Stock Transfer<span>(Raw material)</span></h2>
+
+<form action="" method="POST">
+
+{{masterstockform.as_p}}
+
+{% for form in formset %}
+
+{{form}}
+
+{% endfor %}
+
+
+</form>
+
+
+{% endblock %}
