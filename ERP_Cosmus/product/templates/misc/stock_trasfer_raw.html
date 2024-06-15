@@ -4,10 +4,64 @@
 {% block body %}
 <h2>Stock Transfer<span>(Raw material)</span></h2>
 
-<form action="" method="post">
-
-
+<div action="" method="post">
     {% csrf_token %}
+    <div class="d-flex mb-3">
+        <label for="id_voucher_no" class="item-form">Voucher No:</label>
+        <input  class="item-select mx-3" type="number" name="voucher_no" required id="id_voucher_no">
+        <div class="ms-auto">
+        </div>
+      </div>
+      <div class="d-flex mb-3">
+        <div>
+          <label for="" class="item-form">Source Godown:</label>
+          <p>(Transfer from)</p>
+        </div>
+  
+        <div class="d-flex mb-3 my-3">
+  
+          <select name="source_godown" class="item-select" id="id_source_godown">
+            <option value=""></option>
+            
+  
+          </select>
+        </div>
+        <span class="pt-3 pe-3 mx-2 ">To</span>
+        <div class="mx-2">
+          <label for="" class="form-label">Target Godown:</label>
+          <p>(Transfer to)</p>
+        </div>
+        <div class=" d-flex mb-3 my-3">
+          <select class="item-select" name="destination_godown"  id="id_destination_godown">
+            <option value=""></option>
+            
+          </select>
+        </div>
+      </div>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>color</th>
+                    <th>Quantity</th>
+                    <th>Remark</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody class="mainTableList">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
     {{ masterstockform.as_p }}
     {{ formset.management_form }}
     {% for form in formset %}
