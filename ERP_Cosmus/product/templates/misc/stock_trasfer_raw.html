@@ -4,9 +4,23 @@
 {% block body %}
 <h2>Stock Transfer<span>(Raw material)</span></h2>
 
+<select name="" id="">
+    {% for godown in godowns %}
+    <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+    {% endfor %}
+</select>
+
+
+<select name="" id="">
+    {% for item in Items %}
+    <option value="{{item.id}}">{{item.item_name}}</option>
+    {% endfor %}
+</select>
+
+
+
+
 <form action="" method="post">
-
-
     {% csrf_token %}
     {{ masterstockform.as_p }}
     {{ formset.management_form}}

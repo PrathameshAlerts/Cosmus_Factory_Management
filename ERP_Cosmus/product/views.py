@@ -1546,6 +1546,8 @@ def godowndelete(request,str,pk):
 
 def stockTrasferRaw(request, pk=None):
 
+    godowns = Godown_raw_material.objects.all()
+    Items = Item_Creation.objects.all()
 
     if pk:
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
@@ -1562,7 +1564,7 @@ def stockTrasferRaw(request, pk=None):
     if request.method == 'POST':
         pass
 
-    context = {'masterstockform':masterstockform,'formset':formset}
+    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'Items':Items}
 
     return render(request,'misc/stock_trasfer_raw.html',context=context)
 
