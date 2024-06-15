@@ -63,7 +63,7 @@
                     <th>No</th>
                     <th>Item Name</th>
               
-                    <th style="padding-left: 103px;">Colour</th>
+                    <th style="padding-left: 25px;">Colour</th>
                     <th style="padding-left:20px ;">Shade</th>
                     <th>Quantity</th>
                     <th>Rate</th>
@@ -92,15 +92,17 @@
                     <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
                     <td>
                         <div class="custom-dropdown-container">
-                         <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                         <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                            <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                              
                            
+                             </div>
+                           </div> 
+
                         
-                          </div>
-                        </div> 
                     </td>
                     <td>
-                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 92px;" readonly>
+                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 5px;" readonly>
                         
                     </td>
                     <td>
@@ -368,7 +370,6 @@ function randomValue (){
     //This ajax call is to populate the shade and color based on the selected item once retrive the value
     // When click the item name then append the shades with the color, per 
     $(document).ready(function () {
-       
         var itemName;
         var uniqueIdValue;
         var purchaseValue;
@@ -380,7 +381,6 @@ function randomValue (){
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
         var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change')
-       
         var selectElementValue = itemShadeValue.value;
        
         if(newData == ''){
@@ -403,7 +403,7 @@ function randomValue (){
     
     })
 
-  var searchedItemNameDic; 
+    var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
  $(document).on(' keyup', 'input[name^="item_name_"]', function(e) {
     var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
@@ -563,110 +563,100 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                       
   })
 
-
    var index = 0; // Declare index outside of the event listener
-   var indexbool = false;
- 
-   
-$(document).on('keydown','input[name^="item_name_"]', function(event) {
-    var nameDataKey;
-    var nameKey;
-    var select = $(this).next('.item-name');
-    var selectLength = select.find('.itemName-div').length-1;
-    var nameData = $(this).val().trim();
-    var  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
-    var selectItem = $(`#${selectName}`);
- 
-    var hiddenValue = $(this).closest('.custom-dropdown-container').find( `#select_item_name_${purchaseValue}`);
+   var indexbool = true;
 
-
-    if(nameData == ''){
-          index = 0;
-          return;    
-      }
-
-   
-  
-    if (event.key === 'ArrowDown') {
-        event.preventDefault();
-      
-       if(index <= selectLength){
-            var selectedItem = select.find('#itemName-div_' + index);
-            var nextItem = selectedItem.next();
-             nameDataKey= selectedItem.text();
-             nameKey = selectedItem.data('key');
-        
-            $(this).attr('data-key', nameKey);
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
- 
-            var itemOffsetTop = nextItem.position().top;
-            var itemHeight = nextItem.outerHeight();
-            var selectScrollTop = select.scrollTop();
-            var selectHeight = select.height();
-            
-            if (itemOffsetTop + itemHeight > selectHeight) {
-                select.scrollTop(selectScrollTop + itemHeight);
-
-            } else if (itemOffsetTop < 0) {
-                select.scrollTop(selectScrollTop - itemHeight);
-            }
-           
-            if(index != selectLength ){
-                index += 1; 
-             indexbool = true;        
-            }     
-               
-       }else{
-           index = 0;
-       }
-     }
-      if(event.key === 'ArrowUp'){
-           event.preventDefault();
-           if (index != 0 && indexbool == true)
-           {           
-                index = index - 1;
-           }
-          
-           if(index <= selectLength){
-         
-            var selectedItem = select.find('#itemName-div_' + index);
-            var prevItem = selectedItem.prev();
-            nameDataKey= selectedItem.text();
-            nameKey = selectedItem.data('key');
-        
-            $(this).attr('data-key', nameKey);
-            selectedItem.addClass("bg-highlight").siblings().removeClass("bg-highlight");
-           
-          
-            var itemOffsetTop = prevItem.position().top;
-            var itemHeight = prevItem.outerHeight();
-            var selectScrollTop = select.scrollTop();
-            var selectHeight = select.height();
-
-            if (itemOffsetTop < 0) {
-                select.scrollTop(selectScrollTop - itemHeight);
-            } else if (itemOffsetTop + itemHeight > selectHeight) {
-                select.scrollTop(selectScrollTop + itemHeight);
-            }
-            }
-            else{
-                    index = 0;
-            }   
+   $(document).on('keydown', 'input[name^="item_name_"]', function(event) {
+        const $inputField = $(this);
+        const $dropdownOptions = $inputField.next('.item-name');
+        const $options = $dropdownOptions.find('.itemName-div');
+        const optionsCount = $options.length - 1;
+        const searchText = $inputField.val().trim();
+        const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_item_name_${purchaseValue}`);
+        if (searchText === '') {
+            index = 0;
+            return;
         }
+
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+
+            if (index <= optionsCount) {
+                const $selectedItem = $options.eq(index);
+                const $nextItem = $selectedItem.next();
+                const nameDataKey = $selectedItem.text();
+                const nameKey = $selectedItem.data('key');
+
+                $inputField.attr('data-key', nameKey);
+                $options.removeClass('bg-highlight');
+                $selectedItem.addClass('bg-highlight');
+
+                const itemOffsetTop = $nextItem.position().top;
+                const itemHeight = $nextItem.outerHeight();
+                const selectScrollTop = $dropdownOptions.scrollTop();
+                const selectHeight = $dropdownOptions.height();
+
+                if (itemOffsetTop + itemHeight > selectHeight) {
+                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                } else if (itemOffsetTop < 0) {
+                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                }
+
+                if (index !== optionsCount) {
+                    index += 1;
+                    indexbool = true;
+                }
+            } else {
+                index = 0;
+            }
+        }
+
+        if (event.key === 'ArrowUp') {
+            event.preventDefault();
+
+            if (index != 0 && indexbool == true) {
+                index -= 1;
+            }
+
+            if (index <= optionsCount) {
+                const $selectedItem = $options.eq(index);
+                const $prevItem = $selectedItem.prev();
+                const nameDataKey = $selectedItem.text();
+                const nameKey = $selectedItem.data('key');
+
+                $inputField.attr('data-key', nameKey);
+                $options.removeClass('bg-highlight');
+                $selectedItem.addClass('bg-highlight');
+
+                const itemOffsetTop = $prevItem.position().top;
+                const itemHeight = $prevItem.outerHeight();
+                const selectScrollTop = $dropdownOptions.scrollTop();
+                const selectHeight = $dropdownOptions.height();
+
+                if (itemOffsetTop < 0) {
+                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                } else if (itemOffsetTop + itemHeight > selectHeight) {
+                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                }
+            } else {
+                index = 0;
+            }
+        }
+
         if (event.key === 'Enter') {
-        event.preventDefault();
+            event.preventDefault();
      
-        var itemEnterValue = $(this);
-        var item_value = itemEnterValue.attr('data-key');
+        const itemEnterValue = $(this);
+        const item_value = itemEnterValue.attr('data-key');
 
         nameDataKey = '';
         nameKey = '';
         index = 0;
         indexbool = false;
 
-        var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
-        var itemShade = $('#input_item_shade_' + purchaseValue);
-        var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+        const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+        const itemShade = $('#input_item_shade_' + purchaseValue);
+        const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
 
         if (newData == '' && itemShadeValue != '') {
             itemShade.val(itemShadeValue);
@@ -675,27 +665,19 @@ $(document).on('keydown','input[name^="item_name_"]', function(event) {
         handleSelection(purchaseValue,itemName, item_value);
         enterPressed = true;
         hiddenValue.css("display" ,"none");
-    }
-        
-   });  
- 
-  // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
-     
- 
-     
-        var popupWindow = null; // Variable to hold the reference to the popup window
-       
-        $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-           
+        }
+    });
 
+
+
+    // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
+
+        var popupWindow = null; // Variable to hold the reference to the popup window
+        $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
         var selectedShade = $(this).val();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-      
         var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
         var prefix_id = purchaseValue;
-
-        
-    
         var primary_id = null;
         var test = null;
         if(purchaseId ){
@@ -1193,6 +1175,9 @@ addEventListenersToInputs();
     calculateOtherTotal();
     deleteCalculationRow();
     deleteAlltotal();
+
+
+
 
    
   </script>
