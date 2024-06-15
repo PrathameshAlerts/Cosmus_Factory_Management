@@ -1551,7 +1551,6 @@ def stockTrasferRaw(request, pk=None):
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
 
-        
     else:
         raw_transfer_instance = None
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None,instance = raw_transfer_instance)
@@ -1559,6 +1558,9 @@ def stockTrasferRaw(request, pk=None):
 
     masterstockform = raw_material_stock_trasfer_master_form(request.POST or None, instance = raw_transfer_instance)
 
+
+    if request.method == 'POST':
+        pass
 
     context = {'masterstockform':masterstockform,'formset':formset}
 
