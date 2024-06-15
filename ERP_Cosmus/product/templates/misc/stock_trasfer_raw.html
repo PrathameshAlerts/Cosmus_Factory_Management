@@ -49,44 +49,47 @@
             <thead>
                 <tr>
                     <th>Item Name</th>
-                    <th>color</th>
-                    <th>Quantity</th>
+                    <th>Color</th>
+                    <th>Shades</th>
+                    <th>Qty</th>
                     <th>Units</th>
-                    <th>Remark</th>
+                    <th>Remark</th> 
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody class="mainTableList text-nowrap">
                 {{ formset.management_form}}
                 {% for form in formset %}
-
+                {{ form.id }}
                 <tr>
                     <td>
+                        <select name="stock_name_{{forloop.counter0}}" class="stock_input" placeholder="Item Name" required id="id_stock_name_{{forloop.counter0}}"></select> 
+                    </td>
+                    <td>
+                        <input type="text" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount" readonly>
+                    </td>
+                    <td>
                         <select class="stock_input" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
-                            <option></option>
+                            <option value=""></option>
                             {% for item in Items %}
                             <option value="{{item.id}}">{{item.item_name}}</option>
                             {% endfor %}
                         </select>
-                    </td>
-                    <td>
-                        <input type="text" name="color" id="color" class="purchase-amount" readonly>
-                    </td>
+                      </td>
                     <td>
                         <input type="text" class="purchase-amount" name="{{form.prefix}}-item_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-item_quantity_transfer">
                     </td>
                     <td>
-                        <input type="text" name='per' id="per" class="purchase-amount" readonly>
+                        <input type="text" name='stock_per_{{forloop.counter0}}' id="id_stock_per_{{forloop.counter0}}" class="purchase-amount" readonly>
                     </td>
                     <td>
                         <input type="text" class="purchase-amount" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
                     </td>
                 
                     <td>
-                        <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class=" px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span>
+                        <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span>
                     </td>
-                   
-
+            
                 </tr>
                 {% endfor %}
             </tbody>
@@ -100,5 +103,98 @@
 
 </form>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addRowButton = document.getElementById('addRowButton');
+        const mainTable = document.querySelector('.mainTableList');
+
+        if(addRowButton && mainTable){
+            addRowButton.addEventListener('click', function() {
+                let lastVisibleRow = null;
+                mainTable.querySelectorAll('tr').forEach(row => {
+            if (window.getComputedStyle(row).display !== 'none') {
+                lastVisibleRow = row;
+            }
+        });
+        if(lastVisibleRow) {
+            var newForm = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS');
+            var newFormCount = parseInt(newForm.value) ;
+            var newTable = lastVisibleRow.cloneNode(true);
+            newTable.querySelectorAll("input select").forEach(function(e) {
+            e.value= "";
+            });
+
+            const itemNameElement = newTable.querySelector('select[name^="stock_name_"]');
+            itemNameElement.id = `id_stock_name_${newFormCount}`;
+            itemNameElement.name = `stock_name_${newFormCount}`;
+            itemNameElement.value = "";
+
+
+            const itemColorElement = newTable.querySelector('input[name^="stock_color_"]');
+            itemColorElement.id = `id_stock_color_${newFormCount}`;
+            itemColorElement.name = `stock_color_${newFormCount}`;
+            itemColorElement.value = "";
+
+            const itemShadeElement = newTable.querySelector('select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]');
+            itemShadeElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
+            itemShadeElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
+            itemShadeElement.value = "";
+
+            const itemQuantityElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="item_quantity_transfer"]');
+            itemQuantityElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
+            itemQuantityElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
+            itemQuantityElement.value = "";
+
+            const itemPerElement = newTable.querySelector('input[name^="stock_per_"]');
+            itemPerElement.id = `id_stock_per_${newFormCount}`;
+            itemPerElement.name = `stock_per_${newFormCount}`;
+            itemPerElement.value = "";
+
+            const itemRemarksElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="remarks"]');
+            itemRemarksElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-remarks`;
+            itemRemarksElement.name = `rawstocktrasferrecords_set-${newFormCount}-remarks`;
+            itemRemarksElement.value = "";
+
+            const deleteElement = newTable.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="DELETE"]');
+            deleteElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-DELETE`;
+            deleteElement.name = `rawstocktrasferrecords_set-${newFormCount}-DELETE`;
+            deleteElement.value = "";
+            deleteElement.checked = false;
+
+            newForm.value = newFormCount + 1;
+
+            mainTable.appendChild(newTable);
+            deleteRow();
+        }else {
+            console.error("No visible rows found to clone.");
+        }   
+        });
+        }
+        
+        function deleteRow(){
+        // Add click event listener to all delete buttons
+     document.querySelectorAll('.delete-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+        // Find the row containing the clicked delete button
+        var row = this.closest('tr');
+        console.log("row",row);
+        var checkRow = row.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="-DELETE"]');
+        if (checkRow) {
+            checkRow.checked = true; // Mark as checked
+            checkRow.value = 'true'; // Set the value to 'true'
+
+            row.style.display = 'none';
+
+        } else {
+            console.error("Checkbox for deletion not found in this row");
+        }
+    });
+});
+
+};
+    deleteRow();
+    });
+
+</script>
 
 {% endblock %}
