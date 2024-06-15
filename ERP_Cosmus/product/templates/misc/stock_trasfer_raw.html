@@ -4,17 +4,16 @@
 {% block body %}
 <h2>Stock Transfer<span>(Raw material)</span></h2>
 
-<form action="" method="POST">
+<form action="" method="post">
 
-{{masterstockform.as_p}}
 
-{{ formset.management_form }}
-
-{% for form in formset %}
-
-{{form}}
-
-{% endfor %}
+    {% csrf_token %}
+    {{ masterstockform.as_p }}
+    {{ formset.management_form }}
+    {% for form in formset %}
+        {{ form.as_p }}
+    {% endfor %}
+    <button type="submit">Save</button>
 
 
 </form>

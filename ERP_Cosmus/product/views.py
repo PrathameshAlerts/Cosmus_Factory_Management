@@ -1549,18 +1549,20 @@ def stockTrasferRaw(request, pk=None):
 
     if pk:
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
-        formset  = raw_material_stock_trasfer_items_formset(request.POST, instance = raw_transfer_instance)
+        formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
 
         
     else:
         raw_transfer_instance = None
-        formset  = raw_material_stock_trasfer_items_formset(request.POST, instance = raw_transfer_instance)
+        formset  = raw_material_stock_trasfer_items_formset(request.POST or None,instance = raw_transfer_instance)
 
 
-    masterstockform =   raw_material_stock_trasfer_master_form(request.POST or None, instance = raw_transfer_instance)
+    masterstockform = raw_material_stock_trasfer_master_form(request.POST or None, instance = raw_transfer_instance)
 
 
-    return render(request,'misc/stock_trasfer_raw.html',{'masterstockform':masterstockform,'formset':formset})
+    context = {'masterstockform':masterstockform,'formset':formset}
+
+    return render(request,'misc/stock_trasfer_raw.html',context=context)
 
 
 def stockTrasferRawList(request):
