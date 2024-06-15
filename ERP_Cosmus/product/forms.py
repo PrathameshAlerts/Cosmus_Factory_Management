@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransfer,StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -130,52 +130,8 @@ class CustomPProductaddFormSet(PProductaddFormSet):
 
 
 
-"""
-    Initialization: The __init__ method is used to set up initial values, 
-    configurations, or any other setup tasks when creating a new instance of the form.
 
-    Customization: It allows you to customize the behavior of the form instance.
-    You can customize field attributes, set initial values, define choices dynamically,
-    and perform any other necessary setup tasks.
-
-    Access to Data: It provides access to data passed during form initialization,
-    such as instance data, form data, or additional keyword arguments.
-
-    Flexibility: By overriding the __init__ method, you can customize the behavior
-    of your form according to your specific requirements. This makes your forms more 
-    flexible and adaptable to different scenarios.
-
-    Integration with Django Models: When working with Django forms, you often need to
-    integrate them with Django models. The __init__ method allows you to handle model instances,
-    set initial values based on model data, and perform other tasks related to model forms.
-
-    In the context of Django forms, the __init__ method is often used to customize form fields,
-    set initial values, integrate with model instances, and perform other initialization tasks
-    to ensure that the form behaves as expected in different scenarios.
-
-
-"""
-        
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     instance = kwargs.get('instance')
-    #     print('instance=',instance.Product_Name)
-    #     if instance:
-    #         if instance.Product_Name is None:
-    #             self.initial['Product_Name'] = 'test'
-    #         if instance.Model_Name is None:
-    #             self.initial['Model_Name'] = ' '
-    #         if instance.Product_Status is None:
-    #             self.initial['Product_Status'] = ' '
-    #         if instance.Product_Brand is None:
-    #             self.initial['Product_Brand'] = ' '
-    #         if instance.Product_WarrantyTime is None:
-    #             self.initial['Product_WarrantyTime'] = ' '
-    #         if instance.Product_GST is None:
-    #             self.initial['Product_GST']
-    #     print('instance=',instance.Product_Name)
             
-
 
 
 class ColorForm(forms.ModelForm):
@@ -286,6 +242,7 @@ class product_main_category_form(forms.ModelForm):
         fields = ['product_category_name']
 
 
+
 class product_sub_category_form(forms.ModelForm):
     class Meta:
         model = SubCategory
@@ -302,7 +259,15 @@ class purchase_order_form(forms.ModelForm):
                   'target_date','number_of_pieces']
         
         
-            
+
+
+
+
+class raw_material_stock_trasfer_master_form(forms.ModelForm):
+        class Meta:
+            model = RawStockTransferMaster
+
+            fields = ['']
 
 
 
@@ -319,6 +284,60 @@ class CreateUserForm(UserCreationForm):
         model = User
         fields = ['username', "password1" , "password2"]
 
+
+
+
+
+
+
+
+
+
+
+"""
+    Initialization: The __init__ method is used to set up initial values, 
+    configurations, or any other setup tasks when creating a new instance of the form.
+
+    Customization: It allows you to customize the behavior of the form instance.
+    You can customize field attributes, set initial values, define choices dynamically,
+    and perform any other necessary setup tasks.
+
+    Access to Data: It provides access to data passed during form initialization,
+    such as instance data, form data, or additional keyword arguments.
+
+    Flexibility: By overriding the __init__ method, you can customize the behavior
+    of your form according to your specific requirements. This makes your forms more 
+    flexible and adaptable to different scenarios.
+
+    Integration with Django Models: When working with Django forms, you often need to
+    integrate them with Django models. The __init__ method allows you to handle model instances,
+    set initial values based on model data, and perform other tasks related to model forms.
+
+    In the context of Django forms, the __init__ method is often used to customize form fields,
+    set initial values, integrate with model instances, and perform other initialization tasks
+    to ensure that the form behaves as expected in different scenarios.
+
+
+"""
+        
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     instance = kwargs.get('instance')
+    #     print('instance=',instance.Product_Name)
+    #     if instance:
+    #         if instance.Product_Name is None:
+    #             self.initial['Product_Name'] = 'test'
+    #         if instance.Model_Name is None:
+    #             self.initial['Model_Name'] = ' '
+    #         if instance.Product_Status is None:
+    #             self.initial['Product_Status'] = ' '
+    #         if instance.Product_Brand is None:
+    #             self.initial['Product_Brand'] = ' '
+    #         if instance.Product_WarrantyTime is None:
+    #             self.initial['Product_WarrantyTime'] = ' '
+    #         if instance.Product_GST is None:
+    #             self.initial['Product_GST']
+    #     print('instance=',instance.Product_Name)
 
 
 

@@ -128,7 +128,7 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
 
 
 
-
+# signal for opening godown items in item create update 
 @receiver(post_save, sender= opening_shade_godown_quantity)
 def created_updated_opening_item_godown(sender, instance, created, **kwargs):
 
@@ -141,21 +141,20 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
     opening_quantity_created = False
     opening_quantity_updated = False
 
-    # if created
+    # if opening godown item instance created
     if created:
         opening_quantity_created = True
         opening_quantity = instance.opening_quantity
 
-        print('Created',new_opening_godown,opening_rate,item_shade_id,opening_quantity)
 
 
-    # if updated 
+    # if opening godown item instance updated 
     elif not created:
         opening_quantity_updated = True
         old_opening_quantity = getattr(instance, 'old_opening_g_quantity', None)
 
         if old_opening_quantity is not None:
-            opening_quantity = instance.opening_quantity - old_opening_quantity
+            opening_quantity_diffrence = instance.opening_quantity - old_opening_quantity
         
 
 
@@ -166,59 +165,65 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
             obj.quantity = opening_quantity
             obj.item_rate = opening_rate
             obj.save()
-            print(obj.quantity,opening_quantity)
-            print(obj.item_rate,opening_rate)
 
         else:
             obj.item_rate = opening_rate
             obj.quantity = obj.quantity + opening_quantity
             obj.save()
 
+
     # if updated 
     if opening_quantity_updated:
-        
         old_opening_godown_id = getattr(instance, 'old_opening_godown_id', None) # old godown id to check if godown has changed or not 
-        print('GODOWN_IDS',old_opening_godown_id,new_opening_godown)
+        
 
         if old_opening_godown_id:
-            #
+            
+            # if godown has not changed 
             if old_opening_godown_id == new_opening_godown:
+
+                # get Item2godown instance with instance godown and item shade 
                 get_obj = item_godown_quantity_through_table.objects.get(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
-                
                 get_obj.item_rate = opening_rate
-                get_obj.quantity = get_obj.quantity + opening_quantity
+                get_obj.quantity = get_obj.quantity + opening_quantity_diffrence # add the diffrence_quantity to the quantity
                 get_obj.save()
 
-            #
+
+
+            # if godown has changed but quantities are same 
             elif old_opening_godown_id != new_opening_godown and instance.opening_quantity == old_opening_quantity:
                 
+                # decrease the qty
+                # get Item2godown instance with old_gid and item shade
                 decrease_obj_q = item_godown_quantity_through_table.objects.get(godown_name=old_opening_godown_id,Item_shade_name=item_shade_instance)
                 decrease_obj_q.item_rate = opening_rate
-                decrease_obj_q.quantity = decrease_obj_q.quantity - instance.opening_quantity
+                decrease_obj_q.quantity = decrease_obj_q.quantity - instance.opening_quantity # decrease the instance quantity from the quantity
                 decrease_obj_q.save()
 
-                
+                # increase the qty 
+                # get Item2godown instance with new_gid and item shade
                 get_obj , created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
                 get_obj.item_rate = opening_rate
-                get_obj.quantity = get_obj.quantity + instance.opening_quantity
+                get_obj.quantity = get_obj.quantity + instance.opening_quantity # increase the instance quantity from the quantity
                 get_obj.save()
         
 
-            #
-            elif old_opening_godown_id != new_opening_godown and instance.opening_quantity != old_opening_quantity:
 
+            # if godown has changed and also the quantities
+            elif old_opening_godown_id != new_opening_godown and instance.opening_quantity != old_opening_quantity:
+                
+                # decrease the quantity 
+                # get Item2godown instance with old_gid and decrease the quantity in respect to old quantity
                 decrease_obj_q = item_godown_quantity_through_table.objects.get(godown_name=old_opening_godown_id, Item_shade_name=item_shade_instance)
                 decrease_obj_q.item_rate = opening_rate
                 decrease_obj_q.quantity = decrease_obj_q.quantity - old_opening_quantity
                 decrease_obj_q.save()
 
-
+                # get Item2godown instance with new_gid and increase the quantity in respect to new quantity
                 get_obj , created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
                 get_obj.item_rate = opening_rate
                 get_obj.quantity = get_obj.quantity + instance.opening_quantity
                 get_obj.save()
-
-
 
 
 
@@ -229,7 +234,7 @@ def handle_opening_godown_deleted(sender, instance, **kwargs):
     item_id = instance.opening_purchase_voucher_godown_item.id
     godown_id = instance.opening_godown_id
     quantity = instance.opening_quantity
-    
+
     try:
         godown_item_through = item_godown_quantity_through_table.objects.get(Item_shade_name = item_id,godown_name = godown_id)
 
