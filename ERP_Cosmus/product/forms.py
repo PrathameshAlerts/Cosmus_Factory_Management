@@ -269,7 +269,7 @@ class raw_material_stock_trasfer_master_form(forms.ModelForm):
             fields = ['voucher_no','source_godown','destination_godown']
 
 
-raw_material_stock_trasfer_items_formset = inlineformset_factory(RawStockTransferMaster,RawStockTrasferRecords,fields=['item_shade_transfer','item_quantity_transfer','remarks'])
+raw_material_stock_trasfer_items_formset = inlineformset_factory(RawStockTransferMaster,RawStockTrasferRecords,fields=['item_shade_transfer','item_quantity_transfer','remarks'], extra=1, can_delete=True)
 
 
 
