@@ -26,9 +26,9 @@
   
           </select>
         </div>
-        <span class="pt-3 pe-3 mx-2 ">To</span>
+        <span class="pt-3 pe-4 mx-3 ">To</span>
         <div class="mx-2">
-          <label for="" class="form-label">Target Godown:</label>
+          <label for="" class="item-form">Target Godown:</label>
           <p>(Transfer to)</p>
         </div>
         <div class=" d-flex mb-3 my-3">
@@ -40,23 +40,40 @@
       </div>
     </div>
     <div>
-        <table>
+        <table class="table table-striped table-hover table-responsive">
             <thead>
                 <tr>
                     <th>Item Name</th>
                     <th>color</th>
                     <th>Quantity</th>
+                    <th>Units</th>
                     <th>Remark</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody class="mainTableList">
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+    
+                    <td>
+                        <select class="stock_input" name="rawstocktrasferrecords_set-0-item_shade_transfer" id="id_rawstocktrasferrecords_set-0-item_shade_transfer"></select>
+                    </td>
+                    <td>
+                        <input type="text" name="color" id="color" class="purchase-amount" readonly>
+                    </td>
+                    <td>
+                        <input type="text" name="rawstocktrasferrecords_set-0-item_quantity_transfer" maxlength="200" id="id_rawstocktrasferrecords_set-0-item_quantity_transfer">
+                    </td>
+                    <td>
+                        <input type="text" name='per' id="per" class="purchase-amount" readonly>
+                    </td>
+                    <td>
+                        <input type="text" name="rawstocktrasferrecords_set-0-remarks" maxlength="255" id="id_rawstocktrasferrecords_set-0-remarks">
+                    </td>
+                    
+       
+                    <td>
+                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
+                    </td>
 
                 </tr>
             </tbody>
