@@ -911,7 +911,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                 
                 # create form with that data with initial data 
                 total_forms = len(initial_data_backend)
-                opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)   # when using modelformset need to add can_delete = True or delete wont be added in for
+                opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)   # when using modelformset need to add can_delete = True or delete wont be added in the form
                 formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend, prefix = "opening_shade_godown_quantity_set")
                 
             else:
@@ -948,7 +948,8 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
                                 except opening_shade_godown_quantity.DoesNotExist:
                                     form_instance = form.save(commit=False)
-                                    form_instance.old_opening_g_quantity = 0 # set the old opening quantity to 0 if instance is not there (which can be the case if shade is created but godown opening instances are not )
+                                    # set the old opening quantity to 0 if instance is not there (which can be the case if shade is created but godown opening instances are not) old godown_id not reqired in new created instances
+                                    form_instance.old_opening_g_quantity = 0 
                                     form_instance.save()
                                 
                                 except Exception as e:
@@ -1552,6 +1553,7 @@ def stocktransfer(request):
     raw_godowns = Godown_raw_material.objects.all()
     rawstocktransferlist = RawStockTransfer.objects.all()
     #godowns - one to many - godownitems - many to one - item_shades - many to one - items
+
     if request.method == 'GET':
         selected_source_godown_id = request.GET.get('selected_godown_id') 
         selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
@@ -1673,6 +1675,7 @@ def stocktransfer(request):
             
 
             except item_godown_quantity_through_table.DoesNotExist:
+
                 with transaction.atomic():
                     #substract the quantity from source 
                     source_g.quantity = source_g.quantity - item_quantity_transfer
