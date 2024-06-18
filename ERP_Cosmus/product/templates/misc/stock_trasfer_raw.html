@@ -34,11 +34,8 @@
           <p>(Transfer to)</p>
         </div>
         <div class=" d-flex mb-3 my-3">
-          <select class="item-select" name="destination_godown"  id="id_destination_godown">
-            <option value=""></option>
-            {% for godown in godowns %}
-            <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-            {% endfor %}
+          <select class="item-select destination_godowns" name="destination_godown"  id="id_destination_godown">
+
             
           </select>
         </div>
@@ -220,17 +217,26 @@ $(document).ready(function() {
         success: function(response) {
         console.log(response);
         $('.stock_input_name').empty().append('<option value="">Select Item</option>');
+        $('.destination_godowns').empty().append('<option value="">Select Item</option>');
         $('.stock_shade').empty();
         $('.stock_color').val('');
         $('.stock_qty').val('');
         $('.stock_units').val('');
         $('.stock_remarks').val('');
-
-          var itemsInGodown = response.items_in_godown;
+        var destinaionGodown = response.destination_godowns;
+        var itemsInGodown = response.items_in_godown;
+        
           $.each(itemsInGodown, function (key, value) {
             $('.stock_input_name').append('<option value="' + key + '">' + value + '</option>');
            
           });
+
+          $.each(destinaionGodown, function (key, value) {
+            $('.destination_godowns').append('<option value="' + key + '">' + value + '</option>');
+           
+          });
+
+
         },
         error: function(error) {
             console.log('Error sending value to the backend');
@@ -257,7 +263,7 @@ $(document).ready(function() {
                var item_per = response.item_per;
                var item_color = response.item_color;
                var item_shade_quantity = response.items_shade_quantity_in_godown;
-
+                console.log(item_shade_quantity)
                var itemcolorinput = document.querySelector('#id_stock_color_'+idValue);
                var itemperinput = document.querySelector('#id_stock_per_'+idValue);
 
