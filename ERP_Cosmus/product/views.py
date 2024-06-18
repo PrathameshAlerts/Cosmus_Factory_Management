@@ -1672,12 +1672,12 @@ def stockTrasferRaw(request, pk=None):
 
     context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns}
 
-    return render(request,'misc/stock_trasfer_raw.html',context=context)
+    return render(request,'misc/stock_transfer_raw.html',context=context)
 
 
 def stockTrasferRawList(request):
     stocktrasferall = RawStockTransferMaster.objects.all()
-    return render(request,'misc/stock_trasfer_raw_list.html',{'stocktrasferall':stocktrasferall})
+    return render(request,'misc/stock_transfer_raw_list.html',{'stocktrasferall':stocktrasferall})
 
 
 
