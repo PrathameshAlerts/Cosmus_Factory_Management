@@ -1612,12 +1612,10 @@ def stockTrasferRaw(request, pk=None):
 
         shade_quantity = 0
         selected_shade = request.GET.get('selected_shade_id')
-        
-        selected_godown = request.GET.get('godown_id')
        
-        if selected_shade is not None and selected_godown is not None:
+        if selected_shade is not None and selected_source_godown_id is not None:
             selected_shade = int(selected_shade)
-            selected_source_godown_id = int(selected_godown)
+            selected_source_godown_id = int(selected_source_godown_id)
 
             quantity_get = item_godown_quantity_through_table.objects.filter(Item_shade_name = selected_shade, godown_name = selected_source_godown_id).first()
             shade_quantity  = quantity_get.quantity
