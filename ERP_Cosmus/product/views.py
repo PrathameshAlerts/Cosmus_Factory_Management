@@ -1545,12 +1545,12 @@ def godowndelete(request,str,pk):
 #__________________________stock transfer start__________________________
 
 def stockTrasferRaw(request, pk=None):
-    print(request.POST)
+
     godowns = Godown_raw_material.objects.all()
-    Items = Item_Creation.objects.all()
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         
+        # get te selected source godown
         selected_source_godown_id = int(request.GET.get('selected_godown_id'))
         selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
 
@@ -1562,11 +1562,75 @@ def stockTrasferRaw(request, pk=None):
             item_id = item.items.id
             items_in_godown[item_id] = item_name
 
-        return JsonResponse({'items_in_godown': items_in_godown})
+
+
+        # shades of the selected item from the godown 
+        #get the selected item
+        item_name_value = request.GET.get('item_value')
+
+        #get the selected godown
+        item_color_godown = request.GET.get('selectedValueGodown')
+
+
+         # get the shade of the selected item
+        item_shades_of_selected_item = item_color_shade.objects.filter(items=item_name_value)
+
+        item_shades = {}
+
+        items_shade_quantity_in_godown = {}
+
+        #loop through the itemshade of item   
+        for x in item_shades_of_selected_item:
+
+            # in the through table to with the selected shade of the selected item and selected godown
+            shades_of_item_in_selected_godown = item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name = x.id)
+
+            # loop through the filtered queryset of shades in the godown and make 
+            # item_shade dict to send in front end 
+            for x in shades_of_item_in_selected_godown:
+                shade_name = x.Item_shade_name.item_shade_name
+                shade_id = x.Item_shade_name.id
+                item_shades[shade_id] = shade_name
+
+                # quantity of shade in godown
+                item_id = x.Item_shade_name.id
+                items_shade_quantity_in_godown[item_id] = x.quantity
+
+
+        # item color and item_per 
+        item_color = None
+        item_per = None
+        if item_name_value is not None:
+            item_name_value = int(item_name_value)
+
+            # get the item 
+            items =  get_object_or_404(Item_Creation ,id = item_name_value)
+        
+            item_color = items.Item_Color.color_name
+            item_per = items.unit_name_item.unit_name
+
+
+        shade_quantity = 0
+        selected_shade = request.GET.get('selected_shade_id')
+        selected_godown = request.GET.get('godown_id')
+       
+        if selected_shade is not None and selected_godown is not None:
+            selected_shade = int(selected_shade)
+            selected_source_godown_id = int(selected_godown)
+
+            quantity_get = item_godown_quantity_through_table.objects.filter(Item_shade_name = selected_shade, godown_name = selected_source_godown_id).first()
+            shade_quantity  = quantity_get.quantity
+
+
+        
+        return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
+                                'item_color':item_color,'item_per':item_per, 'shade_quantity':shade_quantity,
+                                'items_shade_quantity_in_godown':items_shade_quantity_in_godown })
 
     if pk:
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
+
 
     else:
         raw_transfer_instance = None
