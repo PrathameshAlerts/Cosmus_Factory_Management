@@ -241,8 +241,9 @@ $(document).ready(function() {
         var item_value = $(this).val();
         var selectedValueGodown = $('#id_source_godown').val();
         console.log(nameValue,idValue);
+        console.log(item_value,selectedValueGodown);
         $.ajax({
-            url: '/stocktransfer/',
+            url: '/stocktransferrawcreate/',
             method: 'GET',
             data: {
                 'item_value': item_value,
@@ -253,10 +254,10 @@ $(document).ready(function() {
 
                 
                 $('#stock_name_' + idValue).empty().append('<option value="">Select Shade</option>');
-                var item_shades = response.item_shades;
-               var item_per = response.item_per;
-               var item_color = response.item_color;
-               var item_shade_quantity = response.items_shade_quantity_in_godown;
+            //     var item_shades = response.item_shades;
+            //    var item_per = response.item_per;
+            //    var item_color = response.item_color;
+            //    var item_shade_quantity = response.items_shade_quantity_in_godown;
                
 
             },
