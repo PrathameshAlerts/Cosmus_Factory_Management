@@ -63,19 +63,20 @@
                 {{ form.id }}
                 <tr>
                     <td>
-                        <select name="stock_name_{{forloop.counter0}}" class="stock_input" placeholder="Item Name" required id="id_stock_name_{{forloop.counter0}}"></select> 
+                        <select class="stock_input stock_input_name" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
+                            <!-- <option value=""></option>
+                            {% for item in Items %}
+                            <option value="{{item.id}}">{{item.item_name}}</option>
+                            {% endfor %} -->
+                        </select>
+                        
                     </td>
                     <td>
                         <input type="text" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount" readonly>
                     </td>
                     <td>
-                        <select class="stock_input" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
-                            <option value=""></option>
-                            {% for item in Items %}
-                            <option value="{{item.id}}">{{item.item_name}}</option>
-                            {% endfor %}
-                        </select>
-                      </td>
+                        <select name="stock_name_{{forloop.counter0}}" class="stock_input" placeholder="Item Name" required id="id_stock_name_{{forloop.counter0}}"></select> 
+                    </td>
                     <td>
                         <input type="text" class="purchase-amount" name="{{form.prefix}}-item_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-item_quantity_transfer">
                     </td>
@@ -193,8 +194,36 @@
 
 };
     deleteRow();
-    });
+});
 
+
+$(document).ready(function() {
+    $('#id_source_godown').on('change',function(){
+        var selectedGodownId  = $(this).val();
+        
+        console.log(selectedGodownId );
+        $.ajax({
+         url: '/stocktransfer/',
+        method: 'GET',
+        data: {
+          'selected_godown_id': selectedGodownId
+        },
+        success: function(response) {
+            console.log(response);
+        $('.stock_input_name').empty().append('<option value="">Select Item</option>');
+        $('#shades').empty();
+          $('#color').val('');
+
+          $('#quantity').val('');
+          $('#per').val('');
+          $('#remarks').val('');
+        },
+        error: function(error) {
+          // Handle any errors that occur
+        }
+        })
+    })
+})
 </script>
 
 {% endblock %}
