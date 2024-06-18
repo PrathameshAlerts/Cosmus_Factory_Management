@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from multiselectfield import MultiSelectField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
+from numpy import true_divide
 
 
 class CompanyMaster(models.Model):
@@ -500,7 +501,7 @@ class RawStockTrasferRecords(models.Model):
     master_instance = models.ForeignKey(RawStockTransferMaster, on_delete = models.CASCADE)
     item_shade_transfer = models.IntegerField(null=False, blank=False)
     item_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=3)
-    remarks = models.CharField(max_length = 255)
+    remarks = models.CharField(max_length = 255, blank=True, null=True)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
 
