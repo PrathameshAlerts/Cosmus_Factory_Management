@@ -9,7 +9,7 @@
    <h2>Stock Transfer<span>(Raw material)</span></h2>
     <div class="d-flex mb-3">
         <label for="id_voucher_no" class="item-form">Voucher No:</label>
-        <input  class="item-select mx-3" type="number" name="voucher_no" required id="id_voucher_no">
+        <input value="{{masterstockform.instance.voucher_no}}"  class="item-select mx-3" type="number" name="voucher_no" required id="id_voucher_no">
         <div class="ms-auto">
         </div>
       </div>
@@ -35,8 +35,6 @@
         </div>
         <div class=" d-flex mb-3 my-3">
           <select class="item-select destination_godowns" name="destination_godown"  id="id_destination_godown">
-
-            
           </select>
         </div>
       </div>
@@ -60,22 +58,26 @@
                 {{ form.id }}
                 <tr>
                     <td>
-                        <select class="stock_input stock_input_name" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer"></select>
+                        <select class="stock_input stock_input_name" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
+
+
+                        </select>
+
                     </td>
                     <td>
-                        <input type="text" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
+                        <input type="text" value="" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
                     </td>
                     <td>
                         <select name="stock_name_{{forloop.counter0}}" class="stock_input stock_shades" placeholder="Item Name" required id="id_stock_name_{{forloop.counter0}}"></select> 
                     </td>
                     <td>
-                        <input type="text" class="purchase-amount stock_qty" name="{{form.prefix}}-item_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-item_quantity_transfer">
+                        <input  value="{{form.instance.item_quantity_transfer}}"  type="text" class="purchase-amount stock_qty" name="{{form.prefix}}-item_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-item_quantity_transfer">
                     </td>
                     <td>
                         <input type="text" name='stock_per_{{forloop.counter0}}' id="id_stock_per_{{forloop.counter0}}" class="purchase-amount stock_units" readonly>
                     </td>
                     <td>
-                        <input type="text" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
+                        <input type="text" value="{{form.instance.remarks}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
                     </td>
                 
                     <td>
