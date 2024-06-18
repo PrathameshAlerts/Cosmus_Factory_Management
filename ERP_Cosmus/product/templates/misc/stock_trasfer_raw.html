@@ -34,11 +34,8 @@
           <p>(Transfer to)</p>
         </div>
         <div class=" d-flex mb-3 my-3">
-          <select class="item-select" name="destination_godown"  id="id_destination_godown">
-            <option value=""></option>
-            {% for godown in godowns %}
-            <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-            {% endfor %}
+          <select class="item-select destination_godowns" name="destination_godown"  id="id_destination_godown">
+
             
           </select>
         </div>
@@ -63,13 +60,7 @@
                 {{ form.id }}
                 <tr>
                     <td>
-                        <select class="stock_input stock_input_name" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
-                            <!-- <option value=""></option>
-                            {% for item in Items %}
-                            <option value="{{item.id}}">{{item.item_name}}</option>
-                            {% endfor %} -->
-                        </select>
-                        
+                        <select class="stock_input stock_input_name" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer"></select>
                     </td>
                     <td>
                         <input type="text" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
@@ -131,9 +122,6 @@
             itemShadeElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
             itemShadeElement.value = "";
 
-         
-
-
             const itemColorElement = newTable.querySelector('input[name^="stock_color_"]');
             itemColorElement.id = `id_stock_color_${newFormCount}`;
             itemColorElement.name = `stock_color_${newFormCount}`;
@@ -142,9 +130,8 @@
             const itemNameElement = newTable.querySelector('select[name^="stock_name_"]');
             itemNameElement.id = `id_stock_name_${newFormCount}`;
             itemNameElement.name = `stock_name_${newFormCount}`;
-            itemNameElement.innerHTML = "";
-           
-
+            itemNameElement.innerHTML = "";   
+ 
             const itemQuantityElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="item_quantity_transfer"]');
             itemQuantityElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
             itemQuantityElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
@@ -182,7 +169,7 @@
     button.addEventListener('click', function() {
         // Find the row containing the clicked delete button
         var row = this.closest('tr');
-        console.log("row",row);
+     
         var checkRow = row.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="-DELETE"]');
         if (checkRow) {
             checkRow.checked = true; // Mark as checked
@@ -202,12 +189,6 @@
 
 
 $(document).ready(function() {
-
-    var idValue;
-    // $(document).on('change','select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]',function(){
-    //     var nameValue = $(this).closest('tr').find('select[name^="rawstocktrasferrecords_set-"]').attr('name');
-    //     idValue = nameValue.split('-')[1];
-    // });
     $('#id_source_godown').on('change',function(){
         var selectedGodownId  = $(this).val();
         var id = $(this).attr('id');
@@ -218,19 +199,26 @@ $(document).ready(function() {
           'selected_godown_id': selectedGodownId
         },
         success: function(response) {
-        console.log(response);
         $('.stock_input_name').empty().append('<option value="">Select Item</option>');
         $('.stock_shades').empty();
         $('.stock_color').val('');
         $('.stock_qty').val('');
         $('.stock_units').val('');
         $('.stock_remarks').val('');
-
-          var itemsInGodown = response.items_in_godown;
+        var destinaionGodown = response.destination_godowns;
+        var itemsInGodown = response.items_in_godown;
+        
           $.each(itemsInGodown, function (key, value) {
             $('.stock_input_name').append('<option value="' + key + '">' + value + '</option>');
            
           });
+
+          $('#id_destination_godown').empty().append('<option value="">Target Godown</option>');
+          $.each(destinaionGodown, function (key, value) {
+            $('#id_destination_godown').append('<option value="' + key + '">' + value + '</option>');
+           
+          });
+
         },
         error: function(error) {
             console.log('Error sending value to the backend');
@@ -240,7 +228,7 @@ $(document).ready(function() {
 
     $(document).on('change','select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]',function(){
         var nameValue = $(this).closest('tr').find('select[name^="rawstocktrasferrecords_set-"]').attr('name');
-        idValue = nameValue.split('-')[1];
+        var idValue = nameValue.split('-')[1];
         var item_value = $(this).val();
         var selectedValueGodown = $('#id_source_godown').val();
        
@@ -257,7 +245,7 @@ $(document).ready(function() {
                var item_per = response.item_per;
                var item_color = response.item_color;
                var item_shade_quantity = response.items_shade_quantity_in_godown;
-
+                console.log(item_shade_quantity)
                var itemcolorinput = document.querySelector('#id_stock_color_'+idValue);
                var itemperinput = document.querySelector('#id_stock_per_'+idValue);
 
