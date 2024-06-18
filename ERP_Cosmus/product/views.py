@@ -1651,7 +1651,7 @@ def stockTrasferRaw(request, pk=None):
 
 
     if request.method == 'POST':
-        
+        print(request.POST)
         if masterstockform.is_valid() and formset.is_valid():
             masterforminstance = masterstockform.save(commit=False)
             masterforminstance.save()
@@ -1665,21 +1665,27 @@ def stockTrasferRaw(request, pk=None):
             for form in formset:
                 if form.is_valid():
                     if not form.cleaned_data.get('DELETE'):  # to check if form is not marked for deleting, not checked forms that are marked for deleting will be saved again 
+                        print(form.cleaned_data)
                         transfer_instance = form.save(commit=False)
                         transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
                         transfer_instance.save()
+            return redirect('stock-transfer-raw-list')
 
 
     context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns}
 
-    return render(request,'misc/stock_trasfer_raw.html',context=context)
+    return render(request,'misc/stock_transfer_raw.html', context=context)
 
 
 def stockTrasferRawList(request):
     stocktrasferall = RawStockTransferMaster.objects.all()
-    return render(request,'misc/stock_trasfer_raw_list.html',{'stocktrasferall':stocktrasferall})
+    return render(request,'misc/stock_transfer_raw_list.html',{'stocktrasferall':stocktrasferall})
 
 
+def stockTrasferRawDelete(request,pk):
+    stocktrasferinstance =  get_object_or_404(RawStockTransferMaster,pk = pk)
+    stocktrasferinstance.delete()
+    return redirect('stock-transfer-raw-list')
 
 #__________________________stock transfer end__________________________
 

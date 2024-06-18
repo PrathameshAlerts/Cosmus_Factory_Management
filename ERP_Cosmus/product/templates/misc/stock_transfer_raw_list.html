@@ -1,0 +1,36 @@
+{% extends 'product/base.html' %}
+{% load static %}
+
+{% block body %}
+<h2>Stock Transfer List<span>(Raw material)</span></h2>
+
+
+
+<a href="{% url 'stock-transfer-raw-create' %}">stock transfer</a>
+
+<table>
+    <tr>
+      <th>Voucher No</th>
+      <th>Source Godown</th>      
+      <th>Destination Godown</th>
+      <th>Creation date</th>
+      <th>Update date</th>
+      <th>Update</th>
+      <th>Delete</th>
+    </tr>
+    {% for record in stocktrasferall %}
+    <tr>
+      <td>{{record.voucher_no}}</td>
+      <td>{{record.source_godown}}</td>
+      <td>{{record.destination_godown}}</td>
+      <td>{{record.created_date}}</td>
+      <td>{{record.updated_date}}</td>
+      <td> <a href="{% url 'stock-transfer-raw-update' record.pk %}">update</a></td>
+      <td><a href="{% url 'stock-transfer-raw-delete' record.pk %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+
+
+{% endblock %}

@@ -109,6 +109,7 @@ urlpatterns = [
     # #stocktransfer
     path('stocktransferrawcreate/', views.stockTrasferRaw, name = 'stock-transfer-raw-create'),
     path('stocktransferrawupdate/<int:pk>', views.stockTrasferRaw, name = 'stock-transfer-raw-update'),
+     path('stocktransferrawdelete/<int:pk>', views.stockTrasferRawDelete, name = 'stock-transfer-raw-delete'),
     path('stocktransferrawlist/', views.stockTrasferRawList, name = 'stock-transfer-raw-list'),
 
 
