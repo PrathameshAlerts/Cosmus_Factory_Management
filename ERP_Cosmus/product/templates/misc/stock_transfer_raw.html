@@ -60,13 +60,7 @@
                 {{ form.id }}
                 <tr>
                     <td>
-                        <select class="stock_input stock_input_name" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
-                            <!-- <option value=""></option>
-                            {% for item in Items %}
-                            <option value="{{item.id}}">{{item.item_name}}</option>
-                            {% endfor %} -->
-                        </select>
-                        
+                        <select class="stock_input stock_input_name" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer"></select>
                     </td>
                     <td>
                         <input type="text" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
@@ -128,9 +122,6 @@
             itemShadeElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
             itemShadeElement.value = "";
 
-         
-
-
             const itemColorElement = newTable.querySelector('input[name^="stock_color_"]');
             itemColorElement.id = `id_stock_color_${newFormCount}`;
             itemColorElement.name = `stock_color_${newFormCount}`;
@@ -139,9 +130,8 @@
             const itemNameElement = newTable.querySelector('select[name^="stock_name_"]');
             itemNameElement.id = `id_stock_name_${newFormCount}`;
             itemNameElement.name = `stock_name_${newFormCount}`;
-            itemNameElement.innerHTML = "";
-           
-
+            itemNameElement.innerHTML = "";   
+ 
             const itemQuantityElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="item_quantity_transfer"]');
             itemQuantityElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
             itemQuantityElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
@@ -179,7 +169,7 @@
     button.addEventListener('click', function() {
         // Find the row containing the clicked delete button
         var row = this.closest('tr');
-        console.log("row",row);
+     
         var checkRow = row.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="-DELETE"]');
         if (checkRow) {
             checkRow.checked = true; // Mark as checked
@@ -199,12 +189,6 @@
 
 
 $(document).ready(function() {
-
-    var idValue;
-    // $(document).on('change','select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]',function(){
-    //     var nameValue = $(this).closest('tr').find('select[name^="rawstocktrasferrecords_set-"]').attr('name');
-    //     idValue = nameValue.split('-')[1];
-    // });
     $('#id_source_godown').on('change',function(){
         var selectedGodownId  = $(this).val();
         var id = $(this).attr('id');
@@ -215,10 +199,8 @@ $(document).ready(function() {
           'selected_godown_id': selectedGodownId
         },
         success: function(response) {
-        console.log(response);
         $('.stock_input_name').empty().append('<option value="">Select Item</option>');
-        $('.destination_godowns').empty().append('<option value="">Select Item</option>');
-        $('.stock_shade').empty();
+        $('.stock_shades').empty();
         $('.stock_color').val('');
         $('.stock_qty').val('');
         $('.stock_units').val('');
@@ -231,11 +213,11 @@ $(document).ready(function() {
            
           });
 
+          $('#id_destination_godown').empty().append('<option value="">Target Godown</option>');
           $.each(destinaionGodown, function (key, value) {
-            $('.destination_godowns').append('<option value="' + key + '">' + value + '</option>');
+            $('#id_destination_godown').append('<option value="' + key + '">' + value + '</option>');
            
           });
-
 
         },
         error: function(error) {
@@ -246,7 +228,7 @@ $(document).ready(function() {
 
     $(document).on('change','select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]',function(){
         var nameValue = $(this).closest('tr').find('select[name^="rawstocktrasferrecords_set-"]').attr('name');
-        idValue = nameValue.split('-')[1];
+        var idValue = nameValue.split('-')[1];
         var item_value = $(this).val();
         var selectedValueGodown = $('#id_source_godown').val();
        
@@ -276,7 +258,8 @@ $(document).ready(function() {
                     } else {
                         $('#id_stock_name_' + idValue).append('<option value="' + key + '">' + value + '</option>');
                     }
-                });   
+                }); 
+             
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
@@ -285,7 +268,8 @@ $(document).ready(function() {
     })
 
     $(document).on('change','select[name^="stock_name_"]',function(){
-     
+        var nameValue = $(this).attr('name');
+        var newValue = nameValue.split('_')[2];
         var selectshadesid = $(this).val();
         var selectedValueGodown = $('#id_source_godown').val();
 
@@ -298,7 +282,7 @@ $(document).ready(function() {
             },
             success: function (response) {     
                 var shade_quantity = response.shade_quantity;
-                $('#id_rawstocktrasferrecords_set-'+ idValue + '-item_quantity_transfer').val(shade_quantity);
+                $('#id_rawstocktrasferrecords_set-'+ newValue + '-item_quantity_transfer').val(shade_quantity);
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
