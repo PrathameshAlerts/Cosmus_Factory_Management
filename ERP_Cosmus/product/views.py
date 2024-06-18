@@ -1551,7 +1551,9 @@ def stockTrasferRaw(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         
         # get te selected source godown
-        selected_source_godown_id = int(request.GET.get('selected_godown_id'))
+        selected_source_godown_id = request.GET.get('selected_godown_id')
+
+        print(selected_source_godown_id)
         selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
 
         # items in the selected godown 
@@ -1568,11 +1570,7 @@ def stockTrasferRaw(request, pk=None):
         #get the selected item
         item_name_value = request.GET.get('item_value')
 
-        #get the selected godown
-        item_color_godown = request.GET.get('selectedValueGodown')
-
-
-         # get the shade of the selected item
+        # get the shade of the selected item
         item_shades_of_selected_item = item_color_shade.objects.filter(items=item_name_value)
 
         item_shades = {}
@@ -1583,7 +1581,7 @@ def stockTrasferRaw(request, pk=None):
         for x in item_shades_of_selected_item:
 
             # in the through table to with the selected shade of the selected item and selected godown
-            shades_of_item_in_selected_godown = item_godown_quantity_through_table.objects.filter(godown_name = item_color_godown, Item_shade_name = x.id)
+            shades_of_item_in_selected_godown = item_godown_quantity_through_table.objects.filter(godown_name = selected_source_godown_id, Item_shade_name = x.id)
 
             # loop through the filtered queryset of shades in the godown and make 
             # item_shade dict to send in front end 
@@ -1658,15 +1656,9 @@ def stockTrasferRaw(request, pk=None):
                         transfer_instance = form.save(commit=False)
                         transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
                         transfer_instance.save()
-                  
-
-            
 
 
-
-
-
-    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'Items':Items}
+    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns}
 
     return render(request,'misc/stock_trasfer_raw.html',context=context)
 
