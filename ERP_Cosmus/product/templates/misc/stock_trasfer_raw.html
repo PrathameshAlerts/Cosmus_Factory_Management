@@ -240,35 +240,33 @@ $(document).ready(function() {
 
         var item_value = $(this).val();
         var selectedValueGodown = $('#id_source_godown').val();
-        console.log(nameValue,idValue);
-        console.log(item_value,selectedValueGodown);
+       
         $.ajax({
             url: '/stocktransferrawcreate/',
             method: 'GET',
             data: {
                 'item_value': item_value,
-               'selectedValueGodown': selectedValueGodown
+               'selected_godown_id': selectedValueGodown
             },
             success: function (response) {
                 console.log(response);
-
-                
-                $('#stock_name_' + idValue).empty().append('<option value="">Select Shade</option>');
+            $('#id_stock_name_' + idValue).empty().append('<option value="">Select Shade</option>');
                 var item_shades = response.item_shades;
                var item_per = response.item_per;
                var item_color = response.item_color;
                var item_shade_quantity = response.items_shade_quantity_in_godown;
 
-               var itemcolorinput = document.querySelector('#id_stock_color_'+idValue);ss
-          var itemperinput = document.querySelector('#id_stock_per_'+idValue);
+               var itemcolorinput = document.querySelector('#id_stock_color_'+idValue);
+               var itemperinput = document.querySelector('#id_stock_per_'+idValue);
 
-          itemcolorinput.value = item_color;
-          itemperinput.value = item_per;
+              itemcolorinput.value = item_color;
+              itemperinput.value = item_per;
+
                 $.each(item_shades, function (key, value) {
                     if (item_shade_quantity.hasOwnProperty(key)) {
-                        $('#stock_name_' + idValue).append('<option value="' + key + '">' + value + ' - ' + item_shade_quantity[key] + '</option>');
+                        $('#id_stock_name_' + idValue).append('<option value="' + key + '">' + value + ' - ' + item_shade_quantity[key] + '</option>');
                     } else {
-                        $('#stock_name_' + idValue).append('<option value="' + key + '">' + value + '</option>');
+                        $('#id_stock_name_' + idValue).append('<option value="' + key + '">' + value + '</option>');
                     }
                 });
                
@@ -280,7 +278,25 @@ $(document).ready(function() {
         })
     })
 
-
+    (document).on('change','select[name^="stock_name_"]',function(){
+        var selectshadesid = $(this).val();
+        var selectedValueGodown = $('#id_source_godown').val();
+      
+        $.ajax({
+            url: '/stocktransferrawcreate/',
+            method: 'GET',
+            data: {
+              'selected_shade_id': selectshadesid,
+              'godown_id': selectedValueGodown
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+            } 
+        })
+    })
 })
 </script>
 
