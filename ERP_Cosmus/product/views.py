@@ -1666,7 +1666,7 @@ def stockTrasferRaw(request, pk=None):
 
 
 
-    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'Items':Items}
+    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns}
 
     return render(request,'misc/stock_trasfer_raw.html',context=context)
 

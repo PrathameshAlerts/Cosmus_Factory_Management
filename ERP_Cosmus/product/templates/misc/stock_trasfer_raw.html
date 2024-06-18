@@ -254,10 +254,23 @@ $(document).ready(function() {
 
                 
                 $('#stock_name_' + idValue).empty().append('<option value="">Select Shade</option>');
-            //     var item_shades = response.item_shades;
-            //    var item_per = response.item_per;
-            //    var item_color = response.item_color;
-            //    var item_shade_quantity = response.items_shade_quantity_in_godown;
+                var item_shades = response.item_shades;
+               var item_per = response.item_per;
+               var item_color = response.item_color;
+               var item_shade_quantity = response.items_shade_quantity_in_godown;
+
+               var itemcolorinput = document.querySelector('#id_stock_color_'+idValue);ss
+          var itemperinput = document.querySelector('#id_stock_per_'+idValue);
+
+          itemcolorinput.value = item_color;
+          itemperinput.value = item_per;
+                $.each(item_shades, function (key, value) {
+                    if (item_shade_quantity.hasOwnProperty(key)) {
+                        $('#stock_name_' + idValue).append('<option value="' + key + '">' + value + ' - ' + item_shade_quantity[key] + '</option>');
+                    } else {
+                        $('#stock_name_' + idValue).append('<option value="' + key + '">' + value + '</option>');
+                    }
+                });
                
 
             },
