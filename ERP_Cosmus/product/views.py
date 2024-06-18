@@ -1598,6 +1598,8 @@ def stockTrasferRaw(request, pk=None):
         # item color and item_per 
         item_color = None
         item_per = None
+
+
         if item_name_value is not None:
             item_name_value = int(item_name_value)
 
@@ -1610,6 +1612,7 @@ def stockTrasferRaw(request, pk=None):
 
         shade_quantity = 0
         selected_shade = request.GET.get('selected_shade_id')
+        
         selected_godown = request.GET.get('godown_id')
        
         if selected_shade is not None and selected_godown is not None:
