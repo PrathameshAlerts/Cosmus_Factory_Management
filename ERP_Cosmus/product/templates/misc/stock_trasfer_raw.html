@@ -206,10 +206,11 @@ $(document).ready(function() {
         console.log(id);
         console.log(selectedGodownId );
         $.ajax({
-         url: '/stocktransfer/',
+         url: '/stocktransferrawcreate/',
         method: 'GET',
         data: {
           'selected_godown_id': selectedGodownId
+          
         },
         success: function(response) {
         console.log(response);

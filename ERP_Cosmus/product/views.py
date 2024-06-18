@@ -1549,6 +1549,21 @@ def stockTrasferRaw(request, pk=None):
     godowns = Godown_raw_material.objects.all()
     Items = Item_Creation.objects.all()
 
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        
+        selected_source_godown_id = int(request.GET.get('selected_godown_id'))
+        selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
+
+        # items in the selected godown 
+        items_in_godown = {}
+        for items in selected_source_godown_items:
+            item = items.Item_shade_name
+            item_name =  item.items.item_name
+            item_id = item.items.id
+            items_in_godown[item_id] = item_name
+
+        return JsonResponse({'items_in_godown': items_in_godown})
+
     if pk:
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
