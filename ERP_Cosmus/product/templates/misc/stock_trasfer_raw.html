@@ -220,7 +220,7 @@ $(document).ready(function() {
         success: function(response) {
         console.log(response);
         $('.stock_input_name').empty().append('<option value="">Select Item</option>');
-        $('.stock_shade').empty();
+        $('.stock_shades').empty();
         $('.stock_color').val('');
         $('.stock_qty').val('');
         $('.stock_units').val('');
@@ -270,7 +270,8 @@ $(document).ready(function() {
                     } else {
                         $('#id_stock_name_' + idValue).append('<option value="' + key + '">' + value + '</option>');
                     }
-                });   
+                }); 
+             
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
@@ -279,7 +280,8 @@ $(document).ready(function() {
     })
 
     $(document).on('change','select[name^="stock_name_"]',function(){
-     
+        var nameValue = $(this).attr('name');
+        var newValue = nameValue.split('_')[2];
         var selectshadesid = $(this).val();
         var selectedValueGodown = $('#id_source_godown').val();
 
@@ -292,7 +294,7 @@ $(document).ready(function() {
             },
             success: function (response) {     
                 var shade_quantity = response.shade_quantity;
-                $('#id_rawstocktrasferrecords_set-'+ idValue + '-item_quantity_transfer').val(shade_quantity);
+                $('#id_rawstocktrasferrecords_set-'+ newValue + '-item_quantity_transfer').val(shade_quantity);
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
