@@ -1610,21 +1610,23 @@ def stockTrasferRaw(request, pk=None):
             item_per = items.unit_name_item.unit_name
 
 
+        # quantity of the selected shade in that godown 
         shade_quantity = 0
         selected_shade = request.GET.get('selected_shade_id')
-       
+        print(selected_shade)
         if selected_shade is not None and selected_source_godown_id is not None:
             selected_shade = int(selected_shade)
             selected_source_godown_id = int(selected_source_godown_id)
 
             quantity_get = item_godown_quantity_through_table.objects.filter(Item_shade_name = selected_shade, godown_name = selected_source_godown_id).first()
             shade_quantity  = quantity_get.quantity
-
+        print(shade_quantity)
+        print(items_shade_quantity_in_godown)
 
         
         return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
-                                'item_color':item_color,'item_per':item_per, 'shade_quantity':shade_quantity,
-                                'items_shade_quantity_in_godown':items_shade_quantity_in_godown })
+                                'item_color':item_color,'item_per':item_per,'items_shade_quantity_in_godown':items_shade_quantity_in_godown,
+                                  'shade_quantity':shade_quantity })
 
     if pk:
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
