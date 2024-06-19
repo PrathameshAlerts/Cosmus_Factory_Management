@@ -3,16 +3,16 @@
 {% block body %}
 
         <div class="mb-4">
-        <lable  class="fw-bold fs-5">Item Name: </lable>
+        <lable class="fw-bold fs-5">Item Name: </lable>
         <span class="mx-2 fs-5 text-danger">{{item}}</span>
-        <lable  class="fw-bold fs-5 ms-4" >shade Name: </lable>
+        <lable class="fw-bold fs-5 ms-4" >shade Name: </lable>
         <span class="mx-2 fs-5 text-danger">{{item_shade}}</span>
           </div>
         <div class="">
             <form method="post" id="childform" onsubmit="submitData()">
                 {% csrf_token %}
                 <table class="table table-striped table-hover" id="newTable">
-                    <thead>
+                    <thead class="name_absolute">
                         <tr>
                             <th>Godowns</th>
                             <th>Quantity</th>

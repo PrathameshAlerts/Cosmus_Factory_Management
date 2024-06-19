@@ -30,9 +30,9 @@
     </div>  
     <div class="row ps-3">
       <div class="col-lg-12 ">
-        <div style="width:100%; overflow:auto; max-height:470px;">
+        <div class="table-responsives">
           <table class="table table-striped table-hover table-responsive table-bordered" style="width:100%;">
-            <thead class="name_absolute">
+            <thead class="name_absolute sticky-top">
                 <tr>
                     <th>No</th>
                     <th>Unit Name
@@ -48,7 +48,7 @@
                 </tr>
             </thead>
         
-            <tbody class="mainTableList">
+            <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                 {% for unit in unit_name_all %}
                 <tr>
                     <td>{{ forloop.counter }}</td>

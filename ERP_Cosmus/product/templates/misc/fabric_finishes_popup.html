@@ -35,10 +35,7 @@
 
         if (response.ok) {
             const data = await response.json();  // Await the response.json() call
-            console.log('Response data:', data);  // Now you can access the JSON data
-
            window.opener.postMessage(data, '*');
-
             window.close();
         } else {
             console.error('Failed to update GST.');

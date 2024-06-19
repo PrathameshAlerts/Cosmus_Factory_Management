@@ -1,38 +1,37 @@
-{% extends 'product/base.html' %} 
-{% load static %} 
- {% block body %}
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
 
-    <div class="row mt-4">
-        <div class="col-lg-5">
-            <form action="" method="POST">
+<div class="row mt-4">
+    <div class="col-lg-5">
+        <form action="" method="POST">
 
-                {% csrf_token %}
-               <h2 class="mb-4">Packaging - {{title}}</h2>
-                <div class="d-flex my-4">
-                    <label for="id_packing_material" class="item-form">Packaging :</label>
-                    <input type="text" name="packing_material" class="item-select" required id="id_packing_material" value="{{form.instance.packing_material}}">    
-                </div>
-            
-                <input type="submit" class="create-btn mt-4" name="save" value="Save">
-            
-            
-            </form>
-            
-        </div>
-        <div class="col-lg-5 mt-2">
-            <div class="row mt-4">
-                <div class="col-lg-12">
-                  <div class="d-flex mb-3">
-                    <div class="container-category "> 
-                     <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_sear  h" />
-                       <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+            {% csrf_token %}
+            <h2 class="mb-4">Packaging- {{title}}</h2>
+            <div class="d-flex my-4">
+                <label for="id_packing_material" class="item-form">Packaging :</label>
+                <input type="text" name="packing_material" class="item-select" required id="id_packing_material"
+                    value="{{form.instance.packing_material}}">
+            </div>
+
+            <input type="submit" class="create-btn mt-4" name="save" value="Save">
+        </form>
+
+    </div>
+    <div class="col-lg-5 mt-2">
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <div class="d-flex mb-3">
+                    <div class="container-category ">
+                        <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" />
+                        <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
                     </div>
-                   </div>
-                  </div>  
-                </div>  
-            <div style="width:100%; overflow:auto; max-height:470px;">
+                </div>
+            </div>
+        </div>
+        <div style="width:100%; overflow:auto; max-height:470px;">
             <table class="table table-striped table-bordered table-hover table-responsive" style="width:100%;">
-                <thead>
+                <thead class="text-nowrap name_absolute">
                     <tr>
                         <th>No</th>
                         <th>Material</th>
@@ -44,18 +43,53 @@
                     {% for package in packaging_all %}
                     <tr>
                         <td>{{forloop.counter}}</td>
-                       <td>{{package.packing_material}}</td>  
-                       <td><a href="{% url 'packaging-update' package.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
-                       <td><a href="{% url 'packaging-delete' package.id %}"><i class="fa-solid fa-trash text-danger px-2"></a></td>
+                        <td>{{package.packing_material}}</td>
+                        <td><a href="{% url 'packaging-update' package.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
+                        <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ package.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
                     </tr>
                     {% endfor %}
-                </tbody> 
+                </tbody>
             </table>
-            </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete this Packaging?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+        </div>
+      </div>
+    </div>
+    </div>
+<script>
+    document.body.appendChild(document.getElementById('exampleModal'));
     
+    $(document).ready(function(){
+        $('.delete-btn').click(function(){
+            var itemId = $(this).data('item-id');
+            $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+            $('#exampleModal').modal('show');
+        });
+    
+        // Confirm delete button click event
+        $('#confirmDeleteButton').click(function(){
+            var itemId = $(this).data('item-id');
+            // Redirect to delete view
+            window.location.href = '/packagingdelete/' + itemId;
+        });
+    });
+    
+    </script>
 
 
 
- {% endblock body %}
+{% endblock body %}

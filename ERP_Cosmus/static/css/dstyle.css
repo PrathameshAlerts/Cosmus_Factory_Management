@@ -13,7 +13,6 @@
 body{
     min-height: 100vh;
     background-color:#f6f7fb;
-    
     color: #000;
     background-size: cover;
     background-position: center;
@@ -96,7 +95,13 @@ input[type=number] {
     padding-top: 30px;
     
  }
-
+ .message-timer{
+    position: fixed;
+    z-index: 9999;
+    top: 70px;
+    left: 70%;
+    background-color: #155724;
+ }
  .form_input{
     padding-left:20px;
     gap: 20px;
@@ -1064,16 +1069,20 @@ input[type=number] {
     overflow-y: auto;
 }
 .errorShow{
-    position: fixed;
-  width: 70%;
+    position: absolute;
+  align-items: center;
+  justify-content: center;
   display: flex;
+  width: 40%;
+    margin-left: 500px;
     color: #f4f4f4;
     list-style-type: none;
     border: 2px solid #f8d7da;
     border-radius: 10px;
-    padding: 5px 20px;
+    padding: 5px;
+    top: 50px;
     background-color: rgba(216, 67, 67, 0.5);
-    z-index: 10;
+    z-index: 9999;
 
 }
 .image_btn{
@@ -1133,6 +1142,19 @@ input[type=number] {
     border: none;
     border-radius: 10px;
     
+}
+
+.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #343a40; /* Adjust as per your theme */
+    color: #fff; /* Adjust text color for better readability */
+}
+.table-responsives {
+    overflow-y: auto;
+   
+    max-height: 520px; /* Adjust the height as needed */
 }
 
 .product2create-btn{
