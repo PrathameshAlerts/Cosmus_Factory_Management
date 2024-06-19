@@ -9,7 +9,7 @@
    <h2>Stock Transfer<span>(Raw material)</span></h2>
     <div class="d-flex mb-3">
         <label for="id_voucher_no" class="item-form">Voucher No:</label>
-        <input value="{{masterstockform.instance.voucher_no}}"  class="item-select mx-3" type="number" name="voucher_no"  id="id_voucher_no">
+        <input value="{{masterstockform.instance.voucher_no}}" required  class="item-select mx-3" type="number" name="voucher_no"  id="id_voucher_no">
         <div class="ms-auto">
         </div>
       </div>
@@ -20,12 +20,10 @@
         </div>
   
         <div class="d-flex mb-3 my-3">
-          <select name="source_godown" class="item-select" id="id_source_godown">
+          <select name="source_godown" required class="item-select" id="id_source_godown">
 
             {% if masterstockform.instance.pk %}
-            
             <option value="{{masterstockform.instance.source_godown.id}}" >{{masterstockform.instance.source_godown.godown_name_raw}}</option>
-
             {% for godown in godowns %}
             <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
             {% endfor %}
@@ -46,7 +44,7 @@
           <p>(Transfer to)</p>
         </div>
         <div class=" d-flex mb-3 my-3">
-          <select class="item-select destination_godowns" name="destination_godown"  id="id_destination_godown">
+          <select class="item-select destination_godowns" required name="destination_godown"  id="id_destination_godown">
             {% if masterstockform.instance.pk %}
                 <option value="{{masterstockform.instance.destination_godown.id}}">{{masterstockform.instance.destination_godown.godown_name_raw}}</option>
             {% endif %}
