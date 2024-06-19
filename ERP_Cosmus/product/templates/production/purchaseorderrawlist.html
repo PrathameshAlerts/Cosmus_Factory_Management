@@ -13,14 +13,14 @@
              <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
                <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
-            
+            <button class="item-btn ms-1">Clear Filter</button>
            </div>
           </div>  
         </div>   
 </div>
 <div>
     <table class="table table-striped table-hover table-responsive table-bordered mt-3">
-        <thead>
+        <thead class="name_absolute">
             <tr>
                 <th>Purchase Order No</th>
                 <th>Product Refrence ID</th>
@@ -28,11 +28,11 @@
                 <th>Target Date</th>
                 <th>Created Date</th>
                 <th>Number of pieces</th>
-                <th>Update</th>
+                <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody class="mainTableList">
+        <tbody class="mainTableList text-nowrap">
             {% for po in purchase_orders %}
             <tr>
                 <td>{{po.purchase_order_number}}</td>

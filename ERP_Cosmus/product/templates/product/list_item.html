@@ -12,7 +12,6 @@ the input field will be pre-filled with that value when the page is loaded. -->
 <div>
      
       <div class="row">
-       
         <div class="col-lg-12 sub_main">
           <h2 class="mb-4">Item List</h2>
           <div class="d-flex mb-3">
@@ -234,7 +233,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>{{item.Item_GST}}</td>
               <td>{{item.HSN_Code}}</td>
               <td>{{item.status}}</td>
-              <td><a href="{% url 'item-edit' item.id %}"><span></span><i class="fa-solid fa-pen-to-square"></i></span></a></td>
+              <td><a href="{% url 'item-edit' item.id %}"><span><i class="fa-solid fa-pen-to-square"></i></span></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ item.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
               <td><a href="#"><i class="fa-solid fa-eye"></i></a></td>
               
@@ -285,9 +284,8 @@ $(document).ready(function(){
         window.location.href = '/itemdelete/' + itemId;
     });
 });
-</script>
-<script>
-  function redirectlistItem (){
+
+function redirectlistItem (){
     window.location.href = "{% url 'item-create'%}"
   }
 </script>

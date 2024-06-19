@@ -2,9 +2,6 @@
 {% load static %} 
 
 {% block body %} 
-
-
-
     <div class="row mt-4">
       <h2>Product Sub Category - {{title}}</h2>
       <div class="col-lg-5 mt-2">
@@ -14,9 +11,7 @@
           <div class="d-flex mb-3">
               <label for="id_product_main_category" class="item-form">Main Category:</label>
               <select name="product_main_category" id="id_product_main_category" class="item-select">
-                
                 {% if form.instance.id %}
-      
                 <option value="{{form.instance.product_main_category.id}}">{{form.instance.product_main_category.product_category_name}}</option>
                 {% for main_cat in main_categories %}
                 <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
