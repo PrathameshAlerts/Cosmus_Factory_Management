@@ -18,10 +18,10 @@
         <div class="row">
           <div class="col-lg-6">
             <table class="table table-striped table-hover table-responsive table-bordered">
-              <thead>
+              <thead class="name_absolute">
                 <tr>
-                  <th  class="name_absolute">No</th>
-                  <th class="name_absolute">Group
+                  <th>No</th>
+                  <th>Group
                     <div class="nav-item dropdown fabric-list-icons">
                       <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                       <ul class="dropdown-menu">
@@ -29,7 +29,7 @@
                       </ul>
                     </div>
                   </th>
-                  <th  class="name_absolute">Sub Group
+                  <th>Sub Group
                     <div class="nav-item dropdown fabric-list-icons">
                       <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                       <ul class="dropdown-menu">
@@ -37,30 +37,24 @@
                       </ul>
                     </div>
                   </th>
-                  <th class="name_absolute">Edit</th>
-                  <th  class="name_absolute">Delete</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
                  
                 </tr>
               </thead>
-              
               <tbody class="mainTableList">
-               
-              </tr>
-              {% for grp in  groups %} 
-              <tr>
-                <td>{{grp.id}}</td>
-                <td>{{grp.account_main_group}}</td>
-                <td>{{grp.account_sub_group}}</td>
-                <td><a href="{% url 'account_sub_group-update' grp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ grp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-              </tr>
-              {% endfor %}
-             
+                  {% for grp in  groups %} 
+                  <tr>
+                    <td>{{grp.id}}</td>
+                    <td>{{grp.account_main_group}}</td>
+                    <td>{{grp.account_sub_group}}</td>
+                    <td><a href="{% url 'account_sub_group-update' grp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                    <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ grp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                  </tr>
+                  {% endfor %}
               </tbody>
-              
             </table>
           </div>  
-         
         </div>
    
     </div>
@@ -84,8 +78,6 @@
   
   
   <script>
-  
-
     document.body.appendChild(document.getElementById('exampleModal'));
   
     $(document).ready(function(){
