@@ -491,15 +491,16 @@ class Godown_finished_goods(models.Model):
 
 class RawStockTransferMaster(models.Model):
     voucher_no = models.IntegerField(primary_key=True)
-    source_godown = models.IntegerField(null=False, blank=False)
-    destination_godown = models.IntegerField(null=False, blank=False)
+    source_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE , related_name='source_godowns')
+    destination_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE, related_name='destination_godowns')
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
 
 
+
 class RawStockTrasferRecords(models.Model):
     master_instance = models.ForeignKey(RawStockTransferMaster, on_delete = models.CASCADE)
-    item_shade_transfer = models.IntegerField(null=False, blank=False)
+    item_shade_transfer = models.ForeignKey(item_color_shade , on_delete= models.CASCADE)
     item_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=3)
     remarks = models.CharField(max_length = 255, blank=True, null=True)
     created_date = models.DateTimeField(auto_now = True)

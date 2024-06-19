@@ -1551,9 +1551,10 @@ def stockTrasferRaw(request, pk=None):
         try:
             # get te selected source godown
             selected_source_godown_id = request.GET.get('selected_godown_id')
-
+            
             # destination godown options which exclude godown selcted in source godown
             destination_godowns_queryset = Godown_raw_material.objects.exclude(pk = selected_source_godown_id)
+            
             destination_godowns = {}
 
             for records in destination_godowns_queryset:
@@ -1629,20 +1630,20 @@ def stockTrasferRaw(request, pk=None):
                 shade_quantity  = quantity_get.quantity
             
             
-
-            
             return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
                                     'item_color':item_color,'item_per':item_per,'items_shade_quantity_in_godown':items_shade_quantity_in_godown,
                                     'shade_quantity':shade_quantity,'destination_godowns':destination_godowns})
         except Exception as e:
             messages.error(request, f'An Error occoured {e}')
             logger.error(f'An Error occoured in stock transfer raw{e}')
+
     if pk:
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
-
+        source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name = raw_transfer_instance.source_godown.id)
 
     else:
+        source_godown_items = None
         raw_transfer_instance = None
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None,instance = raw_transfer_instance)
 
@@ -1652,10 +1653,11 @@ def stockTrasferRaw(request, pk=None):
 
     if request.method == 'POST':
         print(request.POST)
+        formset.forms = [form for form in formset if form.has_changed()]
         if masterstockform.is_valid() and formset.is_valid():
             masterforminstance = masterstockform.save(commit=False)
             masterforminstance.save()
-
+            
             # check and delete forms marked for deleting 
             for form in formset.deleted_forms:
                 if form.instance.pk:
@@ -1672,7 +1674,7 @@ def stockTrasferRaw(request, pk=None):
             return redirect('stock-transfer-raw-list')
 
 
-    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns}
+    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'source_godown_items':source_godown_items}
 
     return render(request,'misc/stock_transfer_raw.html', context=context)
 
