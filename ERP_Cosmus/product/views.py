@@ -404,9 +404,10 @@ def product_color_sku(request,ref_id = None):
 def pproduct_list(request):
     
     queryset = Product.objects.all().order_by('Product_Name').select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color')
-    product_search = request.GET.get('product_search')
-    print('productlist',request.GET)
-    if product_search != '' and product_search is not None:
+
+    product_search = request.GET.get('product_search','')
+    
+    if product_search != '':
         queryset = Product.objects.filter(Q(Product_Name__icontains=product_search)|
                                             Q(Model_Name__icontains=product_search)|
                                             Q(Product_Refrence_ID__icontains=product_search)|
@@ -507,6 +508,15 @@ def add_product_video_url(request,pk):
 
 def definemaincategoryproduct(request,pk=None):
 
+    queryset = MainCategory.objects.all()
+
+    main_cat_product_search = request.GET.get('main_cat_product_search','')
+
+    if main_cat_product_search != '':
+        queryset = MainCategory.objects.filter(product_category_name__icontains = main_cat_product_search)
+
+
+
     if pk:
         instance = MainCategory.objects.get(pk=pk)
         title = 'Update'
@@ -516,7 +526,7 @@ def definemaincategoryproduct(request,pk=None):
         title = 'Create'
         message = 'created'
 
-    main_cats = MainCategory.objects.all()
+    
     form = product_main_category_form(instance=instance)
     if request.method == 'POST':
         form = product_main_category_form(request.POST, instance= instance)
@@ -527,8 +537,12 @@ def definemaincategoryproduct(request,pk=None):
             if message == 'updated':
                 messages.success(request,'Main Category updated sucessfully')
             return redirect('define-main-category-product')
+        else:
+            return render(request,'product/definemaincategoryproduct.html',{'form':form,'main_cats':queryset,
+                                                                    'title':title,'main_cat_product_search':main_cat_product_search})
         
-    return render(request,'product/definemaincategoryproduct.html',{'form':form,'main_cats':main_cats,'title':title})
+    return render(request,'product/definemaincategoryproduct.html',{'form':form,'main_cats':queryset,
+                                                                    'title':title,'main_cat_product_search':main_cat_product_search})
 
 
 def definemaincategoryproductdelete(request,pk):
@@ -744,8 +758,10 @@ def item_clone_ajax(request):
 
 
 def item_list(request):
-    print('Item',request.GET)
-    g_search = request.GET.get('item_search')
+    
+    g_search = request.GET.get('item_search','')
+
+
     #select related for loading forward FK relationships and prefetch related for reverse relationship  
     #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
     queryset = Item_Creation.objects.all().annotate(total_quantity=Sum('shades__godown_shades__quantity')).order_by('item_name').select_related('Item_Color','unit_name_item',
@@ -755,7 +771,7 @@ def item_list(request):
 
 
     # cannot use icontains on foreignkey fields even if it has data in the fields
-    if g_search != '' and  g_search is not None:
+    if g_search != '':
         queryset = Item_Creation.objects.filter(Q(item_name__icontains=g_search)|
                                                 Q(Item_Color__color_name__icontains=g_search)|
                                                 Q(Fabric_Group__fab_grp_name__icontains=g_search))
@@ -1043,9 +1059,9 @@ def color_create_update(request, pk=None):
 
     queryset = Color.objects.all()
 
-    color_search = request.GET.get('color_search')
+    color_search = request.GET.get('color_search','')
 
-    if color_search != '' and color_search is not None:
+    if color_search != '':
         queryset = Color.objects.filter(color_name__icontains = color_search)
 
 
@@ -1124,9 +1140,9 @@ def color_delete(request, pk):
 def item_fabric_group_create_update(request, pk = None):
     queryset = Fabric_Group_Model.objects.all()
 
-    fabric_group_search = request.GET.get('fabric_group_search')
+    fabric_group_search = request.GET.get('fabric_group_search','')
 
-    if fabric_group_search != '' and fabric_group_search is not None:
+    if fabric_group_search != '':
         queryset = Fabric_Group_Model.objects.filter(fab_grp_name__icontains = fabric_group_search)
 
     if pk:
@@ -1201,7 +1217,7 @@ def unit_name_create_update(request,pk=None):
 
     unit_name_search =  request.GET.get('unit_name_search','')
 
-    if unit_name_search != "":
+    if unit_name_search != '':
         queryset = Unit_Name_Create.objects.filter(unit_name__icontains = unit_name_search)
 
 
