@@ -363,19 +363,19 @@
 
       {% for message in messages %}
       {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-      <div id="message-timer" class="success message-timer" role="alert">
+      <div class="success message-timer message-timer" role="alert">
         <svg class="bi flex-shrink-0 ms-2 alertImg" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-          &nbsp;<span>{{message}}</span>
+          &nbsp;{{message}}
       </div>
       {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-      <div id="message-timer" class="info message-timer" role="alert">
+      <div class="info info-messages message-timer" role="alert">
         <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> 
-        &nbsp;<span>{{message}}</span>
+        &nbsp;{{message}}
       </div> 
       {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-      <div id="message-timer" class="error message-timer" role="alert">
+      <div class="error error-message-timers message-timer" role="alert">
         <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-          &nbsp;<span>{{message}}</span>
+          &nbsp;{{message}}
       </div>
       {% endif %}
       {% endfor %}
@@ -411,27 +411,38 @@
   // This function is used to show the alert on the page
   function showAlertForDuration(duration) {
     // Get the alert element
-    var alert = document.getElementById('message-timer');
+    var alerts = document.querySelectorAll('.message-timer');
 
-    if (alert) { // Check if the element exists
-      // Show the alert by removing the 'hidden' class
-      alert.classList.remove('hidden');
+    if (alerts.length > 0) { // Check if there are any elements
+    alerts.forEach(function(alert) {
+      // Show the alert by setting display to block
+      alert.style.display = 'block';
 
       // Hide the alert after the specified duration
       setTimeout(function() {
-          // Hide the alert by adding the 'hidden' class
-          alert.classList.add('hidden');
-          
+        // Hide the alert by setting display to none
+        alert.style.display = 'none';
       }, duration);
-    } else {
-      console.warn("Element with ID 'message-timer' not found."); // Log a warning message if the element doesn't exist
-    }
+    });
+  } else {
+    console.warn("No elements with the class 'message-timer' found."); // Log a warning message if no elements exist
+  }
   }
 
 
-//   document.addEventListener('DOMContentLoaded', function() {
-//     showAlertForDuration(3000); // Show the alert for 3 seconds
-// });
+  function simulateError() {
+      // Simulate an error condition (for example purposes)
+      var errorOccurred = true;
+
+      if (errorOccurred) {
+        // Show the alert for 3 seconds when an error occurs
+        showAlertForDuration(3000);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      simulateError(); // Check for error and show alert if necessary
+    });
 
   // This function is used to toggle the sidebar
   function toggleSidebar() {

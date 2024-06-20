@@ -78,7 +78,7 @@
                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-               <div class="modal-body">
+               <div class="modal-body" id="modal-body-text">
                  Are you sure you want to delete this Fabric Group?
                </div>
               <div class="modal-footer">
@@ -99,6 +99,9 @@ document.body.appendChild(document.getElementById('exampleModal'));
 $(document).ready(function(){
   $('.delete-btn').click(function(){
       var itemId = $(this).data('item-id');
+      var name = $(this).closest('tr').find('td').eq(1).text();
+      var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+      $('#modal-body-text').html('Are you sure you want to delete the fabric group ' + coloredName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
       $('#confirmDeleteModal').modal('show');
   });
