@@ -2909,7 +2909,7 @@ def itemdynamicsearchajax(request):
 def creditdebitreport(request):
     all_reports = account_credit_debit_master_table.objects.all()
 
-    return render(request,'misc/purchase_report.html',{'all_reports':all_reports})
+    return render(request,'misc/credit_debit_master_report.html',{'all_reports':all_reports})
 
 #__________________________reports-end____________________________________
 
