@@ -19,7 +19,12 @@
         </div>
         <div class="col-lg-4 mt-5">
             <div class="table-responsives">
-                
+                <form method="GET">
+                    <div class="container-category "> 
+                     <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="gst_search" value="{{gst_search|default_if_none:''}}" />
+                       <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </form>
             <table class="table table-striped table-hover table-responsive table-bordered" style="width:100%;">
                 <thead class="text-nowrap name_absolute sticky-top">
                     <tr>

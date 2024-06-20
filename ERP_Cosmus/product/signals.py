@@ -1,7 +1,7 @@
 
 from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
-from .models import Ledger, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, opening_shade_godown_quantity, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
+from .models import Ledger, RawStockTrasferRecords, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, opening_shade_godown_quantity, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
 import logging
 
 logger = logging.getLogger('product_signals')
@@ -254,8 +254,36 @@ def handle_opening_godown_deleted(sender, instance, **kwargs):
         
 
 
+#for stock transfer
+@receiver(post_save, sender=RawStockTrasferRecords)
+def created_updated_raw_stock_trasfer(sender, instance, created, **kwargs):
+
+    source_godown_value = instance.master_instance.source_godown
+    destination_godown_value = instance.master_instance.destination_godown
+
+    if created:
+        item_shade = instance.item_shade_transfer
+        item_quantity = instance.item_quantity_transfer
+
+        item_to_godown_quantity_through_source = item_godown_quantity_through_table.objects.get(godown_name=source_godown_value,Item_shade_name=item_shade)
+        item_to_godown_quantity_through_source.quantity = item_to_godown_quantity_through_source.quantity - item_quantity
+        item_to_godown_quantity_through_source.save()
 
 
+        item_to_godown_quantity_through_destination, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=destination_godown_value,Item_shade_name=item_shade)
+
+        if created:
+            item_to_godown_quantity_through_destination.quantity = item_quantity
+            item_to_godown_quantity_through_destination.save()
+
+        else:
+            item_to_godown_quantity_through_destination.quantity = item_to_godown_quantity_through_destination.quantity + item_quantity
+            item_to_godown_quantity_through_destination.save()
+    
+    
+    if not created:
+        pass
+        
 
 
 

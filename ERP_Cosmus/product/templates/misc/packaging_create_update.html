@@ -22,10 +22,12 @@
         <div class="row mt-4">
             <div class="col-lg-12">
                 <div class="d-flex mb-3">
-                    <div class="container-category ">
-                        <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" />
-                        <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-                    </div>
+                    <form method="GET">
+                        <div class="container-category "> 
+                         <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="packaging_search" value="{{packaging_search|default_if_none:''}}" />
+                           <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

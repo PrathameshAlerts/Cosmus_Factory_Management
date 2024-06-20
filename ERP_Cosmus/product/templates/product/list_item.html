@@ -16,11 +16,14 @@ the input field will be pre-filled with that value when the page is loaded. -->
           <h2 class="mb-4">Item List</h2>
           <div class="d-flex mb-3">
             <button class="item-btn " onclick="redirectlistItem()">Add +</button>
-            <div class="container-flex"> 
-             <input class="" type="search" placeholder="Search" aria-label="Search" />
-               <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-            </div>
-            <button class="item-btn ms-1">Clear Filter</button>
+            <div class="container-flex">
+              <form method="GET">
+                  <input class="" type="search" placeholder="Search" name="item_search" aria-label="Search" value="{{item_search | default_if_none:''}}"/>
+                  <button type="submit" class="px-2 py-2"><i class="fa-solid fa-magnifying-glass"></i></button>
+                  
+              </form>
+          </div>
+          <a href="{% url 'item-list' %}" class="item-btn ms-1">Clear Filter</a>
            </div>
           </div>  
         </div>    

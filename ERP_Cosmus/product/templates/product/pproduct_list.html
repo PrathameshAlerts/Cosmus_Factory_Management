@@ -9,10 +9,12 @@
           <h2 class="mb-4">product List</h2>
           <div class="d-flex mb-3">
             <button class="item-btn" onclick="redirectProductList()">Add +</button>
+            <form method="GET">
             <div class="container-flex"> 
-             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
-               <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" value="{{product_search | default_if_none:'' }}" >
+             <button type="submit" class="px-2 py-2"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
+          </form>
             <button class="item-btn ml-3">Clear Filter</button>
            </div>
           </div>  
@@ -268,6 +270,44 @@
     </div>
   </div>
 </div>
+
+
+<div class="pagination">
+  <span class="step-links">
+      {% if products.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ products.previous_page_number }}">previous</a>
+      {% endif %}
+
+      {% if 1 not in page_range %}
+          <a href="?page=1">1</a>
+          {% if 2 not in page_range %}
+              ...
+          {% endif %}
+      {% endif %}
+
+      {% for page in page_range %}
+          {% if page == products.number %}
+              <span class="current">{{ page }}</span>
+          {% else %}
+              <a href="?page={{ page }}">{{ page }}</a>
+          {% endif %}
+      {% endfor %}
+
+      {% if max_index not in page_range %}
+          {% if max_index|add:'-1' not in page_range %}
+              ...
+          {% endif %}
+          <a href="?page={{ max_index }}">{{ max_index }}</a>
+      {% endif %}
+
+      {% if products.has_next %}
+          <a href="?page={{ products.next_page_number }}">next</a>
+          <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>
+
 
 
 <script>
