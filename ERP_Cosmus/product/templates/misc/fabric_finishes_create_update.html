@@ -28,9 +28,9 @@
                </div>
               </div>  
             </div>  
-        <div style="width:100%; overflow:auto; max-height:470px;">
-            <table class="table table-striped table-bordered table-hover table-responsive" style="width:100%;">
-                <thead>
+        <div class="table-responsives">
+            <table class="table table-striped table-bordered table-hover" style="width:100%;">
+                <thead class="name_absolute sticky-top text-nowrap">
                     <tr>
                         <th>No</th>
                         <th>Fabrics</th>
@@ -38,7 +38,7 @@
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody class="mainTableList">
+                <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                     {% for fabricfinish in fabricfinishes %}
                     <tr>
                         <td>{{forloop.counter}}</td>

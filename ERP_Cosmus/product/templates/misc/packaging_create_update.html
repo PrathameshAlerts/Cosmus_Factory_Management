@@ -29,9 +29,9 @@
                 </div>
             </div>
         </div>
-        <div style="width:100%; overflow:auto; max-height:470px;">
+        <div class="table-responsives">
             <table class="table table-striped table-bordered table-hover table-responsive" style="width:100%;">
-                <thead class="text-nowrap name_absolute">
+                <thead class="text-nowrap name_absolute sticky-top">
                     <tr>
                         <th>No</th>
                         <th>Material</th>
@@ -39,7 +39,7 @@
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody class="mainTableList">
+                <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                     {% for package in packaging_all %}
                     <tr>
                         <td>{{forloop.counter}}</td>

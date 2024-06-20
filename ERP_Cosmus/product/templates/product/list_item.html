@@ -202,17 +202,16 @@ the input field will be pre-filled with that value when the page is loaded. -->
                       <th class="px-2">Godown<span style="padding-left: 59px;">Qty</span></th>              
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="mainTableList" >
                     {% for shade in item.shades.all %}
                     <tr>
-                       
-                      <td >{{shade.item_shade_name}}</td>
-                      <td  class="">
+                      <td>{{shade.item_shade_name}}</td>
+                      <td>
                         {% for shade_q in shade.godown_shades.all %}
-                   <table class="text-nowrap" style="border-bottom: 1px solid gray;">
-                    <tr >
-                      <td style="padding-bottom: 10px;" class="py-2" >{{shade_q.godown_name}}</td>
-                      <td style="padding-left: 40px;"  class="py-2">{{shade_q.quantity}}</td>
+                   <table class="text-nowrap table" >
+                    <tr>
+                      <td>{{shade_q.godown_name}}</td>
+                      <td>{{shade_q.quantity}}</td>
                       
                   </tr>
                    </table>
