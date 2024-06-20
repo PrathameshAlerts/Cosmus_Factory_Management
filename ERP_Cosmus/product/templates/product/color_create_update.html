@@ -30,7 +30,7 @@
                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
           </form>
-
+          <button class="item-btn mx-3" onclick="redirectColorFilter()">Clear Filter</button>
            </div>
           </div>  
         </div>  
@@ -119,6 +119,9 @@
       });
   });
   
+  function redirectColorFilter(){
+    window.location.href = "{% url 'simplecolorlist'%}"
+  }
   </script>
 
 {% endblock body %}

@@ -28,6 +28,7 @@
                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </form>
+                    <button class="item-btn mx-2" onclick="redirectPackagingFilter()">Clear Filter</button>
                 </div>
             </div>
         </div>
@@ -92,8 +93,11 @@
             window.location.href = '/packagingdelete/' + itemId;
         });
     });
-    
-    </script>
+
+    function redirectPackagingFilter() {
+        window.location.href = "{% url 'packaging-create-list' %}";
+    }
+        </script>
 
 
 

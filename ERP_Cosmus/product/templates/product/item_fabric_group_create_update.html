@@ -23,22 +23,20 @@
 <div class="row">
 <div class="col-lg-12 ">
   <div class="d-flex mb-3">
-
     <form method="GET">
     <div class="container-category "> 
      <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="fabric_group_search" value="{{fabric_group_search | default_if_none:''}}" />
         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
   </form>
-
+    <button class="item-btn mx-2" onclick="redirecfabricFilter()">Clear Filter</button>
    </div>
-
   </div>  
 </div>  
 <div class="row ps-3">
   <div class="col-lg-12">
     <div class="table-responsives">
-      <table class="table table-striped table-hover table-responsive table-bordered" style="width:100%;">
+      <table class="table table-striped table-hover table-responsive table-bordered">
         <thead class="name_absolute sticky-top">
           <tr>
             <th>No</th>
@@ -52,10 +50,8 @@
             </th>
             <th>Edit</th>
             <th>Delete</th>
-           
           </tr>
-        </thead>
-        
+        </thead> 
         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
         </tr>
         {% for group in fab_group_all %}
@@ -118,6 +114,10 @@ $(document).ready(function(){
       window.location.href = '/itemfabricgroupdelete/' + itemId;
   });
 });
+
+function redirecfabricFilter (){
+  window.location.href = "{% url 'item-fabgroup-create-list'%}"
+}
 </script>
 
 

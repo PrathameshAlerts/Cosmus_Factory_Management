@@ -620,7 +620,7 @@ input[type=number] {
     border: 1px solid;
     border-radius: 10px;
     margin: 0 0;
-    width: 35%;
+    width: 37%;
     margin-left: 470px;
     margin-right: 10px;
   }
@@ -834,7 +834,7 @@ input[type=number] {
 .item-btn{
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
     color: white;
-    padding: 10px;
+    padding: 5px;
     font-size: 15px;
     border: none;
     border-radius: 10px;
@@ -955,7 +955,7 @@ input[type=number] {
     border-radius: 10px;
     margin: 0 0;
     width: 270px;
-    margin-left: 230px;
+    margin-left: 100px;
 }
 .fabric-list-icons{
     position: absolute;
@@ -963,6 +963,15 @@ input[type=number] {
     left: 120px;
 }
 
+.container-cat{
+    color: #555;
+    display: flex;
+    border: 1px solid;
+    border-radius: 10px;
+    margin: 0 0;
+    width: 270px;
+    margin-left: 20px;
+}
 
 .fab_btn{
     color: #fff;

@@ -15,7 +15,8 @@
          <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
            <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
-        <button class="product-btn ml-3">Clear Filter</button>
+
+        <button class="product-btn ml-3" onclick="redirectLedgerFilter()">Clear Filter</button>
        </div>
       </div>  
     </div>    
@@ -142,6 +143,10 @@
   // this function is used to redirect to add ledger page
     function reversAddLedger(){
     window.location.href = "{% url 'ledger-create' %}"
+  }
+
+  function redirectLedgerFilter(){
+    window.location.href = "{% url 'ledger-list' %}"
   }
   // create a modal for confirm delete button click
   document.body.appendChild(document.getElementById('exampleModal'));

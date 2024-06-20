@@ -30,6 +30,7 @@
                 </div>
 
             </form>
+            <button class="item-btn mx-2" onclick="redirectFabricFinishFilter()">Clear Filter</button>
                </div>
               </div>  
             </div>  
@@ -97,6 +98,9 @@
             });
         });
         
+        function redirectFabricFinishFilter(){
+            window.location.href = "{% url 'fabric-finishes-create-list' %}"
+        }
         </script>
 
 
