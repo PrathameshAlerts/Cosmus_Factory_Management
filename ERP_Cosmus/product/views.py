@@ -19,6 +19,7 @@ from django.contrib import messages
 from openpyxl.utils import get_column_letter 
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
@@ -404,14 +405,40 @@ def pproduct_list(request):
     
     queryset = Product.objects.all().order_by('Product_Name').select_related('Product_GST').prefetch_related('productdetails','productdetails__PProduct_color')
     product_search = request.GET.get('product_search')
-  
+    print('productlist',request.GET)
     if product_search != '' and product_search is not None:
         queryset = Product.objects.filter(Q(Product_Name__icontains=product_search)|
                                             Q(Model_Name__icontains=product_search)|
                                             Q(Product_Refrence_ID__icontains=product_search)|
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
-   
-    context = {'products': queryset}
+    print(queryset)
+    # Number of items per page
+    paginator = Paginator(queryset, 3)  # Show 10 products per page
+    
+    # Get the current page number from the request
+    page_number = request.GET.get('page')
+    
+    try:
+        products = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If the page is out of range (e.g. 9999), deliver the last page of results
+        products = paginator.page(paginator.num_pages)
+
+    # Custom pagination range logic
+    index = products.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 2 if index >= 2 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    page_range = list(paginator.page_range)[start_index:end_index]
+
+    context = {
+        'products': products,
+        'page_range': page_range,
+        'product_search':product_search
+    }
 
     return render(request,'product/pproduct_list.html',context=context)
 
@@ -717,6 +744,7 @@ def item_clone_ajax(request):
 
 
 def item_list(request):
+    print('Item',request.GET)
     g_search = request.GET.get('item_search')
     #select related for loading forward FK relationships and prefetch related for reverse relationship  
     #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
@@ -726,7 +754,7 @@ def item_list(request):
                                                     'shades__godown_shades')
 
 
-# cannot use icontains on foreignkey fields even if it has data in the fields
+    # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '' and  g_search is not None:
         queryset = Item_Creation.objects.filter(Q(item_name__icontains=g_search)|
                                                 Q(Item_Color__color_name__icontains=g_search)|
@@ -768,7 +796,7 @@ def item_list(request):
         if exact_desc != '' and exact_desc is not None:
             queryset = Item_Creation.objects.filter(item_name__exact=exact_desc)
 
-    return render(request,'product/list_item.html', {"items":queryset})
+    return render(request,'product/list_item.html', {"items":queryset,"item_search":g_search})
     
 
 
@@ -1013,6 +1041,14 @@ def item_create_dropdown_refresh_ajax(request):
 
 def color_create_update(request, pk=None):
 
+    queryset = Color.objects.all()
+
+    color_search = request.GET.get('color_search')
+
+    if color_search != '' and color_search is not None:
+        queryset = Color.objects.filter(color_name__icontains = color_search)
+
+
 
     if request.path == '/simple_colorcreate_update/':
         template_name = 'product/color_create_update.html'
@@ -1030,7 +1066,6 @@ def color_create_update(request, pk=None):
         template_name = "product/color_popup.html"
         title = 'Create Colors'
     
-    color = Color.objects.all()
 
     if pk:
         instance = get_object_or_404(Color, pk = pk)
@@ -1039,6 +1074,7 @@ def color_create_update(request, pk=None):
 
     form = ColorForm(instance=instance)
     if request.method == 'POST':
+
         form = ColorForm(request.POST, instance=instance)
 
         if form.is_valid():
@@ -1060,9 +1096,9 @@ def color_create_update(request, pk=None):
                 return JsonResponse({'color_all':list(color_all)}) 
         else:
             print(form.errors)
-            return render(request, template_name,{'title': title,'form': form,'colors':color})
+            return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search})
 
-    return render(request, template_name , {'title': title, 'form': form, 'colors':color})
+    return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search})
         
 
 def color_delete(request, pk):
@@ -1086,7 +1122,12 @@ def color_delete(request, pk):
 
 
 def item_fabric_group_create_update(request, pk = None):
-    fab_group_all = Fabric_Group_Model.objects.all()
+    queryset = Fabric_Group_Model.objects.all()
+
+    fabric_group_search = request.GET.get('fabric_group_search')
+
+    if fabric_group_search != '' and fabric_group_search is not None:
+        queryset = Fabric_Group_Model.objects.filter(fab_grp_name__icontains = fabric_group_search)
 
     if pk:
         item_fabric_pk =  get_object_or_404(Fabric_Group_Model,pk=pk)
@@ -1127,11 +1168,11 @@ def item_fabric_group_create_update(request, pk = None):
 
         else:
             print(form.errors)
-            return render(request,template_name,{'title': title,"fab_group_all":fab_group_all,
+            return render(request,template_name,{'title': title,"fab_group_all":queryset,"fabric_group_search":fabric_group_search,
                                                                                   'form':form})
 
 
-    return render(request,template_name,{'title': title, "fab_group_all":fab_group_all,
+    return render(request,template_name,{'title': title, "fab_group_all":queryset,"fabric_group_search":fabric_group_search,
                                                                           'form':form})
 
 
@@ -1156,7 +1197,13 @@ def item_fabric_group_delete(request,pk):
 
 def unit_name_create_update(request,pk=None):
     
-    unit_name_all = Unit_Name_Create.objects.all()
+    queryset = Unit_Name_Create.objects.all()
+
+    unit_name_search =  request.GET.get('unit_name_search','')
+
+    if unit_name_search != "":
+        queryset = Unit_Name_Create.objects.filter(unit_name__icontains = unit_name_search)
+
 
     if pk:
         unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
@@ -1197,10 +1244,10 @@ def unit_name_create_update(request,pk=None):
 
         else:
             print(form.errors)
-            return render(request, template_name, {'title': title,'form':form,"unit_name_all":unit_name_all})
+            return render(request, template_name, {'title': title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search})
         
     else:
-        return render(request, template_name, {'title':title,'form':form,"unit_name_all":unit_name_all})
+        return render(request, template_name, {'title':title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search})
 
 
 
@@ -1546,6 +1593,7 @@ def godowndelete(request,str,pk):
 
 def stockTrasferRaw(request, pk=None):
     godowns = Godown_raw_material.objects.all()
+
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         
         try:
@@ -1633,9 +1681,12 @@ def stockTrasferRaw(request, pk=None):
             return JsonResponse({'items_in_godown': items_in_godown, 'item_shades':item_shades,
                                     'item_color':item_color,'item_per':item_per,'items_shade_quantity_in_godown':items_shade_quantity_in_godown,
                                     'shade_quantity':shade_quantity,'destination_godowns':destination_godowns})
+        
+
         except Exception as e:
             messages.error(request, f'An Error occoured {e}')
             logger.error(f'An Error occoured in stock transfer raw{e}')
+
 
     if pk:
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
@@ -1654,6 +1705,8 @@ def stockTrasferRaw(request, pk=None):
     if request.method == 'POST':
         print(request.POST)
         formset.forms = [form for form in formset if form.has_changed()]
+
+
         if masterstockform.is_valid() and formset.is_valid():
             masterforminstance = masterstockform.save(commit=False)
             masterforminstance.save()
@@ -1663,14 +1716,15 @@ def stockTrasferRaw(request, pk=None):
                 if form.instance.pk:
                     form.instance.delete()
 
-            
+
             for form in formset:
                 if form.is_valid():
                     if not form.cleaned_data.get('DELETE'):  # to check if form is not marked for deleting, not checked forms that are marked for deleting will be saved again 
-                        print(form.cleaned_data)
+                        
                         transfer_instance = form.save(commit=False)
                         transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
                         transfer_instance.save()
+
             return redirect('stock-transfer-raw-list')
 
 
@@ -1680,7 +1734,9 @@ def stockTrasferRaw(request, pk=None):
 
 
 def stockTrasferRawList(request):
+
     stocktrasferall = RawStockTransferMaster.objects.all()
+
     return render(request,'misc/stock_transfer_raw_list.html',{'stocktrasferall':stocktrasferall})
 
 
@@ -2133,8 +2189,6 @@ def purchasevouchercreategodownpopupurl(request):
     return JsonResponse({'popup_url':popup_url})
 
 
-    
-
 def purchasevoucherlist(request):
     purchase_invoice_list = item_purchase_voucher_master.objects.all()
     return render(request,'accounts/purchase_invoice_list.html',{'purchase_invoice_list':purchase_invoice_list})
@@ -2200,7 +2254,18 @@ def salesvoucherdelete(request,pk):
 
 
 def gst_create_update(request, pk = None):
-    gsts =  gst.objects.all()
+
+    queryset =  gst.objects.all()
+
+    gst_search = request.GET.get('gst_search','')
+
+    if gst_search != "":
+        queryset =  gst.objects.filter(gst_percentage__contains = gst_search)
+
+
+
+
+
     if pk:
         instance = gst.objects.get(pk=pk)
         title = 'Update'
@@ -2244,7 +2309,7 @@ def gst_create_update(request, pk = None):
             print(form.errors)
             messages.success(request,'An error occured.')
 
-    return render(request,template_name,{'form':form, 'title':title, 'gsts':gsts})
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
 
 
 
@@ -2260,7 +2325,16 @@ def gst_delete(request,pk):
 
 
 def fabric_finishes_create_update(request, pk = None):
-    fabricfinishes =  FabricFinishes.objects.all()
+    queryset =  FabricFinishes.objects.all()
+
+    fabric_finishes_search = request.GET.get('fabric_finishes_search','')
+
+    if fabric_finishes_search != '':
+        queryset =  FabricFinishes.objects.filter(fabric_finish__icontains = fabric_finishes_search)
+
+
+
+
     if pk:
         fabric_finishes_instance = FabricFinishes.objects.get(pk=pk)
         title = 'Update'
@@ -2295,8 +2369,9 @@ def fabric_finishes_create_update(request, pk = None):
                 return JsonResponse({"fabric_finishes_all": list(fabric_finishes_all)})
         else:
             messages.error(request,'An error occured.')
+            return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
 
-    return render(request,template_name,{'form':form,'title':title,'fabricfinishes':fabricfinishes})
+    return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
 
 
 
@@ -2309,7 +2384,13 @@ def fabric_finishes_delete(request,pk):
 
 def packaging_create_update(request, pk = None):
     
-    packaging_all =  packaging.objects.all()
+    queryset =  packaging.objects.all()
+
+    packaging_search = request.GET.get('packaging_search','')
+
+    if packaging_search != '':
+        queryset =  packaging.objects.filter(packing_material__icontains = packaging_search)
+
 
     if pk:
         packaging_instance = packaging.objects.get(pk=pk)
@@ -2346,9 +2427,10 @@ def packaging_create_update(request, pk = None):
 
                 return JsonResponse({'packaging_all_values': list(packaging_all_values)})
         else:
-            messages.error(request, 'An error accoured.')  
+            messages.error(request, 'An error accoured.')
+            return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset}) 
 
-    return render(request, template_name ,{'form':form,'title':title,'packaging_all':packaging_all})
+    return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset})
 
 
 

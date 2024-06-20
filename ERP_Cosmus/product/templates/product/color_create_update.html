@@ -23,10 +23,14 @@
       <div class="row mt-4">
         <div class="col-lg-12">
           <div class="d-flex mb-3">
+
+            <form method="GET">
             <div class="container-category "> 
-             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_sear  h" />
-               <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="color_search" value="{{color_search | default_if_none:''}}" />
+               <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
+          </form>
+
            </div>
           </div>  
         </div>  
