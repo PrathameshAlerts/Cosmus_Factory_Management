@@ -36,9 +36,9 @@
         </div>  
         <div class="row ps-3">
           <div class="col-lg-12">
-            <div style="width:100%; overflow:auto; max-height:470px;">
-              <table class="table table-striped table-hover table-bordered" style="width:100%;">
-                <thead class="name_absolute">
+            <div class="table-responsives">
+              <table class="table table-striped table-hover table-bordered" style="width: 100%;">
+                <thead class="name_absolute sticky-top text-nowrap">
                   <tr>
                     <th>No</th>
                     <th>Name
@@ -53,14 +53,14 @@
                     <th>Delete</th>
                   </tr>
                 </thead>
-                <tbody class="mainTableList">
+                <tbody class="mainTableList " style="max-height: 450px; overflow-y: auto;">
                 </tr>
                 {% for color in colors%}
                 <tr>
                   <td>{{ forloop.counter }}</td>
                   <td>{{color.color_name}}</td>
-                  <td><a href="{% url 'simplecolorlistupdate' color.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-                  <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ color.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                  <td><a href="{% url 'simplecolorlistupdate' color.id %}"><i class="fa-solid fa-pen-to-square ps-3"></i></a></td>
+                  <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ color.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger ps-3"></button></td>
                 </tr>
                {% endfor %}
                 </tbody>
@@ -79,8 +79,8 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-          Are you sure you want to delete this color?
+      <div class="modal-body" id="modal-body-text">
+          Are you sure you want to delete the color is?
       </div>
       <div class="modal-footer">
         <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
@@ -101,8 +101,14 @@
   $(document).ready(function(){
       $('.delete-btn').click(function(){
           var itemId = $(this).data('item-id');
+       var name = $(this).closest('tr').find('td').eq(1).text();
+  
+      var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+          $('#modal-body-text').html('Are you sure you want to delete the color is ' + coloredName + '?');
           $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
           $('#exampleModal').modal('show');
+         
+        
       });
   
       // Confirm delete button click event

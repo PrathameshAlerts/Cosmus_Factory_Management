@@ -13,7 +13,6 @@
 body{
     min-height: 100vh;
     background-color:#f6f7fb;
-    
     color: #000;
     background-size: cover;
     background-position: center;
@@ -97,11 +96,139 @@ input[type=number] {
     
  }
 
+ /*========================= error message style===========================*/
+ .message-timer{
+    position: absolute;
+    align-items: center;
+    display: flex;
+    width: 40%;
+    margin-left: 660px;
+    color: #f4f4f4;
+    border-radius: 10px;
+    padding: 5px;
+    top: 30px;
+    background-color:rgb(32, 120, 16);
+    z-index: 9999;
+ }
+ .message-timer::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color:darkgreen;
+    width: 0;
+    animation: progress 3000ms linear forwards;
+ }
+ @keyframes progress {
+    0% {
+        width: 0%;
+    }
+    10% {
+        width: 10%;
+    }
+    20% {
+        width: 20%;
+    }
+    50% {
+        width: 50%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+.info-messages{
+    position: absolute;
+    align-items: center;
+    display: flex;
+    width: 44%;
+    margin-left: 660px;
+    color: #f4f4f4;
+    border-radius: 10px;
+    padding: 5px;
+    top: 30px;
+    background-color:rgb(208, 204, 121);
+    z-index: 9999; 
+}
+.info-messages::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color:rgb(255, 251, 0);
+    color: #f4f4f4;
+    width: 0;
+    animation: progress 3000ms linear forwards;
+}
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+    10% {
+        width: 10%;
+    }
+    20% {
+        width: 20%;
+    }
+    50% {
+        width: 50%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+.error-message-timers{
+    position: absolute;
+    align-items: center;
+    display: flex;
+    width: 44%;
+    margin-left: 660px;
+    color: #f4f4f4;
+    border-radius: 10px;
+    padding: 5px;
+    top: 30px;
+    background-color:rgb(211, 65, 65);
+    z-index: 9999; 
+}
+.error-message-timers::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color:darkred;
+    color: #f4f4f4;
+    width: 0;
+    animation: progress 3000ms linear forwards;
+}
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+    10% {
+        width: 10%;
+    }
+    20% {
+        width: 20%;
+    }
+    50% {
+        width: 50%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+ /*========================= error message style===========================*/
  .form_input{
     padding-left:20px;
     gap: 20px;
     padding-bottom: 60px;
  }
+
+ .color-name {
+    font-weight: bold;
+  }
  .dropbtn {
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
     color: white;
@@ -919,10 +1046,10 @@ input[type=number] {
     color: #555;
     display: flex;
     border: 1px solid;
-    border-radius: 20px;
+    border-radius: 10px;
     margin: 0 0;
-    width: 200px;
-    margin-left: 275px; 
+    width: 230px;
+    margin-left: 260px; 
 }
 
 .stock-Input{
@@ -950,7 +1077,7 @@ input[type=number] {
     border-radius: 10px;
     margin: 0 0;
     width: 285px;
-    margin-left: 456px;
+    margin-left: 260px;
 
 }
 .acc-btn{
@@ -1063,19 +1190,53 @@ input[type=number] {
     max-height: 800px !important;
     overflow-y: auto;
 }
-.errorShow{
-    position: fixed;
-  width: 70%;
-  display: flex;
+.errorShow {
+    position: absolute;
+    align-items: center;
+    display: fixed;
+    justify-content: center;
+    display: flex;
+    width: 45%;
+    margin-left: 660px;
     color: #f4f4f4;
     list-style-type: none;
-    border: 2px solid #f8d7da;
     border-radius: 10px;
-    padding: 5px 20px;
+    padding: 5px;
+    top: 30px;
     background-color: rgba(216, 67, 67, 0.5);
-    z-index: 10;
-
+    z-index: 9999;
+    overflow: auto;
 }
+
+.errorShow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color: #ff0217;
+    width: 0;
+    animation: progress 5000ms linear forwards;
+}
+
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+    10% {
+        width: 10%;
+    }
+    20% {
+        width: 20%;
+    }
+    50% {
+        width: 50%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
 .image_btn{
     border: none;
     border-radius: 10px;
@@ -1133,6 +1294,19 @@ input[type=number] {
     border: none;
     border-radius: 10px;
     
+}
+
+.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #343a40; /* Adjust as per your theme */
+    color: #fff; /* Adjust text color for better readability */
+}
+.table-responsives {
+    overflow-y: auto;
+   
+    max-height: 520px; /* Adjust the height as needed */
 }
 
 .product2create-btn{
