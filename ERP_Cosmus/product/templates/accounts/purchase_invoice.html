@@ -415,7 +415,7 @@ function randomValue (){
     var jsonData = $(`#purchase_voucher_items_set-${purchaseValue}-jsonDataInputquantity`).val();
     var uniqueValue = $(`#item_unique_id_${purchaseValue}`).val();
   
-    if (nameValue === '') {
+    if (nameValue === 'None') {
         var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
              
         selectNameValue.css('display', 'none');
@@ -493,7 +493,7 @@ function randomValue (){
         $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
         $(this).addClass('selected').siblings().removeClass('selected');
 
-        if (newData == '' && itemShadeValue != '') {
+        if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
             itemShade.val(itemShadeValue);
             itemShade.show();
         }
@@ -584,7 +584,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
 
             if (index <= optionsCount) {
                 console.log("test")
-               // $options.removeClass('bg-highlight');
                 const $selectedItem = $options.eq(index);
                 console.log($selectedItem)
                 const $nextItem = $selectedItem.next();
@@ -594,7 +593,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 $inputField.attr('data-key', nameKey);
              
              
-                $selectedItem.css('background-color', '#5c5c5c');
+                $selectedItem.addClass('selected');
                 const itemOffsetTop = $nextItem.position().top;
                 const itemHeight = $nextItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
@@ -605,7 +604,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 } else if (itemOffsetTop < 0) {
                     $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
                 }
-                
+                $selectedItem.addClass('selected');
                 if (index !== optionsCount) {
                     index += 1;
                     indexbool = true;
@@ -629,9 +628,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 const nameKey = $selectedItem.data('key');
 
                 $inputField.attr('data-key', nameKey);
-                $selectedItem.removeClass('bg-highlight');
-                // $selectedItem.addClass('bg-highlight');
-
+                // $selectedItem.removeClass('bg-highlight');
+                //  $selectedItem.addClass('bg-highlight');
+                $selectedItem.addClass('selected');
                 const itemOffsetTop = $prevItem.position().top;
                 const itemHeight = $prevItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
@@ -642,6 +641,8 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 } else if (itemOffsetTop + itemHeight > selectHeight) {
                     $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
                 }
+
+                $selectedItem.addClass('selected');
             } else {
                 index = 0;
             }
@@ -661,10 +662,14 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
         const itemShade = $('#input_item_shade_' + purchaseValue);
         const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+        console.log(itemShadeValue)
 
-        if (newData == '' && itemShadeValue != '') {
+        if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
             itemShade.val(itemShadeValue);
             itemShade.show();
+        }else{
+
+            itemShade.hide();
         }
         handleSelection(purchaseValue,itemName, item_value);
         enterPressed = true;

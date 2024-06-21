@@ -329,12 +329,10 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
    var isHighlighted = false; // flag to track if an item is highlighted
 
    var suggestions = $('#search-results')
-    $(document).on('keyup','#id_item-to-clone',function(){
+    $(document).on('input','#id_item-to-clone',function(){
 
       var nameValue = $(this).val().trim();
      
-    
-      
    if(nameValue === '') {
     suggestions.css('display', 'none');
         $(this).attr('data-key', '');

@@ -1605,10 +1605,14 @@ styles.css */
     background: #000;
 }
 
-.allSuggestionsDiv.bg-highlight {
+.bg-highlight {
     background-color: #5c5c5c;
     color: #fff;
   
+}
+.itemName-div.itemName-div-suggestion.selected{
+    background-color: #5c5c5c;
+    color: #fff;
 }
  
  
