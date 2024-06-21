@@ -415,7 +415,7 @@ function randomValue (){
     var jsonData = $(`#purchase_voucher_items_set-${purchaseValue}-jsonDataInputquantity`).val();
     var uniqueValue = $(`#item_unique_id_${purchaseValue}`).val();
   
-    if (nameValue === '') {
+    if (nameValue === 'None') {
         var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
              
         selectNameValue.css('display', 'none');
@@ -493,7 +493,7 @@ function randomValue (){
         $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
         $(this).addClass('selected').siblings().removeClass('selected');
 
-        if (newData == '' && itemShadeValue != '') {
+        if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
             itemShade.val(itemShadeValue);
             itemShade.show();
         }
@@ -583,7 +583,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             event.preventDefault();
 
             if (index <= optionsCount) {
-                console.log("test")
                $options.removeClass('bg-highlight');
                 const $selectedItem = $options.eq(index);
                 console.log($selectedItem)
@@ -605,7 +604,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 } else if (itemOffsetTop < 0) {
                     $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
                 }
-                
+                $selectedItem.addClass('selected');
                 if (index !== optionsCount) {
                     index += 1;
                     indexbool = true;
@@ -631,7 +630,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
 
                 $inputField.attr('data-key', nameKey);
                
-                 $selectedItem.addClass('bg-highlight');
+                $selectedItem.addClass('bg-highlight');
                 
                 const itemOffsetTop = $prevItem.position().top;
                 const itemHeight = $prevItem.outerHeight();
@@ -643,6 +642,8 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 } else if (itemOffsetTop + itemHeight > selectHeight) {
                     $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
                 }
+
+                $selectedItem.addClass('selected');
             } else {
                 index = 0;
             }
@@ -662,10 +663,14 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
         const itemShade = $('#input_item_shade_' + purchaseValue);
         const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+        console.log(itemShadeValue)
 
-        if (newData == '' && itemShadeValue != '') {
+        if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
             itemShade.val(itemShadeValue);
             itemShade.show();
+        }else{
+
+            itemShade.hide();
         }
         handleSelection(purchaseValue,itemName, item_value);
         enterPressed = true;
@@ -676,7 +681,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
 
 
     // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
-
         var popupWindow = null; // Variable to hold the reference to the popup window
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
         var selectedShade = $(this).val();
@@ -759,8 +763,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
     });
 </script>
 
-<!--This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
+
 <script>
+    //This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
    function calculateTotalAmount() {
         var rows = document.querySelectorAll('#myTable tbody tr');
         var total = 0; 
@@ -851,7 +856,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
            }
          
         });   
-        
+
     }
         function calculateOtherTotal(grandTotal) {
 
@@ -876,11 +881,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         // Set the calculated grand total value to the grand total input field
         document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
     }
-
     // Call the function initially to calculate total amount, GST, and grand total on page load
     calculateTotalAmount();
    
-  
     // Add onchange event handler to id_fright_transport
     document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
     document.getElementById('id_round_off').addEventListener('input', calculateOtherTotal);
@@ -973,8 +976,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
       document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
 
     }
-
-   
     function addEventListenersToInputs() {
         var inputs = document.querySelectorAll('#myTable tbody tr input');
         inputs.forEach(function(input) {
@@ -1013,9 +1014,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             rowElement.textContent = formIndex + 1;
             rowElement.style.border="none";
 
-            
-
-
             const inputSelectElement = lastRow.querySelector('.search-input[name^="item_name_"]');
             inputSelectElement.id = `item_name_${formIndex}`;
             inputSelectElement.name = `item_name_${formIndex}`;
@@ -1032,8 +1030,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             selectElement.id = `select_item_name_${formIndex}`;
             selectElement.name = `select_item_name_${formIndex}`;
             selectElement.innerHTML = '';
-          
-           
 
             // Update input name and id
             const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
@@ -1170,10 +1166,10 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             }
         });
     });
-};
-deleteRowData();
-});
-addEventListenersToInputs();
+  };
+  deleteRowData();
+ });
+ addEventListenersToInputs();
     // Call calculateTotalAmount initially to calculate total on page load
     calculateTotalAmount();
 
@@ -1185,6 +1181,6 @@ addEventListenersToInputs();
 
 
    
-  </script>
+</script>
 
 {% endblock body %}

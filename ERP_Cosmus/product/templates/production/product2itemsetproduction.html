@@ -124,7 +124,7 @@ $(document).ready( function() {
 
 
 //this ajax reuest to product to uniuque item list and search the item and display in the dropdown
-$(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_pks"]', function(){
+$(document).on ('input ','input[name^="product2itemuniqueformset-"][name$="Item_pks"]', function(){
      newValueKey = $(this).attr('name').split('-')[1];
     var nameValue = $(this).val().trim();
     var suggestionsContainerUniqueId = $(`#id_itemName_${newValueKey}`);
@@ -141,7 +141,7 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
     }
     enterValue = false;
 
-    if(nameValue.length >= 3) {
+    if(nameValue.length >= 1) {
     $.ajax({
             url:'/itemdynamicsearchajax/',
             method: 'GET',
@@ -320,7 +320,7 @@ var enterPressed = false;
 
 var index = 0; //  index outside of the event listener
 var indexbool = false;
-$(document).on('keyup', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function () {
+$(document).on('input', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function () {
      purchaseData = $(this).attr('name').split('-')[1]; // Extract the numeric value from the input name
      var nameValue = $(this).val().trim();
      var suggestionsContainerCommon= $(`#id_item_input_Name_${purchaseData}`);
@@ -518,8 +518,9 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
 
 </script>
 
-// add a new row to the common product2itemUniqueformset and delete the last row
+
 <script>
+    // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function() {
         const addFormButton = document.getElementById('addForm');
         const tableBody = document.querySelector('#mainProductForm tbody');
@@ -624,8 +625,9 @@ deleteRow();
 
 </script>
 
-// add a new row to the common product2itemcommonformset and delete the last row
+
 <script>
+    // add a new row to the common product2itemcommonformset and delete the last row
     document.addEventListener('DOMContentLoaded', function() {
         const addNewButton = document.getElementById('addNewRow');
         const tableBody = document.querySelector('#myProduct tbody');
