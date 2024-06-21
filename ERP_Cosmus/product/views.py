@@ -1117,11 +1117,11 @@ def color_create_update(request, pk=None):
         
 
 def color_delete(request, pk):
-    
     try:
         product_color = get_object_or_404(Color,pk=pk)
         product_color.delete()
         messages.success(request,f'Color {product_color.color_name} was deleted')
+
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {product_color.color_name} because it is referenced by other objects.')
     return redirect('simplecolorlist')
@@ -2864,6 +2864,7 @@ def purchaseorderrawdelete(request,pk):
 
 
 def itemdynamicsearchajax(request):
+    
     try:
         # Retrieve the partial name typed by the user from the GET request
         item_name_typed = request.GET.get('nameValue')

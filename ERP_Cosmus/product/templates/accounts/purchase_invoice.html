@@ -406,7 +406,7 @@ function randomValue (){
 
     var searchedItemNameDic; 
  // This ajax request for a input type value send to the backend and show the input name 
- $(document).on(' keyup', 'input[name^="item_name_"]', function(e) {
+ $(document).on('input', 'input[name^="item_name_"]', function(e) {
     var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
     var nameValue = $(this).val().trim();
     var selectNameValue = `select_item_name_${purchaseValue}`;
@@ -430,7 +430,7 @@ function randomValue (){
 
    
     if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
-        if(nameValue.length >= 3){
+        if(nameValue.length >= 1){
             $.ajax({
             url: '/itemdynamicsearchajax/',
             method: 'GET',
@@ -584,7 +584,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
 
             if (index <= optionsCount) {
                 console.log("test")
-               // $options.removeClass('bg-highlight');
+               $options.removeClass('bg-highlight');
                 const $selectedItem = $options.eq(index);
                 console.log($selectedItem)
                 const $nextItem = $selectedItem.next();
@@ -594,7 +594,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 $inputField.attr('data-key', nameKey);
              
              
-                $selectedItem.css('background-color', '#5c5c5c');
+                $selectedItem.addClass('bg-highlight');
                 const itemOffsetTop = $nextItem.position().top;
                 const itemHeight = $nextItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
@@ -623,15 +623,16 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             }
 
             if (index <= optionsCount) {
+                 $options.removeClass('bg-highlight');
                 const $selectedItem = $options.eq(index);
                 const $prevItem = $selectedItem.prev();
                 const nameDataKey = $selectedItem.text();
                 const nameKey = $selectedItem.data('key');
 
                 $inputField.attr('data-key', nameKey);
-               // $selectedItem.removeClass('bg-highlight');
-                // $selectedItem.addClass('bg-highlight');
-                $selectedItem.css('background-color', '#5c5c5c');
+               
+                 $selectedItem.addClass('bg-highlight');
+                
                 const itemOffsetTop = $prevItem.position().top;
                 const itemHeight = $prevItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
