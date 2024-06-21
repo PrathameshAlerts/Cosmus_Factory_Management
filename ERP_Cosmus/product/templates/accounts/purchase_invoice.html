@@ -629,9 +629,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 const nameKey = $selectedItem.data('key');
 
                 $inputField.attr('data-key', nameKey);
-               // $selectedItem.removeClass('bg-highlight');
+                $selectedItem.removeClass('bg-highlight');
                 // $selectedItem.addClass('bg-highlight');
-                $selectedItem.css('background-color', '#5c5c5c');
+
                 const itemOffsetTop = $prevItem.position().top;
                 const itemHeight = $prevItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
@@ -675,7 +675,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
 
 
     // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
-
         var popupWindow = null; // Variable to hold the reference to the popup window
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
         var selectedShade = $(this).val();
@@ -758,8 +757,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
     });
 </script>
 
-<!--This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
+
 <script>
+    //This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
    function calculateTotalAmount() {
         var rows = document.querySelectorAll('#myTable tbody tr');
         var total = 0; 
@@ -850,7 +850,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
            }
          
         });   
-        
+
     }
         function calculateOtherTotal(grandTotal) {
 
@@ -875,11 +875,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         // Set the calculated grand total value to the grand total input field
         document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
     }
-
     // Call the function initially to calculate total amount, GST, and grand total on page load
     calculateTotalAmount();
    
-  
     // Add onchange event handler to id_fright_transport
     document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
     document.getElementById('id_round_off').addEventListener('input', calculateOtherTotal);
@@ -972,8 +970,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
       document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
 
     }
-
-   
     function addEventListenersToInputs() {
         var inputs = document.querySelectorAll('#myTable tbody tr input');
         inputs.forEach(function(input) {
@@ -1012,9 +1008,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             rowElement.textContent = formIndex + 1;
             rowElement.style.border="none";
 
-            
-
-
             const inputSelectElement = lastRow.querySelector('.search-input[name^="item_name_"]');
             inputSelectElement.id = `item_name_${formIndex}`;
             inputSelectElement.name = `item_name_${formIndex}`;
@@ -1031,8 +1024,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             selectElement.id = `select_item_name_${formIndex}`;
             selectElement.name = `select_item_name_${formIndex}`;
             selectElement.innerHTML = '';
-          
-           
 
             // Update input name and id
             const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
@@ -1169,10 +1160,10 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             }
         });
     });
-};
-deleteRowData();
-});
-addEventListenersToInputs();
+  };
+  deleteRowData();
+ });
+ addEventListenersToInputs();
     // Call calculateTotalAmount initially to calculate total on page load
     calculateTotalAmount();
 
@@ -1184,6 +1175,6 @@ addEventListenersToInputs();
 
 
    
-  </script>
+</script>
 
 {% endblock body %}

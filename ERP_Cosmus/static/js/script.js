@@ -1,32 +1,23 @@
-$(document).ready(function(){
-  // jQuery for toggle sub menus
-  $('.sub-btn').click(function(){
-      // Close other sub-menus
-      $('.sub-menu').not($(this).next('.sub-menu')).slideUp();
-      $('.dropdown').not($(this).find('.dropdown')).removeClass('rotate');
+// $(document).ready(function(){
+//   // Toggle sub-menus
+//   $('.sub-btn').click(function(){
+//       // Close other sub-menus
+//       $('.sub-menu').not($(this).next('.sub-menu')).slideUp().removeClass('open');
+//       $('.dropdown').not($(this).find('.dropdown')).removeClass('rotate');
 
-      // Toggle current sub-menu
-      $(this).next('.sub-menu').slideToggle();
-      $(this).find('.dropdown').toggleClass('rotate');
-  });
-
-  // jQuery for expand and collapse the sidebar
-  $('.menu-btn').click(function(){
-      $('.side-bar').addClass('active');
-      $('.menu-btn').css("visibility", "hidden");
-  });
-
-  $('.close-btn').click(function(){
-      $('.side-bar').removeClass('active');
-      $('.menu-btn').css("visibility", "visible");
-  });
-
-  // Event listener for submenu item click
-  $('.sub-item').click(function(){
-      // Add any additional functionality you need when a submenu item is clicked
-      console.log('Submenu item clicked');
-  });
-});
+//       // Toggle current sub-menu
+//       $(this).next('.sub-menu').slideToggle().toggleClass('open');
+//       $(this).find('.dropdown').toggleClass('rotate');
+//   });
+//   // Keep sub-menu open when a sub-item is clicked
+//   $('.sub-item').click(function(){
+//       // Keep the parent sub-menu open
+//       $(this).closest('.sub-menu').addClass('open');
+//       // Optionally, you can also add code here to handle navigation
+//       // For example: window.location.href = $(this).attr('href');
+//       console.log('Submenu item clicked');
+//   });
+// });
 
   //search in using sort option
 //navbar dropdown function

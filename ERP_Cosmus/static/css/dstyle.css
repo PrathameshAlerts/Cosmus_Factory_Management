@@ -440,6 +440,9 @@ input[type=number] {
     background: #262627;
     display: none;
 }
+.side-bar .menu .item .sub-menu.open{
+    display: block;
+}
    
 .side-bar .menu .item .sub-menu a{
     padding-left: 37px;
@@ -607,7 +610,6 @@ input[type=number] {
     right: 0;
     top: 0;
     margin-left: 230px;
-    min-height: 100vh;
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
     z-index: 0;
@@ -1314,8 +1316,11 @@ input[type=number] {
 }
 .table-responsives {
     overflow-y: auto;
-   
-    max-height: 520px; /* Adjust the height as needed */
+    max-height: 475px; /* Adjust the height as needed */
+}
+.table-res {
+    overflow-y: auto;
+    max-height: 560px; /* Adjust the height as needed */
 }
 
 .product2create-btn{
@@ -1600,7 +1605,7 @@ styles.css */
     background: #000;
 }
 
-.itemName-div-suggestion.bg-highlight {
+.allSuggestionsDiv.bg-highlight {
     background-color: #5c5c5c;
     color: #fff;
   

@@ -49,7 +49,6 @@
           <a href="{% url 'godown-list' %}" class="sub-item">Godown</a>
         </div>
       </div>
-    
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Sub Category')"><img src="../../../static/images/list.png" alt="list Icon" style="width: 33px; padding-right: 10px;">Sub Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
@@ -60,8 +59,7 @@
           <a href="{% url 'fabric-finishes-create-list' %}" class="sub-item">Fabric Finishes</a>
           <a href="{% url 'packaging-create-list' %}" class="sub-item">Packaging</a>
         </div>
-      </div>
-      
+      </div> 
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Accounts')"><img src="../../../static/images/document.png" alt="document" style="width: 33px; padding-right: 10px;">Accounts<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
@@ -398,6 +396,28 @@
 <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
 
 <script>
+
+$(document).ready(function(){
+  // Toggle sub-menus
+  $('.sub-btn').click(function(){
+      // Close other sub-menus
+      $('.sub-menu').not($(this).next('.sub-menu')).slideUp().removeClass('open');
+      $('.dropdown').not($(this).find('.dropdown')).removeClass('rotate');
+
+      // Toggle current sub-menu
+      $(this).next('.sub-menu').slideToggle().toggleClass('open');
+      $(this).find('.dropdown').toggleClass('rotate');
+  });
+  // Keep sub-menu open when a sub-item is clicked
+  $('.sub-item').click(function(){
+      // Keep the parent sub-menu open
+      $(this).closest('.sub-menu').addClass('open');
+      // Optionally, you can also add code here to handle navigation
+      // For example: window.location.href = $(this).attr('href');
+      console.log('Submenu item clicked');
+  });
+});
+
   // This function is used to hide the error message
   window.onload = function() {
     var errorMessage = document.getElementById('errorform');
@@ -445,25 +465,25 @@
     });
 
   // This function is used to toggle the sidebar
-  function toggleSidebar() {
-    var sideBar = document.querySelector('.side-bar');
-    if (sideBar.style.width === '200px') {
-      sideBar.style.width = '0';
-      sideBar.style.display = 'none';
-    } else {
-      sideBar.style.width = '200px';
-      sideBar.style.display = 'block';
-    }
-  }
+  // function toggleSidebar() {
+  //   var sideBar = document.querySelector('.side-bar');
+  //   if (sideBar.style.width === '200px') {
+  //     sideBar.style.width = '0';
+  //     sideBar.style.display = 'none';
+  //   } else {
+  //     sideBar.style.width = '200px';
+  //     sideBar.style.display = 'block';
+  //   }
+  // }
 
   // This function is used to change the header title
-  function changeHeaderTitle(newTitle) {
-    // Get the header element
-    var headerTitle = document.getElementById('headerTitle');
+  // function changeHeaderTitle(newTitle) {
+  //   // Get the header element
+  //   var headerTitle = document.getElementById('headerTitle');
 
-    // Update the header title
-    headerTitle.textContent = newTitle;
-  }
+  //   // Update the header title
+  //   headerTitle.textContent = newTitle;
+  // }
 </script>
 </body>
 </html>
