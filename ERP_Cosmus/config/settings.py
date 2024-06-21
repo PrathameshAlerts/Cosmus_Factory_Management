@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-nswpnk1f5tmh4g^_s9r(&slf6sjt#v7t77=_6p$fp4(4x(r(o6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -72,7 +72,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # for serving static file in production mode in django server
 ]
+
+
 
 ROOT_URLCONF = 'config.urls'
 
@@ -156,9 +159,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 
+
+# URL to use when referring to static files located in STATIC_ROOT
+STATIC_URL = 'static/'
+
+# The absolute path to the directory where collectstatic will collect static files for deployment
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/Media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
