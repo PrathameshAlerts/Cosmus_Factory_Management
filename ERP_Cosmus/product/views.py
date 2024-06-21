@@ -674,7 +674,7 @@ def product2subcategoryajax(request):
     for obj in categoryforselectedproduct:
         dict_result[obj.SubCategory_id.id] = obj.SubCategory_id.product_sub_category_name
     
-    print(dict_result)
+    
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return JsonResponse({'dict_result':dict_result})
@@ -830,7 +830,7 @@ def item_edit(request,pk):
     form = Itemform(instance = item_pk)
     formset = ShadeFormSet(instance= item_pk)
 
-    print(request.POST)
+    
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
@@ -1038,16 +1038,15 @@ def item_delete(request, pk):
         item_pk = get_object_or_404(Item_Creation,pk = pk)
         item_pk.delete()
         messages.success(request,f'Item {item_pk.item_name} was deleted')
-    except IntegrityError as e:
-        messages.error(request, f'Cannot delete {item_pk.item_name} because it is referenced by other objects.')
+    # except IntegrityError as e:
+    #     messages.error(request, f'Cannot delete {item_pk.item_name} because it is referenced by other objects.')
+    except Exception as e:
+         messages.error(request, f'EXCEPTION-{e}')
+         print(e)
     return redirect('item-list')
 
 
 
-def item_create_dropdown_refresh_ajax(request):
-    print(request.GET.get('gst_change'))
-    print('TEST')
-    return JsonResponse('TEST')
 
 #_____________________Item-Views-end_______________________
 
@@ -1802,7 +1801,6 @@ def purchasevouchercreateupdate(request, pk=None):
             party_names = ''
     
     try:
-
         party_gst_no = ''
         selected_party_name = request.GET.get('selected_party_name')
         if selected_party_name is not None:
@@ -2212,6 +2210,7 @@ def purchasevoucherlist(request):
 
 def purchasevoucherdelete(request,pk):
     purchase_invoice_pk = get_object_or_404(item_purchase_voucher_master,pk=pk)
+    print(pk)
     purchase_invoice_pk.delete()
     return redirect('purchase-voucher-list')
                     
