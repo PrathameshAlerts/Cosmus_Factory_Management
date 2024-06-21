@@ -40,9 +40,9 @@
  
 <div class="side-bar">
     <div class="menu">
-      <div class="item"><a href="{% url 'dashboard-main' %}" onclick="changeHeaderTitle('Cosmus- Dashboard')"><i class="fas fa-desktop"></i>Dashboard</a></div>
+      <div class="item"><a href="{% url 'dashboard-main' %}" onclick="changeHeaderTitle('Cosmus- Dashboard')"><img src="../../../static/images/analytics.png" alt="Monitor Icon" style="width: 33px; padding-right: 10px;">Dashboard</a></div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Main Category')"><i class="fa-brands fa-product-hunt"></i>Main Category<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Main Category')"><img src="../../../static/images/category.png" alt="menu Icon" style="width: 33px; padding-right: 10px;">Main Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'pproductlist' %}" class="sub-item">Product</a>
           <a href="{% url 'item-list' %}" class="sub-item">Raw Material</a>
@@ -51,7 +51,7 @@
       </div>
     
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Sub Category')"><i class="fas fa-table"></i>Sub Category<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Sub Category')"><img src="../../../static/images/list.png" alt="list Icon" style="width: 33px; padding-right: 10px;">Sub Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'simplecolorlist' %}" class="sub-item">Colors</a>
           <a href="{% url 'item-fabgroup-create-list' %}" class="sub-item">Fabric Groups</a>
@@ -63,7 +63,7 @@
       </div>
       
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Accounts')"><i class="fa-solid fa-file-invoice"></i>Accounts<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Accounts')"><img src="../../../static/images/document.png" alt="document" style="width: 33px; padding-right: 10px;">Accounts<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'account_sub_group-list' %}" class="sub-item">Groups</a>
           <a href="{% url 'ledger-list' %}" class="sub-item">Ledgers</a>
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Vouchers')"><i class="fa-solid fa-file-invoice"></i>Vouchers<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus-Vouchers')"><img src="../../../static/images/shop.png" alt="document" style="width: 33px; padding-right: 10px; ">Vouchers<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'purchase-voucher-list' %}" class="sub-item">Purchase Invoice</a>
           <a href="" class="sub-item">Sales Invoice</a>
@@ -84,7 +84,7 @@
         </div>
       </div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Reports')"><i class="fa-solid fa-file-invoice"></i>Reports<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Reports')"><img src="../../../static/images/research.png" alt="document" style="width: 33px; padding-right: 10px;">Reports<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="" class="sub-item">Stock Transfer Report</a>
           <a href="{% url 'credit-debit-report' %}" class="sub-item">Purchase Report</a>
@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><i class="fa-solid fa-file-invoice"></i>Product Definition<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><img src="../../../static/images/industrial-park.png" alt="document" style="width: 33px; padding-right: 10px;">Product Definition<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'define-main-category-product' %}" class="sub-item">Main Cat Create</a>
           <a href="{% url 'define-sub-category-product' %}" class="sub-item">Sub Category</a>
@@ -101,7 +101,7 @@
       </div>
       
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><i class="fa-solid fa-file-invoice"></i>Production<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><img src="../../../static/images/industry.png" alt="industry icon" style="width: 33px; padding-right: 10px;">Production<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'purchase-order-raw-list' %}" class="sub-item">Purchase Order(Raw)</a>
         </div>

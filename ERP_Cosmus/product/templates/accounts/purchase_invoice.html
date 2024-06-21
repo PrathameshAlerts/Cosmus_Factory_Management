@@ -615,37 +615,37 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             }
         }
 
-        // if (event.key === 'ArrowUp') {
-        //     event.preventDefault();
+        if (event.key === 'ArrowUp') {
+            event.preventDefault();
 
-        //     if (index != 0 && indexbool == true) {
-        //         index -= 1;
-        //     }
+            if (index != 0 && indexbool == true) {
+                index -= 1;
+            }
 
-        //     if (index <= optionsCount) {
-        //         const $selectedItem = $options.eq(index);
-        //         const $prevItem = $selectedItem.prev();
-        //         const nameDataKey = $selectedItem.text();
-        //         const nameKey = $selectedItem.data('key');
+            if (index <= optionsCount) {
+                const $selectedItem = $options.eq(index);
+                const $prevItem = $selectedItem.prev();
+                const nameDataKey = $selectedItem.text();
+                const nameKey = $selectedItem.data('key');
 
-        //         $inputField.attr('data-key', nameKey);
-        //         $selectedItem.removeClass('bg-highlight');
-        //         // $selectedItem.addClass('bg-highlight');
+                $inputField.attr('data-key', nameKey);
+               // $selectedItem.removeClass('bg-highlight');
+                // $selectedItem.addClass('bg-highlight');
+                $selectedItem.css('background-color', '#5c5c5c');
+                const itemOffsetTop = $prevItem.position().top;
+                const itemHeight = $prevItem.outerHeight();
+                const selectScrollTop = $dropdownOptions.scrollTop();
+                const selectHeight = $dropdownOptions.height();
 
-        //         const itemOffsetTop = $prevItem.position().top;
-        //         const itemHeight = $prevItem.outerHeight();
-        //         const selectScrollTop = $dropdownOptions.scrollTop();
-        //         const selectHeight = $dropdownOptions.height();
-
-        //         if (itemOffsetTop < 0) {
-        //             $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
-        //         } else if (itemOffsetTop + itemHeight > selectHeight) {
-        //             $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
-        //         }
-        //     } else {
-        //         index = 0;
-        //     }
-        // }
+                if (itemOffsetTop < 0) {
+                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                } else if (itemOffsetTop + itemHeight > selectHeight) {
+                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                }
+            } else {
+                index = 0;
+            }
+        }
 
         if (event.key === 'Enter') {
             event.preventDefault();

@@ -510,7 +510,7 @@ input[type=number] {
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
     box-shadow: 0 0 11px rgba(0, 0, 0, 0.13);
-    height: 60px;
+    height: 58px;
 }
 
 .coder-navbar .headerpos-fixed{
@@ -524,10 +524,10 @@ input[type=number] {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.image-h{
-    height: 50px;
-    width: 50px;
-    margin: 5px;
+.image-h {
+    height: 45px;
+    width: 48px;
+    margin: 2px;
 }
 .brand_image{
     height: 50px;
@@ -828,7 +828,7 @@ input[type=number] {
     border: 1px solid;
     border-radius: 10px;
     margin: 0 0;
-    width: 35%;
+    width: 26%;
     margin-left: 298px;
 }
 .item-btn{
@@ -970,7 +970,7 @@ input[type=number] {
     border-radius: 10px;
     margin: 0 0;
     width: 270px;
-    margin-left: 20px;
+    margin-left: 90px;
 }
 
 .fab_btn{

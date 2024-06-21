@@ -4,11 +4,11 @@
 
  
     <div class="row mt-4">
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <form action="" method="POST">
                 {% csrf_token %}
                 <h2 class="mb-4">GST-{{title}}</h2>
-                <div class="d-flex my-4">
+                <div class="d-flex ">
                     <label for="id_gst_percentage" class="item-form">Gst percentage :</label>
                     <input type="number" name="gst_percentage" class="item-select" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}" step="0.01">    
                 </div>
@@ -18,8 +18,8 @@
             </form>
 
         </div>
-        <div class="col-lg-4 mt-4">
-            <div class="row">
+        <div class="col-lg-5 ">
+            <div class="row mt-4">
                 <div class="col-lg-12">
                   <div class="d-flex mb-3">
                     <form method="GET">

@@ -12,7 +12,7 @@
 
 <div class="">
     <table class="table table-striped table-bordered" id="mainProductForm">
-        <thead class="table-dark">
+        <thead class="text-nowrap name_absolute">
             <tr>
                 <th>No</th>
                 <th>Product Sku</th>
@@ -65,7 +65,7 @@
     <div>
         <h4 class="mb-3">Add common Items</h3>
             <table class="table table-responsive table-striped table-bordered" id="myProduct">
-                <thead class="table-dark">
+                <thead class="text-nowrap name_absolute">
                     <tr>
                         <th>No</th>
                         <th>Item Name</th>
@@ -143,11 +143,11 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
 
     if(nameValue.length >= 3) {
     $.ajax({
-    url:'/itemdynamicsearchajax/',
-    method: 'GET',
-    data:{
-        'nameValue': nameValue
-    },
+            url:'/itemdynamicsearchajax/',
+            method: 'GET',
+            data:{
+                'nameValue': nameValue
+            },
     success:function(response){
 
         // Function to escape special characters in the search query
@@ -161,8 +161,8 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
         var filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
         
         suggestionsContainerUniqueId.empty();
-        console.log(filteredOptions)
-        $.each(filteredOptions, function(index, [key, value]) {
+        
+        $.each(filteredOptions, function(index, [key, value]) {       // Display suggestions
             var highlightedText = value;
             if (searchQuery) {
                 highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
@@ -170,29 +170,20 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
       
             suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
         });
-     
-       
-    
     },
      error:function(xhr){
             console.log(xhr.status + ": " + xhr.responseText);
                 if (xhr.status === 404 || xhr.status === 400) {
-                    
                     suggestionsContainerUniqueId.css('display', 'block');
                     suggestionsContainerUniqueId.empty();
-                    suggestionsContainerUniqueId.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
-                    
-                }
-               
+                    suggestionsContainerUniqueId.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`); 
+                }   
         }
-       
    })
-
     }else{
         suggestionsContainerUniqueId.empty();
     }
  
-  
    suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function() {
        var dataKey= $(this).attr('data-key');
       
@@ -201,11 +192,8 @@ $(document).on ('keyup ','input[name^="product2itemuniqueformset-"][name$="Item_
        $(this).closest('.custom-dropdown-container').find('.input_text').val($(this).text().trim());
        $(this).addClass('selected').siblings().removeClass('selected');
 
-     
      suggestionsContainerUniqueId.css('display', 'none');
    })
-
-
 })  
 
 $(document).on('click', '.input_text',function(){
@@ -530,6 +518,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
 
 </script>
 
+// add a new row to the common product2itemUniqueformset and delete the last row
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const addFormButton = document.getElementById('addForm');
@@ -635,6 +624,7 @@ deleteRow();
 
 </script>
 
+// add a new row to the common product2itemcommonformset and delete the last row
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const addNewButton = document.getElementById('addNewRow');
@@ -731,24 +721,6 @@ document.querySelectorAll('.delete').forEach(function(button) {
 };
 deletedRow();
     });
-
-//     document.addEventListener('DOMContentLoaded', function() {
-//     const dropdownContainer = document.querySelector('.custom-dropdown-container');
-//     const dropdownInput = dropdownContainer.querySelector('.search-input');
-//     const dropdown = dropdownContainer.querySelector('.commom_items');
-
-//     dropdownInput.addEventListener('focus', adjustDropdownHeight);
-//     window.addEventListener('resize', adjustDropdownHeight);
-
-//     function adjustDropdownHeight() {
-//         dropdown.style.display = 'block';
-//         const rect = dropdownInput.getBoundingClientRect();
-//         const availableHeightBelow = window.innerHeight - rect.bottom;
-//         const maxDropdownHeight = 194;
-//         dropdown.style.maxHeight = `${Math.min(availableHeightBelow - 10, maxDropdownHeight)}px`;
-//     }
-// });
-
 
 </script>
     {% endblock body %} 
