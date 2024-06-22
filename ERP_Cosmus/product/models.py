@@ -421,6 +421,7 @@ class Ledger(models.Model):
     DEBIT_CREDIT = [
         ("Debit", 'Debit'),
         ("Credit", 'Credit'),
+        ('N/A','N/A'),
     ]
 
     name = models.CharField(max_length = 100, blank = True, unique=True)
@@ -522,7 +523,7 @@ class item_purchase_voucher_master(models.Model):
 
 class purchase_voucher_items(models.Model):
     item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
-    item_shade = models.ForeignKey(item_color_shade, on_delete = models.SET_NULL, null=True)
+    item_shade = models.ForeignKey(item_color_shade, on_delete = models.PROTECT)
     quantity_total = models.DecimalField(max_digits=10, decimal_places=2)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -601,3 +602,9 @@ class purchase_order(models.Model):
     modified_created_date = models.DateField(auto_now_add=True)
     number_of_pieces = models.IntegerField(default=0)
     
+
+class purchase_order_to_product(models.Model):
+    purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+

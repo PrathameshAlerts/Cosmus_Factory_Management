@@ -76,12 +76,13 @@
         <label for="id_opening_balance" class="form-label item-form ms-1">Openeing Balance:</label>
 
       {% if form.instance.id %}
-        <input type="number" placeholder="Rs" class="item-select me-2" value="{{ open_bal }}" name="opening_balance" required id="id_opening_balance">
+        <input type="number" placeholder="Rs" class="item-select me-2" value="{{ open_bal|default_if_none:'0'}}" name="opening_balance" required id="id_opening_balance">
        {% elif not form.instance.id %}
-       <input type="number" placeholder="Rs" class="item-select me-2" value="" name="opening_balance" required id="id_opening_balance">
+       <input type="number" placeholder="Rs" class="item-select me-2" value="0" name="opening_balance" required id="id_opening_balance">
        {% endif %}
         <select class="item-select w-25" name="Debit_Credit" id="id_Debit_Credit" required>
       <option value="{{form.instance.Debit_Credit}}">{{form.instance.Debit_Credit}}</option>
+      <option value="N/A">N/A</option>
       <option value="Debit">Debit</option>
       <option value="Credit">Credit</option>
     </select> 
