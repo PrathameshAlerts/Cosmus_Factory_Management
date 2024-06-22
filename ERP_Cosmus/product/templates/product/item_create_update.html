@@ -5,7 +5,7 @@
 
 <h2 class="mt-3 mb-4">{{title}}</h2>
 <div class="row">
-<div class="col-lg-4">
+<div class="col-lg-5">
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
@@ -43,6 +43,7 @@
               {% endfor %}
           {% endif %}
       </select>
+      <button class="fab_btn" onclick="openFabPopup()">+</button>
   </div>
 
     <div class=" d-flex my-3">
@@ -66,7 +67,7 @@
         {% endfor %}
         {% endif %}
       </select>
-
+      <button class="col_btn"  onclick="opencolorPopup()">+</button>
     </div>
     {% if form.instance.id %}
     <div class="d-flex mb-3">
@@ -154,6 +155,7 @@
         {% endfor %}
 
       </select>
+      <button class="package_btn"  onclick="openPackagePopup()">+</button>
     </div>
     <div class=" d-flex my-3">
       <label for="id_unit_name_item" class="item-form">Unit Name:</label>
@@ -170,8 +172,8 @@
         <option value="{{x.id}}">{{x.unit_name}}</option>
         {% endfor %}
         {% endif %}
-
       </select>
+      <button class="unit_btn"  onclick="openunitPopup()">+</button>
     </div>
     <div class=" d-flex my-3">
       <label for="id_Units" class=" item-form">Units:</label>
@@ -180,7 +182,7 @@
 
     <div class=" d-flex my-3">
       <label for="id_Panha" class=" item-form">Panha:</label>
-      <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha}}" step="0.01" required
+      <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha | default_if_none:'0.00'}}" step="0.01" required
         id="id_Panha">
     </div>
     <div class=" d-flex my-3">
@@ -203,8 +205,8 @@
         {% for fab_finish in fab_finishes %}
         <option value="{{fab_finish.id}}">{{fab_finish.fabric_finish}}</option>
         {% endfor %}
-
       </select>
+      <button class="finish_btn"  onclick="openFabricFinishPopup()">+</button>
     </div>
     <div class="d-flex my-3">
       <label for="id_GST" class="item-form">GST:</label>
@@ -218,8 +220,8 @@
         {% for gst in gsts %}
         <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
         {% endfor %}
-      
       </select>
+      <button class="gst_btn"  onclick="openGstPopup()">+</button>
     </div>
     <div class="d-flex my-3">
       <label for="id_HSN_Code" class="form-label item-form">HSN Code:</label>
@@ -256,24 +258,19 @@
 
 {% if not form.instance.id %}
 <div class="col-lg-1">
-    <div class="">
-      <button class="fab_btn" onclick="openFabPopup()">+</button>
-    </div>
-    <div class="">
-      <button class="col_btn"  onclick="opencolorPopup()">+</button>
-    </div>
-    <div class="">
-      <button class="package_btn"  onclick="openPackagePopup()">+</button>
-    </div>
-    <div class="">
-      <button class=" unit_btn"  onclick="openunitPopup()">+</button>
-    </div>
-    <div class="">
-      <button class="finish_btn"  onclick="openFabricFinishPopup()">+</button>
-    </div>
-    <div class="">
-      <button class="gst_btn"  onclick="openGstPopup()">+</button>
-    </div>
+    
+   
+      
+
+  
+      
+  
+  
+      
+   
+
+      
+ 
    
     
 </div>
@@ -467,17 +464,18 @@ $(document).on('click', '.product2Select',function(){
         var selectValue = $(this).next('.s-suggestion-container');
         selectValue.css('display', 'none');
         selectValue.empty();
-    })
+})
 
     $(document).on('keydown', '[name^="item-to-clone"]', function (e) {
       var nameDataKey;
         var nameKey;
-        var selectValue = $(this).next('.s-suggestion-container');
-
-        var selectedItems = selectValue.find(`#itemName-div_${index}`);
-        var selectLength = selectValue.find('.itemName-div').length-1;
        
-        var nameData = $(this).val().trim();
+        const $inputField = $(this);
+        const $dropdownOptions = $inputField.next('.s-suggestion-container');
+        const $options = $dropdownOptions.find('.itemName-div');
+        const optionsCount = $options.length - 1;
+       
+        var nameData = $inputField.val().trim();
 
         if(nameData === ''){
          
@@ -486,44 +484,45 @@ $(document).on('click', '.product2Select',function(){
          return;
      }
 
-     if(e.key=== 'ArrowDown'){
-
+        const newHeight = $inputField.offset();
+        const windowHeight = $(window).height();
+        const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+         $dropdownOptions.css({
+              'max-height': availableSpace + 'px',
+              'overflow-y': 'auto'
+         });
+       if(e.key=== 'ArrowDown'){
           e.preventDefault();
 
-            // Remove highlight from previously selected item
-        selectValue.find('.bg-highlight').removeClass('bg-highlight');
+        
 
-          if(index <= selectLength){
-              var selectedItem = selectValue.find(`#itemName-div_${index}`);
-              var nextItem = selectedItem.next();
-
-                // Add highlight to the currently selected item
-                isHighlighted = true; // Set the flag to true when an item is highlighted
-                selectedItem.addClass('bg-highlight');
-              
-              nameDataKey= selectedItem.text();
-              nameKey = selectedItem.data('key');
-              $(this).attr('data-key', nameKey);
-              $(this).text(nameDataKey);
+          if(index <= optionsCount){
+            const selectedItem = $options.eq(index);
+            const nextItem = selectedItem.next();
+            const nameDataKey= selectedItem.text();
+            const nameKey = selectedItem.data('key');
+                // Remove highlight from previously selected item   
+            $options.removeClass('bg-highlight');
+            selectedItem.addClass('bg-highlight');
+            $inputField.attr('data-key', nameKey);
+            $inputField.text(nameDataKey);
            
+            const itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
+            const itemHeight = nextItem.outerHeight();
+            const selectScrollTop = $dropdownOptions.scrollTop();
+            const selectHeight = $dropdownOptions.height();
 
-              var itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
-              var itemHeight = nextItem.outerHeight();
-              var selectScrollTop = selectValue.scrollTop();
-              var selectHeight = selectValue.height();
-
-              if (itemOffsetTop + itemHeight > selectHeight) {
-                  selectValue.scrollTop(selectScrollTop + itemHeight);
-
-              } else if (itemOffsetTop < 0) {
-                  selectValue.scrollTop(selectScrollTop - itemHeight);
-              }
+            if (itemOffsetTop + itemHeight > selectHeight) {
+                $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+            } else if (itemOffsetTop < 0) {
+                $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+            }
              
-              selectedItem.toggleClass('bg-highlight', true);
-              if(index != selectLength ){
-                  index += 1; 
-              indexbool = true;        
-              }     
+          
+            if(index !== optionsCount ){
+                index += 1; 
+             indexbool = true;        
+            }     
                 
           }else{
             index = 0;
@@ -531,10 +530,7 @@ $(document).on('click', '.product2Select',function(){
       
           }
           if(e.key === 'ArrowUp'){
-            event.preventDefault();
-
-             selectValue.find('.bg-highlight').removeClass('bg-highlight');
-        
+            e.preventDefault(); 
             if (index != 0 && indexbool == true)
             {           
                   index = index - 1;
@@ -542,31 +538,27 @@ $(document).on('click', '.product2Select',function(){
             
             if(index <= selectLength){
           
-              var selectedItem = selectValue.find(`#itemName-div_${index}`);
-              var prevItem = selectedItem.prev();
+          const selectedItem = $options.eq(index);
+           const prevItem = selectedItem.prev();
+           const nameDataKey= selectedItem.text();
+           const nameKey = selectedItem.data('key');
 
-                // Add highlight to the currently selected item
-                isHighlighted = true;
-                selectedItem.addClass('bg-highlight');
-        
-              nameDataKey= selectedItem.text();
-              nameKey = selectedItem.data('key');
+            $options.removeClass('bg-highlight');
+            selectedItem.addClass('bg-highlight');
 
-              $(this).attr('data-key', nameKey);
-              $(this).text(nameDataKey);
-
-      
+              $inputField.attr('data-key', nameKey);
+              $inputField.text(nameDataKey);
           
-              var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
-              var itemHeight = prevItem.outerHeight();
-              var selectScrollTop = selectValue.scrollTop();
-              var selectHeight = selectValue.height();
+            const itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
+            const itemHeight = prevItem.outerHeight();
+            const selectScrollTop = $dropdownOptions.scrollTop();
+            const selectHeight = $dropdownOptions.height();
 
-              if (itemOffsetTop < 0) {
-                  selectValue.scrollTop(selectScrollTop - itemHeight);
-              } else if (itemOffsetTop + itemHeight > selectHeight) {
-                  selectValue.scrollTop(selectScrollTop + itemHeight);
-              }
+            if (itemOffsetTop < 0) {
+                $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+            } else if (itemOffsetTop + itemHeight > selectHeight) {
+                $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+            }
               }
               else{
                       index = 0;
@@ -575,14 +567,13 @@ $(document).on('click', '.product2Select',function(){
           }
           if(e.key === 'Enter'){
           e.preventDefault();
-          var commomSugenstionHide = $(this).closest('.custom-dropdown-container').find(`#search-results`);
-          var selectedItem = $(this);
-          var nameValues = $(this).text().trim();
-          var itemValue = selectedItem.attr('data-key');
+          const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#search-results`);
+          const nameValues = $inputField.text().trim();
+          const itemValue = $inputField.attr('data-key');
           
-          if (selectedItem.length > 0) {
+          if ($inputField.length > 0) {
               
-              $(this).val(nameValues);
+            $inputField.val(nameValues);
            
             $.ajax({           // this ajax reuest is to send the data and show the all the option will filed once click on the suggestion on the screen
             url: '/itemcreatecloneajax/',

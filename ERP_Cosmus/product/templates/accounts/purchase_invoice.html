@@ -578,6 +578,13 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             index = 0;
             return;
         }
+        const newHeight = $inputField.offset();
+        const windowHeight = $(window).height();
+        const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+         $dropdownOptions.css({
+        'max-height': availableSpace + 'px',
+        'overflow-y': 'auto'
+         });
 
         if (event.key === 'ArrowDown') {
             event.preventDefault();
