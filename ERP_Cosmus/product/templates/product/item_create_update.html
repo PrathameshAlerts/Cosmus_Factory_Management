@@ -323,7 +323,7 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
     var enterValue = false;
     var index = 0; //  index outside of the event listener
    var indexbool = false;
-   var isHighlighted = false; // flag to track if an item is highlighted
+
 
    var suggestions = $('#search-results')
     $(document).on('input','#id_item-to-clone',function(){
@@ -403,9 +403,8 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
                 'itemValue': itemValue
             },
             success: function (response) {
-                item_data_response = response.response_data
-                console.log(item_data_response)
-              
+                item_data_response = response.response_data;
+            
                 var r_fab_group = item_data_response.fabric_group
                 var r_color = item_data_response.color
                 var r_m_code = item_data_response.material_code
@@ -439,26 +438,16 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
                 $('#id_HSN_Code').val(r_hsn_code);
 
                 $('#id_status').val(r_status);
-
-              
-                
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
             }
         })
-
         suggestions.css('display', 'none');
-        
    })
 
     })
-    $('#id_item-to-clone').on('keyup', function() {
-    if ($(this).val().length === 0) {
-      suggestions.empty();
-    }
-  });
-
+    
     
 $(document).on('click', '.product2Select',function(){
         var selectValue = $(this).next('.s-suggestion-container');
@@ -467,9 +456,6 @@ $(document).on('click', '.product2Select',function(){
 })
 
     $(document).on('keydown', '[name^="item-to-clone"]', function (e) {
-      var nameDataKey;
-        var nameKey;
-       
         const $inputField = $(this);
         const $dropdownOptions = $inputField.next('.s-suggestion-container');
         const $options = $dropdownOptions.find('.itemName-div');
@@ -493,8 +479,6 @@ $(document).on('click', '.product2Select',function(){
          });
        if(e.key=== 'ArrowDown'){
           e.preventDefault();
-
-        
 
           if(index <= optionsCount){
             const selectedItem = $options.eq(index);
@@ -538,16 +522,15 @@ $(document).on('click', '.product2Select',function(){
             
             if(index <= selectLength){
           
-          const selectedItem = $options.eq(index);
+           const selectedItem = $options.eq(index);
            const prevItem = selectedItem.prev();
            const nameDataKey= selectedItem.text();
            const nameKey = selectedItem.data('key');
 
             $options.removeClass('bg-highlight');
             selectedItem.addClass('bg-highlight');
-
-              $inputField.attr('data-key', nameKey);
-              $inputField.text(nameDataKey);
+            $inputField.attr('data-key', nameKey);
+            $inputField.text(nameDataKey);
           
             const itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
             const itemHeight = prevItem.outerHeight();
@@ -563,7 +546,7 @@ $(document).on('click', '.product2Select',function(){
               else{
                       index = 0;
               }   
-               // Set the flag to true when an item is highlighted
+            
           }
           if(e.key === 'Enter'){
           e.preventDefault();
@@ -583,44 +566,41 @@ $(document).on('click', '.product2Select',function(){
             },
             success: function (response) {
               var item_data_response = response.response_data
-          
+
+              var r_fab_group = item_data_response.fabric_group
+              var r_color = item_data_response.color
+              var r_m_code = item_data_response.material_code
+              var r_packing = item_data_response.packing
+              var r_unit_name = item_data_response.unit_name
+              var r_panha = item_data_response.panha
+              var r_fab_non_fab = item_data_response.fab_non_fab
+              var r_fab_finishes = item_data_response.fab_finishes
+              var r_gst = item_data_response.gst
+              var r_hsn_code = item_data_response.hsn_code
+              var r_status = item_data_response.status
               
-                var r_fab_group = item_data_response.fabric_group
-                var r_color = item_data_response.color
-                var r_m_code = item_data_response.material_code
-                var r_packing = item_data_response.packing
-                var r_unit_name = item_data_response.unit_name
-                var r_panha = item_data_response.panha
-                var r_fab_non_fab = item_data_response.fab_non_fab
-                var r_fab_finishes = item_data_response.fab_finishes
-                var r_gst = item_data_response.gst
-                var r_hsn_code = item_data_response.hsn_code
-                var r_status = item_data_response.status
-              
-                $('#id_Fabric_Group').val(r_fab_group.fab_g_key);
+              $('#id_Fabric_Group').val(r_fab_group.fab_g_key);
             
-                $('#id_Item_Color').val(r_color.color_key);
+              $('#id_Item_Color').val(r_color.color_key);
                 
-                $('#id_Material_code').val(r_m_code);
+              $('#id_Material_code').val(r_m_code);
 
-                $('#Item_Packing').val(r_packing.packing_key);
+              $('#Item_Packing').val(r_packing.packing_key);
   
-                $('#id_unit_name_item').val(r_unit_name.unit_name_key);
+              $('#id_unit_name_item').val(r_unit_name.unit_name_key);
 
-                $('#id_Panha').val(r_panha);
+              $('#id_Panha').val(r_panha);
               
-                $('#id_Fabric_nonfabric').val(r_fab_non_fab);
+              $('#id_Fabric_nonfabric').val(r_fab_non_fab);
               
-                $('#id_Item_Fabric_Finishes').val(r_fab_finishes.fab_finishes_key);
+              $('#id_Item_Fabric_Finishes').val(r_fab_finishes.fab_finishes_key);
               
-                $('#id_Item_Creation_GST').val(r_gst.gst_key);
+              $('#id_Item_Creation_GST').val(r_gst.gst_key);
               
-                $('#id_HSN_Code').val(r_hsn_code);
+              $('#id_HSN_Code').val(r_hsn_code);
 
-                $('#id_status').val(r_status);
-
-              
-                
+              $('#id_status').val(r_status); 
+                 
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
@@ -725,15 +705,8 @@ function receiveData(openingValue){
       })
       }
     })
-
-
-    
-
   })
-  
-
-
-  </script>
+   </script>
 
 
 
@@ -802,13 +775,12 @@ function receiveData(openingValue){
     window.addEventListener('message', function (event) {
       if (event.data === 'popupClosed'|| event.data === 'submit') {
         // Close the popup window
-    
+
         // Reload parent page when popup window is closed
         location.reload();
       }
     });
   }
-
 
   document.querySelector('input[type="file"]').addEventListener('change', function(event) {
       var imgPreview = document.getElementById('iFrame');

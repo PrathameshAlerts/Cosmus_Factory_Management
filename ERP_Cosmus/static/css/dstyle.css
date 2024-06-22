@@ -346,10 +346,15 @@ input[type=number] {
  }
   .dropdown-menu-right {
     right: 0;
-    left: auto;
+   left: 0;
     text-decoration: none;
 }
 
+.dropdown-menu-end{
+  margin-left: 188px;
+    text-decoration: none;
+ 
+}
 .float-right {
     font-size: 10px;
     float: left !important;
@@ -556,17 +561,27 @@ input[type=number] {
     display: block;
     padding: 0px 5px;
     line-height: 45px; 
+    background-color: #fff;
+    cursor: pointer;
+    list-style: none;
+    width: 190px;
 }
 .pro-head:hover{
     background: #888;
     color: #f1f1f1;
     transition: 0.2s ease;
 }
-.dropdown-menu .dropdown-menu-right li:hover{
-    background: red;
-    transition: 0.3s ease;
+/* .dropdown-menu .dropdown-menu-right li:hover{
+    background: #888;
+    color: #f1f1f1;
+    transition: 0.2s ease;
     
 }
+.dropdown-menu .dropdown-menu-end li:hover{
+    background: #888;
+    color: #f1f1f1;
+    transition: 0.2s ease;
+} */
 .subfields {
     position: fixed;
     left: 0;
@@ -591,6 +606,12 @@ input[type=number] {
     left: 0;
     cursor: pointer;
 }
+ /* .dropdown-end {
+    position: relative;
+    width: 190px;
+    left: 100px;
+    cursor: pointer;
+} */
 }
 /*======navbar end====*/
 /*=====Static code for all the pages =======*/
