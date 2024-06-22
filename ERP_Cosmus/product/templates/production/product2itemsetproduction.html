@@ -335,7 +335,7 @@ $(document).on('input', '[name^="product2itemcommonformset-"][name$="Item_pks"]'
     }
     enterPressed = false; // Reset the flag when key is released
                    
-if(nameValue.length >= 3){
+if(nameValue.length >= 1){
     $.ajax({
         url:'/itemdynamicsearchajax/',
         method: 'GET',

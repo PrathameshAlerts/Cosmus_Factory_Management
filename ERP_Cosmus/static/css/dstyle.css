@@ -1610,12 +1610,6 @@ styles.css */
     color: #fff;
   
 }
-.itemName-div.itemName-div-suggestion.selected{
-    background-color: #5c5c5c;
-    color: #fff;
-}
- 
- 
 .custom-select {
     background-color: white;
     width: 180px;

@@ -583,7 +583,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             event.preventDefault();
 
             if (index <= optionsCount) {
-               $options.removeClass('bg-highlight');
+            
                 const $selectedItem = $options.eq(index);
                 console.log($selectedItem)
                 const $nextItem = $selectedItem.next();
@@ -592,8 +592,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
 
                 $inputField.attr('data-key', nameKey);
              
-             
-                $selectedItem.addClass('bg-highlight');
+                $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
                 const itemOffsetTop = $nextItem.position().top;
                 const itemHeight = $nextItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
@@ -622,15 +621,15 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             }
 
             if (index <= optionsCount) {
-                 $options.removeClass('bg-highlight');
+               
                 const $selectedItem = $options.eq(index);
                 const $prevItem = $selectedItem.prev();
                 const nameDataKey = $selectedItem.text();
                 const nameKey = $selectedItem.data('key');
 
                 $inputField.attr('data-key', nameKey);
-               
-                $selectedItem.addClass('bg-highlight');
+                
+                $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
                 
                 const itemOffsetTop = $prevItem.position().top;
                 const itemHeight = $prevItem.outerHeight();
