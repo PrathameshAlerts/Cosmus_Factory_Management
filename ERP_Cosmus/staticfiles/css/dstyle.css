@@ -979,8 +979,8 @@ input[type=number] {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 3px 10px;
-    margin-top: 98px;
+    padding: 2px 7px;
+    margin-left: 5px; 
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Color group item======*/
@@ -994,8 +994,8 @@ input[type=number] {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 3px 10px;
-    margin-top: 18px;
+    padding: 2px 7px;
+    margin-left: 5px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Unit group item======*/
@@ -1009,8 +1009,8 @@ input[type=number] {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 3px 10px;
-    margin-top: 19px;
+    padding: 2px 7px;
+    margin-left: 5px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Package group item======*/
@@ -1018,8 +1018,8 @@ input[type=number] {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 3px 10px;
-    margin-top: 69px;
+    padding: 2px 7px;
+    margin-left: 5px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Finish group item======*/
@@ -1027,8 +1027,8 @@ input[type=number] {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 3px 10px;
-    margin-top: 166px;
+    padding: 2px 7px;
+    margin-left: 5px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======GST group item======*/
@@ -1036,8 +1036,8 @@ input[type=number] {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 3px 10px;
-    margin-top: 18px;
+    padding: 2px 7px;
+    margin-left: 5px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 /*=======Account group item======*/
@@ -1610,12 +1610,6 @@ styles.css */
     color: #fff;
   
 }
-.itemName-div.itemName-div-suggestion.selected{
-    background-color: #5c5c5c;
-    color: #fff;
-}
- 
- 
 .custom-select {
     background-color: white;
     width: 180px;
