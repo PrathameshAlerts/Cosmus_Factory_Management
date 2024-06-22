@@ -1415,7 +1415,10 @@ def ledgercreate(request):
 
             elif debit_credit_value == 'Credit':
                 account_credit_debit_master_table.objects.create(ledger = ledger_instance, voucher_type = 'Ledger',credit= open_bal_value)
-            
+
+            elif debit_credit_value == 'N/A':
+                account_credit_debit_master_table.objects.create(ledger = ledger_instance, voucher_type = 'Ledger',credit= 0, debit= 0)
+
             messages.success(request,'Ledger Created')
             return redirect('ledger-list')
         
@@ -1423,7 +1426,6 @@ def ledgercreate(request):
 
             return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
-
     return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
 
@@ -1432,7 +1434,7 @@ def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
     
     Ledger_pk = get_object_or_404(Ledger,pk = pk)
-    ledgers = Ledger_pk.transaction_entry.all() #get all transactions related instances to the ledger
+    ledgers = Ledger_pk.transaction_entry.all() #get all credit_debit model transactions related instances to the ledger
 
     Opening_ledger = ledgers.filter(voucher_type ='Ledger').first() # filter the first related instance for only ledger as voucher type
     form = LedgerForm(instance = Ledger_pk)
@@ -1445,6 +1447,9 @@ def ledgerupdate(request,pk):
     elif form.instance.Debit_Credit == 'Credit':         # if form instance has Credit
         opening_bal = Opening_ledger.credit              # get the data from the credit side of transaction_entry
         opening_balance = opening_balance + opening_bal  # and store it in opening_balance variable
+
+    elif form.instance.Debit_Credit == 'N/A': # if form instance has N/A 
+        opening_balance = opening_balance # opening_balance will be 0 
 
     else:
         messages.error(request,' Error with Credit Debit ')
@@ -1463,6 +1468,11 @@ def ledgerupdate(request,pk):
 
             if request.POST['Debit_Credit'] == 'Credit':
                 Opening_ledger.credit = request.POST['opening_balance']
+                Opening_ledger.debit = 0
+                Opening_ledger.save()
+
+            if request.POST['Debit_Credit'] == 'N/A':
+                Opening_ledger.credit = 0
                 Opening_ledger.debit = 0
                 Opening_ledger.save()
             
@@ -2806,8 +2816,10 @@ def viewproduct2items_configs(request,product_sku):
 
 
 def purchaseorderrawcreateupdate(request,pk= None):
-
     print(request.POST)
+
+    product_queryset = Product.objects.all()
+
     if pk:
         instance = get_object_or_404(purchase_order, pk = pk)
 
@@ -2827,11 +2839,14 @@ def purchaseorderrawcreateupdate(request,pk= None):
             print(form.cleaned_data['target_date'])
             form.save()
             return redirect('purchase-order-raw-list')
-    
+        else:
+            return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
+                                                                          'ledger_party_names':ledger_party_names,
+                                                                          "products":products,'product_queryset':product_queryset})
 
     return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
                                                                           'ledger_party_names':ledger_party_names,
-                                                                          "products":products})
+                                                                          "products":products,'product_queryset':product_queryset})
 
 
 
