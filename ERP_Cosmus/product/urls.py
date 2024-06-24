@@ -157,6 +157,12 @@ urlpatterns = [
     path('purchaseorderrawlist/',views.purchaseorderrawlist, name = 'purchase-order-raw-list'),
     path('purchaseorderrawdelete/<int:pk>',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
     
+    path('purchaseorderproductqtyajaxcreate/<int:product_pk>',views.purchaseorderproductqtypopup, name = 'purchase-order-product-qty-ajax-create'),
+    path('purchaseorderproductqtyajaxupdate/<int:pk>/<int:product_pk>',views.purchaseorderproductqtypopup, name = 'purchase-order-product-qty-ajax-update'),
+
+
+    path('purchaseorderproductqtypopupajax/',views.purchaseorderproductqtypopupajax, name = 'purchase-order-product-qty-ajax-popup'),
+
     #reports
     # path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
