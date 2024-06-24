@@ -92,17 +92,21 @@
             console.log(product_id);
             $.ajax({
               type: "GET",
-              url: "{% url 'product-2-subcategory' %}",
+              url: "",
               data: {
                 'product_id': product_id
               },
-              success: function(response) {
-                
+              success: function(data) {
+                $("#div_id_product_form").html(data);
               },
-              error: function(xhr, errmsg, err) {
-                console.log(xhr.status + ": " + xhr.responseText);
+              error: function(data) {
+                console.log('Error:', data);
               }
-            })
+            }).then(function(data) {
+              $("#div_id_product_form").html(data);
+            }).catch(function(error) {
+              console.log(error);
+            });
           });
         });
     </script>

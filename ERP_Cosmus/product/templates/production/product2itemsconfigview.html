@@ -14,35 +14,37 @@
 </div>
 <div class="row" >
     <div class="col-lg-10">
-   <table class="table table-striped table-hover table-responsive table-bordered">
-            <thead>
-                <tr>
-                    <th>Item Name </th>
-                    <th>part_name</th>
-                    <th>part_dimentions</th>
-                    <th>dimention_total</th>
-                    <th>part_pieces</th>
-                </tr>
-            </thead>
-            
-        <tbody class="mainTableList">
-            {% for Items in product2item_instances %}
-            <tr>
-                <td class="text-nowrap text-danger">{{Items.Item_pk.item_name}}
-                    {% for item_config in Items.product_item_configs.all %}
+        <div class="table-responsives">
+            <table class="table table-striped table-hover table-bordered" style="width: 100%;">
+                <thead>
                     <tr>
-                        <td></td>
-                        <td class="text-nowrap">{{item_config.part_name}}</td>
-                        <td class="text-nowrap">{{item_config.part_dimentions}}</td>
-                        <td> {{item_config.dimention_total}}</td>
-                        <td>{{item_config.part_pieces}}</td>
+                        <th>Item Name </th>
+                        <th>part_name</th>
+                        <th>part_dimentions</th>
+                        <th>dimention_total</th>
+                        <th>part_pieces</th>
                     </tr>
-                    {% endfor %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        </table>
+                </thead>
+            <tbody class="mainTableList" >
+                {% for Items in product2item_instances %}
+                <tr>
+                    <td class="text-nowrap text-danger">{{Items.Item_pk.item_name}}
+                        {% for item_config in Items.product_item_configs.all %}
+                        <tr>
+                            <td></td>
+                            <td class="text-nowrap">{{item_config.part_name}}</td>
+                            <td class="text-nowrap">{{item_config.part_dimentions}}</td>
+                            <td> {{item_config.dimention_total}}</td>
+                            <td>{{item_config.part_pieces}}</td>
+                        </tr>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+  
     </div>
 </div>
 </div>
