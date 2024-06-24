@@ -685,8 +685,6 @@ function receiveData(openingValue){
           var itemValues  = itemId.split('-')[1];
           var qtyData =document.getElementById('shades-'+itemValues+'-openingValue').value
 
-      
-          console.log('qtyData',qtyData)
           if(response.popup_url === '/openinggodownquantity/'+itemValue){
             const url = response.popup_url; 
             const newUrl = encodeURIComponent(qtyData);
@@ -712,75 +710,71 @@ function receiveData(openingValue){
 
 <script>
 
-  var popUpWindow = null;
+var popUpWindow = null;
 
+function openFabPopup(button) {
+  openPopup(button, '{% url "fabric-popup" %}');
+}
 
-  function openFabPopup(button) {
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '{% url "fabric-popup" %}');
-    } else {
-      popUpWindow.focus();
-    }
-  }
+function opencolorPopup(button) {
+  openPopup(button, '{% url "color-popup" %}');
+}
 
-  function opencolorPopup(button) {
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '{% url "color-popup" %}');
-    } else {
-      popUpWindow.focus();
-    }
-  }
+function openunitPopup(button) {
+  openPopup(button, '{% url "unit-name-popup" %}');
+}
 
-  function openunitPopup(button) {
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '{% url "unit-name-popup" %}');
-    } else {
-      popUpWindow.focus();
-    }
-  }
-  function openGstPopup(button) {
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '{% url "gst-popup" %}');
-    } else {
-      popUpWindow.focus();
-    }
-  }
-  function openPackagePopup(button) {
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button,'{% url "packaging-popup" %}');
-    } else {
-      popUpWindow.focus();
-    }
-  }
+function openGstPopup(button) {
+  openPopup(button, '{% url "gst-popup" %}');
+}
 
-  function openFabricFinishPopup(button) {
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '{% url "fabric-finishes-popup" %}');
-    } else {
-      popUpWindow.focus();
-    }
-  }
+function openPackagePopup(button) {
+  openPopup(button,'{% url "packaging-popup" %}');
+}
 
+function openFabricFinishPopup(button) {
+  openPopup(button, '{% url "fabric-finishes-popup" %}');
+}
+
+function openPopup(button, url) {
+  if (popUpWindow === null || popUpWindow.closed) {
+    newPopUpwindow(button, url);
+  } else {
+    popUpWindow.focus();
+  }
+}
+
+function newPopUpwindow(button, path) {
+  // Specify minimum height and width
+  var minWidth = 800; // minimum width
+  var minHeight = 600; // minimum height
+
+  $('body').addClass('popup-open');
+  //$('body').append('<div class="popup-overlay"></div>');
+
+  // Open new page with specified dimensions
+  popUpWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+
+  // Ensure only one event listener is attached
+  window.removeEventListener('message', handlePopupMessage);
+  window.addEventListener('message', handlePopupMessage);
+}
+
+function handlePopupMessage(event) {
+  if (event.data === 'popupClosed' || event.data === 'submit') {
+    if (popUpWindow) {
+      popUpWindow.close();
+      console.log('Popup closed');
+      $('body').removeClass('popup-open');
+    }
 
   
-  function newPopUpwindow(button, path) {
-    // Specify minimum height and width
-    var minWidth = 800; // minimum width
-    var minHeight = 600; // minimum height
-
-    // Open new page with specified dimensions
-    popUpWindow = window.open( path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
- 
-    // Listen for messages from the popup window
-    window.addEventListener('message', function (event) {
-      if (event.data === 'popupClosed'|| event.data === 'submit') {
-        // Close the popup window
-
-        // Reload parent page when popup window is closed
-        location.reload();
-      }
-    });
+   //$('.popup-overlay').remove();
+    location.reload();
   }
+}
+
+  
 
   document.querySelector('input[type="file"]').addEventListener('change', function(event) {
       var imgPreview = document.getElementById('iFrame');
