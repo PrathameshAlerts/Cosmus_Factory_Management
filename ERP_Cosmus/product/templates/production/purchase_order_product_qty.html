@@ -1,0 +1,10 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
+{{formset.management_form}}
+{% for form in formset %}
+{{form}}
+{% endfor %}
+
+
+{% endblock %}

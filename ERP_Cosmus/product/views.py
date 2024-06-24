@@ -41,7 +41,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_mater
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet)
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset)
 
 
 logger = logging.getLogger('product_views')
@@ -2848,10 +2848,13 @@ def purchaseorderrawcreateupdate(request,pk= None):
                                                                           "products":products,'product_queryset':product_queryset})
 
 
+def purchaseorderproductqty(request,p_o_pk):
 
+    purchase_voucher_instance = get_object_or_404(purchase_order,pk=p_o_pk)
 
+    formset = purchase_order_product_qty_formset(request.POST or None,instance=purchase_voucher_instance)
 
-
+    return render(request,'production/purchase_order_product_qty.html',{'formset':formset})
 
 
 def purchaseorderrawlist(request):
