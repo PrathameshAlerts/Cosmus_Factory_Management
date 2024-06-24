@@ -41,7 +41,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_mater
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet)
+                                Product2ItemFormset,Product2CommonItemFormSet, purchase_order_product_qty_formsets)
 
 
 logger = logging.getLogger('product_views')
@@ -2847,6 +2847,27 @@ def purchaseorderrawcreateupdate(request,pk= None):
     return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
                                                                           'ledger_party_names':ledger_party_names,
                                                                           "products":products,'product_queryset':product_queryset})
+
+def purchaseorderproductqtypopup(request):
+    pass
+
+
+
+
+def purchaseorderproductqtypopupajax(request):
+    form_pk = int(request.GET.get('form_pk',''))
+    product_pk = int(request.GET.get('product_pk',''))
+    
+    if form_pk != '' and product_pk != '':
+        popup_url = reverse('purchase-order-product-qty-ajax-update', args=[form_pk,product_pk])
+
+    elif form_pk == '' and product_pk != '':
+        popup_url = reverse('purchase-order-product-qty-ajax-create', args=[product_pk])
+
+    else:
+        popup_url = None
+    print(popup_url)
+    return JsonResponse({'popup_url':popup_url})
 
 
 
