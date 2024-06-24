@@ -43,7 +43,7 @@
               {% endfor %}
           {% endif %}
       </select>
-      <button class="fab_btn" type="button"  data-popup-url="{% url 'fabric-popup' %}" onclick="openFabPopup()">+</button>
+      <button class="fab_btn" type="button"  onclick="openFabPopup()">+</button>
   </div>
 
     <div class=" d-flex my-3">
@@ -67,7 +67,7 @@
         {% endfor %}
         {% endif %}
       </select>
-      <button class="col_btn popup-trigger"  data-popup-url="{% url 'color-popup' %}" onclick="opencolorPopup()">+</button>
+      <button class="col_btn popup-trigger" onclick="opencolorPopup()">+</button>
     </div>
     {% if form.instance.id %}
     <div class="d-flex mb-3">
@@ -339,7 +339,6 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
     }
     enterValue = false;
     
-   
     if(nameValue.length >= 1){
  
       $.ajax({
@@ -353,22 +352,19 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
               function escapeRegExp(string) {
                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                }
-
                 var searchQuery = nameValue.toLowerCase();
                 var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                 var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
 
                 var filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
        
-
                 suggestions.empty();
                 $.each(filteredOptions, function(index, [key, value]) {
                   var highlightedText = value;
         
                 if (searchQuery) {
                     highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
-                }
-                  
+                } 
                   suggestions.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
                 
                 });
@@ -386,15 +382,13 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
     }else{
         suggestions.empty();
     }
-      
-     
+    
         suggestions.on('click', '.itemName-div-suggestion', function() {
        
        $(this).closest('.custom-dropdown-container').find('.product2Select').val($(this).text().trim());
        $(this).addClass('selected').siblings().removeClass('selected');
 
        var itemValue = $(this).attr('data-key');
-      
        $.ajax({
             url: '/itemcreatecloneajax/',
             method: 'GET',
@@ -511,7 +505,7 @@ $(document).on('click', '.product2Select',function(){
             index = 0;
           }
       
-          }
+        }
           if(e.key === 'ArrowUp'){
             e.preventDefault(); 
             if (index != 0 && indexbool == true)
@@ -604,23 +598,16 @@ $(document).on('click', '.product2Select',function(){
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
             }
-        })
-           
+        }); 
           }
-
           index = 0;
           indexbool = false;
           enterValue = true; // Set the flag to true when Enter is pressed
           commomSugenstionHide.css('display', 'none'); // Hide the dropdown
           commomSugenstionHide.empty();
-
-          }    
-
+        }    
     })
-
 })
-
-
 </script>
 
 <script>
@@ -663,7 +650,7 @@ function receiveData(openingValue){
 
     $(document).on ('click','button.itemQty',function(button){
       var itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
-       itemValue = itemId.split('-')[1];
+      itemValue = itemId.split('-')[1];
       var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
       var primary_key_id = primaryKey.value;
      
@@ -672,7 +659,11 @@ function receiveData(openingValue){
            
         var minWidth = 800;
         var minHeight = 600;
-      $.ajax({
+
+        $('body').addClass('popup-open');
+        $('body').append('<div class="popup-overlay"></div>');
+
+        $.ajax({
         url: '{% url "opening-godown-qty-ajax" %}',
         type: 'GET',
         data:{
@@ -696,6 +687,16 @@ function receiveData(openingValue){
           }else{
             newPopup = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }
+
+          window.addEventListener('click', function(event) {
+              handleOutsideClick(event);
+          });
+
+          window.addEventListener('message', function(event) {
+            if (event.data.message === 'close') {
+              newPopup.close();
+            }
+          });
         },
         error: function (xhr, errmsg, err) {
                console.log('Error getting popup URL');
@@ -794,17 +795,6 @@ function handlePopupMessage(event) {
     }
   }
 }
-
-// // Attach event listeners to all elements with the class 'popup-trigger'
-// document.querySelector('body').addEventListener('click', function() {
-
-//     var button = 
-//     console.log(button);
-//     var popupUrl = event.target.getAttribute('data-popup-url');
-//     openPopup(popupUrl);
-
-// });
-
   document.querySelector('input[type="file"]').addEventListener('change', function(event) {
       var imgPreview = document.getElementById('iFrame');
       var file = event.target.files[0];
