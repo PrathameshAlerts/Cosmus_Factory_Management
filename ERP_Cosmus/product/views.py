@@ -2817,8 +2817,12 @@ def viewproduct2items_configs(request,product_sku):
 
 def purchaseorderrawcreateupdate(request,pk= None):
     print(request.POST)
-
     product_queryset = Product.objects.all()
+
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        pass
+
+
 
     if pk:
         instance = get_object_or_404(purchase_order, pk = pk)
@@ -2853,11 +2857,10 @@ def purchaseorderproductqtypopup(request):
 
 
 
-
 def purchaseorderproductqtypopupajax(request):
     form_pk = int(request.GET.get('form_pk',''))
     product_pk = int(request.GET.get('product_pk',''))
-    
+
     if form_pk != '' and product_pk != '':
         popup_url = reverse('purchase-order-product-qty-ajax-update', args=[form_pk,product_pk])
 
@@ -2866,7 +2869,7 @@ def purchaseorderproductqtypopupajax(request):
 
     else:
         popup_url = None
-    print(popup_url)
+    
     return JsonResponse({'popup_url':popup_url})
 
 
