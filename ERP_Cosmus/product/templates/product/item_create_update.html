@@ -689,8 +689,8 @@ function receiveData(openingValue){
           }
 
           window.addEventListener('click', function(event) {
-    handleOutsideClick(event);
-  });
+              handleOutsideClick(event);
+          });
 
           window.addEventListener('message', function(event) {
             if (event.data.message === 'close') {
