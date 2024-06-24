@@ -2836,8 +2836,9 @@ def purchaseorderrawcreateupdate(request,pk= None):
 
         if form.is_valid():
             
-            form.save()
-            return redirect('purchase-order-raw-list')
+            form_instance = form.save()
+
+            return redirect(reverse('purchase-order-product-qty', args=[form_instance.id]))
         else:
             return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
                                                                           'ledger_party_names':ledger_party_names,
