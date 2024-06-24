@@ -688,15 +688,14 @@ function receiveData(openingValue){
             newPopup = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }
 
+          window.addEventListener('message', handlePopupMessage);
+
+          // Listen for messages from the popup window
           window.addEventListener('click', function(event) {
-              handleOutsideClick(event);
+          handleOutsideClick(event);
           });
 
-          window.addEventListener('message', function(event) {
-            if (event.data.message === 'close') {
-              newPopup.close();
-            }
-          });
+         
         },
         error: function (xhr, errmsg, err) {
                console.log('Error getting popup URL');
@@ -739,10 +738,9 @@ function openFabricFinishPopup(button) {
 
 function openPopup(button, url) {
   if (popUpWindow === null || popUpWindow.closed) {
-    console.log('Popup is already open. Focusing on existing popup.');
     newPopUpwindow(button, url);
   } else {
-    console.log('Popup is already open. Focusing on existing popup.');
+  
     popUpWindow.focus();
   }
 }
