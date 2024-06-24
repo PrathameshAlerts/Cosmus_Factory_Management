@@ -92,7 +92,7 @@
 </form>
 
 <script>
-
+ 
     document.addEventListener('DOMContentLoaded', function () {
         const addButtonRow = document.getElementById('addRow');
         const tableBody = document.querySelector('#tableItem tbody');
@@ -170,6 +170,7 @@
 
     });
 
+  
     var primaryKey = document.getElementById('id_primary_key').value;
 
     if (primaryKey == '' || primaryKey == "None") {
@@ -200,6 +201,14 @@
         })
     }
 
+
+   // Handle the case when the window is closed without form submission
+   window.addEventListener('beforeunload',  function(event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
+  });
 </script>
 
 {% endblock %}

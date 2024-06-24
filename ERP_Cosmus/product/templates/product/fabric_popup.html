@@ -16,6 +16,7 @@
   </div>
 
   <script>
+    let formSubmitted = false;  // Flag to track whether form is submitted
     document.getElementById('fabricForm').addEventListener('submit', async function(event) {
         event.preventDefault();  // Prevent the default form submission
     
@@ -39,6 +40,8 @@
            window.opener.postMessage(data, '*');
 
             window.close();
+
+            formSubmitted = true;  // Set flag to true after successful submission
         } else {
             console.error('Failed to update Fabric.');
         }
@@ -47,6 +50,14 @@
     }
       
     });
+    
+   // Handle the case when the window is closed without form submission
+  window.addEventListener('beforeunload', function(event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
+  });
     </script>
 
 {% endblock body %}

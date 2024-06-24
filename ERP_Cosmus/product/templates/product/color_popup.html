@@ -19,6 +19,8 @@
 
 
 <script>
+let formSubmitted = false;  // Flag to track whether form is submitted
+
   document.getElementById('colorForm').addEventListener('submit', async function(event) {
     event.preventDefault();  // Prevent the default form submission
     
@@ -42,6 +44,7 @@
         window.opener.postMessage(data, '*');
 
           window.close();  // Now you can access the JSON data
+          formSubmitted = true;  // Set flag to true after successful submission
       }else{
 
         console.error('Failed to create color.');
@@ -49,6 +52,14 @@
       
     } catch (error) {
       console.error('Error:', error);
+    }
+  });
+
+   // Handle the case when the window is closed without form submission
+  window.addEventListener('beforeunload',  function(event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
     }
   });
 </script>
