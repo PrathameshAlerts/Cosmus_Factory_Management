@@ -126,11 +126,10 @@
               url: "{% url 'purchase-order-product-qty-ajax-popup' %}",
               data: {
                 'product_pk': product_pk,
-                'form_pk': form_pk
               },
               success: function(response) {
          
-                console.log('Response:', response);
+                console.log('Response:', response.products);
                 var urls = JSON.stringify(response.popup_url);
                 var newUrl = decodeURIComponent(urls);
                 var newurlName =JSON.parse(newUrl);

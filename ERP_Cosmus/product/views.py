@@ -28,7 +28,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
+                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table)
 
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_material_stock_trasfer_items_formset,
@@ -41,7 +41,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_mater
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet, purchase_order_product_qty_formsets)
+                                Product2ItemFormset,Product2CommonItemFormSet)
 
 
 logger = logging.getLogger('product_views')
@@ -2857,20 +2857,15 @@ def purchaseorderproductqtypopup(request):
 
 
 
-def purchaseorderproductqtypopupajax(request):
-    form_pk = int(request.GET.get('form_pk',''))
-    product_pk = int(request.GET.get('product_pk',''))
+def purchaseorderproductqtypopupajax(request):  
+    product_pk = request.GET.get('product_pk','')
 
-    if form_pk != '' and product_pk != '':
-        popup_url = reverse('purchase-order-product-qty-ajax-update', args=[form_pk,product_pk])
+    if product_pk != '':
+        products  = PProduct_Creation.objects.filter(Product=product_pk)
+        products_all = [product.PProduct_SKU for product in products]
 
-    elif form_pk == '' and product_pk != '':
-        popup_url = reverse('purchase-order-product-qty-ajax-create', args=[product_pk])
-
-    else:
-        popup_url = None
-    
-    return JsonResponse({'popup_url':popup_url})
+        print(products_all)
+    return JsonResponse({'products':products_all})
 
 
 
