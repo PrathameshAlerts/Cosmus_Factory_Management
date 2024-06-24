@@ -1,7 +1,7 @@
 
 from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
-from .models import Ledger, RawStockTrasferRecords, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, opening_shade_godown_quantity, product_2_item_through_table, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
+from .models import Ledger, PProduct_Creation, Product, RawStockTrasferRecords, account_credit_debit_master_table, item_purchase_voucher_master, item_godown_quantity_through_table,Item_Creation,item_color_shade, opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items
 import logging
 
 logger = logging.getLogger('product_signals')
@@ -286,6 +286,23 @@ def created_updated_raw_stock_trasfer(sender, instance, created, **kwargs):
         
 
 
+
+
+@receiver(post_save, sender=purchase_order)
+def created_updated_purchase_order_product_qty(sender, instance, created, **kwargs):
+    purchase_order_instance = instance
+    product_id = instance.product_reference_number
+
+    if created:
+        products = Product.objects.get(Product_Refrence_ID=product_id.Product_Refrence_ID)
+        
+        for product in products.productdetails.all():
+            purchase_order_to_product.objects.create(purchase_order_id=purchase_order_instance,product_id=product,quantity=0)
+
+    if not created:
+        products = PProduct_Creation.objects.filter(Product = product_id)
+        for product in products:
+            obj, created = purchase_order_to_product.objects.get_or_create(purchase_order_id=purchase_order_instance,product_id=product)
 
 
 
