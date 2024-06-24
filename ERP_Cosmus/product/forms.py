@@ -260,7 +260,7 @@ class purchase_order_form(forms.ModelForm):
         
 
 
-purchase_order_product_qty_formsets = modelformset_factory(purchase_order_to_product, fields=['purchase_order_id','product_id','quantity'])
+purchase_order_product_qty_formsets = inlineformset_factory(purchase_order,purchase_order_to_product, fields=['product_id', 'quantity'])
 
 
 

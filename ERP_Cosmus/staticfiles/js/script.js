@@ -10,22 +10,30 @@ $(document).ready(function(){
       $(this).find('.dropdown').toggleClass('rotate');
   });
 
-  // jQuery for expand and collapse the sidebar
-  $('.menu-btn').click(function(){
-      $('.side-bar').addClass('active');
-      $('.menu-btn').css("visibility", "hidden");
-  });
-
-  $('.close-btn').click(function(){
-      $('.side-bar').removeClass('active');
-      $('.menu-btn').css("visibility", "visible");
-  });
-
   // Event listener for submenu item click
   $('.sub-item').click(function(){
+  //  console.log('Base URL: ' + document.baseURI);
+ 
+    // $('.sub-item').removeClass('active');
+    // $(this).addClass('active');
+
       // Add any additional functionality you need when a submenu item is clicked
       console.log('Submenu item clicked');
   });
+
+
+  $('.dropdown-click').click(function(){
+    console.log('Dropdown clicked');
+    $('.dropdown-menu-right').not($(this).next('.dropdown-menu-right')).slideUp();
+    $('.dropdown').not($(this).find('.dropdown')).removeClass('rotate');
+  })
+
+  $('.dropdown-toggle-end').click(function(){
+    console.log('Dropdown clicked');
+    $('.dropdown-menu-end').show();
+    
+
+  })
 });
 
   //search in using sort option
