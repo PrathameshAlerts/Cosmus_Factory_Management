@@ -16,6 +16,7 @@
 </div>
 
 <script>
+    let formSubmitted = false;  // Flag to track whether form is submitted
     document.getElementById('packingForm').addEventListener('submit', async function (event) {
         event.preventDefault();  // Prevent the default form submission
 
@@ -37,6 +38,8 @@
                 const data = await response.json();  // Await the response.json() call
                window.opener.postMessage(data, '*');
                 window.close();
+
+                formSubmitted = true;  // Set flag to true after successful submission
             } else {
                 console.error('Failed to update Packing.');
             }
@@ -45,6 +48,14 @@
         }
 
     });
+    
+   // Handle the case when the window is closed without form submission
+  window.addEventListener('beforeunload', async function(event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
+  });
 </script>
 
 {% endblock body %}

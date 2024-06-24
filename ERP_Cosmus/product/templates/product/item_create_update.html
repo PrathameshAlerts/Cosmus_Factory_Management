@@ -43,7 +43,7 @@
               {% endfor %}
           {% endif %}
       </select>
-      <button class="fab_btn" onclick="openFabPopup()">+</button>
+      <button class="fab_btn" type="button"  data-popup-url="{% url 'fabric-popup' %}" onclick="openFabPopup()">+</button>
   </div>
 
     <div class=" d-flex my-3">
@@ -67,7 +67,7 @@
         {% endfor %}
         {% endif %}
       </select>
-      <button class="col_btn"  onclick="opencolorPopup()">+</button>
+      <button class="col_btn popup-trigger"  data-popup-url="{% url 'color-popup' %}" onclick="opencolorPopup()">+</button>
     </div>
     {% if form.instance.id %}
     <div class="d-flex mb-3">
@@ -280,7 +280,6 @@
 <script>
  window.addEventListener('message', function(event) {
     const data = event.data;
-
     if (data.gst_updated) {
         populateDropdown(data.gst_updated, '#id_Item_Creation_GST', 'gst_percentage', 'Select GST');
     }
@@ -751,31 +750,35 @@ function newPopUpwindow(button, path) {
   var minHeight = 600; // minimum height
 
   $('body').addClass('popup-open');
-  //$('body').append('<div class="popup-overlay"></div>');
+  $('body').append('<div class="popup-overlay"></div>');
 
   // Open new page with specified dimensions
   popUpWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    // Ensure only one event listener is attached
+    //window.removeEventListener('message', handlePopupMessage);
+    window.addEventListener('message', handlePopupMessage);
 
-  // Ensure only one event listener is attached
-  window.removeEventListener('message', handlePopupMessage);
-  window.addEventListener('message', handlePopupMessage);
 }
 
 function handlePopupMessage(event) {
-  if (event.data === 'popupClosed' || event.data === 'submit') {
-    if (popUpWindow) {
-      popUpWindow.close();
-      console.log('Popup closed');
-      $('body').removeClass('popup-open');
+    if (event.data) {
+        if (popUpWindow) {
+          $('body').removeClass('popup-open');
+          $('.popup-overlay').remove();
+            popUpWindow.close();
+        }
     }
-
-  
-   //$('.popup-overlay').remove();
-    location.reload();
-  }
 }
 
-  
+// // Attach event listeners to all elements with the class 'popup-trigger'
+// document.querySelector('body').addEventListener('click', function() {
+
+//     var button = 
+//     console.log(button);
+//     var popupUrl = event.target.getAttribute('data-popup-url');
+//     openPopup(popupUrl);
+
+// });
 
   document.querySelector('input[type="file"]').addEventListener('change', function(event) {
       var imgPreview = document.getElementById('iFrame');
