@@ -260,9 +260,6 @@ class purchase_order_form(forms.ModelForm):
         
 
 
-purchase_order_product_qty_formsets = inlineformset_factory(purchase_order,purchase_order_to_product, fields=['product_id', 'quantity'])
-
-
 
 class raw_material_stock_trasfer_master_form(forms.ModelForm):
         class Meta:

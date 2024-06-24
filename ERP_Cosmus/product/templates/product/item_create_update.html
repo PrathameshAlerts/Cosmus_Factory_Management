@@ -738,8 +738,10 @@ function openFabricFinishPopup(button) {
 
 function openPopup(button, url) {
   if (popUpWindow === null || popUpWindow.closed) {
+    console.log('Popup is already open. Focusing on existing popup.');
     newPopUpwindow(button, url);
   } else {
+    console.log('Popup is already open. Focusing on existing popup.');
     popUpWindow.focus();
   }
 }
@@ -755,19 +757,42 @@ function newPopUpwindow(button, path) {
   // Open new page with specified dimensions
   popUpWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
     // Ensure only one event listener is attached
-    //window.removeEventListener('message', handlePopupMessage);
+  
     window.addEventListener('message', handlePopupMessage);
 
+    // Listen for messages from the popup window
+    window.addEventListener('click', function(event) {
+    handleOutsideClick(event);
+  });
+
+}
+function handleOutsideClick(event) {
+
+    var popUpRect = document.querySelector('body').getBoundingClientRect();
+    var clickX = event.clientX;
+    var clickY = event.clientY;
+   
+    // Check if the click is outside the popup window
+    if (
+      clickX > popUpRect.left || clickX <= popUpRect.right ||
+      clickY > popUpRect.top || clickY <= popUpRect.bottom
+    ) {
+     
+      popUpWindow.focus();
+      
+      
+    }
+  
 }
 
 function handlePopupMessage(event) {
-    if (event.data) {
-        if (popUpWindow) {
-          $('body').removeClass('popup-open');
-          $('.popup-overlay').remove();
-            popUpWindow.close();
-        }
+  if (event.data) {
+    if (popUpWindow) {
+      $('body').removeClass('popup-open');
+      $('.popup-overlay').remove();
+      popUpWindow.close();
     }
+  }
 }
 
 // // Attach event listeners to all elements with the class 'popup-trigger'

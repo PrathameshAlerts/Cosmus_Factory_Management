@@ -88,7 +88,7 @@
           </div>
           <div class="modal-body">
             <p>Product PK: <span id="productPkDisplay"></span></p>
-            <p>Form PK: <span id="formPkDisplay"></span></p>
+          
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -114,7 +114,6 @@
             var form_pk = $('#id_productRow').val();
 
             $('#productPkDisplay').text(product_pk);
-            $('#formPkDisplay').text(form_pk);
             var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
                          keyboard: false
                     });
@@ -126,11 +125,15 @@
               url: "{% url 'purchase-order-product-qty-ajax-popup' %}",
               data: {
                 'product_pk': product_pk,
-      
               },
               success: function(response) {
          
-                console.log('Response:', response);
+                console.log('Response:', response.products);
+                var form = new formData();
+               var table = document.createElement('table');
+               var tableBody = document.createElement('tbody');
+               table.appendChild(tableBody);
+               table.setAttribute('class', 'table table-striped table-hover table-bordered mt-3');
                 var urls = JSON.stringify(response.popup_url);
                 var newUrl = decodeURIComponent(urls);
                 var newurlName =JSON.parse(newUrl);
