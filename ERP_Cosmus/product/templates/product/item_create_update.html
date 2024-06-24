@@ -670,8 +670,9 @@ function receiveData(openingValue){
      
     
       if (newPopup === null || newPopup.closed) { // Check if no popup is open or the existing one is closed
-                    var minWidth = 800;
-                    var minHeight = 600;
+           
+        var minWidth = 800;
+        var minHeight = 600;
       $.ajax({
         url: '{% url "opening-godown-qty-ajax" %}',
         type: 'GET',
@@ -692,9 +693,9 @@ function receiveData(openingValue){
 
        
            
-            popupWindow = window.open(fullUrl , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+            newPopup = window.open(fullUrl , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }else{
-          popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+            newPopup = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }
         },
         error: function (xhr, errmsg, err) {

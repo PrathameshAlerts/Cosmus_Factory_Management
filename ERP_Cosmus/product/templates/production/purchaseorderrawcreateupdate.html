@@ -7,6 +7,7 @@
     <h3 class="my-4">Create new Purchase Order</h3>
 
     {% csrf_token %}
+    <input type="hidden" name="productRowCreate" value="{{form.instance.id}}" id="id_productRow">
     <div class="row">
       <div class="col-lg-4">
         <div class="d-flex mb-3">
@@ -57,9 +58,9 @@
         </div>   
         <div class="d-flex mb-3">
           <label for="id_product_select" class="item-form">Product Name:</label>
-          <select name="product_select" id="id_product_select" class="item-select">
+          <select name="product_select" id="id_product_select" class="item-select" >
             {% for product in product_queryset %}
-            <option value="{{product.id}}">{{product.Product_Name}}</option>
+            <option  value="{{product.id}}">{{product.Product_Name}}</option>
             {% endfor %}
           </select>
         </div>
@@ -70,13 +71,32 @@
       </div>
     </div>
     
-    
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+ 
+    </button> -->
     
 
-    <input type="submit" class="create-btn mt-4 mx-3"  value="submit">
+    <input  type="submit" class="create-btn mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal" value="submit" id="id_submit">
     </form>
 
-
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Product PK: <span id="productPkDisplay"></span></p>
+            <p>Form PK: <span id="formPkDisplay"></span></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -85,28 +105,45 @@
              var date= dateInput.value;
              dateInput.min = today;
         });
-
+        document.body.appendChild(document.getElementById('exampleModal'));
+  
         $(document).ready(function(){
+  
           $("#id_product_select").change(function(){
-            var product_id = $(this).val();
-            console.log(product_id);
-            $.ajax({
+            var product_pk = $(this).val();
+            var form_pk = $('#id_productRow').val();
+
+            $('#productPkDisplay').text(product_pk);
+            $('#formPkDisplay').text(form_pk);
+            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+                         keyboard: false
+                    });
+             myModal.show();
+
+         
+              $.ajax({
               type: "GET",
-              url: "",
+              url: "{% url 'purchase-order-product-qty-ajax-popup' %}",
               data: {
-                'product_id': product_id
+                'product_pk': product_pk,
+                'form_pk': form_pk
               },
-              success: function(data) {
-                $("#div_id_product_form").html(data);
+              success: function(response) {
+         
+                console.log('Response:', response);
+                var urls = JSON.stringify(response.popup_url);
+                var newUrl = decodeURIComponent(urls);
+                var newurlName =JSON.parse(newUrl);
+            
+      
               },
-              error: function(data) {
-                console.log('Error:', data);
+              error: function(response) {
+                console.log('Error:', response);
               }
-            }).then(function(data) {
-              $("#div_id_product_form").html(data);
-            }).catch(function(error) {
-              console.log(error);
-            });
+            })
+            
+            
+            
           });
         });
     </script>
