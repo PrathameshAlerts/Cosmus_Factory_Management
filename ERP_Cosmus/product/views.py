@@ -2836,7 +2836,7 @@ def purchaseorderrawcreateupdate(request,pk= None):
         form = purchase_order_form(request.POST, instance=instance)
 
         if form.is_valid():
-            print(form.cleaned_data['target_date'])
+            
             form.save()
             return redirect('purchase-order-raw-list')
         else:
