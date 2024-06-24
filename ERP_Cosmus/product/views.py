@@ -2819,11 +2819,6 @@ def purchaseorderrawcreateupdate(request,pk= None):
     print(request.POST)
     product_queryset = Product.objects.all()
 
-    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        pass
-
-
-
     if pk:
         instance = get_object_or_404(purchase_order, pk = pk)
 
@@ -2852,20 +2847,10 @@ def purchaseorderrawcreateupdate(request,pk= None):
                                                                           'ledger_party_names':ledger_party_names,
                                                                           "products":products,'product_queryset':product_queryset})
 
-def purchaseorderproductqtypopup(request):
-    pass
 
 
 
-def purchaseorderproductqtypopupajax(request):  
-    product_pk = request.GET.get('product_pk','')
 
-    if product_pk != '':
-        products  = PProduct_Creation.objects.filter(Product=product_pk)
-        products_all = [product.PProduct_SKU for product in products]
-
-        print(products_all)
-    return JsonResponse({'products':products_all})
 
 
 

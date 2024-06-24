@@ -105,46 +105,8 @@
              var date= dateInput.value;
              dateInput.min = today;
         });
-        document.body.appendChild(document.getElementById('exampleModal'));
-  
-        $(document).ready(function(){
-  
-          $("#id_product_select").change(function(){
-            var product_pk = $(this).val();
-            var form_pk = $('#id_productRow').val();
-
-            $('#productPkDisplay').text(product_pk);
-            $('#formPkDisplay').text(form_pk);
-            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-                         keyboard: false
-                    });
-             myModal.show();
-
-         
-              $.ajax({
-              type: "GET",
-              url: "{% url 'purchase-order-product-qty-ajax-popup' %}",
-              data: {
-                'product_pk': product_pk,
-              },
-              success: function(response) {
-         
-                console.log('Response:', response.products);
-                var urls = JSON.stringify(response.popup_url);
-                var newUrl = decodeURIComponent(urls);
-                var newurlName =JSON.parse(newUrl);
-            
+        
       
-              },
-              error: function(response) {
-                console.log('Error:', response);
-              }
-            })
-            
-            
-            
-          });
-        });
     </script>
 
 
