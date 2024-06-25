@@ -157,7 +157,6 @@ urlpatterns = [
     path('purchaseorderrawlist/',views.purchaseorderrawlist, name = 'purchase-order-raw-list'),
     path('purchaseorderrawdelete/<int:pk>',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
 
-    # path('purchaseorderproductqty/<int:p_o_pk>/<int:t_qty>',views.purchaseorderproductqty, name = 'purchase-order-product-qty'),
 
     #reports
     # path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),

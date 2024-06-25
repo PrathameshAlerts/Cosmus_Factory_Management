@@ -2812,13 +2812,11 @@ def viewproduct2items_configs(request, product_sku):
 
     except product_2_item_through_table.DoesNotExist:
         return render(request, 'production/product2itemsconfigview.html', {
-            'error_message': f'No items found for product SKU: {product_sku}'
-        })
+            'error_message': f'No items found for product SKU: {product_sku}'})
 
     except DatabaseError as e:
         # Handle database errors
         return HttpResponseServerError(f'A database error occurred: {e}')
-
 
     except Exception as e:
         # Handle any other unexpected errors
@@ -2836,12 +2834,10 @@ def purchaseorderrawcreateupdate(request,pk= None):
         if pk:
             instance = get_object_or_404(purchase_order,pk=pk)
             model_name = instance.product_reference_number.Model_Name
-        
         else:
             instance = None
             model_name = None
         
-
         formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
         form = purchase_order_form(instance=instance)
 
@@ -2849,13 +2845,11 @@ def purchaseorderrawcreateupdate(request,pk= None):
         logger.error(f'An Exception Occoured {e}')
 
     if request.method == 'POST':
-        
         # both forms are submitted indivially depends on name of submitted button
         # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
             if form.is_valid():
-
                 try:
                     form.save()
                     logger.info(f'Purchase invoice created-updated-{form.instance.id}')
@@ -2877,6 +2871,7 @@ def purchaseorderrawcreateupdate(request,pk= None):
         if 'submit-form-2' in request.POST:
             # based on the created instance of form-1, form-2 update form is rendered using that instance
             formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+            
             if formset.is_valid():
                 try:                
                     formset.save()
@@ -2887,7 +2882,7 @@ def purchaseorderrawcreateupdate(request,pk= None):
 
                 except DatabaseError as db_err:
                     logger.error(f'Database error during form save: {db_err}')
-                    
+
                 except Exception as e:
                     logger.error(f'Unexpected error during form save: {e}')
             else:
@@ -2899,8 +2894,6 @@ def purchaseorderrawcreateupdate(request,pk= None):
     return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,'formset':formset,
                                                                           'ledger_party_names':ledger_party_names,
                                                                           "products":products,'model_name':model_name})
-
-
 
 
 
