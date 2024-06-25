@@ -2848,7 +2848,7 @@ def purchaseorderrawcreateupdate(request,pk= None):
 
 
 def purchaseorderproductqty(request,p_o_pk,t_qty):
-
+    print(request.POST)
     purchase_voucher_instance = get_object_or_404(purchase_order,pk=p_o_pk)
     total_quantity = t_qty
     formset = purchase_order_product_qty_formset(request.POST or None,instance=purchase_voucher_instance)

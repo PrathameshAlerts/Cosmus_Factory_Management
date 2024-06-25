@@ -1675,6 +1675,16 @@ styles.css */
     font-weight:700;
 }
 
+.productorder_btn {
+    background: linear-gradient(45deg, #4998d1, #2fc2dc);
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
   .print-button {
     padding: 0.5rem 1rem;
     background-color: #007bff;
