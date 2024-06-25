@@ -60,16 +60,16 @@ Model Name: {{model_name}}
       </div>
       </div>
       
-    <input type="submit" class="create-btn mt-4 mx-3" value="p_o_create_update_submit" id="id_p_o_create_update_submit">
+    <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-1" value="submit-form-1" id="id_submit_1">
     </form>
 
-    <form method="POST" action="{% url 'purchase-order-product-qty' 00 000 %}">
+    <form method="POST">
       {% csrf_token %}
       {{formset.management_form}}
       {% for form in formset %}
       {{form.as_p}}
       {% endfor %}
-      <input type="submit" class="create-btn mt-4 mx-3" value="p_o_qty_submit" id="id_p_o_qty_submit">
+      <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="submit-form-2" id="id_submit_2">
     </form>
 
 
