@@ -607,4 +607,13 @@ class purchase_order_to_product(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
+    process_quantity = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        if self.process_quantity > self.order_quantity:
+            raise ValueError("process_quantity cannot be greater than order_quantity")
+
+        super().save(*args, **kwargs)
+
+    
 
