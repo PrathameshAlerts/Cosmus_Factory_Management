@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q, Sum, ProtectedError
-from django.db import IntegrityError, transaction
+from django.db import DatabaseError, IntegrityError, transaction
 from django.utils.timezone import now
 import logging
 import urllib.parse
@@ -22,7 +22,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import modelformset_factory
-from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
@@ -2716,7 +2716,6 @@ def export_Product2Item_excel(request,product_ref_id):
                 product_configs.part_dimentions,
                 product_configs.dimention_total,
                 product_configs.part_pieces
-            
             ])
             
             row_count_to_unlock = 1
@@ -2726,7 +2725,6 @@ def export_Product2Item_excel(request,product_ref_id):
                 row_count_to_unlock = row_count_to_unlock + 1
 
             row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
-
 
             # Insert a blank row and grand total from parent model in sheet after every product data has inserted
             sheet1.append(['','','','','','','', grand_total_parent])
@@ -2738,12 +2736,9 @@ def export_Product2Item_excel(request,product_ref_id):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
-
-
         # for product_common_configs
         headers =  ['id','item name','part name', 'part dimention','dimention total','part pieces', 'g total']
         sheet2.append(headers)
-
 
         row_count_to_unlock_total_common = 1
         for product in products_in_i2p_common:
@@ -2767,7 +2762,6 @@ def export_Product2Item_excel(request,product_ref_id):
                 row_count_to_unlock = row_count_to_unlock + 1
             row_count_to_unlock_total_common =  row_count_to_unlock_total_common + row_count_to_unlock
 
-
             # Insert a blank row and grant total from parent in sheet after every product data has inserted
             sheet2.append(['','','','','','', grand_total_parent])
 
@@ -2777,8 +2771,6 @@ def export_Product2Item_excel(request,product_ref_id):
         for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=7):
             for cell in row:
                 cell.protection = Protection(locked = False)
-
-
 
         # Protect the entire worksheet
         sheet1.protection.sheet = True
@@ -2806,59 +2798,81 @@ def export_Product2Item_excel(request,product_ref_id):
 
 
 # view configs of single products
-def viewproduct2items_configs(request,product_sku):
-    product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
+def viewproduct2items_configs(request, product_sku):
+    try:
+        product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
+        product2item_instances_first = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku).first()
+        
+        context = {
+            'product2item_instances': product2item_instances,
+            'product2item_instances_first': product2item_instances_first
+        }
 
-    product2item_instances_first = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku).first()
+        return render(request, 'production/product2itemsconfigview.html', context)
 
-    return render(request,'production/product2itemsconfigview.html',{'product2item_instances' : product2item_instances,
-                                                                     "product2item_instances_first":product2item_instances_first})
+    except product_2_item_through_table.DoesNotExist:
+        return render(request, 'production/product2itemsconfigview.html', {
+            'error_message': f'No items found for product SKU: {product_sku}'
+        })
+
+    except DatabaseError as e:
+        # Handle database errors
+        return HttpResponseServerError(f'A database error occurred: {e}')
+
+    except Exception as e:
+        # Handle any other unexpected errors
+        return HttpResponseServerError(f'An unexpected error occurred: {e}')
     
 
 
 def purchaseorderrawcreateupdate(request,pk= None):
-    ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
-    products = Product.objects.all()
 
-    # on update instance is fetched by pk which is used for form and formset 
-    if pk:
-        instance = get_object_or_404(purchase_order,pk=pk)
-        model_name = instance.product_reference_number.Model_Name
+    try:
+        ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
+        products = Product.objects.all()
+
+        # on update instance is fetched by pk which is used for form and formset 
+        if pk:
+            instance = get_object_or_404(purchase_order,pk=pk)
+            model_name = instance.product_reference_number.Model_Name
         
-    else:
-        instance = None
-        model_name = None
+        else:
+            instance = None
+            model_name = None
         
 
-    formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
-    form = purchase_order_form(instance=instance)
+        formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+        form = purchase_order_form(instance=instance)
+
+    except Exception as e:
+        logger.error(f'An Exception Occoured {e}')
 
     if request.method == 'POST':
         
         # both forms are submitted indivially depends on name of submitted button
-        #  (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
+        # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
             if form.is_valid():
                 form.save()
+                logger.info(f'Purchase invoice created-updated-{form.instance.id}')
                 # on sbmission of form-1, form-2 is rendered with form-1 instance
                 return redirect(reverse('purchase-order-raw-update', args=[form.instance.id]))
+            
+            else:
+                logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
 
         if 'submit-form-2' in request.POST:
             # based on the created instance of form-1, form-2 update form is rendered using that instance
             formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
             if formset.is_valid():
                 formset.save()
+                logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
             else:
-                print(formset.errors)
+                logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {formset.errors}')
             
             return redirect('purchase-order-raw-list')
         
-    else:
-        print(form.errors)
-        return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,'formset':formset,
-                                                                          'ledger_party_names':ledger_party_names,
-                                                                          "products":products,'model_name':model_name})
 
     return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,'formset':formset,
                                                                           'ledger_party_names':ledger_party_names,
