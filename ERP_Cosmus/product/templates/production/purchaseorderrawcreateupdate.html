@@ -104,7 +104,7 @@
                       {% endfor %}
                   </tbody>
               </table>
-           
+           <button type="button" class="add_btn rounded-2" id="id_return">Back</button>
       <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="submit-form-2" id="id_submit_2">
     </form>
   </div>
@@ -126,14 +126,16 @@
              if(id != "None"){
               var main_form = document.getElementById('productForm-conatiner');
               var submitBtn = document.getElementById('id_submit_1');
+              var backbutton = document.getElementById('id_return');
+              console.log(backbutton)
               main_form.style.display = 'block';
               submitBtn.style.display = 'none';
              
-          
-             }else{
-              console.log("hello");
+              backbutton.addEventListener('click', function() {
+                main_form.style.display = 'none';
+                submitBtn.style.display = 'block';
+              });
              }
-            
         });
         
 
