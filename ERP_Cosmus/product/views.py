@@ -2817,17 +2817,21 @@ def viewproduct2items_configs(request,product_sku):
 
 
 def purchaseorderrawcreateupdate(request,pk= None):
-    print(request.POST)
-    product_queryset = Product.objects.all()
 
     if pk:
         instance = get_object_or_404(purchase_order,pk = pk)
+        model_name = instance.product_reference_number.Model_Name
+        
 
     else:
         instance = None
+        model_name = None
+
 
     ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
+
     products = Product.objects.all()
+
     form = purchase_order_form(instance=instance)
     
     if request.method == 'POST':
@@ -2840,11 +2844,11 @@ def purchaseorderrawcreateupdate(request,pk= None):
         else:
             return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
                                                                           'ledger_party_names':ledger_party_names,
-                                                                          "products":products,'product_queryset':product_queryset})
+                                                                          "products":products,'model_name':model_name})
 
     return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
                                                                           'ledger_party_names':ledger_party_names,
-                                                                          "products":products,'product_queryset':product_queryset})
+                                                                          "products":products,'model_name':model_name})
 
 
 def purchaseorderproductqty(request,p_o_pk,t_qty):
@@ -2888,6 +2892,21 @@ def purchaseorderrawdelete(request,pk):
         logger.error(f"Cannot delete {instance.purchase_order_number} - {e}.")
     return redirect('purchase-order-raw-list')
      
+
+
+
+def purchase_order_for_raw_material_create_update(request,pk,p_o_pk):
+
+    if p_o_pk:
+        purchase_voucher_instance = get_object_or_404(purchase_order,pk=p_o_pk)
+
+    if pk:
+        pass
+    
+    else:
+        pass
+
+
 
 #_________________________production-end______________________________
 
