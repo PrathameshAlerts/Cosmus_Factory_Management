@@ -612,7 +612,6 @@ class purchase_order_to_product(models.Model):
     def save(self, *args, **kwargs):
         if self.process_quantity > self.order_quantity:
             raise ValueError("process_quantity cannot be greater than order_quantity")
-
         super().save(*args, **kwargs)
 
     
