@@ -2868,10 +2868,10 @@ def purchaseorderrawcreateupdate(request,pk= None):
             else:
                 logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
 
+
         if 'submit-form-2' in request.POST:
             # based on the created instance of form-1, form-2 update form is rendered using that instance
             formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
-            
             if formset.is_valid():
                 try:                
                     formset.save()
