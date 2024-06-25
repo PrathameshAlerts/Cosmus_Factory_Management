@@ -2819,6 +2819,7 @@ def viewproduct2items_configs(request, product_sku):
         # Handle database errors
         return HttpResponseServerError(f'A database error occurred: {e}')
 
+
     except Exception as e:
         # Handle any other unexpected errors
         return HttpResponseServerError(f'An unexpected error occurred: {e}')
