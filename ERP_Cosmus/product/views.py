@@ -2817,34 +2817,36 @@ def viewproduct2items_configs(request,product_sku):
 
 
 def purchaseorderrawcreateupdate(request,pk= None):
-    print(request.POST)
+    ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
+    products = Product.objects.all()
+
+    # on update instance is fetched by pk which is used for form and formset 
     if pk:
-        instance = get_object_or_404(purchase_order,pk = pk)
+        instance = get_object_or_404(purchase_order,pk=pk)
         model_name = instance.product_reference_number.Model_Name
-        purchase_voucher_instance = get_object_or_404(purchase_order, pk=pk)
         
     else:
         instance = None
         model_name = None
-        purchase_voucher_instance = None
+        
 
-
-    ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
-    products = Product.objects.all()
-
-    formset = purchase_order_product_qty_formset(request.POST or None, instance=purchase_voucher_instance)
+    formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
     form = purchase_order_form(instance=instance)
-    if request.method == 'POST':
 
+    if request.method == 'POST':
+        
+        # both forms are submitted indivially depends on name of submitted button
+        #  (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
             if form.is_valid():
                 form.save()
+                # on sbmission of form-1, form-2 is rendered with form-1 instance
                 return redirect(reverse('purchase-order-raw-update', args=[form.instance.id]))
 
         if 'submit-form-2' in request.POST:
-            print(purchase_voucher_instance)
-            formset = purchase_order_product_qty_formset(request.POST or None, instance=purchase_voucher_instance)
+            # based on the created instance of form-1, form-2 update form is rendered using that instance
+            formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
             if formset.is_valid():
                 formset.save()
             else:
@@ -2861,23 +2863,6 @@ def purchaseorderrawcreateupdate(request,pk= None):
     return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,'formset':formset,
                                                                           'ledger_party_names':ledger_party_names,
                                                                           "products":products,'model_name':model_name})
-
-
-# def purchaseorderproductqty(request,p_o_pk,t_qty):
-
-#     purchase_voucher_instance = get_object_or_404(purchase_order,pk=p_o_pk)
-#     total_quantity = t_qty
-#     formset = purchase_order_product_qty_formset(request.POST or None, instance=purchase_voucher_instance)
-
-#     if request.method == 'POST':
-#         if formset.is_valid():
-#             formset.save()
-#             return redirect('purchase-order-raw-list')
-#         else:
-#             return render(request,'production/purchase_order_product_qty.html',{'formset':formset,'total_quantity':total_quantity})
-
-
-#     return render(request,'production/purchase_order_product_qty.html',{'formset':formset ,'total_quantity':total_quantity})
 
 
 
