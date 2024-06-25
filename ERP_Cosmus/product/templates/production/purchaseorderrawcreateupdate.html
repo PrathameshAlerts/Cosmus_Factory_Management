@@ -2,24 +2,22 @@
 {% load static %} 
 
 {% block body %}
-Model Name: {{model_name}}
+
 <div class="row">
-  <div class="col-lg-5" id="create_form">
-    <form action="" method="POST" onsubmit="return handleForm1Submit(event)">
-      <h3 class="my-4">Create new Purchase Order</h3>
-  
+  <div class="" id="create_form" >
+    <form action="" method="POST" style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
+      <h3 class="mb-3">Purchase Order</h3>
+     
       {% csrf_token %}
       <input type="hidden" name="productRowCreate" value="{{form.instance.id}}" id="id_productRow">
-     
-          <div class="d-flex mb-3">
-            <label for="id_purchase_order_number" class="item-form">Order Number:</label>
-            <input type="number" name="purchase_order_number" class="item-select" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number">
-        </div>
-        
-          
-          <div class="d-flex mb-3">
-            <label for="id_product_reference_number" class="item-form">Reference Number:</label>
-            <select name="product_reference_number" class="item-select" required id="id_product_reference_number">
+     <div class="d-flex mb-2">
+      <div class="d-flex mb-3">
+        <label for="id_purchase_order_number" class="">Order Number:</label>
+        <input type="number" name="purchase_order_number" class="purchase-amount ms-2 me-4" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number">
+    </div>
+    <div class="d-flex mb-3">
+            <label for="id_product_reference_number" class="">Reference Number:</label>
+            <select name="product_reference_number" class="item-select ms-2 me-4" required id="id_product_reference_number">
                 {% if form.instance.id %}
                 <option value="{{form.instance.product_reference_number.id}}">{{form.instance.product_reference_number.Product_Refrence_ID}}</option>
                 {% for product in products %}      
@@ -49,23 +47,32 @@ Model Name: {{model_name}}
                 {% endif %}
             </select>
           </div>
-          <div class="d-flex mb-3">
-            <label for="id_target_date" class="item-form">Target date:</label>
-            <input type="date" name="target_date" class="item-select" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date">  
-          </div> 
-          <div class="d-flex mb-3">
-            <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
-            <input type="number" name="number_of_pieces" class="item-select"  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces">
-          </div>   
+           
+     </div>
+          <div class="d-flex">
+            <div class="d-flex mb-3">
+              <label for="id_target_date" class="">Target date:</label>
+              <input type="date" name="target_date" class="item-select ms-2 me-4" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date">  
+            </div> 
+            <div class="d-flex mb-3">
+              <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
+              <input type="number" name="number_of_pieces" class="item-select"  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces">
+            </div>  
+          </div>
+          
+        
+          
+          
 
       <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-1" value="submit-form-1" id="id_submit_1">
       </form>
   </div>
-  <div class="col-lg-5" id="productForm-conatiner" style="display: none;" >
+  <div class="col-lg-5 mt-3" id="productForm-conatiner" style="display: none;" >
     <div class="d-flex mb-3">
-      <span>Total Qty : <input class="text-danger purchase-amount border-0 bg-transparent" id="id_total-quantity"value="{{total_quantity}}"> </span>
-      <span>Grand Total: <input type="number" class="purchase-amount border-0 bg-transparent" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01"></span>
-              
+      <lable>Model Name : <input class="text-danger purchase-amount border-0 bg-transparent ms-2 me-4" id="id_model_name"value="{{model_name | default_if_none:''}}"> </lable>
+      <lable>Total: <input type="number" class="purchase-amount border-0 bg-transparent text-danger" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
+        <input type="hidden" class="" id="id_total-quantity"value="{{form.instance.number_of_pieces}}"> 
+            
   </div>
     <form method="POST">
       {% csrf_token %}
@@ -97,6 +104,7 @@ Model Name: {{model_name}}
                       {% endfor %}
                   </tbody>
               </table>
+           
       <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="submit-form-2" id="id_submit_2">
     </form>
   </div>
@@ -116,22 +124,16 @@ Model Name: {{model_name}}
              var id = document.getElementById('id_productRow').value;
              console.log(id);
              if(id != "None"){
-              console.log("hello0000");
               var main_form = document.getElementById('productForm-conatiner');
-             
+              var submitBtn = document.getElementById('id_submit_1');
               main_form.style.display = 'block';
+              submitBtn.style.display = 'none';
              
           
              }else{
               console.log("hello");
              }
-             
             
-  //           function handleForm1Submit(event) {
-  //         event.preventDefault();
-  //            document.getElementById('productForm-container').style.display = 'block';
-  //   return false;
-  // }
         });
         
 
