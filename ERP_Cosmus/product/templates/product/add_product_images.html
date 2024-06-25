@@ -70,6 +70,7 @@
 </div>
 
 <script>
+   var formSubmitted = false;
   document.addEventListener("DOMContentLoaded", function() {
       const addFormButton = document.getElementById("addForm");
       const tableBody = document.querySelector("#myTable tbody");
@@ -134,6 +135,14 @@
     });
 }
 deleteFormRow();
+  });
+
+    // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload',  function(event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
   });
   </script>
  {% endblock body %}
