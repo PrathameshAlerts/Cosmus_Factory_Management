@@ -1,4 +1,5 @@
 from io import BytesIO
+from operator import is_
 from sys import exception
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
@@ -2820,25 +2821,22 @@ def purchaseorderrawcreateupdate(request,pk= None):
     product_queryset = Product.objects.all()
 
     if pk:
-        instance = get_object_or_404(purchase_order, pk = pk)
+        instance = get_object_or_404(purchase_order,pk = pk)
 
     else:
         instance = None
 
     ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
-    
     products = Product.objects.all()
-
     form = purchase_order_form(instance=instance)
     
     if request.method == 'POST':
+
         form = purchase_order_form(request.POST, instance=instance)
-
         if form.is_valid():
-            
             form_instance = form.save()
-
-            return redirect(reverse('purchase-order-product-qty', args=[form_instance.id]))
+            return redirect(reverse('purchase-order-product-qty', args=[form_instance.id, form_instance.number_of_pieces]))
+        
         else:
             return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,
                                                                           'ledger_party_names':ledger_party_names,
@@ -2849,13 +2847,24 @@ def purchaseorderrawcreateupdate(request,pk= None):
                                                                           "products":products,'product_queryset':product_queryset})
 
 
-def purchaseorderproductqty(request,p_o_pk):
+def purchaseorderproductqty(request,p_o_pk,t_qty):
 
     purchase_voucher_instance = get_object_or_404(purchase_order,pk=p_o_pk)
-
+    total_quantity = t_qty
     formset = purchase_order_product_qty_formset(request.POST or None,instance=purchase_voucher_instance)
 
-    return render(request,'production/purchase_order_product_qty.html',{'formset':formset})
+    if request.method == 'POST':
+        if formset.is_valid():
+            formset.save()
+            return redirect('purchase-order-raw-list')
+        else:
+            return render(request,'production/purchase_order_product_qty.html',{'formset':formset,'total_quantity':total_quantity})
+
+
+    return render(request,'production/purchase_order_product_qty.html',{'formset':formset ,'total_quantity':total_quantity})
+
+
+
 
 
 def purchaseorderrawlist(request):
