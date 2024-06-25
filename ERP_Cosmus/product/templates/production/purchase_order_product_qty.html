@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<h3>Total Qty :  {{total_quantity}}</h3>
+<h3>Total Qty : <span class="text-danger" id="id_total-quantity">{{total_quantity}}</span> </h3>
 
 <form method="POST">
     {% csrf_token %}
@@ -31,26 +31,68 @@
                     <td>
                         <input type="number" class="purchase-input " name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
                     </td>
-                    <!-- <td> <input type="checkbox" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE"></td> -->
                     <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;"   name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
                 </tr>
                 {% endfor %}
             </tbody>
-            <input type="submit" class="create-btn mt-4">
         </table>
-    </form>
+        <input type="number" class="purchase-amount" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
     </div>
 </div>
-
+<input type="submit" class="create-btn mt-4">
+</form>
 
 
     
 
-    <script>
-        var form = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
-        console.log(form)
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Function to update the total quantity and manage the input fields
+    function updateTotalQuantity() {
+        var totalQuantity = 0;
+        var formCount = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+        var totalAllowedQuantity = parseFloat(document.getElementById('id_total-quantity').textContent);
+        
+        // Calculate the total quantity from all form inputs
+        for (var i = 0; i < formCount; i++) {
+            var quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+            var quantityValue = parseFloat(quantityElement.value); // Convert string to number
+            if (!isNaN(quantityValue)) { // Check if the value is a valid number 
+                totalQuantity += quantityValue;
+            }
+        }
+        
+        // Update the grand total quantity field
+        document.getElementById('id_grand_quantity').value = totalQuantity;
 
-        //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
+        // If the total quantity exceeds the allowed quantity, disable the input fields
+        if (totalQuantity > totalAllowedQuantity) {
+            for (var i = 0; i < formCount; i++) {
+                var quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+                quantityElement.value = ''; // Clear the value
+                quantityElement.disabled = true; // Disable the input field
+            }
+        } else {
+            // Enable the input fields if the total quantity is within the allowed limit
+            for (var i = 0; i < formCount; i++) {
+                var quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+                quantityElement.disabled = false; // Enable the input field
+            }
+        }
+    }
+
+    // Attach event listeners to the quantity input fields
+    var formCount = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+    for (var i = 0; i < formCount; i++) {
+        var quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+        quantityElement.addEventListener('input', updateTotalQuantity); // Trigger update on input change
+    }
+
+    // Initial calculation on page load
+    updateTotalQuantity();
+});
+
+
     
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
