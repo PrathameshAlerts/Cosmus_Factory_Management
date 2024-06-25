@@ -2855,10 +2855,21 @@ def purchaseorderrawcreateupdate(request,pk= None):
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
             if form.is_valid():
-                form.save()
-                logger.info(f'Purchase invoice created-updated-{form.instance.id}')
-                # on sbmission of form-1, form-2 is rendered with form-1 instance
-                return redirect(reverse('purchase-order-raw-update', args=[form.instance.id]))
+
+                try:
+                    form.save()
+                    logger.info(f'Purchase invoice created-updated-{form.instance.id}')
+                    # on sbmission of form-1, form-2 is rendered with form-1 instance
+                    return redirect(reverse('purchase-order-raw-update', args=[form.instance.id]))
+                
+                except ValidationError as val_err:
+                    logger.error(f'Validation error: {val_err} - {formset.errors}')
+
+                except DatabaseError as db_err:
+                    logger.error(f'Database error during formset save: {db_err}')
+
+                except Exception as e:
+                    logger.error(f'Unexpected error during formset save: {e}')
             
             else:
                 logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
@@ -2867,8 +2878,18 @@ def purchaseorderrawcreateupdate(request,pk= None):
             # based on the created instance of form-1, form-2 update form is rendered using that instance
             formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
             if formset.is_valid():
-                formset.save()
-                logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
+                try:                
+                    formset.save()
+                    logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
+
+                except ValidationError as val_err:
+                    logger.error(f'Validation error: {val_err} - {form.errors}')
+
+                except DatabaseError as db_err:
+                    logger.error(f'Database error during form save: {db_err}')
+                    
+                except Exception as e:
+                    logger.error(f'Unexpected error during form save: {e}')
             else:
                 logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {formset.errors}')
             
