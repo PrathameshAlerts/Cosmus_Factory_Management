@@ -2821,7 +2821,7 @@ def purchaseorderrawcreateupdate(request,pk= None):
     if pk:
         instance = get_object_or_404(purchase_order,pk = pk)
         model_name = instance.product_reference_number.Model_Name
-        purchase_voucher_instance = get_object_or_404(purchase_order, pk = pk)
+        purchase_voucher_instance = get_object_or_404(purchase_order, pk=pk)
         
     else:
         instance = None
@@ -2839,21 +2839,22 @@ def purchaseorderrawcreateupdate(request,pk= None):
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
             if form.is_valid():
-                form_instance = form.save()
-                purchase_voucher_instance = get_object_or_404(purchase_order, pk = form_instance.id)
+                form.save()
+                return redirect(reverse('purchase-order-raw-update', args=[form.instance.id]))
 
-            if 'submit-form-2' in request.POST:
-                formset = purchase_order_product_qty_formset(request.POST or None, instance=purchase_voucher_instance)
-                if formset.is_valid():
-                    formset.save()
-                else:
-                    print(formset.errors)
+        if 'submit-form-2' in request.POST:
+            print(purchase_voucher_instance)
+            formset = purchase_order_product_qty_formset(request.POST or None, instance=purchase_voucher_instance)
+            if formset.is_valid():
+                formset.save()
+            else:
+                print(formset.errors)
             
-            return redirect(reverse('purchase-order-raw-update', args=[form_instance.id]))
-
-        else:
-            print(form.errors)
-            return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,'formset':formset,
+            return redirect('purchase-order-raw-list')
+        
+    else:
+        print(form.errors)
+        return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,'formset':formset,
                                                                           'ledger_party_names':ledger_party_names,
                                                                           "products":products,'model_name':model_name})
 
