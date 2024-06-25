@@ -583,7 +583,7 @@ class product_2_item_through_table(models.Model):
         unique_together = [['PProduct_pk','Item_pk']]
         # ordering = ['row_number']
     
-    
+
 class set_prod_item_part_name(models.Model):
     producttoitem = models.ForeignKey(product_2_item_through_table, on_delete=models.CASCADE, related_name='product_item_configs')
     part_name = models.CharField(max_length=100,blank=True, null= True)
@@ -606,5 +606,5 @@ class purchase_order(models.Model):
 class purchase_order_to_product(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0)
+    order_quantity = models.IntegerField(default=0)
 

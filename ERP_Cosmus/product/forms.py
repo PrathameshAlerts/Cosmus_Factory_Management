@@ -264,7 +264,7 @@ class purchase_order_to_product_form(forms.ModelForm):
     class Meta:
         model = purchase_order_to_product
 
-        fields = ['product_id','quantity']
+        fields = ['product_id','order_quantity']
 
         widgets = {
             'product_id': forms.TextInput(),
