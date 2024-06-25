@@ -43,7 +43,9 @@
               {% endfor %}
           {% endif %}
       </select>
+      {% if not form.instance.id %}
       <button class="fab_btn" type="button"  onclick="openFabPopup()">+</button>
+      {% endif %}
   </div>
 
     <div class=" d-flex my-3">
@@ -67,7 +69,9 @@
         {% endfor %}
         {% endif %}
       </select>
-      <button class="col_btn popup-trigger" onclick="opencolorPopup()">+</button>
+      {% if not form.instance.id %}
+      <button type="button" class="col_btn popup-trigger" onclick="opencolorPopup()">+</button>
+      {% endif %}
     </div>
     {% if form.instance.id %}
     <div class="d-flex mb-3">
@@ -155,7 +159,9 @@
         {% endfor %}
 
       </select>
+      {% if not form.instance.id %}
       <button class="package_btn"  onclick="openPackagePopup()">+</button>
+      {% endif %}
     </div>
     <div class=" d-flex my-3">
       <label for="id_unit_name_item" class="item-form">Unit Name:</label>
@@ -173,7 +179,9 @@
         {% endfor %}
         {% endif %}
       </select>
+      {% if not form.instance.id %}
       <button class="unit_btn"  onclick="openunitPopup()">+</button>
+      {% endif %}
     </div>
     <div class=" d-flex my-3">
       <label for="id_Units" class=" item-form">Units:</label>
@@ -206,7 +214,9 @@
         <option value="{{fab_finish.id}}">{{fab_finish.fabric_finish}}</option>
         {% endfor %}
       </select>
+      {% if not form.instance.id %}
       <button class="finish_btn"  onclick="openFabricFinishPopup()">+</button>
+      {% endif %}
     </div>
     <div class="d-flex my-3">
       <label for="id_GST" class="item-form">GST:</label>
@@ -221,7 +231,9 @@
         <option value="{{gst.id}}">{{gst.gst_percentage}}</option>
         {% endfor %}
       </select>
-      <button class="gst_btn"  onclick="openGstPopup()">+</button>
+      {% if not form.instance.id %}
+      <button type="button" class="gst_btn"  onclick="openGstPopup()">+</button>
+      {% endif %}
     </div>
     <div class="d-flex my-3">
       <label for="id_HSN_Code" class="form-label item-form">HSN Code:</label>
@@ -643,8 +655,9 @@ function receiveData(openingValue){
 </script>
 
 <script>
+   var newPopup = null;
   $(document).ready(function(){
-    var newPopup = null;
+   
     var itemValue;
     var itemId;
 
@@ -688,11 +701,11 @@ function receiveData(openingValue){
             newPopup = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }
 
-          window.addEventListener('message', handlePopupMessage);
+          window.addEventListener('message', handlePopupMessageQty);
 
           // Listen for messages from the popup window
           window.addEventListener('click', function(event) {
-          handleOutsideClick(event);
+            handleOutside(event);
           });
 
          
@@ -704,7 +717,35 @@ function receiveData(openingValue){
       }
     })
   })
-   </script>
+
+  function handleOutside(event) {
+
+var popUpRect = document.querySelector('body').getBoundingClientRect();
+var clickX = event.clientX;
+var clickY = event.clientY;
+
+// Check if the click is outside the popup window
+if (
+  clickX > popUpRect.left || clickX <= popUpRect.right ||
+  clickY > popUpRect.top || clickY <= popUpRect.bottom
+) {
+ 
+ newPopup.focus();
+  
+}
+
+}
+
+function handlePopupMessageQty(event) {
+if (event.data) {
+if (newPopup) {
+  $('body').removeClass('popup-open');
+  $('.popup-overlay').remove();
+  newPopup.close();
+}
+}
+}
+  </script>
 
 
 
@@ -778,7 +819,6 @@ function handleOutsideClick(event) {
     ) {
      
       popUpWindow.focus();
-      
       
     }
   

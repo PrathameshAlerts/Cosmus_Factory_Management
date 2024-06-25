@@ -56,14 +56,6 @@
           <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
           <input type="number" name="number_of_pieces" class="item-select"  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces">
         </div>   
-        <div class="d-flex mb-3">
-          <label for="id_product_select" class="item-form">Product Name:</label>
-          <select name="product_select" id="id_product_select" class="item-select" >
-            {% for product in product_queryset %}
-            <option  value="{{product.id}}">{{product.Product_Name}}</option>
-            {% endfor %}
-          </select>
-        </div>
       </div>
       </div>
       
