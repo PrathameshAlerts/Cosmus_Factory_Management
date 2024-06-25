@@ -63,6 +63,16 @@ Model Name: {{model_name}}
     <input type="submit" class="create-btn mt-4 mx-3" value="submit" id="id_submit">
     </form>
 
+    <form method="POST">
+      {% csrf_token %}
+      {{formset.management_form}}
+      {% for form in formset %}
+      {{form.as_p}}
+      {% endfor %}
+      <input type="submit" class="create-btn mt-4 mx-3" value="submit" id="id_submit">
+    </form>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var dateInput = document.getElementById('id_target_date');
