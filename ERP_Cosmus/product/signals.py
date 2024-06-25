@@ -299,8 +299,10 @@ def created_updated_purchase_order_product_qty(sender, instance, created, **kwar
         for product in products.productdetails.all():
             purchase_order_to_product.objects.create(purchase_order_id=purchase_order_instance,product_id=product,order_quantity=0)
 
+
     if not created:
         products = PProduct_Creation.objects.filter(Product = product_id)
+        
         for product in products:
             obj, created = purchase_order_to_product.objects.get_or_create(purchase_order_id=purchase_order_instance,product_id=product)
 
