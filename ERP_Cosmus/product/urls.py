@@ -152,14 +152,15 @@ urlpatterns = [
     path('viewproduct2item_configs/<int:product_sku>',views.viewproduct2items_configs,name ='view-product-2-item-configs'),
     
 
-    path('purchaseorderrawcreate/',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-create'),
-    path('purchaseorderrawupdate/<int:pk>',views.purchaseorderrawcreateupdate, name = 'purchase-order-raw-update'),
-    path('purchaseorderrawlist/',views.purchaseorderrawlist, name = 'purchase-order-raw-list'),
-    path('purchaseorderrawdelete/<int:pk>',views.purchaseorderrawdelete, name = 'purchase-order-raw-delete'),
+    path('purchaseordercreate/',views.purchaseordercreateupdate, name = 'purchase-order-create'),
+    path('purchaseorderupdate/<int:pk>',views.purchaseordercreateupdate, name = 'purchase-order-update'),
+    path('purchaseorderlist/',views.purchaseorderlist, name = 'purchase-order-list'),
+    path('purchaseorderdelete/<int:pk>',views.purchaseorderdelete, name = 'purchase-order-delete'),
 
+    path('purchaseorderrawmaterial/<int:p_o_pk>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial'),
 
     #reports
-    # path('stocktransferreport/', views.stocktransferreport, name = 'stock-transfer-report'),
+    # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
 
     #common Routes

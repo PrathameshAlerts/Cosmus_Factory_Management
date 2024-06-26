@@ -42,7 +42,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_mater
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset)
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset)
 
 
 logger = logging.getLogger('product_views')
@@ -1751,7 +1751,7 @@ def stockTrasferRaw(request, pk=None):
                         transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
                         transfer_instance.save()
 
-            return redirect('stock-transfer-raw-list')
+            return redirect('stock-transfer-list')
 
 
     context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'source_godown_items':source_godown_items}
@@ -1769,7 +1769,7 @@ def stockTrasferRawList(request):
 def stockTrasferRawDelete(request,pk):
     stocktrasferinstance =  get_object_or_404(RawStockTransferMaster,pk = pk)
     stocktrasferinstance.delete()
-    return redirect('stock-transfer-raw-list')
+    return redirect('stock-transfer-list')
 
 #__________________________stock transfer end__________________________
 
@@ -2824,7 +2824,7 @@ def viewproduct2items_configs(request, product_sku):
     
 
 
-def purchaseorderrawcreateupdate(request,pk= None):
+def purchaseordercreateupdate(request,pk= None):
 
     try:
         ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
@@ -2834,6 +2834,7 @@ def purchaseorderrawcreateupdate(request,pk= None):
         if pk:
             instance = get_object_or_404(purchase_order,pk=pk)
             model_name = instance.product_reference_number.Model_Name
+
         else:
             instance = None
             model_name = None
@@ -2849,28 +2850,34 @@ def purchaseorderrawcreateupdate(request,pk= None):
         # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
-            if form.is_valid():
-                try:
-                    form.save()
-                    logger.info(f'Purchase invoice created-updated-{form.instance.id}')
-                    # on sbmission of form-1, form-2 is rendered with form-1 instance
-                    return redirect(reverse('purchase-order-raw-update', args=[form.instance.id]))
+            if form.has_changed():
+                if form.is_valid():
+                    try:
+                        form.save()
+                        logger.info(f'Purchase invoice created-updated-{form.instance.id}')
+                        # on submission of form-1, form-2 is rendered with form-1 instance
+                        return redirect(reverse('purchase-order-update', args=[form.instance.id]))
                 
-                except ValidationError as val_err:
-                    logger.error(f'Validation error: {val_err} - {formset.errors}')
+                    except ValidationError as val_err:
+                        logger.error(f'Validation error: {val_err} - {formset.errors}')
 
-                except DatabaseError as db_err:
-                    logger.error(f'Database error during formset save: {db_err}')
+                    except DatabaseError as db_err:
+                        logger.error(f'Database error during formset save: {db_err}')
 
-                except Exception as e:
-                    logger.error(f'Unexpected error during formset save: {e}')
+                    except Exception as e:
+                        logger.error(f'Unexpected error during formset save: {e}')
+                else:
+                    logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
             else:
-                logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
+                return redirect(reverse('purchase-order-update', args=[form.instance.id]))
 
 
         if 'submit-form-2' in request.POST:
             # based on the created instance of form-1, form-2 update form is rendered using that instance
             formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+
+            formset.forms = [form for form in formset if form.has_changed()]
+
             if formset.is_valid():
                 try:                
                     formset.save()
@@ -2887,49 +2894,47 @@ def purchaseorderrawcreateupdate(request,pk= None):
             else:
                 logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {formset.errors}')
             
-            return redirect('purchase-order-raw-list')
+            return redirect('purchase-order-list')
         
 
-    return render(request,'production/purchaseorderrawcreateupdate.html',{'form':form ,'formset':formset,
+    return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,
                                                                           'ledger_party_names':ledger_party_names,
                                                                           "products":products,'model_name':model_name})
 
 
 
-def purchaseorderrawlist(request):
+def purchaseorderlist(request):
     purchase_orders = purchase_order.objects.all()
-
-    return render(request,'production/purchaseorderrawlist.html',{'purchase_orders':purchase_orders})
-
+    return render(request,'production/purchaseorderlist.html',{'purchase_orders': purchase_orders})
 
 
-def purchaseorderrawdelete(request,pk):
-     
+
+def purchaseorderdelete(request,pk):
     try:
         instance = get_object_or_404(purchase_order, pk = pk)
         instance.delete()
         logger.info(f"Purchase Order with order no - {instance.purchase_order_number} was deleted")
-        messages.success(request,f'Purchase Order with order no - {instance.purchase_order_number} was deleted')
+        messages.success(request,f'Purchase order with order no - {instance.purchase_order_number} was deleted')
         
-    
     except exception as e:
         messages.error(request,f'Cannot delete {instance.purchase_order_number} - {e}.')
         logger.error(f"Cannot delete {instance.purchase_order_number} - {e}.")
-    return redirect('purchase-order-raw-list')
+    return redirect('purchase-order-list')
      
 
 
+def purchaseorderrawmaterial(request,p_o_pk):
+    purchase_order_number = p_o_pk
+    purchase_order_instance = get_object_or_404(purchase_order, pk = purchase_order_number)
 
-def purchase_order_for_raw_material_create_update(request,pk,p_o_pk):
+    form = purchase_order_form(instance = purchase_order_instance)
 
-    if p_o_pk:
-        purchase_voucher_instance = get_object_or_404(purchase_order,pk=p_o_pk)
+    formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
-    if pk:
-        pass
-    else:
-        pass
 
+
+
+    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'formset':formset})
 
 
 #_________________________production-end______________________________
