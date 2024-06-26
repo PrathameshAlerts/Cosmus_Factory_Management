@@ -106,7 +106,7 @@
   </div>
 </div>
 {% if form.instance.id %}
-<a href="{% url 'purchase-order-rawmaterial' form.instance.id %}">purcahse order raw</a>
+<a href="{% url 'purchase-order-rawmaterial' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">purcahse order raw</a>
 {% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
