@@ -633,7 +633,7 @@ input[type=number] {
 .pcoded-content{
     position: relative;
     display: block;
-    padding: 50px 20px;
+    padding: 30px 20px;
 }
 
 .pcoded-main-container {
@@ -1356,7 +1356,7 @@ input[type=number] {
 }
 .table-res {
     overflow-y: auto;
-    max-height: 560px; /* Adjust the height as needed */
+    max-height: 548px; /* Adjust the height as needed */
 }
 
 .product2create-btn{
@@ -1711,6 +1711,11 @@ styles.css */
     padding-left: 6px;
     height: 28px;
     background-color: transparent;
+}
+.tables-form{
+        max-height: 293px !important;
+        overflow-y: auto;
+    
 }
 .tables td{
     padding: 1px; /* Removes padding inside table cells */

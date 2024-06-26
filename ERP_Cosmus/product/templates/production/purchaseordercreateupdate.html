@@ -3,7 +3,7 @@
 
 {% block body %}
 
-  <div class="" id="create_form" >
+  <div class="mt-2" id="create_form" >
     <form action="" method="POST" style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
       <h3 class="mb-3">Purchase Order</h3>
      
@@ -62,13 +62,16 @@
       </form>
   </div>
   <div class="row">
-  <div class="col-lg-4 mt-3" id="productForm-conatiner" style="display: none;" >
-    <div class="d-flex mb-3">
-      <lable>Model Name : <input class="text-danger purchase-amount border-0 bg-transparent ms-2 me-4" id="id_model_name"value="{{model_name | default_if_none:''}}"> </lable>
-      <lable>Total: <input type="number" class="purchase-amount border-0 bg-transparent text-danger" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
-        <input type="hidden" class="" id="id_total-quantity"value="{{form.instance.number_of_pieces}}"> 
-            
-      </div>
+    
+        
+  <div class="col-lg-5 mt-3" id="productForm-conatiner" style="display: none;" >
+    <div class="d-flex mb-2">
+        <lable>Model Name :  </lable>
+        <input class="text-danger purchase-amount border-0 bg-transparent ms-2 me-4 pb-2" id="id_model_name"value="{{model_name | default_if_none:''}}">
+        <lable>Total: </lable>
+          <input type="number" class="purchase-amount border-0 bg-transparent text-danger ms-2 me-4 pb-2" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
+          <input type="hidden" class="" id="id_total-quantity"value="{{form.instance.number_of_pieces}}">  
+        </div>
     <form method="POST">
       {% csrf_token %}
               <table class="table table-striped table-hover table-bordered tables" id="productTable" >

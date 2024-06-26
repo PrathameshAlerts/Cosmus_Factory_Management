@@ -5,7 +5,7 @@
 <div class="" >
     <form method="POST">
         {% csrf_token %}
-    <h4>Purchase Order raw material</h4>
+    <h4 class="mt-2">Purchase Order raw material</h4>
     <div class="row">
         <div class="col-lg-6 mt-2">
             <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
@@ -79,52 +79,54 @@
                 </table>
             </div>
     </div>
-    
-    <div class="table-responsives mt-4">
-            <div class="row">
-                <div class="col-lg-11">
-                    <table class="table table-striped table-hover table-bordered" >
-                        <thead class="name_absolute sticky-top">
-                        <tr>
-                            <th>Product SKU</th>
-                            <th>Material Name</th>
-                            <th>Rate</th>
-                            <th>Panha</th>
-                            <th>Units</th>
-                            <th>G-Total</th>
-                            <th>Comsumption</th>
-                            <th>Total Comsumption</th>
-                            <th>Physical Stock</th>
-                            <th>Balance Physical Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-                        {% for product_item in prod_to_items %}
-                        <tr>
-                            <td>{{product_item.PProduct_pk.PProduct_SKU}}</td>
-                            <td>{{product_item.Item_pk.item_name}}</td>
-                            <td>NA</td>
-                            <td>{{product_item.Item_pk.Panha}}</td>
-                            <td>{{product_item.Item_pk.Units}}</td>
-                            <td>{{product_item.grand_total}}</td>
-                            <th>NA</th>
-                            <th>NA</th>
-                            <th>NA</th>
-                            <th>NA</th>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    </table>
-                </div>
-                
+    <div class="row mt-2">
+                <div class="col-lg-12">
+                    <div class="tables-form">
+                        <table class="table table-striped table-hover table-bordered" >
+                            <thead class="name_absolute sticky-top border-1">
+                            <tr>
+                                <th>Product SKU</th>
+                                <th>Material Name</th>
+                                <th>Rate</th>
+                                <th>Panha</th>
+                                <th>Units</th>
+                                <th>G-Total</th>
+                                <th>Comsumption</th>
+                                <th>Total Comsumption</th>
+                                <th>Physical Stock</th>
+                                <th>Balance Physical Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                            {% for product_item in prod_to_items %}
+                            <tr>
+                                <td>{{product_item.PProduct_pk.PProduct_SKU}}</td>
+                                <td>{{product_item.Item_pk.item_name}}</td>
+                                <td>NA</td>
+                                <td>{{product_item.Item_pk.Panha}}</td>
+                                <td>{{product_item.Item_pk.Units}}</td>
+                                <td>{{product_item.grand_total}}</td>
+                                <th>NA</th>
+                                <th>NA</th>
+                                <th>NA</th>
+                                <th>NA</th>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                    
+              
             </div>
     </div>
     <input type="submit" class="create-btn mt-2 mb-4 mx-3" name="submit-form" value="Submit" id="id_submit">
+    {% if form.instance.id %}
+    <button type="button" class="add_btn " name="Back-form" value="Back" id="back"><a href="{% url 'purchase-order-update' form.instance.id %}">Back</a></button>
+
+{% endif %}
 </form>
 </div>
-{% if form.instance.id %}
-<a href="{% url 'purchase-order-update' form.instance.id %}">Back</a>
-{% endif %}
+
 
 {% endblock %}
 
