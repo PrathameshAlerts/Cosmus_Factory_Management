@@ -257,7 +257,6 @@ class Product_A_plus_content(models.Model):
         ('200 * 200','200 * 200'),
         ('1260 * 200','1260 * 200'),
         ('1080 * 720','1080 * 720'),
-       
     ]
 
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productaplus')
@@ -332,8 +331,9 @@ class Item_Creation(models.Model):
     Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
     Item_Creation_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
     HSN_Code = models.CharField(max_length = 100, blank = True)
-    status= models.CharField(max_length = 50, choices= STATUS)
+    status = models.CharField(max_length = 50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
+    rate = models.DecimalField(blank=True,null=True,max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now =True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
     
