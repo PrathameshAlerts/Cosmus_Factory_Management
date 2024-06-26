@@ -2864,7 +2864,6 @@ def purchaseorderrawcreateupdate(request,pk= None):
 
                 except Exception as e:
                     logger.error(f'Unexpected error during formset save: {e}')
-            
             else:
                 logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
 
