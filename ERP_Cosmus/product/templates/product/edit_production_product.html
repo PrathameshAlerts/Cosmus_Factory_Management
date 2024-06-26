@@ -796,8 +796,8 @@
 
    function newPopup(button, path) {
      var refrence_id = document.getElementById('id_Product_Refrence_ID').value
-     $('body').addClass('popup-open');
-     $('body').append('<div class="popup-overlay"></div>');
+    //  $('body').addClass('popup-open');
+    //  $('body').append('<div class="popup-overlay"></div>');
 
          var minWidth = 1270; // minimum width
          var minHeight = 700;
@@ -807,12 +807,12 @@
          var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
          popupWindow = window.open( baseUrl  + path + refrence_id , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                 
-        window.addEventListener('message', handlePopupMessage);
+        // window.addEventListener('message', handlePopupMessage);
 
-          // Listen for messages from the popup window
-          window.addEventListener('click', function(event) {
-            handleOutsideView(event);
-          });
+        //   // Listen for messages from the popup window
+        //   window.addEventListener('click', function(event) {
+        //     handleOutsideView(event);
+        //   });
               } 
    
 

@@ -5,10 +5,11 @@
 <h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
 
 
-   <form method="POST" enctype="multipart/form-data">
+   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <h4 class="mb-3">Add Unique Product</h3>
     
-    {% csrf_token %}
+  
 
 <div class="">
     <table class="table table-striped table-bordered" id="mainProductForm">
@@ -58,10 +59,7 @@
     </table>
 </div>
         
-        <button type="button" class="add_btn mb-4" id="addForm">Add</button> 
-
-    
-  
+  <button type="button" class="add_btn mb-4" id="addForm">Add</button> 
     <div>
         <h4 class="mb-3">Add common Items</h3>
             <table class="table table-responsive table-striped table-bordered" id="myProduct">
@@ -107,9 +105,9 @@
         <button type="button" class="add_btn mb-3" id="addNewRow">Add</button>  
     </div>
     
-<div class="mb-4"> 
+
     <input type="submit" class="add_btn" >
-</div>
+
 
 </form>
 
@@ -520,7 +518,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
 
 
 <script>
-       var formSubmitted = false;
+      // var formSubmitted = false;
     // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function() {
         const addFormButton = document.getElementById('addForm');
@@ -543,8 +541,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
             e.value= "";
           });
 
-         
-         
+        
             const newSelectElement = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
             newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;
             newSelectElement.name = `product2itemuniqueformset-${newFormCount}-PProduct_pk`;
@@ -622,13 +619,13 @@ document.querySelectorAll('.delete-btn').forEach(function(button) {
 deleteRow();
     });
 
-   // Handle the case when the window is closed without form submission
-   window.addEventListener('beforeunload',  function(event) {
-    if (!formSubmitted) {
-      const data = { message: 'close' };
-      window.opener.postMessage(data, '*');
-    }
-  });
+//    // Handle the case when the window is closed without form submission
+//    window.addEventListener('beforeunload',  function(event) {
+//     // if (!formSubmitted) {
+//       const data = { message: 'close' };
+//       window.opener.postMessage(data, '*');
+//     // }
+//   });
 
 </script>
 

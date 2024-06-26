@@ -2932,19 +2932,37 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     form = purchase_order_form(instance = purchase_order_instance)
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
-    product_reference_no = prod_ref_no
-    
-    items_for_selected_po_items = []
+    items_for_selected_po_items_queryset = []
 
     for product in purchase_order_instance.purchase_order_to_product_set.all():
         prod_to_items = product_2_item_through_table.objects.filter(PProduct_pk = product.product_id.PProduct_SKU)
+
+        # looping the filtered queryset as filter returns a list of all records which has the product of th current iteration which
+        #  gives a list of multiple lists so looping in those lists to create a single list
+        for record in prod_to_items:
+            items_for_selected_po_items_queryset.append(record)
+
+    initial_data = []
+
+    for query in items_for_selected_po_items_queryset:
+        initial_data_dict = {'product_sku' : query.PProduct_pk.PProduct_SKU,
+                             'item_name':query.Item_pk.item_name,
+                             'rate':'n/a',
+                             'panha':query.Item_pk.Panha,
+                             'units':query.Item_pk.Units,
+                             'grand_total':query.grand_total,
+                             'Comsumption':'n/a',
+                             'total_consumption':'n/a',
+                             'physical_stock':'n/a',
+                             'balance_physical_stock':'n/a'}
         
-        items_for_selected_po_items.append(prod_to_items)
-    print(items_for_selected_po_items)
+        initial_data.append(initial_data_dict)
 
-    purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST or None, instance=purchase_order_instance)
+    print(initial_data)
 
-    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'prod_to_items':prod_to_items})
+    purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset( initial=initial_data if not request.POST else None, instance=purchase_order_instance)
+
+    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'prod_to_items':items_for_selected_po_items_queryset})
 
 
 #_________________________production-end______________________________
