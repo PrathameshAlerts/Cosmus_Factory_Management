@@ -12,7 +12,7 @@
         </div>
         <div class="d-flex mb-3">
             <lable for="id_product_reference_number" class="">Reference Number:</lable>
-            <input type="number" name="purchase_order_number" class="purchase-amount ms-2 me-4" value="{{form.instance.product_reference_number.id}}" required id="id_purchase_order_number" readonly>
+            <input type="number" name="purchase_order_number" class="purchase-amount ms-2 me-4" value="{{form.instance.product_reference_number.Product_Refrence_ID}}" required id="id_purchase_order_number" readonly>
         </div>
         <div class="d-flex mb-3">
             <label for="id_ledger_party_name" class="item-form">Ledger party name:</label>
@@ -48,7 +48,7 @@
                         </thead>
                         <tbody class="mainTableList">
                             {{formset.management_form}}
-                            {% for form in formset %}
+                            {% for form in purchase_order_raw_formset %}
                             {{form.id}}
                             <tr class="text-nowrap">
                                 <td>
@@ -72,6 +72,40 @@
                 </div>
             </div>
             <input type="submit" class="create-btn mt-4 mx-3" name="submit-form" value="Submit" id="id_submit">
+
+
+            <table>
+                <tr>
+                <th>Product SKU</th>
+                <th>Material Name</th>
+                <th>Rate</th>
+               <th>Panha</th>
+                <th>Units</th>
+                <th>G-Total</th>
+                <th>Comsumption</th>
+                <th>Total Comsumption</th>
+                <th>Physical Stock</th>
+                <th>Balance Physical Stock</th>
+            </tr>
+            {% for product_item in prod_to_items %}
+                <tr>
+                    <td>{{product_item.PProduct_pk.PProduct_SKU}}</td>
+                    <td>{{product_item.Item_pk.item_name}}</td>
+                    <td>NA</td>
+                    <td>{{product_item.Item_pk.Panha}}</td>
+                    <td>{{product_item.Item_pk.Units}}</td>
+                    <td>{{product_item.grand_total}}</td>
+                    <th>NA</th>
+                    <th>NA</th>
+                    <th>NA</th>
+                    <th>NA</th>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+
+
           </form>
         
     </div>

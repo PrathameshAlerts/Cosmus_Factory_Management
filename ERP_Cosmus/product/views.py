@@ -2924,18 +2924,18 @@ def purchaseorderdelete(request,pk):
 
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
-
     
-    purchase_order_instance = get_object_or_404(purchase_order, pk = prod_ref_no)
+    purchase_order_instance = get_object_or_404(purchase_order, pk = p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
-    formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
+    purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
     product_reference_no = prod_ref_no
     
     prod_to_items = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_reference_no)
     
-    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'formset':formset,'prod_to_items':prod_to_items})
+
+    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'prod_to_items':prod_to_items})
 
 
 #_________________________production-end______________________________
