@@ -2,33 +2,36 @@
 {% load static %} 
 {% block body %}
 
-
-
 <div class="">
+    <h4>Purchase Order raw material</h4>
     <div class="d-flex">
-        <div class="d-flex mb-3">
+        <div class="d-flex mb-2">
             <lable for="id_purchase_order_number" class="">Order Number:</lable>
-            <input type="number" name="purchase_order_number" class="purchase-amount ms-2 me-4" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number" readonly>
+            <input type="number" name="purchase_order_number" class="purchase-amount ms-2 me-4  border-0 bg-transparent text-danger" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number" readonly>
         </div>
-        <div class="d-flex mb-3">
+        <div class="d-flex mb-2 ms-4">
             <lable for="id_product_reference_number" class="">Reference Number:</lable>
-            <input type="number" name="purchase_order_number" class="purchase-amount ms-2 me-4" value="{{form.instance.product_reference_number.id}}" required id="id_purchase_order_number" readonly>
+            <input type="number" name="purchase_order_number" class="purchase-amount ms-2 me-2  border-0 bg-transparent text-danger" value="{{form.instance.product_reference_number.id}}" required id="id_purchase_order_number" readonly>
         </div>
-        <div class="d-flex mb-3">
+        <div class="d-flex mb-2">
             <label for="id_ledger_party_name" class="item-form">Ledger party name:</label>
-            <input name="ledger_party_name" class="item-select" id="id_ledger_party_name" value="{{form.instance.ledger_party_name.name}}" readonly>
+            <input name="ledger_party_name" class="item-select border-0 bg-transparent text-danger" id="id_ledger_party_name" value="{{form.instance.ledger_party_name.name}}" readonly>
             
           </div>
     </div>
-    <div class="d-flex">
-        <div class="d-flex mb-3">
+    <div class="d-flex mb-4">
+        <div class="d-flex ">
             <label for="id_target_date" class="">Target date:</label>
-            <input type="date" name="target_date" class="item-select ms-2 me-4" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
+            <input type="date" name="target_date" class="border-0 bg-transparent ms-3 me-3 text-danger" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
           </div> 
-          <div class="d-flex mb-3">
-            <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
-            <input type="number" name="number_of_pieces" class="item-select"  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
+          <div class="d-flex">
+            <label for="id_number_of_pieces" class="">Number of pieces:</label>
+            <input type="number" name="number_of_pieces" class="purchase-input ms-2 me-5 border-0 bg-transparent text-danger "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
           </div> 
+          <diV class="d-flex">
+            <lable for="id_model_name" class="ms-3">Model Name : </lable> 
+            <input class="text-danger purchase-amount ms-2 me-4 border-0 bg-transparent" id="id_model_name"value="{{model_name | default_if_none:''}}">
+          </diV>
     </div>
       
     <div>
