@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<div class="row">
+
   <div class="" id="create_form" >
     <form action="" method="POST" style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
       <h3 class="mb-3">Purchase Order</h3>
@@ -62,16 +62,17 @@
       <input type="submit" class="productorder_btn mt-3 mx-3" name="submit-form-1" value="Submit & Next" id="id_submit_1">
       </form>
   </div>
-  <div class="col-lg-5 mt-3" id="productForm-conatiner" style="display: none;" >
+  <div class="row">
+  <div class="col-lg-4 mt-3" id="productForm-conatiner" style="display: none;" >
     <div class="d-flex mb-3">
       <lable>Model Name : <input class="text-danger purchase-amount border-0 bg-transparent ms-2 me-4" id="id_model_name"value="{{model_name | default_if_none:''}}"> </lable>
       <lable>Total: <input type="number" class="purchase-amount border-0 bg-transparent text-danger" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
         <input type="hidden" class="" id="id_total-quantity"value="{{form.instance.number_of_pieces}}"> 
             
-  </div>
+      </div>
     <form method="POST">
       {% csrf_token %}
-              <table class="table table-striped table-hover table-bordered" id="productTable">
+              <table class="table table-striped table-hover table-bordered tables" id="productTable" >
                   <thead class="name_absolute text-nowrap">
                       <tr>
                           <th>Product Sku</th>
@@ -84,15 +85,15 @@
                       {{formset.management_form}}
                       {% for form in formset %}
                       {{form.id}}
-                      <tr>
-                          <td class="text-nowrap">
-                              <input type="text" class="item-select border-0 bg-transparent" name="{{form.prefix}}-product_id" value="{{form.instance.product_id.PProduct_SKU | default_if_none:''}}" id="id_{{form.prefix}}-product_id" readonly>
+                      <tr class="text-nowrap">
+                          <td>
+                              <input type="text" class="productorder_input" name="{{form.prefix}}-product_id" value="{{form.instance.product_id.PProduct_SKU | default_if_none:''}}" id="id_{{form.prefix}}-product_id" readonly>
                           </td>
                           <td>
-                              <input type="text" class="item-select border-0 bg-transparent" name="{{forloop.counter0}}-product_color" value="{{form.instance.product_id.PProduct_color | default_if_none:''}}" id="id_{{forloop.counter0}}-product_color" readonly>
+                              <input type="text" class="productorder_input border-0 bg-transparent" name="{{forloop.counter0}}-product_color" value="{{form.instance.product_id.PProduct_color | default_if_none:''}}" id="id_{{forloop.counter0}}-product_color" readonly>
                           </td>
                           <td>
-                              <input type="number" class="purchase-input " name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
+                              <input type="number" class="productorderqty-input" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
                           </td>
                           <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;"   name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
                       </tr>
