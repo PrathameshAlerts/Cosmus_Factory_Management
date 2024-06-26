@@ -110,6 +110,9 @@
         
     </div>
 </div>
+{% if form.instance.id %}
+<a href="{% url 'purchase-order-update' form.instance.id %}">Back</a>
+{% endif %}
 
 {% endblock %}
 
