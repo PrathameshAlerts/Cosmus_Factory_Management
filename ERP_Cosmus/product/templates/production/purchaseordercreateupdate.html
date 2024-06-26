@@ -105,10 +105,9 @@
     </form>
   </div>
 </div>
-
-<a href="{% url 'purchase-order-rawmaterial' form.instance.id %}">purcahse order raw</a>
-
-
+{% if form.instance.id %}
+<a href="{% url 'purchase-order-rawmaterial' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">purcahse order raw</a>
+{% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var dateInput = document.getElementById('id_target_date');
