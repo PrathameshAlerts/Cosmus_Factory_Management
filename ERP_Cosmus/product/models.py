@@ -609,10 +609,25 @@ class purchase_order_to_product(models.Model):
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
 
+
     def save(self, *args, **kwargs):
         if self.process_quantity > self.order_quantity:
             raise ValueError("process_quantity cannot be greater than order_quantity")
         super().save(*args, **kwargs)
 
     
+
+class purchase_order_for_raw_material(models.Model):
+    purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
+    material_name = models.CharField(max_length = 100, null=False, blank=False)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    panha = models.DecimalField(max_digits=10, decimal_places=2)
+    units = models.DecimalField(max_digits=10, decimal_places=2)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2)
+    consumption = models.DecimalField(max_digits=10, decimal_places=2)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=2)
+    physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
+    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
+
+
 

@@ -273,6 +273,21 @@ class purchase_order_to_product_form(forms.ModelForm):
 purchase_order_product_qty_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_to_product_form, extra=0, can_delete=True)
 
 
+
+class purchase_order_raw_to_product_form(forms.ModelForm):
+    class Meta:
+        model = purchase_order_to_product
+
+        fields = ['product_id','order_quantity','process_quantity']
+
+        widgets = {
+            'product_id': forms.TextInput(),
+        }
+
+purchase_order_raw_product_qty_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_form, extra=0, can_delete=True)
+
+
+
 class raw_material_stock_trasfer_master_form(forms.ModelForm):
         class Meta:
             model = RawStockTransferMaster
