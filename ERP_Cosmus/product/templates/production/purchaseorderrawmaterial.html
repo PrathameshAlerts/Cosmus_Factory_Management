@@ -121,6 +121,9 @@
     <input type="submit" class="create-btn mt-2 mb-4 mx-3" name="submit-form" value="Submit" id="id_submit">
 </form>
 </div>
+{% if form.instance.id %}
+<a href="{% url 'purchase-order-update' form.instance.id %}">Back</a>
+{% endif %}
 
 {% endblock %}
 
