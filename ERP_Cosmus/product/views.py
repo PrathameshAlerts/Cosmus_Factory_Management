@@ -42,7 +42,8 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_mater
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset)
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,
+                                purchase_order_raw_product_sheet_formset)
 
 
 logger = logging.getLogger('product_views')
@@ -2478,6 +2479,7 @@ def packaging_delete(request,pk):
 
 
 def product2item(request,product_refrence_id):
+    print(request.POST)
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -2925,20 +2927,28 @@ def purchaseorderdelete(request,pk):
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     
-    purchase_order_instance = get_object_or_404(purchase_order, pk = p_o_pk)
+    purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
     product_reference_no = prod_ref_no
     
-    prod_to_items = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_reference_no)
-    
+    items_for_selected_po_items = []
+
+    for product in purchase_order_instance.purchase_order_to_product_set.all():
+        prod_to_items = product_2_item_through_table.objects.filter(PProduct_pk = product.product_id.PProduct_SKU)
+        
+        items_for_selected_po_items.append(prod_to_items)
+    print(items_for_selected_po_items)
+
+    purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST or None, instance=purchase_order_instance)
 
     return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'prod_to_items':prod_to_items})
 
 
 #_________________________production-end______________________________
+
 
 
 #__________________________common-functions-start____________________________
