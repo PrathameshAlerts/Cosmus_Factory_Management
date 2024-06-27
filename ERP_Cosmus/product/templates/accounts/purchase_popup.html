@@ -193,7 +193,7 @@
 
     <script>
         
-
+        let formSubmitted = false;
         var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
         
         for (var i = 0; i <= total_form_Value; i++) {
@@ -276,6 +276,15 @@
 
             
         }
+
+           // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload', function(event) {
+        if (!formSubmitted) {
+            console.log('Form not submitted');
+        const data = { message: 'close' };
+        window.opener.postMessage(data, '*');
+        }
+    });
     </script>
 
     <script>

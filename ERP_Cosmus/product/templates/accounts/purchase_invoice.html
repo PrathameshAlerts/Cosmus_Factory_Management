@@ -711,6 +711,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
+
+                    $('body').addClass('popup-open');
+                    $('body').append('<div class="popup-overlay"></div>');
                   
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
@@ -726,6 +729,12 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                            
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                            
+                            window.addEventListener('message', handlePopupMessagePurchase);
+
+                                // Listen for messages from the popup window
+                                window.addEventListener('click', function(event) {
+                                    handleOutsidePurchase(event);
+                                });
                         },
                         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
@@ -740,6 +749,8 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
+                    $('body').addClass('popup-open');
+                    $('body').append('<div class="popup-overlay"></div>');
     
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
@@ -753,6 +764,12 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                         success: function (response) {
                             // Open the dynamic URL received from the server
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                            window.addEventListener('message', handlePopupMessagePurchase);
+
+                            // Listen for messages from the popup window
+                            window.addEventListener('click', function(event) {
+                                handleOutsidePurchase(event);
+                            });
                         },
                         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
@@ -765,6 +782,33 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             }
             
         });
+        function handleOutsidePurchase(event) {
+
+var popUpRect = document.querySelector('body').getBoundingClientRect();
+var clickX = event.clientX;
+var clickY = event.clientY;
+
+// Check if the click is outside the popup window
+if (
+  clickX > popUpRect.left || clickX <= popUpRect.right ||
+  clickY > popUpRect.top || clickY <= popUpRect.bottom
+) {
+ 
+    popupWindow.focus();
+  
+}
+
+}
+
+function handlePopupMessagePurchase(event) {
+if (event.data) {
+if (popupWindow) {
+  $('body').removeClass('popup-open');
+  $('.popup-overlay').remove();
+  popupWindow.close();
+}
+}
+}
 
     });
 </script>
