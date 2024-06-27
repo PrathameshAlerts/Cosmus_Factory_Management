@@ -58,7 +58,7 @@
                         </tr>
                     </thead>
                     <tbody class="mainTableList">
-                        {{formset.management_form}}
+                        {{purchase_order_raw_formset.management_form}}
                         {% for form in purchase_order_raw_formset %}
                         {{form.id}}
                         <tr class="text-nowrap">
@@ -86,7 +86,7 @@
                         <table class="table table-striped table-hover table-bordered" >
                             <thead class="name_absolute sticky-top border-1">
                             <tr>
-                                <th>Product SKU</th>
+                                <th>Product Color</th>
                                 <th>Material Name</th>
                                 <th>Rate</th>
                                 <th>Panha</th>
@@ -100,20 +100,36 @@
                         </thead>
                         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                             {{purchase_order_raw_sheet_formset.management_form}}
+                            {{form.id}}
                             {% for form in purchase_order_raw_sheet_formset %}
+
+                            {% if form.instance.id %}
                             <tr>
-                                <td></td>
-                                <td><input type="text" class="productorder_input" name="{{form.prefix}}-material_name" value="MELANGE (CTC) BLGS D.GREY" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
-                                <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="0" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
-                                <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="57.00" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
-                                <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="39.37" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
-                                <td> <input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="659.46" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
-                                <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="0" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
-                                <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="0" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
-                                <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="0" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
-                                <td>  <input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="0" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                                <td>{{form.initial.product_color}}</td>
+                                <td><input type="text" class="productorder_input" name="{{form.prefix}}-material_name" value="{{form.instance.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.instance.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.instance.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.instance.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
+                                <td> <input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.instance.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                                <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.instance.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.instance.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.instance.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                                <td> <input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="{{form.instance.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
                             </tr>
-                
+                            {% elif not form.instance.id %}
+                            <tr>
+                                <td>{{form.initial.product_color}}</td>
+                                <td><input type="text" class="productorder_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.initial.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.initial.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.initial.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
+                                <td> <input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.initial.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                                <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.initial.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.initial.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.initial.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                                <td> <input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="{{form.initial.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                            </tr>
+                            {% endif %}
                             {% endfor %}
                         </tbody>
                         </table>

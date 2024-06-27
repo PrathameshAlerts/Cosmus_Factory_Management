@@ -43,7 +43,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_mater
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,
-                                )
+                                purchase_order_raw_product_sheet_form)
 
 
 logger = logging.getLogger('product_views')
@@ -2945,7 +2945,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     initial_data = []
 
     for query in items_for_selected_po_items_queryset:
-        initial_data_dict = {'product_sku' : query.PProduct_pk.PProduct_SKU,
+        initial_data_dict = {'product_color' : query.PProduct_pk.PProduct_color,
                              'material_name':query.Item_pk.item_name,
                              'rate':'0',
                              'panha':query.Item_pk.Panha,
@@ -2958,11 +2958,18 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         
         initial_data.append(initial_data_dict)
 
-    purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, fields =('material_name','rate','panha','units','g_total','consumption','total_comsumption','physical_stock','balance_physical_stock'), extra=len(initial_data) if initial_data else 0, can_delete=False)
-
+    purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_data) if initial_data else 0, can_delete=False)
 
     purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
-    print(purchase_order_raw_sheet_formset)
+    
+    if request.method == 'POST':
+
+        if purchase_order_raw_formset.is_valid() and purchase_order_raw_sheet_formset.is_valid():
+            purchase_order_raw_formset.save()
+            purchase_order_raw_sheet_formset.save()
+        
+
+
     return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'prod_to_items':items_for_selected_po_items_queryset,'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset})
 
 
