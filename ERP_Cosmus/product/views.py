@@ -2964,7 +2964,14 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     initial_data = []
 
     for query in product_2_items_instances:
-        initial_data_dict = {'product_color' : query.PProduct_pk.PProduct_color,
+
+        if query.common_unique == True:
+            product_color_or_common_item = 'Common Item'
+        else:
+            product_color_or_common_item = query.PProduct_pk.PProduct_color
+
+        query.PProduct_pk.PProduct_color
+        initial_data_dict = {'product_color' : product_color_or_common_item,
                              'material_name':query.Item_pk.item_name,
                              'rate':query.Item_pk.rate,
                              'panha':query.Item_pk.Panha,
