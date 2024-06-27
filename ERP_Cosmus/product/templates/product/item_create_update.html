@@ -673,9 +673,6 @@ function receiveData(openingValue){
         var minWidth = 800;
         var minHeight = 600;
 
-        $('body').addClass('popup-open');
-        $('body').append('<div class="popup-overlay"></div>');
-
         $.ajax({
         url: '{% url "opening-godown-qty-ajax" %}',
         type: 'GET',
