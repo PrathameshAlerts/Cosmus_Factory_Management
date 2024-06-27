@@ -287,6 +287,24 @@ class purchase_order_raw_to_product_form(forms.ModelForm):
 purchase_order_raw_product_qty_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_form, extra=0)
 
 
+class purchase_order_raw_product_sheet_form(forms.ModelForm):
+
+    # extra field added in front end not in table which is populated by initial data 
+    product_color = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'readonly': 'readonly'}),
+        
+    )
+
+    class Meta:
+        model = purchase_order_for_raw_material
+
+        fields = ['material_name','rate','panha','units','g_total','consumption','total_comsumption','physical_stock','balance_physical_stock']
+
+
+
+
+
 
 
 
