@@ -333,7 +333,7 @@ class Item_Creation(models.Model):
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status = models.CharField(max_length = 50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
-    rate = models.DecimalField(blank=True,null=True,max_digits=10, decimal_places=2)
+    rate = models.DecimalField(max_digits=10, decimal_places=2,blank=True,default=0)
     created_date = models.DateTimeField(auto_now =True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
     

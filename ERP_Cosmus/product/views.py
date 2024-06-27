@@ -21,7 +21,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.forms import modelformset_factory
+from django.forms import inlineformset_factory, modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse, QueryDict
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
@@ -29,7 +29,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
+                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table)
 
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_material_stock_trasfer_items_formset,
@@ -42,7 +42,8 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet,raw_mater
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset)
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,
+                                )
 
 
 logger = logging.getLogger('product_views')
@@ -2478,6 +2479,7 @@ def packaging_delete(request,pk):
 
 
 def product2item(request,product_refrence_id):
+    print(request.POST)
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -2925,20 +2927,47 @@ def purchaseorderdelete(request,pk):
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     
-    purchase_order_instance = get_object_or_404(purchase_order, pk = p_o_pk)
+    purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
-    product_reference_no = prod_ref_no
-    
-    prod_to_items = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_reference_no)
-    
+    items_for_selected_po_items_queryset = []
 
-    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'prod_to_items':prod_to_items})
+    for product in purchase_order_instance.purchase_order_to_product_set.all():
+        prod_to_items = product_2_item_through_table.objects.filter(PProduct_pk = product.product_id.PProduct_SKU)
+
+        # looping the filtered queryset as filter returns a list of all records which has the product of th current iteration which
+        #  gives a list of multiple lists so looping in those lists to create a single list
+        for record in prod_to_items:
+            items_for_selected_po_items_queryset.append(record)
+
+    initial_data = []
+
+    for query in items_for_selected_po_items_queryset:
+        initial_data_dict = {'product_sku' : query.PProduct_pk.PProduct_SKU,
+                             'material_name':query.Item_pk.item_name,
+                             'rate':'0',
+                             'panha':query.Item_pk.Panha,
+                             'units':query.Item_pk.Units,
+                             'g_total':query.grand_total,
+                             'consumption':'0',
+                             'total_comsumption':'0',
+                             'physical_stock':'0',
+                             'balance_physical_stock':'0'}
+        
+        initial_data.append(initial_data_dict)
+
+    purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, fields =('material_name','rate','panha','units','g_total','consumption','total_comsumption','physical_stock','balance_physical_stock'), extra=len(initial_data) if initial_data else 0, can_delete=False)
+
+
+    purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
+    print(purchase_order_raw_sheet_formset)
+    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'prod_to_items':items_for_selected_po_items_queryset,'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset})
 
 
 #_________________________production-end______________________________
+
 
 
 #__________________________common-functions-start____________________________

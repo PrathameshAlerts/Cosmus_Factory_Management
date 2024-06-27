@@ -99,19 +99,9 @@
                             </tr>
                         </thead>
                         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-                            {% for product_item in prod_to_items %}
-                            <tr>
-                                <td>{{product_item.PProduct_pk.PProduct_SKU}}</td>
-                                <td>{{product_item.Item_pk.item_name}}</td>
-                                <td>NA</td>
-                                <td>{{product_item.Item_pk.Panha}}</td>
-                                <td>{{product_item.Item_pk.Units}}</td>
-                                <td>{{product_item.grand_total}}</td>
-                                <th>NA</th>
-                                <th>NA</th>
-                                <th>NA</th>
-                                <th>NA</th>
-                            </tr>
+                            {{purchase_order_raw_sheet_formset.management_form}}
+                            {% for form in purchase_order_raw_sheet_formset %}
+                           {{form.as_p}}
                             {% endfor %}
                         </tbody>
                         </table>
