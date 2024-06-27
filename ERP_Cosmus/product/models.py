@@ -518,7 +518,7 @@ class item_purchase_voucher_master(models.Model):
     gross_total = models.DecimalField(max_digits=10, decimal_places=2)
     grand_total = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now_add = True)
 
 
 class purchase_voucher_items(models.Model):

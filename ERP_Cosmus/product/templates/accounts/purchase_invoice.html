@@ -712,8 +712,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                     var minWidth = 800;
                     var minHeight = 600;
 
-                    $('body').addClass('popup-open');
-                    $('body').append('<div class="popup-overlay"></div>');
+                  
                   
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
@@ -749,8 +748,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
-                    $('body').addClass('popup-open');
-                    $('body').append('<div class="popup-overlay"></div>');
+                  
     
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically

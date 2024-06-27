@@ -2947,7 +2947,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     for query in items_for_selected_po_items_queryset:
         initial_data_dict = {'product_color' : query.PProduct_pk.PProduct_color,
                              'material_name':query.Item_pk.item_name,
-                             'rate':'0',
+                             'rate':query.Item_pk.rate,
                              'panha':query.Item_pk.Panha,
                              'units':query.Item_pk.Units,
                              'g_total':query.grand_total,
