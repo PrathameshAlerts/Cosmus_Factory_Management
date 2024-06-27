@@ -691,20 +691,13 @@ function receiveData(openingValue){
             const newUrl = encodeURIComponent(qtyData);
             const fullUrl = `${url}?data=${newUrl}`;
 
-       
-           
+  
             newPopup = window.open(fullUrl , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }else{
             newPopup = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }
 
-          window.addEventListener('message', handlePopupMessageQty);
-
-          // Listen for messages from the popup window
-          window.addEventListener('click', function(event) {
-            handleOutside(event);
-          });
-
+        
          
         },
         error: function (xhr, errmsg, err) {
@@ -715,33 +708,33 @@ function receiveData(openingValue){
     })
   })
 
-  function handleOutside(event) {
+//   function handleOutside(event) {
 
-var popUpRect = document.querySelector('body').getBoundingClientRect();
-var clickX = event.clientX;
-var clickY = event.clientY;
+// var popUpRect = document.querySelector('body').getBoundingClientRect();
+// var clickX = event.clientX;
+// var clickY = event.clientY;
 
-// Check if the click is outside the popup window
-if (
-  clickX > popUpRect.left || clickX <= popUpRect.right ||
-  clickY > popUpRect.top || clickY <= popUpRect.bottom
-) {
+// // Check if the click is outside the popup window
+// if (
+//   clickX > popUpRect.left || clickX <= popUpRect.right ||
+//   clickY > popUpRect.top || clickY <= popUpRect.bottom
+// ) {
  
- newPopup.focus();
+//  newPopup.focus();
   
-}
+// }
 
-}
+// }
 
-function handlePopupMessageQty(event) {
-if (event.data) {
-if (newPopup) {
-  $('body').removeClass('popup-open');
-  $('.popup-overlay').remove();
-  newPopup.close();
-}
-}
-}
+// function handlePopupMessageQty(event) {
+// if (event.data) {
+// if (newPopup) {
+//   $('body').removeClass('popup-open');
+//   $('.popup-overlay').remove();
+//   newPopup.close();
+// }
+// }
+// }
   </script>
 
 
