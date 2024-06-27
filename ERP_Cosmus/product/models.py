@@ -487,8 +487,10 @@ class item_shades_godown_report(models.Model):
     Quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
 
 
+
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225, unique= True)
+
 
 
 class RawStockTransferMaster(models.Model):
