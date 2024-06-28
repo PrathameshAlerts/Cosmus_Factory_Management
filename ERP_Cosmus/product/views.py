@@ -2843,7 +2843,7 @@ def viewproduct2items_configs(request, product_sku):
     
 
 
-def purchaseordercreateupdate(request,pk= None):
+def purchaseordercreateupdate(request,pk=None):
 
     try:
         ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
@@ -2863,6 +2863,7 @@ def purchaseordercreateupdate(request,pk= None):
 
     except Exception as e:
         logger.error(f'An Exception Occoured {e}')
+
 
     if request.method == 'POST':
         # both forms are submitted indivially depends on name of submitted button
@@ -2888,7 +2889,7 @@ def purchaseordercreateupdate(request,pk= None):
                 else:
                     logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
             else:
-                print(form.errors)
+                
                 return redirect(reverse('purchase-order-update', args=[form.instance.id]))
 
 
@@ -2912,7 +2913,7 @@ def purchaseordercreateupdate(request,pk= None):
                     logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
 
                 except ValidationError as val_err:
-                    logger.error(f'Validation error: {val_err} - {form.errors}')
+                    logger.error(f'Validation error: {val_err} - {formset.errors}')
 
                 except DatabaseError as db_err:
                     logger.error(f'Database error during form save: {db_err}')
@@ -2922,7 +2923,7 @@ def purchaseordercreateupdate(request,pk= None):
             else:
                 logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {formset.errors}')
             
-            return redirect('purchase-order-list')
+            return redirect(reverse('purchase-order-rawmaterial',args=[form.instance.id,form.instance.product_reference_number.Product_Refrence_ID])) # form.instance.id is p_o id
         
 
     return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,
@@ -2979,8 +2980,6 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
     physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) # convert python dict to json 
     
-
-
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
     # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
