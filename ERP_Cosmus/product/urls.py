@@ -158,7 +158,6 @@ urlpatterns = [
     path('purchaseorderdelete/<int:pk>',views.purchaseorderdelete, name = 'purchase-order-delete'),
 
     path('purchaseorderrawmaterial/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial'),
-
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),

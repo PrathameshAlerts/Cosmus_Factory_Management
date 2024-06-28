@@ -287,7 +287,7 @@ def created_updated_raw_stock_trasfer(sender, instance, created, **kwargs):
 
 
 
-
+# signal to create purchase_order_to_product instances on purchase_order creation
 @receiver(post_save, sender=purchase_order)
 def created_updated_purchase_order_product_qty(sender, instance, created, **kwargs):
     purchase_order_instance = instance
@@ -298,6 +298,8 @@ def created_updated_purchase_order_product_qty(sender, instance, created, **kwar
 
         for product in products.productdetails.all():
             purchase_order_to_product.objects.create(purchase_order_id=purchase_order_instance,product_id=product,order_quantity=0)
+            
+            
 
 
     if not created:
@@ -334,6 +336,13 @@ def set_item_rate_on_purchase(sender, instance, created, **kwargs):
             item_instance.rate = item_rate
             item_instance.save()
 
+# signal for purchase order status flag while saving purchase_order
+@receiver(post_save, sender=purchase_order)
+def set_purchase_order_product_status(sender, instance, created, **kwargs):
+    if created:
+        purchase_order_id = instance
+        purchase_order_id.process_status = '1'
+        purchase_order_id.save()
 
 
 

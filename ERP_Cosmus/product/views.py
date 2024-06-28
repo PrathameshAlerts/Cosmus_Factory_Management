@@ -2884,10 +2884,11 @@ def purchaseordercreateupdate(request,pk= None):
                         logger.error(f'Database error during formset save: {db_err}')
 
                     except Exception as e:
-                        logger.error(f'Unexpected error during formset save: {e}')
+                        logger.error(f'Unexpected error during form save: {e}')
                 else:
                     logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
             else:
+                print(form.errors)
                 return redirect(reverse('purchase-order-update', args=[form.instance.id]))
 
 
@@ -2900,6 +2901,14 @@ def purchaseordercreateupdate(request,pk= None):
             if formset.is_valid():
                 try:                
                     formset.save()
+
+                    # set the status to 2
+                    for form in formset:
+                        p_o_instance = form.instance.purchase_order_id
+                        if p_o_instance.process_status == '1':
+                            p_o_instance.process_status = '2'
+                            p_o_instance.save()
+
                     logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
 
                 except ValidationError as val_err:
@@ -2947,21 +2956,10 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
-    purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
-
-    # for product in purchase_order_instance.purchase_order_to_product_set.all():
-    #     prod_to_items = product_2_item_through_table.objects.filter(PProduct_pk = product.product_id.PProduct_SKU)
-
-    #     # looping the filtered queryset as filter returns a list of all records which has the product of th current iteration which
-    #     #  gives a list of multiple lists so looping in those lists to create a single list
-    #     for record in prod_to_items:
-    #         items_for_selected_po_items_queryset.append(record)
 
     product_refrence_no = prod_ref_no
-
     product_2_items_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_refrence_no).order_by('Item_pk','id').distinct('Item_pk')
-    
-    # print(product_2_items_instances)
+
 
     physical_stock_all_godowns = {}
 
@@ -2981,38 +2979,59 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
     physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) # convert python dict to json 
     
-    initial_data = []
-    for query in product_2_items_instances:
 
-        # for forntend use to mulitply total proccessed qty with consumption for common item 
-        if query.common_unique == True:
-            product_color_or_common_item = 'Common Item'
-        else:
-            product_color_or_common_item = query.PProduct_pk.PProduct_color
 
-        query.PProduct_pk.PProduct_color
-        initial_data_dict = {'product_color' : product_color_or_common_item,
-                             'material_name':query.Item_pk.item_name,
-                             'rate':query.Item_pk.rate,
-                             'panha':query.Item_pk.Panha,
-                             'units':query.Item_pk.Units,
-                             'g_total':query.grand_total,
-                             'consumption':'0',
-                             'total_comsumption':'0',
-                             'physical_stock':'0',
-                             'balance_physical_stock':'0'}
+    purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
+
+    
+    if not purchase_order_instance.purchase_order_for_raw_material_set.all():
         
-        initial_data.append(initial_data_dict)
+        initial_data = []
+        for query in product_2_items_instances:
 
-    purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_data) if initial_data else 0, can_delete=False)
+            # for forntend use to mulitply total proccessed qty with consumption for common item 
+            if query.common_unique == True:
 
-    purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
+                product_color_or_common_item = 'Common Item'
+            else:
+                product_color_or_common_item = query.PProduct_pk.PProduct_color
+
+            query.PProduct_pk.PProduct_color
+
+            initial_data_dict = {'product_color' : product_color_or_common_item,
+                                'material_name':query.Item_pk.item_name,
+                                'rate':query.Item_pk.rate,
+                                'panha':query.Item_pk.Panha,
+                                'units':query.Item_pk.Units,
+                                'g_total':query.grand_total,
+                                'consumption':'0',
+                                'total_comsumption':'0',
+                                'physical_stock':'0',
+                                'balance_physical_stock':'0'}
+            
+            initial_data.append(initial_data_dict)
+
+        purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_data) if initial_data else 0, can_delete=False)
+
+        purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
+    else:
+
+
+        purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=0, can_delete=False)
+
+        purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
+
     
     if request.method == 'POST':
-
+        purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
+        
         if purchase_order_raw_formset.is_valid() and purchase_order_raw_sheet_formset.is_valid():
+
             purchase_order_raw_formset.save()
             purchase_order_raw_sheet_formset.save()
+        else:
+            print(purchase_order_raw_formset.errors)
+            print( purchase_order_raw_sheet_formset.errors)
         
 
 
