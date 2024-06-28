@@ -1,5 +1,6 @@
 import decimal
 from io import BytesIO
+from itertools import count
 from operator import is_
 from sys import exception
 from django.contrib.auth.models import User , Group
@@ -12,7 +13,7 @@ from django.contrib.auth import  update_session_auth_hash ,authenticate # help u
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q, Sum, ProtectedError
+from django.db.models import Q, Sum, ProtectedError, Count
 from django.db import DatabaseError, IntegrityError, transaction
 from django.utils.timezone import now
 import logging
@@ -2958,13 +2959,32 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
     product_refrence_no = prod_ref_no
 
-    product_2_items_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID =product_refrence_no).order_by('Item_pk','id').distinct('Item_pk')
+    product_2_items_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_refrence_no).order_by('Item_pk','id').distinct('Item_pk')
     
+    # print(product_2_items_instances)
 
+    physical_stock_all_godowns = {}
+
+    
+    for item in product_2_items_instances:
+        item_id = item.Item_pk
+        item_name = item.Item_pk.item_name
+        item_quantity = 0
+        item_godowns = item_godown_quantity_through_table.objects.filter(Item_shade_name__items = item_id) # later filter by godown also after checking user godown location
+        
+        if item_godowns:
+            for query in item_godowns:
+                item_quantity = item_quantity + query.quantity
+                physical_stock_all_godowns[item_name] = str(item_quantity)
+        else:
+            physical_stock_all_godowns[item_name] = str(item_quantity)
+
+    physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) # convert python dict to json 
+    
     initial_data = []
-
     for query in product_2_items_instances:
 
+        # for forntend use to mulitply total proccessed qty with consumption for common item 
         if query.common_unique == True:
             product_color_or_common_item = 'Common Item'
         else:
@@ -2996,7 +3016,10 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         
 
 
-    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,'purchase_order_raw_formset':purchase_order_raw_formset,'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset})
+    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,
+                                                                      'purchase_order_raw_formset':purchase_order_raw_formset,
+                                                                      'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
+                                                                      'physical_stock_all_godown_json':physical_stock_all_godown_json})
 
 
 #_________________________production-end______________________________
