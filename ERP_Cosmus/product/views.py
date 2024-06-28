@@ -2910,7 +2910,7 @@ def purchaseordercreateupdate(request,pk=None):
                             p_o_instance.process_status = '2'         # change the status to 2
                             p_o_instance.save()                     # save the parent form instance
 
-                    logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
+                    logger.info(f'Purchase Order Quantities updated-{form.instance.id}')  # formset form form.instance.id
 
                 except ValidationError as val_err:
                     logger.error(f'Validation error: {val_err} - {formset.errors}')
@@ -2921,9 +2921,9 @@ def purchaseordercreateupdate(request,pk=None):
                 except Exception as e:
                     logger.error(f'Unexpected error during form save: {e}')
             else:
-                logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {formset.errors}')
+                logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {formset.errors}')   # formset form form.instance.id
             
-            return redirect(reverse('purchase-order-rawmaterial',args=[form.instance.id,form.instance.product_reference_number.Product_Refrence_ID])) # form.instance.id is p_o id
+            return redirect(reverse('purchase-order-rawmaterial',args=[instance.id, instance.product_reference_number.Product_Refrence_ID])) # instance.id is p_o id
         
 
     return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,
@@ -3014,6 +3014,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
 
+
     # for update (to check child instances of p_o_id is avaliable)
     elif purchase_order_instance.purchase_order_for_raw_material_set.all():
 
@@ -3035,13 +3036,17 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                 if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
                     po_form_instance.process_status = '3'  # change the status to 3
                     po_form_instance.save()  # save the parent form instance 
+
+            return(redirect(reverse('purchase-order-rawmaterial',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+        
         else:
             print(purchase_order_raw_formset.errors)
             print( purchase_order_raw_sheet_formset.errors)
+
         
 
 
-    return render(request,'production/purchaseorderrawmaterial.html',{'form':form ,
+    return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,
                                                                       'purchase_order_raw_formset':purchase_order_raw_formset,
                                                                       'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
                                                                       'physical_stock_all_godown_json':physical_stock_all_godown_json})
