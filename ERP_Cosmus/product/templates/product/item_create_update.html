@@ -792,7 +792,14 @@ function newPopUpwindow(button, path) {
   popUpWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
     // Ensure only one event listener is attached
   
-    window.addEventListener('message', handlePopupMessage);
+    window.addEventListener('message', function(event){
+             if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                popupWindow.close();
+             }
+           });
+
 
     // Listen for messages from the popup window
     window.addEventListener('click', function(event) {
@@ -818,15 +825,15 @@ function handleOutsideClick(event) {
   
 }
 
-function handlePopupMessage(event) {
-  if (event.data) {
-    if (popUpWindow) {
-      $('body').removeClass('popup-open');
-      $('.popup-overlay').remove();
-      popUpWindow.close();
-    }
-  }
-}
+// function handlePopupMessage(event) {
+//   if (event.data) {
+//     if (popUpWindow) {
+//       $('body').removeClass('popup-open');
+//       $('.popup-overlay').remove();
+//       popUpWindow.close();
+//     }
+//   }
+// }
   document.querySelector('input[type="file"]').addEventListener('change', function(event) {
       var imgPreview = document.getElementById('iFrame');
       var file = event.target.files[0];
