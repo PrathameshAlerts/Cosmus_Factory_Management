@@ -631,6 +631,7 @@ class purchase_order_to_product(models.Model):
 
 class purchase_order_for_raw_material(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
+    product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
     rate = models.DecimalField(max_digits=10, decimal_places=3)
     panha = models.DecimalField(max_digits=10, decimal_places=3)
