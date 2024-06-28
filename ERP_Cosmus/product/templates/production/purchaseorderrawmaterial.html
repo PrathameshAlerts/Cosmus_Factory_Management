@@ -199,13 +199,11 @@
                     const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
                     const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
                    
-
-
                     if (totalProductColor === productColor) {
                        // Calculate total consumption for matching colors
-                       const consumptionInput = document.querySelector('input[name$="-consumption"]');
-                       const consumption = parseFloat(consumptionInput.value) || 0;
-                            var totalConsumption = processQuantity * consumption;
+                        const consumptionInput = document.querySelector('input[name$="-consumption"]');
+                        const consumption = parseFloat(consumptionInput.value) || 0;
+                        var totalConsumption = processQuantity * consumption;
                             if (totalConsumptionInput) {
                                 totalConsumptionInput.value = totalConsumption.toFixed(2);
                             }
@@ -224,9 +222,7 @@
                             totalConsumptionInput.value = commonConsumption.toFixed(2);
                              }
                             });
-                       
                      }
-                   
                 });
                 
             })
