@@ -538,6 +538,12 @@ function handleSelection(purchaseValue,itemName, item_value) {
 
                 var item_shade_response = response.item_shade;
                 var item_shade__quantity = response.item_shades_total_quantity_dict;
+                
+
+                var itemrateinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-rate');
+                var item_rate_response = response.item_rate;
+                itemrateinput.value = item_rate_response
+
 
                 $.each(item_shade_response, function (key, value) {
                     if (item_shade__quantity.hasOwnProperty(key)) {
@@ -691,7 +697,10 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
         var selectedShade = $(this).val();
         var  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');  
+        var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');
+        var itemrate =  document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-rate');
+        itemratevalue = itemrate.value
+        console.log(itemratevalue)
         var prefix_id = purchaseValue;
         var primary_id = null;
         var test = null;
@@ -712,8 +721,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                     var minWidth = 800;
                     var minHeight = 600;
 
-                    $('body').addClass('popup-open');
-                    $('body').append('<div class="popup-overlay"></div>');
+                  
                   
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
@@ -722,7 +730,9 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                         data: {
                             'selected_shade': selectedShade,
                             'purchase_id': primary_id,
-                            'prefix_id':prefix_id,   
+                            'prefix_id':prefix_id, 
+                            
+                            
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server
@@ -749,7 +759,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
-                   
+                  
     
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
@@ -758,7 +768,8 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                         data: {
                             'selected_shade': selectedShade,
                             'unique_invoice_row_id': uniqueIdValue,
-                            'prefix_id':prefix_id
+                            'prefix_id':prefix_id,
+                            'item_rate' :itemratevalue,
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server

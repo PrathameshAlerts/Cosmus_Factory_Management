@@ -309,12 +309,30 @@ def created_updated_purchase_order_product_qty(sender, instance, created, **kwar
 
 
 
+# signal to set latest rate of an item after purchase invoice
+@receiver(post_save, sender=purchase_voucher_items)
+def set_item_rate_on_purchase(sender, instance, created, **kwargs):
+    item_rate = instance.rate
+    item_id = instance.item_shade.items.id
+
+    if item_id:
+        item_instance = Item_Creation.objects.get(id=item_id)
+        item_instance.rate = item_rate
+        item_instance.save()
 
 
 
+# signal to set latest rate of an item after opening godown quantity added
+@receiver(post_save, sender=opening_shade_godown_quantity)
+def set_item_rate_on_purchase(sender, instance, created, **kwargs):
+    item_rate = instance.opening_rate
+    item_id = instance.opening_purchase_voucher_godown_item.items.id
 
-
-
+    if item_id:
+        item_instance = Item_Creation.objects.get(id=item_id)  # set item rate only if the rate is 0, which means there is no purchase made. 
+        if item_instance.rate == 0:
+            item_instance.rate = item_rate
+            item_instance.save()
 
 
 

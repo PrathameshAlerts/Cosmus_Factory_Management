@@ -161,6 +161,7 @@
                     document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-consumption').value = '0.000';
                 }
             }
+            calculateTotalConsumption();
         }
 
         function updateProcessQuantity() {
@@ -172,8 +173,7 @@
 
                 var orderQuantityValue = parseFloat(orderQuantity);
                 var processQuantityValue = parseFloat(processQuantity);
-                console.log('orderQuantityValue',orderQuantityValue)
-                console.log('processQuantityValue',processQuantityValue)
+               
                  if (processQuantityValue > orderQuantityValue) {
                     document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity').value = "0";
                 
@@ -193,37 +193,38 @@
                 const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
                 const processtotalQty = document.getElementById('id_processTotal');
                 total = total + processQuantity;
-                console.log('total',total)
-       
+               
                 processtotalQty.value = total;
                 totalConsumptionRows.forEach(totalRow => {
                     const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
-                
-                    if (totalProductColor === productColor) {
-                        // Get the consumption value
-                        const consumptionInput = document.querySelector('input[name$="-consumption"]');
-                        
-                       
-                        const consumption = parseFloat(consumptionInput.value);
-                        // Calculate the total consumption
-                        var totalConsumption = processQuantity * consumption;
-                         
-                      
-                        // Update the total_consumption input
-                       const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
-               
-                        if (totalConsumptionInput) {
-                            totalConsumptionInput.value = totalConsumption.toFixed(2);
-                        }
-                    // }else if(totalProductColor !== productColor){
-                    //     const consumptionInput = document.querySelector('input[name$="-consumption"]');
-                    //     const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
+                    const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
+                   
 
-                    //     const consumption = parseFloat(consumptionInput.value);
-                    //     var commonConsumption = total * consumption;
-                    //     if (totalConsumptionInput) {
-                    //         totalConsumptionInput.value = commonConsumption.toFixed(2);
-                    //     }
+
+                    if (totalProductColor === productColor) {
+                       // Calculate total consumption for matching colors
+                       const consumptionInput = document.querySelector('input[name$="-consumption"]');
+                       const consumption = parseFloat(consumptionInput.value) || 0;
+                            var totalConsumption = processQuantity * consumption;
+                            if (totalConsumptionInput) {
+                                totalConsumptionInput.value = totalConsumption.toFixed(2);
+                            }
+                    }else if(totalProductColor === "Common Item"){
+                        const rows = $("tbody.mainTableList tr").find("input[name$='-product_color']").filter(function() {
+                            return $(this).val() === "Common Item";
+                        }).closest('tr');
+                
+                        // Iterate over each row to get the consumption input value
+                            rows.each(function() {
+                                const consumptionInputCommon = $(this).find('input[name$="-consumption"]').val();
+                                const totalValue = $('#id_processTotal').val();
+                            
+                                var commonConsumption = totalValue * consumptionInputCommon;
+                            if (totalConsumptionInput) {
+                            totalConsumptionInput.value = commonConsumption.toFixed(2);
+                             }
+                            });
+                       
                      }
                    
                 });
