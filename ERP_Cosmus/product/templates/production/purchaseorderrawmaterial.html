@@ -74,6 +74,7 @@
                         </tr>
                         {% endfor %}
                     </tbody>
+                    <input type="hidden" name="processTotal" id="id_processTotal" value="0">
                 </table>
             </div>
         </div>
@@ -141,74 +142,113 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    function updateTotal() {
-        var total = 0;
-       var form = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
-    
-       for(var i =0 ; i <form ; i++){
-        var panha = document.getElementById('id_purchase_order_for_raw_material_set-'+i+'-panha').value;
-        var units = document.getElementById('id_purchase_order_for_raw_material_set-'+i+'-units').value;
-        var grandTotal = document.getElementById('id_purchase_order_for_raw_material_set-'+i+'-g_total').value;
-        var Comsumption = document.getElementById('id_purchase_order_for_raw_material_set-'+i+'-comsumption');
-        var totalComsumption = document.getElementById('id_purchase_order_for_raw_material_set-'+i+'-total_comsumption');
-        var productColor = document.getElementById('id_'+i+'-product_color').value;
+        function updateTotal() {
+            var totalForms = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
 
-        console.log(productColor)
-        var punhaValue = parseFloat(panha);
-        var unitsValue = parseFloat(units);
-        var grandTotalValue = parseFloat(grandTotal);
-        // var totalComsumptionValue = parseFloat(totalComsumption);
- 
-        Comsumption  = punhaValue * unitsValue/grandTotalValue;
-        document.getElementById('id_purchase_order_for_raw_material_set-'+i+'-consumption').value = Comsumption.toFixed(3);
+            for (var i = 0; i < totalForms; i++) {
+                var panha = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-panha').value;
+                var units = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-units').value;
+                var grandTotal = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-g_total').value;
 
-       
-       }
-    }
+                var panhaValue = parseFloat(panha);
+                var unitsValue = parseFloat(units);
+                var grandTotalValue = parseFloat(grandTotal);
 
-    function combinData(){
-        var form = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
-        var newForm = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
-        for(var i =0 ; i <form ; i++){
-            var productColor = document.getElementById('id_'+i+'-product_color').value;
-        }
-        for(var i =0 ; i <newForm ; i++){
-            var productColor = document.getElementById('id_'+i+'-product_color').value;
-        }
-    }
-    updateTotal();
-
-    function updateTotalComsumption(){
-        var newForm = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
-        // console.log('newForm',newForm)
-        for(var i =0 ; i <newForm ; i++){ 
-            var processqty = document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity').value;
-            var totalQty = document.getElementById('id_purchase_order_to_product_set-'+i+'-order_quantity').value;
-            // console.log('processqty',processqty)
-            // console.log('totalQty',totalQty)
-            if(processqty <= totalQty ){
-               
-              var newValue=  document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity').value
-              newValue = parseInt(processqty);
-              console.log('newValue',newValue)
-            }else{
-                document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity').value = "0";
+                if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
+                    var consumption = (panhaValue * unitsValue) / grandTotalValue;
+              
+                    document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-consumption').value = consumption.toFixed(3);
+                } else {
+                    document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-consumption').value = '0.000';
+                }
             }
-        } 
-    }
+            calculateTotalConsumption();
+        }
 
-    var newForm = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
-        console.log('newForm',newForm)
-        for(var i =0 ; i < newForm ; i++){ 
-            var processValue = document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity');
+        function updateProcessQuantity() {
+            var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+
+            for (var i = 0; i < newForms; i++) {
+                var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
+                var processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity').value;
+
+                var orderQuantityValue = parseFloat(orderQuantity);
+                var processQuantityValue = parseFloat(processQuantity);
+               
+                 if (processQuantityValue > orderQuantityValue) {
+                    document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity').value = "0";
+                
+                 }
+            }
+        }
+
+        function calculateTotalConsumption(){
+            var total =0;
+            const processQty = document.querySelectorAll('input[name$="-process_quantity"]');
+
+            processQty.forEach(input =>{
+                const processQuantity = parseInt(input.value) || 0;
+               
+                const row = input.closest('tr');
+                const productColor = row.querySelector('input[name$="-product_color"]').value;
+                const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
+                const processtotalQty = document.getElementById('id_processTotal');
+                total = total + processQuantity;
+               
+                processtotalQty.value = total;
+                totalConsumptionRows.forEach(totalRow => {
+                    const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
+                    const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
+                   
+
+
+                    if (totalProductColor === productColor) {
+                       // Calculate total consumption for matching colors
+                       const consumptionInput = document.querySelector('input[name$="-consumption"]');
+                       const consumption = parseFloat(consumptionInput.value) || 0;
+                            var totalConsumption = processQuantity * consumption;
+                            if (totalConsumptionInput) {
+                                totalConsumptionInput.value = totalConsumption.toFixed(2);
+                            }
+                    }else if(totalProductColor === "Common Item"){
+                        const rows = $("tbody.mainTableList tr").find("input[name$='-product_color']").filter(function() {
+                            return $(this).val() === "Common Item";
+                        }).closest('tr');
+                
+                        // Iterate over each row to get the consumption input value
+                            rows.each(function() {
+                                const consumptionInputCommon = $(this).find('input[name$="-consumption"]').val();
+                                const totalValue = $('#id_processTotal').val();
+                            
+                                var commonConsumption = totalValue * consumptionInputCommon;
+                            if (totalConsumptionInput) {
+                            totalConsumptionInput.value = commonConsumption.toFixed(2);
+                             }
+                            });
+                       
+                     }
+                   
+                });
+                
+            })
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
+            formElements.forEach(element => {
+                element.addEventListener('input', updateTotal);
+            });
+
+            var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
+            processQuantityElements.forEach(element => {
+                element.addEventListener('input', updateProcessQuantity);
+                element.addEventListener('input', calculateTotalConsumption);
+                element.addEventListener('keyup', calculateTotalConsumption);
+            });
            
-            processValue.addEventListener('input',updateTotalComsumption)
-        } 
-
-    updateTotalComsumption();
-    });
-
+            calculateTotalConsumption();
+            updateTotal(); // Initialize the calculation on page load
+            updateProcessQuantity(); // Initialize the validation on page load
+        });
 </script>
 {% endblock %}
 
