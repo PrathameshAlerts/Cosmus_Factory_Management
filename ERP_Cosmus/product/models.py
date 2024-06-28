@@ -170,10 +170,10 @@ class Product(models.Model):
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
     Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True)
     Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False,null =True)
-    Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
-    Product_MRP = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
-    Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
-    Product_BulkPrice=models.DecimalField( max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
+    Product_MRP = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
+    Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
+    Product_BulkPrice=models.DecimalField( max_digits=10, decimal_places=3, blank = True, null = True)
     Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, null = True)
     Product_HSNCode = models.BigIntegerField(blank = True,null =True)
     Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, null = True)
@@ -595,6 +595,14 @@ class set_prod_item_part_name(models.Model):
 
 
 class purchase_order(models.Model):
+    STATUS = [
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+    ]
+
+
     purchase_order_number = models.IntegerField(unique=True, blank=False, null=False)
     product_reference_number = models.ForeignKey(Product, on_delete=models.PROTECT)
     ledger_party_name = models.ForeignKey(Ledger, on_delete= models.PROTECT)
@@ -602,6 +610,7 @@ class purchase_order(models.Model):
     created_date = models.DateField(auto_now=True)
     modified_created_date = models.DateField(auto_now_add=True)
     number_of_pieces = models.IntegerField(default=0)
+    process_status = models.CharField(choices=STATUS, blank=True, null= True)
     
 
 
@@ -610,6 +619,7 @@ class purchase_order_to_product(models.Model):
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
+    cutting_quantity = models.IntegerField(default=0)
 
 
     def save(self, *args, **kwargs):
@@ -622,14 +632,14 @@ class purchase_order_to_product(models.Model):
 class purchase_order_for_raw_material(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
-    rate = models.DecimalField(max_digits=10, decimal_places=2)
-    panha = models.DecimalField(max_digits=10, decimal_places=2)
-    units = models.DecimalField(max_digits=10, decimal_places=2)
-    g_total = models.DecimalField(max_digits=10, decimal_places=2)
-    consumption = models.DecimalField(max_digits=10, decimal_places=2)
-    total_comsumption = models.DecimalField(max_digits=10, decimal_places=2)
-    physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
-    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
+    rate = models.DecimalField(max_digits=10, decimal_places=3)
+    panha = models.DecimalField(max_digits=10, decimal_places=3)
+    units = models.DecimalField(max_digits=10, decimal_places=3)
+    g_total = models.DecimalField(max_digits=10, decimal_places=3)
+    consumption = models.DecimalField(max_digits=10, decimal_places=3)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
+    physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
 
 
 
