@@ -2904,10 +2904,10 @@ def purchaseordercreateupdate(request,pk= None):
 
                     # set the status to 2
                     for form in formset:
-                        p_o_instance = form.instance.purchase_order_id
-                        if p_o_instance.process_status == '1':
-                            p_o_instance.process_status = '2'
-                            p_o_instance.save()
+                        p_o_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                        if p_o_instance.process_status == '1':             # if process_status in parent form is 1
+                            p_o_instance.process_status = '2'         # change the status to 2
+                            p_o_instance.save()                     # save the parent form instance
 
                     logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
 
@@ -2983,7 +2983,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
-    
+    # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
     if not purchase_order_instance.purchase_order_for_raw_material_set.all():
         
         initial_data = []
@@ -3014,8 +3014,9 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_data) if initial_data else 0, can_delete=False)
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
-    else:
 
+    # for update (to check child instances of p_o_id is avaliable)
+    elif purchase_order_instance.purchase_order_for_raw_material_set.all():
 
         purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=0, can_delete=False)
 
@@ -3029,6 +3030,12 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
             purchase_order_raw_formset.save()
             purchase_order_raw_sheet_formset.save()
+
+            for form in purchase_order_raw_sheet_formset:
+                po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
+                    po_form_instance.process_status = '3'  # change the status to 3
+                    po_form_instance.save()  # save the parent form instance 
         else:
             print(purchase_order_raw_formset.errors)
             print( purchase_order_raw_sheet_formset.errors)
