@@ -5,7 +5,7 @@
 <div class="" >
     <form method="POST">
         {% csrf_token %}
-        {{physical_stock_all_godown_json}}
+       
         <div class="row">
             <div class="col-lg-6 mt-3">
                 <h4 class="">Purchase Order raw material</h4>
@@ -75,6 +75,7 @@
                         {% endfor %}
                     </tbody>
                     <input type="hidden" name="processTotal" id="id_processTotal" value="0">
+                    
                 </table>
             </div>
         </div>
@@ -126,9 +127,11 @@
                                 <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.initial.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.initial.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
                                 <td> <input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="{{form.initial.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                            
                             </tr>
                             {% endif %}
                             {% endfor %}
+                            <input type="hidden" id="id_physical_stock" value=" {{physical_stock_all_godown_json}}">
                         </tbody>
                     </table>
                 </div>  
@@ -143,17 +146,30 @@
 </div>
 
 <script>
-        function updateTotal() {
+       function updateTotal() {
             var totalForms = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
 
             for (var i = 0; i < totalForms; i++) {
                 var panha = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-panha').value;
                 var units = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-units').value;
                 var grandTotal = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-g_total').value;
-
+                var physicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock');
+                var newPhysicalStock = document.getElementById('id_physical_stock').value;
+                var materialName = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-material_name').value;
                 var panhaValue = parseFloat(panha);
                 var unitsValue = parseFloat(units);
                 var grandTotalValue = parseFloat(grandTotal);
+                var mainstock = JSON.parse(newPhysicalStock);
+                for (var key in mainstock) {
+                    if (mainstock.hasOwnProperty(key)) {
+                        if(key === materialName){
+
+                            physicalStock.value = mainstock[key];
+                        }
+                    }
+               }
+
+               
 
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
                     var consumption = (panhaValue * unitsValue) / grandTotalValue;
@@ -194,20 +210,19 @@
                 const productColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
                 const processtotalQty = document.getElementById('id_processTotal');
+              
                 total = total + processQuantity;
                
                 processtotalQty.value = total;
                 totalConsumptionRows.forEach(totalRow => {
                     const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
                     const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
-                   
-
-
+               
                     if (totalProductColor === productColor) {
                        // Calculate total consumption for matching colors
-                       const consumptionInput = document.querySelector('input[name$="-consumption"]');
-                       const consumption = parseFloat(consumptionInput.value) || 0;
-                            var totalConsumption = processQuantity * consumption;
+                        const consumptionInput = document.querySelector('input[name$="-consumption"]');
+                        const consumption = parseFloat(consumptionInput.value) || 0;
+                        var totalConsumption = processQuantity * consumption;
                             if (totalConsumptionInput) {
                                 totalConsumptionInput.value = totalConsumption.toFixed(2);
                             }
@@ -226,13 +241,26 @@
                             totalConsumptionInput.value = commonConsumption.toFixed(2);
                              }
                             });
-                       
                      }
-                   
                 });
                 
             })
+            balanceStock();
         }
+function balanceStock(){
+    var totals = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
+
+    for (var i = 0; i < totals; i++) {
+        var totalConsumtionValue = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-total_comsumption').value;
+        var newPhysicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock').value;
+        var balanceStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock');
+        balanceStock = newPhysicalStock - totalConsumtionValue;
+    
+        document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
+    }               
+  
+}
+
         document.addEventListener('DOMContentLoaded', () => {
             var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
             formElements.forEach(element => {

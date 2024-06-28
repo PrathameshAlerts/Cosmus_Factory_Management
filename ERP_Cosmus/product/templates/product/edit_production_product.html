@@ -796,8 +796,8 @@
 
    function newPopup(button, path) {
      var refrence_id = document.getElementById('id_Product_Refrence_ID').value
-    //  $('body').addClass('popup-open');
-    //  $('body').append('<div class="popup-overlay"></div>');
+     $('body').addClass('popup-open');
+     $('body').append('<div class="popup-overlay"></div>');
 
          var minWidth = 1270; // minimum width
          var minHeight = 700;
@@ -807,12 +807,18 @@
          var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
          popupWindow = window.open( baseUrl  + path + refrence_id , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                 
-        // window.addEventListener('message', handlePopupMessage);
+         window.addEventListener('message', function(event){
+             if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                popupWindow.close();
+             }
+           });
 
         //   // Listen for messages from the popup window
-        //   window.addEventListener('click', function(event) {
-        //     handleOutsideView(event);
-        //   });
+          window.addEventListener('click', function(event) {
+            handleOutsideView(event);
+          });
               } 
    
 
@@ -830,7 +836,13 @@
          popupWindow = window.open( baseUrl  + path + sku , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
        
          
-         window.addEventListener('message', handlePopupMessage);
+         window.addEventListener('message', function(event){
+             if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                popupWindow.close();
+             }
+           });
 
         // Listen for messages from the popup window
         window.addEventListener('click', function(event) {
@@ -855,15 +867,6 @@ if (
 
 }
 
-function handlePopupMessage(event) {
-if (event.data) {
-if (popupWindow) {
-  $('body').removeClass('popup-open');
-  $('.popup-overlay').remove();
-  popupWindow.close();
-}
-}
-}
    
    </script>
  

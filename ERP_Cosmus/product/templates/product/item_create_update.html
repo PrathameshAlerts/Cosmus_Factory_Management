@@ -656,12 +656,12 @@ function receiveData(openingValue){
 
 <script>
    var newPopup = null;
-  $(document).ready(function(){
+$(document).ready(function(){
    
-    var itemValue;
-    var itemId;
+  var itemValue;
+  var itemId;
 
-    $(document).on ('click','button.itemQty',function(button){
+  $(document).on ('click','button.itemQty',function(button){
       var itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
       itemValue = itemId.split('-')[1];
       var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
@@ -672,6 +672,9 @@ function receiveData(openingValue){
            
         var minWidth = 800;
         var minHeight = 600;
+
+        $('body').addClass('popup-open');
+        $('body').append('<div class="popup-overlay"></div>');
 
         $.ajax({
         url: '{% url "opening-godown-qty-ajax" %}',
@@ -696,8 +699,18 @@ function receiveData(openingValue){
           }else{
             newPopup = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
           }
-
+          window.addEventListener('message', function(event){
+             if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                newPopup.close();
+             }
+           });
         
+            // Listen for messages from the popup window
+            window.addEventListener('click', function(event) {
+              handleOutside(event);
+             });
          
         },
         error: function (xhr, errmsg, err) {
@@ -708,33 +721,24 @@ function receiveData(openingValue){
     })
   })
 
-//   function handleOutside(event) {
+  function handleOutside(event) {
 
-// var popUpRect = document.querySelector('body').getBoundingClientRect();
-// var clickX = event.clientX;
-// var clickY = event.clientY;
+    var popUpRect = document.querySelector('body').getBoundingClientRect();
+    var clickX = event.clientX;
+    var clickY = event.clientY;
 
-// // Check if the click is outside the popup window
-// if (
-//   clickX > popUpRect.left || clickX <= popUpRect.right ||
-//   clickY > popUpRect.top || clickY <= popUpRect.bottom
-// ) {
- 
-//  newPopup.focus();
-  
-// }
+    // Check if the click is outside the popup window
+    if (
+      clickX > popUpRect.left || clickX <= popUpRect.right ||
+      clickY > popUpRect.top || clickY <= popUpRect.bottom
+    ) {
+    
+    newPopup.focus();
+      
+    }
 
-// }
+    }
 
-// function handlePopupMessageQty(event) {
-// if (event.data) {
-// if (newPopup) {
-//   $('body').removeClass('popup-open');
-//   $('.popup-overlay').remove();
-//   newPopup.close();
-// }
-// }
-// }
   </script>
 
 
@@ -788,7 +792,14 @@ function newPopUpwindow(button, path) {
   popUpWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
     // Ensure only one event listener is attached
   
-    window.addEventListener('message', handlePopupMessage);
+    window.addEventListener('message', function(event){
+             if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                popupWindow.close();
+             }
+           });
+
 
     // Listen for messages from the popup window
     window.addEventListener('click', function(event) {
@@ -814,15 +825,15 @@ function handleOutsideClick(event) {
   
 }
 
-function handlePopupMessage(event) {
-  if (event.data) {
-    if (popUpWindow) {
-      $('body').removeClass('popup-open');
-      $('.popup-overlay').remove();
-      popUpWindow.close();
-    }
-  }
-}
+// function handlePopupMessage(event) {
+//   if (event.data) {
+//     if (popUpWindow) {
+//       $('body').removeClass('popup-open');
+//       $('.popup-overlay').remove();
+//       popUpWindow.close();
+//     }
+//   }
+// }
   document.querySelector('input[type="file"]').addEventListener('change', function(event) {
       var imgPreview = document.getElementById('iFrame');
       var file = event.target.files[0];
