@@ -518,7 +518,7 @@ $(document).on('keydown','[name^="product2itemcommonformset-"][name$="Item_pks"]
 
 
 <script>
-      // var formSubmitted = false;
+       var formSubmitted = false;
     // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function() {
         const addFormButton = document.getElementById('addForm');
@@ -620,12 +620,12 @@ deleteRow();
     });
 
 //    // Handle the case when the window is closed without form submission
-//    window.addEventListener('beforeunload',  function(event) {
-//     // if (!formSubmitted) {
-//       const data = { message: 'close' };
-//       window.opener.postMessage(data, '*');
-//     // }
-//   });
+   window.addEventListener('beforeunload',  function(event) {
+    // if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    // }
+  });
 
 </script>
 

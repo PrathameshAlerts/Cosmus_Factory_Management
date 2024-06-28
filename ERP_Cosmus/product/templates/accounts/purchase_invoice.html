@@ -247,9 +247,15 @@
         }
 
     }
+    
+    console.log(datasId)
     // Set the popupData with convertedData
-    var data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData');
-    data.value = JSON.stringify(convertedData);
+    if(datasId){
+        var data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData').value;
+    console.log(data);
+    data = JSON.stringify(convertedData);
+    }
+    
 }
 
 </script>
@@ -504,10 +510,10 @@ function randomValue (){
   
 });
 
-// // Function to handle the AJAX request and UI updates
-function handleSelection(purchaseValue,itemName, item_value) {
+       // Function to handle the AJAX request and UI updates
+      function handleSelection(purchaseValue,itemName, item_value) {
 
-    if (item_value !== undefined) {
+     if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
          $(`input[name^="item_name_${purchaseValue}"]`).val(selectedValue);
 
@@ -559,21 +565,21 @@ function handleSelection(purchaseValue,itemName, item_value) {
                 ajaxInProgress = false;
             }
         });
-    }
-}
+      }
+      }
 
-$(document).on('click','[name^="item_name_"]', function(event) {
+     $(document).on('click','[name^="item_name_"]', function(event) {
           event.preventDefault();
           var  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
          var selectItem = $(`#${selectName}`);
           selectItem.css("display" ,"none");
                       
-  })
+     })
 
-   var index = 0; // Declare index outside of the event listener
-   var indexbool = true;
+     var index = 0; // Declare index outside of the event listener
+     var indexbool = true;
 
-   $(document).on('keydown', 'input[name^="item_name_"]', function(event) {
+     $(document).on('keydown', 'input[name^="item_name_"]', function(event) {
         const $inputField = $(this);
         const $dropdownOptions = $inputField.next('.item-name');
         const $options = $dropdownOptions.find('.itemName-div');
@@ -598,7 +604,6 @@ $(document).on('click','[name^="item_name_"]', function(event) {
             if (index <= optionsCount) {
             
                 const $selectedItem = $options.eq(index);
-                console.log($selectedItem)
                 const $nextItem = $selectedItem.next();
                 const nameDataKey = $selectedItem.text();
                 const nameKey = $selectedItem.data('key');
@@ -688,11 +693,11 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         enterPressed = true;
         hiddenValue.css("display" ,"none");
         }
-    });
+     });
 
 
 
-    // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
+     // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
         var popupWindow = null; // Variable to hold the reference to the popup window
         $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
         var selectedShade = $(this).val();
@@ -700,7 +705,7 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         var purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');
         var itemrate =  document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-rate');
         itemratevalue = itemrate.value
-        console.log(itemratevalue)
+     
         var prefix_id = purchaseValue;
         var primary_id = null;
         var test = null;
@@ -720,7 +725,8 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     var minWidth = 800;
                     var minHeight = 600;
-
+                    $('body').addClass('popup-open');
+                    $('body').append('<div class="popup-overlay"></div>');
                   
                   
                     $.ajax({
@@ -739,8 +745,19 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                            
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                            
-                            window.addEventListener('message', handlePopupMessagePurchase);
+                                // // Add event listener for the popup window close
+                                // popupWindow.addEventListener('beforeunload', function() {
+                                //                     $('body').removeClass('popup-open');
+                                //                     $('.popup-overlay').remove();
+                                //                 });
 
+                                window.addEventListener('message', function(event){
+                                if (event.data.message === 'close') {
+                                    $('body').removeClass('popup-open');
+                                    $('.popup-overlay').remove();
+                                    popupWindow.close();
+                                }
+                                 });
                                 // Listen for messages from the popup window
                                 window.addEventListener('click', function(event) {
                                     handleOutsidePurchase(event);
@@ -760,7 +777,8 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                     var minWidth = 800;
                     var minHeight = 600;
                   
-    
+                    $('body').addClass('popup-open');
+                    $('body').append('<div class="popup-overlay"></div>');
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',
@@ -774,7 +792,15 @@ $(document).on('click','[name^="item_name_"]', function(event) {
                         success: function (response) {
                             // Open the dynamic URL received from the server
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-                            window.addEventListener('message', handlePopupMessagePurchase);
+                        
+                            
+                            window.addEventListener('message', function(event){
+                                if (event.data.message === 'close') {
+                                    $('body').removeClass('popup-open');
+                                    $('.popup-overlay').remove();
+                                    popupWindow.close();
+                                }
+                                 });
 
                             // Listen for messages from the popup window
                             window.addEventListener('click', function(event) {
@@ -794,31 +820,23 @@ $(document).on('click','[name^="item_name_"]', function(event) {
         });
         function handleOutsidePurchase(event) {
 
-var popUpRect = document.querySelector('body').getBoundingClientRect();
-var clickX = event.clientX;
-var clickY = event.clientY;
+        var popUpRect = document.querySelector('body').getBoundingClientRect();
+        var clickX = event.clientX;
+        var clickY = event.clientY;
 
-// Check if the click is outside the popup window
-if (
-  clickX > popUpRect.left || clickX <= popUpRect.right ||
-  clickY > popUpRect.top || clickY <= popUpRect.bottom
-) {
- 
-    popupWindow.focus();
-  
-}
+        // Check if the click is outside the popup window
+        if (
+        clickX > popUpRect.left || clickX <= popUpRect.right ||
+        clickY > popUpRect.top || clickY <= popUpRect.bottom
+        ) {
+        
+            popupWindow.focus();
+        
+        }
 
-}
+        }
 
-function handlePopupMessagePurchase(event) {
-if (event.data) {
-if (popupWindow) {
-  $('body').removeClass('popup-open');
-  $('.popup-overlay').remove();
-  popupWindow.close();
-}
-}
-}
+
 
     });
 </script>
