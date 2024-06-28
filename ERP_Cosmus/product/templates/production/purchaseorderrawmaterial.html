@@ -99,9 +99,9 @@
                         </thead>
                         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                             {{purchase_order_raw_sheet_formset.management_form}}
-                            {{form.id}}
                             {% for form in purchase_order_raw_sheet_formset %}
-
+                            
+                            {{form.id}}
                             {% if form.instance.id %}
                             <tr>
                                 <td><input type="text" class="productorder_input" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{forloop.counter0}}-product_color" readonly></td>
