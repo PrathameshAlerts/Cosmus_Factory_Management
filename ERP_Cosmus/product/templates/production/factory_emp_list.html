@@ -1,0 +1,24 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
+
+<table>
+
+    <tr>
+        <th>No.</th>
+        <th>Factory Worker Name</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for emp in factory_employees %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{emp.factory_emp_name}}</td>
+        <td><a href="{% url 'factory-emp-update' emp.id %}">Update</a></td>
+        <td><a href="{% url 'factory-emp-delete'  emp.id %} ">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}

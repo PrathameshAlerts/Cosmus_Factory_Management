@@ -158,6 +158,15 @@ urlpatterns = [
     path('purchaseorderdelete/<int:pk>',views.purchaseorderdelete, name = 'purchase-order-delete'),
 
     path('purchaseorderrawmaterial/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial'),
+
+
+    # factory worker routes
+
+    path('factory_emp_create/',views.factory_employee_create_update, name = 'factory-emp-create'),
+    path('factory_emp_update/<int:pk>',views.factory_employee_create_update, name = 'factory-emp-update'),
+    path('factory_emp_list/',views.factoryemplist, name = 'factory-emp-list'),
+    path('factory_emp_delete/<int:pk>',views.factoryempdelete, name = 'factory-emp-delete'),
+
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),

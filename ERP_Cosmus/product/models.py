@@ -450,6 +450,10 @@ class Ledger(models.Model):
 
 
 
+class factory_employee(models.Model):
+    factory_emp_name = models.CharField(max_length= 255)
+
+
 class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, blank = False, null = False, related_name = 'transaction_entry')
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
