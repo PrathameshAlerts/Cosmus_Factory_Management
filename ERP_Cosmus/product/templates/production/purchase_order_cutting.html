@@ -73,8 +73,8 @@
                 </tr>
             </thead>
             <tbody class="mainTableList">
-                {{purchase_order_raw_formset.management_form}}
-                {% for form in purchase_order_raw_formset %}
+                {{ purchase_order_raw_to_product_cutting_formset.management_form }}
+                {% for form in purchase_order_raw_to_product_cutting_formset %}
                 {{form.id}}
                 <tr class="text-nowrap">
                     <td>
@@ -89,6 +89,9 @@
                     <td>
                         <input type="number" class="productorderqty-input" name="{{form.prefix}}-process_quantity" value="{{form.instance.process_quantity}}" id="id_{{form.prefix}}-process_quantity">
                     </td>
+                    <td>
+                        <input type="number" class="productorderqty-input" name="{{form.prefix}}-process_quantity" value="{{form.instance.process_quantity}}" id="id_{{form.prefix}}-process_quantity">
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -97,6 +100,16 @@
         </table>
     </div>
 </div>
+
+
+
+
+{{ purchase_order_raw_to_product_cutting_formset.management_form }}
+{% for form in purchase_order_raw_to_product_cutting_formset %}
+{{form.as_p}}
+{% endfor %}
+
+<input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
 </form>
 
 {% endblock %}
