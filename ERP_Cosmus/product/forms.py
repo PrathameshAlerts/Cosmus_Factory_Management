@@ -313,7 +313,7 @@ class purchase_order_raw_to_product_cutting_form(purchase_order_raw_to_product_f
         fields = purchase_order_raw_to_product_form.Meta.fields + ['cutting_quantity']
 
 
-purchase_order_raw_product_qty_cutting_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_form, extra=0)
+purchase_order_raw_product_qty_cutting_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_cutting_form, extra=0)
 
 
 class raw_material_stock_trasfer_master_form(forms.ModelForm):
