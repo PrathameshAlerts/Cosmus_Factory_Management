@@ -274,16 +274,12 @@ class purchase_order_to_product_form(forms.ModelForm):
 purchase_order_product_qty_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_to_product_form, extra=0, can_delete=True)
 
 
+# inherited from purchase_order_to_product_form
+class purchase_order_raw_to_product_form(purchase_order_to_product_form):
+    class Meta(purchase_order_to_product_form.Meta):  # inherited from purchase_order_to_product_form meta class
+        
+        fields = purchase_order_to_product_form.Meta.fields + ['process_quantity']   # inherited from purchase_order_to_product_form fields of meta class
 
-class purchase_order_raw_to_product_form(forms.ModelForm):
-    class Meta:
-        model = purchase_order_to_product
-
-        fields = ['product_id','order_quantity','process_quantity']
-
-        widgets = {
-            'product_id': forms.TextInput(),
-        }
 
 purchase_order_raw_product_qty_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_form, extra=0)
 
@@ -304,9 +300,20 @@ class purchase_order_raw_product_sheet_form(forms.ModelForm):
         fields = ['product_color','material_name','rate','panha','units','g_total','consumption','total_comsumption','physical_stock','balance_physical_stock']
 
 
+# inherited from purchase_order_form
+class purchase_order_form_for_cutting(purchase_order_form):
+    class Meta(purchase_order_form.Meta):  # inherited the meta from parent class  
+        fields = purchase_order_form.Meta.fields + ['factory_employee_id']
 
 
 
+# inherited from purchase_order_raw_to_product_form
+class purchase_order_raw_to_product_cutting_form(purchase_order_raw_to_product_form):
+    class Meta(purchase_order_raw_to_product_form.Meta): # inherited the meta from parent class
+        fields = purchase_order_raw_to_product_form.Meta.fields + ['cutting_quantity']
+
+
+purchase_order_raw_product_qty_cutting_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_form, extra=0)
 
 
 class raw_material_stock_trasfer_master_form(forms.ModelForm):
@@ -316,11 +323,6 @@ class raw_material_stock_trasfer_master_form(forms.ModelForm):
 
 raw_material_stock_trasfer_items_formset = inlineformset_factory(RawStockTransferMaster,RawStockTrasferRecords,fields=['item_shade_transfer','item_quantity_transfer','remarks'], extra=1, can_delete=True)
 
-
-# inherited from purchase_order_form
-class purchase_order_form_for_cutting(purchase_order_form):
-    class Meta(purchase_order_form.Meta):  # inherited the meta from parent class  
-        fields = purchase_order_form.Meta.fields + ['factory_employee_id']
 
 
 

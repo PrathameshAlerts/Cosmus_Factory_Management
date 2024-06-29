@@ -5,6 +5,14 @@
 <form method="POST">
 
 {{form.as_p}}
+
+
+{{ purchase_order_raw_to_product_cutting_formset.management_form }}
+{% for form in purchase_order_raw_to_product_cutting_formset %}
+{{form.as_p}}
+{% endfor %}
+
+<input type="submit">
 </form>
 
 {% endblock %}
