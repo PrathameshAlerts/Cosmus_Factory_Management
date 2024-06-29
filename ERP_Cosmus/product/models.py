@@ -647,4 +647,18 @@ class purchase_order_for_raw_material(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
 
 
+class purchase_order_for_raw_material_cutting(models.Model):
+    purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
+    product_color = models.CharField(max_length = 100, null=False, blank=False)
+    material_name = models.CharField(max_length = 100, null=False, blank=False)
+    rate = models.DecimalField(max_digits=10, decimal_places=3)
+    panha = models.DecimalField(max_digits=10, decimal_places=3)
+    units = models.DecimalField(max_digits=10, decimal_places=3)
+    g_total = models.DecimalField(max_digits=10, decimal_places=3)
+    consumption = models.DecimalField(max_digits=10, decimal_places=3)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
+    physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+
+
 

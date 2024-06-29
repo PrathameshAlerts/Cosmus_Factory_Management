@@ -3057,14 +3057,24 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
 
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
-    form = purchase_order_form_for_cutting(instance = purchase_order_instance)
+    form = purchase_order_form_for_cutting(request.POST or None, instance = purchase_order_instance)
 
     purchase_order_raw_to_product_cutting_formset = purchase_order_raw_product_qty_cutting_formset(request.POST or None, instance = purchase_order_instance)
 
     
+    if request.method == 'POST':
+        if form.is_valid() and purchase_order_raw_to_product_cutting_formset.is_valid():
+            form.save()
+            purchase_order_raw_to_product_cutting_formset.save()
 
-    return render(request,'production/purchase_order_cutting.html', {'form':form,'purchase_order_raw_to_product_cutting_formset':purchase_order_raw_to_product_cutting_formset})
-    
+    return render(request,'production/purchase_order_cutting.html', {'form':form,
+                                                                     'purchase_order_raw_to_product_cutting_formset':purchase_order_raw_to_product_cutting_formset})
+
+def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
+    p_o_cutting_order_all = 'p_o_cutting_order_all'    
+    return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all,'p_o_pk':p_o_pk,'prod_ref_no':prod_ref_no})
+
+
 #_________________________production-end________________________________________
 
 #_________________________factory-emp-start_______________________________________
