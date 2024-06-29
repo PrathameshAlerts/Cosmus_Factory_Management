@@ -108,7 +108,7 @@
  
       <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="Submit" id="id_submit_2">
       {% if form.instance.id %}
-<button type="button" class="add_btn rounded-2" id="id_next"><a href="{% url 'purchase-order-rawmaterial' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">Next</a></button>
+<button type="button" class="add_btn rounded-2" id="id_next"><a class="text-decoration-none text-white" href="{% url 'purchase-order-rawmaterial' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">Next</a></button>
  
 {% endif %}
     </form>
