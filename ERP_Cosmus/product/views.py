@@ -3061,6 +3061,7 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
 
     purchase_order_raw_to_product_cutting_formset = purchase_order_raw_product_qty_cutting_formset(request.POST or None, instance = purchase_order_instance)
 
+    
 
     return render(request,'production/purchase_order_cutting.html', {'form':form,'purchase_order_raw_to_product_cutting_formset':purchase_order_raw_to_product_cutting_formset})
     
