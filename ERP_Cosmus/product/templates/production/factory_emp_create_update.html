@@ -1,11 +1,23 @@
-{% extends 'misc/navbar_popup.html' %}
+{% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
 
-<form method="POST">
-    {% csrf_token %}
-{{form}}
-<input type="submit">
-</form>
+<div class="row mt-4">
+    <div class="col-lg-6">
+     
+        <form  action="" method="POST">
+          {% csrf_token %}  
+          <h2 class="mb-4">Employee create</h2>
+         <div class="d-flex">
+          <label for="id_factory_emp_name" class="item-form">Employee Name:</label>
+          <input type="text" class="item-select rounded" value="{{ form.instance.color_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
+         </div>
+    
+      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+      
+    </form>
+  
+  </div>
+</div>
 
 {% endblock %}

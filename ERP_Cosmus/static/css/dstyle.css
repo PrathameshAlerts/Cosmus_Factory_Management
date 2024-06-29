@@ -1432,6 +1432,22 @@ input[type=number] {
     height: 33px;  
 }
 
+.productinputtext{
+    width: 215px;
+    border: none ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px; 
+    background-color: transparent; 
+}
+.productinput{
+    width: 110px;
+    border: none ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+    background-color: transparent;  
+}
 .product_row{
     width: 50px;
     border: 1px solid #cecdcd ;

@@ -91,13 +91,13 @@
                       {{form.id}}
                       <tr class="text-nowrap">
                           <td>
-                              <input type="text" class="productorder_input" name="{{form.prefix}}-product_id" value="{{form.instance.product_id.PProduct_SKU | default_if_none:''}}" id="id_{{form.prefix}}-product_id" readonly>
+                              <input type="text" class="productinput" name="{{form.prefix}}-product_id" value="{{form.instance.product_id.PProduct_SKU | default_if_none:''}}" id="id_{{form.prefix}}-product_id" readonly>
                           </td>
                           <td>
-                              <input type="text" class="productorder_input" name="{{forloop.counter0}}-product_color" value="{{form.instance.product_id.PProduct_color | default_if_none:''}}" id="id_{{forloop.counter0}}-product_color" readonly>
+                              <input type="text" class="productinput" name="{{forloop.counter0}}-product_color" value="{{form.instance.product_id.PProduct_color | default_if_none:''}}" id="id_{{forloop.counter0}}-product_color" readonly>
                           </td>
                           <td>
-                              <input type="number" class="productorderqty-input border-0 bg-transparent" step="0.01" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
+                              <input type="number" class="productorderqty-input" step="0.01" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
                           </td>
                           <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;"   name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span></td>
                       </tr>
@@ -108,7 +108,7 @@
  
       <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="Submit" id="id_submit_2">
       {% if form.instance.id %}
-<button type="button" class="add_btn rounded-2" id="id_next"><a href="{% url 'purchase-order-rawmaterial' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">Next</a></button>
+<button type="button" class="add_btn rounded-2" id="id_next"><a class="text-decoration-none text-white" href="{% url 'purchase-order-rawmaterial' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">Next</a></button>
  
 {% endif %}
     </form>
