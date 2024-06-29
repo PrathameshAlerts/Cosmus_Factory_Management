@@ -1,3 +1,4 @@
+from pyexpat import model
 from django import forms
 from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_to_product, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
@@ -308,20 +309,19 @@ class purchase_order_raw_product_sheet_form(forms.ModelForm):
 
 
 
-
-
-
-
-
-
-
 class raw_material_stock_trasfer_master_form(forms.ModelForm):
         class Meta:
             model = RawStockTransferMaster
             fields = ['voucher_no','source_godown','destination_godown']
 
-
 raw_material_stock_trasfer_items_formset = inlineformset_factory(RawStockTransferMaster,RawStockTrasferRecords,fields=['item_shade_transfer','item_quantity_transfer','remarks'], extra=1, can_delete=True)
+
+
+# inherited from purchase_order_form
+class purchase_order_form_for_cutting(purchase_order_form):
+    class Meta(purchase_order_form.Meta):  # inherited the meta from parent class  
+        fields = purchase_order_form.Meta.fields + ['factory_employee_id']
+
 
 
 
@@ -329,8 +329,6 @@ class factory_employee_form(forms.ModelForm):
     class Meta:
         model = factory_employee
         fields = ['factory_emp_name']
-
-
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())

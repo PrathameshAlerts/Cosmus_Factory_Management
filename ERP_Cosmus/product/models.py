@@ -615,6 +615,7 @@ class purchase_order(models.Model):
     modified_created_date = models.DateField(auto_now_add=True)
     number_of_pieces = models.IntegerField(default=0)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
+    factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
     
 
 
@@ -624,7 +625,6 @@ class purchase_order_to_product(models.Model):
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
     cutting_quantity = models.IntegerField(default=0)
-
 
     def save(self, *args, **kwargs):
         if self.process_quantity > self.order_quantity:

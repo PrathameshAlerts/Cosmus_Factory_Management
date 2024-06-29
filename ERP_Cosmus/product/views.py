@@ -34,7 +34,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table)
 
-from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_employee_form,raw_material_stock_trasfer_items_formset,
+from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_employee_form, purchase_order_form_for_cutting,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -3053,6 +3053,18 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                                                                       'physical_stock_all_godown_json':physical_stock_all_godown_json})
 
 
+def purchaseordercutting(request,p_o_pk,prod_ref_no):
+
+    purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
+
+    form = purchase_order_form_for_cutting(instance = purchase_order_instance)
+
+    return render(request,'production/purchase_order_cutting.html', {'form':form})
+    
+#_________________________production-end________________________________________
+
+#_________________________factory-emp-start_______________________________________
+
 
 def factory_employee_create_update(request,pk=None):
 
@@ -3089,9 +3101,8 @@ def factoryempdelete(request,pk=None):
     return redirect('factory-emp-list')
 
 
-    
-#_________________________production-end______________________________
 
+#_________________________factory-emp-end_______________________________________
 
 
 #__________________________common-functions-start____________________________
