@@ -3055,29 +3055,25 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 
 def factory_employee_create_update(request,pk=None):
-    
+
     if pk:
         instance = get_object_or_404(factory_employee,pk=pk)
-        
+
     else:
         instance = None
     
     form = factory_employee_form(request.POST or None, instance =instance)
 
     if request.method == 'POST':
-
         if form.is_valid():
             form.save()
-
             return render(request,'production/factory_emp_create_update.html', {'form':form})
 
     return render(request,'production/factory_emp_create_update.html', {'form':form})
 
 
 def factoryemplist(request):
-
     factory_employees = factory_employee.objects.all() 
-
     return render(request,'production/factory_emp_list.html',{'factory_employees':factory_employees})
 
 
@@ -3086,7 +3082,7 @@ def factoryempdelete(request,pk=None):
     try:
         instance = get_object_or_404(factory_employee,pk-pk)
         instance.delete()
-        messages.success(request,f' Factory Employee {instance.factory_emp_name} was deleted')
+        messages.success(request,f'Factory Employee {instance.factory_emp_name} was deleted')
 
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {instance.factory_emp_name} because it is referenced by other objects.')
