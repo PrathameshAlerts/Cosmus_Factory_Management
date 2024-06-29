@@ -146,22 +146,26 @@ urlpatterns = [
     path('packagingpop/',views.packaging_create_update, name = 'packaging-popup'),
 
     #Production
+    #product2items
     path('product2item/<int:product_refrence_id>',views.product2item, name = 'product-2-item'),
     path('export_Product2Item_excel/<int:product_ref_id>',views.export_Product2Item_excel, name = 'export-Product2Item-excel'),
 
     path('viewproduct2item_configs/<int:product_sku>',views.viewproduct2items_configs,name ='view-product-2-item-configs'),
     
-
+    #purchase_order
     path('purchaseordercreate/',views.purchaseordercreateupdate, name = 'purchase-order-create'),
     path('purchaseorderupdate/<int:pk>',views.purchaseordercreateupdate, name = 'purchase-order-update'),
     path('purchaseorderlist/',views.purchaseorderlist, name = 'purchase-order-list'),
     path('purchaseorderdelete/<int:pk>',views.purchaseorderdelete, name = 'purchase-order-delete'),
 
+    #purchase_order_for_raw
     path('purchaseorderrawmaterial/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial'),
+
+    #purchase_order_cutting_room
+    path('purchaseordercutting/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercutting, name = 'purchase-order-cutting'),
 
 
     # factory worker routes
-
     path('factory_emp_create/',views.factory_employee_create_update, name = 'factory-emp-create'),
     path('factory_emp_update/<int:pk>',views.factory_employee_create_update, name = 'factory-emp-update'),
     path('factory_emp_list/',views.factoryemplist, name = 'factory-emp-list'),
