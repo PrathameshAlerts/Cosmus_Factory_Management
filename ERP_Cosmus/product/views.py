@@ -45,7 +45,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
-                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form)
+                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,purchase_order_for_raw_material_cutting_items_formset)
 
 
 logger = logging.getLogger('product_views')
@@ -3051,14 +3051,16 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 def purchaseordercutting(request,p_o_pk,prod_ref_no):
 
-
     labour_all = factory_employee.objects.all()
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
-    form = purchase_order_form( instance = purchase_order_instance)
+
+    form = purchase_order_form(instance = purchase_order_instance)
 
     purchase_order_cutting_form = purchase_order_raw_material_cutting_form(request.POST or None)
 
     purchase_order_raw_to_product_cutting_formset = purchase_order_raw_product_qty_cutting_formset(request.POST or None, instance = purchase_order_instance)
+
+    # purchase_order_for_raw_material_cutting_items_formset = purchase_order_for_raw_material_cutting_items_formset()
 
     if request.method == 'POST':
         if purchase_order_raw_to_product_cutting_formset.is_valid():
