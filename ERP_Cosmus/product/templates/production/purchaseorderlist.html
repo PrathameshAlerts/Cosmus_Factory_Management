@@ -43,9 +43,7 @@
                 <td>{{po.created_date}}</td>
                 <td>{{po.number_of_pieces}}</td>
                 <td><a href="{% url 'purchase-order-update' po.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-                <td><button class="border-0 bg-transparent deletes-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
-                
-                   
+                <td><button class="border-0 bg-transparent deletes-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></i></button></td> 
                 </tr>
             {% endfor %}
         </tbody>
