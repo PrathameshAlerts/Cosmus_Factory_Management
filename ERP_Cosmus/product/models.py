@@ -605,8 +605,6 @@ class purchase_order(models.Model):
         ('3', '3'),
         ('4', '4'),
     ]
-
-
     purchase_order_number = models.IntegerField(unique=True, blank=False, null=False)
     product_reference_number = models.ForeignKey(Product, on_delete=models.PROTECT)
     ledger_party_name = models.ForeignKey(Ledger, on_delete= models.PROTECT)
@@ -636,7 +634,7 @@ class purchase_order_for_raw_material(models.Model):
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
     rate = models.DecimalField(max_digits=10, decimal_places=3)
-    panha = models.DecimalField(max_digits=10, decimal_places=3)
+    panha = models.DecimalField(max_digits=10, decimal_places=2)
     units = models.DecimalField(max_digits=10, decimal_places=3)
     g_total = models.DecimalField(max_digits=10, decimal_places=3)
     consumption = models.DecimalField(max_digits=10, decimal_places=3)

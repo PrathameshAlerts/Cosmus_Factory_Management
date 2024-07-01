@@ -31,7 +31,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
+                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table)
 
 from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_employee_form,raw_material_stock_trasfer_items_formset,
@@ -3050,7 +3050,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 
 def purchaseordercutting(request,p_o_pk,prod_ref_no):
-
+    print(request.POST)
     labour_all = factory_employee.objects.all()
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
@@ -3063,13 +3063,13 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
     # purchase_order_for_raw_material_cutting_items_formset = purchase_order_for_raw_material_cutting_items_formset()
 
     if request.method == 'POST':
-        if purchase_order_raw_to_product_cutting_formset.is_valid():
-            
+        if purchase_order_raw_to_product_cutting_formset.is_valid() and purchase_order_cutting_form.is_valid():
             purchase_order_raw_to_product_cutting_formset.save()
+            purchase_order_cutting_form.save()
 
         else:
             print(purchase_order_raw_to_product_cutting_formset.errors)
-            print(form.errors)
+            print(purchase_order_cutting_form.errors)
 
     return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,
                                                                      'purchase_order_raw_to_product_cutting_formset':purchase_order_raw_to_product_cutting_formset})
@@ -3077,7 +3077,8 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
 
 
 def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
-    p_o_cutting_order_all = 'p_o_cutting_order_all'    
+    p_o_cutting_order_all =  'TEST'#purchase_order_raw_material_cutting.objects.filter(purchase_order_id =p_o_pk)
+    print(p_o_cutting_order_all)
     return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_pk':p_o_pk ,'prod_ref_no':prod_ref_no })
 
 

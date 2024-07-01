@@ -1,8 +1,14 @@
-{% extends 'product/base.html' %}
+<!-- {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
 <span>Cutting Order List</span>
 
 <a href="{% url 'purchase-order-cutting' p_o_pk prod_ref_no %}">Create Cutting Order</a>
 
-{% endblock %}
+{% for cutting_order in p_o_cutting_order_all %}
+{{cutting_order.raw_material_cutting_id}}
+{% endfor %}
+
+
+
+{% endblock %} -->

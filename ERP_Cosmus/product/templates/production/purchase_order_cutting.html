@@ -16,7 +16,7 @@
                     {% csrf_token %}
                 <div class="d-flex mb-2">
                     <lable for="id_purchase_order_number" class="">Order No:</lable>
-                    <input type="number" name="purchase_order_id" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-4 pb-2" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_id" readonly>
+                    <input type="number" name="purchase_order_id" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-4 pb-2" value="{{form.instance.purchase_order_number}}" required id="id_purchase_order_id" readonly>
                     <lable for="id_raw_material_cutting_id" class="ms-2">Cutting No:</lable>
                     <input type="number" name="raw_material_cutting_id" class="purchase-amount text-danger pb-2 ms-2 me-4" value="" id="id_raw_material_cutting_id">
                     <label for="id_factory_employee_id" class="ms-4">Cutting Master:</label>
@@ -113,10 +113,11 @@
             <input type="hidden" name="processTotal" id="id_processTotal" value="0">
             
         </table>
+        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
     </div>
 </div>
 
-<input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
+
 </form>
 
 {% endblock %}
