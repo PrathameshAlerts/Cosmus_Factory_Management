@@ -1,12 +1,12 @@
 from pyexpat import model
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_to_product, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput , DateInput
-from django.forms import modelformset_factory, BaseInlineFormSet 
+from django.forms import IntegerField, modelformset_factory, BaseInlineFormSet 
 
 
 
@@ -300,20 +300,10 @@ class purchase_order_raw_product_sheet_form(forms.ModelForm):
         fields = ['product_color','material_name','rate','panha','units','g_total','consumption','total_comsumption','physical_stock','balance_physical_stock']
 
 
-# inherited from purchase_order_form
-class purchase_order_form_for_cutting(purchase_order_form):
-    class Meta(purchase_order_form.Meta):  # inherited the meta from parent class  
-        fields = purchase_order_form.Meta.fields + ['factory_employee_id']
+
+purchase_order_raw_product_qty_cutting_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_form, extra=0)
 
 
-
-# inherited from purchase_order_raw_to_product_form
-class purchase_order_raw_to_product_cutting_form(purchase_order_raw_to_product_form):
-    class Meta(purchase_order_raw_to_product_form.Meta): # inherited the meta from parent class
-        fields = purchase_order_raw_to_product_form.Meta.fields + ['cutting_quantity']
-
-
-purchase_order_raw_product_qty_cutting_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_cutting_form, extra=0)
 
 
 class raw_material_stock_trasfer_master_form(forms.ModelForm):
@@ -325,12 +315,56 @@ raw_material_stock_trasfer_items_formset = inlineformset_factory(RawStockTransfe
 
 
 
+class purchase_order_raw_material_cutting_form(forms.ModelForm):
+    class Meta:
+        model = purchase_order_raw_material_cutting
+        fields = ['purchase_order_id','raw_material_cutting_id','factory_employee_id']
+
+        widgets = {
+            'purchase_order_id': forms.TextInput(attrs={'readonly': 'readonly'})
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class factory_employee_form(forms.ModelForm):
     class Meta:
         model = factory_employee
         fields = ['factory_emp_name']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())

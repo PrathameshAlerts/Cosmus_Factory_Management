@@ -4,11 +4,15 @@
 
 <form method="POST">
     {% csrf_token %}
+
+
+
 <div class="row">
     <div class="col-lg-6 mt-3">
         <h4 class="">Cutting Order Production</h4>
         <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
             <div class="d-flex">
+                {{purchase_order_cutting_form}}
                 <div class="d-flex mb-2">
                     <lable for="id_purchase_order_number" class="">Order Number:</lable>
                     <input type="number" name="purchase_order_number" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-5 pb-2" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number" readonly>
@@ -50,13 +54,25 @@
                     <input type="number" name="balance_qty" class="border-0 bg-transparent text-danger ms-3 me-3 pb-2" value="" required id="id_balance_qty" readonly>  
                 </div> 
             </div>
-            <div class="d-flex mb-2">
+            <!-- <div class="d-flex mb-2">
                 <div class="d-flex">
                     <label for="id_factory_employee_id" class="">Cutting Master:</label>
-                    <select type="text" name="factory_employee_id" class="item-select  ms-3 me-5 pb-2 "  value="" required id="id_factory_employee_id" >
-                        <option></option>
+                    <select type="text" name="factory_employee_id" class="item-select  ms-3 me-5 pb-2 "  required id="id_factory_employee_id" >
+
+                        {% if form.instance.factory_employee_id %}
+                        <option value="{{form.instance.factory_employee_id.id}}">{{form.instance.factory_employee_id}}</option>
+                        {% for labour in labour_all %}
+                        <option value="{{labour.id}}">{{labour.factory_emp_name}}</option>
+                        {% endfor %}
+                        {% elif not form.instance.factory_employee_id %}
+
+                        <option value=""></option>
+                        {% for labour in labour_all %}
+                        <option value="{{labour.id}}">{{labour.factory_emp_name}}</option>
+                        {% endfor %}
+                        {% endif %}
                     </select>
-                </div> 
+                </div>  -->
                 
             </div>
         </div>

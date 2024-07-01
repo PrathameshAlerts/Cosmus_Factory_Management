@@ -615,7 +615,6 @@ class purchase_order(models.Model):
     modified_created_date = models.DateField(auto_now_add=True)
     number_of_pieces = models.IntegerField(default=0)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
-    factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
     
 
 
@@ -624,7 +623,6 @@ class purchase_order_to_product(models.Model):
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
-    cutting_quantity = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         if self.process_quantity > self.order_quantity:
@@ -647,8 +645,14 @@ class purchase_order_for_raw_material(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
 
 
-class purchase_order_for_raw_material_cutting(models.Model):
-    purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
+
+class purchase_order_raw_material_cutting(models.Model):
+    purchase_order_id = models.ForeignKey(purchase_order, on_delete = models.PROTECT)
+    raw_material_cutting_id = models.IntegerField(primary_key=True)
+    factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
+
+class purchase_order_for_raw_material_cutting_items(models.Model):
+    purchase_order_cutting = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
     rate = models.DecimalField(max_digits=10, decimal_places=3)
@@ -659,6 +663,7 @@ class purchase_order_for_raw_material_cutting(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    cutting_quantity = models.IntegerField(default=0)
 
 
 
