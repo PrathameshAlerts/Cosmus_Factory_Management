@@ -271,7 +271,7 @@
 </div>
 
 
-<div class="pagination">
+<!-- <div class="pagination">
   <span class="step-links">
       {% if products.has_previous %}
           <a href="?page=1">&laquo; first</a>
@@ -305,8 +305,45 @@
           <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
       {% endif %}
   </span>
+</div> -->
+<div class="" style="margin-top: 10px ;">
+  <nav aria-label="Page navigation example justify-content-end">
+    <ul class="pagination">
+      {% if products.has_previous %}
+        <!-- <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li> -->
+        <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+      {% endif %}
+  
+      {% if 1 not in page_range %}
+        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+        {% if 2 not in page_range %}
+          <li class="page-item"><span class="page-link">...</span></li>
+        {% endif %}
+      {% endif %}
+  
+      {% for page in page_range %}
+        {% if page == products.number %}
+          <li class="page-item active" aria-current="page"><span class="page-link">{{ page }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+        {% endif %}
+      {% endfor %}
+  
+      {% if max_index not in page_range %}
+        {% if max_index|add:'-1' not in page_range %}
+          <li class="page-item"><span class="page-link">...</span></li>
+        {% endif %}
+        <!-- <li class="page-item"><a class="page-link" href="?page={{ max_index }}">{{ max_index }}</a></li> -->
+      {% endif %}
+  
+      {% if products.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+        <!-- <li class="page-item"><a class="page-link" href="?page={{ products.paginator.num_pages }}">last &raquo;</a></li> -->
+      {% endif %}
+    </ul>
+  </nav>
+  
 </div>
-
 
 
 <script>
