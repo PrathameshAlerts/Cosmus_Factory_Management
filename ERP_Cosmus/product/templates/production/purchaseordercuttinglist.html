@@ -5,7 +5,7 @@
 <div class="mb-3 pt-2">
     <h3 class="mb-3">Cutting Order List</h3>
     <div class="d-flex mb-3">
-      <button class="item-btn" onclick="redirectlistCutting()"><a class="text-decoration-none text-white" href="{% url 'purchase-order-cutting' p_o_pk prod_ref_no %}">Add +</a></button>
+      <button class="item-btn" onclick="redirectlistCutting()"><a class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-create' p_o_pk prod_ref_no %}">Add +</a></button>
       <div class="container-cat">
         <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
         <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -13,13 +13,6 @@
       <button class="item-btn mx-2" onclick="">Clear Filter</button>
     </div>
   </div>
-
-{% for cutting_order in p_o_cutting_order_all %}
-{{cutting_order.raw_material_cutting_id}}
-{% endfor %}
-
-
-
 
 
   <div class="row">
@@ -30,7 +23,7 @@
           <tr>
             <th>No</th>
             <th>id</th>
-            <th>Edit</th>
+            <th>View</th>
             <!-- <th>Delete</th> -->
           </tr>
         </thead>
@@ -39,8 +32,8 @@
           <tr>
             <td>{{forloop.counter}}</td>
             <td>{{cutting_order.raw_material_cutting_id}}</td>
-            <td><a href=""><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-            <!-- <td><i class="fa-solid fa-trash text-danger px-2"></i></td> -->
+            <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+            <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
           </tr>
           {% endfor %}
         </tbody>
