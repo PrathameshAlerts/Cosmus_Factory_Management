@@ -2979,13 +2979,13 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         else:
             physical_stock_all_godowns[item_name] = str(item_quantity)
 
-    physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) # convert python dict to json 
-    
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
     # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
     if not purchase_order_instance.purchase_order_for_raw_material_set.all():
         
+        physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) # convert python dict to json and send only on create on update it will be None
+
         initial_data = []
         for query in product_2_items_instances:
 
@@ -3016,14 +3016,17 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
 
 
-    # for update(to check child instances of p_o_id is avaliable)
+    # for update(to check child instances of p_o_id is avaliable means form is on update)
     elif purchase_order_instance.purchase_order_for_raw_material_set.all():
+
+        physical_stock_all_godown_json = None # send only on create on update it will be None as saved data will be rendered
+
 
         purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=0, can_delete=False)
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
 
-    print(purchase_order_raw_sheet_formset)
+    print(physical_stock_all_godown_json)
     if request.method == 'POST':
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
 
@@ -3052,15 +3055,21 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 def purchaseordercutting(request,p_o_pk,prod_ref_no):
     
-    purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_pk)
-    
     labour_all = factory_employee.objects.all()
+
+    # purchase_order_instance
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
-    
+
+    # purchase_order_raw_material_instances
+    purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_pk)
+
+    # purchase_order_form
     form = purchase_order_form(instance = purchase_order_instance)
 
+    # cutting forms for that purchase order (this form data is submitted only)
     purchase_order_cutting_form = purchase_order_raw_material_cutting_form(request.POST or None)
 
+    # purchase_order_to_product formsets
     purchase_order_raw_to_product_cutting_formset = purchase_order_raw_product_qty_cutting_formset(request.POST or None, instance = purchase_order_instance)
 
     initial_data = []
@@ -3081,20 +3090,21 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
 
         initial_data.append(initial_data_dict)
 
-
+    # production sheet for that cutting order of the purchase order (inline factory for below form)
     purchase_order_for_raw_material_cutting_items_formset = inlineformset_factory(purchase_order_raw_material_cutting, purchase_order_for_raw_material_cutting_items, form=purchase_order_for_raw_material_cutting_items_form, extra=len(initial_data))
 
 
+    # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)
+    purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(request.POST or None,initial=initial_data)
 
-    purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(initial=initial_data)
+
 
     if request.method == 'POST':
-        if purchase_order_raw_to_product_cutting_formset.is_valid() and purchase_order_cutting_form.is_valid():
-            purchase_order_raw_to_product_cutting_formset.save()
-            purchase_order_cutting_form.save()
+        if purchase_order_cutting_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid():
+            cutting_form_instance = purchase_order_cutting_form.save()
 
         else:
-            print(purchase_order_raw_to_product_cutting_formset.errors)
+            
             print(purchase_order_cutting_form.errors)
 
     return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
