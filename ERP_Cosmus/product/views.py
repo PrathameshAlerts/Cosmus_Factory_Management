@@ -3023,7 +3023,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
 
-    
+    print(purchase_order_raw_sheet_formset)
     if request.method == 'POST':
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
 
