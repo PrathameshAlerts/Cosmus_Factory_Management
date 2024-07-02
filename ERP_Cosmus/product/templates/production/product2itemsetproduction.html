@@ -619,13 +619,13 @@ document.querySelectorAll('.delete-btn').forEach(function(button) {
 deleteRow();
     });
 
-// //    // Handle the case when the window is closed without form submission
-//    window.addEventListener('beforeunload',  function(event) {
-//     // if (!formSubmitted) {
-//       const data = { message: 'close' };
-//       window.opener.postMessage(data, '*');
-//     // }
-//   });
+//    // Handle the case when the window is closed without form submission
+   window.addEventListener('beforeunload',  function(event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
+  });
 
 </script>
 
