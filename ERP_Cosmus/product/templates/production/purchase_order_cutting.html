@@ -12,24 +12,25 @@
         <h4 class="">Cutting Order Production</h4>
         <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
             <div class="d-flex">
-                <form method="post">
-                    {% csrf_token %}
-                    
+                
                 <div class="d-flex mb-2">
                     <lable for="id_purchase_order_number" class="">Order No:</lable>
                     <input type="number" name="purchase_o_no" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-4 pb-2" value="{{form.instance.purchase_order_number}}" required id="id_purchase_o_no" readonly>
                     <input type="hidden" name="purchase_order_id" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-4 pb-2" value="{{p_o_pk}}" required id="id_purchase_order_id" readonly>
                     <lable for="id_raw_material_cutting_id" class="ms-2">Cutting No:</lable>
-                    <input type="number" name="raw_material_cutting_id" class="purchase-amount text-danger pb-2 ms-2 me-4" value="" id="id_raw_material_cutting_id">
+                    <input type="number" name="raw_material_cutting_id" class="purchase-amount text-danger pb-2 ms-2 me-4" value="{{purchase_order_cutting_form.instance.raw_material_cutting_id}}" id="id_raw_material_cutting_id">
                     <label for="id_factory_employee_id" class="ms-4">Cutting Master:</label>
                     <select type="text" name="factory_employee_id" class="item-select  ms-3 me-5 pb-2 "  required id="id_factory_employee_id" >
 
-                        {% if form.instance.factory_employee_id %}
-                        <option value="{{form.instance.factory_employee_id.id}}">{{form.instance.factory_employee_id}}</option>
+                        {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
+                        
+                        <option value="{{purchase_order_cutting_form.instance.factory_employee_id.id}}">{{purchase_order_cutting_form.instance.factory_employee_id.factory_emp_name}}</option>
+
                         {% for labour in labour_all %}
                         <option value="{{labour.id}}">{{labour.factory_emp_name}}</option>
                         {% endfor %}
-                        {% elif not form.instance.factory_employee_id %}
+
+                        {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
 
                         <option value=""></option>
                         {% for labour in labour_all %}
@@ -38,7 +39,7 @@
                         {% endif %}
                     </select>
                 </div>
-            </form>
+            
             
                 <div class="d-flex">
                     <label for="id_ledger_party_name" class="">Party name:</label>
@@ -143,6 +144,25 @@
                     {{purchase_order_for_raw_material_cutting_items_formset_form.management_form}}
                     {% for form in purchase_order_for_raw_material_cutting_items_formset_form %}
                     {{form.id}}
+                    {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
+        
+                    <tr>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
+                        <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.instance.panha}}" step="0.001" id="id_{{form.prefix}}-panha"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.instance.units}}" step="0.001" id="id_{{form.prefix}}-units"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.instance.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.instance.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.instance.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.instance.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock"></td>
+                        <td><input type="number"  class="productinput" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity"></td>
+                   
+                    </tr>
+
+                    {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
+
                     <tr>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
@@ -157,14 +177,14 @@
                         <td><input type="number"  class="productinput" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity"></td>
                    
                     </tr>
-                   
+
+                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
 
 </form>
 

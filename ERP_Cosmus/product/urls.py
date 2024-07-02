@@ -163,7 +163,9 @@ urlpatterns = [
 
     #purchase_order_cutting_room
     path('purchaseordercuttinglist/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercuttinglist, name = 'purchase-order-cutting-list'),
-    path('purchaseordercutting/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercutting, name = 'purchase-order-cutting'),
+    path('purchaseordercuttingcreate/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-create'),
+        path('purchaseordercuttingupdate/<int:p_o_pk>/<int:prod_ref_no>/<int:pk>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-update'),
+
 
 
     # factory worker routes
