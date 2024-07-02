@@ -14,13 +14,9 @@
     </div>
   </div>
 
-<<<<<<< HEAD
-{% for cutting_order in p_o_cutting_order_all %}
-{{cutting_order.raw_material_cutting_id}}
-{% endfor %}
 
 
-=======
+
   <div class="row">
     <div class="col-lg-5">
       <div class="table-responsives">     
@@ -28,20 +24,20 @@
         <thead class="name_absolute sticky-top">
           <tr>
             <th>No</th>
-            <th>Name</th>
+            <th>id</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody  class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-    
+          {% for cutting_order in p_o_cutting_order_all %}
           <tr>
-            <td></td>
-            <td></td>
+            <td>{{forloop.counter}}</td>
+            <td>{{cutting_order.raw_material_cutting_id}}</td>
             <td><a href=""><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
             <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
           </tr>
-        
+          {% endfor %}
         </tbody>
       </table>
       </div>
@@ -92,5 +88,4 @@
   });
   
 </script>
->>>>>>> e112c9b1b3299b51e2202e3a93a44b38d4e51530
 {% endblock %}
