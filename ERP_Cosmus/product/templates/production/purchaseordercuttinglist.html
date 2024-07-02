@@ -13,8 +13,6 @@
       <button class="item-btn mx-2" onclick="">Clear Filter</button>
     </div>
   </div>
-
-
   <div class="row">
     <div class="col-lg-5">
       <div class="table-responsives">     
@@ -24,7 +22,7 @@
             <th>No</th>
             <th>id</th>
             <th>View</th>
-            <th>Delete</th>
+            <!-- <th>Delete</th> -->
           </tr>
         </thead>
         <tbody  class="mainTableList" style="max-height: 450px; overflow-y: auto;">
@@ -33,7 +31,7 @@
             <td>{{forloop.counter}}</td>
             <td>{{cutting_order.raw_material_cutting_id}}</td>
             <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-            <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+            <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
           </tr>
           {% endfor %}
         </tbody>
@@ -42,7 +40,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -59,9 +57,9 @@
       </div>
     </div>
   </div>
-    
+     -->
 
-<script>
+<!-- <script>
     document.body.appendChild(document.getElementById('exampleModal'));
   
   $(document).ready(function(){
@@ -85,5 +83,5 @@
       });
   });
   
-</script>
+</script> -->
 {% endblock %}

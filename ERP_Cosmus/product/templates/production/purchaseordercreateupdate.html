@@ -64,11 +64,11 @@
   <div class="row">
     
         
-  <div class="col-lg-5 mt-3" id="productForm-conatiner" style="display: none;" >
+  <div class="col-lg-6 mt-3" id="productForm-conatiner" style="display: none;" >
     <div class="d-flex mb-2">
-        <lable>Model Name :  </lable>
-        <input class="text-danger purchase-amount border-0 bg-transparent ms-2 me-4 pb-2" id="id_model_name"value="{{model_name | default_if_none:''}}">
-        <lable>Total: </lable>
+        <lable>Model Name:</lable>
+        <input class="productinputtext pb-2" id="id_model_name"value="{{model_name | default_if_none:''}}">
+        <lable>Total:</lable>
           <input type="number" class="purchase-amount border-0 bg-transparent text-danger ms-2 me-4 pb-2" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01">
           <input type="hidden" class="" id="id_total-quantity"value="{{form.instance.number_of_pieces}}">  
         </div>

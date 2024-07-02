@@ -13,7 +13,7 @@
                     <div class="d-flex mb-2">
                         <div class="d-flex">
                             <lable for="id_purchase_order_number" class="">Order Number:</lable>
-                            <input type="number" name="purchase_order_number" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-5 pb-2" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number" readonly>
+                            <input type="number" name="purchase_order_number" class="purchase-amount border-0 bg-transparent text-danger ms-2 me-5 pb-2" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number" readonly>
                         </div>
                         <div class="d-flex ms-1 ">
                             <lable for="id_product_reference_number" class="">Reference Number:</lable>
@@ -24,22 +24,22 @@
                     <div class="d-flex mb-2">
                         <div class="d-flex">
                             <label for="id_ledger_party_name" class="">Party name:</label>
-                            <input name="ledger_party_name" class="item-select border-0 bg-transparent text-danger ms-3 me-1 pb-2" id="id_ledger_party_name" value="{{form.instance.ledger_party_name.name}}" readonly>
+                            <input name="ledger_party_name" class="item-select border-0 bg-transparent text-danger ms-2 me-1 pb-2" id="id_ledger_party_name" value="{{form.instance.ledger_party_name.name}}" readonly>
                         </div>
                    
                         <diV class="d-flex"> 
-                            <lable for="id_model_name" class="">Model Name : </lable> 
-                            <input class="text-danger purchase-amount border-0 bg-transparent pb-2" id="id_model_name"value="{{model_name | default_if_none:''}}">
+                            <lable for="id_model_name" class="">Model Name:</lable> 
+                            <input class="item-select border-0 bg-transparent text-danger pb-2" id="id_model_name"value="{{model_name | default_if_none:''}}">
                         </diV>
                     </div>
                     <div class="d-flex">
                         <div class="d-flex">
                             <label for="id_number_of_pieces" class="">No Of pieces:</label>
-                            <input type="number" name="number_of_pieces" class="purchase-input border-0 bg-transparent text-danger ms-3 me-5 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
+                            <input type="number" name="number_of_pieces" class="purchase-input border-0 bg-transparent text-danger ms-2 me-5 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
                         </div> 
                         <div class="d-flex ms-5">
                             <label for="id_target_date" class="">Target date:</label>
-                            <input type="date" name="target_date" class="border-0 bg-transparent text-danger ms-3 me-3 pb-2" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
+                            <input type="date" name="target_date" class="border-0 bg-transparent text-danger ms-2 me-3 pb-2" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
                         </div> 
                     </div>
                 </div>
@@ -159,11 +159,14 @@
                 var physicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock');
                 var newPhysicalStock = document.getElementById('id_physical_stock').value;
                 var materialName = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-material_name').value;
+                console.log(newPhysicalStock);
                 var panhaValue = parseFloat(panha);
                 var unitsValue = parseFloat(units);
                 var grandTotalValue = parseFloat(grandTotal);
-                var mainstock = JSON.parse(newPhysicalStock);
-                for (var key in mainstock) {
+                if(newPhysicalStock != "None"){
+                    var mainstock = JSON.parse(newPhysicalStock);
+                    console.log(mainstock);  
+                    for (var key in mainstock) {
                     if (mainstock.hasOwnProperty(key)) {
                         if(key === materialName){
 
@@ -172,6 +175,9 @@
                     }
                }
 
+                }
+              
+                
                
 
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
