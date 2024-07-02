@@ -3053,7 +3053,7 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
     print(request.POST)
     labour_all = factory_employee.objects.all()
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
-
+    
     form = purchase_order_form(instance = purchase_order_instance)
 
     purchase_order_cutting_form = purchase_order_raw_material_cutting_form(request.POST or None)
@@ -3071,13 +3071,13 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
             print(purchase_order_raw_to_product_cutting_formset.errors)
             print(purchase_order_cutting_form.errors)
 
-    return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,
+    return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
                                                                      'purchase_order_raw_to_product_cutting_formset':purchase_order_raw_to_product_cutting_formset})
 
 
 
 def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
-    p_o_cutting_order_all =  'TEST'#purchase_order_raw_material_cutting.objects.filter(purchase_order_id =p_o_pk)
+    p_o_cutting_order_all =  purchase_order_raw_material_cutting.objects.filter(purchase_order_id =p_o_pk)
     print(p_o_cutting_order_all)
     return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_pk':p_o_pk ,'prod_ref_no':prod_ref_no })
 
