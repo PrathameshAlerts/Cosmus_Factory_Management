@@ -330,15 +330,6 @@ class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
 
         fields = ['product_color','material_name','rate','panha','units','g_total','consumption','total_comsumption','physical_stock','balance_physical_stock','cutting_quantity']
 
-purchase_order_for_raw_material_cutting_items_formset = inlineformset_factory(purchase_order_raw_material_cutting, purchase_order_for_raw_material_cutting_items, form=purchase_order_for_raw_material_cutting_items_form, extra=0)
-
-
-
-
-
-
-
-
 
 
 

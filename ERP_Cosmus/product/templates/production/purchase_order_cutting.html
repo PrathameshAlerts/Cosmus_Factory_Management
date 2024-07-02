@@ -119,7 +119,10 @@
     </div>
 </div>
 
-
+{{purchase_order_for_raw_material_cutting_items_formset_form.management_form}}
+{% for form in purchase_order_for_raw_material_cutting_items_formset_form %}
+{{form}}
+{% endfor %}
 </form>
 
 {% endblock %}

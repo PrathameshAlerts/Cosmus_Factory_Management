@@ -661,7 +661,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
-    cutting_quantity = models.IntegerField(default=0)
+    cutting_quantity = models.IntegerField(default=0, null = True, blank=True)
 
 
 

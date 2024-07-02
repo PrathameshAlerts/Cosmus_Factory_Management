@@ -32,9 +32,9 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
-                                   shade_godown_items_temporary_table)
+                                   shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_employee_form,raw_material_stock_trasfer_items_formset,
+from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_employee_form, purchase_order_for_raw_material_cutting_items_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -45,7 +45,7 @@ from .forms import(ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
-                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,purchase_order_for_raw_material_cutting_items_formset)
+                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form)
 
 
 logger = logging.getLogger('product_views')
@@ -2995,7 +2995,8 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
             else:
                 product_color_or_common_item = query.PProduct_pk.PProduct_color
-            query.PProduct_pk.PProduct_color
+
+            
 
             initial_data_dict = {'product_color' : product_color_or_common_item,
                                 'material_name':query.Item_pk.item_name,
@@ -3050,7 +3051,9 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 
 def purchaseordercutting(request,p_o_pk,prod_ref_no):
-    print(request.POST)
+    
+    purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_pk)
+    
     labour_all = factory_employee.objects.all()
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
     
@@ -3060,7 +3063,30 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
 
     purchase_order_raw_to_product_cutting_formset = purchase_order_raw_product_qty_cutting_formset(request.POST or None, instance = purchase_order_instance)
 
-    # purchase_order_for_raw_material_cutting_items_formset = purchase_order_for_raw_material_cutting_items_formset()
+    initial_data = []
+    for purchase_items_raw in purchase_order_raw_instances:
+        
+        initial_data_dict = {
+            'product_color' : purchase_items_raw.product_color,
+            'material_name' : purchase_items_raw.material_name,
+            'rate' : purchase_items_raw.rate,
+            'panha' : purchase_items_raw.panha,
+            'units' : purchase_items_raw.units,
+            'g_total' : purchase_items_raw.g_total,
+            'consumption' : purchase_items_raw.consumption,
+            'total_comsumption' : purchase_items_raw.total_comsumption,
+            'physical_stock' : purchase_items_raw.physical_stock,
+            'balance_physical_stock' : purchase_items_raw.balance_physical_stock,
+        }
+
+        initial_data.append(initial_data_dict)
+
+
+    purchase_order_for_raw_material_cutting_items_formset = inlineformset_factory(purchase_order_raw_material_cutting, purchase_order_for_raw_material_cutting_items, form=purchase_order_for_raw_material_cutting_items_form, extra=len(initial_data))
+
+
+
+    purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(initial=initial_data)
 
     if request.method == 'POST':
         if purchase_order_raw_to_product_cutting_formset.is_valid() and purchase_order_cutting_form.is_valid():
@@ -3072,7 +3098,7 @@ def purchaseordercutting(request,p_o_pk,prod_ref_no):
             print(purchase_order_cutting_form.errors)
 
     return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
-                                                                     'purchase_order_raw_to_product_cutting_formset':purchase_order_raw_to_product_cutting_formset})
+                                                                     'purchase_order_raw_to_product_cutting_formset':purchase_order_raw_to_product_cutting_formset,'purchase_order_for_raw_material_cutting_items_formset_form':purchase_order_for_raw_material_cutting_items_formset_form})
 
 
 
