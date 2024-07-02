@@ -3041,7 +3041,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                     po_form_instance.process_status = '3'  # change the status to 3
                     po_form_instance.save()  # save the parent form instance 
 
-            return(redirect(reverse('purchase-order-rawmaterial',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+            return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
         
         else:
             print(purchase_order_raw_formset.errors)
@@ -3080,6 +3080,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     # purchase_order_to_product formsets
     purchase_order_raw_to_product_cutting_formset = purchase_order_raw_product_qty_cutting_formset(request.POST or None, instance = purchase_order_instance)
 
+    # for create page 
     if not pk:
 
         initial_data = []
@@ -3108,7 +3109,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)(for get request)
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(initial=initial_data)
 
-
+    # for view page 
     elif pk:
 
         purchase_order_for_raw_material_cutting_items_formset = inlineformset_factory(purchase_order_raw_material_cutting, purchase_order_for_raw_material_cutting_items, form=purchase_order_for_raw_material_cutting_items_form, extra=0, can_delete=False)
@@ -3124,11 +3125,13 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         if purchase_order_cutting_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid():
             cutting_form_instance = purchase_order_cutting_form.save()
-            
+            if cutting_form_instance.purchase_order_id.process_status == '3':
+                cutting_form_instance.purchase_order_id.process_status = '4'
+                cutting_form_instance.purchase_order_id.save()
+
             for form in purchase_order_for_raw_material_cutting_items_formset_form:
 
                 if form.is_valid(): 
-
                     form_instance = form.save(commit=False)
                     form_instance.purchase_order_cutting = cutting_form_instance
                     form_instance.save()
