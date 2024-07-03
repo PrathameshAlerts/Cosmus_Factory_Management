@@ -130,7 +130,6 @@
                         <th>Total consumption</th>
                         <th>Physical Stock</th>
                         <th>Balance Physical Stock</th>
-                
                     </tr>
                 </thead>
                 <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
@@ -139,7 +138,6 @@
                     {% for form in purchase_order_for_raw_material_cutting_items_formset_form %}
                     {{form.id}}
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
-        
                     <tr>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
@@ -205,7 +203,6 @@
     }
 
     function updateCuttingQuantity(){
-
         var totals =0;
         const cuttingQtyElements = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
       
@@ -224,7 +221,6 @@
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
                 const cuttingNewQty = row.querySelector('input[name$="-cutting_quantity"]');
-             
                 
                 if(currentColor == productColor){
                     const consumptionInput =document.querySelector('input[name$="-consumption"]');
@@ -236,29 +232,28 @@
                                 if (cuttingNewQty) {
                                     cuttingNewQty.value = CuttingQty;
                                 }
-                }
+                    }
                 }else if(currentColor === "Common Item"){
-                    const rows = $("tbody.mainTableList tr").find("input[name$='-product_color']").filter(function() {
-                            return $(this).val() === "Common Item";
-                        }).closest('tr');
-
-                        rows.each(function() {
-                            const consumptionInputs = document.querySelector('input[name$="-consumption"]');
+                    const rows = document.querySelectorAll("tbody.mainTableList tr input[name$='-product_color']")
+                    .forEach(element => {
+                        if (element.value === "Common Item") {
+                            const row = element.closest('tr');
+                            const consumptionInputs = row.querySelector('input[name$="-consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInputs.value) || 0;
-                            const totalValue = $('#id_cuttingTotal').val();
+                            const totalValue = parseFloat(cuttingTotal.value) || 0;
                             var commonConsumption = totalValue * commonConsumptionValue;
 
-                            if(totalConsumptionInput){
+                            if (totalConsumptionInput) {
                                 totalConsumptionInput.value = commonConsumption.toFixed(2);
                                 if (cuttingNewQty) {
-                                cuttingNewQty.value = totalValue;
+                                    cuttingNewQty.value = totalValue;
                                 }
                             }
-                        })
+                        }
+                    });
                 }
             })
         })
-   
     }
 
     function submitForm(){
@@ -267,7 +262,7 @@
         ids.forEach(element =>{
             if (element.value) {
                   hasIdValue = true;
-             }
+            }
         })
         if(hasIdValue){
             const submit = document.getElementById('id_submit');
@@ -277,9 +272,7 @@
                 const cuttingMainValue = parseFloat(newValue.value) || 0;
                 const row = newValue.closest('tr');
                 const color = row.querySelector('input[name$="-product_color"]').value;
-          
                 const cuttingColor = document.querySelector('.color[name$="-product_color"]').value;
-              
                 const currentCutting = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
                 currentCutting.forEach(element =>{
                     if(color == cuttingColor){
@@ -295,16 +288,14 @@
     }
 submitForm();
     document.addEventListener('DOMContentLoaded', ()=>{
-
         var qty = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
-
         qty.forEach(element => {
             element.addEventListener('input', () => {
-            cuttingOrder();
-            updateCuttingQuantity();
-        });
+                cuttingOrder();
+                updateCuttingQuantity();
+            });
         })
-
+        submitForm();
     });
 </script>
 {% endblock %}
