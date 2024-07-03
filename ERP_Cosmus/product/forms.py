@@ -286,9 +286,9 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
         
         # Access the parent model's number_of_pieces field
         parent_quantity = self.instance.number_of_pieces  
-        
+
         # Raise a validation error if the total order quantity exceeds the parent quantity
-        if total_order_quantity > parent_quantity:
+        if total_order_quantity != parent_quantity:
             raise ValidationError(f'The total order quantity ({total_order_quantity}) exceeds the available quantity ({parent_quantity}).')
 
 
@@ -321,7 +321,30 @@ class purchase_order_raw_to_product_form(purchase_order_to_product_form):
         fields = purchase_order_to_product_form.Meta.fields + ['process_quantity']   # inherited from purchase_order_to_product_form fields of meta class
 
 
-purchase_order_raw_product_qty_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_raw_to_product_form, extra=0)
+
+class Basepurchase_order_raw_product_qty_formset(BaseInlineFormSet):
+    
+    def clean(self):
+        super().clean()
+
+        for form in self.forms:
+            if not form.cleaned_data.get('DELETE', False):
+                # Get the order_quantity from the cleaned_data of each form:
+                order_quantity = form.cleaned_data.get('order_quantity', 0)
+                proc_color_wise_qty = form.cleaned_data.get('process_quantity', 0)
+                print(order_quantity,proc_color_wise_qty)
+                if order_quantity < proc_color_wise_qty:
+                    raise ValidationError(f' order quantity ({proc_color_wise_qty}) exceeds the available order quantity ({order_quantity}).')
+        
+            
+
+
+
+purchase_order_raw_product_qty_formset = inlineformset_factory(purchase_order,
+                                                                purchase_order_to_product, 
+                                                                form=purchase_order_raw_to_product_form, 
+                                                                formset = Basepurchase_order_raw_product_qty_formset,
+                                                                extra=0)
 
 
 class purchase_order_raw_product_sheet_form(forms.ModelForm):
@@ -357,17 +380,21 @@ raw_material_stock_trasfer_items_formset = inlineformset_factory(RawStockTransfe
 class purchase_order_raw_material_cutting_form(forms.ModelForm):
     class Meta:
         model = purchase_order_raw_material_cutting
-        fields = ['purchase_order_id','raw_material_cutting_id','factory_employee_id']
+        fields = ['purchase_order_id','raw_material_cutting_id','factory_employee_id','processed_qty','balance_qty']
 
         widgets = {
             'purchase_order_id': forms.TextInput(attrs={'readonly': 'readonly'})
         }
 
+    # def clean_processed_qty(self)
+
 class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
     class Meta:
         model = purchase_order_for_raw_material_cutting_items
 
-        fields = ['product_color','material_name','rate','panha','units','g_total','consumption','total_comsumption','physical_stock','balance_physical_stock','cutting_quantity']
+        fields = ['product_color','material_name','rate','panha','units','g_total',
+                  'consumption','total_comsumption','physical_stock','balance_physical_stock',
+                  'cutting_quantity']
 
 
 

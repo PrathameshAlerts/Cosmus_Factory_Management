@@ -8,6 +8,7 @@ from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
 from pandas import json_normalize
+from python_utils import raise_exception
 import requests
 from django.contrib.auth.models import auth 
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
@@ -2914,9 +2915,10 @@ def purchaseordercreateupdate(request,pk=None):
                                 p_o_instance.save()  # save the parent form instance
 
                         messages.success(request, 'Purchase Order Quantities updated successfully.')
+                        logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
                         return redirect(reverse('purchase-order-rawmaterial', args=[instance.id, instance.product_reference_number.Product_Refrence_ID]))
 
-                        logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
+                        
 
                     except DatabaseError as db_err:
                         logger.error(f'Database error during form save: {db_err}')
@@ -3043,37 +3045,47 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     if request.method == 'POST':
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
 
-        if purchase_order_raw_formset.is_valid() and purchase_order_raw_sheet_formset.is_valid():
-            
-            try:
-
-                purchase_order_raw_formset.save()
-                purchase_order_raw_sheet_formset.save()
+        try:
+            if purchase_order_raw_formset.is_valid() and purchase_order_raw_sheet_formset.is_valid():
                 
-                for form in purchase_order_raw_sheet_formset:
-                    po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
-                    if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
-                        po_form_instance.process_status = '3'  # change the status to 3
-                        po_form_instance.save()  # save the parent form instance 
+                try:
 
-                return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
-            
-            except ValueError as ve:
-                messages.error(request,f'Error Occured - {ve}')
-            except exception as e:
-                messages.error(request,f'Exception Occured - {e}')
-            
-            return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
-                                                                      'purchase_order_raw_formset':purchase_order_raw_formset,
-                                                                      'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
-                                                                      'physical_stock_all_godown_json':physical_stock_all_godown_json})
+                    purchase_order_raw_formset.save()
+                    purchase_order_raw_sheet_formset.save()
+                    
+                    for form in purchase_order_raw_sheet_formset:
+                        po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                        if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
+                            po_form_instance.process_status = '3'  # change the status to 3
+                            po_form_instance.save()  # save the parent form instance 
 
+                    return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+                
+                except ValueError as ve:
+                    messages.error(request,f'Error Occured - {ve}')
+
+                except exception as e:
+                    messages.error(request,f'Exception Occured - {e}')
+                
+                return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
+                                                                        'purchase_order_raw_formset':purchase_order_raw_formset,
+                                                                        'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
+                                                                        'physical_stock_all_godown_json':physical_stock_all_godown_json})
+
+            
+            else:
+                raise ValidationError("No products found for the given reference ID.")
+                # messages.error(request,f' Please enter correct Procurement color wise QTY {purchase_order_raw_sheet_formset.errors}-{purchase_order_raw_sheet_formset.errors}')
+                # return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
+                #                                                         'purchase_order_raw_formset':purchase_order_raw_formset,
+                #                                                         'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
+                #                                                         'physical_stock_all_godown_json':physical_stock_all_godown_json})
+        except ValidationError as ve:
+                messages.error(request,f' Please enter correct Procurement color wise QTY {ve}')
         
-        else:
-            return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
-                                                                      'purchase_order_raw_formset':purchase_order_raw_formset,
-                                                                      'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
-                                                                      'physical_stock_all_godown_json':physical_stock_all_godown_json})
+        except exception as e:
+            messages.error(request,f' An exception occoured {e}')
+
 
 
     return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
