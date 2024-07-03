@@ -7,9 +7,9 @@
      
         <form  action="" method="POST">
           {% csrf_token %}  
-          <h2 class="mb-4">Employee create</h2>
+          <h2 class="mb-4">Worker create</h2>
          <div class="d-flex">
-          <label for="id_factory_emp_name" class="item-form">Employee Name:</label>
+          <label for="id_factory_emp_name" class="item-form">Worker Name:</label>
           <input type="text" class="item-select rounded" value="{{ form.instance.color_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
          </div>
     
