@@ -133,33 +133,43 @@
     </form>
   </div>
 </div>
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var dateInput = document.getElementById('id_target_date');
+        var today = new Date().toISOString().split('T')[0];
+        var date= dateInput.value;
+            dateInput.min = today;
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var dateInput = document.getElementById('id_target_date');
-            var today = new Date().toISOString().split('T')[0];
-             var date= dateInput.value;
-             dateInput.min = today;
-
-             var id = document.getElementById('id_productRow').value;
+        var id = document.getElementById('id_productRow').value;
         
-             if(id != "None"){
-              var main_form = document.getElementById('productForm-conatiner');
-              var submitBtn = document.getElementById('id_submit_1');
-              var backbutton = document.getElementById('id_return');
-      
-              main_form.style.display = 'block';
-              submitBtn.style.display = 'none';
-             
+        if(id != "None"){
+            var main_form = document.getElementById('productForm-conatiner');
+            var submitBtn = document.getElementById('id_submit_1');
+            var backbutton = document.getElementById('id_return');
+            var orderNo = document.getElementById('id_purchase_order_number')
+            var productOderQty = document.getElementById('id_number_of_pieces')
+            var refrenceId = document.getElementById('id_product_reference_number');
+            var godownId = document.getElementById('id_temp_godown_select');
+                main_form.style.display = 'block';
+                submitBtn.style.display = 'none';
+                orderNo.readOnly = true;;
+                productOderQty.readOnly = true;
+                refrenceId.disabled = true;
+                godownId.disabled = true;
+
+
               backbutton.addEventListener('click', function() {
                 main_form.style.display = 'none';
                 submitBtn.style.display = 'block';
+                orderNo.readOnly = false;;
+                productOderQty.readOnly = false;
+                refrenceId.disabled = false;
+                godownId.disabled = false;
               });
              }
         });
-        
-  
-    </script>
+</script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Function to update the total quantity and manage the input fields
@@ -197,7 +207,7 @@
             q.element.readOnly = true;
             q.element.style.borderColor = ''; // Reset border color
         });
-
+     
         // Check if the total quantity equals the allowed quantity
         if (totalQuantity === totalAllowedQuantity) {
             // If the total quantity matches the allowed quantity, only the current input field is editable

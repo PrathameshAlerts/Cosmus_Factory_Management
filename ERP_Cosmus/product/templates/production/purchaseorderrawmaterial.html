@@ -32,7 +32,7 @@
                             <input class="item-select border-0 bg-transparent text-danger pb-2" id="id_model_name"value="{{model_name | default_if_none:''}}">
                         </diV>
                     </div>
-                    <div class="d-flex">
+                    <div class="d-flex mb-2">
                         <div class="d-flex">
                             <label for="id_number_of_pieces" class="">No Of pieces:</label>
                             <input type="number" name="number_of_pieces" class="purchase-input border-0 bg-transparent text-danger ms-2 me-5 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
@@ -42,7 +42,7 @@
                             <input type="date" name="target_date" class="border-0 bg-transparent text-danger ms-2 me-3 pb-2" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
                         </div> 
                     </div>
-                    <div class="d-flex ms-5">
+                    <div class="d-flex mb-2">
                         <label for="id_temp_godown_select" class="">Godown Name:</label>
                         <input type="text" name="temp_godown_select" class="border-0 bg-transparent text-danger ms-2 me-3 pb-2" value="{{ form.instance.temp_godown_select }}" required id="id_temp_godown_select" readonly>  
                     </div> 
@@ -78,9 +78,15 @@
                         </tr>
                         {% endfor %}
                     </tbody>
-                    <input type="hidden" name="processTotal" id="id_processTotal" value="0">
                     
+                    <!-- <input type="hidden" name="processTotal" id="id_processTotal" value="0">
+                     -->
                 </table>
+                <div class="d-flex">
+                    <lable class="ms-2">Total</lable>
+                    <input type="number" name="OderQty" class="productorderqty-input pb-1" value="{{form.instance.number_of_pieces}}" id="id_OderQty" style="margin-left: 185px;" readonly>
+                    <input type="number" class="productorderqty-input text-danger pb-1 ms-3" name="processTotal" id="id_processTotal" value="0">
+                </div>
             </div>
         </div>
         <div class="row mt-2">
@@ -180,10 +186,7 @@
                }
 
                 }
-              
-                
-               
-
+            
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
                     var consumption = (panhaValue * unitsValue) / grandTotalValue;
               
@@ -201,10 +204,9 @@
             for (var i = 0; i < newForms; i++) {
                 var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
                 var processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity').value;
-
                 var orderQuantityValue = parseFloat(orderQuantity);
                 var processQuantityValue = parseFloat(processQuantity);
-               
+      
                  if (processQuantityValue > orderQuantityValue) {
                     document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity').value = "0";
                 
@@ -267,13 +269,24 @@ function balanceStock(){
         var totalConsumtionValue = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-total_comsumption').value;
         var newPhysicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock').value;
         var balanceStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock');
+
         balanceStock = newPhysicalStock - totalConsumtionValue;
     
         document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
     }               
   
 }
+    function orderQty(){
+        var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
 
+        for (var i = 0; i < newForms; i++) {
+            var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
+            var processQty = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
+            var orderQuantityValue = parseFloat(orderQuantity);
+            processQty.value = orderQuantityValue;
+            
+        }
+    }
         document.addEventListener('DOMContentLoaded', () => {
             var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
             formElements.forEach(element => {
@@ -286,7 +299,7 @@ function balanceStock(){
                 element.addEventListener('input', calculateTotalConsumption);
                 element.addEventListener('keyup', calculateTotalConsumption);
             });
-           
+            orderQty();
             calculateTotalConsumption();
             updateTotal(); // Initialize the calculation on page load
             updateProcessQuantity(); // Initialize the validation on page load
