@@ -103,7 +103,7 @@
                         <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-process_quantity" value="{{form.instance.process_quantity}}" id="id_{{form.prefix}}-process_quantity" readonly>
                     </td>
                     <td>
-                        <input type="number" class="productorderqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity">
+                        <input type="number" class="productorderqty-input currentQty" name="current_{{forloop.counter0}}-cutting" value="{{form.instance.cutting}}" id="id_current_{{forloop.counter0}}-cutting">
                     </td>
                 </tr>
                 {% endfor %}
@@ -151,8 +151,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.instance.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.instance.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock"></td>
-                        <td><input type="number"  class="productinput" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity"></td>
-                   
+                        <input type="hidden"  class="productinput" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity">
                     </tr>
 
                     {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
@@ -191,13 +190,13 @@
 
         for(var i=0;i<myform;i++){
             var processQty = document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity').value;
-            var cuttingQty = document.getElementById('id_purchase_order_to_product_set-'+i+'-cutting_quantity').value;
+            var cuttingQty = document.getElementById('id_current_'+i+'-cutting').value;
             var totalCuttingQty = document.getElementById('id_cuttingTotal');
             var processQtyValue = parseFloat(processQty);
             var cuttingQtyValue = parseFloat(cuttingQty);
-            console.log('', cuttingQtyValue);
+          
             if(cuttingQtyValue > processQtyValue){
-                document.getElementById('id_purchase_order_to_product_set-'+i+'-cutting_quantity').value = 0;
+                document.getElementById('id_current_'+i+'-cutting').value = 0;
             }
 
             total = total + cuttingQtyValue;
@@ -207,31 +206,37 @@
 
     function updateCuttingQuantity(){
 
-        var total =0;
-        const cuttingQtyElements = document.querySelectorAll('input[name^="purchase_order_to_product_set-"][name$="-cutting_quantity"]');
-
+        var totals =0;
+        const cuttingQtyElements = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
+        console.log('cuttingQtyElements',cuttingQtyElements);
         cuttingQtyElements.forEach(input =>{
-            const CuttingQty = parseInt(input.value) || 0;
-
-            console.log(CuttingQty);
+            const CuttingQty = parseFloat(input.value) || 0;
             const row = input.closest('tr');
             const productColor = row.querySelector('input[name$="-product_color"]').value;
             const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
             const cuttingTotal = document.getElementById('id_cuttingTotal');
-            
-            total = total + CuttingQty;
-            cuttingTotal.value = total;
+          
+            console.log('CuttingQty',CuttingQty);
+            totals = totals + CuttingQty;
+            cuttingTotal.value = totals;
 
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
+                const cuttingNewQty = row.querySelector('input[name$="-cutting_quantity"]');
+             
+                
                 if(currentColor == productColor){
                     const consumptionInput =document.querySelector('input[name$="-consumption"]');
                     const consumption = parseFloat(consumptionInput.value) || 0;
+                   
                     var totalConsumption = CuttingQty * consumption;
                     if (totalConsumptionInput) {
-                                totalConsumptionInput.value = totalConsumption.toFixed(2);
-                     }
+                            totalConsumptionInput.value = totalConsumption.toFixed(2);
+                                if (cuttingNewQty) {
+                                    cuttingNewQty.value = CuttingQty;
+                                }
+                }
                 }else if(currentColor === "Common Item"){
                     const rows = $("tbody.mainTableList tr").find("input[name$='-product_color']").filter(function() {
                             return $(this).val() === "Common Item";
@@ -240,11 +245,15 @@
                         rows.each(function() {
                             const consumptionInputs = document.querySelector('input[name$="-consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInputs.value) || 0;
+               
                             const totalValue = $('#id_cuttingTotal').val();
-                            console.log()
+                          console.log('totalValue',totalValue);
                             var commonConsumption = totalValue * commonConsumptionValue;
                             if(totalConsumptionInput){
                                 totalConsumptionInput.value = commonConsumption.toFixed(2);
+                                if (cuttingNewQty) {
+                                cuttingNewQty.value = totalValue;
+                                }
                             }
                         })
                 }
@@ -255,12 +264,13 @@
 
     document.addEventListener('DOMContentLoaded', ()=>{
 
-        var qty = document.querySelectorAll('input[name$="-cutting_quantity"]');
+        var qty = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
 
         qty.forEach(element => {
-            element.addEventListener('input',cuttingOrder);
-            element.addEventListener('input',updateCuttingQuantity);
-            element.addEventListener('keyup',updateCuttingQuantity);
+            element.addEventListener('input', () => {
+            cuttingOrder();
+            updateCuttingQuantity();
+        });
         })
 
     });
