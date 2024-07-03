@@ -613,7 +613,7 @@ class purchase_order(models.Model):
     modified_created_date = models.DateField(auto_now_add=True)
     number_of_pieces = models.IntegerField(default=0)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
-    temp_godown_select =models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
+    temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
     
 
 
@@ -623,10 +623,10 @@ class purchase_order_to_product(models.Model):
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
 
-    def save(self, *args, **kwargs):
-        if self.process_quantity > self.order_quantity:
-            raise ValueError("process_quantity cannot be greater than order_quantity")
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.process_quantity > self.order_quantity:
+    #         raise ValueError("process_quantity cannot be greater than order_quantity")
+    #     super().save(*args, **kwargs)
 
     
 
@@ -649,7 +649,8 @@ class purchase_order_raw_material_cutting(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, on_delete = models.CASCADE)
     raw_material_cutting_id = models.IntegerField(primary_key=True)
     factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
-
+    processed_qty  = models.IntegerField(default=0)
+    balance_qty = models.IntegerField(default=0)
 
 
 class purchase_order_for_raw_material_cutting_items(models.Model):

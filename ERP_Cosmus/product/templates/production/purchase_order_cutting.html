@@ -47,7 +47,7 @@
                     <input type="number" name="purchase_order_number" class="purchase-amount  border-0 bg-transparent text-danger me-3 pb-2" value="{{form.instance.product_reference_number.Product_Refrence_ID}}" id="id_purchase_order_number" readonly>
                 </div>
                 <div class="d-flex">
-                    <label for="id_number_of_pieces" class="">No Of pieces:</label>
+                    <label for="id_number_of_pieces" class="">Total P.O Qty:</label>
                     <input type="number" name="number_of_pieces" class="purchase-input border-0 bg-transparent text-danger ms-3 me-3 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
                 </div> 
                 <div class="d-flex ms-5">
@@ -59,15 +59,15 @@
                     <input class="text-danger purchase-amount border-0 bg-transparent pb-2 " id="id_model_name"value="{{model_name | default_if_none:''}}">
                 </div>
             </div>
-           
+            
             <div class="d-flex mb-2">
                 <div class="d-flex me-4">
-                    <label for="id_total_qty" class="">Total Qty:</label>
-                    <input type="number" name="total_qty" class="purchase-input border-0 bg-transparent text-danger ms-3  pb-2 "  value="" required id="id_total_qty" readonly>
+                    <label for="id_processed_qty" class="">Process Qty:</label>
+                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value=""  id="id_processed_qty" readonly>
                 </div> 
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input border-0 bg-transparent text-danger ms-3 pb-2" value="" required id="id_balance_qty" readonly>  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value=""  id="id_balance_qty" readonly>  
                 </div> 
                
             </div>
