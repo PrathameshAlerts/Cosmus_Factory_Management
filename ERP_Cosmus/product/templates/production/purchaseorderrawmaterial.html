@@ -159,13 +159,13 @@
                 var physicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock');
                 var newPhysicalStock = document.getElementById('id_physical_stock').value;
                 var materialName = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-material_name').value;
-                console.log(newPhysicalStock);
+            
                 var panhaValue = parseFloat(panha);
                 var unitsValue = parseFloat(units);
                 var grandTotalValue = parseFloat(grandTotal);
                 if(newPhysicalStock != "None"){
                     var mainstock = JSON.parse(newPhysicalStock);
-                    console.log(mainstock);  
+            
                     for (var key in mainstock) {
                     if (mainstock.hasOwnProperty(key)) {
                         if(key === materialName){
