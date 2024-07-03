@@ -613,6 +613,7 @@ class purchase_order(models.Model):
     modified_created_date = models.DateField(auto_now_add=True)
     number_of_pieces = models.IntegerField(default=0)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
+    temp_godown_select =models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
     
 
 
@@ -655,6 +656,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     purchase_order_cutting = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
+    # material_shade = 
     rate = models.DecimalField(max_digits=10, decimal_places=3)
     panha = models.DecimalField(max_digits=10, decimal_places=3)
     units = models.DecimalField(max_digits=10, decimal_places=3)

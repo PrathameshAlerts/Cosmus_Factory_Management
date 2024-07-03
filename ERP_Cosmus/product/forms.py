@@ -258,7 +258,7 @@ class purchase_order_form(forms.ModelForm):
         model = purchase_order
 
         fields = ['purchase_order_number','product_reference_number','ledger_party_name',
-                  'target_date','number_of_pieces']
+                  'target_date','number_of_pieces','temp_godown_select']
         
 
 
@@ -280,13 +280,31 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
         total_order_quantity = 0
         for form in self.forms:
             if not form.cleaned_data.get('DELETE', False):
+                # Get the order_quantity from the cleaned_data of each form:
                 order_quantity = form.cleaned_data.get('order_quantity', 0)
                 total_order_quantity += order_quantity
         
+        # Access the parent model's number_of_pieces field
         parent_quantity = self.instance.number_of_pieces  
         
+        # Raise a validation error if the total order quantity exceeds the parent quantity
         if total_order_quantity > parent_quantity:
             raise ValidationError(f'The total order quantity ({total_order_quantity}) exceeds the available quantity ({parent_quantity}).')
+
+
+        """
+        NOTE ON class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
+
+        with 'self.instance.PARENT FIELD NAME'  we can access parent values 
+        AND 
+        with 
+        for form in self.forms:
+            form.cleaned_data.get(''MODEL FIELD NAME'', ''DEFAULT VALUE'')
+            OR
+            child_instance = form.instance  # Get the child model instance
+            OR
+            child_instance_fields = form.instance.FIELD NAME
+        """
 
 
 purchase_order_product_qty_formset = inlineformset_factory(purchase_order,

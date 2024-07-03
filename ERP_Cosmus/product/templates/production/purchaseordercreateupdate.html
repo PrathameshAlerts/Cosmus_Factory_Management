@@ -5,7 +5,7 @@
 
   <div class="mt-2" id="create_form" >
     <form action="" method="POST" style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
-      <h3 class="mb-3">Purchase Order</h3>
+      <h3 class="mb-3">New Order</h3>
      
       {% csrf_token %}
       <input type="hidden" name="productRowCreate" value="{{form.instance.id}}" id="id_productRow">
@@ -56,7 +56,26 @@
             <div class="d-flex mb-3">
               <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
               <input type="number" name="number_of_pieces" class="item-select"  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces">
-            </div>  
+            </div>
+            
+            <div class="d-flex mb-3">
+                <label for="id_temp_godown_select" class="item-form">godown select:</label>
+                <select name="temp_godown_select" class="item-select" id="id_temp_godown_select">
+                    {% if form.instance.id %}
+                    <option value="{{form.instance.temp_godown_select.id}}">{{form.instance.temp_godown_select.godown_name_raw}}</option>
+                    {% for godown in raw_material_godowns %}
+                      <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                    {% endfor %}
+                    {% elif not form.instance.id %}
+                    <option value=""></option>
+                    {% for godown in raw_material_godowns %}
+                      <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+              </div>
+
+            
           </div>
       <input type="submit" class="productorder_btn mt-3 mx-3" name="submit-form-1" value="Submit & Next" id="id_submit_1">
       </form>

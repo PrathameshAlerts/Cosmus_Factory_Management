@@ -2853,6 +2853,8 @@ def purchaseordercreateupdate(request,pk=None):
         ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
         products = Product.objects.all()
 
+        raw_material_godowns = Godown_raw_material.objects.all()
+
         # on update instance is fetched by pk which is used for form and formset 
         if pk:
             instance = get_object_or_404(purchase_order,pk=pk)
@@ -2937,7 +2939,7 @@ def purchaseordercreateupdate(request,pk=None):
                 messages.error(request, f'An exception occurred: {e}') 
         
 
-    return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,
+    return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,'raw_material_godowns':raw_material_godowns,
                                                                           'ledger_party_names':ledger_party_names,
                                                                           "products":products,'model_name':model_name})
 
