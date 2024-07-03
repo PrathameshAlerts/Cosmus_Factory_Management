@@ -272,7 +272,28 @@ class purchase_order_to_product_form(forms.ModelForm):
             'product_id': forms.TextInput(),
         }
 
-purchase_order_product_qty_formset = inlineformset_factory(purchase_order, purchase_order_to_product, form=purchase_order_to_product_form, extra=0, can_delete=True)
+# custom formset for validation extended form BaseInlineFormset
+class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
+    def clean(self):
+        super().clean()
+
+        total_order_quantity = 0
+        for form in self.forms:
+            if not form.cleaned_data.get('DELETE', False):
+                order_quantity = form.cleaned_data.get('order_quantity', 0)
+                total_order_quantity += order_quantity
+        
+        parent_quantity = self.instance.number_of_pieces  
+        
+        if total_order_quantity > parent_quantity:
+            raise ValidationError(f'The total order quantity ({total_order_quantity}) exceeds the available quantity ({parent_quantity}).')
+
+
+purchase_order_product_qty_formset = inlineformset_factory(purchase_order,
+                                                            purchase_order_to_product,
+                                                              form=purchase_order_to_product_form,
+                                                              formset=BasePurchaseOrderProductQtyFormSet, # custom formset for validation
+                                                                extra=0, can_delete=True)
 
 
 # inherited from purchase_order_to_product_form

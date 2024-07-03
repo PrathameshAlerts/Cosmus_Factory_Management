@@ -1,4 +1,5 @@
 import decimal
+from email import message
 from io import BytesIO
 from itertools import count
 from operator import is_
@@ -1783,6 +1784,7 @@ def stockTrasferRawDelete(request,pk):
 
 
 def purchasevouchercreateupdate(request, pk=None):
+    print(request.POST)
     item_name_searched = Item_Creation.objects.all()
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
@@ -2843,8 +2845,10 @@ def viewproduct2items_configs(request, product_sku):
     
 
 
-def purchaseordercreateupdate(request,pk=None):
 
+
+def purchaseordercreateupdate(request,pk=None):
+    
     try:
         ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
         products = Product.objects.all()
@@ -2870,60 +2874,67 @@ def purchaseordercreateupdate(request,pk=None):
         # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
-            if form.has_changed():
-                if form.is_valid():
-                    try:
-                        form.save()
-                        logger.info(f'Purchase invoice created-updated-{form.instance.id}')
-                        # on submission of form-1, form-2 is rendered with form-1 instance
-                        return redirect(reverse('purchase-order-update', args=[form.instance.id]))
+        
+            if form.is_valid():
+                try:
+                    form.save()
+                    logger.info(f'Purchase invoice created-updated-{form.instance.id}')
+                    # on submission of form-1, form-2 is rendered with form-1 instance
+                    return redirect(reverse('purchase-order-update', args=[form.instance.id]))
                 
-                    except ValidationError as val_err:
-                        logger.error(f'Validation error: {val_err} - {formset.errors}')
-
-                    except DatabaseError as db_err:
-                        logger.error(f'Database error during formset save: {db_err}')
-
-                    except Exception as e:
-                        logger.error(f'Unexpected error during form save: {e}')
-                else:
-                    logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
-            else:
-                
-                return redirect(reverse('purchase-order-update', args=[form.instance.id]))
-
-
-        if 'submit-form-2' in request.POST:
-            # based on the created instance of form-1, form-2 update form is rendered using that instance
-            formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
-
-            formset.forms = [form for form in formset if form.has_changed()]
-
-            if formset.is_valid():
-                try:                
-                    formset.save()
-
-                    # set the status to 2
-                    for form in formset:
-                        p_o_instance = form.instance.purchase_order_id  # get FK instance from form instance
-                        if p_o_instance.process_status == '1':             # if process_status in parent form is 1
-                            p_o_instance.process_status = '2'         # change the status to 2
-                            p_o_instance.save()                     # save the parent form instance
-
-                    logger.info(f'Purchase Order Quantities updated-{form.instance.id}')  # formset form form.instance.id
-
                 except ValidationError as val_err:
                     logger.error(f'Validation error: {val_err} - {formset.errors}')
 
                 except DatabaseError as db_err:
-                    logger.error(f'Database error during form save: {db_err}')
+                    logger.error(f'Database error during formset save: {db_err}')
 
                 except Exception as e:
                     logger.error(f'Unexpected error during form save: {e}')
             else:
-                logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {formset.errors}')   # formset form form.instance.id
+                logger.error(f'Purchase Order Quantities updated error-{form.instance.id} - {form.errors}')
             
-            return redirect(reverse('purchase-order-rawmaterial',args=[instance.id, instance.product_reference_number.Product_Refrence_ID])) # instance.id is p_o id
+
+
+        if 'submit-form-2' in request.POST:
+
+            try:
+                formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+
+                if formset.is_valid():
+                    try:
+                        formset.save()
+
+                        # set the status to 2
+                        for form in formset:
+                            p_o_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                            if p_o_instance.process_status == '1':  # if process_status in parent form is 1
+                                p_o_instance.process_status = '2'  # change the status to 2
+                                p_o_instance.save()  # save the parent form instance
+
+                        messages.success(request, 'Purchase Order Quantities updated successfully.')
+                        return redirect(reverse('purchase-order-rawmaterial', args=[instance.id, instance.product_reference_number.Product_Refrence_ID]))
+
+                        logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
+
+                    except DatabaseError as db_err:
+                        logger.error(f'Database error during form save: {db_err}')
+                        messages.error(request, 'A database error occurred during form save.')
+
+                    except Exception as e:
+                        logger.error(f'Unexpected error during form save: {e}')
+                        messages.error(request, 'An unexpected error occurred during form save.')
+                else:
+                    # Log formset errors
+                    logger.error(f'Purchase Order Quantities update error - {formset.errors}')
+                    messages.error(request, 'There were errors in the form. Please correct them and try again.')
+
+            except ValidationError as val_err:
+                logger.error(f'Validation error: {val_err} - {formset.errors}')
+                messages.error(request, f'Validation error: {val_err}')
+
+            except Exception as e:
+                logger.error(f'Exception occurred: {e}')
+                messages.error(request, f'An exception occurred: {e}') 
         
 
     return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,
@@ -3031,21 +3042,37 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
 
         if purchase_order_raw_formset.is_valid() and purchase_order_raw_sheet_formset.is_valid():
-
-            purchase_order_raw_formset.save()
-            purchase_order_raw_sheet_formset.save()
             
-            for form in purchase_order_raw_sheet_formset:
-                po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
-                if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
-                    po_form_instance.process_status = '3'  # change the status to 3
-                    po_form_instance.save()  # save the parent form instance 
+            try:
 
-            return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+                purchase_order_raw_formset.save()
+                purchase_order_raw_sheet_formset.save()
+                
+                for form in purchase_order_raw_sheet_formset:
+                    po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                    if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
+                        po_form_instance.process_status = '3'  # change the status to 3
+                        po_form_instance.save()  # save the parent form instance 
+
+                return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+            
+            except ValueError as ve:
+                messages.error(request,f'Error Occured - {ve}')
+            except exception as e:
+                messages.error(request,f'Exception Occured - {e}')
+            
+            return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
+                                                                      'purchase_order_raw_formset':purchase_order_raw_formset,
+                                                                      'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
+                                                                      'physical_stock_all_godown_json':physical_stock_all_godown_json})
+
         
         else:
-            print(purchase_order_raw_formset.errors)
-            print( purchase_order_raw_sheet_formset.errors)
+            return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
+                                                                      'purchase_order_raw_formset':purchase_order_raw_formset,
+                                                                      'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
+                                                                      'physical_stock_all_godown_json':physical_stock_all_godown_json})
+
 
     return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
                                                                       'purchase_order_raw_formset':purchase_order_raw_formset,
@@ -3054,7 +3081,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
-    
+    print(request.POST)
     if pk:
         purchase_order_cutting_instance = get_object_or_404(purchase_order_raw_material_cutting, pk=pk)
 
@@ -3136,6 +3163,8 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     form_instance.purchase_order_cutting = cutting_form_instance
                     form_instance.save()
 
+            return(redirect(reverse('purchase-order-cutting-list',args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
+
         else:
             print('errors',purchase_order_for_raw_material_cutting_items_formset_form.errors)
             print('errors',purchase_order_cutting_form.errors)
@@ -3147,8 +3176,8 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
 def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
     p_o_cutting_order_all =  purchase_order_raw_material_cutting.objects.filter(purchase_order_id =p_o_pk)
-    print(p_o_cutting_order_all)
-    return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_pk':p_o_pk ,'prod_ref_no':prod_ref_no })
+    Purchase_order_no = purchase_order.objects.get(id = p_o_pk)
+    return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_number':Purchase_order_no ,'prod_ref_no':prod_ref_no,'p_o_pk':p_o_pk})
 
 
 #_________________________production-end__________________________________________
