@@ -160,16 +160,16 @@
                 godownId.disabled = true;
 
 
-              backbutton.addEventListener('click', function() {
+            backbutton.addEventListener('click', function() {
                 main_form.style.display = 'none';
                 submitBtn.style.display = 'block';
                 orderNo.readOnly = false;;
                 productOderQty.readOnly = false;
                 refrenceId.disabled = false;
                 godownId.disabled = false;
-              });
-             }
-        });
+            });
+        }
+    });
 </script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -242,30 +242,29 @@
 });
 
           //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
-          $(document).on('click', '.delete-btn', function() {
+    $(document).on('click', '.delete-btn', function() {
               
-              var tableRows = $('#productTable tbody tr'); 
-              if (tableRows.length > 1) { 
-                  var row = $(this).closest('tr'); 
-                 
-                  var checkbox = row.find('.godown_delete[name^="purchase_order_to_product_set-"][name$="-DELETE"]');
+        var tableRows = $('#productTable tbody tr'); 
+            if (tableRows.length > 1) { 
+                var row = $(this).closest('tr'); 
+                var checkbox = row.find('.godown_delete[name^="purchase_order_to_product_set-"][name$="-DELETE"]');
                   
-                  checkbox.prop('checked', true);
-                  checkbox.val('true');
+                checkbox.prop('checked', true);
+                checkbox.val('true');
                  
-                  if(checkbox.val() == 'true'){
+                if(checkbox.val() == 'true'){
       
                   row.hide();
                   deleteRowCalculate();
-                  }
+                }
                     
               } else {
                   alert('The table must have at least one godown item'); 
               }
            
               
-              });
+    });
       
-      </script>
+</script>
 
 {% endblock %}

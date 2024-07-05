@@ -215,18 +215,17 @@
         }
 
         function calculateTotalConsumption(){
-            var total =0;
+            let total =0;
             const processQty = document.querySelectorAll('input[name$="-process_quantity"]');
 
             processQty.forEach(input =>{
-                const processQuantity = parseInt(input.value) || 0;
-               
+                const processQuantity = parseInt(input.value) || 0;  
                 const row = input.closest('tr');
                 const productColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
                 const processtotalQty = document.getElementById('id_processTotal');
               
-                total = total + processQuantity;
+                total += processQuantity;
                
                 processtotalQty.value = total;
                 totalConsumptionRows.forEach(totalRow => {
@@ -237,7 +236,7 @@
                        // Calculate total consumption for matching colors
                         const consumptionInput = document.querySelector('input[name$="-consumption"]');
                         const consumption = parseFloat(consumptionInput.value) || 0;
-                        var totalConsumption = processQuantity * consumption;
+                        let totalConsumption = processQuantity * consumption;
                             if (totalConsumptionInput) {
                                 totalConsumptionInput.value = totalConsumption.toFixed(2);
                             }
@@ -246,21 +245,21 @@
                             return $(this).val() === "Common Item";
                         }).closest('tr');
                 
-                        // Iterate over each row to get the consumption input value
+                           // Iterate over each row to get the consumption input value
                             rows.each(function() {
                                 const consumptionInputCommon = $(this).find('input[name$="-consumption"]').val();
                                 const totalValue = $('#id_processTotal').val();
                             
-                                var commonConsumption = totalValue * consumptionInputCommon;
-                            if (totalConsumptionInput) {
-                            totalConsumptionInput.value = commonConsumption.toFixed(2);
-                             }
+                                let commonConsumption = totalValue * consumptionInputCommon;
+                                if (totalConsumptionInput) {
+                                totalConsumptionInput.value = commonConsumption.toFixed(2);
+                                }
                             });
-                     }
+                    }
                 });
                 
             })
-            balanceStock();
+              balanceStock();
         }
 function balanceStock(){
     var totals = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
@@ -270,30 +269,29 @@ function balanceStock(){
         var newPhysicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock').value;
         var balanceStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock');
 
-        balanceStock = newPhysicalStock - totalConsumtionValue;
+            balanceStock = newPhysicalStock - totalConsumtionValue;
     
-        document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
+            document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
     }               
   
 }
-    function orderQty(){
-        var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+function orderQty(){
+    var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
 
-        for (var i = 0; i < newForms; i++) {
-            var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
-            var processQty = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
-            var orderQuantityValue = parseFloat(orderQuantity);
-            processQty.value = orderQuantityValue;
-            
-        }
+    for (var i = 0; i < newForms; i++) {
+        var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
+        var processQty = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
+        var orderQuantityValue = parseFloat(orderQuantity);
+            processQty.value = orderQuantityValue;      
     }
-        document.addEventListener('DOMContentLoaded', () => {
-            var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
+}
+    document.addEventListener('DOMContentLoaded', () => {
+        var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
+        var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
             formElements.forEach(element => {
                 element.addEventListener('input', updateTotal);
             });
 
-            var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
             processQuantityElements.forEach(element => {
                 element.addEventListener('input', updateProcessQuantity);
                 element.addEventListener('input', calculateTotalConsumption);
@@ -303,7 +301,7 @@ function balanceStock(){
             calculateTotalConsumption();
             updateTotal(); // Initialize the calculation on page load
             updateProcessQuantity(); // Initialize the validation on page load
-        });
+    });
 </script>
 {% endblock %}
 

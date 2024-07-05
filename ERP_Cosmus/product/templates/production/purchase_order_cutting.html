@@ -185,8 +185,7 @@
 
 
 <script>
- 
-    function cuttingOrder(){
+ function cuttingOrder(){
         var myform = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
         var total =0;
         var process = 0;
@@ -200,7 +199,7 @@
             var processQtyValue = parseFloat(processQty.value);
             var cuttingQtyValue = parseFloat(cuttingQty.value);
             var totalCuttingQtyValue = parseFloat(totalValue.value);
-            console.log('totalValue',totalCuttingQtyValue)
+           
             if(cuttingQtyValue > processQtyValue){
                 document.getElementById('id_current_'+i+'-cutting').value = 0;
             }
@@ -210,8 +209,10 @@
 
             process = process + processQtyValue;
             totalProcessQty.value = process;
-            console.log('totalCuttingQty',totalCuttingQty.value)
-            if(totalCuttingQtyValue > totalCuttingQty.value){
+            
+            console.log(totalCuttingQtyValue)
+            console.log(totalCuttingQty.value)
+            if(totalCuttingQtyValue < totalCuttingQty.value){
                 document.getElementById('id_current_'+i+'-cutting').value = 0;
             }
         }
@@ -273,15 +274,16 @@
     function submitForm(){
         var ids = document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-id"]');
         var hasIdValue = false;
-        ids.forEach(element =>{
-            if (element.value) {
+            ids.forEach(element =>{
+                if (element.value) {
                   hasIdValue = true;
-            }
-        })
+                }
+            })
         if(hasIdValue){
             const submit = document.getElementById('id_submit');
-            submit.style.display = "none";
             const newCutting = document.querySelectorAll('input[name$="-cutting_quantity"]');
+            submit.style.display = "none";
+           
             newCutting.forEach(newValue =>{
                 const cuttingMainValue = parseFloat(newValue.value) || 0;
                 const row = newValue.closest('tr');
@@ -307,21 +309,18 @@
         var totalactualProcessQty = document.getElementById('id_processQty');
         var OderQty = document.getElementById('id_number_of_pieces');
         var balanceQty = document.getElementById('id_balance_qty');
-       
-     
         var orderQtyValue = parseFloat(OderQty.value);
         var totalProcessQtyValue= parseFloat(totalProcessQty.value);
         var totalactualProcessQtyValue = parseFloat(totalactualProcessQty.value);
         var balanceQtyValue = parseFloat(balanceQty.value);
     
-         balanceQtyValue = orderQtyValue - totalProcessQtyValue;
+            balanceQtyValue = orderQtyValue - totalProcessQtyValue;
 
-         document.getElementById('id_balance_qty').value = balanceQtyValue;
+            document.getElementById('id_balance_qty').value = balanceQtyValue;
         
-        
-      if(totalProcessQtyValue > totalactualProcessQtyValue){
-          document.getElementById('id_processed_qty').value = 0;
-      }
+        if(totalProcessQtyValue > totalactualProcessQtyValue){
+            document.getElementById('id_processed_qty').value = 0;
+        }
     }
 
     document.addEventListener('DOMContentLoaded', ()=>{
