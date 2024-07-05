@@ -15,43 +15,42 @@
                 <th>Delete</th>
             </tr>
         </thead>
-    <tbody class="mainTableList">
-        <input type="hidden" name="parentId" value="{{parent_row_id}}" id="id_parentId">
-        <input type="hidden" name="primary_key" value="{{primary_key}}" id="id_primary_key">
+        <tbody class="mainTableList">
+            <input type="hidden" name="parentId" value="{{parent_row_id}}" id="id_parentId">
+            <input type="hidden" name="primary_key" value="{{primary_key}}" id="id_primary_key">
             {{formset.management_form}}
             {% for form in formset %}
-        <tr>
-            {{ form.id }}
-               <td>
-                <select name="{{ form.prefix }}-opening_godown_id" id="id_{{ form.prefix }}-opening_godown_id" class="item-select godown-select">
+            <tr>
+                {{ form.id }}
+                <td>
+                    <select name="{{ form.prefix }}-opening_godown_id" id="id_{{ form.prefix }}-opening_godown_id" class="item-select godown-select">
                         {% if form.instance.id %}
-                    <option value="{{ form.instance.opening_godown_id.id }}" selected>{{form.instance.opening_godown_id.godown_name_raw }}</option>
+                        <option value="{{ form.instance.opening_godown_id.id }}" selected>{{form.instance.opening_godown_id.godown_name_raw }}</option>
                         {% else %}
                         {% if form.initial.opening_godown_id %}
                         {% for godown in godowns %}
                         {% if godown.id == form.initial.opening_godown_id %}
-                    <option value="{{ godown.id }}" selected>{{ godown.godown_name_raw }}</option>
+                        <option value="{{ godown.id }}" selected>{{ godown.godown_name_raw }}</option>
                         {% endif %}
                         {% endfor %}
                         {% else %}
-                    <option value="" selected></option>
+                        <option value="" selected></option>
                         {% endif %}
                         {% endif %}
 
                         {% for godown in godowns %}
 
                         <!-- {% if not form.instance.id or godown.id != form.instance.opening_godown_id.id %} -->
-                    <option value="{{ godown.id }}">{{ godown.godown_name_raw }}</option>
+                        <option value="{{ godown.id }}">{{ godown.godown_name_raw }}</option>
                         <!-- {% endif %} -->
 
                         {% endfor %}
                     </select>
-                  
                 </td>
 
                 {% if form.instance.id %}
                 <td>
-                    <input type="number" class="purchase-amount item-qty" name="{{form.prefix}}-opening_quantity" value="{{form.instance.opening_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-opening_quantity" step="0.01">
+                    <input type="number" class="purchase-amount item-qty" name="{{form.prefix}}-opening_quantity"value="{{form.instance.opening_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-opening_quantity" step="0.01">
                 </td>
                 {% elif not form.instance.id %}
 
@@ -68,7 +67,6 @@
 
                 {% endif %}
 
-
                 {% if form.instance.id %}
                 <td>
                     <input type="number" class="purchase-amount item-rate" name="{{form.prefix}}-opening_rate" value="{{form.instance.opening_rate}}" id="id_{{form.prefix}}-opening_rate" step="0.01">
@@ -82,9 +80,8 @@
                     <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value=""></i></span>
                 </td>
             </tr>
-
             {% endfor %}
-    </tbody>
+        </tbody>
     </table>
     <button type="button" class="create-btn" id="addRow">Add +</button>
     <input type="submit" class="add_btn" id="submitButton">
@@ -92,7 +89,7 @@
 </form>
 
 <script>
- 
+
     document.addEventListener('DOMContentLoaded', function () {
         const addButtonRow = document.getElementById('addRow');
         const tableBody = document.querySelector('#tableItem tbody');
@@ -112,7 +109,6 @@
                     if (newRates != '' && newRates != null) {
                         const index = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS');
                         const indexValue = parseInt(index.value);
-
                         const newRow = lastVisibleRow.cloneNode(true);
 
                         newRow.querySelectorAll('input, select').forEach(element => {
@@ -166,11 +162,9 @@
         }
         deleteData();
 
-
-
     });
 
-   var formSubmitted = false;
+    var formSubmitted = false;
     var primaryKey = document.getElementById('id_primary_key').value;
 
     if (primaryKey == '' || primaryKey == "None") {
@@ -194,7 +188,6 @@
             }
 
             var openingValue = JSON.stringify(newValueData);
-            console.log(openingValue);
             window.opener.receiveData(openingValue);
             window.close();
 
@@ -202,13 +195,13 @@
     }
 
 
-   // Handle the case when the window is closed without form submission
-   window.addEventListener('beforeunload',  function(event) {
-    if (!formSubmitted) {
-      const data = { message: 'close' };
-      window.opener.postMessage(data, '*');
-    }
-  });
+    // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload', function (event) {
+        if (!formSubmitted) {
+            const data = { message: 'close' };
+            window.opener.postMessage(data, '*');
+        }
+    });
 </script>
 
 {% endblock %}

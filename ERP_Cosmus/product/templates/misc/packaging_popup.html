@@ -8,7 +8,8 @@
         {% csrf_token %}
         <div class="d-flex mb-3">
             <label for="id_packing_material" class="form-label px-2">Name:</label>
-            <input type="text" class="item-select" value="{{ form.instance.packing_material }}" name="packing_material" maxlength="255" required id="id_packing_material">
+            <input type="text" class="item-select" value="{{ form.instance.packing_material }}" name="packing_material"
+                maxlength="255" required id="id_packing_material">
         </div>
 
         <input type="submit" class="create-btn mt-4" name="save" value="Save">
@@ -36,7 +37,7 @@
 
             if (response.ok) {
                 const data = await response.json();  // Await the response.json() call
-               window.opener.postMessage(data, '*');
+                window.opener.postMessage(data, '*');
                 window.close();
 
                 formSubmitted = true;  // Set flag to true after successful submission
@@ -48,14 +49,14 @@
         }
 
     });
-    
-   // Handle the case when the window is closed without form submission
-  window.addEventListener('beforeunload', async function(event) {
-    if (!formSubmitted) {
-      const data = { message: 'close' };
-      window.opener.postMessage(data, '*');
-    }
-  });
+
+    // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload', async function (event) {
+        if (!formSubmitted) {
+            const data = { message: 'close' };
+            window.opener.postMessage(data, '*');
+        }
+    });
 </script>
 
 {% endblock body %}

@@ -6,52 +6,51 @@
 
 <form action="" method="post">
     {% csrf_token %}
-   <h2>Stock Transfer<span>(Raw material)</span></h2>
+    <h2>Stock Transfer<span>(Raw material)</span></h2>
     <div class="d-flex mb-3">
         <label for="id_voucher_no" class="item-form">Voucher No:</label>
-        <input value="{{masterstockform.instance.voucher_no}}" required  class="item-select mx-3" type="number" name="voucher_no"  id="id_voucher_no">
-        <div class="ms-auto">
-        </div>
-      </div>
-      <div class="d-flex mb-3">
+        <input value="{{masterstockform.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">
+    </div>
+    <div class="d-flex mb-3">
         <div>
-          <label for="" class="item-form">Source Godown:</label>
-          <p>(Transfer from)</p>
+            <label for="" class="item-form">Source Godown:</label>
+            <p>(Transfer from)</p>
         </div>
-  
         <div class="d-flex mb-3 my-3">
-          <select name="source_godown" required class="item-select" id="id_source_godown">
+            <select name="source_godown" required class="item-select" id="id_source_godown">
 
-            {% if masterstockform.instance.pk %}
-            <option value="{{masterstockform.instance.source_godown.id}}" >{{masterstockform.instance.source_godown.godown_name_raw}}</option>
-            {% for godown in godowns %}
-            <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-            {% endfor %}
+                {% if masterstockform.instance.pk %}
+                <option value="{{masterstockform.instance.source_godown.id}}">
+                    {{masterstockform.instance.source_godown.godown_name_raw}}</option>
+                {% for godown in godowns %}
+                <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                {% endfor %}
 
-            {% elif not masterstockform.instance.pk %}
+                {% elif not masterstockform.instance.pk %}
 
-            <option value=""></option>
-            {% for godown in godowns %}
-            <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-            {% endfor %}
+                <option value=""></option>
+                {% for godown in godowns %}
+                <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                {% endfor %}
 
-            {% endif %}
-          </select>
+                {% endif %}
+            </select>
         </div>
         <span class="pt-3 pe-4 mx-3 ">To</span>
         <div class="mx-2">
-          <label for="" class="item-form">Target Godown:</label>
-          <p>(Transfer to)</p>
+            <label for="" class="item-form">Target Godown:</label>
+            <p>(Transfer to)</p>
         </div>
         <div class=" d-flex mb-3 my-3">
-          <select class="item-select destination_godowns" required name="destination_godown"  id="id_destination_godown">
-            {% if masterstockform.instance.pk %}
-                <option value="{{masterstockform.instance.destination_godown.id}}">{{masterstockform.instance.destination_godown.godown_name_raw}}</option>
-            {% endif %}
-          </select>
+            <select class="item-select destination_godowns" required name="destination_godown" id="id_destination_godown">
+                {% if masterstockform.instance.pk %}
+                <option value="{{masterstockform.instance.destination_godown.id}}">
+                    {{masterstockform.instance.destination_godown.godown_name_raw}}</option>
+                {% endif %}
+            </select>
         </div>
-      </div>
     </div>
+   
     <div class="table-responsive ms-3">
         <table class="table table-striped table-hover table-responsive table-bordered" id="mainProductForm">
             <thead>
@@ -61,7 +60,7 @@
                     <th>Shades</th>
                     <th>Qty</th>
                     <th>Units</th>
-                    <th>Remark</th> 
+                    <th>Remark</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -71,28 +70,27 @@
                 {{ form.id }}
                 <tr>
                     <td>
-                        <select name="stock_name_{{forloop.counter0}}" class="stock_input stock_input_name" placeholder="Item Name"  id="id_stock_name_{{forloop.counter0}}">
-
+                        <select name="stock_name_{{forloop.counter0}}" class="stock_input stock_input_name" placeholder="Item Name" id="id_stock_name_{{forloop.counter0}}">
                             <!-- if master form is on update show the data of the source godown  -->
                             {% if masterstockform.instance.pk %}
-                            <option value="{{form.instance.item_shade_transfer.items.pk}}">{{form.instance.item_shade_transfer.items.item_name}}</option>
+                            <option value="{{form.instance.item_shade_transfer.items.pk}}">
+                                {{form.instance.item_shade_transfer.items.item_name}}</option>
 
                             {% for item_shade in source_godown_items %}
-                            <option value="{{item_shade.Item_shade_name.items.id}}">{{item_shade.Item_shade_name.items.item_name}}</option>
+                            <option value="{{item_shade.Item_shade_name.items.id}}">
+                                {{item_shade.Item_shade_name.items.item_name}}</option>
                             {% endfor %}
                             {% endif %}
-                        </select> 
-                       
+                        </select>
                     </td>
                     <td>
                         <input type="text" value="{{form.instance.item_shade_transfer.items.Item_Color}}" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
                     </td>
                     <td>
-                        
-                        <select class="stock_input stock_shades" name="{{form.prefix}}-item_shade_transfer" id="id_{{form.prefix}}-item_shade_transfer">
-                            
+                        <select class="stock_input stock_shades" name="{{form.prefix}}-item_shade_transfer"id="id_{{form.prefix}}-item_shade_transfer">
                             {% if form.instance.pk %}
-                            <option value="{{form.instance.item_shade_transfer.pk}}">{{form.instance.item_shade_transfer.item_shade_name}}</option>
+                            <option value="{{form.instance.item_shade_transfer.pk}}">
+                                {{form.instance.item_shade_transfer.item_shade_name}}</option>
                             {% endif %}
                         </select>
                     </td>
@@ -105,221 +103,210 @@
                     <td>
                         <input type="text" value="{{form.instance.remarks|default_if_none:''}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
                     </td>
-                
                     <td>
-                        <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value="" ></i></span>
+                        <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE"id="id_{{form.prefix}}-DELETE" value=""></i></span>
                     </td>
-            
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         <button type="button" class="create-btn" id="addRowButton">Add +</button>
     </div>
- 
-  
     <input type="submit" type="submit" class="create-btn mt-4" name="save" value="Save">
-
-
 </form>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const addRowButton = document.getElementById('addRowButton');
         const mainTable = document.querySelector('.mainTableList');
 
-        if(addRowButton && mainTable){
-            addRowButton.addEventListener('click', function() {
+        if (addRowButton && mainTable) {
+            addRowButton.addEventListener('click', function () {
                 let lastVisibleRow = null;
                 mainTable.querySelectorAll('tr').forEach(row => {
-            if (window.getComputedStyle(row).display !== 'none') {
-                lastVisibleRow = row;
-            }
-        });
-        if(lastVisibleRow) {
-            var newForm = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS');
-            var newFormCount = parseInt(newForm.value) ;
-            var newTable = lastVisibleRow.cloneNode(true);
-            newTable.querySelectorAll("input select").forEach(function(e) {
-            e.value= "";
-            });
-
-            const itemNameElement = newTable.querySelector('select[name^="stock_name_"]');
-            itemNameElement.id = `id_stock_name_${newFormCount}`;
-            itemNameElement.name = `stock_name_${newFormCount}`;
-            itemNameElement.value = ""; 
-
-            const itemColorElement = newTable.querySelector('input[name^="stock_color_"]');
-            itemColorElement.id = `id_stock_color_${newFormCount}`;
-            itemColorElement.name = `stock_color_${newFormCount}`;
-            itemColorElement.value = "";
-
-            const itemShadeElement = newTable.querySelector('select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]');
-            itemShadeElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
-            itemShadeElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
-            itemShadeElement.innerHTML = ""; 
-            
-            const itemQuantityElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="item_quantity_transfer"]');
-            itemQuantityElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
-            itemQuantityElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
-            itemQuantityElement.value = "";
-
-            const itemPerElement = newTable.querySelector('input[name^="stock_per_"]');
-            itemPerElement.id = `id_stock_per_${newFormCount}`;
-            itemPerElement.name = `stock_per_${newFormCount}`;
-            itemPerElement.value = "";
-
-            const itemRemarksElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="remarks"]');
-            itemRemarksElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-remarks`;
-            itemRemarksElement.name = `rawstocktrasferrecords_set-${newFormCount}-remarks`;
-            itemRemarksElement.value = "";
-
-            const deleteElement = newTable.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="DELETE"]');
-            deleteElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-DELETE`;
-            deleteElement.name = `rawstocktrasferrecords_set-${newFormCount}-DELETE`;
-            deleteElement.value = "";
-            deleteElement.checked = false;
-
-            newForm.value = newFormCount + 1;
-
-            mainTable.appendChild(newTable);
-            deleteRow();
-        }else {
-            console.error("No visible rows found to clone.");
-        }   
-        });
-        }
-        
-        function deleteRow(){
-        // Add click event listener to all delete buttons
-     document.querySelectorAll('.delete-btn').forEach(function(button) {
-    button.addEventListener('click', function() {
-        // Find the row containing the clicked delete button
-        var row = this.closest('tr');
-     
-        var checkRow = row.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="-DELETE"]');
-        if (checkRow) {
-            checkRow.checked = true; // Mark as checked
-            checkRow.value = 'true'; // Set the value to 'true'
-
-            row.style.display = 'none';
-
-        } else {
-            console.error("Checkbox for deletion not found in this row");
-        }
-    });
-});
-
-};
-    deleteRow();
-});
-
-
-$(document).ready(function() {
-    $('#id_source_godown').on('change',function(){
-        var selectedGodownId  = $(this).val();
-        console.log(selectedGodownId)
-        var id = $(this).attr('id');
-        $.ajax({
-         url: '/stocktransferrawcreate/',
-        method: 'GET',
-        data: {
-          'selected_godown_id': selectedGodownId
-        },
-        success: function(response) {
-        $('.stock_input_name').empty().append('<option value="">Select Item</option>');
-        $('.stock_shades').empty();
-        $('.stock_color').val('');
-        $('.stock_qty').val('');
-        $('.stock_units').val('');
-        $('.stock_remarks').val('');
-        
-        var destinaionGodown = response.destination_godowns;
-        var itemsInGodown = response.items_in_godown;
-        console.log(destinaionGodown,itemsInGodown)
-          $.each(itemsInGodown, function (key, value) {
-            $('.stock_input_name').append('<option value="' + key + '">' + value + '</option>');
-           
-          });
-
-          $('#id_destination_godown').empty().append('<option value="">Target Godown</option>');
-          $.each(destinaionGodown, function (key, value) {
-            $('#id_destination_godown').append('<option value="' + key + '">' + value + '</option>');
-           
-          });
-
-        },
-        error: function(error) {
-            console.log('Error sending value to the backend');
-        }
-        })
-    })
-
-    $(document).on('change','select[name^="stock_name_"]',function(){
-        var nameValue = $(this).attr('name');
-        var idValue = nameValue.split('_')[2];
-        var item_value = $(this).val();
-        var selectedValueGodown = $('#id_source_godown').val();
-        console.log(idValue)
-       
-        $.ajax({
-            url: '/stocktransferrawcreate/',
-            method: 'GET',
-            data: {
-                'item_value': item_value,
-               'selected_godown_id': selectedValueGodown
-            },
-            success: function (response) {
-            $('#id_rawstocktrasferrecords_set-' + idValue + '-item_shade_transfer').empty().append('<option value="">Select Shade</option>');
-                var item_shades = response.item_shades;
-               var item_per = response.item_per;
-               var item_color = response.item_color;
-               var item_shade_quantity = response.items_shade_quantity_in_godown;
-             
-               var itemcolorinput = document.querySelector('#id_stock_color_'+idValue);
-               var itemperinput = document.querySelector('#id_stock_per_'+idValue);
-
-              itemcolorinput.value = item_color;
-              itemperinput.value = item_per;
-
-                $.each(item_shades, function (key, value) {
-                    if (item_shade_quantity.hasOwnProperty(key)) {
-                        $('#id_rawstocktrasferrecords_set-' + idValue + '-item_shade_transfer').append('<option value="' + key + '">' + value + ' - ' + item_shade_quantity[key] + '</option>');
-                    } else {
-                        $('#id_rawstocktrasferrecords_set-' + idValue + '-item_shade_transfer').append('<option value="' + key + '">' + value + '</option>');
+                    if (window.getComputedStyle(row).display !== 'none') {
+                        lastVisibleRow = row;
                     }
-                }); 
-             
-            },
-            error: function (xhr, errmsg, err) {
-                console.log('Error sending value to the backend');
-            }
+                });
+                if (lastVisibleRow) {
+                    var newForm = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS');
+                    var newFormCount = parseInt(newForm.value);
+                    var newTable = lastVisibleRow.cloneNode(true);
+                    newTable.querySelectorAll("input select").forEach(function (e) {
+                        e.value = "";
+                    });
+
+                    const itemNameElement = newTable.querySelector('select[name^="stock_name_"]');
+                    itemNameElement.id = `id_stock_name_${newFormCount}`;
+                    itemNameElement.name = `stock_name_${newFormCount}`;
+                    itemNameElement.value = "";
+
+                    const itemColorElement = newTable.querySelector('input[name^="stock_color_"]');
+                    itemColorElement.id = `id_stock_color_${newFormCount}`;
+                    itemColorElement.name = `stock_color_${newFormCount}`;
+                    itemColorElement.value = "";
+
+                    const itemShadeElement = newTable.querySelector('select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]');
+                    itemShadeElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
+                    itemShadeElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_shade_transfer`;
+                    itemShadeElement.innerHTML = "";
+
+                    const itemQuantityElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="item_quantity_transfer"]');
+                    itemQuantityElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
+                    itemQuantityElement.name = `rawstocktrasferrecords_set-${newFormCount}-item_quantity_transfer`;
+                    itemQuantityElement.value = "";
+
+                    const itemPerElement = newTable.querySelector('input[name^="stock_per_"]');
+                    itemPerElement.id = `id_stock_per_${newFormCount}`;
+                    itemPerElement.name = `stock_per_${newFormCount}`;
+                    itemPerElement.value = "";
+
+                    const itemRemarksElement = newTable.querySelector('input[name^="rawstocktrasferrecords_set-"][name$="remarks"]');
+                    itemRemarksElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-remarks`;
+                    itemRemarksElement.name = `rawstocktrasferrecords_set-${newFormCount}-remarks`;
+                    itemRemarksElement.value = "";
+
+                    const deleteElement = newTable.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="DELETE"]');
+                    deleteElement.id = `id_rawstocktrasferrecords_set-${newFormCount}-DELETE`;
+                    deleteElement.name = `rawstocktrasferrecords_set-${newFormCount}-DELETE`;
+                    deleteElement.value = "";
+                    deleteElement.checked = false;
+
+                    newForm.value = newFormCount + 1;
+
+                    mainTable.appendChild(newTable);
+                    deleteRow();
+                } else {
+                    console.error("No visible rows found to clone.");
+                }
+            });
+        }
+
+        function deleteRow() {
+            // Add click event listener to all delete buttons
+            document.querySelectorAll('.delete-btn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Find the row containing the clicked delete button
+                    var row = this.closest('tr');
+                    var checkRow = row.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="-DELETE"]');
+                    if (checkRow) {
+                        checkRow.checked = true; // Mark as checked
+                        checkRow.value = 'true'; // Set the value to 'true'
+
+                        row.style.display = 'none';
+
+                    } else {
+                        console.error("Checkbox for deletion not found in this row");
+                    }
+                });
+            });
+        };
+        deleteRow();
+    });
+
+
+    $(document).ready(function () {
+        $('#id_source_godown').on('change', function () {
+            var selectedGodownId = $(this).val();
+            console.log(selectedGodownId)
+            var id = $(this).attr('id');
+            $.ajax({
+                url: '/stocktransferrawcreate/',
+                method: 'GET',
+                data: {
+                    'selected_godown_id': selectedGodownId
+                },
+                success: function (response) {
+                    $('.stock_input_name').empty().append('<option value="">Select Item</option>');
+                    $('.stock_shades').empty();
+                    $('.stock_color').val('');
+                    $('.stock_qty').val('');
+                    $('.stock_units').val('');
+                    $('.stock_remarks').val('');
+
+                    var destinaionGodown = response.destination_godowns;
+                    var itemsInGodown = response.items_in_godown;
+                    console.log(destinaionGodown, itemsInGodown)
+                    $.each(itemsInGodown, function (key, value) {
+                        $('.stock_input_name').append('<option value="' + key + '">' + value + '</option>');
+
+                    });
+
+                    $('#id_destination_godown').empty().append('<option value="">Target Godown</option>');
+                    $.each(destinaionGodown, function (key, value) {
+                        $('#id_destination_godown').append('<option value="' + key + '">' + value + '</option>');
+                    });
+                },
+                error: function (error) {
+                    console.log('Error sending value to the backend');
+                }
+            })
+        })
+
+        $(document).on('change', 'select[name^="stock_name_"]', function () {
+            var nameValue = $(this).attr('name');
+            var idValue = nameValue.split('_')[2];
+            var item_value = $(this).val();
+            var selectedValueGodown = $('#id_source_godown').val();
+
+            $.ajax({
+                url: '/stocktransferrawcreate/',
+                method: 'GET',
+                data: {
+                    'item_value': item_value,
+                    'selected_godown_id': selectedValueGodown
+                },
+                success: function (response) {
+                    $('#id_rawstocktrasferrecords_set-' + idValue + '-item_shade_transfer').empty().append('<option value="">Select Shade</option>');
+                    var item_shades = response.item_shades;
+                    var item_per = response.item_per;
+                    var item_color = response.item_color;
+                    var item_shade_quantity = response.items_shade_quantity_in_godown;
+
+                    var itemcolorinput = document.querySelector('#id_stock_color_' + idValue);
+                    var itemperinput = document.querySelector('#id_stock_per_' + idValue);
+
+                    itemcolorinput.value = item_color;
+                    itemperinput.value = item_per;
+
+                    $.each(item_shades, function (key, value) {
+                        if (item_shade_quantity.hasOwnProperty(key)) {
+                            $('#id_rawstocktrasferrecords_set-' + idValue + '-item_shade_transfer').append('<option value="' + key + '">' + value + ' - ' + item_shade_quantity[key] + '</option>');
+                        } else {
+                            $('#id_rawstocktrasferrecords_set-' + idValue + '-item_shade_transfer').append('<option value="' + key + '">' + value + '</option>');
+                        }
+                    });
+
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log('Error sending value to the backend');
+                }
+            })
+        })
+
+        $(document).on('change', 'select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]', function () {
+            var nameValue = $(this).attr('name');
+            var newValue = nameValue.split('-')[1];
+            var selectshadesid = $(this).val();
+            var selectedValueGodown = $('#id_source_godown').val();
+
+            $.ajax({
+                url: '/stocktransferrawcreate/',
+                method: 'GET',
+                data: {
+                    'selected_shade_id': selectshadesid,
+                    'selected_godown_id': selectedValueGodown
+                },
+                success: function (response) {
+                    var shade_quantity = response.shade_quantity;
+                    $('#id_rawstocktrasferrecords_set-' + newValue + '-item_quantity_transfer').val(shade_quantity);
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log('Error sending value to the backend');
+                }
+            })
         })
     })
-
-    $(document).on('change', 'select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]',function(){
-        var nameValue = $(this).attr('name');
-        var newValue = nameValue.split('-')[1];
-        var selectshadesid = $(this).val();
-        var selectedValueGodown = $('#id_source_godown').val();
-
-        $.ajax({
-            url: '/stocktransferrawcreate/',
-            method: 'GET',
-            data: {
-              'selected_shade_id': selectshadesid,
-              'selected_godown_id': selectedValueGodown
-            },
-            success: function (response) {     
-                var shade_quantity = response.shade_quantity;
-                $('#id_rawstocktrasferrecords_set-'+ newValue + '-item_quantity_transfer').val(shade_quantity);
-            },
-            error: function (xhr, errmsg, err) {
-                console.log('Error sending value to the backend');
-            } 
-        })
-    })
-})
 </script>
 
 {% endblock %}

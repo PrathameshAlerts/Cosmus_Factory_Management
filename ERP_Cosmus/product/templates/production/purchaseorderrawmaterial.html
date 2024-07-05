@@ -78,9 +78,6 @@
                         </tr>
                         {% endfor %}
                     </tbody>
-                    
-                    <!-- <input type="hidden" name="processTotal" id="id_processTotal" value="0">
-                     -->
                 </table>
                 <div class="d-flex">
                     <lable class="ms-2">Total</lable>
@@ -153,8 +150,7 @@
         {% if form.instance.process_status == '3' %}
         <button type="button" class="add_btn mt-3 mx-3" name="po_cutting" value="po_cutting" id="id_po_cutting"><a class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-list' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">PO Cutting</a></button>
         {% endif %}
-      
-        
+    
     </form>
 </div>
 
@@ -177,13 +173,13 @@
                     var mainstock = JSON.parse(newPhysicalStock);
             
                     for (var key in mainstock) {
-                    if (mainstock.hasOwnProperty(key)) {
-                        if(key === materialName){
+                        if (mainstock.hasOwnProperty(key)) {
+                            if(key === materialName){
 
-                            physicalStock.value = mainstock[key];
+                                physicalStock.value = mainstock[key];
+                            }
                         }
                     }
-               }
 
                 }
             

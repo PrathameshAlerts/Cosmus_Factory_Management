@@ -2,35 +2,35 @@
 {% load static %}
 {% block body %}
 <div id="printableArea">
-    
-<div class="mb-4 mt-3">
-    <lable  class="fw-bold fs-5">Model Name: </lable>
-    <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.Product.Model_Name}}</span>
-    <label class="fw-bold ms-5 fs-5">Product Sku:</label>
-    <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_SKU}}</span>
-    <label class="fw-bold ms-5 fs-5">Product Color: </label>
-    <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_color}}</span>
-    <button class="print-button bg-transparent border-0" style="padding-left: 200px;" id="printButton"><img src="../../../static/images/printer.png" alt="Print" width="25px" height="25px" ></button>
-</div>
-<div class="row" >
-    <div class="col-lg-11">
-        <div class="table-responsives">
-            <table class="table table-striped table-hover table-bordered" style="width: 100%;">
-                <thead class="name_absolute sticky-top text-nowrap">
-                    <tr>
-                        <th>Item Name </th>
-                        <th>part_name</th>
-                        <th>part_dimentions</th>
-                        <th>dimention_total</th>
-                        <th>part_pieces</th>
-                        <th>Grand Total</th>
-                    </tr>
-                </thead>
-            <tbody class="mainTableList" >
-                {% for Items in product2item_instances %}
-                <tr>
-                    <td class="text-nowrap text-danger">{{Items.Item_pk.item_name}}
-                        {% for item_config in Items.product_item_configs.all %}
+
+    <div class="mb-4 mt-3">
+        <lable class="fw-bold fs-5">Model Name: </lable>
+        <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.Product.Model_Name}}</span>
+        <label class="fw-bold ms-5 fs-5">Product Sku:</label>
+        <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_SKU}}</span>
+        <label class="fw-bold ms-5 fs-5">Product Color: </label>
+        <span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_color}}</span>
+        <button class="print-button bg-transparent border-0" style="padding-left: 200px;" id="printButton"><img src="../../../static/images/printer.png" alt="Print" width="25px" height="25px"></button>
+    </div>
+    <div class="row">
+        <div class="col-lg-11">
+            <div class="table-responsives">
+                <table class="table table-striped table-hover table-bordered" style="width: 100%;">
+                    <thead class="name_absolute sticky-top text-nowrap">
+                        <tr>
+                            <th>Item Name </th>
+                            <th>part_name</th>
+                            <th>part_dimentions</th>
+                            <th>dimention_total</th>
+                            <th>part_pieces</th>
+                            <th>Grand Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mainTableList">
+                        {% for Items in product2item_instances %}
+                        <tr>
+                            <td class="text-nowrap text-danger">{{Items.Item_pk.item_name}}
+                                {% for item_config in Items.product_item_configs.all %}
                         <tr>
                             <td></td>
                             <td class="text-nowrap">{{item_config.part_name}}</td>
@@ -39,24 +39,24 @@
                             <td>{{item_config.part_pieces}}</td>
                         </tr>
                         {% endfor %}
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{Items.grand_total}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{Items.grand_total}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
-  
     </div>
 </div>
-</div>
 <script>
-     var formSubmitted = false;
+    var formSubmitted = false;
     function printDiv(divId) {
         var content = document.getElementById(divId).innerHTML;
         var printWindow = window.open('', '', 'height=800,width=800');
@@ -74,20 +74,20 @@
         printWindow.print();
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var printButton = document.getElementById('printButton');
-        printButton.addEventListener('click', function() {
+        printButton.addEventListener('click', function () {
             printDiv('printableArea');
         });
     });
 
     // Handle the case when the window is closed without form submission
-   window.addEventListener('beforeunload',  function(event) {
-    if (!formSubmitted) {
-      const data = { message: 'close' };
-      window.opener.postMessage(data, '*');
-    }
-  });
+    window.addEventListener('beforeunload', function (event) {
+        if (!formSubmitted) {
+            const data = { message: 'close' };
+            window.opener.postMessage(data, '*');
+        }
+    });
 </script>
 
 

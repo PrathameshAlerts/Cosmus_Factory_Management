@@ -5,144 +5,130 @@
 <div class="row">
 
   <div class="col-lg-2">
-<form id="myForm" method="post" enctype="multipart/form-data" >
-    {% csrf_token %}
-    {{ formset.management_form }}
-    <h2 class="mb-4">Add Product Images</h2>
-    <div style="width:100%; overflow:auto; max-height:470px;">
+    <form id="myForm" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ formset.management_form }}
+      <h2 class="mb-4">Add Product Images</h2>
+      <div style="width:100%; overflow:auto; max-height:470px;">
 
-      <table class="table table-responsive table-striped table-bordered" id="myTable" style="width:100%;" >
-        <thead class="name_absolute">
-          <tr>
-            <th>No</th>
-            <th>choose Image</th>
-            <th>Image Type</th>
-            <th>Order By</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for form in formset %}
-          {{ form.id }}
-          <tr>
-            <td>{{forloop.counter}}</td>
-          <td>
-            <div style="max-width: 150px;">
-              {% if form.instance.Image %}
-              <img src="{{ form.instance.Image.url }}" alt="Image Preview" style="max-width: 150px;">
-               {% endif %}
-            <input type="file" class="my-file" name="{{form.prefix}}-Image" accept="image/*" id="{{form.prefix}}-Image">
-          </div>
-            
-          </td>
-          <td>
-            <select name="{{form.prefix}}-Image_type" id="{{form.prefix}}-Image_type" class="item-select">
-              <option value="{{form.instance.Image_type}}">{{form.instance.Image_type}}</option>
-          
-            <option value="Main Image">Main Image</option>
-          
-            <option value="White Background">White Background</option>
-          
-            <option value="Model Image">Model Image</option>
-          
-            <option value="Catalogue Image">Catalogue Image</option>
-          
-          </select></td>
-          <td>
-            <input type="number" class="item-select" name="{{form.prefix}}-Order_by" value="{{form.instance.Order_by}}" id="{{form.prefix}}-Order_by">
-          </td>
-          
-          <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_image_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
-          </tr>
-          {% endfor %}
-  
-        </tbody>
-      </table>
-    </div>
+        <table class="table table-responsive table-striped table-bordered" id="myTable" style="width:100%;">
+          <thead class="name_absolute">
+            <tr>
+              <th>No</th>
+              <th>choose Image</th>
+              <th>Image Type</th>
+              <th>Order By</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for form in formset %}
+            {{ form.id }}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>
+                <div style="max-width: 150px;">
+                  {% if form.instance.Image %}
+                  <img src="{{ form.instance.Image.url }}" alt="Image Preview" style="max-width: 150px;">
+                  {% endif %}
+                  <input type="file" class="my-file" name="{{form.prefix}}-Image" accept="image/*" id="{{form.prefix}}-Image">
+                </div>
+              </td>
+              <td>
+                <select name="{{form.prefix}}-Image_type" id="{{form.prefix}}-Image_type" class="item-select">
+                  <option value="{{form.instance.Image_type}}">{{form.instance.Image_type}}</option>
+                  <option value="Main Image">Main Image</option>
+                  <option value="White Background">White Background</option>
+                  <option value="Model Image">Model Image</option>
+                  <option value="Catalogue Image">Catalogue Image</option>
+                </select>
+              </td>
+              <td><input type="number" class="item-select" name="{{form.prefix}}-Order_by"value="{{form.instance.Order_by}}" id="{{form.prefix}}-Order_by"></td>
+              <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_image_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value=""></i></span></td>
+            </tr>
+            {% endfor %}
 
-    
+          </tbody>
+        </table>
+      </div>
       <button type="button" class="add_btn" id="addForm">Add</button>
-
-    <input type="submit" class="add_btn">
+      <input type="submit" class="add_btn">
     </form>
   </div>
- 
+
 </div>
 
 <script>
-   var formSubmitted = false;
-  document.addEventListener("DOMContentLoaded", function() {
-      const addFormButton = document.getElementById("addForm");
-      const tableBody = document.querySelector("#myTable tbody");
-  
-      if (addFormButton && tableBody) {
-          addFormButton.addEventListener("click", function() {
-              const formCountInput = document.getElementById("id_productimages-TOTAL_FORMS");
-              const formCount = parseInt(formCountInput.value);
-            console.log(formCountInput);
-              // Clone the last row in the table
-              const lastRow = tableBody.lastElementChild.cloneNode(true);
-              const formIndex = formCount;
-              lastRow.querySelectorAll("input").forEach(function(ele) {
-                ele.value= "";
-              });
-  
-              // Iterate over elements in the cloned row
-              lastRow.querySelectorAll("*").forEach(function(element) {
-                  // Check and update IDs and names of elements
-                  if (element.id) {
-                      element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                  }
-                  if (element.name) {
-                      element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                  }
-                  
-                  // Hide the file input initially
-                  if (element.tagName === "INPUT" && element.type === "file") {
-                      element.style.display = "block";
-                  }
-              });
-  
-              // Update the total forms count
-              formCountInput.value = formCount + 1;
-  
-              // Append the new row to the table
-              tableBody.appendChild(lastRow);
-              deleteFormRow();
-              // Add event listener for delete button in the new row
-          });
-      } else {
-          console.error("Could not find addFormButton or table body element.");
-      }
+  var formSubmitted = false;
+  document.addEventListener("DOMContentLoaded", function () {
+    const addFormButton = document.getElementById("addForm");
+    const tableBody = document.querySelector("#myTable tbody");
 
-      function deleteFormRow(){
-      // Add click event listener to all delete buttons
-    document.querySelectorAll('.delete-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-            // Find the row containing the clicked delete button
-            var row = this.closest('tr');
-            var checkRow = row.querySelector('.product_image_deleteId[name^="productimages-"][name$="-DELETE"]');
-            if (checkRow) {
-                checkRow.checked = true; // Mark as checked
-                checkRow.value = 'true'; // Set the value to 'true'
-
-                row.style.display = 'none';
-
-            } else {
-                console.error("Checkbox for deletion not found in this row");
-            }
+    if (addFormButton && tableBody) {
+      addFormButton.addEventListener("click", function () {
+        const formCountInput = document.getElementById("id_productimages-TOTAL_FORMS");
+        const formCount = parseInt(formCountInput.value);
+        const lastRow = tableBody.lastElementChild.cloneNode(true);// Clone the last row in the table
+        const formIndex = formCount;
+        lastRow.querySelectorAll("input").forEach(function (ele) {
+          ele.value = "";
         });
-    });
-}
-deleteFormRow();
+
+        // Iterate over elements in the cloned row
+        lastRow.querySelectorAll("*").forEach(function (element) {
+          // Check and update IDs and names of elements
+          if (element.id) {
+            element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+          }
+          if (element.name) {
+            element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+          }
+
+          // Hide the file input initially
+          if (element.tagName === "INPUT" && element.type === "file") {
+            element.style.display = "block";
+          }
+        });
+
+        // Update the total forms count
+        formCountInput.value = formCount + 1;
+
+        // Append the new row to the table
+        tableBody.appendChild(lastRow);
+        deleteFormRow();
+        // Add event listener for delete button in the new row
+      });
+    } else {
+      console.error("Could not find addFormButton or table body element.");
+    }
+
+    function deleteFormRow() {
+      // Add click event listener to all delete buttons
+      document.querySelectorAll('.delete-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+          // Find the row containing the clicked delete button
+          var row = this.closest('tr');
+          var checkRow = row.querySelector('.product_image_deleteId[name^="productimages-"][name$="-DELETE"]');
+          if (checkRow) {
+            checkRow.checked = true; // Mark as checked
+            checkRow.value = 'true'; // Set the value to 'true'
+            row.style.display = 'none';
+
+          } else {
+            console.error("Checkbox for deletion not found in this row");
+          }
+        });
+      });
+    }
+    deleteFormRow();
   });
 
-    // Handle the case when the window is closed without form submission
-    window.addEventListener('beforeunload',  function(event) {
+  // Handle the case when the window is closed without form submission
+  window.addEventListener('beforeunload', function (event) {
     if (!formSubmitted) {
       const data = { message: 'close' };
       window.opener.postMessage(data, '*');
     }
   });
-  </script>
- {% endblock body %}
+</script>
+{% endblock body %}

@@ -1,43 +1,43 @@
-{% extends 'product/base.html' %} 
-{% load static %} 
+{% extends 'product/base.html' %}
+{% load static %}
 
-{% block body %} 
+{% block body %}
 
 <h2>Product Assign</h2>
 <form class="mt-5" action="" method="POST">
-    {% csrf_token %}
+  {% csrf_token %}
 
-    <div class="d-flex mb-3">
-        <label for="" class="item-form">Product:</label>
-        <select class="item-select" name="product_name" id="id_product_name">
-          <option value=""></option>
-          {% for product in products %}
-          <option value="{{product.id}}">{{product.Product_Name}}</option>
-          {% endfor %}
+  <div class="d-flex mb-3">
+    <label for="" class="item-form">Product:</label>
+    <select class="item-select" name="product_name" id="id_product_name">
+      <option value=""></option>
+      {% for product in products %}
+      <option value="{{product.id}}">{{product.Product_Name}}</option>
+      {% endfor %}
 
-        </select>
-      </div>
-      <div class="d-flex mb-3">
-        <label for="" class="item-form">Sub Category :</label>
+    </select>
+  </div>
+  <div class="d-flex mb-3">
+    <label for="" class="item-form">Sub Category :</label>
+    <ul style="list-style: none;">
+      {% for main_cat in main_categories %}
+      <li class="my-1">
+        <p class="product2_btn mb-2">{{main_cat.product_category_name}}</p>
         <ul style="list-style: none;">
-          {% for main_cat in main_categories %}
-          <li class="my-1">
-            <p class="product2_btn mb-2">{{main_cat.product_category_name}}</p>
-            <ul style="list-style: none;">
-              {% for sub_cat in main_cat.subcategories.all %}
-              <li>
-                <!-- sends multiple values with the name  -->
-                <input type="checkbox" id="{{ sub_cat.id }}" class = 'sub_category_name' name="sub_category_name" value="{{ sub_cat.id }} ">
-                <label for="{{ sub_cat.id }}">{{ sub_cat.product_sub_category_name }}</label>
-              </li>
-              {% endfor %}
-            </ul>           
+          {% for sub_cat in main_cat.subcategories.all %}
+          <li>
+            <!-- sends multiple values with the name  -->
+            <input type="checkbox" id="{{ sub_cat.id }}" class='sub_category_name' name="sub_category_name" value="{{ sub_cat.id }} ">
+            <label for="{{ sub_cat.id }}">{{ sub_cat.product_sub_category_name }}</label>
           </li>
           {% endfor %}
         </ul>
-      </div>
-     
-    <input type="submit" class="product2create-btn" name="save" value="Save">
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <input type="submit" class="product2create-btn" name="save" value="Save">
 </form>
 
 <script>
@@ -50,30 +50,28 @@
         url: '/product2subcategoryajax/',
         method: 'GET',
         data: {
-            'selected_product_id': selectedproduct
+          'selected_product_id': selectedproduct
         },
         success: function (response) {
-            // Handle success response from the backend
-            console.log('Value sent to the backend successfully');
-            $('.sub_category_name').prop('checked', false); // Uncheck all checkboxes
-    
-            // Populate the checkboxes from the response
-            var dict_result_subcategory = response.dict_result;
-            console.log(dict_result_subcategory) 
-          
-            // Check checkboxes based on the received dictionary
-            for (var key in dict_result_subcategory) {
-              if (dict_result_subcategory.hasOwnProperty(key)) {
-                $('#' + key).prop('checked', true);
-              }
-            }
+          // Handle success response from the backend
+          console.log('Value sent to the backend successfully');
+          $('.sub_category_name').prop('checked', false); // Uncheck all checkboxes
 
+          // Populate the checkboxes from the response
+          var dict_result_subcategory = response.dict_result;
+  
+          // Check checkboxes based on the received dictionary
+          for (var key in dict_result_subcategory) {
+            if (dict_result_subcategory.hasOwnProperty(key)) {
+              $('#' + key).prop('checked', true);
+            }
+          }
         },
         error: function (xhr, errmsg, err) {
-            console.log(xhr.status + ": " + xhr.responseText); // Log any errors
+          console.log(xhr.status + ": " + xhr.responseText); // Log any errors
         }
-    });
-    
+      });
+
     });
   });
 

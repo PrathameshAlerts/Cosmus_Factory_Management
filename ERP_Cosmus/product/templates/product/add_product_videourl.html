@@ -1,11 +1,11 @@
 {% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
- 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ formset.management_form }}
-       <div class="row">
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <div class="row">
         <h2 class="mb-4">Add Product Video Urls</h2>
         <div class="col-lg-5">
             <table class="table table-striped table-hover table-bordered" id="myTable">
@@ -23,86 +23,84 @@
                     <tr>
                         <td>{{forloop.counter}}</td>
                         <td>{{form.instance.product_video_url}}</td>
-                        <td><input type="url" class="item-select me-3" name="{{form.prefix}}-product_video_url" value="{{form.instance.product_video_url}}"  maxlength="255" id="{{form.prefix}}-product_video_url"></td>
-                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_videourl_deleteId px-2" style="display: none;"  name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
+                        <td><input type="url" class="item-select me-3" name="{{form.prefix}}-product_video_url" value="{{form.instance.product_video_url}}" maxlength="255" id="{{form.prefix}}-product_video_url"></td>
+                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_videourl_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value=""></i></span></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-           
         </div>
-       </div>
-                
-    <button type="button" class="add_btn" id="addForm">Add</button>  
-    <input type="submit" class="add_btn" >
-    </form>
+    </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const addFormButton = document.getElementById("addForm");
-            const tableBody = document.querySelector("#myTable tbody");
-            
-            if (addFormButton && tableBody) {
-                addFormButton.addEventListener("click", function() {
-                    const formCountInput = document.getElementById("id_productvideourls-TOTAL_FORMS");
-                    const formCount = parseInt(formCountInput.value);
-                    const lastRow = tableBody.lastElementChild.cloneNode(true);
-                    const formIndex = formCount;
-                    lastRow.querySelectorAll("input").forEach(function(element) {
-                        element.value = "";
-                    });
-                    
-                    lastRow.querySelectorAll("*").forEach(function(element) {
-                        if (element.id) {
-                            element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                        }
-                        if(element.name){
-                            element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
-                        }
-                    });
-    
-                    const urlInput = lastRow.querySelector('input[type="url"]');
-                
-                    const urlValue = urlInput.value;
-                    urlValue.value = "";
-                    formCountInput.value = formCount + 1;
-    
-                    tableBody.appendChild(lastRow);
-                    deleteRowData();
+    <button type="button" class="add_btn" id="addForm">Add</button>
+    <input type="submit" class="add_btn">
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addFormButton = document.getElementById("addForm");
+        const tableBody = document.querySelector("#myTable tbody");
+
+        if (addFormButton && tableBody) {
+            addFormButton.addEventListener("click", function () {
+                const formCountInput = document.getElementById("id_productvideourls-TOTAL_FORMS");
+                const formCount = parseInt(formCountInput.value);
+                const lastRow = tableBody.lastElementChild.cloneNode(true);
+                const formIndex = formCount;
+                lastRow.querySelectorAll("input").forEach(function (element) {
+                    element.value = "";
                 });
-            } else {
-                console.error("Could not find addFormButton or table body element.");
-            }
 
-            function deleteRowData() {
-          // Add click event listener to all delete buttons
-          document.querySelectorAll('.delete-btn').forEach(function(button) {
-              button.addEventListener('click', function() {
-                  // Find the row containing the clicked delete button
-                  var row = this.closest('tr');
-                  var checkRow = row.querySelector('.product_videourl_deleteId[name^="productvideourls-"][name$="-DELETE"]');
-                  if (checkRow) {
-                      checkRow.checked = true; // Mark as checked
-                      checkRow.value = 'true'; // Set the value to 'true'
-      
-                      row.style.display = 'none';
-      
-                  } else {
-                      console.error("Checkbox for deletion not found in this row");
-                  }
-              });
-          });
-      }
-      deleteRowData();
-        });
+                lastRow.querySelectorAll("*").forEach(function (element) {
+                    if (element.id) {
+                        element.id = element.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                    }
+                    if (element.name) {
+                        element.name = element.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+                    }
+                });
 
-         // Handle the case when the window is closed without form submission
-    window.addEventListener('beforeunload',  function(event) {
-    if (!formSubmitted) {
-      const data = { message: 'close' };
-      window.opener.postMessage(data, '*');
-    }
-  });
-    </script>
-    
-    {% endblock body %} 
+                const urlInput = lastRow.querySelector('input[type="url"]');
+
+                const urlValue = urlInput.value;
+                urlValue.value = "";
+                formCountInput.value = formCount + 1;
+
+                tableBody.appendChild(lastRow);
+                deleteRowData();
+            });
+        } else {
+            console.error("Could not find addFormButton or table body element.");
+        }
+
+        function deleteRowData() {
+            // Add click event listener to all delete buttons
+            document.querySelectorAll('.delete-btn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Find the row containing the clicked delete button
+                    var row = this.closest('tr');
+                    var checkRow = row.querySelector('.product_videourl_deleteId[name^="productvideourls-"][name$="-DELETE"]');
+                    if (checkRow) {
+                        checkRow.checked = true; // Mark as checked
+                        checkRow.value = 'true'; // Set the value to 'true'
+                        row.style.display = 'none';
+
+                    } else {
+                        console.error("Checkbox for deletion not found in this row");
+                    }
+                });
+            });
+        }
+        deleteRowData();
+    });
+
+    // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload', function (event) {
+        if (!formSubmitted) {
+            const data = { message: 'close' };
+            window.opener.postMessage(data, '*');
+        }
+    });
+</script>
+
+{% endblock body %}

@@ -3,7 +3,6 @@
 
 {% block body %}
 <div class="mt-3">
-
   <form action="" method="POST">
     {% csrf_token %}
     <h2 class="mb-3">{{title}}</h2>
@@ -24,7 +23,7 @@
     <button type="button" class="add_btn"><a class="text-decoration-none text-white" href="{% url 'account_sub_group-list' %}">Return</a></button>
     <input type="submit" class="create-btn" name="save" value="Save">
     {% if not form.instance.id %}
-    <input type="submit" class="create-btn" style="width: 180px;" name="save_and_add_another" value="Save and Add Another">
+    <input type="submit" class="create-btn" style="width: 180px;" name="save_and_add_another"value="Save and Add Another">
     {% endif %}
 
 </div>
