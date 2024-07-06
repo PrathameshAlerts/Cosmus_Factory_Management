@@ -3,6 +3,7 @@ from django.conf import settings
 from multiselectfield import MultiSelectField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 from numpy import true_divide
+from progressbar import NullBar
 
 
 class CompanyMaster(models.Model):
@@ -612,6 +613,7 @@ class purchase_order(models.Model):
     created_date = models.DateField(auto_now=True)
     modified_created_date = models.DateField(auto_now_add=True)
     number_of_pieces = models.IntegerField(default=0)
+    balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
     temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
     

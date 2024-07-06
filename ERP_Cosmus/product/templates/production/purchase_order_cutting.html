@@ -63,11 +63,11 @@
             <div class="d-flex mb-2">
                 <div class="d-flex me-4">
                     <label for="id_processed_qty" class="">Process Qty:</label>
-                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value=""  id="id_processed_qty" >
+                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value="{{purchase_order_cutting_form.instance.processed_qty}}"  id="id_processed_qty" >
                 </div> 
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value=""  id="id_balance_qty" >  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{purchase_order_cutting_form.instance.balance_qty}}"  id="id_balance_qty" >  
                 </div> 
                
             </div>
