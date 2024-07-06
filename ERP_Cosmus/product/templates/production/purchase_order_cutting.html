@@ -63,16 +63,17 @@
             </div>
             
             <div class="d-flex mb-2">
+               
                 <div class="d-flex me-4">
-                    <label for="id_processed_qty" class="">Processed Qty:</label> 
-                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value="{{form.instance.processed_qty}}"  id="id_processed_qty" readonly >{{form.instance.processed_qty}}
+                    <label for="id_processed_qty" class="">Processed Qty:</label>
+                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value="{{purchase_order_cutting_form.instance.processed_qty}}"  id="id_processed_qty" readonly >
                 </div> 
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
                     <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
                 </div> 
                <div>
-                <span>{{form.instance.processed_qty}}</span>
+                <span>{{purchase_order_cutting_form.instance.processed_qty}}</span>
                </div>
             </div>
     
@@ -107,7 +108,7 @@
                         <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-process_quantity" value="{{form.instance.process_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-process_quantity" readonly>
                     </td>
                     <td>
-                        <input type="number" class="productorderqty-input currentQty" name="current_{{forloop.counter0}}-cutting" value="{{form.instance.cutting | default_if_none:'0'}}" id="id_current_{{forloop.counter0}}-cutting">
+                        <input type="number" class="productorderqty-input currentQty" name="current_{{forloop.counter0}}-cutting" value="" id="id_current_{{forloop.counter0}}-cutting">
                     </td>
                 </tr>
                 {% endfor %}
@@ -128,6 +129,7 @@
             <table class="table table-striped table-hover table-bordered tables" >
                 <thead class="name_absolute sticky-top border-1">
                     <tr class="text-nowrap">
+                        <th>Product SKU</th>
                         <th>Product Color</th>
                         <th>Material Name</th>
                         <th>Rate</th>
@@ -147,6 +149,7 @@
                     {{form.id}}
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                     <tr>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
@@ -163,6 +166,7 @@
                     {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
 
                     <tr>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.initial.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
@@ -190,11 +194,14 @@
 
 <script>
  function cuttingOrder(){
+
         var myform = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
         var total =0;
         var process = 0;
 
         for(var i = 0;i < myform; i++){
+            var mainId = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-id').value;
+            console.log(mainId);
             var processQty = document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity');
             var cuttingQty = document.getElementById('id_current_'+i+'-cutting');
             var totalCuttingQty = document.getElementById('id_cuttingTotal');
@@ -203,7 +210,8 @@
             var processQtyValue = parseFloat(processQty.value);
             var cuttingQtyValue = parseFloat(cuttingQty.value);
             var totalCuttingQtyValue = parseFloat(totalValue.value);
-           
+            if(mainId == ''){
+                console.log(mainId);
             if(cuttingQtyValue > processQtyValue){
                 document.getElementById('id_current_'+i+'-cutting').value = 0;
             }
@@ -220,6 +228,8 @@
                 document.getElementById('id_current_'+i+'-cutting').value = 0;
             }
         }
+    }
+      
     }
  
     function updateCuttingQuantity(){
@@ -290,24 +300,30 @@
            
             newCutting.forEach(newValue =>{
                 const cuttingMainValue = parseFloat(newValue.value) || 0;
+                console.log('cuttingMainValue',newValue.value);
                 const row = newValue.closest('tr');
                 const color = row.querySelector('input[name$="-product_color"]').value;
                 const cuttingColor = document.querySelector('.color[name$="-product_color"]').value;
-                const currentCutting = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
+                var currentCutting = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
+                console.log('cuttingColor',cuttingColor);
+                console.log('color',color);
+                console.log('currentCutting',currentCutting);
+                if(color === cuttingColor){
                 currentCutting.forEach(element =>{
-                    if(color == cuttingColor){
+                   
+                        console.log('currentCuttingss',currentCutting);
                         element.value = cuttingMainValue;
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
-                    }
+                 
                 })
+               }
             })
             
         }
     }
-
-
+    submitForm();
    function processValueQty(){
          var totalProcessQty = document.getElementById('id_processed_qty')
         
@@ -334,6 +350,7 @@
                 cuttingOrder();
                 updateCuttingQuantity();
                 processValueQty();
+                submitForm();
             });
         })
     

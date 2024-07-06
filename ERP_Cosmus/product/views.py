@@ -3008,13 +3008,16 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
             # for fortend use to mulitply total proccessed qty with consumption for common item
             if query.common_unique == True:
                 product_color_or_common_item = 'Common Item'
+                product_sku_or_None = 'None'
 
             else:
                 product_color_or_common_item = query.PProduct_pk.PProduct_color
+                product_sku_or_None = query.PProduct_pk.PProduct_SKU
 
             
 
-            initial_data_dict = {'product_color' : product_color_or_common_item,
+            initial_data_dict = {'product_sku': product_sku_or_None,
+                                'product_color' : product_color_or_common_item,
                                 'material_name':query.Item_pk.item_name,
                                 'rate':query.Item_pk.rate,
                                 'panha':query.Item_pk.Panha,
@@ -3129,6 +3132,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         for purchase_items_raw in purchase_order_raw_instances:
             
             initial_data_dict = {
+                'product_sku': purchase_items_raw.product_sku,
                 'product_color' : purchase_items_raw.product_color,
                 'material_name' : purchase_items_raw.material_name,
                 'rate' : purchase_items_raw.rate,
@@ -3167,7 +3171,6 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         if purchase_order_cutting_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid():
 
-        
             cutting_form_instance = purchase_order_cutting_form.save()
 
             # change the status in purchase order model 
@@ -3182,7 +3185,8 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             qty_to_process_minus_processed_qty = qty_to_process - processed_quantity
             cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty
             cutting_form_instance.purchase_order_id.save()
-           
+
+
 
             for form in purchase_order_for_raw_material_cutting_items_formset_form:
 
@@ -3190,10 +3194,6 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     form_instance = form.save(commit=False)
                     form_instance.purchase_order_cutting = cutting_form_instance
                     form_instance.save()
-
-                    
-                    
-
 
             return(redirect(reverse('purchase-order-cutting-list',args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
 
