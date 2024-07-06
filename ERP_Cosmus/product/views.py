@@ -3170,9 +3170,19 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         
             cutting_form_instance = purchase_order_cutting_form.save()
 
+            # change the status in purchase order model 
             if cutting_form_instance.purchase_order_id.process_status == '3':
                 cutting_form_instance.purchase_order_id.process_status = '4'
                 cutting_form_instance.purchase_order_id.save()
+            
+            # change the status in purchase order model 
+            processed_quantity = int(request.POST['processed_qty'])
+
+            qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces
+            qty_to_process_minus_processed_qty = qty_to_process - processed_quantity
+            cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty
+            cutting_form_instance.purchase_order_id.save()
+           
 
             for form in purchase_order_for_raw_material_cutting_items_formset_form:
 
@@ -3180,6 +3190,10 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     form_instance = form.save(commit=False)
                     form_instance.purchase_order_cutting = cutting_form_instance
                     form_instance.save()
+
+                    
+                    
+
 
             return(redirect(reverse('purchase-order-cutting-list',args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
 
