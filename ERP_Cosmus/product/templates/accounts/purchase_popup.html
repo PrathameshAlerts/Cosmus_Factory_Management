@@ -197,8 +197,7 @@
         </script>
 
     <script>
-        
-
+        function shadeGodown(){
         var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
         
         for (var i = 0; i <= total_form_Value; i++) {
@@ -206,14 +205,13 @@
         var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
         var oldGid = document.getElementById('shade_godown_items_set-'+ i + '-old_godown_id');
         var newGid = document.getElementById('shade_godown_items_set-'+ i + '-godown_id').value;
-        oldquantity.value = jsonQty;
+            oldquantity.value = jsonQty;
 
         oldGid.value = newGid;
-      
-        
         
         }
-    
+        }
+        shadeGodown();
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
         function jsondata(){
             var prefixIdValue = document.getElementById('prefix_id').value;
@@ -292,7 +290,7 @@
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {
           
-          //first find the last row rate value is not empty then add a new row 
+                                                  //first find the last row rate value is not empty then add a new row 
           //there any one rate value is empty then don't add a new row
         var newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
        
@@ -300,9 +298,6 @@
         var newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
        
         var formsValue = parseInt(newFormValue.value);
-       
-       
-        
         var tableClone = $('#newTable').find('tbody tr').last().clone(true);
 
         tableClone.show();
@@ -475,43 +470,28 @@
     $(document).on('change', '.godown-select, .godown-quantity, .godown-rate', function() {
     calculateGodownAmount(); // Recalculate the amount
     deleteRowCalculate();
-});
+    });
 
-    
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
             
-        var tableRows = $('#newTable tbody tr'); 
-        if (tableRows.length > 1) { 
-            var row = $(this).closest('tr'); 
-           
-            var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+            var tableRows = $('#newTable tbody tr'); 
+            if (tableRows.length > 1) { 
+                var row = $(this).closest('tr'); 
+                var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+                
+                checkbox.prop('checked', true); 
+                checkbox.val('true');
             
-            checkbox.prop('checked', true); 
-            checkbox.val('true');
-           
-            if(checkbox.val() == 'true'){
-
-            row.hide();
-            deleteRowCalculate();
+                if(checkbox.val() == 'true'){
+                    row.hide();
+                    deleteRowCalculate();
+                }
+            } else {
+                alert('The table must have at least one godown item'); 
             }
-              
-        } else {
-            alert('The table must have at least one godown item'); 
-        }
-     
-        
-        });
-
-     
-
+            });
         })
-    </script>
-
-
-
-
-
-
+</script>
 
 {% endblock body %}

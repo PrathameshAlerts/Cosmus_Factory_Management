@@ -1,123 +1,121 @@
-{% extends 'product/base.html' %} 
-{% load static %} 
+{% extends 'product/base.html' %}
+{% load static %}
 
-{% block body %} 
+{% block body %}
 
- 
-<div class="row mt-4"> 
-<div class="col-lg-5">
- 
-<form  action="" method="POST">
-     {% csrf_token %}
- <h2 class="mb-4">{{title}}</h2> 
- <div class="d-flex">
-<label for="id_fab_grp_name" class=" item-form">Fabric Name:</label>
-<input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">
-</div>
 
-<input type="submit" class="create-btn mt-4" name="save" value="Save">
+<div class="row mt-4">
+  <div class="col-lg-5">
 
-</form>
-</div>
-<div class="col-lg-5 mt-4">
-<div class="row">
-<div class="col-lg-12 ">
-  <div class="d-flex mb-3">
-    <form method="GET">
-    <div class="container-category "> 
-     <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="fabric_group_search" value="{{fabric_group_search | default_if_none:''}}" />
-        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <h2 class="mb-4">{{title}}</h2>
+      <div class="d-flex">
+        <label for="id_fab_grp_name" class=" item-form">Fabric Name:</label>
+        <input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">
+      </div>
+      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    </form>
+  </div>
+  <div class="col-lg-5 mt-4">
+    <div class="row">
+      <div class="col-lg-12 ">
+        <div class="d-flex mb-3">
+          <form method="GET">
+            <div class="container-category ">
+              <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="fabric_group_search" value="{{fabric_group_search | default_if_none:''}}" />
+              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+          </form>
+          <button class="item-btn mx-2" onclick="redirecfabricFilter()">Clear Filter</button>
+        </div>
+      </div>
     </div>
-  </form>
-    <button class="item-btn mx-2" onclick="redirecfabricFilter()">Clear Filter</button>
-   </div>
-  </div>  
-</div>  
-<div class="row ps-3">
-  <div class="col-lg-12">
-    <div class="table-responsives">
-      <table class="table table-striped table-hover table-bordered">
-        <thead class="name_absolute sticky-top">
-          <tr>
-            <th>No</th>
-            <th>Name
-              <!-- <div class="nav-item dropdown fabric-list-icons">
+    <div class="row ps-3">
+      <div class="col-lg-12">
+        <div class="table-responsives">
+          <table class="table table-striped table-hover table-bordered">
+            <thead class="name_absolute sticky-top">
+              <tr>
+                <th>No</th>
+                <th>Name
+                  <!-- <div class="nav-item dropdown fabric-list-icons">
                 <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                 <ul class="dropdown-menu">
                   <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
                 </ul>
               </div> -->
-            </th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead> 
-        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-        </tr>
-        {% for group in fab_group_all %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{group.fab_grp_name}}</td>
-          <td><a href="{% url 'item-fabgroup-update' group.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-          <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ group.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-        </tr>
-       {% endfor %}
-        </tbody>
-      </table>
-    </div>
-   
-  </div>
- 
-</div>
-
-</div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-                <div class="modal-header">
-                   <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
-                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-               <div class="modal-body" id="modal-body-text">
-                 Are you sure you want to delete this Fabric Group?
-               </div>
-              <div class="modal-footer">
-                <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
-                <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
-              </div>
-           </div>
+                </th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+              </tr>
+              {% for group in fab_group_all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{group.fab_grp_name}}</td>
+                <td><a href="{% url 'item-fabgroup-update' group.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ group.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-     </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body-text">
+          Are you sure you want to delete this Fabric Group?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
 
 
 <script>
-document.body.appendChild(document.getElementById('exampleModal'));
+  document.body.appendChild(document.getElementById('exampleModal'));
 
-$(document).ready(function(){
-  $('.delete-btn').click(function(){
+  $(document).ready(function () {
+    $('.delete-btn').click(function () {
       var itemId = $(this).data('item-id');
       var name = $(this).closest('tr').find('td').eq(1).text();
       var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
       $('#modal-body-text').html('Are you sure you want to delete the fabric group ' + coloredName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
       $('#confirmDeleteModal').modal('show');
-  });
+    });
 
-  // Confirm delete button click event
-  $('#confirmDeleteButton').click(function(){
+    // Confirm delete button click event
+    $('#confirmDeleteButton').click(function () {
       var itemId = $(this).data('item-id');
       // Redirect to delete view
       window.location.href = '/itemfabricgroupdelete/' + itemId;
+    });
   });
-});
 
-function redirecfabricFilter (){
-  window.location.href = "{% url 'item-fabgroup-create-list'%}"
-}
+  function redirecfabricFilter() {
+    window.location.href = "{% url 'item-fabgroup-create-list'%}"
+  }
 </script>
 
 

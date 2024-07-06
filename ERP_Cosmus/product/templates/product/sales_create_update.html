@@ -1,12 +1,12 @@
-{% extends 'product/base.html' %} 
-{% load static %} 
+{% extends 'product/base.html' %}
+{% load static %}
 
-{% block body %} 
+{% block body %}
 <div>
-        <h2 ></h2>
-      <form class="mt-5" action="" method="POST">
-           {% csrf_token %}
-       <div class="d-flex mb-3">
+  <h2></h2>
+  <form class="mt-5" action="" method="POST">
+    {% csrf_token %}
+    <div class="d-flex mb-3">
       <label for="" class="form-label px-2"></label>
       <input type="text" class="item-select mx-3" value="" name="" maxlength="50" required id="">
     </div>
@@ -19,7 +19,7 @@
     </div>
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-   <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="">Return</a></button>
-  </div>
+    <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="">Return</a></button>
+</div>
 
 {% endblock body %}

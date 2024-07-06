@@ -3,7 +3,7 @@
 
 {% block body %}
 <div>
-  
+
   <div class="mb-5">
     <h2 class="">Godown List</h2>
     <div class="d-flex mb-3">
@@ -19,54 +19,52 @@
   <div class="row">
     <div class="col-lg-5">
       <h3>Raw Material</h3>
-      <div class="table-responsives">     
-      <table class="table table-striped table-hover  table-bordered" style="width: 100%;">
-        <thead class="name_absolute sticky-top">
-          <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody  class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-          </tr>
-          {% for godown in godowns_raw %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{godown.godown_name_raw}}</td>
-            <td><a href="{% url 'godown-update' 'raw' godown.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-            <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ godown.id }}" data-type="{{ 'raw' }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="table-responsives">
+        <table class="table table-striped table-hover  table-bordered" style="width: 100%;">
+          <thead class="name_absolute sticky-top">
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+            {% for godown in godowns_raw %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{godown.godown_name_raw}}</td>
+              <td><a href="{% url 'godown-update' 'raw' godown.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+              <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ godown.id }}" data-type="{{ 'raw' }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="col-lg-5 ms-5">
       <h3>Finished Product</h3>
       <div class="table-responsives">
-      <table class="table table-striped table-hover table-bordered" style="width: 100%;">
-        <thead class="name_absolute sticky-top">
-          <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-          </tr>
-          {% for godown in godowns_finished %}
-          <tr>
+        <table class="table table-striped table-hover table-bordered" style="width: 100%;">
+          <thead class="name_absolute sticky-top">
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+            {% for godown in godowns_finished %}
+            <tr>
               <td>{{ forloop.counter }}</td>
               <td>{{ godown.godown_name_finished }}</td>
               <td><a href="{% url 'godown-update' 'finished' godown.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ godown.id }}" data-type="{{ 'finished' }}" data-bs-toggle="" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -81,7 +79,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="modal-body-text">
-          Are you sure you want to delete this Godown?
+        Are you sure you want to delete this Godown?
       </div>
       <div class="modal-footer">
         <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
@@ -89,40 +87,40 @@
       </div>
     </div>
   </div>
-  </div>
+</div>
 <script>
   function redirectAddGodown() {
     window.location.href = "{% url 'godown-create' %}"
   }
 
-    document.body.appendChild(document.getElementById('exampleModal'));
-    
-    $(document).ready(function(){
-        $('.delete-btn').click(function(){
-            var itemId = $(this).data('item-id');
-            var itemType = $(this).data('type'); 
-            var name = $(this).closest('tr').find('td').eq(1).text();
-            var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-    
-            $('#modal-body-text').html('Are you sure you want to delete the Godown ' + coloredName + '?');
-            $('#confirmDeleteButton').attr('data-item-id', itemId);
-            $('#confirmDeleteButton').attr('data-type', itemType); // Set the item id to the confirm button's data
-            $('#exampleModal').modal('show');
-        });
-    
-        // Confirm delete button click event
-        $('#confirmDeleteButton').click(function(){
-            var itemId = $(this).data('item-id');
-            var itemType = $(this).data('type');
-            // Redirect to delete view
-          var deleteUrl = '/godowndelete/' + itemType + '/' +itemId
-        
-            window.location.href = deleteUrl
-      
-        });
+  document.body.appendChild(document.getElementById('exampleModal'));
+
+  $(document).ready(function () {
+    $('.delete-btn').click(function () {
+      var itemId = $(this).data('item-id');
+      var itemType = $(this).data('type');
+      var name = $(this).closest('tr').find('td').eq(1).text();
+      var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+
+      $('#modal-body-text').html('Are you sure you want to delete the Godown ' + coloredName + '?');
+      $('#confirmDeleteButton').attr('data-item-id', itemId);
+      $('#confirmDeleteButton').attr('data-type', itemType); // Set the item id to the confirm button's data
+      $('#exampleModal').modal('show');
     });
-    
-   
+
+    // Confirm delete button click event
+    $('#confirmDeleteButton').click(function () {
+      var itemId = $(this).data('item-id');
+      var itemType = $(this).data('type');
+      // Redirect to delete view
+      var deleteUrl = '/godowndelete/' + itemType + '/' + itemId
+
+      window.location.href = deleteUrl
+
+    });
+  });
+
+
 </script>
 
 {% endblock body %}

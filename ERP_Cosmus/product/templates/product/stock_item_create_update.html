@@ -1,6 +1,5 @@
 {% extends 'product/base.html' %}
 {% load static %}
-
 {% block body %}
 
 <div class="row mt-4">
@@ -10,8 +9,7 @@
       {% csrf_token %}
       <div class="d-flex mb-3">
         <label for="id_account_sub_group" class=" create_color_lable">Name:</label>
-        <input type="text" class="stock-Input " value="{{ form.instance.stock_item_name }}" name="stock_item_name"
-          maxlength="150" required id="id_stock_item_name">
+        <input type="text" class="stock-Input " value="{{ form.instance.stock_item_name }}" name="stock_item_name" maxlength="150" required id="id_stock_item_name">
       </div>
       <div class="d-flex mb-3">
         <label for="id_acc_sub_grp" class=" create_color_lable">Sub Group:</label>
@@ -30,14 +28,14 @@
         </select>
       </div>
       <input type="submit" class="create-btn mt-4" name="save" value="Save">
-
     </form>
   </div>
   <div class="col-lg-5 mt-4">
     <div class="">
       <div class="d-flex mb-3">
         <div class="container-stock">
-          <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search"><a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+          <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search">
+          <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
         <button class="item-btn ms-2">Clear Filter</button>
       </div>
@@ -46,64 +44,63 @@
     <div class="row ps-3">
       <div class="col-lg-12">
         <div class="table-responsives">
-        <table class="table table-striped table-hover table-bordered " style="width: 100%;">
-          <thead class="name_absolute sticky-top text-nowrap">
-            <tr>
-              <th>No</th>
-              <th>Sub Group
-                <!-- <div class="nav-item dropdown stock-list-icons">
+          <table class="table table-striped table-hover table-bordered " style="width: 100%;">
+            <thead class="name_absolute sticky-top text-nowrap">
+              <tr>
+                <th>No</th>
+                <th>Sub Group
+                  <!-- <div class="nav-item dropdown stock-list-icons">
                 <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                 <ul class="dropdown-menu">
                   <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
                 </ul>
             </div> -->
-      </th>
-      <th>Stock Item
-        <!-- <div class="nav-item dropdown stock-list-icons">
+                </th>
+                <th>Stock Item
+                  <!-- <div class="nav-item dropdown stock-list-icons">
                 <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
                 <ul class="dropdown-menu">
                   <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
                 </ul>
               </div> -->
-      </th>
-      <th>Edit</th>
-      <th>Delete</th>
-      </tr>
-      </thead>
-      <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-        </tr>
-        {% for items in stocks %}
-        <tr>
-          <td>{{items.id}}</td>
-          <td>{{items.account_sub_group}}</td>
-          <td>{{items.stock_item_name}}</td>
-          <td><a href="{% url 'stock_item-update' items.id  %}"><i class="fa-solid fa-pen-to-square px-1"></a></td>
-          <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ items.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      </table>
-    </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="modal-body-text">
-        Are you sure you want to delete this Stock Item?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
-        <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+                </th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+              {% for items in stocks %}
+              <tr>
+                <td>{{items.id}}</td>
+                <td>{{items.account_sub_group}}</td>
+                <td>{{items.stock_item_name}}</td>
+                <td><a href="{% url 'stock_item-update' items.id  %}"><i class="fa-solid fa-pen-to-square px-1"></a></td>
+                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ items.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body-text">
+          Are you sure you want to delete this Stock Item?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -116,7 +113,7 @@
       var itemId = $(this).data('item-id');
       var itemName = $(this).closest('tr').find('td').eq(2).text();
       var coloredName = '<span class="color-name" style="color:' + itemName + ';">' + itemName + '</span>';
-      
+
       $('#modal-body-text').html('Are you sure you want to delete the Stock Item ' + coloredName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
       $('#confirmDeleteModal').modal('show');
