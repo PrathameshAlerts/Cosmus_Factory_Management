@@ -258,7 +258,7 @@ class purchase_order_form(forms.ModelForm):
         model = purchase_order
 
         fields = ['purchase_order_number','product_reference_number','ledger_party_name',
-                  'target_date','number_of_pieces','temp_godown_select']
+                  'target_date','number_of_pieces','temp_godown_select','balance_number_of_pieces']
         
 
 
@@ -289,7 +289,7 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
 
         # Raise a validation error if the total order quantity exceeds the parent quantity
         if total_order_quantity != parent_quantity:
-            raise ValidationError(f'The total order quantity ({total_order_quantity}) exceeds the available quantity ({parent_quantity}).')
+            raise ValidationError(f'The total order quantity ({total_order_quantity}) exceeds the available quantity ({parent_quantity}) it should equal')
 
 
         """

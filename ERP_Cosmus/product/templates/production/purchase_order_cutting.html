@@ -58,18 +58,22 @@
                     <lable for="id_model_name" class="">Model Name : </lable> 
                     <input class="text-danger purchase-amount border-0 bg-transparent pb-2 " id="id_model_name"value="{{model_name | default_if_none:''}}">
                 </div>
+                <input type="hidden" class="text-danger purchase-amount border-0 bg-transparent pb-2" name="balance_number_of_pieces" id="id_balance_number_of_pieces"value="{{form.instance.balance_number_of_pieces}}">
+                
             </div>
             
             <div class="d-flex mb-2">
                 <div class="d-flex me-4">
-                    <label for="id_processed_qty" class="">Processed Qty:</label>
-                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value=""  id="id_processed_qty" readonly >
+                    <label for="id_processed_qty" class="">Processed Qty:</label> 
+                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value="{{form.instance.processed_qty}}"  id="id_processed_qty" readonly >{{form.instance.processed_qty}}
                 </div> 
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value=""  id="id_balance_qty" readonly>  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
                 </div> 
-               
+               <div>
+                <span>{{form.instance.processed_qty}}</span>
+               </div>
             </div>
     
         </div>
@@ -112,7 +116,7 @@
         </table>
         <div class="d-flex pb-2">
             <label for="id_OderQty" class="text-danger">Total:</label>
-            <input type="number" class="productorderqty-input text-danger" name="OderQty" id="id_OderQty" value="{{form.instance.number_of_pieces | default_if_none:'0'}}" style="margin-left: 234px;" readonly>
+            <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.balance_number_of_pieces}}" style="margin-left: 234px;" readonly>
             <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 30px;" readonly>
             <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 190px;" readonly> 
         </div>
@@ -305,15 +309,20 @@
 
 
    function processValueQty(){
-        var totalProcessQty = document.getElementById('id_processed_qty')
-        var totalCuttingQtys = document.getElementById('id_cuttingTotal').value;
-        var OderQty = document.getElementById('id_number_of_pieces');
-       // var balanceQty = document.getElementById('id_balance_qty');
-        var orderQtyValue = parseFloat(OderQty.value);
+         var totalProcessQty = document.getElementById('id_processed_qty')
+        
+       var totalCuttingQtys = document.getElementById('id_cuttingTotal').value;
+       var OderQty = document.getElementById('id_number_of_pieces');
+        // var balanceQty = document.getElementById('id_balance_qty');
+         var orderQtyValue = parseFloat(OderQty.value);
      
-        totalProcessQty.value = totalCuttingQtys;
-        var balanceQtyValue = orderQtyValue - totalCuttingQtys;
-        document.getElementById('id_balance_qty').value = balanceQtyValue;
+         
+
+      totalProcessQty.value = totalCuttingQtys;
+       var balanceQtyValue = orderQtyValue - totalCuttingQtys;
+          // document.getElementById('id_balance_qty').value = balanceQtyValue;
+        
+        
     }
 
 
