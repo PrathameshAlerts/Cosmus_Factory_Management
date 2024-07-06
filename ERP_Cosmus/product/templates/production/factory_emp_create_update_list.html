@@ -2,14 +2,42 @@
 {% load static %}
 {% block body %}
 
+<div class="row mt-4">
+  <div class="col-lg-6">
+   
+      <form  action="" method="POST">
+        {% csrf_token %}  
+        <h2 class="mb-4">Worker - {{title}}</h2>
+       <div class="d-flex">
+        <label for="id_factory_emp_name" class="item-form">Worker Name:</label>
+        <input type="text" class="item-select rounded" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
+       </div>
+  
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    
+  </form>
+
+</div>
+</div>
+
 
 <div class="mb-3 pt-2">
+<<<<<<< HEAD:ERP_Cosmus/product/templates/production/factory_emp_create_update_list.html
+    <h3 class="mb-3">Worker List</h3>
+    <div class="d-flex mb-3"> 
+      <div class="container-cat">
+        <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
+        <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+      </div>
+      <!-- <button class="item-btn mx-2" onclick="">Clear Filter</button> -->
+=======
   <h3 class="mb-3">Worker List</h3>
   <div class="d-flex mb-3">
     <button class="item-btn" onclick="redirectlistFactory()">Add +</button>
     <div class="container-cat">
       <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
       <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+>>>>>>> 7844f959c73acc6bb899b4d01b3f92aa49e62952:ERP_Cosmus/product/templates/production/factory_emp_list.html
     </div>
     <!-- <button class="item-btn mx-2" onclick="">Clear Filter</button> -->
   </div>

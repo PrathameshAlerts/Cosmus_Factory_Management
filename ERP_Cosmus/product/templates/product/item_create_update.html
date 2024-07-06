@@ -130,6 +130,16 @@
       </div>
       {% endif %}
 
+<<<<<<< HEAD
+{% if not form.instance.id %}
+<div class="col-lg-1">
+    
+  
+    
+</div>
+
+{% endif %}
+=======
       <div class="d-flex my-3">
         <label for="id_Material_code" class="item-form">Material Code:</label>
         <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}" maxlength="255" required id="id_Material_code">
@@ -249,7 +259,9 @@
   </div>
 
  
+>>>>>>> 7844f959c73acc6bb899b4d01b3f92aa49e62952
 </div>
+
 <script>
   window.addEventListener('message', function (event) {
     const data = event.data;

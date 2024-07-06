@@ -164,14 +164,13 @@ urlpatterns = [
     #purchase_order_cutting_room
     path('purchaseordercuttinglist/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercuttinglist, name = 'purchase-order-cutting-list'),
     path('purchaseordercuttingcreate/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-create'),
-        path('purchaseordercuttingupdate/<int:p_o_pk>/<int:prod_ref_no>/<int:pk>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-update'),
+    path('purchaseordercuttingupdate/<int:p_o_pk>/<int:prod_ref_no>/<int:pk>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-update'),
 
 
 
     # factory worker routes
-    path('factory_emp_create/',views.factory_employee_create_update, name = 'factory-emp-create'),
-    path('factory_emp_update/<int:pk>',views.factory_employee_create_update, name = 'factory-emp-update'),
-    path('factory_emp_list/',views.factoryemplist, name = 'factory-emp-list'),
+    path('factory_emp_create/',views.factory_employee_create_update_list, name = 'factory-emp-create'),
+    path('factory_emp_update/<int:pk>',views.factory_employee_create_update_list, name = 'factory-emp-update'),
     path('factory_emp_delete/<int:pk>',views.factoryempdelete, name = 'factory-emp-delete'),
 
     #reports
