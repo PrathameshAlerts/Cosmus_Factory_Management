@@ -3199,12 +3199,16 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 #_________________________factory-emp-start_______________________________________
 
 
-def factory_employee_create_update(request,pk=None):
+def factory_employee_create_update_list(request,pk=None):
+
+    factory_employees = factory_employee.objects.all() 
 
     if pk:
+        title = 'Update'
         instance = get_object_or_404(factory_employee,pk=pk)
 
     else:
+        title = 'Create'
         instance = None
     
     form = factory_employee_form(request.POST or None, instance =instance)
@@ -3212,14 +3216,16 @@ def factory_employee_create_update(request,pk=None):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return render(request,'production/factory_emp_create_update.html', {'form':form})
+            messages.success('Factory Employee created Successfully')
+            return render(request,'production/factory_emp_create_update_list.html', {'form':form,
+                                                                                     'factory_employees':factory_employees,
+                                                                                     'title':title})
+        else:
+            messages.error(request,f'Error with form submission {form.errors}')
 
-    return render(request,'production/factory_emp_create_update.html', {'form':form})
+    return render(request,'production/factory_emp_create_update_list.html', {'form':form,'factory_employees':factory_employees,'title':title})
 
 
-def factoryemplist(request):
-    factory_employees = factory_employee.objects.all() 
-    return render(request,'production/factory_emp_list.html',{'factory_employees':factory_employees})
 
 
 def factoryempdelete(request,pk=None):
