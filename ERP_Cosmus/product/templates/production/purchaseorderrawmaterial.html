@@ -82,7 +82,7 @@
                 <div class="d-flex">
                     <lable class="ms-2">Total</lable>
                     <input type="number" name="OderQty" class="productorderqty-input pb-1" value="{{form.instance.number_of_pieces}}" id="id_OderQty" style="margin-left: 185px;" readonly>
-                    <input type="number" class="productorderqty-input text-danger pb-1 ms-3" name="processTotal" id="id_processTotal" value="0">
+                    <input type="number" class="productorderqty-input text-danger pb-1 ms-3" name="processTotal" id="id_processTotal" value="0" readonly>
                 </div>
             </div>
         </div>
@@ -199,17 +199,16 @@
 
             for (var i = 0; i < newForms; i++) {
                 var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
-                var processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity').value;
+                var processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
                 var orderQuantityValue = parseFloat(orderQuantity);
-                var processQuantityValue = parseFloat(processQuantity);
-      
-                 if (processQuantityValue > orderQuantityValue) {
-                    document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity').value = "0";
-                
-                 }
+              
+              
+                processQuantity.value = orderQuantityValue;
+                processQuantity.readOnly = true;
+                 
             }
         }
-
+        updateProcessQuantity();
         function calculateTotalConsumption(){
             let total =0;
             const processQty = document.querySelectorAll('input[name$="-process_quantity"]');
@@ -257,6 +256,8 @@
             })
               balanceStock();
         }
+
+        calculateTotalConsumption();
 function balanceStock(){
     var totals = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
 
@@ -269,18 +270,17 @@ function balanceStock(){
     
             document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
     }               
-  
 }
-function orderQty(){
-    var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+// function orderQty(){
+//     var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
 
-    for (var i = 0; i < newForms; i++) {
-        var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
-        var processQty = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
-        var orderQuantityValue = parseFloat(orderQuantity);
-            processQty.value = orderQuantityValue;      
-    }
-}
+//     for (var i = 0; i < newForms; i++) {
+//         var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
+//         var processQty = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
+//         var orderQuantityValue = parseFloat(orderQuantity);
+//             processQty.value = orderQuantityValue;      
+//     }
+// }
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
         var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
@@ -291,9 +291,8 @@ function orderQty(){
             processQuantityElements.forEach(element => {
                 element.addEventListener('input', updateProcessQuantity);
                 element.addEventListener('input', calculateTotalConsumption);
-                element.addEventListener('keyup', calculateTotalConsumption);
             });
-            orderQty();
+           
             calculateTotalConsumption();
             updateTotal(); // Initialize the calculation on page load
             updateProcessQuantity(); // Initialize the validation on page load
