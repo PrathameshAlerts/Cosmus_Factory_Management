@@ -112,9 +112,9 @@
         </table>
         <div class="d-flex pb-2">
             <label for="id_OderQty" class="text-danger">Total:</label>
-            <input type="number" class="productorderqty-input text-danger" name="OderQty" id="id_OderQty" value="{{form.instance.number_of_pieces | default_if_none:'0'}}" style="margin-left: 304px;" readonly>
-            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 50px;" readonly>
-            <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 70px;" readonly> 
+            <input type="number" class="productorderqty-input text-danger" name="OderQty" id="id_OderQty" value="{{form.instance.number_of_pieces | default_if_none:'0'}}" style="margin-left: 234px;" readonly>
+            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 30px;" readonly>
+            <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 190px;" readonly> 
         </div>
     </div>
 </div>
@@ -190,7 +190,7 @@
         var total =0;
         var process = 0;
 
-        for(var i=0;i<myform;i++){
+        for(var i = 0;i < myform; i++){
             var processQty = document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity');
             var cuttingQty = document.getElementById('id_current_'+i+'-cutting');
             var totalCuttingQty = document.getElementById('id_cuttingTotal');
@@ -217,7 +217,7 @@
             }
         }
     }
-    cuttingOrder();
+ 
     function updateCuttingQuantity(){
         var totals =0;
         const cuttingQtyElements = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
@@ -302,28 +302,24 @@
             
         }
     }
-   submitForm();
+
 
    function processValueQty(){
-         var totalProcessQty = document.getElementById('id_processed_qty')
-        
-       var totalCuttingQtys = document.getElementById('id_cuttingTotal').value;
-       var OderQty = document.getElementById('id_number_of_pieces');
-         var balanceQty = document.getElementById('id_balance_qty');
-         var orderQtyValue = parseFloat(OderQty.value);
+        var totalProcessQty = document.getElementById('id_processed_qty')
+        var totalCuttingQtys = document.getElementById('id_cuttingTotal').value;
+        var OderQty = document.getElementById('id_number_of_pieces');
+       // var balanceQty = document.getElementById('id_balance_qty');
+        var orderQtyValue = parseFloat(OderQty.value);
      
-         
-
-      totalProcessQty.value = totalCuttingQtys;
-       var balanceQtyValue = orderQtyValue - totalCuttingQtys;
-           document.getElementById('id_balance_qty').value = balanceQtyValue;
-        
-        
+        totalProcessQty.value = totalCuttingQtys;
+        var balanceQtyValue = orderQtyValue - totalCuttingQtys;
+        document.getElementById('id_balance_qty').value = balanceQtyValue;
     }
-    processValueQty();
+
+
+
     document.addEventListener('DOMContentLoaded', ()=>{
         var qty = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
-        //var processValue = document.getElementById('id_processed_qty');
         qty.forEach(element => {
             element.addEventListener('input', () => {
                 cuttingOrder();
@@ -331,11 +327,11 @@
                 processValueQty();
             });
         })
-        // processValue.addEventListener('input',()=>{
-        //    // processValueQty();
-        // })
+    
         submitForm();
-        //processValueQty();
+        processValueQty();
+        cuttingOrder();
+        updateCuttingQuantity();
     });
 </script>
 {% endblock %}
