@@ -159,6 +159,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.instance.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock"></td>
                         <input type="hidden"  class="productinput" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity">
+                        <input type="hidden"  class="productinput" name="{{form.prefix}}-process_quantity_cutting" value="{{form.instance.process_quantity_cutting}}" id="id_{{form.prefix}}-process_quantity_cutting">
                     </tr>
 
                     {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
@@ -176,6 +177,8 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock"></td>
                         <input type="hidden"  class="productinput" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity">
+                        <input type="hidden"  class="productinput" name="{{form.prefix}}-process_quantity_cutting" value="{{form.instance.process_quantity_cutting}}" id="id_{{form.prefix}}-process_quantity_cutting">
+
                     </tr>
 
                     {% endif %}

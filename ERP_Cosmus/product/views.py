@@ -3008,15 +3008,15 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
             # for fortend use to mulitply total proccessed qty with consumption for common item
             if query.common_unique == True:
                 product_color_or_common_item = 'Common Item'
-                product_sku_or_None = 'None'
+                product_sku_or_common_item = 'Common Item'
 
             else:
                 product_color_or_common_item = query.PProduct_pk.PProduct_color
-                product_sku_or_None = query.PProduct_pk.PProduct_SKU
+                product_sku_or_common_item = query.PProduct_pk.PProduct_SKU
 
             
 
-            initial_data_dict = {'product_sku': product_sku_or_None,
+            initial_data_dict = {'product_sku': product_sku_or_common_item,
                                 'product_color' : product_color_or_common_item,
                                 'material_name':query.Item_pk.item_name,
                                 'rate':query.Item_pk.rate,
@@ -3180,7 +3180,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             
             # change the status in purchase order model 
             processed_quantity = int(request.POST['processed_qty'])
-
+            print(processed_quantity)
             qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces
             qty_to_process_minus_processed_qty = qty_to_process - processed_quantity
             cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty
@@ -3194,6 +3194,17 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     form_instance = form.save(commit=False)
                     form_instance.purchase_order_cutting = cutting_form_instance
                     form_instance.save()
+
+                    product_sku = form_instance.product_sku
+                    processed_qty = form_instance.cutting_quantity
+                    if product_sku != 'Common Item':
+                        p_o_id = form_instance.purchase_order_cutting.purchase_order_id
+                        purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
+                        purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
+                        purchase_order_products.save()
+
+
+
 
             return(redirect(reverse('purchase-order-cutting-list',args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
 
