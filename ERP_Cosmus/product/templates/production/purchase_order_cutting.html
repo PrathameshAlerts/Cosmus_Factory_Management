@@ -63,9 +63,10 @@
             </div>
             
             <div class="d-flex mb-2">
+                <span>{{purchase_order_cutting_form.instance.processed_qty}}</span>
                 <div class="d-flex me-4">
-                    <label for="id_processed_qty" class="">Processed Qty:</label> 
-                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value="{{form.instance.processed_qty}}"  id="id_processed_qty" readonly >
+                    <label for="id_processed_qty" class="">Processed Qty:</label>
+                    <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value="{{purchase_order_cutting_form.instance.processed_qty}}"  id="id_processed_qty" readonly >
                 </div> 
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
@@ -126,6 +127,7 @@
             <table class="table table-striped table-hover table-bordered tables" >
                 <thead class="name_absolute sticky-top border-1">
                     <tr class="text-nowrap">
+                        <th>Product SKU</th>
                         <th>Product Color</th>
                         <th>Material Name</th>
                         <th>Rate</th>
@@ -145,6 +147,7 @@
                     {{form.id}}
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                     <tr>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
@@ -161,6 +164,7 @@
                     {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
 
                     <tr>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.initial.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>

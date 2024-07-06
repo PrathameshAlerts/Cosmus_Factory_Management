@@ -92,6 +92,7 @@
                     <table class="table table-striped table-hover table-bordered tables" >
                         <thead class="name_absolute sticky-top border-1">
                             <tr class="text-nowrap">
+                                <th>Product SKU</th>
                                 <th>Product Color</th>
                                 <th>Material Name</th>
                                 <th>Rate</th>
@@ -111,6 +112,7 @@
                             {{form.id}}
                             {% if form.instance.id %}
                             <tr>
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="text" class="productinputtext" name="{{form.prefix}}-material_name" value="{{form.instance.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.instance.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
@@ -124,6 +126,7 @@
                             </tr>
                             {% elif not form.instance.id %}
                             <tr>
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="text" class="productinputtext" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.initial.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
