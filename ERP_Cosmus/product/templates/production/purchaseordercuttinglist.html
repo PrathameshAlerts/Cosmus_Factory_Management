@@ -40,7 +40,7 @@
               <td>{{cutting_order.raw_material_cutting_id}}</td>
               <td>{{cutting_order.purchase_order_id.ledger_party_name.name}}</td>
               <td>{{cutting_order.factory_employee_id.factory_emp_name}}</td>
-              <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+              <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
               <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
             </tr>
             {% endfor %}

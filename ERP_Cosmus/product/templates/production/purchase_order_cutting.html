@@ -341,8 +341,7 @@
             var procumentValue =0;
             document.getElementById('id_submit').style.display = "none";
          
-         
-
+        
             document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {
              
                 const row = newValue.closest('tr');
@@ -351,14 +350,14 @@
                 const procumentQtyValue = parseFloat(procumentQty) || 0;
 
                 procumentValue  += procumentQtyValue;  
-                console.log('procumentQty',procumentQtyValue)
+         
                 document.getElementById('id_processQty').value = procumentValue;
 
                 document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-material_name"]').forEach(element => {
-                    console.log()
+             
                     if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
-                        console.log('element',element)
-                       // element.value = cuttingMainValue;
+                    
+                   
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
