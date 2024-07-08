@@ -3236,6 +3236,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         else:
             print('errors',purchase_order_for_raw_material_cutting_items_formset_form.errors)
             print('errors',purchase_order_cutting_form.errors)
+            print('errors',purchase_order_to_product_formset_form.errors)
 
     return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
                                                                     'purchase_order_to_product_formset_form':purchase_order_to_product_formset_form,
