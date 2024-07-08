@@ -205,7 +205,6 @@
                 var processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
                 var orderQuantityValue = parseFloat(orderQuantity);
               
-              
                 processQuantity.value = orderQuantityValue;
                 processQuantity.readOnly = true;
                  
@@ -274,16 +273,7 @@ function balanceStock(){
             document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
     }               
 }
-// function orderQty(){
-//     var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
 
-//     for (var i = 0; i < newForms; i++) {
-//         var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
-//         var processQty = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
-//         var orderQuantityValue = parseFloat(orderQuantity);
-//             processQty.value = orderQuantityValue;      
-//     }
-// }
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
         var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
