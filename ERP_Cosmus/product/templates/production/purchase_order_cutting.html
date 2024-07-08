@@ -68,10 +68,18 @@
                     <label for="id_processed_qty" class="">Processed Qty:</label>
                     <input type="number" name="processed_qty" class="purchase-input  ms-3  pb-2 "  value="{{purchase_order_cutting_form.instance.processed_qty}}"  id="id_processed_qty" readonly >
                 </div> 
+
+                {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
+                <div class="d-flex ms-5">
+                    <label for="id_balance_qty_view" class="">Balance Qty:</label>
+                    <input type="number" name="balance_qty_view" class="purchase-input  text-danger ms-3 pb-2" value="0"  id="id_balance_qty_view" readonly>  
+                </div> 
+                {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
                     <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
                 </div> 
+                {% endif %}
             </div>
     
         </div>

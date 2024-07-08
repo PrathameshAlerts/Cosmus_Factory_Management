@@ -150,7 +150,7 @@
         <button type="button" class="add_btn mt-3 mx-3" name="Back-form" value="Back" id="back"><a class="text-decoration-none text-white" href="{% url 'purchase-order-update' form.instance.id %}">Back</a></button>
         {% endif %}
         <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
-        {% if form.instance.process_status == '3' %}
+        {% if form.instance.process_status >= '3' %}
         <button type="button" class="add_btn mt-3 mx-3" name="po_cutting" value="po_cutting" id="id_po_cutting"><a class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-list' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">PO Cutting</a></button>
         {% endif %}
     

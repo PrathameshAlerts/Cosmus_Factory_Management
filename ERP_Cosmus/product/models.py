@@ -166,7 +166,7 @@ class Product(models.Model):
 
 
     Product_Name = models.CharField(max_length=255, blank = True, null = True, unique=True)
-    Model_Name = models.CharField(max_length=255, blank = True,null =True)
+    Model_Name = models.CharField(max_length=255, blank = True ,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
     Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True)
@@ -288,7 +288,7 @@ class Fabric_Group_Model(models.Model):
         ordering = ['fab_grp_name']
 
 class Unit_Name_Create(models.Model):
-    unit_name = models.CharField( max_length=255,unique= True, null = False, blank = False)
+    unit_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
@@ -554,13 +554,11 @@ class shade_godown_items_temporary_table(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     
 
-
 class item_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT, related_name= 'raw_godown_names')
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
     quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
     item_rate = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
-
 
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
@@ -574,8 +572,6 @@ class item_godown_quantity_through_table(models.Model):
         return f'{self.godown_name}-{self.Item_shade_name}-{self.quantity}'
     
             
-
-
 class product_2_item_through_table(models.Model):
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
@@ -672,7 +668,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
-    # material_shade = 
+    material_color_shade = models.ForeignKey(item_color_shade, on_delete=models.PROTECT)
     rate = models.DecimalField(max_digits=10, decimal_places=3)
     panha = models.DecimalField(max_digits=10, decimal_places=3)
     units = models.DecimalField(max_digits=10, decimal_places=3)
