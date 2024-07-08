@@ -146,7 +146,7 @@
         <div class="d-flex pb-2">
             <label for="id_OderQty" class="text-danger">Total:</label>
             <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 234px;" readonly>
-            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="" style="margin-left: 30px;" readonly>
+            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 30px;" readonly>
             <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 190px;" readonly> 
         </div>
     </div>
@@ -237,11 +237,10 @@
             var processQtyValue = parseFloat(processQty.value);
             var cuttingQtyValue = parseFloat(cuttingQty.value);
             //var totalCuttingQtyValue = parseFloat(totalValue.value);
-            // console.log('test',totalCuttingQty.value)
-            //console.log('totalCuttingQtyValue',totalCuttingQtyValue)
-            console.log('cuttingQtyValue',cuttingQtyValue)
-            console.log('processQtyValue',processQtyValue)
-            console.log('cuttingQty',cuttingQty.value)
+          
+            // console.log('cuttingQtyValue',cuttingQtyValue)
+            // console.log('processQtyValue',processQtyValue)
+            // console.log('cuttingQty',cuttingQty.value)
                
             if(cuttingQtyValue > processQtyValue){
                 document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity').value = 0;
@@ -254,10 +253,7 @@
             process = process + processQtyValue;
             totalProcessQty.value = process;
             
-            // if(totalCuttingQtyValue < totalCuttingQty.value){
-            //     document.getElementById('id_current_'+i+'-cutting').value = 0;
-            // }
-       
+           
     }
       
     }
@@ -288,9 +284,6 @@
                     var totalConsumption = CuttingQty * consumption;
                     if (totalConsumptionInput) {
                             totalConsumptionInput.value = totalConsumption.toFixed(2);
-                                // if (cuttingNewQty) {
-                                //     cuttingNewQty.value = CuttingQty;
-                                // }
                     }
                 }else if(currentColor === "Common Item"){
                     const rows = document.querySelectorAll("tbody.mainTableList tr input[name$='-product_color']")
@@ -304,9 +297,6 @@
 
                             if (totalConsumptionInput) {
                                 totalConsumptionInput.value = commonConsumption.toFixed(2);
-                                // if (cuttingNewQty) {
-                                //     cuttingNewQty.value = totalValue;
-                                // }
                             }
                         }
                     });
@@ -329,21 +319,20 @@
         if(hasIdValue){
             var procumentValue =0;
             document.getElementById('id_submit').style.display = "none";
-            // var processValueQty = document.getElementById('id_processed_qty');
-            // var cuttingTotal = document.getElementById('id_cuttingTotal');
+         
          
 
             document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {
-                //const cuttingMainValue = parseFloat(newValue.value) || 0;
-                //console.log('cuttingMainValue',cuttingMainValue)
+             
                 const row = newValue.closest('tr');
-           
                 const color = row.querySelector('input[name$="-product_color"]').value;
-              const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
+                const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
                 const procumentQtyValue = parseFloat(procumentQty) || 0;
-             procumentValue  += procumentQtyValue;  
-               console.log('procumentQty',procumentQtyValue)
+
+                procumentValue  += procumentQtyValue;  
+                console.log('procumentQty',procumentQtyValue)
                 document.getElementById('id_processQty').value = procumentValue;
+
                 document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-material_name"]').forEach(element => {
                     console.log()
                     if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
@@ -387,7 +376,7 @@
     
         submitForm();
         processValueQty();
-        //cuttingOrder();
+        cuttingOrder();
         updateCuttingQuantity();
     });
 </script>
