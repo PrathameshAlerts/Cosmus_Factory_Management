@@ -72,7 +72,7 @@
                 {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="0"  id="id_balance_qty" readonly>  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{purchase_order_cutting_form.instance.balance_qty}}"  id="id_balance_qty" readonly>  
                 </div>
                 
                 {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
@@ -206,13 +206,13 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
                         <td>
-                            <select name="" id="">
+                            <select name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade">
                                 <option value=""></option>
                                 {% for shade in form.initial.material_color_shade %}
                                 {% if shade != 'Common Item'%}
                                 <option value="{{shade.id}}">{{shade.item_shade_name}}</option>
                                 {% elif shade == 'Common Item' %}
-                                <option value="" selected></option>
+                                <option value=""selected></option>
                                 {% endif %}
                                 {% endfor %}
                             </select>
