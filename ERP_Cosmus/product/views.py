@@ -3200,7 +3200,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 cutting_form_instance.purchase_order_id.process_status = '4'
                 cutting_form_instance.purchase_order_id.save()
             
-            # change the status in purchase order model 
+            
             processed_quantity = int(request.POST['processed_qty'])
             
             qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces
@@ -3215,19 +3215,21 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     form_instance.purchase_order_cutting = cutting_form_instance
                     form_instance.save()
 
-                    product_sku = form_instance.product_sku
-                    processed_qty = form_instance.cutting_quantity  # to change this today
-                    if product_sku != 'Common Item':
-                        p_o_id = form_instance.purchase_order_cutting.purchase_order_id
-                        purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
-                        purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
-                        purchase_order_products.save()
-
             for form in purchase_order_to_product_formset_form:
                 if form.is_valid(): 
                     p_o_to_order_form_instance = form.save(commit=False)
                     p_o_to_order_form_instance.purchase_order_cutting_id = cutting_form_instance
                     p_o_to_order_form_instance.save()
+
+
+                    # reduce the process quantity form purchase_order_to_products model
+                    product_sku = p_o_to_order_form_instance.product_sku
+                    processed_qty = p_o_to_order_form_instance.cutting_quantity
+
+                    p_o_id = p_o_to_order_form_instance.purchase_order_cutting_id.purchase_order_id
+                    purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
+                    purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
+                    purchase_order_products.save()
 
             return(redirect(reverse('purchase-order-cutting-list', args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
 
