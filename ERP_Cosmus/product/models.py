@@ -668,7 +668,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
-    material_color_shade = models.ForeignKey(item_color_shade, on_delete=models.PROTECT)
+    material_color_shade = models.ForeignKey(item_color_shade, on_delete=models.PROTECT, null=True, blank=True)
     rate = models.DecimalField(max_digits=10, decimal_places=3)
     panha = models.DecimalField(max_digits=10, decimal_places=3)
     units = models.DecimalField(max_digits=10, decimal_places=3)
