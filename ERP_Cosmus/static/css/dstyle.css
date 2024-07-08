@@ -1719,7 +1719,14 @@ styles.css */
     height: 28px;
     margin-left: 10px;
 }
-
+.productShadeCutting_input{
+    width: 120px;
+    border-radius: 3px;
+    border: 1px solid #b1b0b0;
+    padding-left: 6px;
+    height: 28px;
+    margin-left: 10px;
+}
 .productorderrawqty-input{
     width: 73px;
     border-radius: 3px;
