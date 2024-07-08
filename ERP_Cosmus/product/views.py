@@ -3191,8 +3191,13 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)(for post request)
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(request.POST)
 
-        if purchase_order_cutting_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid() and purchase_order_to_product_formset_form.is_valid():
 
+        # formset for purchase_order_to_products_cutting for POST request
+        purchase_order_to_product_formset_form = purchase_order_to_product_formset(request.POST)
+
+
+        if purchase_order_cutting_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid() and purchase_order_to_product_formset_form.is_valid():
+            
             cutting_form_instance = purchase_order_cutting_form.save()
 
             # change the status in purchase order model 
@@ -3214,6 +3219,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     form_instance = form.save(commit=False)
                     form_instance.purchase_order_cutting = cutting_form_instance
                     form_instance.save()
+
 
             for form in purchase_order_to_product_formset_form:
                 if form.is_valid(): 
@@ -3237,6 +3243,8 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             print('errors',purchase_order_for_raw_material_cutting_items_formset_form.errors)
             print('errors',purchase_order_cutting_form.errors)
             print('errors',purchase_order_to_product_formset_form.errors)
+            logger.debug(f'errors {purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors()}')
+            logger.debug(f'Non-form errors: {purchase_order_to_product_formset_form.non_form_errors}')
 
     return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
                                                                     'purchase_order_to_product_formset_form':purchase_order_to_product_formset_form,
