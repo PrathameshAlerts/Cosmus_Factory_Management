@@ -72,9 +72,6 @@
                     <label for="id_balance_qty" class="">Balance Qty:</label>
                     <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
                 </div> 
-               <div>
-                <span>{{purchase_order_cutting_form.instance.processed_qty}}</span>
-               </div>
             </div>
     
         </div>
@@ -117,8 +114,8 @@
         </table>
         <div class="d-flex pb-2">
             <label for="id_OderQty" class="text-danger">Total:</label>
-            <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.balance_number_of_pieces}}" style="margin-left: 234px;" readonly>
-            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 30px;" readonly>
+            <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 234px;" readonly>
+            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="{{form.instance.balance_number_of_pieces}}" style="margin-left: 30px;" readonly>
             <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 190px;" readonly> 
         </div>
     </div>
@@ -203,9 +200,8 @@
         var process = 0;
 
         for(var i = 0;i < myform; i++){
-            var mainId = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-id').value;
-            console.log(mainId);
-            var processQty = document.getElementById('id_purchase_order_to_product_set-'+i+'-process_quantity');
+            
+            var processQty = document.getElementById('id_purchase_order_to_product_set-'+ i +'-process_quantity');
             var cuttingQty = document.getElementById('id_current_'+i+'-cutting');
             var totalCuttingQty = document.getElementById('id_cuttingTotal');
             var totalProcessQty = document.getElementById('id_processQty');
@@ -213,8 +209,12 @@
             var processQtyValue = parseFloat(processQty.value);
             var cuttingQtyValue = parseFloat(cuttingQty.value);
             var totalCuttingQtyValue = parseFloat(totalValue.value);
-            if(mainId == ''){
-                console.log(mainId);
+            // console.log('test',totalCuttingQty.value)
+            // console.log('totalCuttingQtyValue',totalCuttingQtyValue)
+            // console.log('cuttingQtyValue',cuttingQtyValue)
+            // console.log('processQtyValue',processQtyValue)
+            // console.log('cuttingQty',cuttingQty.value)
+               
             if(cuttingQtyValue > processQtyValue){
                 document.getElementById('id_current_'+i+'-cutting').value = 0;
             }
@@ -223,14 +223,13 @@
                 totalCuttingQty.value = total;
             }
            
-        
             process = process + processQtyValue;
             totalProcessQty.value = process;
             
-            if(totalCuttingQtyValue < totalCuttingQty.value){
-                document.getElementById('id_current_'+i+'-cutting').value = 0;
-            }
-        }
+            // if(totalCuttingQtyValue < totalCuttingQty.value){
+            //     document.getElementById('id_current_'+i+'-cutting').value = 0;
+            // }
+       
     }
       
     }
@@ -297,51 +296,43 @@
                 }
             })
         if(hasIdValue){
-            const submit = document.getElementById('id_submit');
-            const newCutting = document.querySelectorAll('input[name$="-cutting_quantity"]');
-            submit.style.display = "none";
-           
-            newCutting.forEach(newValue =>{
+            document.getElementById('id_submit').style.display = "none";
+            // var processValueQty = document.getElementById('id_processed_qty');
+            // var cuttingTotal = document.getElementById('id_cuttingTotal');
+         
+
+            document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {
                 const cuttingMainValue = parseFloat(newValue.value) || 0;
-                console.log('cuttingMainValue',newValue.value);
+       
                 const row = newValue.closest('tr');
                 const color = row.querySelector('input[name$="-product_color"]').value;
-                const cuttingColor = document.querySelector('.color[name$="-product_color"]').value;
-                var currentCutting = document.querySelectorAll('input[name^="current_"][name$="-cutting"]');
-                console.log('cuttingColor',cuttingColor);
-                console.log('color',color);
-                console.log('currentCutting',currentCutting);
-                if(color === cuttingColor){
-                currentCutting.forEach(element =>{
-                   
-                        console.log('currentCuttingss',currentCutting);
+               
+
+                document.querySelectorAll('input[name^="current_"][name$="-cutting"]').forEach(element => {
+                    if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
+                        console.log('element',element)
                         element.value = cuttingMainValue;
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
-                 
-                })
-               }
-            })
+                    }
+                });
+            });
             
         }
     }
     submitForm();
    function processValueQty(){
-         var totalProcessQty = document.getElementById('id_processed_qty')
+    var productId = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-0-id').value;
         
-       var totalCuttingQtys = document.getElementById('id_cuttingTotal').value;
-       var OderQty = document.getElementById('id_number_of_pieces');
-        // var balanceQty = document.getElementById('id_balance_qty');
-         var orderQtyValue = parseFloat(OderQty.value);
+        if(productId == ''){
+        var totalProcessQty = document.getElementById('id_processed_qty');
+        var totalCuttingQtys = document.getElementById('id_cuttingTotal').value;
+        var OderQty = document.getElementById('id_number_of_pieces');
+        var orderQtyValue = parseFloat(OderQty.value);
      
-         
-
-      totalProcessQty.value = totalCuttingQtys;
-       var balanceQtyValue = orderQtyValue - totalCuttingQtys;
-          // document.getElementById('id_balance_qty').value = balanceQtyValue;
-        
-        
+        totalProcessQty.value = totalCuttingQtys;  
+        }
     }
 
 
@@ -359,7 +350,7 @@
     
         submitForm();
         processValueQty();
-        cuttingOrder();
+        //cuttingOrder();
         updateCuttingQuantity();
     });
 </script>
