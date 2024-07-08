@@ -1,7 +1,7 @@
 from dataclasses import fields
 from pyexpat import model
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -394,11 +394,16 @@ class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
 
         fields = ['product_sku','product_color','material_name','rate','panha','units','g_total',
                   'consumption','total_comsumption','physical_stock','balance_physical_stock',
-                  'cutting_quantity','process_quantity_cutting']
+                  'process_quantity_cutting']
 
 
 
+class purchase_order_to_product_cutting_form(forms.ModelForm):
 
+    class Meta:
+        model = purchase_order_to_product_cutting
+
+        fields = ['product_color','product_sku','order_quantity','process_quantity','cutting_quantity']
 
 
 class factory_employee_form(forms.ModelForm):
