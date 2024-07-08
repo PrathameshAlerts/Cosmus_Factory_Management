@@ -71,14 +71,16 @@
 
                 {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                 <div class="d-flex ms-5">
-                    <label for="id_balance_qty_view" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty_view" class="purchase-input  text-danger ms-3 pb-2" value="0"  id="id_balance_qty_view" readonly>  
-                </div> 
+                    <label for="id_balance_qty" class="">Balance Qty:</label>
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
+                </div>
+                
                 {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="0"  id="id_balance_qty" readonly>  
                 </div> 
+
                 {% endif %}
             </div>
     
@@ -160,6 +162,7 @@
                         <th>Product SKU</th>
                         <th>Product Color</th>
                         <th>Material Name</th>
+                        <th>Material Color Shade</th>
                         <th>Rate</th>
                         <th>Panha</th>
                         <th>Units</th>
@@ -180,6 +183,11 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
+
+                        <td>
+                            <span>{{form.instance.material_color_shade}}</span>
+                        </td>
+
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.instance.panha}}" step="0.001" id="id_{{form.prefix}}-panha"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.instance.units}}" step="0.001" id="id_{{form.prefix}}-units"></td>
@@ -197,6 +205,19 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
+                        <td>
+                            <select name="" id="">
+                                <option value=""></option>
+                                {% for shade in form.initial.material_color_shade %}
+                                {% if shade != 'Common Item'%}
+                                <option value="{{shade.id}}">{{shade.item_shade_name}}</option>
+                                {% elif shade == 'Common Item' %}
+                                <option value="" selected></option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            
+                        </td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.initial.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.initial.panha}}" step="0.001" id="id_{{form.prefix}}-panha"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.initial.units}}" step="0.001" id="id_{{form.prefix}}-units"></td>

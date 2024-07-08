@@ -3100,7 +3100,6 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     print(request.POST)
-
     if pk:
         purchase_order_cutting_instance = get_object_or_404(purchase_order_raw_material_cutting, pk=pk)
 
@@ -3129,11 +3128,20 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     if not pk:
         initial_data = []
         for purchase_items_raw in purchase_order_raw_instances:
+
+            if purchase_items_raw.product_sku == 'Common Item':
+                
+                material_color_shade_query = ['Common Item']
+
+            else:
+                print("TEST1")
+                material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name)
             
             initial_data_dict = {
                 'product_sku': purchase_items_raw.product_sku,
                 'product_color' : purchase_items_raw.product_color,
                 'material_name' : purchase_items_raw.material_name,
+                'material_color_shade': material_color_shade_query,
                 'rate' : purchase_items_raw.rate,
                 'panha' : purchase_items_raw.panha,
                 'units' : purchase_items_raw.units,
@@ -3143,7 +3151,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'physical_stock' : purchase_items_raw.physical_stock,
                 'balance_physical_stock' : purchase_items_raw.balance_physical_stock,
             }
-
+            print(initial_data_dict)
             initial_data.append(initial_data_dict)
 
         
