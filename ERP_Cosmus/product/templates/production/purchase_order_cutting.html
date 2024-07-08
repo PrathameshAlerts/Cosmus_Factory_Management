@@ -72,13 +72,13 @@
                 {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="0"  id="id_balance_qty" readonly>  
                 </div>
                 
                 {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="0"  id="id_balance_qty" readonly>  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{form.instance.balance_number_of_pieces}}"  id="id_balance_qty" readonly>  
                 </div> 
 
                 {% endif %}
