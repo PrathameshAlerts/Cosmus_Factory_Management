@@ -656,6 +656,17 @@ class purchase_order_raw_material_cutting(models.Model):
     balance_qty = models.IntegerField(default=0)
 
 
+
+class purchase_order_to_product_cutting(models.Model): 
+    purchase_order_cutting_id = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
+    product_color = models.CharField(max_length=100)
+    product_sku = models.CharField(max_length=100)
+    order_quantity = models.IntegerField(default=0)
+    process_quantity = models.IntegerField(default=0)
+    cutting_quantity = models.IntegerField(default=0)
+
+
+
 class purchase_order_for_raw_material_cutting_items(models.Model):
     purchase_order_cutting = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
@@ -670,7 +681,6 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
-    cutting_quantity = models.IntegerField(default=0, null = True, blank=True)
     process_quantity_cutting = models.IntegerField(default=0)
 
 
