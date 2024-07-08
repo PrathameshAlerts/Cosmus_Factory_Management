@@ -3124,16 +3124,15 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     # cutting form for that purchase order (this form data is submitted only)(for create and view/update page)
     purchase_order_cutting_form = purchase_order_raw_material_cutting_form(request.POST or None, instance=purchase_order_cutting_instance)
 
-    # for create page 
+    # for create page initial data is denndered 
     if not pk:
+
+        # initial data for purchase_order_cutting items
         initial_data = []
         for purchase_items_raw in purchase_order_raw_instances:
 
-            if purchase_items_raw.product_sku == 'Common Item':
-                material_color_shade_query = ['Common Item']
-
-            else:
-                material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name)
+            
+            material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name)
             
             initial_data_dict = {
                 'product_sku': purchase_items_raw.product_sku,
@@ -3161,11 +3160,9 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(initial=initial_data)
 
 
+        # intial data for purchase_order_to_product formset
         initial_data_p_o_to_items = []
-
-
         for instances in purchase_order_to_product_instances:
-
             initial_data_dict = {
                 'product_color': instances.product_id.PProduct_color,
                 'product_sku': instances.product_id.PProduct_SKU,
@@ -3201,33 +3198,19 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         # formset for purchase_order_to_products_cutting for POST request
         purchase_order_to_product_formset_form = purchase_order_to_product_formset(request.POST)
 
-
         if purchase_order_cutting_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid() and purchase_order_to_product_formset_form.is_valid():
             
-            cutting_form_instance = purchase_order_cutting_form.save()
 
+            # cutting form save
+            cutting_form_instance = purchase_order_cutting_form.save()
             # change the status in purchase order model 
             if cutting_form_instance.purchase_order_id.process_status == '3':
                 cutting_form_instance.purchase_order_id.process_status = '4'
                 cutting_form_instance.purchase_order_id.save()
             
-            
-            processed_quantity = int(request.POST['processed_qty'])
-            
-            # updating balance quantity of purchase order form
-            qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces
-            qty_to_process_minus_processed_qty = qty_to_process - processed_quantity
-            cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty
-            cutting_form_instance.purchase_order_id.save()
-
-            for form in purchase_order_for_raw_material_cutting_items_formset_form:
-
-                if form.is_valid(): 
-                    form_instance = form.save(commit=False)
-                    form_instance.purchase_order_cutting = cutting_form_instance
-                    form_instance.save()
 
 
+            # purchase_order to product formset 
             for form in purchase_order_to_product_formset_form:
                 if form.is_valid(): 
                     p_o_to_order_form_instance = form.save(commit=False)
@@ -3243,6 +3226,33 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
                     purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
                     purchase_order_products.save()
+
+
+
+            # purchase_order_cutting_items formset
+            for form in purchase_order_for_raw_material_cutting_items_formset_form:
+                if form.is_valid(): 
+                    form_instance = form.save(commit=False)
+                    form_instance.purchase_order_cutting = cutting_form_instance
+
+                    material_name = form_instance.material_name
+                    material_color_shade_id = form.instance.material_color_shade
+                    
+
+
+                    form_instance.save()
+
+
+            # updating balance quantity of purchase order form 
+            processed_quantity = int(request.POST['processed_qty'])
+            qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces  # get the quanitty from purchase_order
+            qty_to_process_minus_processed_qty = qty_to_process - processed_quantity  # reduce the purchase_order_qty with the processed qty
+            cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty  # assign the value
+            cutting_form_instance.purchase_order_id.save() # save changes
+
+            
+
+            
 
             return(redirect(reverse('purchase-order-cutting-list', args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
 
