@@ -394,7 +394,7 @@ class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
 
         fields = ['product_sku','product_color','material_name','rate','panha','units','g_total',
                   'consumption','total_comsumption','physical_stock','balance_physical_stock',
-                  'process_quantity_cutting']
+                  ]
 
 
 

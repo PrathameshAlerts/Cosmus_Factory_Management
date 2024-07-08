@@ -138,7 +138,7 @@
         <div class="d-flex pb-2">
             <label for="id_OderQty" class="text-danger">Total:</label>
             <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 234px;" readonly>
-            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="{{form.instance.balance_number_of_pieces}}" style="margin-left: 30px;" readonly>
+            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="" style="margin-left: 30px;" readonly>
             <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 190px;" readonly> 
         </div>
     </div>
@@ -170,7 +170,7 @@
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                     <tr>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
+                        <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.instance.panha}}" step="0.001" id="id_{{form.prefix}}-panha"></td>
@@ -186,7 +186,7 @@
 
                     <tr>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
+                        <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.initial.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.initial.panha}}" step="0.001" id="id_{{form.prefix}}-panha"></td>
@@ -196,6 +196,8 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock"></td>
+                       
+
                     </tr>
 
                     {% endif %}
@@ -307,30 +309,38 @@
 
     function submitForm(){
         var ids = document.querySelectorAll('input[name$="-id"]');
-        console.log('ids',ids)
+      
         var hasIdValue = false;
             ids.forEach(element =>{
+
                 if (element.value) {
+
                   hasIdValue = true;
                 }
             })
         if(hasIdValue){
+            var procumentValue =0;
             document.getElementById('id_submit').style.display = "none";
             // var processValueQty = document.getElementById('id_processed_qty');
             // var cuttingTotal = document.getElementById('id_cuttingTotal');
          
 
             document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {
-                const cuttingMainValue = parseFloat(newValue.value) || 0;
-       
+                //const cuttingMainValue = parseFloat(newValue.value) || 0;
+                //console.log('cuttingMainValue',cuttingMainValue)
                 const row = newValue.closest('tr');
+           
                 const color = row.querySelector('input[name$="-product_color"]').value;
-               
-
-                document.querySelectorAll('input[name^="current_"][name$="-cutting"]').forEach(element => {
+              const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
+                const procumentQtyValue = parseFloat(procumentQty) || 0;
+             procumentValue  += procumentQtyValue;  
+               console.log('procumentQty',procumentQtyValue)
+                document.getElementById('id_processQty').value = procumentValue;
+                document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-material_name"]').forEach(element => {
+                    console.log()
                     if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
                         console.log('element',element)
-                        element.value = cuttingMainValue;
+                       // element.value = cuttingMainValue;
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
