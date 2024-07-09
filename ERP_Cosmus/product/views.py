@@ -3130,11 +3130,9 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         for purchase_items_raw in purchase_order_raw_instances:
 
             if purchase_items_raw.product_sku == 'Common Item':
-                
                 material_color_shade_query = ['Common Item']
 
             else:
-                print("TEST1")
                 material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name)
             
             initial_data_dict = {
@@ -3151,7 +3149,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'physical_stock' : purchase_items_raw.physical_stock,
                 'balance_physical_stock' : purchase_items_raw.balance_physical_stock,
             }
-            print(initial_data_dict)
+            
             initial_data.append(initial_data_dict)
 
         
@@ -3216,6 +3214,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             
             processed_quantity = int(request.POST['processed_qty'])
             
+            # updating balance quantity of purchase order form
             qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces
             qty_to_process_minus_processed_qty = qty_to_process - processed_quantity
             cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty

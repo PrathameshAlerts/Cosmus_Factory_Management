@@ -72,7 +72,7 @@
                 {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                 <div class="d-flex ms-5">
                     <label for="id_balance_qty" class="">Balance Qty:</label>
-                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="0"  id="id_balance_qty" readonly>  
+                    <input type="number" name="balance_qty" class="purchase-input  text-danger ms-3 pb-2" value="{{purchase_order_cutting_form.instance.balance_qty}}"  id="id_balance_qty" readonly>  
                 </div>
                 
                 {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
@@ -82,6 +82,10 @@
                 </div> 
 
                 {% endif %}
+                <div class="d-flex me-4">
+                   
+                    <input type="hidden" name="balanceView_qty" class="purchase-input  ms-3  pb-2 "  value=""  id="id_balanceView_qty" readonly >
+                </div> 
             </div>
     
         </div>
@@ -142,7 +146,7 @@
                 
                 {% endif %}
                 {% endfor %}
-                
+            
             </tbody>
         </table>
         <div class="d-flex pb-2">
@@ -187,7 +191,6 @@
                         <td>
                             <span class="productinput">{{form.instance.material_color_shade}}</span>
                         </td>
-
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.instance.panha}}" step="0.001" id="id_{{form.prefix}}-panha" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.instance.units}}" step="0.001" id="id_{{form.prefix}}-units" readonly></td>
@@ -205,13 +208,13 @@
                         <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
                         <td>
-                            <select name="" id="" class="productShadeCutting_input">
+                            <select name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade" class="productShadeCutting_input">
                                 <option value=""></option>
                                 {% for shade in form.initial.material_color_shade %}
                                 {% if shade != 'Common Item'%}
                                 <option value="{{shade.id}}">{{shade.item_shade_name}}</option>
                                 {% elif shade == 'Common Item' %}
-                                <option value="" selected></option>
+                                <option value=""selected></option>
                                 {% endif %}
                                 {% endfor %}
                             </select>
@@ -226,7 +229,6 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
                        
-
                     </tr>
 
                     {% endif %}
@@ -257,12 +259,7 @@
             var totalValue = document.getElementById('id_processed_qty')
             var processQtyValue = parseFloat(processQty.value);
             var cuttingQtyValue = parseFloat(cuttingQty.value);
-            //var totalCuttingQtyValue = parseFloat(totalValue.value);
-          
-            // console.log('cuttingQtyValue',cuttingQtyValue)
-            // console.log('processQtyValue',processQtyValue)
-            // console.log('cuttingQty',cuttingQty.value)
-               
+           
             if(cuttingQtyValue > processQtyValue){
                 document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity').value = 0;
             }
@@ -273,9 +270,7 @@
            
             process = process + processQtyValue;
             totalProcessQty.value = process;
-            
-           
-    }
+        }
       
     }
  
@@ -296,7 +291,6 @@
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
-                //const cuttingNewQty = row.querySelector('input[name$="-cutting_quantity"]');
                 
                 if(currentColor == productColor){
                     const consumptionInput =document.querySelector('input[name$="-consumption"]');
@@ -341,7 +335,13 @@
             var procumentValue =0;
             document.getElementById('id_submit').style.display = "none";
          
-        
+            var actualQty = document.getElementById('id_processQty').value;
+            var processed_qty = document.getElementById('id_processed_qty').value;
+           var  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
+
+           document.getElementById('id_balanceView_qty').value = balanceViewQty;
+
+
             document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {
              
                 const row = newValue.closest('tr');
