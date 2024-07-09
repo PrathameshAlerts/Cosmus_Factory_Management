@@ -210,8 +210,8 @@ the input field will be pre-filled with that value when the page is loaded. -->
                 <td>{{shade.item_shade_name}}</td>
                 <td>
                   {% for shade_q in shade.godown_shades.all %}
-                  <table class="text-nowrap table">
-                    <tr>
+                  <table class="table">
+                    <tr class="text-nowrap">
                       <td>{{shade_q.godown_name}}</td>
                       <td>{{shade_q.quantity}}</td>
                     </tr>

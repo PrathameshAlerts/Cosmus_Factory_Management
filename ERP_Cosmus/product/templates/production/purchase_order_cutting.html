@@ -322,16 +322,12 @@
         let newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
 
         for(let i =0 ; i<newForm; i++){
-        const TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
-        const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
-        const balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
-             
-        let balanceStock = parseFloat(physicalStock) - parseFloat(TotalConsumtion);
-        balancePhysicalStock.value = balanceStock.toFixed(3);
-        
-        console.log(physicalStock)
-                console.log(balancePhysicalStock)
-                console.log(TotalConsumtion)
+            const TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
+            const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
+            const balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
+                
+            let balanceStock = parseFloat(physicalStock) - parseFloat(TotalConsumtion);
+            balancePhysicalStock.value = balanceStock.toFixed(3);
         }
         
     }
@@ -370,7 +366,7 @@
 
             // Update the border and background color of the input elements
             document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {
-             
+               
                 const row = newValue.closest('tr');
                 const color = row.querySelector('input[name$="-product_color"]').value;
                 const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
@@ -379,14 +375,15 @@
                 procumentValue  += procumentQtyValue;  
          
                 document.getElementById('id_processQty').value = procumentValue;
-
-                // Update the border and background color of the input elements
-                document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-material_name"]').forEach(element => {
-             
+                newValue.readOnly = true;
+                // Update the border and background color of the input elementsid_purchase_order_to_product_cutting_set-0-cutting_quantity
+                document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]').forEach(element => {
+                   
                     if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
+                        element.value = newValue.value;
                     }
                 });
             });
