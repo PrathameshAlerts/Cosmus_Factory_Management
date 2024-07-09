@@ -3237,7 +3237,18 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
                     material_name = form_instance.material_name
                     material_color_shade_id = form.instance.material_color_shade
-                    
+                    po_godown = form_instance.purchase_order_cutting.purchase_order_id.temp_godown_select
+                    total_consumption = form_instance.total_comsumption
+                    print(po_godown)
+                    print(total_consumption)
+                    print(material_color_shade_id)
+                    if material_color_shade_id.items.Fabric_nonfabric == 'Fabric':
+                        item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade_id)
+
+                        if item_in_godown:
+                            item_quantity_in_godown = item_in_godown.quantity
+                            if item_quantity_in_godown >= total_consumption:
+                                print(material_name)
 
 
                     form_instance.save()
