@@ -3101,7 +3101,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                                                                       'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
                                                                       'physical_stock_all_godown_json':physical_stock_all_godown_json})
 
-
+@transaction.atomic
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     print(request.POST)
     if pk:
@@ -3213,77 +3213,118 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         purchase_order_to_product_formset_form = purchase_order_to_product_formset(request.POST)
 
         if purchase_order_cutting_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid() and purchase_order_to_product_formset_form.is_valid():
+            try:
+                # cutting form save
+                cutting_form_instance = purchase_order_cutting_form.save()
+                # change the status in purchase order model 
+                if cutting_form_instance.purchase_order_id.process_status == '3':
+                    cutting_form_instance.purchase_order_id.process_status = '4'
+                    cutting_form_instance.purchase_order_id.save()
+                
+
+
+                # purchase_order to product formset 
+                for form in purchase_order_to_product_formset_form:
+
+                    if form.is_valid(): 
+                        try:
+                            p_o_to_order_form_instance = form.save(commit=False)
+                            p_o_to_order_form_instance.purchase_order_cutting_id = cutting_form_instance
+                            p_o_to_order_form_instance.save()
+
+
+                            # reduce the process quantity form purchase_order_to_products model
+                            product_sku = p_o_to_order_form_instance.product_sku
+                            processed_qty = p_o_to_order_form_instance.cutting_quantity
+
+                            p_o_id = p_o_to_order_form_instance.purchase_order_cutting_id.purchase_order_id
+                            purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
+
+                            if purchase_order_products:
+                                purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
+                                purchase_order_products.save()
+
+                            else:
+                                logger.error(f'Product {product_sku} not found in purchase order {p_o_id}')
+                                messages.error(request, f'Product {product_sku} not found in the purchase order.')
+
+                        except Exception as e:
+                            logger.error(f'Error processing product form: {e}')
+                            messages.error(request, f'An error occurred while processing the product form: {e}')
+
+
+
+                # purchase_order_cutting_items formset
+                for form in purchase_order_for_raw_material_cutting_items_formset_form:
+                    if form.is_valid(): 
+                        try:
+                            form_instance = form.save(commit=False)
+                            form_instance.purchase_order_cutting = cutting_form_instance
+
+                            
+                            material_color_shade_id = form.instance.material_color_shade
+                            po_godown = current_godown
+                            total_consumption = form_instance.total_comsumption
+
+                            if material_color_shade_id.items.Fabric_nonfabric == 'Fabric':
+                                try:
+                                    item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade_id)
+
+                                    if item_in_godown:
+                                        item_quantity_in_godown = item_in_godown.quantity
+                                        if item_quantity_in_godown >= total_consumption:
+                                            item_in_godown.quantity = item_in_godown.quantity - total_consumption
+                                            item_in_godown.save()
+                                        else:
+                                            logger.error(f'Insufficient quantity in godown {po_godown} for material {material_color_shade_id}. Required: {total_consumption}, Available: {item_quantity_in_godown}')
+                                            messages.error(request, f'Insufficient quantity in godown {po_godown} for material {material_color_shade_id.item_shade_name}.')
+                                            continue
+
+                                    else:
+                                        logger.error(f'Item Not Avaliable in Godown {po_godown}-{material_color_shade_id.item_shade_name}')
+                                        messages.error(request, f'Item Not Avaliable in Godown {po_godown}-{material_color_shade_id.item_shade_name}')
+                                        continue
+
+                                except item_godown_quantity_through_table.DoesNotExist:
+                                    logger.error(f'Material {material_color_shade_id} does not exist in godown {po_godown}.')
+                                    messages.error(request, f'Material {material_color_shade_id.item_shade_name} does not exist in godown {po_godown}.')
+                                    continue
+
+                            form_instance.save()
+
+                        except Exception as e:
+                            logger.error(f'Error processing raw material form: {e}')
+                            messages.error(request, f'An error occurred while processing the raw material form: {e}')
+
+
+                # updating balance quantity of purchase order form 
+                processed_quantity = int(request.POST['processed_qty'])
+                qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces  # get the quanitty from purchase_order
+                qty_to_process_minus_processed_qty = qty_to_process - processed_quantity  # reduce the purchase_order_qty with the processed qty
+                cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty  # assign the value
+                cutting_form_instance.purchase_order_id.save() # save changes
+
+
+                return(redirect(reverse('purchase-order-cutting-list', args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
             
 
-            # cutting form save
-            cutting_form_instance = purchase_order_cutting_form.save()
-            # change the status in purchase order model 
-            if cutting_form_instance.purchase_order_id.process_status == '3':
-                cutting_form_instance.purchase_order_id.process_status = '4'
-                cutting_form_instance.purchase_order_id.save()
-            
+            except ValidationError as val_err:
+                logger.error(f'Validation error: {val_err}')
+                messages.error(request, f'Validation error: {val_err}')
 
-            # purchase_order to product formset 
-            for form in purchase_order_to_product_formset_form:
-                if form.is_valid(): 
-                    p_o_to_order_form_instance = form.save(commit=False)
-                    p_o_to_order_form_instance.purchase_order_cutting_id = cutting_form_instance
-                    p_o_to_order_form_instance.save()
+            except DatabaseError as db_err:
+                logger.error(f'Database error: {db_err}')
+                messages.error(request, f'Database error: {db_err}')
 
-
-                    # reduce the process quantity form purchase_order_to_products model
-                    product_sku = p_o_to_order_form_instance.product_sku
-                    processed_qty = p_o_to_order_form_instance.cutting_quantity
-
-                    p_o_id = p_o_to_order_form_instance.purchase_order_cutting_id.purchase_order_id
-                    purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
-                    purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
-                    purchase_order_products.save()
-
-
-
-            # purchase_order_cutting_items formset
-            for form in purchase_order_for_raw_material_cutting_items_formset_form:
-                if form.is_valid(): 
-                    form_instance = form.save(commit=False)
-                    form_instance.purchase_order_cutting = cutting_form_instance
-
-                    
-                    material_color_shade_id = form.instance.material_color_shade
-                    po_godown = current_godown
-                    total_consumption = form_instance.total_comsumption
-
-                    if material_color_shade_id.items.Fabric_nonfabric == 'Fabric':
-                        item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade_id)
-
-                        if item_in_godown:
-                            item_quantity_in_godown = item_in_godown.quantity
-                            if item_quantity_in_godown >= total_consumption:
-                                item_in_godown.quantity = item_in_godown.quantity - total_consumption
-                                item_in_godown.save()
-
-                    form_instance.save()
-
-
-            # updating balance quantity of purchase order form 
-            processed_quantity = int(request.POST['processed_qty'])
-            qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces  # get the quanitty from purchase_order
-            qty_to_process_minus_processed_qty = qty_to_process - processed_quantity  # reduce the purchase_order_qty with the processed qty
-            cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty  # assign the value
-            cutting_form_instance.purchase_order_id.save() # save changes
-
-            
-
-            
-
-            return(redirect(reverse('purchase-order-cutting-list', args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
+            except Exception as e:
+                logger.error(f'Unexpected error: {e}')
+                messages.error(request, f'An unexpected error occurred: {e}')
 
         else:
-            print('errors',purchase_order_for_raw_material_cutting_items_formset_form.errors)
-            print('errors',purchase_order_cutting_form.errors)
-            print('errors',purchase_order_to_product_formset_form.errors)
-            logger.debug(f'errors {purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors()}')
-            logger.debug(f'Non-form errors: {purchase_order_to_product_formset_form.non_form_errors}')
+
+            return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
+                                                                    'purchase_order_to_product_formset_form':purchase_order_to_product_formset_form,
+                                                                     'purchase_order_for_raw_material_cutting_items_formset_form':purchase_order_for_raw_material_cutting_items_formset_form})
 
     return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
                                                                     'purchase_order_to_product_formset_form':purchase_order_to_product_formset_form,
