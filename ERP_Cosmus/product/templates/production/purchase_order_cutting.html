@@ -82,6 +82,10 @@
                 </div> 
 
                 {% endif %}
+                <div class="d-flex me-4">
+                   
+                    <input type="hidden" name="balanceView_qty" class="purchase-input  ms-3  pb-2 "  value=""  id="id_balanceView_qty" readonly >
+                </div> 
             </div>
     
         </div>
@@ -142,13 +146,13 @@
                 
                 {% endif %}
                 {% endfor %}
-                
+            
             </tbody>
         </table>
         <div class="d-flex pb-2">
             <label for="id_OderQty" class="text-danger">Total:</label>
             <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 234px;" readonly>
-            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="{{form.instance.balance_number_of_pieces}}" style="margin-left: 30px;" readonly>
+            <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 30px;" readonly>
             <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 190px;" readonly> 
         </div>
     </div>
@@ -162,7 +166,7 @@
                         <th>Product SKU</th>
                         <th>Product Color</th>
                         <th>Material Name</th>
-                        <th>Material Color Shade</th>
+                        <th>Color Shade</th>
                         <th>Rate</th>
                         <th>Panha</th>
                         <th>Units</th>
@@ -170,7 +174,7 @@
                         <th>consumption</th>
                         <th>Total consumption</th>
                         <th>Physical Stock</th>
-                        <th>Balance Physical Stock</th>
+                        <th>Balance Stock</th>
                     </tr>
                 </thead>
                 <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
@@ -180,33 +184,31 @@
                     {{form.id}}
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                     <tr>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
-                        <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                        <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                        <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
 
                         <td>
-                            <span>{{form.instance.material_color_shade}}</span>
+                            <span class="productinput">{{form.instance.material_color_shade}}</span>
                         </td>
-
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.instance.panha}}" step="0.001" id="id_{{form.prefix}}-panha"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.instance.units}}" step="0.001" id="id_{{form.prefix}}-units"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.instance.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.instance.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.instance.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.instance.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock"></td>
-
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.instance.rate}}" step="0.001" id="id_{{form.prefix}}-rate" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.instance.panha}}" step="0.001" id="id_{{form.prefix}}-panha" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.instance.units}}" step="0.001" id="id_{{form.prefix}}-units" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.instance.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.instance.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.instance.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.instance.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
                     </tr>
 
                     {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
 
                     <tr>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
-                        <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name"></td>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                        <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                        <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
                         <td>
-                            <select name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade">
+                            <select name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade" class="productShadeCutting_input">
                                 <option value=""></option>
                                 {% for shade in form.initial.material_color_shade %} 
                                 <option value="{{shade.id}}">{{shade.item_shade_name}}</option>
@@ -214,16 +216,15 @@
                             </select>
                             
                         </td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.initial.rate}}" step="0.001" id="id_{{form.prefix}}-rate"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.initial.panha}}" step="0.001" id="id_{{form.prefix}}-panha"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.initial.units}}" step="0.001" id="id_{{form.prefix}}-units"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.initial.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.initial.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock"></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-rate" value="{{form.initial.rate}}" step="0.001" id="id_{{form.prefix}}-rate" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.initial.panha}}" step="0.001" id="id_{{form.prefix}}-panha" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.initial.units}}" step="0.001" id="id_{{form.prefix}}-units" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.initial.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.initial.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
                        
-
                     </tr>
 
                     {% endif %}
@@ -254,13 +255,7 @@
             var totalValue = document.getElementById('id_processed_qty')
             var processQtyValue = parseFloat(processQty.value);
             var cuttingQtyValue = parseFloat(cuttingQty.value);
-            //var totalCuttingQtyValue = parseFloat(totalValue.value);
-            // console.log('test',totalCuttingQty.value)
-            //console.log('totalCuttingQtyValue',totalCuttingQtyValue)
-            console.log('cuttingQtyValue',cuttingQtyValue)
-            console.log('processQtyValue',processQtyValue)
-            console.log('cuttingQty',cuttingQty.value)
-               
+           
             if(cuttingQtyValue > processQtyValue){
                 document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity').value = 0;
             }
@@ -271,12 +266,7 @@
            
             process = process + processQtyValue;
             totalProcessQty.value = process;
-            
-            // if(totalCuttingQtyValue < totalCuttingQty.value){
-            //     document.getElementById('id_current_'+i+'-cutting').value = 0;
-            // }
-       
-    }
+        }
       
     }
  
@@ -297,7 +287,6 @@
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
-                const cuttingNewQty = row.querySelector('input[name$="-cutting_quantity"]');
                 
                 if(currentColor == productColor){
                     const consumptionInput =document.querySelector('input[name$="-consumption"]');
@@ -306,9 +295,6 @@
                     var totalConsumption = CuttingQty * consumption;
                     if (totalConsumptionInput) {
                             totalConsumptionInput.value = totalConsumption.toFixed(2);
-                                if (cuttingNewQty) {
-                                    cuttingNewQty.value = CuttingQty;
-                                }
                     }
                 }else if(currentColor === "Common Item"){
                     const rows = document.querySelectorAll("tbody.mainTableList tr input[name$='-product_color']")
@@ -322,9 +308,6 @@
 
                             if (totalConsumptionInput) {
                                 totalConsumptionInput.value = commonConsumption.toFixed(2);
-                                if (cuttingNewQty) {
-                                    cuttingNewQty.value = totalValue;
-                                }
                             }
                         }
                     });
@@ -334,30 +317,43 @@
     }
 
     function submitForm(){
-        var ids = document.querySelectorAll('input[name^="id_purchase_order_to_product_cutting_set-"][name$="-id"]');
+        var ids = document.querySelectorAll('input[name$="-id"]');
+      
         var hasIdValue = false;
             ids.forEach(element =>{
+
                 if (element.value) {
+
                   hasIdValue = true;
                 }
             })
         if(hasIdValue){
+            var procumentValue =0;
             document.getElementById('id_submit').style.display = "none";
-            // var processValueQty = document.getElementById('id_processed_qty');
-            // var cuttingTotal = document.getElementById('id_cuttingTotal');
          
+            var actualQty = document.getElementById('id_processQty').value;
+            var processed_qty = document.getElementById('id_processed_qty').value;
+           var  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
+
+           document.getElementById('id_balanceView_qty').value = balanceViewQty;
+
 
             document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {
-                const cuttingMainValue = parseFloat(newValue.value) || 0;
-       
+             
                 const row = newValue.closest('tr');
                 const color = row.querySelector('input[name$="-product_color"]').value;
-               
+                const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
+                const procumentQtyValue = parseFloat(procumentQty) || 0;
 
-                document.querySelectorAll('input[name^="current_"][name$="-cutting"]').forEach(element => {
+                procumentValue  += procumentQtyValue;  
+         
+                document.getElementById('id_processQty').value = procumentValue;
+
+                document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-material_name"]').forEach(element => {
+             
                     if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
-                        console.log('element',element)
-                        element.value = cuttingMainValue;
+                    
+                   
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
@@ -396,7 +392,7 @@
     
         submitForm();
         processValueQty();
-        //cuttingOrder();
+        cuttingOrder();
         updateCuttingQuantity();
     });
 </script>
