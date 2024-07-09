@@ -27,6 +27,10 @@ from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse, QueryDict
+
+from django.db.models import OuterRef, Subquery, DecimalField, F
+from django.db.models.functions import Coalesce
+
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
@@ -2985,7 +2989,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         item_id = item.Item_pk
         item_name = item.Item_pk.item_name
         item_quantity = 0
-        item_godowns = item_godown_quantity_through_table.objects.filter(Item_shade_name__items = item_id) #later filter by godown also after checking user godown location
+        item_godowns = item_godown_quantity_through_table.objects.filter(Item_shade_name__items = item_id,godown_name =purchase_order_instance.temp_godown_select) #later filter by godown also after checking user godown location
         
         if item_godowns:
             for query in item_godowns:
@@ -3131,9 +3135,17 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         initial_data = []
         for purchase_items_raw in purchase_order_raw_instances:
 
+            godown_quantity_subquery = item_godown_quantity_through_table.objects.filter(godown_name= form.instance.temp_godown_select,
+                                                                                    Item_shade_name=OuterRef('pk')).values('quantity')[:1]
+            # Filter and annotate the item_color_shade queryset
+            material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name).annotate(
+                    godown_qty=Coalesce(Subquery(godown_quantity_subquery, output_field=DecimalField()),  decimal.Decimal('0')))
             
-            material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name)
-            
+            current_physical_stock = 0
+            for shade in material_color_shade_query:
+                current_physical_stock = current_physical_stock + shade.godown_qty
+
+
             initial_data_dict = {
                 'product_sku': purchase_items_raw.product_sku,
                 'product_color' : purchase_items_raw.product_color,
@@ -3144,9 +3156,9 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'units' : purchase_items_raw.units,
                 'g_total' : purchase_items_raw.g_total,
                 'consumption' : purchase_items_raw.consumption,
-                'total_comsumption' : '0',
-                'physical_stock' : purchase_items_raw.physical_stock,
-                'balance_physical_stock' : purchase_items_raw.balance_physical_stock,
+                'total_comsumption' :'0',
+                'physical_stock' : current_physical_stock,
+                'balance_physical_stock' : '0',
             }
             
             initial_data.append(initial_data_dict)
