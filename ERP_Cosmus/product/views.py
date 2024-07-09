@@ -3125,6 +3125,8 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     # purchase_order_form
     form = purchase_order_form(instance = purchase_order_instance)
 
+    current_godown = form.instance.temp_godown_select
+
     # cutting form for that purchase order (this form data is submitted only)(for create and view/update page)
     purchase_order_cutting_form = purchase_order_raw_material_cutting_form(request.POST or None, instance=purchase_order_cutting_instance)
 
@@ -3135,7 +3137,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         initial_data = []
         for purchase_items_raw in purchase_order_raw_instances:
 
-            godown_quantity_subquery = item_godown_quantity_through_table.objects.filter(godown_name= form.instance.temp_godown_select,
+            godown_quantity_subquery = item_godown_quantity_through_table.objects.filter(godown_name= current_godown,
                                                                                     Item_shade_name=OuterRef('pk')).values('quantity')[:1]
             # Filter and annotate the item_color_shade queryset
             material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name).annotate(
@@ -3221,7 +3223,6 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 cutting_form_instance.purchase_order_id.save()
             
 
-
             # purchase_order to product formset 
             for form in purchase_order_to_product_formset_form:
                 if form.is_valid(): 
@@ -3247,21 +3248,19 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                     form_instance = form.save(commit=False)
                     form_instance.purchase_order_cutting = cutting_form_instance
 
-                    material_name = form_instance.material_name
+                    
                     material_color_shade_id = form.instance.material_color_shade
-                    po_godown = form_instance.purchase_order_cutting.purchase_order_id.temp_godown_select
+                    po_godown = current_godown
                     total_consumption = form_instance.total_comsumption
-                    print(po_godown)
-                    print(total_consumption)
-                    print(material_color_shade_id)
+
                     if material_color_shade_id.items.Fabric_nonfabric == 'Fabric':
                         item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade_id)
 
                         if item_in_godown:
                             item_quantity_in_godown = item_in_godown.quantity
                             if item_quantity_in_godown >= total_consumption:
-                                print(material_name)
-
+                                item_in_godown.quantity = item_in_godown.quantity - total_consumption
+                                item_in_godown.save()
 
                     form_instance.save()
 

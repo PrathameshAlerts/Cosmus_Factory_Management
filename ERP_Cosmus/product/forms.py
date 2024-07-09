@@ -332,7 +332,7 @@ class Basepurchase_order_raw_product_qty_formset(BaseInlineFormSet):
                 # Get the order_quantity from the cleaned_data of each form:
                 order_quantity = form.cleaned_data.get('order_quantity', 0)
                 proc_color_wise_qty = form.cleaned_data.get('process_quantity', 0)
-                print(order_quantity,proc_color_wise_qty)
+                
                 if order_quantity < proc_color_wise_qty:
                     raise ValidationError(f' order quantity ({proc_color_wise_qty}) exceeds the available order quantity ({order_quantity}).')
         
