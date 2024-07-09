@@ -210,12 +210,8 @@
                         <td>
                             <select name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade" class="productShadeCutting_input">
                                 <option value=""></option>
-                                {% for shade in form.initial.material_color_shade %}
-                                {% if shade != 'Common Item'%}
+                                {% for shade in form.initial.material_color_shade %} 
                                 <option value="{{shade.id}}">{{shade.item_shade_name}}</option>
-                                {% elif shade == 'Common Item' %}
-                                <option value=""selected></option>
-                                {% endif %}
                                 {% endfor %}
                             </select>
                             
