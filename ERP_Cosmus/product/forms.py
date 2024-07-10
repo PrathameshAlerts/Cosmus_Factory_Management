@@ -1,13 +1,19 @@
 from dataclasses import fields
 from pyexpat import model
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput , DateInput
 from django.forms import IntegerField, modelformset_factory, BaseInlineFormSet 
+from django.db import transaction
+import logging
+
+
+logger = logging.getLogger('product_forms')
+
 
 
 
@@ -334,7 +340,7 @@ class Basepurchase_order_raw_product_qty_formset(BaseInlineFormSet):
                 proc_color_wise_qty = form.cleaned_data.get('process_quantity', 0)
                 
                 if order_quantity < proc_color_wise_qty:
-                    raise ValidationError(f' order quantity ({proc_color_wise_qty}) exceeds the available order quantity ({order_quantity}).')
+                    raise ValidationError(f'order quantity ({proc_color_wise_qty}) exceeds the available order quantity ({order_quantity}).')
         
             
 
@@ -388,15 +394,6 @@ class purchase_order_raw_material_cutting_form(forms.ModelForm):
 
     # def clean_processed_qty(self)
 
-class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
-    class Meta:
-        model = purchase_order_for_raw_material_cutting_items
-
-        fields = ['product_sku','product_color','material_name','rate','panha','units','g_total',
-                  'consumption','total_comsumption','physical_stock','balance_physical_stock',
-                  'material_color_shade'
-                  ]
-
 
 
 class purchase_order_to_product_cutting_form(forms.ModelForm):
@@ -405,6 +402,83 @@ class purchase_order_to_product_cutting_form(forms.ModelForm):
         model = purchase_order_to_product_cutting
 
         fields = ['product_color','product_sku','order_quantity','process_quantity','cutting_quantity']
+
+
+
+class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
+
+    #extra field added in front end 
+    purchase_order_pk = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'type': 'readonly'}),
+        
+    )
+    class Meta:
+        model = purchase_order_for_raw_material_cutting_items
+
+        fields = ['product_sku','product_color','material_name','rate','panha','units','g_total',
+                  'consumption','total_comsumption','physical_stock','balance_physical_stock',
+                  'material_color_shade','purchase_order_pk']
+        
+
+
+
+class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
+    
+    def clean(self):
+        super().clean()
+
+        # get the data from parent instance
+        # po_godown = self.instance.purchase_order_cutting_id.purchase_order_id.temp_godown_select
+        
+    
+        with transaction.atomic():
+            for form in self.forms:
+                if not form.cleaned_data.get('DELETE', False):
+                    try:
+                        Purchase_order_pk = form.cleaned_data.get('purchase_order_pk')
+
+                        if not Purchase_order_pk:
+                            raise ValidationError("Purchase order primary key is missing.")
+                        
+                        po_instance = purchase_order.objects.get(id=Purchase_order_pk)
+                        po_godown = po_instance.temp_godown_select.id
+                        total_consumption = form.cleaned_data.get('total_comsumption')
+                        material_color_shade = form.cleaned_data.get('material_color_shade')
+                        
+                        if material_color_shade.items.Fabric_nonfabric == 'Fabric':
+
+                            try:
+                                item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade)
+
+                            except item_godown_quantity_through_table.DoesNotExist:
+                                raise ValidationError(f'No such item {material_color_shade} in godown {po_godown}.')
+                            
+                            item_quantity_in_godown = item_in_godown.quantity
+
+                            if item_quantity_in_godown >= total_consumption:
+                                item_in_godown.quantity = item_in_godown.quantity - total_consumption
+                                item_in_godown.save()
+
+                            else:
+                                raise ValidationError(f'Insufficient quantity in godown {po_godown} for material {material_color_shade}. Required: {total_consumption},Available: {item_quantity_in_godown}')
+
+
+                    except purchase_order.DoesNotExist:
+                        raise ValidationError(f'Purchase order with ID {Purchase_order_pk} does not exist.')
+                    
+                    except item_godown_quantity_through_table.DoesNotExist as e:
+                        logger.error(f'Item not found in godown: {e}')
+                        raise
+
+                    except ValidationError as e:
+                        logger.error(f'Validation error: {e}')
+                        raise
+
+                    except Exception as e:
+                        logger.error(f'Unexpected error occurred: {e}', exc_info=True)
+                        raise ValidationError(f'An unexpected error occurred: {e}')
+
 
 
 class factory_employee_form(forms.ModelForm):

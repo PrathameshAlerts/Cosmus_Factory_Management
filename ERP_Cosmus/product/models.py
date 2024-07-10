@@ -370,7 +370,7 @@ class item_color_shade(models.Model):
     item_shade_name =  models.CharField(max_length=100, null=False, blank=False)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images')
     created_date = models.DateTimeField(auto_now = True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now_add = True)
 
 
     def __str__(self):
