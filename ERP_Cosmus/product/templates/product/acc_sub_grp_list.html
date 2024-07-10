@@ -83,10 +83,10 @@
 
   $(document).ready(function () {
     $('.delete-btn').click(function () {
-      var itemId = $(this).data('item-id');
-      var name = $(this).closest('tr').find('td').eq(2).text();
+      let itemId = $(this).data('item-id');
+      let name = $(this).closest('tr').find('td').eq(2).text();
 
-      var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+      let coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
       $('#modal-body-text').html('Are you sure you want to delete the sub group ' + coloredName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
       $('#confirmDeleteModal').modal('show');
@@ -94,7 +94,7 @@
 
     // Confirm delete button click event
     $('#confirmDeleteButton').click(function () {
-      var itemId = $(this).data('item-id');
+      let itemId = $(this).data('item-id');
       // Redirect to delete view
       window.location.href = '/accsubgrpdelete/' + itemId;
     });

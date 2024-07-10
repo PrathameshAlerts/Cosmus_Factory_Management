@@ -158,6 +158,7 @@
 </div>
 
 <script>
+    // Function to update the consumption value calculated for pahna, units and grand total to assigne the value to consumption field
        function updateTotal() {
             var totalForms = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
 
@@ -197,6 +198,7 @@
             calculateTotalConsumption();
         }
 
+        // This calculation is for process quantity to be equal to order quantity
         function updateProcessQuantity() {
             var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
 
@@ -211,6 +213,8 @@
             }
         }
         updateProcessQuantity();
+
+        // Function to calculate total consumption for each color in the table and assign the value to consumption field
         function calculateTotalConsumption(){
             let total =0;
             const processQty = document.querySelectorAll('input[name$="-process_quantity"]');
@@ -260,6 +264,8 @@
         }
 
         calculateTotalConsumption();
+
+        // Function to calculate balance stock the calulate the physical stock - total consumption for each color
 function balanceStock(){
     var totals = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
 

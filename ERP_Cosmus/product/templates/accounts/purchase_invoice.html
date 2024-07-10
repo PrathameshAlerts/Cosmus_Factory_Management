@@ -278,19 +278,15 @@
 
 // This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst 
 function getGstNo() {
-    var partyGstValue = document.getElementById('id_GST_number').value;
-    var comapnyGst = document.getElementById('id_company_GST_numbers').value;
+    let partyGstValue = document.getElementById('id_GST_number').value;
+    let comapnyGst = document.getElementById('id_company_GST_numbers').value;
 
         comapnyGst = comapnyGst.toString();
         partyGstValue = partyGstValue.toString();
 
-    var newCompanyGst = comapnyGst.slice(0,2);
-    var newPartyGst = partyGstValue.slice(0,2);
-    if(newCompanyGst == newPartyGst){
-        return true;
-    }else{
-        return false;
-    }
+    const newCompanyGst = comapnyGst.slice(0,2);
+    const newPartyGst = partyGstValue.slice(0,2);
+    return newCompanyGst === newPartyGst;
 }
 
 </script>
@@ -352,37 +348,40 @@ function randomValue (){
     // When click the item name then append the shades with the color, per 
     $(document).ready(function () {
         var itemName;
-        var uniqueIdValue;
+        //var uniqueIdValue;
         var purchaseValue;
-        var itemShadeName ;
-        var itemShadeIdValue;
-        var selectName;
+        //var itemShadeName ;
+        //var itemShadeIdValue;
+        //var selectName;
         var enterPressed = false;
+
+        // perfix value on item-name change
+        $(document).on('click input keyup focus keydown', 'input[name^="item_name_"]', function () {
+        itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+        purchaseValue = itemName.split('-')[1];
+                
+        });
+
         $(document).on('change','select[name^="purchase_voucher_items_set-"]', function () {
         var newData = document.getElementById('purchase_voucher_items_set-'+purchaseValue+'-jsonDataInputquantity').value;
         var itemShade = document.querySelector('#input_item_shade_'+ purchaseValue);
         var itemShadeValue = document.querySelector('#purchase_voucher_items_set-'+purchaseValue+'-old_item_shade_for_dropdown_change')
         var selectElementValue = itemShadeValue.value;
        
-        if(newData == ''){
-            itemShade.value = selectElementValue;
-            itemShade.style ="display: none";
-        }
+            if(newData == ''){
+                itemShade.value = selectElementValue;
+                itemShade.style ="display: none";
+            }
 
         });
         
-       // perfix value on item-name change
-        $(document).on('click input keyup focus keydown', 'input[name^="item_name_"]', function () {
-        itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-        purchaseValue = itemName.split('-')[1];
-                
-        });
+   
         //perfix value on item-shade change 
-        $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
-        itemShadeName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-        itemShadeIdValue = itemShadeName.split('-')[1];
+        // $(document).on('click','select[name^="purchase_voucher_items_set-"]',function(){
+        // itemShadeName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+        // itemShadeIdValue = itemShadeName.split('-')[1];
     
-        })
+        // })
 
         var searchedItemNameDic; 
         // This ajax request for a input type value send to the backend and show the input name 
@@ -1014,7 +1013,7 @@ function randomValue (){
 
     }
     function addEventListenersToInputs() {
-        var inputs = document.querySelectorAll('#myTable tbody tr input');
+        let inputs = document.querySelectorAll('#myTable tbody tr input');
         inputs.forEach(function(input) {
             input.addEventListener('input', function() {
                 calculateTotalAmount();
@@ -1121,41 +1120,41 @@ function randomValue (){
             TotalAmountElement.name = `purchase_voucher_items_set-${formIndex}-total_amount`;
             TotalAmountElement.value="";
 
-           const uniqueElement = lastRow.querySelector('.unique-id');
-           uniqueElement.id = `item_unique_id_${formIndex}`;
-           uniqueElement.name = `item_unique_id_${formIndex}`;
-           uniqueElement.value= uuidv4();
+            const uniqueElement = lastRow.querySelector('.unique-id');
+            uniqueElement.id = `item_unique_id_${formIndex}`;
+            uniqueElement.name = `item_unique_id_${formIndex}`;
+            uniqueElement.value= uuidv4();
 
-           const backendQtyElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-jsonDataInputquantity"]');
-           backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
-           backendQtyElement.name = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
-           backendQtyElement.value= "";
-           
-           const popUpElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-popupData"]');
-           popUpElement.id = `purchase_voucher_items_set-${formIndex}-popupData`;
-           popUpElement.name = `purchase_voucher_items_set-${formIndex}-popupData`;
-           popUpElement.value= "";
+            const backendQtyElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-jsonDataInputquantity"]');
+            backendQtyElement.id = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
+            backendQtyElement.name = `purchase_voucher_items_set-${formIndex}-jsonDataInputquantity`;
+            backendQtyElement.value= "";
+            
+            const popUpElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-popupData"]');
+            popUpElement.id = `purchase_voucher_items_set-${formIndex}-popupData`;
+            popUpElement.name = `purchase_voucher_items_set-${formIndex}-popupData`;
+            popUpElement.value= "";
 
 
-           const deleteElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
-           deleteElement.id = `purchase_voucher_items_set-${formIndex}-DELETE`;
-           deleteElement.name = `purchase_voucher_items_set-${formIndex}-DELETE`;
-           deleteElement.value= "";
-           
-           const deletedCheckBoxElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-deleteJsonData"]');
-           deletedCheckBoxElement.id = `purchase_voucher_items_set-${formIndex}-deleteJsonData`;
-           deletedCheckBoxElement.name = `purchase_voucher_items_set-${formIndex}-deleteJsonData`;
-           deletedCheckBoxElement.value = '';
+            const deleteElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+            deleteElement.id = `purchase_voucher_items_set-${formIndex}-DELETE`;
+            deleteElement.name = `purchase_voucher_items_set-${formIndex}-DELETE`;
+            deleteElement.value= "";
+            
+            const deletedCheckBoxElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-deleteJsonData"]');
+            deletedCheckBoxElement.id = `purchase_voucher_items_set-${formIndex}-deleteJsonData`;
+            deletedCheckBoxElement.name = `purchase_voucher_items_set-${formIndex}-deleteJsonData`;
+            deletedCheckBoxElement.value = '';
 
-           const olditemshadeElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-old_item_shade"]');
-           olditemshadeElement.id = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
-           olditemshadeElement.name = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
-           olditemshadeElement.value = '';
+            const olditemshadeElement = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-old_item_shade"]');
+            olditemshadeElement.id = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
+            olditemshadeElement.name = `purchase_voucher_items_set-${formIndex}-old_item_shade`;
+            olditemshadeElement.value = '';
 
-           const olditemshadeElementforupdate = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-old_item_shade_for_dropdown_change"]');
-           olditemshadeElementforupdate.id = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
-           olditemshadeElementforupdate.name = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
-           olditemshadeElementforupdate.value = '';
+            const olditemshadeElementforupdate = lastRow.querySelector('input[name^="purchase_voucher_items_set-"][name$="-old_item_shade_for_dropdown_change"]');
+            olditemshadeElementforupdate.id = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
+            olditemshadeElementforupdate.name = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
+            olditemshadeElementforupdate.value = '';
             
             tableBody.appendChild(lastRow);
            
@@ -1187,8 +1186,8 @@ function randomValue (){
     document.querySelectorAll('.delete-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             // Find the row containing the clicked delete button
-            var row = this.closest('tr');
-            var checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+            const row = this.closest('tr');
+            const checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
             if (checkRow) {
                 checkRow.checked = true; // Mark as checked
                 checkRow.value = 'true'; // Set the value to 'true'

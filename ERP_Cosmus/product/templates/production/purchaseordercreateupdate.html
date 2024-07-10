@@ -57,8 +57,8 @@
                 <label for="id_number_of_pieces" class="item-form ">Number of pieces:</label>
                 <input type="number" name="number_of_pieces" class="item-select" value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces">
             </div>
-            <div class="d-flex mb-3">
-                <label for="id_temp_godown_select" class="item-form">godown select:</label>
+            <div class="d-flex mb-3 ms-3">
+                <label for="id_temp_godown_select" class="me-3">godown select:</label>
                 <select name="temp_godown_select" class="item-select" id="id_temp_godown_select">
                     {% if form.instance.id %}
                     <option value="{{form.instance.temp_godown_select.id}}">{{form.instance.temp_godown_select.godown_name_raw}}</option>
@@ -133,11 +133,11 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
-        var dateInput = document.getElementById('id_target_date');
+        var dateInput = document.getElementById('id_target_date');// this script is for date picker 
         var today = new Date().toISOString().split('T')[0];
         var date = dateInput.value;
         dateInput.min = today;
-
+        // this script is for other form submit buttons hide adn show when first form submit 
         var id = document.getElementById('id_productRow').value;
 
         if (id != "None") {
