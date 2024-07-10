@@ -43,7 +43,7 @@
 <script>
   $(document).ready(function () {
     $('#id_product_name').change(function () {
-      var selectedproduct = $(this).val(); // Get the value of the selected option
+      const selectedproduct = $(this).val(); // Get the value of the selected option
 
       // Send selectedproduct to the backend using AJAX
       $.ajax({
@@ -53,15 +53,15 @@
           'selected_product_id': selectedproduct
         },
         success: function (response) {
-          // Handle success response from the backend
+
           console.log('Value sent to the backend successfully');
           $('.sub_category_name').prop('checked', false); // Uncheck all checkboxes
 
           // Populate the checkboxes from the response
-          var dict_result_subcategory = response.dict_result;
+          const dict_result_subcategory = response.dict_result;
   
           // Check checkboxes based on the received dictionary
-          for (var key in dict_result_subcategory) {
+          for (const key in dict_result_subcategory) {
             if (dict_result_subcategory.hasOwnProperty(key)) {
               $('#' + key).prop('checked', true);
             }

@@ -110,9 +110,9 @@
 
   $(document).ready(function () {
     $('.delete-btn').click(function () {
-      var itemId = $(this).data('item-id');
-      var itemName = $(this).closest('tr').find('td').eq(2).text();
-      var coloredName = '<span class="color-name" style="color:' + itemName + ';">' + itemName + '</span>';
+      const itemId = $(this).data('item-id');
+      const itemName = $(this).closest('tr').find('td').eq(2).text();
+      const coloredName = '<span class="color-name" style="color:' + itemName + ';">' + itemName + '</span>';
 
       $('#modal-body-text').html('Are you sure you want to delete the Stock Item ' + coloredName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
@@ -121,7 +121,7 @@
 
     // Confirm delete button click event
     $('#confirmDeleteButton').click(function () {
-      var itemId = $(this).data('item-id');
+      const itemId = $(this).data('item-id');
       // Redirect to delete view
       window.location.href = '/stockitemdelete/' + itemId;
     });

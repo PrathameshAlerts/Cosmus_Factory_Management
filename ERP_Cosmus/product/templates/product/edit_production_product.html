@@ -261,8 +261,7 @@
           <label for="" class=" item-form">Compartment:</label>
           <select name="Product_Compartments" required id="" class="item-select">
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments|
-              default_if_none:''}}</option>
+            <option value="{{form.instance.Product_Compartments}}">{{form.instance.Product_Compartments|default_if_none:''}}</option>
             {% elif not form.instance.id %}
             <option value=""></option>
             {% endif %}
@@ -519,8 +518,8 @@
     // Add click event listener to all delete buttons
     document.querySelectorAll('.delete-btn').forEach(function (button) {
       button.addEventListener('click', function () {   // Find the row containing the clicked delete button
-        var rows = this.closest('.card');
-        var checkRow = rows.querySelector('.product_delete_related[name^="productdetails-"][name$="-DELETE"]');
+        const rows = this.closest('.card');
+        const checkRow = rows.querySelector('.product_delete_related[name^="productdetails-"][name$="-DELETE"]');
         if (checkRow) {
           checkRow.checked = true; // Mark as checked
           checkRow.value = 'true'; // Set the value to 'true'
@@ -537,7 +536,7 @@
 <script>
   $(document).ready(function () {
     $('#id_Product_MainCatagory').change(function () {
-      var p_main_cat = $(this).val(); // Get the value of the selected option
+      const p_main_cat = $(this).val(); // Get the value of the selected option
 
       // Send selectedmaincat to the backend using AJAX
       $.ajax({
@@ -570,27 +569,27 @@
 
 <script>
   function redirectDownloadSetProduction() {
-    var ref_id = document.getElementById('id_Product_Refrence_ID').value
+    const ref_id = document.getElementById('id_Product_Refrence_ID').value
     window.location.href = '/export_Product2Item_excel/' + encodeURIComponent(ref_id)
   }
 
   function checkAll(source) {
-    var checkboxes = document.querySelectorAll('input[name="Product_Channel"]');
-    for (var i = 0; i < checkboxes.length; i++) {
+    const checkboxes = document.querySelectorAll('input[name="Product_Channel"]');
+    for (let i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = source.checked;
     }
   }
 
   function redirectPproduct() {
-    var ref_id_value = document.getElementById('id_Product_Refrence_ID').value
-    console.log(ref_id_value)
+    const ref_id_value = document.getElementById('id_Product_Refrence_ID').value
+
     window.location.href = '/pproduct_creation_ref_id/' + encodeURIComponent(ref_id_value);
   }
 
   function previewFile(event, counter) {
-    var preview = document.getElementById('previewImage_');
-    var file = event.target.files[0];
-    var reader = new FileReader();
+    const preview = document.getElementById('previewImage_');
+    const file = event.target.files[0];
+    const reader = new FileReader();
 
     reader.onloadend = function () {
       preview.src = reader.result;
@@ -625,19 +624,19 @@
 
 
   function openPopup(button, path) {
-    var card = button.closest('.card');
+    const card = button.closest('.card');
     if (card) {
-      var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+      const productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
       if (productSkuInput) {
-        var productSku = productSkuInput.value;
-        var minWidth = 800; // minimum width
-        var minHeight = 600;
+        const productSku = productSkuInput.value;
+        const minWidth = 800; // minimum width
+        const minHeight = 600;
 
         $('body').addClass('popup-open');
         $('body').append('<div class="popup-overlay"></div>');
 
         // this will generate http://127.0.0.1:8000/ 
-        var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+        const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
         popupWindow = window.open(baseUrl + '/product' + path + productSku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
         window.addEventListener('message', handlePopupMessage);
@@ -657,7 +656,7 @@
 </script>
 
 <script>
-  var popupWindow = null;
+  let popupWindow = null;
 
   function editSetProduction(button) {
     if (popupWindow === null || popupWindow.closed) {
@@ -676,15 +675,15 @@
 
 
   function newPopup(button, path) {
-    var refrence_id = document.getElementById('id_Product_Refrence_ID').value;
-    var minWidth = 1270; // minimum width
-    var minHeight = 700;
+    const refrence_id = document.getElementById('id_Product_Refrence_ID').value;
+    const minWidth = 1270; // minimum width
+    const minHeight = 700;
 
     $('body').addClass('popup-open');
     $('body').append('<div class="popup-overlay"></div>');
 
     // this will generate http://127.0.0.1:8000/ 
-    var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+    const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
     popupWindow = window.open(baseUrl + path + refrence_id, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
     window.addEventListener('message', function (event) {
@@ -704,15 +703,15 @@
 
 
   function newViewPopup(button, path) {
-    var sku = document.getElementById('id_Products').value
-    var minWidth = 1270; // minimum width
-    var minHeight = 700;
+    const sku = document.getElementById('id_Products').value
+    const minWidth = 1270; // minimum width
+    const minHeight = 700;
 
     $('body').addClass('popup-open');
     $('body').append('<div class="popup-overlay"></div>');
 
     // this will generate http://127.0.0.1:8000/ 
-    var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+    const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
     popupWindow = window.open(baseUrl + path + sku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
     window.addEventListener('message', function (event) {
@@ -730,23 +729,18 @@
   }
   function handleOutsideView(event) {
 
-    var popUpRect = document.querySelector('body').getBoundingClientRect();
-    var clickX = event.clientX;
-    var clickY = event.clientY;
+    const popUpRect = document.querySelector('body').getBoundingClientRect();
+    const clickX = event.clientX;
+    const clickY = event.clientY;
 
     // Check if the click is outside the popup window
-    if (
-      clickX > popUpRect.left || clickX <= popUpRect.right ||
-      clickY > popUpRect.top || clickY <= popUpRect.bottom
-    ) {
+    if (clickX > popUpRect.left || clickX <= popUpRect.right ||clickY > popUpRect.top || clickY <= popUpRect.bottom) {
 
       popupWindow.focus();
 
     }
 
   }
-
-
 </script>
 
 
@@ -754,9 +748,9 @@
   // create a function to toggle the visibility of the data container when the button is clicked to show the data container
   document.addEventListener("DOMContentLoaded", function () {
     function toggleVisible(toggleButtonId, dataContainerId) {
-      var toggleButton = document.getElementById(toggleButtonId);
-      var icon = toggleButton.querySelector(".arrowBtn");
-      var dataContainer = document.getElementById(dataContainerId);
+      const toggleButton = document.getElementById(toggleButtonId);
+      const icon = toggleButton.querySelector(".arrowBtn");
+      const dataContainer = document.getElementById(dataContainerId);
       toggleButton.addEventListener("click", function () {
         // Toggle the visibility of the data container
         if (dataContainer.style.display === "none") {

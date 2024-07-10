@@ -56,10 +56,10 @@
     </div>
 </div>
 <script>
-    var formSubmitted = false;
+    let formSubmitted = false;
     function printDiv(divId) {
-        var content = document.getElementById(divId).innerHTML;
-        var printWindow = window.open('', '', 'height=800,width=800');
+        const content = document.getElementById(divId).innerHTML;
+        const printWindow = window.open('', '', 'height=800,width=800');
         printWindow.document.write('<html><head><title>Print</title>');
         printWindow.document.write('<style>');
         printWindow.document.write('body { font-family: Arial, sans-serif; }');
@@ -75,7 +75,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        var printButton = document.getElementById('printButton');
+        const printButton = document.getElementById('printButton');
         printButton.addEventListener('click', function () {
             printDiv('printableArea');
         });

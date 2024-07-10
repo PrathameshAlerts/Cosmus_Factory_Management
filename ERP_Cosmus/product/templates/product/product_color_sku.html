@@ -57,7 +57,7 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Counter to keep track of added cards
-    var cardCounter = 1;
+    let cardCounter = 1;
 
     // Event listener for adding new cards
     document.getElementById("addNewProductButton").addEventListener("click", function () {
@@ -65,11 +65,11 @@
     });
 
     function createCard() {
-      var cardContainer = document.getElementById("cardContainer");
-      var cardClone = document.querySelector(".card-clone");
+      const cardContainer = document.getElementById("cardContainer");
+      const cardClone = document.querySelector(".card-clone");
 
       // Clone the card clone element
-      var newCard = cardClone.cloneNode(true);
+      const newCard = cardClone.cloneNode(true);
 
       // Display the new card
       newCard.style.display = "block";
@@ -82,15 +82,15 @@
 
       // Update input names with dynamic counters
       newCard.querySelectorAll("input, select").forEach(function (element) {
-        var name = element.getAttribute("name");
+        const name = element.getAttribute("name");
         element.setAttribute("name", name + cardCounter);
       });
 
       // Event listener for image preview
       newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
-        var imgPreview = newCard.querySelector(".card-img-top");
-        var file = event.target.files[0];
-        var reader = new FileReader();
+        const imgPreview = newCard.querySelector(".card-img-top");
+        const file = event.target.files[0];
+        const reader = new FileReader();
 
         reader.onload = function () {
           imgPreview.src = reader.result;
@@ -103,7 +103,7 @@
 
       // Event listener for canceling the card
       newCard.querySelector(".cancel-btn").addEventListener("click", function (event) {
-        var card = event.target.closest(".card");
+        const card = event.target.closest(".card");
         card.parentNode.removeChild(card);
         cardCounter--; // Decrement the counter
       });
@@ -115,7 +115,7 @@
 </script>
 
 <script>
-  var popUpWindow = null;
+  let popUpWindow = null;
   function openNewColor(button) {
     if (popUpWindow === null || popUpWindow.closed) {
       newPopUpwindow(button, '{% url "color-popup" %}');
@@ -126,8 +126,8 @@
 
   function newPopUpwindow(button, path) {
     // Specify minimum height and width
-    var minWidth = 800; // minimum width
-    var minHeight = 600; // minimum height
+    const minWidth = 800; // minimum width
+    const minHeight = 600; // minimum height
 
     // Open new page with specified dimensions
     popUpWindow = window.open("http://127.0.0.1:8000" + path, "_blank", "width=" + minWidth + ", height=" + minHeight + ", resizable=yes");

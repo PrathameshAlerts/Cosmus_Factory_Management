@@ -133,21 +133,21 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
-        var dateInput = document.getElementById('id_target_date');// this script is for date picker 
-        var today = new Date().toISOString().split('T')[0];
-        var date = dateInput.value;
+        const dateInput = document.getElementById('id_target_date');// this script is for date picker 
+        const today = new Date().toISOString().split('T')[0];
+        const date = dateInput.value;
         dateInput.min = today;
         // this script is for other form submit buttons hide adn show when first form submit 
-        var id = document.getElementById('id_productRow').value;
+        const id = document.getElementById('id_productRow').value;
 
         if (id != "None") {
-            var main_form = document.getElementById('productForm-conatiner');
-            var submitBtn = document.getElementById('id_submit_1');
-            var backbutton = document.getElementById('id_return');
-            var orderNo = document.getElementById('id_purchase_order_number')
-            var productOderQty = document.getElementById('id_number_of_pieces')
-            var refrenceId = document.getElementById('id_product_reference_number');
-            var godownId = document.getElementById('id_temp_godown_select');
+            const main_form = document.getElementById('productForm-conatiner');
+            const submitBtn = document.getElementById('id_submit_1');
+            const backbutton = document.getElementById('id_return');
+            const orderNo = document.getElementById('id_purchase_order_number')
+            const productOderQty = document.getElementById('id_number_of_pieces')
+            const refrenceId = document.getElementById('id_product_reference_number');
+            const godownId = document.getElementById('id_temp_godown_select');
             main_form.style.display = 'block';
             submitBtn.style.display = 'none';
             orderNo.readOnly = true;;
@@ -171,20 +171,20 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Function to update the total quantity and manage the input fields
         function updateTotalQuantity(event) {
-            var totalQuantity = 0;
-            var formCount = parseInt(document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value);
-            var totalAllowedQuantity = parseFloat(document.getElementById('id_total-quantity').value);
-            var grandQuantityElement = document.getElementById('id_grand_quantity');
-            var quantities = [];
+            let totalQuantity = 0;
+            const formCount = parseInt(document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value);
+            const totalAllowedQuantity = parseFloat(document.getElementById('id_total-quantity').value);
+            const grandQuantityElement = document.getElementById('id_grand_quantity');
+            const quantities = [];
 
             // Get the element that triggered the event
-            var currentElement = event ? event.target : null;
-            var currentIndex = -1;
+            const currentElement = event ? event.target : null;
+            let currentIndex = -1;
 
             // Calculate the total quantity from all form inputs
-            for (var i = 0; i < formCount; i++) {
-                var quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
-                var quantityValue = parseFloat(quantityElement.value);
+            for (let i = 0; i < formCount; i++) {
+                const quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+                const quantityValue = parseFloat(quantityElement.value);
                 if (!isNaN(quantityValue)) {
                     totalQuantity += quantityValue;
                 }
@@ -227,9 +227,9 @@
         }
 
         // Attach event listeners to the quantity input fields
-        var formCount = parseInt(document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value);
-        for (var i = 0; i < formCount; i++) {
-            var quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+        const formCount = parseInt(document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value);
+        for (let i = 0; i < formCount; i++) {
+            const quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
             quantityElement.addEventListener('input', updateTotalQuantity); // Trigger update on input change
         }
 
@@ -240,10 +240,10 @@
     //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
     $(document).on('click', '.delete-btn', function () {
 
-        var tableRows = $('#productTable tbody tr');
+        const tableRows = $('#productTable tbody tr');
         if (tableRows.length > 1) {
-            var row = $(this).closest('tr');
-            var checkbox = row.find('.godown_delete[name^="purchase_order_to_product_set-"][name$="-DELETE"]');
+            const row = $(this).closest('tr');
+            const checkbox = row.find('.godown_delete[name^="purchase_order_to_product_set-"][name$="-DELETE"]');
 
             checkbox.prop('checked', true);
             checkbox.val('true');

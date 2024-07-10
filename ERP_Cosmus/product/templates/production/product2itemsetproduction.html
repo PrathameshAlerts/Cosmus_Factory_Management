@@ -102,19 +102,20 @@
 <script>
 
     $(document).ready(function () {
-        var newValueKey;
-        var enterValue = false;
-        var index = 0; //  index outside of the event listener
-        var indexbool = false;
-
+        let newValueKey;
+        let enterValue = false;
+        let index = 0; //  index outside of the event listener
+        let indexbool = false;
+        let purchaseData;
+        let enterPressed = false;
 
         //this ajax reuest to product to uniuque item list and search the item and display in the dropdown
         $(document).on('input ', 'input[name^="product2itemuniqueformset-"][name$="Item_pks"]', function () {
             newValueKey = $(this).attr('name').split('-')[1];
-            var nameValue = $(this).val().trim();
-            var suggestionsContainerUniqueId = $(`#id_itemName_${newValueKey}`);
-            var selectValue = $(this).next('.s-suggestion-container');
-            var selectedItem = $(this).find('.s-suggestion-container').find(`#itemName-div_${index}`);
+            const nameValue = $(this).val().trim();
+            const suggestionsContainerUniqueId = $(`#id_itemName_${newValueKey}`);
+            const selectValue = $(this).next('.s-suggestion-container');
+            const selectedItem = $(this).find('.s-suggestion-container').find(`#itemName-div_${index}`);
 
             if (nameValue === '') {
                 suggestionsContainerUniqueId.css('display', 'none');
@@ -138,16 +139,16 @@
                         function escapeRegExp(string) {
                             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                         }
-                        var searchData = response.searched_item_name_dict;
-                        var searchQuery = nameValue.toLowerCase();
-                        var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
-                        var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
-                        var filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+                        const searchData = response.searched_item_name_dict;
+                        const searchQuery = nameValue.toLowerCase();
+                        const escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+                        const regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+                        const filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
 
                         suggestionsContainerUniqueId.empty();
 
                         $.each(filteredOptions, function (index, [key, value]) {       // Display suggestions
-                            var highlightedText = value;
+                            let highlightedText = value;
                             if (searchQuery) {
                                 highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
                             }
@@ -169,9 +170,9 @@
             }
 
             suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function () {
-                var dataKey = $(this).attr('data-key');
+                const dataKey = $(this).attr('data-key');
 
-                var nameData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(dataKey)
+                const nameData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(dataKey)
 
                 $(this).closest('.custom-dropdown-container').find('.input_text').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
@@ -181,7 +182,7 @@
         })
 
         $(document).on('click', '.input_text', function () {
-            var selectValue = $(this).next('.s-suggestion-container');
+            const selectValue = $(this).next('.s-suggestion-container');
             selectValue.css('display', 'none');
             selectValue.empty();
         })
@@ -298,14 +299,12 @@
 
         })
 
-        var purchaseData;
-        var enterPressed = false;
-        var index = 0; //  index outside of the event listener
-        var indexbool = false;
+      
+      
         $(document).on('input', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function () {
             purchaseData = $(this).attr('name').split('-')[1]; // Extract the numeric value from the input name
-            var nameValue = $(this).val().trim();
-            var suggestionsContainerCommon = $(`#id_item_input_Name_${purchaseData}`);
+            const nameValue = $(this).val().trim();
+            const suggestionsContainerCommon = $(`#id_item_input_Name_${purchaseData}`);
             if (nameValue === '') {
                 suggestionsContainerCommon.css('display', 'none');
                 $(this).attr('data-key', '');
@@ -328,16 +327,16 @@
                         function escapeRegExp(string) {
                             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                         }
-                        var searchedItemData = response.searched_item_name_dict;
-                        var searchQuery = nameValue.toLowerCase();
-                        var escapedSearchQuery = escapeRegExp(searchQuery);
-                        var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
-                        var filteredOptions = Object.entries(searchedItemData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+                        const searchedItemData = response.searched_item_name_dict;
+                        const searchQuery = nameValue.toLowerCase();
+                        const escapedSearchQuery = escapeRegExp(searchQuery);
+                        const regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+                        const filteredOptions = Object.entries(searchedItemData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
 
                         suggestionsContainerCommon.empty();
 
                         $.each(filteredOptions, function (index, [key, value]) {
-                            var highlightedTexts = value;
+                            let highlightedTexts = value;
                             if (searchQuery) {
                                 highlightedTexts = value.replace(regex, '<span class="highlight">$1</span>');
                             }
@@ -359,8 +358,8 @@
             }
 
             suggestionsContainerCommon.on('click', '.itemName-div-suggestion', function () {
-                var dataKey = $(this).attr('data-key');
-                var nameData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(dataKey);
+                const dataKey = $(this).attr('data-key');
+                const nameData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(dataKey);
 
                 $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
@@ -370,7 +369,7 @@
             })
         })
         $(document).on('click', '.commom_item', function () {
-            var selectValue = $(this).next('.s-suggestion-container');
+            const selectValue = $(this).next('.s-suggestion-container');
             selectValue.css('display', 'none');
             selectValue.empty();
         })
@@ -460,10 +459,10 @@
                     $options.removeClass('bg-highlight');
                     selectedItem.addClass("bg-highlight");
 
-                    var itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
-                    var itemHeight = prevItem.outerHeight();
-                    var selectScrollTop = $dropdownOptions.scrollTop();
-                    var selectHeight = $dropdownOptions.height();
+                    const itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
+                    const itemHeight = prevItem.outerHeight();
+                    const selectScrollTop = $dropdownOptions.scrollTop();
+                    const selectHeight = $dropdownOptions.height();
 
                     if (itemOffsetTop < 0) {
                         $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
@@ -497,7 +496,7 @@
 
 
 <script>
-    var formSubmitted = false;
+    let formSubmitted = false;
     // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
         const addFormButton = document.getElementById('addForm');
@@ -512,9 +511,9 @@
                     }
                 });
                 if (lastVisibleRow) {
-                    var forms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
-                    var newFormCount = parseInt(forms.value);
-                    var newTable = lastVisibleRow.cloneNode(true);
+                    const forms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+                    const newFormCount = parseInt(forms.value);
+                    const newTable = lastVisibleRow.cloneNode(true);
                     newTable.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
                     });
@@ -576,8 +575,8 @@
             document.querySelectorAll('.delete-btn').forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Find the row containing the clicked delete button
-                    var row = this.closest('tr');
-                    var checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
+                    const row = this.closest('tr');
+                    const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
@@ -618,9 +617,9 @@
                     }
                 });
                 if (lastVisibleRow) {
-                    var tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
-                    var newCount = parseInt(tableRow.value);
-                    var lastRow = lastVisibleRow.cloneNode(true);
+                    const tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
+                    const newCount = parseInt(tableRow.value);
+                    const lastRow = lastVisibleRow.cloneNode(true);
                     lastRow.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
                     });
@@ -678,8 +677,8 @@
             document.querySelectorAll('.delete').forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Find the row containing the clicked delete button
-                    var row = this.closest('tr');
-                    var checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
+                    const row = this.closest('tr');
+                    const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'

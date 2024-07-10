@@ -311,24 +311,20 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
         dropdown.append('<option value="' + item.id + '">' + item[valueKey] + '</option>');
     });
 }
-
-
-
-  </script>
+ </script>
 
 
 <script>
   //This script is to ajax reuest send the data and highlight the searched item in the dropdown and the suggestion will be shown on the screen
   $(document).ready(function () {
-    var enterValue = false;
-    var index = 0; //  index outside of the event listener
-   var indexbool = false;
+    let enterValue = false;
+    let index = 0; //  index outside of the event listener
+    let indexbool = false;
 
-
-   var suggestions = $('#search-results')
+    const suggestions = $('#search-results')
     $(document).on('input','#id_item-to-clone',function(){
 
-      var nameValue = $(this).val().trim();
+      const nameValue = $(this).val().trim();
      
    if(nameValue === '') {
     suggestions.css('display', 'none');
@@ -349,19 +345,19 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
                 'nameValue': nameValue
             },
             success: function (response) {
-             var searchData = response.searched_item_name_dict
+              const searchData = response.searched_item_name_dict
               function escapeRegExp(string) {
                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                }
-                var searchQuery = nameValue.toLowerCase();
-                var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
-                var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+               const searchQuery = nameValue.toLowerCase();
+               const escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+               const regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
 
-                var filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+               const filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
        
                 suggestions.empty();
                 $.each(filteredOptions, function(index, [key, value]) {
-                  var highlightedText = value;
+                let highlightedText = value;
         
                 if (searchQuery) {
                     highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
@@ -372,11 +368,10 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
               
             },
             error:function(xhr){
-            console.log(xhr.status + ": " + xhr.responseText);
+            // console.log(xhr.status + ": " + xhr.responseText);
                 if (xhr.status === 404 || xhr.status === 400) {
                   suggestions.css('display', 'block');
-                  suggestions.empty();
-                  suggestions.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
+                  suggestions.empty().append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
                 }
         }
         });
@@ -389,7 +384,7 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
        $(this).closest('.custom-dropdown-container').find('.product2Select').val($(this).text().trim());
        $(this).addClass('selected').siblings().removeClass('selected');
 
-       var itemValue = $(this).attr('data-key');
+       const itemValue = $(this).attr('data-key');
        $.ajax({
             url: '/itemcreatecloneajax/',
             method: 'GET',
@@ -397,41 +392,20 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
                 'itemValue': itemValue
             },
             success: function (response) {
-                item_data_response = response.response_data;
-            
-                var r_fab_group = item_data_response.fabric_group
-                var r_color = item_data_response.color
-                var r_m_code = item_data_response.material_code
-                var r_packing = item_data_response.packing
-                var r_unit_name = item_data_response.unit_name
-                var r_panha = item_data_response.panha
-                var r_fab_non_fab = item_data_response.fab_non_fab
-                var r_fab_finishes = item_data_response.fab_finishes
-                var r_gst = item_data_response.gst
-                var r_hsn_code = item_data_response.hsn_code
-                var r_status = item_data_response.status
-              
-                $('#id_Fabric_Group').val(r_fab_group.fab_g_key);
-            
-                $('#id_Item_Color').val(r_color.color_key);
-                
-                $('#id_Material_code').val(r_m_code);
-
-                $('#Item_Packing').val(r_packing.packing_key);
-  
-                $('#id_unit_name_item').val(r_unit_name.unit_name_key);
-
-                $('#id_Panha').val(r_panha);
-              
-                $('#id_Fabric_nonfabric').val(r_fab_non_fab);
-              
-                $('#id_Item_Fabric_Finishes').val(r_fab_finishes.fab_finishes_key);
-              
-                $('#id_Item_Creation_GST').val(r_gst.gst_key);
-              
-                $('#id_HSN_Code').val(r_hsn_code);
-
-                $('#id_status').val(r_status);
+             const item_data_response = response.response_data;
+             console.log(item_data_response);
+        
+             $('#id_Fabric_Group').val(item_data_response.fabric_group.fab_g_key);
+                $('#id_Item_Color').val(item_data_response.color.color_key);
+                $('#id_Material_code').val(item_data_response.material_code);
+                $('#Item_Packing').val(item_data_response.packing.packing_key);
+                $('#id_unit_name_item').val(item_data_response.unit_name.unit_name_key);
+                $('#id_Panha').val(item_data_response.panha);
+                $('#id_Fabric_nonfabric').val(item_data_response.fab_non_fab);
+                $('#id_Item_Fabric_Finishes').val(item_data_response.fab_finishes.fab_finishes_key);
+                $('#id_Item_Creation_GST').val(item_data_response.gst.gst_key);
+                $('#id_HSN_Code').val(item_data_response.hsn_code);
+                $('#id_status').val(item_data_response.status);
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
@@ -455,14 +429,13 @@ $(document).on('click', '.product2Select',function(){
         const $options = $dropdownOptions.find('.itemName-div');
         const optionsCount = $options.length - 1;
        
-        var nameData = $inputField.val().trim();
+        const nameData = $inputField.val().trim();
 
         if(nameData === ''){
-         
-         index = 0;
-         indexbool = false;
-         return;
-     }
+            index = 0;
+            indexbool = false;
+            return;
+        }
 
         const newHeight = $inputField.offset();
         const windowHeight = $(window).height();
@@ -559,41 +532,19 @@ $(document).on('click', '.product2Select',function(){
                 'itemValue': itemValue
             },
             success: function (response) {
-              var item_data_response = response.response_data
-
-              var r_fab_group = item_data_response.fabric_group
-              var r_color = item_data_response.color
-              var r_m_code = item_data_response.material_code
-              var r_packing = item_data_response.packing
-              var r_unit_name = item_data_response.unit_name
-              var r_panha = item_data_response.panha
-              var r_fab_non_fab = item_data_response.fab_non_fab
-              var r_fab_finishes = item_data_response.fab_finishes
-              var r_gst = item_data_response.gst
-              var r_hsn_code = item_data_response.hsn_code
-              var r_status = item_data_response.status
+              const item_data_response = response.response_data
               
-              $('#id_Fabric_Group').val(r_fab_group.fab_g_key);
-            
-              $('#id_Item_Color').val(r_color.color_key);
-                
-              $('#id_Material_code').val(r_m_code);
-
-              $('#Item_Packing').val(r_packing.packing_key);
-  
-              $('#id_unit_name_item').val(r_unit_name.unit_name_key);
-
-              $('#id_Panha').val(r_panha);
-              
-              $('#id_Fabric_nonfabric').val(r_fab_non_fab);
-              
-              $('#id_Item_Fabric_Finishes').val(r_fab_finishes.fab_finishes_key);
-              
-              $('#id_Item_Creation_GST').val(r_gst.gst_key);
-              
-              $('#id_HSN_Code').val(r_hsn_code);
-
-              $('#id_status').val(r_status); 
+                $('#id_Fabric_Group').val(item_data_response.fabric_group.fab_g_key);
+                $('#id_Item_Color').val(item_data_response.color.color_key);
+                $('#id_Material_code').val(item_data_response.material_code);
+                $('#Item_Packing').val(item_data_response.packing.packing_key);
+                $('#id_unit_name_item').val(item_data_response.unit_name.unit_name_key);
+                $('#id_Panha').val(item_data_response.panha);
+                $('#id_Fabric_nonfabric').val(item_data_response.fab_non_fab);
+                $('#id_Item_Fabric_Finishes').val(item_data_response.fab_finishes.fab_finishes_key);
+                $('#id_Item_Creation_GST').val(item_data_response.gst.gst_key);
+                $('#id_HSN_Code').val(item_data_response.hsn_code);
+                $('#id_status').val(item_data_response.status);
                  
             },
             error: function (xhr, errmsg, err) {
@@ -618,8 +569,8 @@ $(document).on('click', '.product2Select',function(){
     document.querySelectorAll('.delete-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             // Find the row containing the clicked delete button
-            var row = this.closest('tr');
-            var checkRow = row.querySelector('.shade_deleteId[name^="shades-"][name$="-DELETE"]');
+            const row = this.closest('tr');
+            const checkRow = row.querySelector('.shade_deleteId[name^="shades-"][name$="-DELETE"]');
             if (checkRow) {
                 checkRow.checked = true; // Mark as checked
                 checkRow.value = 'true'; // Set the value to 'true'
@@ -636,31 +587,31 @@ $(document).on('click', '.product2Select',function(){
 });
 
 function receiveData(openingValue){
-  var popupData = JSON.parse(openingValue);
-  var primeKey = popupData.parentKey;
-  var openingData= document.getElementById('shades-'+primeKey+'-openingValue')
-  openingData.value = JSON.stringify(popupData); // Set the value of the input field to the popupData;   
-    }
+  const popupData = JSON.parse(openingValue);
+  const primeKey = popupData.parentKey;
+  const openingData= document.getElementById('shades-'+primeKey+'-openingValue')
+      openingData.value = JSON.stringify(popupData); // Set the value of the input field to the popupData;   
+}
 </script>
 
 <script>
-   var newPopup = null;
+   let newPopup = null;
 $(document).ready(function(){
    
-  var itemValue;
-  var itemId;
+  let itemValue;
+  let itemId;
 
   $(document).on ('click','button.itemQty',function(button){
-      var itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
+      const itemId = $(this).closest('tr').find('input[name$="item_name_rank"]').attr('name');
       itemValue = itemId.split('-')[1];
-      var primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
-      var primary_key_id = primaryKey.value;
+      const primaryKey = document.getElementById('id_shades-'+itemValue+'-id');
+      const primary_key_id = primaryKey.value;
      
     
       if (newPopup === null || newPopup.closed) { // Check if no popup is open or the existing one is closed
            
-        var minWidth = 800;
-        var minHeight = 600;
+        const minWidth = 800;
+        const minHeight = 600;
 
         $('body').addClass('popup-open');
         $('body').append('<div class="popup-overlay"></div>');
@@ -675,8 +626,8 @@ $(document).ready(function(){
         },
         success: function (response){
           console.log('Data sent successfully')
-          var itemValues  = itemId.split('-')[1];
-          var qtyData =document.getElementById('shades-'+itemValues+'-openingValue').value
+          const itemValues  = itemId.split('-')[1];
+          const qtyData =document.getElementById('shades-'+itemValues+'-openingValue').value
 
           if(response.popup_url === '/openinggodownquantity/'+itemValue){
             const url = response.popup_url; 
@@ -711,10 +662,9 @@ $(document).ready(function(){
   })
 
   function handleOutside(event) {
-
-    var popUpRect = document.querySelector('body').getBoundingClientRect();
-    var clickX = event.clientX;
-    var clickY = event.clientY;
+    const popUpRect = document.querySelector('body').getBoundingClientRect();
+    const clickX = event.clientX;
+    const clickY = event.clientY;
 
     // Check if the click is outside the popup window
     if (
@@ -734,7 +684,7 @@ $(document).ready(function(){
 
 <script>
 
-var popUpWindow = null;
+let popUpWindow = null;
 
 function openFabPopup(button) {
   openPopup(button, '{% url "fabric-popup" %}');
@@ -771,8 +721,8 @@ function openPopup(button, url) {
 
 function newPopUpwindow(button, path) {
   // Specify minimum height and width
-  var minWidth = 800; // minimum width
-  var minHeight = 600; // minimum height
+  const minWidth = 800; // minimum width
+  const minHeight = 600; // minimum height
 
   $('body').addClass('popup-open');
   $('body').append('<div class="popup-overlay"></div>');
@@ -798,9 +748,9 @@ function newPopUpwindow(button, path) {
 }
 function handleOutsideClick(event) {
 
-    var popUpRect = document.querySelector('body').getBoundingClientRect();
-    var clickX = event.clientX;
-    var clickY = event.clientY;
+  const popUpRect = document.querySelector('body').getBoundingClientRect();
+  const clickX = event.clientX;
+  const clickY = event.clientY;
    
     // Check if the click is outside the popup window
     if (
@@ -814,19 +764,10 @@ function handleOutsideClick(event) {
   
 }
 
-// function handlePopupMessage(event) {
-//   if (event.data) {
-//     if (popUpWindow) {
-//       $('body').removeClass('popup-open');
-//       $('.popup-overlay').remove();
-//       popUpWindow.close();
-//     }
-//   }
-// }
   document.querySelector('input[type="file"]').addEventListener('change', function(event) {
-      var imgPreview = document.getElementById('iFrame');
-      var file = event.target.files[0];
-      var reader = new FileReader();
+      const imgPreview = document.getElementById('iFrame');
+      const file = event.target.files[0];
+      const reader = new FileReader();
 
       reader.onload = function() {
         imgPreview.src = reader.result;
