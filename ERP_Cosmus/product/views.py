@@ -3355,7 +3355,7 @@ def factory_employee_create_update_list(request,pk=None):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            messages.success('Factory Employee created Successfully')
+            messages.success(request,'Factory Employee created Successfully')
             return render(request,'production/factory_emp_create_update_list.html', {'form':form,
                                                                                      'factory_employees':factory_employees,
                                                                                      'title':title})
