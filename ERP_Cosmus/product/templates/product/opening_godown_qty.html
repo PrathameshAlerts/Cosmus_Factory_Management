@@ -106,7 +106,7 @@
                 if (lastVisibleRow) {
                     const newRates = lastVisibleRow.querySelector('.item-rate[name^="opening_shade_godown_quantity_set-"][name$="-opening_rate"]').value;
 
-                    if (newRates != '' && newRates != null) {
+                    if (newRates !== '' && newRates !== null) {
                         const index = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS');
                         const indexValue = parseInt(index.value);
                         const newRow = lastVisibleRow.cloneNode(true);
@@ -164,30 +164,30 @@
 
     });
 
-    var formSubmitted = false;
-    var primaryKey = document.getElementById('id_primary_key').value;
+    let formSubmitted = false;
+    const primaryKey = document.getElementById('id_primary_key').value;
 
-    if (primaryKey == '' || primaryKey == "None") {
+    if (primaryKey === '' || primaryKey === "None") {
         document.getElementById('submitButton').addEventListener('click', function () {
-            var newForm = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS').value;
-            var newData = {};
-            var parentKey = document.getElementById('id_parentId').value;
+            const newForm = document.getElementById('id_opening_shade_godown_quantity_set-TOTAL_FORMS').value;
+            const newData = {};
+            const parentKey = document.getElementById('id_parentId').value;
 
-            for (var i = 0; i < newForm; i++) {
-                var Row = 'childRow_' + i;
-                var godownData = document.getElementById('id_opening_shade_godown_quantity_set-' + i + '-opening_godown_id').value;
-                var qtyData = document.getElementById('id_opening_shade_godown_quantity_set-' + i + '-opening_quantity').value;
-                var rateData = document.getElementById('id_opening_shade_godown_quantity_set-' + i + '-opening_rate').value;
+            for (let i = 0; i < newForm; i++) {
+                const Row = 'childRow_' + i;
+                const godownData = document.getElementById('id_opening_shade_godown_quantity_set-' + i + '-opening_godown_id').value;
+                const qtyData = document.getElementById('id_opening_shade_godown_quantity_set-' + i + '-opening_quantity').value;
+                const rateData = document.getElementById('id_opening_shade_godown_quantity_set-' + i + '-opening_rate').value;
 
                 newData[Row] = { godownData, qtyData, rateData }
             }
 
-            var newValueData = {
+            const newValueData = {
                 parentKey: parentKey,
                 newData: newData
             }
 
-            var openingValue = JSON.stringify(newValueData);
+            const openingValue = JSON.stringify(newValueData);
             window.opener.receiveData(openingValue);
             window.close();
 

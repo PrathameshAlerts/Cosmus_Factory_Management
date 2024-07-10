@@ -97,10 +97,10 @@
 
   $(document).ready(function () {
     $('.delete-btn').click(function () {
-      var itemId = $(this).data('item-id');
-      var itemType = $(this).data('type');
-      var name = $(this).closest('tr').find('td').eq(1).text();
-      var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+      const itemId = $(this).data('item-id');
+      const itemType = $(this).data('type');
+      const name = $(this).closest('tr').find('td').eq(1).text();
+      const coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
 
       $('#modal-body-text').html('Are you sure you want to delete the Godown ' + coloredName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId);
@@ -110,10 +110,10 @@
 
     // Confirm delete button click event
     $('#confirmDeleteButton').click(function () {
-      var itemId = $(this).data('item-id');
-      var itemType = $(this).data('type');
+      const itemId = $(this).data('item-id');
+      const itemType = $(this).data('type');
       // Redirect to delete view
-      var deleteUrl = '/godowndelete/' + itemType + '/' + itemId
+      const deleteUrl = '/godowndelete/' + itemType + '/' + itemId
 
       window.location.href = deleteUrl
 

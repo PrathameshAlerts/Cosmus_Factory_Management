@@ -83,9 +83,9 @@
 
   $(document).ready(function(){
       $('.deletes-btn').click(function(){
-          var itemId = $(this).data('item-id');
-          var name = $(this).closest('tr').find('td').eq(1).text();
-          var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+          const itemId = $(this).data('item-id');
+          const name = $(this).closest('tr').find('td').eq(1).text();
+          const coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
 
           $('#modal-body-text').html('Are you sure you want to delete the Purchase Order ' + coloredName + '?');
           $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
@@ -94,7 +94,7 @@
 
       // Confirm delete button click event
       $('#confirmDeleteButton').click(function(){
-          var itemId = $(this).data('item-id');
+          const itemId = $(this).data('item-id');
           console.log(itemId);
           // Redirect to delete view
           window.location.href = '/purchaseorderdelete/' + itemId;

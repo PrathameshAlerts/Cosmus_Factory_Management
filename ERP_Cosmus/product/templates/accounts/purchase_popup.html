@@ -78,41 +78,36 @@
 
      
         <script>
-            var formSubmitted = false;
-              var primaryId  = document.getElementById('primary_id').value;
-               var shadeId = document.getElementById('id_shade_id').value;
-               var prefixId = document.getElementById('prefix_id').value;
-               var uniqueId = document.getElementById('id_unique_id_godown').value;
+            let formSubmitted = false;
+                const primaryId  = document.getElementById('primary_id').value;
+                const shadeId = document.getElementById('id_shade_id').value;
+                const prefixId = document.getElementById('prefix_id').value;
+                const uniqueId = document.getElementById('id_unique_id_godown').value;
 
                
             if(primaryId != "None" && uniqueId == "None"){
+                const formDataget = $('#childform').serializeArray(); // Serialize form data
 
-                var formDataget = $('#childform').serializeArray(); // Serialize form data
+                document.getElementById('popupData').addEventListener('click', function() {
+                    const formData = $('#childform').serializeArray(); // Serialize form data
+                    const prefixs = formData.find(field => field.name === 'prefix_id')?.value;
 
-
-              document.getElementById('popupData').addEventListener('click', function() {
-                var formData = $('#childform').serializeArray(); // Serialize form data
-                var prefixs = formData.find(field => field.name === 'prefix_id')?.value;
-
-                console.log("Prefix value:", prefixs);
                 function findFieldByName(formData, fieldName) {
                     return formData.find(field => field.name === fieldName);
                }
 
-               
-                var array2 = formData
-                var array1 = formDataget
-
-               var primaryIdDict = {"name": "primary_id" , "value": primaryId};
-               var shadeIdDict = {"name": "shade_id" , "value":shadeId};
-               var prefixIdDict = {"name": "prefix_id" , "value":prefixId};
+               const array2 = formData
+               const array1 = formDataget
+               const primaryIdDict = {"name": "primary_id" , "value": primaryId};
+               const shadeIdDict = {"name": "shade_id" , "value":shadeId};
+               const prefixIdDict = {"name": "prefix_id" , "value":prefixId};
 
                 function getChangedDicts(array1, array2, extraFields) {
-                    var changedDicts = [];
+                    const changedDicts = [];
                 
                     // Iterate over each object in array1
                     array1.forEach(function (obj1) {
-                    var obj2 = array2.find(function (item) {
+                        const obj2 = array2.find(function (item) {
                         return item.name === obj1.name;
                     });
 
@@ -143,8 +138,6 @@
             });
         }
     });
-
-
                 // Check for added fields in array2
                 array2.forEach(function (obj2) {
                     if (!array1.some((obj1) => obj1.name === obj2.name)) {
@@ -172,18 +165,14 @@
 
                 //var extraFields = [ primaryIdDict, shadeIdDict , prefixIdDict];
                 // Call the function to get the changed dictionaries
-                var ChildData = getChangedDicts(array1, array2);
+                const ChildData = getChangedDicts(array1, array2);
                 
             
-                var dataWithPrefix = {
+                const dataWithPrefix = {
                 [`popupRow_${prefixId}`]:ChildData,
                 };
 
-                
-           
-
                 window.opener.postMessage(dataWithPrefix, "*"); // Send form data to parent window
-                
                 window.close(); // Close the child window
             });
             }
@@ -197,45 +186,42 @@
         </script>
 
     <script>
-        function shadeGodown(){
-        var total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
+    function shadeGodown(){
+        const total_form_Value = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value;
         
-        for (var i = 0; i <= total_form_Value; i++) {
-        var oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
-        var jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
-        var oldGid = document.getElementById('shade_godown_items_set-'+ i + '-old_godown_id');
-        var newGid = document.getElementById('shade_godown_items_set-'+ i + '-godown_id').value;
-            oldquantity.value = jsonQty;
+        for (let i = 0; i <= total_form_Value; i++) {
+            const oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
+            const jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
+            const oldGid = document.getElementById('shade_godown_items_set-'+ i + '-old_godown_id');
+            const newGid = document.getElementById('shade_godown_items_set-'+ i + '-godown_id').value;
+                oldquantity.value = jsonQty;
+                oldGid.value = newGid;
+        
+        }
+    }
+        
+    shadeGodown();
 
-        oldGid.value = newGid;
-        
-        }
-        }
-        shadeGodown();
         // This function send the data to the parent page for some values like all rates and calculate the oldqty and current qty 
-        function jsondata(){
-            var prefixIdValue = document.getElementById('prefix_id').value;
-         
-            var json_data_first_rate = document.getElementById('shade_godown_items_set-0-rate').value
-            var total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value
+    function jsondata(){
+        const prefixIdValue = document.getElementById('prefix_id').value; 
+        const json_data_first_rate = document.getElementById('shade_godown_items_set-0-rate').value
+        const total_forms = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS').value    
+        const newRow = {};   
             
-            var newRow = {};   
-            
-            for (var i = 0; i < total_forms; i++) {
-                var row = 'row_' + i;
-                var popup_row_id = document.getElementById('id_shade_godown_items_set-' + i + '-id');
-                var gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
-                var jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
-                var old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
-                var popup_old_id = document.getElementById('shade_godown_items_set-' + i + '-old_godown_id');
-                var uniqueKey = document.getElementById('shade_godown_items_set-' + i + '-unique_id').value;
-                var deleteValue = document.getElementById('shade_godown_items_set-' + i + '-DELETE').value;
+        for (let i = 0; i < total_forms; i++) {
+                const row = 'row_' + i;
+                let popup_row_id = document.getElementById('id_shade_godown_items_set-' + i + '-id');
+                const gId = document.getElementById('shade_godown_items_set-' + i + '-godown_id').value;
+                const jsonQty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-quantity').value);
+                const old_qty = parseFloat(document.getElementById('shade_godown_items_set-' + i + '-new_quantity').value);
+                let popup_old_id = document.getElementById('shade_godown_items_set-' + i + '-old_godown_id');
+                const uniqueKey = document.getElementById('shade_godown_items_set-' + i + '-unique_id').value;
+                const deleteValue = document.getElementById('shade_godown_items_set-' + i + '-DELETE').value;
               
-                
                 if(popup_row_id && popup_old_id != "" && uniqueKey == 'None' && deleteValue != 'true'){
                     popup_old_id = popup_old_id.value
                     popup_row_id = popup_row_id.value
-
 
                     newRow[row] = {gId, jsonQty, popup_row_id ,popup_old_id};
                     
@@ -244,15 +230,14 @@
                 } 
             }
 
-            var jsonData = {
+            const jsonData = {
                 parent_row_prefix_id: prefixIdValue,
                 all_Rate: json_data_first_rate,
                 newRow: newRow,
               
             };
             
-            var jsonString = JSON.stringify(jsonData);
-            
+            const jsonString = JSON.stringify(jsonData); 
             window.opener.BackendQuantityjson(jsonString);
 
         }
@@ -261,13 +246,13 @@
 
             jsondata()
 
-            var newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
-            var newTotalQty = document.getElementById('grand_godown_quantity').value;
-            var newTotalRate = document.getElementById('grand_godown_rate').value;
-            var newPrimaryKey = document.getElementById('id_primary_key_godown').value;
-            var prefixValue = document.getElementById('prefix_id').value;
+            const newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
+            const newTotalQty = document.getElementById('grand_godown_quantity').value;
+            const newTotalRate = document.getElementById('grand_godown_rate').value;
+            const newPrimaryKey = document.getElementById('id_primary_key_godown').value;
+            const prefixValue = document.getElementById('prefix_id').value;
     
-            var newSessionData = {
+            const newSessionData = {
                 "newUniqueId": newUniqueId,
                 "newTotalQty": newTotalQty,
                 "newTotalRate": newTotalRate,
@@ -276,10 +261,7 @@
             }
             
             window.opener.updateFormData(newSessionData);
-
-            
         }
-
     </script>
 
     <script>
@@ -288,19 +270,15 @@
         
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
-        $('#addModalButton').on('click', function() {
-          
-                                                  //first find the last row rate value is not empty then add a new row 
-          //there any one rate value is empty then don't add a new row
-        var newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        $('#addModalButton').on('click', function() {  //first find the last row rate value is not empty then add a new row there any one rate value is empty then don't add a new row
+        const newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
        
         if(newRate != "" && newRate != null){
-        var newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
-       
-        var formsValue = parseInt(newFormValue.value);
-        var tableClone = $('#newTable').find('tbody tr').last().clone(true);
+            const newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
+            let formsValue = parseInt(newFormValue.value);
+            const tableClone = $('#newTable').find('tbody tr').last().clone(true);
 
-        tableClone.show();
+            tableClone.show();
         
             //update the input name and id for the new row
         const newGodownItem = tableClone.find('select[name^="shade_godown_items_set-"][name$="-godown_id"]');
@@ -348,7 +326,7 @@
         ID.attr('id', 'shade_godown_items_set-' + formsValue + '-id');
         ID.val('');
 
-       const deleteElement = tableClone.find('input[name^="shade_godown_items_set-"][name$="-DELETE"]');
+        const deleteElement = tableClone.find('input[name^="shade_godown_items_set-"][name$="-DELETE"]');
         deleteElement.attr('name', 'shade_godown_items_set-' + formsValue + '-DELETE');
         deleteElement.attr('id', 'shade_godown_items_set-' + formsValue + '-DELETE');
         deleteElement.val('');
@@ -367,14 +345,14 @@
     });
    // This funcion calculate the amount for each row then set the total amount and total quantity
     function calculateNewRow(row) {
-        var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
-        var inputQtyValue = parseInt(inputQty);
-        var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
-        var inputRateValue = parseInt(inputRate);
-        var totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
+        const inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        const inputQtyValue = parseInt(inputQty);
+        const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        const inputRateValue = parseInt(inputRate);
+        let totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
     
         // Calculate and set the amount for this row
-        var amount = inputQtyValue * inputRateValue;
+        const amount = inputQtyValue * inputRateValue;
         
         totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
         row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val(totalAmount);
@@ -384,32 +362,31 @@
     }
     // calculate the total quantity
     function calculateQty(row) {
-        var inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
-        var inputQtyValue = parseInt(inputQty);
+        const inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        const inputQtyValue = parseInt(inputQty);
         return inputQtyValue;
       
     }
     function calculateRate(row){
-        var inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
-        var inputRateValue = parseInt(inputRate);
+        const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        const inputRateValue = parseInt(inputRate);
         return inputRateValue;
     }
     // Function to calculate total amount
     function calculateGodownAmount() {
-        var total = 0;
-        var totalRate = 0;
-        var totalQty = 0;
+        let total = 0;
+        let totalRate = 0;
+        let totalQty = 0;
         // Iterate over each row in the table body
         $('#newTable tbody tr').each(function() {
-        var newAmount = calculateNewRow($(this));
-        var newQty = calculateQty($(this));
-        var newRate = calculateRate($(this));
-        totalQty += newQty;
-        totalRate = newRate;
-        total += newAmount;
-        });
+            let newAmount = calculateNewRow($(this));
+            let newQty = calculateQty($(this));
+            let newRate = calculateRate($(this));
 
-       
+            totalQty += newQty;
+            totalRate = newRate;
+            total += newAmount;
+        });
         // Update the total amount field
         $('#grand_godown_amount').val(total);
         $('#grand_godown_quantity').val(totalQty);
@@ -418,52 +395,43 @@
 
 
     function deleteRowCalculate(){
-        var totalAmount = 0; // Total amount across all rows
-        var totalQty = 0; // Total quantity
-        var totalRate = 0; 
+        let totalAmount = 0; // Total amount across all rows
+        let totalQty = 0; // Total quantity
+        let totalRate = 0; 
         
         $('#newTable tbody tr:visible').each(function() {
-            var currentRow = $(this); 
-        
-            var amount = parseFloat( currentRow.find('.godown-amount').val()); // Calculate amount for this row
-            var qty = parseFloat(currentRow.find('.godown-quantity').val()); // Calculate quantity
-            var rate = parseFloat(currentRow.find('.godown-rate').val()); // Calculate rate
+            const amount = parseFloat( $(this).find('.godown-amount').val()); // Calculate amount for this row
+            const qty = parseFloat($(this).find('.godown-quantity').val()); // Calculate quantity
+            const rate = parseFloat($(this).find('.godown-rate').val()); // Calculate rate
 
             // Accumulate totals
             totalAmount += amount; // Add amount to total
             totalQty += qty; // Add quantity to total
             totalRate = rate; // Set rate (if applicable, otherwise accumulate)
-           });
-
+        });
                 // Update the totals in the UI
-                $('#grand_godown_amount').val(totalAmount.toFixed(2));
-                $('#grand_godown_quantity').val(totalQty.toFixed(2));
-                $('#grand_godown_rate').val(totalRate.toFixed(2));
-
-                    
+        $('#grand_godown_amount').val(totalAmount.toFixed(2));
+        $('#grand_godown_quantity').val(totalQty.toFixed(2));
+        $('#grand_godown_rate').val(totalRate.toFixed(2));             
     }
     $(document).on('click','#popupData', function(){
         calculateGodownAmount();
         deleteRowCalculate();
     })
 
-  
     $(document).on('change', '.godown-select', function(){
         calculateGodownAmount();
         deleteRowCalculate()
     })
 
-    $(document).on('input', '.godown-quantity' && ' .godown-rate', function() {
-            //call the calculation function when qunatity and rate is changed   
-            calculateGodownAmount();
-            deleteRowCalculate();
-
-        })
+    $(document).on('input', '.godown-quantity' && ' .godown-rate', function() { 
+        calculateGodownAmount();
+        deleteRowCalculate();
+    })
 
     $(document).on('input', '.godown-quantity' , function() {
-            //call the calculation function when qunatity and rate is changed   
-            calculateGodownAmount();
-            deleteRowCalculate();
+        calculateGodownAmount();
+        deleteRowCalculate();
 
     })
       
@@ -474,11 +442,10 @@
 
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
-            
-            var tableRows = $('#newTable tbody tr'); 
+            const tableRows = $('#newTable tbody tr'); 
             if (tableRows.length > 1) { 
-                var row = $(this).closest('tr'); 
-                var checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+                const row = $(this).closest('tr'); 
+                const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
                 
                 checkbox.prop('checked', true); 
                 checkbox.val('true');

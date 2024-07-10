@@ -129,9 +129,9 @@
                     }
                 });
                 if (lastVisibleRow) {
-                    var newForm = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS');
-                    var newFormCount = parseInt(newForm.value);
-                    var newTable = lastVisibleRow.cloneNode(true);
+                    const newForm = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS');
+                    const newFormCount = parseInt(newForm.value);
+                    const newTable = lastVisibleRow.cloneNode(true);
                     newTable.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
                     });
@@ -187,12 +187,11 @@
             document.querySelectorAll('.delete-btn').forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Find the row containing the clicked delete button
-                    var row = this.closest('tr');
-                    var checkRow = row.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="-DELETE"]');
+                    const row = this.closest('tr');
+                    const checkRow = row.querySelector('.stock_deleteId[name^="rawstocktrasferrecords_set-"][name$="-DELETE"]');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
-
                         row.style.display = 'none';
 
                     } else {
@@ -207,9 +206,8 @@
 
     $(document).ready(function () {
         $('#id_source_godown').on('change', function () {
-            var selectedGodownId = $(this).val();
-            console.log(selectedGodownId)
-            var id = $(this).attr('id');
+            const selectedGodownId = $(this).val();
+            const id = $(this).attr('id');
             $.ajax({
                 url: '/stocktransferrawcreate/',
                 method: 'GET',
@@ -224,9 +222,9 @@
                     $('.stock_units').val('');
                     $('.stock_remarks').val('');
 
-                    var destinaionGodown = response.destination_godowns;
-                    var itemsInGodown = response.items_in_godown;
-                    console.log(destinaionGodown, itemsInGodown)
+                    const destinaionGodown = response.destination_godowns;
+                    const itemsInGodown = response.items_in_godown;
+                  
                     $.each(itemsInGodown, function (key, value) {
                         $('.stock_input_name').append('<option value="' + key + '">' + value + '</option>');
 
@@ -244,10 +242,10 @@
         })
 
         $(document).on('change', 'select[name^="stock_name_"]', function () {
-            var nameValue = $(this).attr('name');
-            var idValue = nameValue.split('_')[2];
-            var item_value = $(this).val();
-            var selectedValueGodown = $('#id_source_godown').val();
+            const nameValue = $(this).attr('name');
+            const idValue = nameValue.split('_')[2];
+            const item_value = $(this).val();
+            const selectedValueGodown = $('#id_source_godown').val();
 
             $.ajax({
                 url: '/stocktransferrawcreate/',
@@ -258,13 +256,13 @@
                 },
                 success: function (response) {
                     $('#id_rawstocktrasferrecords_set-' + idValue + '-item_shade_transfer').empty().append('<option value="">Select Shade</option>');
-                    var item_shades = response.item_shades;
-                    var item_per = response.item_per;
-                    var item_color = response.item_color;
-                    var item_shade_quantity = response.items_shade_quantity_in_godown;
+                    const item_shades = response.item_shades;
+                    const item_per = response.item_per;
+                    const item_color = response.item_color;
+                    const item_shade_quantity = response.items_shade_quantity_in_godown;
 
-                    var itemcolorinput = document.querySelector('#id_stock_color_' + idValue);
-                    var itemperinput = document.querySelector('#id_stock_per_' + idValue);
+                    const itemcolorinput = document.querySelector('#id_stock_color_' + idValue);
+                    const itemperinput = document.querySelector('#id_stock_per_' + idValue);
 
                     itemcolorinput.value = item_color;
                     itemperinput.value = item_per;
@@ -285,10 +283,10 @@
         })
 
         $(document).on('change', 'select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]', function () {
-            var nameValue = $(this).attr('name');
-            var newValue = nameValue.split('-')[1];
-            var selectshadesid = $(this).val();
-            var selectedValueGodown = $('#id_source_godown').val();
+            const nameValue = $(this).attr('name');
+            const newValue = nameValue.split('-')[1];
+            const selectshadesid = $(this).val();
+            const selectedValueGodown = $('#id_source_godown').val();
 
             $.ajax({
                 url: '/stocktransferrawcreate/',
