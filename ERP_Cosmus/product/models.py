@@ -451,8 +451,6 @@ class Ledger(models.Model):
 
 
 
-class factory_employee(models.Model):
-    factory_emp_name = models.CharField(max_length= 255)
 
 
 class account_credit_debit_master_table(models.Model):
@@ -593,6 +591,15 @@ class set_prod_item_part_name(models.Model):
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
     dimention_total = models.DecimalField(default=0, max_digits=10, decimal_places=2, blank=True, null= True)
     part_pieces = models.IntegerField(blank=True, null= True)
+
+
+
+class factory_employee(models.Model):
+    factory_emp_name = models.CharField(max_length= 255, unique=True)
+    #cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
+
+# class cutting_room(models.Model):
+#     cutting_room_name = models.CharField(max_length=100)
 
 
 class purchase_order(models.Model):
