@@ -1,7 +1,7 @@
 from dataclasses import fields
 from pyexpat import model
 from django import forms
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -430,8 +430,7 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
 
         # get the data from parent instance
         # po_godown = self.instance.purchase_order_cutting_id.purchase_order_id.temp_godown_select
-        
-    
+
         with transaction.atomic():
             for form in self.forms:
                 if not form.cleaned_data.get('DELETE', False):
@@ -484,11 +483,15 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
 class factory_employee_form(forms.ModelForm):
     class Meta:
         model = factory_employee
-        fields = ['factory_emp_name']
+        fields = ['factory_emp_name'] # 'cutting_room_id'
 
 
 
+# class cutting_room_form(forms.ModelForm):
 
+#     class Meta:
+#         model = cutting_room
+#         fields = ['cutting_room_name']
 
 
 

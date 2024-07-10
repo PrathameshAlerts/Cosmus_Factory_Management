@@ -35,7 +35,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
-                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, factory_employee,
+                             SubCategory, Unit_Name_Create, account_credit_debit_master_table,  factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
@@ -3339,9 +3339,8 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 
 def factory_employee_create_update_list(request,pk=None):
-
-    factory_employees = factory_employee.objects.all() 
-
+    factory_employees = factory_employee.objects.all()
+   
     if pk:
         title = 'Update'
         instance = get_object_or_404(factory_employee,pk=pk)
@@ -3355,6 +3354,7 @@ def factory_employee_create_update_list(request,pk=None):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
+
             messages.success('Factory Employee created Successfully')
             return render(request,'production/factory_emp_create_update_list.html', {'form':form,
                                                                                      'factory_employees':factory_employees,
@@ -3365,10 +3365,7 @@ def factory_employee_create_update_list(request,pk=None):
     return render(request,'production/factory_emp_create_update_list.html', {'form':form,'factory_employees':factory_employees,'title':title})
 
 
-
-
-def factoryempdelete(request,pk=None):
-
+def factoryempdelete(request,pk=None): 
     try:
         instance = get_object_or_404(factory_employee,pk-pk)
         instance.delete()
@@ -3379,6 +3376,30 @@ def factoryempdelete(request,pk=None):
     return redirect('factory-emp-list')
 
 
+
+# def cuttingroomcreateupdatelist(request, pk=None):
+    
+#     if pk:
+#         instance = cutting_room.objects.get(id = pk)
+
+#     else:
+#         instance = None
+
+#     form = cutting_room_form(request.POST or None, instance= instance)
+
+#     cutting_rooms = cutting_room_form.objects.all()
+
+#     if request.method == 'POST':
+#         if form.is_valid():
+#             form.save()
+#             return redirect('cutting-room-list')
+    
+#     return render(request,'cuttingroomcreateupdatelist.html', {'form':form,'cutting_rooms':cutting_rooms})
+
+
+# def cuttingroomdelete(request,pk):
+#     instance = cutting_room.objects.get(id = pk)
+#     return render(request,'cuttingroomcreateupdatelist.html')
 
 #_________________________factory-emp-end_______________________________________
 
