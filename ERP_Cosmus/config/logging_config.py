@@ -56,6 +56,12 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+
+        'product_forms': {  
+            'handlers': ['product_file'],         #'console',
+            'level': 'DEBUG',
+            'propagate': False,
+        },
         
     }
 }

@@ -178,12 +178,13 @@
                     </tr>
                 </thead>
                 <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-
+                    
                     {{purchase_order_for_raw_material_cutting_items_formset_form.management_form}}
                     {% for form in purchase_order_for_raw_material_cutting_items_formset_form %}
                     {{form.id}}
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                     <tr>
+                        <input type="hidden" name="{{form.prefix}}-purchase_order_pk" id="id_{{form.prefix}}-purchase_order_pk" value="{{p_o_pk}}">
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                         <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.instance.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
@@ -204,6 +205,7 @@
                     {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
 
                     <tr>
+                        <input type="hidden" name="{{form.prefix}}-purchase_order_pk" id="id_{{form.prefix}}-purchase_order_pk" value="{{p_o_pk}}">
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                         <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="text"  class="productinput" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
