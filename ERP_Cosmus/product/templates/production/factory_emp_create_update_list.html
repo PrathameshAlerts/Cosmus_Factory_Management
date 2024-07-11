@@ -11,14 +11,8 @@
         <label for="id_factory_emp_name" class="item-form">Worker Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
        </div>
-<<<<<<< HEAD
-
-       <div>
-        <select name="cutting_room_id" id="id_cutting_room_id">
-=======
        <!-- <div>
         <select name="cutting_room_id" id="id_cutting_room_id" class="item-select rounded">
->>>>>>> 10c944aa2937ce0bf6c8308ad7aadc72a1aca341
           {% if form.instance.id %}
           <option value="{{form.instance.cutting_room_id.id}}">{{form.instance.cutting_room_id.cutting_room_name}}</option>
           {% for room in cutting_rooms %}
@@ -38,42 +32,43 @@
   </form>
 
 </div>
-<div class="col-lg-5 mt-4">
+<div class="col-lg-6 mt-4">
     <div class="container-category  mb-3">
       <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
       <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-lg-5">
-    <div class="table-responsives">
-      <table class="table table-striped table-hover  table-bordered">
-        <thead class="name_absolute sticky-top">
-          <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>Cutting room</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-
-          {% for emp in factory_employees %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{emp.factory_emp_name}}</td>
-            <td>{{emp.cutting_room_id.cutting_room_name}}</td>
-            <td><a href="{% url 'factory-emp-update' emp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-            <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="table-responsives">
+        <table class="table table-striped table-hover  table-bordered">
+          <thead class="name_absolute sticky-top">
+            <tr class="text-nowrap">
+              <th>No</th>
+              <th>Name</th>
+              <th>Cutting room</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+  
+            {% for emp in factory_employees %}
+            <tr class="text-nowrap">
+              <td>{{ forloop.counter }}</td>
+              <td>{{emp.factory_emp_name}}</td>
+              <td>{{emp.cutting_room_id.cutting_room_name}}</td>
+              <td><a href="{% url 'factory-emp-update' emp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+              <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
+
+
 </div>
 
 
