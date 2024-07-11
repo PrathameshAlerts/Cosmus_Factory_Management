@@ -173,6 +173,13 @@ urlpatterns = [
     path('factory_emp_update/<int:pk>',views.factory_employee_create_update_list, name = 'factory-emp-update'),
     path('factory_emp_delete/<int:pk>',views.factoryempdelete, name = 'factory-emp-delete'),
 
+    # cutting Room 
+    
+    path('cutting_room_create/',views.cutting_room_create_update_list, name = 'cutting_room-create'),
+    path('cutting_room_update/<int:pk>',views.cutting_room_create_update_list, name = 'cutting_room-update'),
+    path('cutting_room_delete/<int:pk>',views.factoryempdelete, name = 'cutting_room-delete'),
+
+
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),

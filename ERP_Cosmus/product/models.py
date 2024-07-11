@@ -596,10 +596,10 @@ class set_prod_item_part_name(models.Model):
 
 class factory_employee(models.Model):
     factory_emp_name = models.CharField(max_length= 255, unique=True)
-    #cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
+    cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
 
-# class cutting_room(models.Model):
-#     cutting_room_name = models.CharField(max_length=100)
+class cutting_room(models.Model):
+    cutting_room_name = models.CharField(max_length=100)
 
 
 class purchase_order(models.Model):
