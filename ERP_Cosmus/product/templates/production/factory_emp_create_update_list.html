@@ -12,6 +12,7 @@
         <label for="id_factory_emp_name" class="item-form">Worker Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
        </div>
+
        <div>
         <select name="cutting_room_id" id="id_cutting_room_id">
           {% if form.instance.id %}
@@ -55,6 +56,7 @@
           <tr>
             <th>No</th>
             <th>Name</th>
+            <th>Cutting room</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -65,6 +67,7 @@
           <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{emp.factory_emp_name}}</td>
+            <td>{{emp.cutting_room_id.cutting_room_name}}</td>
             <td><a href="{% url 'factory-emp-update' emp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
             <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
           </tr>

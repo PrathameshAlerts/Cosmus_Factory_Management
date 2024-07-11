@@ -35,12 +35,12 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
-                             SubCategory, Unit_Name_Create, account_credit_debit_master_table,  factory_employee,
+                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
+from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -3340,7 +3340,7 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 def factory_employee_create_update_list(request,pk=None):
     factory_employees = factory_employee.objects.all()
-   
+    cutting_rooms =  cutting_room.objects.all()
     if pk:
         title = 'Update'
         instance = get_object_or_404(factory_employee,pk=pk)
@@ -3355,51 +3355,51 @@ def factory_employee_create_update_list(request,pk=None):
         if form.is_valid():
             form.save()
 
-            messages.success('Factory Employee created Successfully')
-            return render(request,'production/factory_emp_create_update_list.html', {'form':form,
-                                                                                     'factory_employees':factory_employees,
-                                                                                     'title':title})
+            messages.success(request,'Factory Employee created Successfully')
+            return redirect('factory-emp-create')
         else:
             messages.error(request,f'Error with form submission {form.errors}')
 
-    return render(request,'production/factory_emp_create_update_list.html', {'form':form,'factory_employees':factory_employees,'title':title})
+    return render(request,'production/factory_emp_create_update_list.html', {'form':form,'factory_employees':factory_employees,'title':title,'cutting_rooms':cutting_rooms})
 
 
 def factoryempdelete(request,pk=None): 
     try:
-        instance = get_object_or_404(factory_employee,pk-pk)
+        instance = get_object_or_404(factory_employee,pk=pk)
         instance.delete()
         messages.success(request,f'Factory Employee {instance.factory_emp_name} was deleted')
 
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {instance.factory_emp_name} because it is referenced by other objects.')
-    return redirect('factory-emp-list')
+    return redirect('factory-emp-create')
 
 
 
-# def cuttingroomcreateupdatelist(request, pk=None):
+def cutting_room_create_update_list(request, pk=None):
     
-#     if pk:
-#         instance = cutting_room.objects.get(id = pk)
 
-#     else:
-#         instance = None
+    if pk:
+        instance = cutting_room.objects.get(id = pk)
 
-#     form = cutting_room_form(request.POST or None, instance= instance)
+    else:
+        instance = None
 
-#     cutting_rooms = cutting_room_form.objects.all()
+    form = cutting_room_form(request.POST or None, instance= instance)
 
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             form.save()
-#             return redirect('cutting-room-list')
+    cutting_rooms = cutting_room.objects.all()
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('cutting_room-create')
     
-#     return render(request,'cuttingroomcreateupdatelist.html', {'form':form,'cutting_rooms':cutting_rooms})
+    return render(request,'production/cuttingroomcreateupdatelist.html', {'form':form,'cutting_rooms':cutting_rooms})
 
 
-# def cuttingroomdelete(request,pk):
-#     instance = cutting_room.objects.get(id = pk)
-#     return render(request,'cuttingroomcreateupdatelist.html')
+def cuttingroomdelete(request,pk):
+    instance = cutting_room.objects.get(id = pk)
+    return render(request,'production/cuttingroomcreateupdatelist.html')
+
 
 #_________________________factory-emp-end_______________________________________
 

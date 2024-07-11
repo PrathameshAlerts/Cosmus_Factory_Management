@@ -1,0 +1,19 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<form method="POST">
+{{ form }}
+
+{% csrf_token %}
+<input type="submit">
+</form>
+
+{% for room in cutting_rooms %}
+{{room.cutting_room_name}}
+<a href="{% url 'cutting_room-update' room.id %}">Update</a>
+<a href="{% url 'cutting_room-delete' room.id %}">Delete</a>
+{% endfor %}
+
+
+{% endblock %}
