@@ -3,18 +3,22 @@
 {% block body %}
 
 <div class="row mt-4">
-  <div class="col-lg-6">
-   
+  <div class="col-lg-5">
       <form  action="" method="POST">
         {% csrf_token %}  
-        <h2 class="mb-4">Worker - {{title}}</h2>
+        <h2 class="mb-4">Worker- {{title}}</h2>
        <div class="d-flex">
         <label for="id_factory_emp_name" class="item-form">Worker Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
        </div>
+<<<<<<< HEAD
 
        <div>
         <select name="cutting_room_id" id="id_cutting_room_id">
+=======
+       <!-- <div>
+        <select name="cutting_room_id" id="id_cutting_room_id" class="item-select rounded">
+>>>>>>> 10c944aa2937ce0bf6c8308ad7aadc72a1aca341
           {% if form.instance.id %}
           <option value="{{form.instance.cutting_room_id.id}}">{{form.instance.cutting_room_id.cutting_room_name}}</option>
           {% for room in cutting_rooms %}
@@ -27,24 +31,17 @@
           {% endfor %}
           {% endif %}
         </select>
-       </div>
+       </div> -->
   
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
     
   </form>
 
 </div>
-</div>
-
-
-<div class="mb-3 pt-2">
-  <h3 class="mb-3">Worker List</h3>
-  <div class="d-flex mb-3">
-    <div class="container-cat">
+<div class="col-lg-5 mt-4">
+    <div class="container-category  mb-3">
       <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
       <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-    </div>
-    <!-- <button class="item-btn mx-2" onclick="">Clear Filter</button> -->
   </div>
 </div>
 
@@ -77,6 +74,12 @@
     </div>
   </div>
 </div>
+</div>
+
+
+
+
+
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -102,10 +105,10 @@
 
   $(document).ready(function () {
     $('.delete-btn').click(function () {
-      var itemId = $(this).data('item-id');
-      var name = $(this).closest('tr').find('td').eq(1).text();
+      const itemId = $(this).data('item-id');
+      const name = $(this).closest('tr').find('td').eq(1).text();
 
-      var EmployeeName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+      const EmployeeName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
       $('#modal-body-text').html(' Are you sure you want to delete this Employee name ' + EmployeeName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
       $('#exampleModal').modal('show');
@@ -115,7 +118,7 @@
 
     // Confirm delete button click event
     $('#confirmDeleteButton').click(function () {
-      var itemId = $(this).data('item-id');
+      const itemId = $(this).data('item-id');
       // Redirect to delete view
       window.location.href = '/factory_emp_delete/' + itemId;
     });
