@@ -40,7 +40,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
+from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormset, cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -326,87 +326,103 @@ def product2subcategoryproductajax(request):
 
 
 
+# def product_color_sku(request,ref_id = None):
+#     color = Color.objects.all()
+
+#     try:
+#         if request.method == 'POST':
+#             product_ref_id = request.POST.get('Product_Refrence_ID')
+#             request_dict = request.POST
+#             count = 0
+
+#             for x in request_dict.keys():
+#                 if x[0:12] == 'PProduct_SKU':
+#                     count = count + 1
+
+#             with transaction.atomic():
+#                 all_sets_valid = False
+
+#                 try:
+#                     for i in range(1, count): 
+#                         # Build field names dynamically 
+#                         image_field_name = f'PProduct_image_{i}'
+#                         color_field_name = f'PProduct_color_{i}'
+#                         sku_field_name = f'PProduct_SKU_{i}'
+#                         Ean_field_name = f'Product_EANCode_{i}'
+
+
+#                         # Create a dictionary with the dynamic field names
+#                         data = {
+#                             'PProduct_color': request.POST.get(color_field_name),
+#                             'PProduct_SKU': request.POST.get(sku_field_name),
+#                             'Product_EANCode': request.POST.get(Ean_field_name),
+#                             'Product_Refrence_ID': product_ref_id
+#                         }
+#                         files = {
+#                             'PProduct_image': request.FILES.get(image_field_name)
+#                         }
+                
+#                         current_form = PProductCreateForm(data, files)
+
+#                         if current_form.is_valid():
+#                             pproduct = current_form.save(commit=False)
+#                             # Create a new Product instance or get an existing one based on Product_Refrence_ID
+#                             # product will be the object retrieved from the db and then created ,created will be a boolean field
+#                             product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
+#                             #product = Product.objects.create(Product_Refrence_ID=product_ref_id)
+                    
+#                             # Associate the PProduct instance with the Product
+#                             pproduct.Product = product
+
+#                             #The variable pproduct holds the unsaved instance of the PProduct_Creation model. 
+#                             #This instance is populated with the data from the form, and you can use it to perform 
+#                             #any additional logic or modifications before finally saving it to the database.
+#                             pproduct.save()
+#                             all_sets_valid = True
+
+#                         else:
+#                             all_sets_valid = False
+#                             #explicitly set transaction to rollback on errors
+#                             transaction.set_rollback(True)
+#                             break
+
+#                 except Exception as e:
+#                     print('Exception occured:', str(e))
+#                     messages.error(request, f'Exception occured - {e}')
+
+
+#             if all_sets_valid:
+#                 messages.success(request, f'Products for Refrence ID {product_ref_id} created')
+#                 # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
+#                 return redirect(reverse('edit_production_product', args=[product_ref_id]))
+            
+#             else:
+
+#                 #Return a response with errors for invalid sets of fields
+#                 return render(request, 'product/product_color_sku.html', {'form':current_form,'color': color})
+#     except Exception as e:
+#         print('Exception occured', str(e))
+#         messages.error(request,'Add a product first for Reference ID')
+        
+    
+#     form = PProductCreateForm()
+#     return render(request, 'product/product_color_sku.html', {'form': form, 'color': color,'ref_id': ref_id})
+
+
 def product_color_sku(request,ref_id = None):
     color = Color.objects.all()
 
-    try:
-        if request.method == 'POST':
-            product_ref_id = request.POST.get('Product_Refrence_ID')
-            request_dict = request.POST
-            count = 0
+    if ref_id:
+        instance = get_object_or_404(Product, Product_Refrence_ID=ref_id) 
+    else:
+        instance = None
 
-            for x in request_dict.keys():
-                if x[0:12] == 'PProduct_SKU':
-                    count = count + 1
-
-            with transaction.atomic():
-                all_sets_valid = False
-
-                try:
-                    for i in range(1, count): 
-                        # Build field names dynamically 
-                        image_field_name = f'PProduct_image_{i}'
-                        color_field_name = f'PProduct_color_{i}'
-                        sku_field_name = f'PProduct_SKU_{i}'
-                        Ean_field_name = f'Product_EANCode_{i}'
+    print('instance',instance)
+    formset = ProductCreateSkuFormset(instance=instance)
 
 
-                        # Create a dictionary with the dynamic field names
-                        data = {
-                            'PProduct_color': request.POST.get(color_field_name),
-                            'PProduct_SKU': request.POST.get(sku_field_name),
-                            'Product_EANCode': request.POST.get(Ean_field_name),
-                            'Product_Refrence_ID': product_ref_id
-                        }
-                        files = {
-                            'PProduct_image': request.FILES.get(image_field_name)
-                        }
-                
-                        current_form = PProductCreateForm(data, files)
 
-                        if current_form.is_valid():
-                            pproduct = current_form.save(commit=False)
-                            # Create a new Product instance or get an existing one based on Product_Refrence_ID
-                            # product will be the object retrieved from the db and then created ,created will be a boolean field
-                            product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
-                            #product = Product.objects.create(Product_Refrence_ID=product_ref_id)
-                    
-                            # Associate the PProduct instance with the Product
-                            pproduct.Product = product
-
-                            #The variable pproduct holds the unsaved instance of the PProduct_Creation model. 
-                            #This instance is populated with the data from the form, and you can use it to perform 
-                            #any additional logic or modifications before finally saving it to the database.
-                            pproduct.save()
-                            all_sets_valid = True
-
-                        else:
-                            all_sets_valid = False
-                            #explicitly set transaction to rollback on errors
-                            transaction.set_rollback(True)
-                            break
-
-                except Exception as e:
-                    print('Exception occured:', str(e))
-                    messages.error(request, f'Exception occured - {e}')
-
-
-            if all_sets_valid:
-                messages.success(request, f'Products for Refrence ID {product_ref_id} created')
-                # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
-                return redirect(reverse('edit_production_product', args=[product_ref_id]))
-            
-            else:
-
-                #Return a response with errors for invalid sets of fields
-                return render(request, 'product/product_color_sku.html', {'form':current_form,'color': color})
-    except Exception as e:
-        print('Exception occured', str(e))
-        messages.error(request,'Add a product first for Reference ID')
-        
-    
-    form = PProductCreateForm()
-    return render(request, 'product/product_color_sku.html', {'form': form, 'color': color,'ref_id': ref_id})
+    return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id})
 
 
 
