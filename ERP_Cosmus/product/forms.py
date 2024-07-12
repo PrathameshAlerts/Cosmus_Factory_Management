@@ -18,10 +18,9 @@ logger = logging.getLogger('product_forms')
 
 
 class PProductCreateForm(forms.ModelForm):
-    Product_Refrence_ID = forms.IntegerField(label='Product_Refrence_ID')
     class Meta:
         model = PProduct_Creation
-        fields = ['PProduct_image','PProduct_color','PProduct_SKU', 'Product_Refrence_ID','Product_EANCode']
+        fields = ['PProduct_image','PProduct_color','PProduct_SKU','Product_EANCode']
 
 
 
@@ -47,8 +46,7 @@ class PProductCreateFormset(BaseInlineFormSet):
 ProductCreateSkuFormset = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
                                                 formset=PProductCreateFormset,
-                                                
-                                                extra=1, can_delete=False)
+                                                extra=0, can_delete=False)
 
 
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
