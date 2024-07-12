@@ -696,24 +696,6 @@ input[type=number] {
   
 
   /*=========card style=======*/
-  #cardContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Adjust the gap between cards as needed */
-  }
-  
-  .card {
-    flex: 0 1 calc(25% - 10px); /* Adjust the width calculation to fit four cards per row */
-    box-sizing: border-box;
-  }
-  
-  .add-button-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 1 calc(25% - 10px); /* Adjust the width calculation to fit the button inline with cards */
-    box-sizing: border-box;
-  }
 .bg-c-blue {
     background: linear-gradient(45deg, #4099ff, #73b4ff);
 }
