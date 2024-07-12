@@ -12,13 +12,7 @@ class Company(models.Model):
     
 
 class Roles(models.Model):
-
-    TYPE = (
-        ('developer-backend','developer-backend'),
-        ('developer-frontend','developer-frontend'),
-    )
-
-    user_type = models.CharField(choices = TYPE, default = 'developer-backend') 
+    user_type = models.CharField( max_length=100, default = 'base_user') 
 
     
 class CustomUserManager(BaseUserManager):
@@ -54,7 +48,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_admin =  models.BooleanField(default=False)
     timestamp =  models.DateTimeField(auto_now=True)
-
     role = models.ManyToManyField(Roles)
     company = models.ForeignKey(Company,on_delete=models.CASCADE, null=True, blank=True)
     objects = CustomUserManager()
