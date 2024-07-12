@@ -36,17 +36,18 @@ class PProductCreateFormset(BaseInlineFormSet):
                 sku = form.cleaned_data.get('PProduct_SKU')
 
                 if sku in skus:
-                    raise forms.ValidationError('Duplicate SKU in the formset.')
+                    raise ValidationError('Duplicate SKU in the formset.')
 
                 if PProduct_Creation.objects.filter(PProduct_SKU=sku).exists():
-                    raise forms.ValidationError('Product SKU already exists in the database')
+                    raise ValidationError('Product SKU already exists in the database')
 
                 skus.append(sku)
+        
 
 ProductCreateSkuFormset = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
                                                 formset=PProductCreateFormset,
-                                                extra=0, can_delete=False)
+                                                extra=1, can_delete=False)
 
 
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)

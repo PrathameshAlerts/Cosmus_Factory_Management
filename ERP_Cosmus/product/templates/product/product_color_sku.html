@@ -7,22 +7,17 @@
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   
-  <!-- {% for form in formset %}
-  {{form}}
-  {% endfor %} -->
-
   <div class="d-flex mt-4 mb-4">
     <label for="id_Product_Refrence_ID" class="item-form fw-bold">Refrence ID :
     </label>
-    <input type="text" class="item-select px-2 mx-2" name="Product_Refrence_ID" required id="id_Product_Refrence_ID"
-      value="{{ref_id  | default_if_none:''}}" />
+    <input type="number" name="Product_Refrence_ID" id="Product_Refrence_ID" value="{{ref_id | default_if_none:''}}">
   </div>
  
-  <div class="d-flex">
+  <div class="d-flex flex-wrap">
     {{formset.management_form}}
     {% for form in formset %}
     {{form.id}}
-    <div class="d-flex flex-wrap" id="cardContainer">
+    <div id="cardContainer">
       <div class="card card-clone" style="width: 15rem; display: block">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
         <img id="frame-{{forloop.counter}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %}" class="card-img-top card-img p-1" alt="..." />
@@ -45,7 +40,7 @@
 
           <div class="mb-2 d-flex">
             <label for="id_{{form.prefix}}-PProduct_SKU" class="form-label pe-4">SKU</label>
-            <input type="number" name="{{formset.prefix}}-PProduct_SKU" min="-9223372036854775808" max="9223372036854775807" id="id_{{form.prefix}}-PProduct_SKU" class="rounded-3 w-75 px-2" value="{{form.instance.PProduct_SKU}}" />
+            <input type="number" name="{{form.prefix}}-PProduct_SKU" min="-9223372036854775808" max="9223372036854775807" id="id_{{form.prefix}}-PProduct_SKU" class="rounded-3 w-75 px-2" value="{{form.instance.PProduct_SKU}}" />
           </div>
           <div class="mb-2 d-flex">
             <label for="id_{{form.prefix}}-Product_EANCode" class="form-label pe-4">EANCode</label>

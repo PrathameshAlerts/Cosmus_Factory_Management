@@ -170,7 +170,7 @@ class Product(models.Model):
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
     Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True)
-    Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False,null =True)
+    Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False,null =False)
     Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
     Product_MRP = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
     Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
