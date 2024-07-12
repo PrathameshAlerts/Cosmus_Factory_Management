@@ -417,9 +417,32 @@ def product_color_sku(request,ref_id = None):
     else:
         instance = None
 
-    print('instance',instance)
-    formset = ProductCreateSkuFormset(instance=instance)
+    formset = ProductCreateSkuFormset(request.POST or None, instance=instance)
 
+    if request.method == 'POST':
+        
+        product_ref_id = request.POST.get('Product_Refrence_ID', None)
+        
+        formset.forms = [form for form in formset if form.has_changed()]
+
+        if product_ref_id:
+            if formset.is_valid():
+                try:
+                    for form in formset:
+                        if form.is_valid():
+                            form_instance = form.save(commit=False)
+                            obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
+                            form_instance.Product = obj
+                            form_instance.save()
+                        else:
+                            print(form.errors)
+                except ValidationError as ve :
+                    print(ve)
+                except Exception as e :
+                    print(e)
+            else:
+                print(formset.errors)
+                print(formset.non_form_errors)
 
 
     return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id})
