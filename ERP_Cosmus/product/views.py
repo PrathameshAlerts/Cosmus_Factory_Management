@@ -434,15 +434,16 @@ def product_color_sku(request,ref_id = None):
                             obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
                             form_instance.Product = obj
                             form_instance.save()
-                        else:
-                            print(form.errors)
+                    return redirect(reverse('edit_production_product', args=[product_ref_id]))
+                        
                 except ValidationError as ve :
-                    print(ve)
+                    messages.error(request,f'{ve}')
+                    logger.error(ve)
                 except Exception as e :
-                    print(e)
+                    messages.error(request,f'{e}')
+                    logger.error(e)
             else:
-                print(formset.errors)
-                print(formset.non_form_errors)
+                return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id})
 
 
     return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id})
