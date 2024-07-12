@@ -18,9 +18,9 @@
     {% for form in formset %}
     {{form.id}}
     <div id="cardContainer">
-      <div class="card card-clone" style="width: 15rem; display: block">
+      <div class="card card-clone" style="width: 15rem;">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
-        <img id="frame-{{forloop.counter}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %}" class="card-img-top card-img p-1" alt="..." />
+        <img id="frame-{{forloop.counter}}" src="" class="card-img-top card-img p-1" alt="..." />
        
       
         <div class="card-body card-input">
@@ -73,7 +73,6 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     // Counter to keep track of added cards
-    let cardCounter = 1;
 
     // Event listener for adding new cards
     document.getElementById("addNewProductButton").addEventListener("click", function () {
@@ -81,26 +80,48 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function createCard() {
+      const form  = document.getElementById('id_productdetails-TOTAL_FORMS');
+      let totalForms = parseInt(form.value);
+      console.log(totalForms);
         const cardContainer = document.getElementById("cardContainer");
+      
         const cardClone = document.querySelector(".card-clone");
 
         // Clone the card clone element
         const newCard = cardClone.cloneNode(true);
 
         // Display the new card
-        newCard.style.display = "block";
+         newCard.style.display = "block";
+        const cardFile = newCard.querySelector('input[type="file"]');
+        cardFile.id = `id_productdetails-${totalForms}-PProduct_image`;
+        cardFile.setAttribute("name", `productdetails-${totalForms}-PProduct_image`);
+        newCard.querySelector('input[name$="-PProduct_image"]').value = "";
 
-        // Reset input values in the new card
-        newCard.querySelector('input[type="file"]').value = "";
-        newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
-        newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
-        newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
+        const cardColor = newCard.querySelector('select[name$="-PProduct_color"]');
+        cardColor.id = `id_productdetails-${totalForms}-PProduct_color`;
+        cardColor.setAttribute("name", `productdetails-${totalForms}-PProduct_color`);
+        cardColor.selectedIndex = 0;
+
+        const cardSKU = newCard.querySelector('input[name$="-PProduct_SKU"]');
+        cardSKU.id = `id_productdetails-${totalForms}-PProduct_SKU`;
+        cardSKU.setAttribute("name", `productdetails-${totalForms}-PProduct_SKU`);
+        cardSKU.value = "";
+
+        const cardEANCode = newCard.querySelector('input[name$="-Product_EANCode"]');
+        cardEANCode.id = `id_productdetails-${totalForms}-Product_EANCode`;
+        cardEANCode.setAttribute("name", `productdetails-${totalForms}-Product_EANCode`);
+        cardEANCode.value = "";
+
+        // newCard.querySelector('input[type="file"]').value = "";
+        // newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
+        // newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
+        // newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
 
         // Update input names with dynamic counters
-        newCard.querySelectorAll("input, select").forEach(function (element) {
-            const name = element.getAttribute("name");
-            element.setAttribute("name", name.replace(/-0-/, `-${cardCounter}-`));
-        });
+        // newCard.querySelectorAll("input, select").forEach(function (element) {
+        //     const name = element.getAttribute("name");
+        //     element.setAttribute("name", name.replace(/-0-/, `-${cardCounter}-`));
+        // });
 
         // Event listener for image preview
         newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
@@ -121,13 +142,14 @@ document.addEventListener("DOMContentLoaded", function () {
         newCard.querySelector(".cancel-btn").addEventListener("click", function (event) {
             const card = event.target.closest(".card");
             card.parentNode.removeChild(card);
-            cardCounter--; // Decrement the counter
+            form.value = totalForms - 1; // Decrement the counter
         });
 
+        form.value = totalForms + 1;
         cardContainer.appendChild(newCard);
-        cardCounter++; // Increment the counter
+         // Increment the counter
     }
-
+   
     // Initial image preview setup for existing cards
     document.querySelectorAll('.card-clone').forEach(function (card, index) {
         const imageInput = card.querySelector('input[type="file"]');

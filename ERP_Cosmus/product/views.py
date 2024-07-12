@@ -410,6 +410,7 @@ def product2subcategoryproductajax(request):
 
 
 def product_color_sku(request,ref_id = None):
+    print(request.POST)
     color = Color.objects.all()
 
     if ref_id:
