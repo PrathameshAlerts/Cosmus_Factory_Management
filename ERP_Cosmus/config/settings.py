@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "debug_toolbar",
     #'inventory',
-    # 'core',
+    'core',
     #'discount',
     #'logistics',
     #'order',
@@ -76,6 +76,7 @@ MIDDLEWARE = [
 ]
 
 
+AUTH_USER_MODEL = 'core.CustomUser'
 
 ROOT_URLCONF = 'config.urls'
 
