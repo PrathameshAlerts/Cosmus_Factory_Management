@@ -20,16 +20,16 @@
     <div id="cardContainer">
       <div class="card card-clone" style="width: 15rem;">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
-        <img id="frame-{{forloop.counter}}" src="" class="card-img-top card-img p-1" alt="..." />
+        <img id="id_frame-{{forloop.counter0}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %} " class="card-img-top card-img p-1" alt="..." name="frame-{{forloop.counter0}}" />
        
       
         <div class="card-body card-input">
           <div class="mb-2 d-flex">
-            <label for="id_{{form.prefix}}-PProduct_image" class="form-label">Image</label>
+            <label for="" class="form-label">Image</label>
             <input type="file" class="px-2 rounded-3" name="{{form.prefix}}-PProduct_image"  id="id_{{form.prefix}}-PProduct_image" value="{{form.instance.PProduct_image}}" />
           </div>
           <div class="mb-2 d-flex">
-            <label for="id_{{form.prefix}}-PProduct_color" class="form-label me-1">Color</label>
+            <label for="" class="form-label me-1">Color</label>
             <select required name="{{form.prefix}}-PProduct_color" id="id_{{form.prefix}}-PProduct_color" class="rounded-3">
               {% if form.instance.PProduct_SKU %}
               <option value="{{form.instance.PProduct_color.id}}">{{form.instance.PProduct_color.color_name}}</option>
@@ -46,11 +46,11 @@
           </div>
 
           <div class="mb-2 d-flex">
-            <label for="id_{{form.prefix}}-PProduct_SKU" class="form-label pe-4">SKU</label>
+            <label for="" class="form-label pe-4">SKU</label>
             <input type="number" name="{{form.prefix}}-PProduct_SKU" min="-9223372036854775808" max="9223372036854775807" id="id_{{form.prefix}}-PProduct_SKU" class="rounded-3 w-75 px-2" value="{{form.instance.PProduct_SKU}}" />
           </div>
           <div class="mb-2 d-flex">
-            <label for="id_{{form.prefix}}-Product_EANCode" class="form-label pe-4">EANCode</label>
+            <label for="" class="form-label pe-4">EANCode</label>
             <input type="number" name="{{form.prefix}}-Product_EANCode" maxlength="100" id="id_{{form.prefix}}-Product_EANCode" class="rounded-3 w-75 px-2" value="{{form.instance.Product_EANCode}}" />
           </div>
         </div>
@@ -72,7 +72,7 @@
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Counter to keep track of added cards
+   
 
     // Event listener for adding new cards
     document.getElementById("addNewProductButton").addEventListener("click", function () {
@@ -80,37 +80,45 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function createCard() {
-      const form  = document.getElementById('id_productdetails-TOTAL_FORMS');
-      let totalForms = parseInt(form.value);
-      console.log(totalForms);
+        const form = document.getElementById('id_productdetails-TOTAL_FORMS');
+        let totalForms = parseInt(form.value);
+   
         const cardContainer = document.getElementById("cardContainer");
-      
         const cardClone = document.querySelector(".card-clone");
 
         // Clone the card clone element
         const newCard = cardClone.cloneNode(true);
+        //newCard.classList.remove("card-clone"); // Remove the clone class to make it unique
+        
+        // Reset values in inputs and selects
+        newCard.querySelectorAll('input, select').forEach(function (el) {
+            el.value = "";
+        });
 
         // Display the new card
-         newCard.style.display = "block";
-        const cardFile = newCard.querySelector('input[type="file"]');
-        cardFile.id = `id_productdetails-${totalForms}-PProduct_image`;
-        cardFile.setAttribute("name", `productdetails-${totalForms}-PProduct_image`);
-        newCard.querySelector('input[name$="-PProduct_image"]').value = "";
+        //newCard.style.display = "block";
 
-        const cardColor = newCard.querySelector('select[name$="-PProduct_color"]');
-        cardColor.id = `id_productdetails-${totalForms}-PProduct_color`;
-        cardColor.setAttribute("name", `productdetails-${totalForms}-PProduct_color`);
-        cardColor.selectedIndex = 0;
+        // Set IDs and names dynamically based on totalForms
+        newCard.querySelector('img').id = `id_frame-${totalForms}`;
+        newCard.querySelector('img').setAttribute("name", `frame-${totalForms}`);
+        newCard.querySelector('img').src = "";
 
-        const cardSKU = newCard.querySelector('input[name$="-PProduct_SKU"]');
-        cardSKU.id = `id_productdetails-${totalForms}-PProduct_SKU`;
-        cardSKU.setAttribute("name", `productdetails-${totalForms}-PProduct_SKU`);
-        cardSKU.value = "";
+        newCard.querySelector('input[type="file"]').id = `id_productdetails-${totalForms}-PProduct_image`;
+        newCard.querySelector('input[type="file"]').setAttribute("name", `productdetails-${totalForms}-PProduct_image`);
+        newCard.querySelector('input[type="file"]').value = "";
 
-        const cardEANCode = newCard.querySelector('input[name$="-Product_EANCode"]');
-        cardEANCode.id = `id_productdetails-${totalForms}-Product_EANCode`;
-        cardEANCode.setAttribute("name", `productdetails-${totalForms}-Product_EANCode`);
-        cardEANCode.value = "";
+        newCard.querySelector('select[name$="-PProduct_color"]').id = `id_productdetails-${totalForms}-PProduct_color`;
+        newCard.querySelector('select[name$="-PProduct_color"]').setAttribute("name", `productdetails-${totalForms}-PProduct_color`);
+        newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
+        newCard.querySelector('select[name$="-PProduct_color"]').value = "";
+
+        newCard.querySelector('input[name$="-PProduct_SKU"]').id = `id_productdetails-${totalForms}-PProduct_SKU`;
+        newCard.querySelector('input[name$="-PProduct_SKU"]').setAttribute("name", `productdetails-${totalForms}-PProduct_SKU`);
+        newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
+
+        newCard.querySelector('input[name$="-Product_EANCode"]').id = `id_productdetails-${totalForms}-Product_EANCode`;
+        newCard.querySelector('input[name$="-Product_EANCode"]').setAttribute("name", `productdetails-${totalForms}-Product_EANCode`);
+        newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
 
         // Event listener for image preview
         newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
@@ -129,25 +137,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Event listener for canceling the card
         newCard.querySelector(".cancel-btn").addEventListener("click", function (event) {
-            const card = event.target.closest(".card-clone");
-            card.parentNode.removeChild(card);
+            const cards = event.target.closest(".card");
+            cards.parentNode.removeChild(cards);
             form.value = totalForms - 1; // Decrement the counter
         });
 
+        const existingCards = document.querySelectorAll('.card');
+       
+        if (existingCards.length > 0) {
+            const lastCard = existingCards[existingCards.length - 1];
+            if (lastCard.nextSibling ) {
+              console.log("test");
+              lastCard.insertAdjacentElement('afterend', newCard);
+            } else {
+              console.log("test2");
+                cardContainer.appendChild(newCard); // Fallback if nextSibling is null
+            }
+        } else {
+            cardContainer.appendChild(newCard);
+        }
         form.value = totalForms + 1;
-        cardContainer.appendChild(newCard);
-         // Increment the counter
+        
     }
-   
+
     // Initial image preview setup for existing cards
-    document.querySelectorAll('.card-clone').forEach(function (card, index) {
-        const imageInput = card.querySelector('input[type="file"]');
-        console.log(imageInput);
+    document.querySelectorAll('.card').forEach(function (card, index) {
+        const imageInput = card.querySelectorAll('input[type="file"]');
+        const imgPreview = card.querySelector(".card-img-top");
+   
         if (imageInput && imageInput.value) {
-            const imgPreview = card.querySelector(".card-img-top");
-            console.log(imgPreview);
             imgPreview.src = imageInput.value;
         }
+        document.querySelector('input[type="file"]').addEventListener("change", function () {
+        const file = event.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function () {
+                imgPreview.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        
+      })
     });
 
 });
