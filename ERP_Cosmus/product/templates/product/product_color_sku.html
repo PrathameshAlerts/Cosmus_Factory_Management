@@ -1,10 +1,12 @@
-{% extends 'product/base.html' %} {% load static %} {% block body %}
+{% extends 'product/base.html' %} 
+{% load static %} 
+{% block body %}
 
-
+<h2 class="mb-3 mt-4">Create Product</h2>
+  <button class="add_btn" onclick="openNewColor()">Add Color +</button>
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  <h2 class="mb-3 mt-4">Create Product</h2>
-  <button class="add_btn" onclick="openNewColor()">Add Color +</button>
+  
 
 
   <div class="d-flex mt-4 mb-4">
@@ -22,7 +24,7 @@
         <div class="card-body card-input">
           <div class="mb-2 d-flex">
             <label for="id_PProduct_image_1" class="form-label">Image</label>
-            <input class="px-2 rounded-3" name="PProduct_image_" type="file" id="formFile" onchange="preview()" />
+            <input class="px-2 rounded-3" name="PProduct_image_" type="file" id="formFile"  />
           </div>
           <div class="mb-2 d-flex">
             <label for="id_PProduct_color_" class="form-label me-1">Color</label>
@@ -126,21 +128,40 @@
 
   function newPopUpwindow(button, path) {
     // Specify minimum height and width
+
+    $('body').addClass('popup-open');
+    $('body').append('<div class="popup-overlay"></div>');
     const minWidth = 800; // minimum width
     const minHeight = 600; // minimum height
 
-    // Open new page with specified dimensions
-    popUpWindow = window.open("http://127.0.0.1:8000" + path, "_blank", "width=" + minWidth + ", height=" + minHeight + ", resizable=yes");
+    // this will generate http://127.0.0.1:8000/ 
+    const baseUrl = "{{ request.scheme }}://{{ request.get_host }}";
+    popUpWindow = window.open(baseUrl + path, "_blank", "width=" + minWidth + ", height=" + minHeight + ", resizable=yes");
 
-    // Listen for messages from the popup window
-    window.addEventListener("message", function (event) {
-      if (event.data === "popupClosed" || event.data === "submit") {
-        // Close the popup window
-
-        // Reload parent page when popup window is closed
-        location.reload();
+    window.addEventListener('message', function(event){
+      if (event.data.message === 'close') {
+        $('body').removeClass('popup-open');
+        $('.popup-overlay').remove();
+          popUpWindow.close();
       }
     });
+        
+     // Listen for messages from the popup window
+    window.addEventListener('click', function(event) {
+      handleOutside(event);
+    });
+  }
+
+  function handleOutside(event) {
+    const popUpRect = document.querySelector('body').getBoundingClientRect();
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+      // Check if the click is outside the popup window
+      if ( clickX > popUpRect.left || clickX <= popUpRect.right || clickY > popUpRect.top || clickY <= popUpRect.bottom) {
+    
+        popUpWindow.focus();  
+      }
   }
 </script>
 
