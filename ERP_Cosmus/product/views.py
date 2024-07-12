@@ -423,6 +423,7 @@ def product_color_sku(request,ref_id = None):
         
         product_ref_id = request.POST.get('Product_Refrence_ID', None)
         
+        # only changed forms for validation are allowed
         formset.forms = [form for form in formset if form.has_changed()]
 
         if product_ref_id:
@@ -430,10 +431,10 @@ def product_color_sku(request,ref_id = None):
                 try:
                     for form in formset:
                         if form.is_valid():
-                            form_instance = form.save(commit=False)
-                            obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
-                            form_instance.Product = obj
-                            form_instance.save()
+                            form_instance = form.save(commit=False)  # save the form with commit = false
+                            obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id) # create a parent instance with the entered refrence id or get the instance if already created 
+                            form_instance.Product = obj   #assign the parent instance to childs FK field 
+                            form_instance.save() # save the form
                     return redirect(reverse('edit_production_product', args=[product_ref_id]))
                         
                 except ValidationError as ve :
