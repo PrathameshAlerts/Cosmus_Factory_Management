@@ -44,7 +44,13 @@ class PProductCreateFormset(BaseInlineFormSet):
                 skus.append(sku)
         
 
-ProductCreateSkuFormset = inlineformset_factory(Product, PProduct_Creation,
+ProductCreateSkuFormsetUpdate = inlineformset_factory(Product, PProduct_Creation,
+                                                form=PProductCreateForm,
+                                                formset=PProductCreateFormset,
+                                                extra=0, can_delete=False)
+
+
+ProductCreateSkuFormsetCreate = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
                                                 formset=PProductCreateFormset,
                                                 extra=1, can_delete=False)
