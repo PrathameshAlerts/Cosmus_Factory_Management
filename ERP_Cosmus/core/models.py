@@ -1,6 +1,11 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin , UserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin , UserManager , Group
 from django.db import models
 from django.core.validators import  MinLengthValidator, MaxLengthValidator
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
+
+
+
 
 class Company(models.Model):
     name = models.CharField(max_length=255)
@@ -17,7 +22,7 @@ class Roles(models.Model):
     
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, username,is_active= True,is_staff= False,is_admin= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
+    def create_user(self, username,is_active= True,is_superuser=False,is_staff= False,is_admin= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
         if not username:
             raise ValueError('users must have an email address')
         
@@ -28,16 +33,28 @@ class CustomUserManager(BaseUserManager):
         user_obj.set_password(password) # The set_password method is typically called later to set the user's password before saving the user instance to the database.
         user_obj.is_staff = is_staff
         user_obj.is_admin = is_admin
-        user_obj.is_active = is_active   
+        user_obj.is_active = is_active
+        user_obj.is_superuser = is_superuser
         user_obj.save(using=self._db) # save user
+
+         # Add user to groups based on roles
+        self.update_user_groups(user_obj)
+
         return user_obj
 
     def create_superuser(self, username, password=None, **extra_fields): #takes createuser and sets superuser attributes to true
-        user = self.create_user(username, password = password, is_admin=True, is_staff=True)
+        user = self.create_user(username, password = password, is_superuser=True ,is_admin=True, is_staff=True)
 
         return user
     
-
+    def update_user_groups(self, user):
+        # Clear existing groups
+        user.groups.clear()
+        # Add user to groups based on roles
+        for role in user.role.all():
+            group, created = Group.objects.get_or_create(name=role.user_type)
+            user.groups.add(group)
+        user.save()
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -46,10 +63,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     is_admin =  models.BooleanField(default=False)
     timestamp =  models.DateTimeField(auto_now=True)
     role = models.ManyToManyField(Roles)
     company = models.ForeignKey(Company,on_delete=models.CASCADE, null=True, blank=True)
+    
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'
@@ -76,7 +95,27 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # @property
     # def is_active(self):
     #     return self.is_active
+
+
+@receiver(m2m_changed, sender=CustomUser.role.through)
+def update_user_groups_on_role_change(sender, instance, action, **kwargs):
     
+    if action in ["post_add", "post_remove", "post_clear"]:
+        instance.objects.update_user_groups(instance)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

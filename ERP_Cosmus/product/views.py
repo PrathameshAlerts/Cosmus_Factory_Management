@@ -4,6 +4,7 @@ from io import BytesIO
 from itertools import count
 from operator import is_
 from sys import exception
+from django.conf import settings
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
@@ -17,6 +18,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q, Sum, ProtectedError, Count
 from django.db import DatabaseError, IntegrityError, transaction
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
 import logging
 import urllib.parse
@@ -40,7 +42,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate, ProductCreateSkuFormsetUpdate,  cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
+from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate, ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -410,13 +412,13 @@ def product2subcategoryproductajax(request):
 
 
 def product_color_sku(request,ref_id = None):
-    print(request.POST)
-    print(request.FILES)
+
     color = Color.objects.all()
 
     if ref_id:
         instance = get_object_or_404(Product, Product_Refrence_ID=ref_id) 
         formset = ProductCreateSkuFormsetUpdate(request.POST or None,request.FILES or None, instance=instance)
+
     else:
         instance = None
         formset = ProductCreateSkuFormsetCreate(request.POST or None,request.FILES or None, instance=instance)
@@ -424,7 +426,6 @@ def product_color_sku(request,ref_id = None):
     
 
     if request.method == 'POST':
-        
         product_ref_id = request.POST.get('Product_Refrence_ID', None)
         
         # only changed forms for validation are allowed
@@ -3507,6 +3508,73 @@ def creditdebitreport(request):
 
 
 #_______________________authentication View start___________________________
+
+
+from django.apps import apps
+# Import the user model directly
+UserModel = apps.get_model(settings.AUTH_USER_MODEL)
+
+
+
+def superuser_required(view_func):
+    decorated_view_func = login_required(user_passes_test(lambda u: u.is_superuser)(view_func))
+    return decorated_view_func
+
+
+
+@superuser_required
+def create_user(request):
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            return redirect('user_list')  # Redirect to a list of users or another appropriate page
+    else:
+        form = CreateUserForm()
+    return render(request, 'misc/create_user.html', {'form': form})
+
+
+
+@superuser_required
+def edit_user_roles(request, user_id):
+    user = get_object_or_404(UserModel, id=user_id)
+    if request.method == 'POST':
+        form = UserRoleForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user_list')  # Redirect to a list of users or another appropriate page
+    else:
+        form = UserRoleForm(instance=user)
+    return render(request, 'misc/edit_user_roles.html', {'form': form, 'user': user})
+
+
+
+@superuser_required
+def user_list(request):
+    users = UserModel.objects.all()
+    return render(request, 'misc/user_list.html', {'users': users})
+
+
+
+
+def group_required(*group_names):
+    def in_groups(user):
+        if user.is_authenticated:
+            if bool(user.groups.filter(name__in=group_names)) | user.is_superuser:
+                return True
+        return False
+
+    return user_passes_test(in_groups)
+
+
+
+
+
+
+
+
+
+
 def login(request):
     form = LoginForm()
     if request.method == 'POST':
