@@ -105,17 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
         cardEANCode.setAttribute("name", `productdetails-${totalForms}-Product_EANCode`);
         cardEANCode.value = "";
 
-        // newCard.querySelector('input[type="file"]').value = "";
-        // newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
-        // newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
-        // newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
-
-        // Update input names with dynamic counters
-        // newCard.querySelectorAll("input, select").forEach(function (element) {
-        //     const name = element.getAttribute("name");
-        //     element.setAttribute("name", name.replace(/-0-/, `-${cardCounter}-`));
-        // });
-
         // Event listener for image preview
         newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
             const imgPreview = newCard.querySelector(".card-img-top");
@@ -133,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Event listener for canceling the card
         newCard.querySelector(".cancel-btn").addEventListener("click", function (event) {
-            const card = event.target.closest(".card");
+            const card = event.target.closest(".card-clone");
             card.parentNode.removeChild(card);
             form.value = totalForms - 1; // Decrement the counter
         });
@@ -146,8 +135,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initial image preview setup for existing cards
     document.querySelectorAll('.card-clone').forEach(function (card, index) {
         const imageInput = card.querySelector('input[type="file"]');
+        console.log(imageInput);
         if (imageInput && imageInput.value) {
             const imgPreview = card.querySelector(".card-img-top");
+            console.log(imgPreview);
             imgPreview.src = imageInput.value;
         }
     });
