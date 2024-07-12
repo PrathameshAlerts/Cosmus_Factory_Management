@@ -147,10 +147,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (existingCards.length > 0) {
             const lastCard = existingCards[existingCards.length - 1];
             if (lastCard.nextSibling ) {
-              console.log("test");
+           
               lastCard.insertAdjacentElement('afterend', newCard);
             } else {
-              console.log("test2");
+              
                 cardContainer.appendChild(newCard); // Fallback if nextSibling is null
             }
         } else {
