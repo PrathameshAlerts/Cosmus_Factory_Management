@@ -40,7 +40,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                  item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormset, cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
+from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate, ProductCreateSkuFormsetUpdate,  cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -411,14 +411,17 @@ def product2subcategoryproductajax(request):
 
 def product_color_sku(request,ref_id = None):
     print(request.POST)
+    print(request.FILES)
     color = Color.objects.all()
 
     if ref_id:
         instance = get_object_or_404(Product, Product_Refrence_ID=ref_id) 
+        formset = ProductCreateSkuFormsetUpdate(request.POST or None,request.FILES or None, instance=instance)
     else:
         instance = None
+        formset = ProductCreateSkuFormsetCreate(request.POST or None,request.FILES or None, instance=instance)
 
-    formset = ProductCreateSkuFormset(request.POST or None, instance=instance)
+    
 
     if request.method == 'POST':
         
@@ -436,11 +439,13 @@ def product_color_sku(request,ref_id = None):
                             obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id) # create a parent instance with the entered refrence id or get the instance if already created 
                             form_instance.Product = obj   #assign the parent instance to childs FK field 
                             form_instance.save() # save the form
+
                     return redirect(reverse('edit_production_product', args=[product_ref_id]))
                         
                 except ValidationError as ve :
                     messages.error(request,f'{ve}')
                     logger.error(ve)
+
                 except Exception as e :
                     messages.error(request,f'{e}')
                     logger.error(e)
