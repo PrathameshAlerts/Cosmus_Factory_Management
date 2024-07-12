@@ -7,7 +7,9 @@
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   
-
+  {% for form in formset %}
+  {{form}}
+  {% endfor %}
 
   <div class="d-flex mt-4 mb-4">
     <label for="id_Product_Refrence_ID" class="item-form fw-bold">Refrence ID :
@@ -15,20 +17,23 @@
     <input type="text" class="item-select px-2 mx-2" name="Product_Refrence_ID" required id="id_Product_Refrence_ID"
       value="{{ref_id  | default_if_none:''}}" />
   </div>
+ 
   <div class="d-flex">
+    {% for form in formset %}
     <div id="cardContainer">
       <div class="card card-clone" style="width: 15rem; display: none">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
         <img id="frame" src="..." class="card-img-top card-img p-1" alt="..." />
-
+       
+      
         <div class="card-body card-input">
           <div class="mb-2 d-flex">
-            <label for="id_PProduct_image_1" class="form-label">Image</label>
-            <input class="px-2 rounded-3" name="PProduct_image_" type="file" id="formFile"  />
+            <label for="id_{{formset.prefix}}-PProduct_image" class="form-label">Image</label>
+            <input class="px-2 rounded-3" name="{{formset.prefix}}-PProduct_image" type="file" id="id_{{formset.prefix}}-PProduct_image"  />
           </div>
           <div class="mb-2 d-flex">
-            <label for="id_PProduct_color_" class="form-label me-1">Color</label>
-            <select name="PProduct_color_" required id="id_PProduct_color_" class="rounded-3">
+            <label for="id_{{formset.prefix}}-PProduct_color" class="form-label me-1">Color</label>
+            <select required name="{{formset.prefix}}-PProduct_color" id="id_{{formset.prefix}}-PProduct_color" class="rounded-3">
               <option value="-" selected>---------</option>
               {%for c in color %}
               <option value="{{ c.id }}">{{c.color_name}}</option>
@@ -37,21 +42,25 @@
           </div>
 
           <div class="mb-2 d-flex">
-            <label for="id_PProduct_SKU_" class="form-label pe-4">SKU</label>
-            <input type="number" name="PProduct_SKU_" class="rounded-3 w-75 px-2" />
+            <label for="id_{{formset.prefix}}-PProduct_SKU" class="form-label pe-4">SKU</label>
+            <input type="number" name="{{formset.prefix}}-PProduct_SKU" min="-9223372036854775808" max="9223372036854775807" id="id_{{formset.prefix}}-PProduct_SKU" class="rounded-3 w-75 px-2" />
           </div>
           <div class="mb-2 d-flex">
-            <label for="" class="form-label pe-4">EANCode</label>
-            <input type="number" name="Product_EANCode_" class="rounded-3 w-75 px-2" />
+            <label for="id_{{formset.prefix}}-Product_EANCode" class="form-label pe-4">EANCode</label>
+            <input type="number" name="{{formset.prefix}}-Product_EANCode" maxlength="100" id="id_{{formset.prefix}}-Product_EANCode" class="rounded-3 w-75 px-2" />
           </div>
         </div>
+        
       </div>
     </div>
+    {% endfor %}
     <span style="padding-top: 100px;">
       <button type="button" id="addNewProductButton" class="add_btn">Add +</button>
     </span>
 
   </div>
+
+
   <div><input type="submit" class="newProductCreateBtn mt-5" name="save" value="Save"></div>
 
 </form>
@@ -78,9 +87,9 @@
 
       // Reset input values in the new card
       newCard.querySelector('input[type="file"]').value = "";
-      newCard.querySelector('input[name="PProduct_SKU_"]').value = "";
-      newCard.querySelector('select[name="PProduct_color_"]').selectedIndex = 0;
-      newCard.querySelector('input[name="Product_EANCode_"]').value = "";
+      newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
+      newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
+      newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
 
       // Update input names with dynamic counters
       newCard.querySelectorAll("input, select").forEach(function (element) {

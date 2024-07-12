@@ -21,23 +21,35 @@ class PProductCreateForm(forms.ModelForm):
     Product_Refrence_ID = forms.IntegerField(label='Product_Refrence_ID')
     class Meta:
         model = PProduct_Creation
-        fields = ['PProduct_image','PProduct_color','PProduct_SKU', 'Product_Refrence_ID',
-                  'Product_EANCode','Product_Rating','Amazon_Link','Flipkart_Link',
-                  'Cosmus_link']
+        fields = ['PProduct_image','PProduct_color','PProduct_SKU', 'Product_Refrence_ID','Product_EANCode']
 
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['Color'].widget.attrs['data-popup'] = True
 
-    def clean_PProduct_SKU(self):
-        sku = self.cleaned_data['PProduct_SKU']
 
-        # Check if SKU already exists in the database
-        if PProduct_Creation.objects.filter(PProduct_SKU=sku).exists():
-            raise forms.ValidationError('Product SKU already exists in the database')
+class PProductCreateFormset(BaseInlineFormSet):
 
-        return sku
+    def clean(self):
+        super().clean()
+        skus = []
+
+        for form in self.forms:
+            if not form.cleaned_data.get('DELETE', False):
+                sku = form.cleaned_data.get('PProduct_SKU')
+
+                if sku in skus:
+                    raise forms.ValidationError('Duplicate SKU in the formset.')
+
+                if PProduct_Creation.objects.filter(PProduct_SKU=sku).exists():
+                    raise forms.ValidationError('Product SKU already exists in the database')
+
+                skus.append(sku)
+
+ProductCreateSkuFormset = inlineformset_factory(Product, PProduct_Creation,
+                                                form=PProductCreateForm,
+                                                formset=PProductCreateFormset,
+                                                
+                                                extra=1, can_delete=False)
+
 
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
