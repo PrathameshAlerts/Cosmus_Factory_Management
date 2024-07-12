@@ -69,9 +69,9 @@
           </div>
           <div class="mb-2 d-flex">
             <label for="" class="mx-2 pe-2">EAN Code:</label>
-            <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode" value="{{form.instance.Product_EANCode}}" class="rounded-3 w-75 px-2">
+            <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode" value="{{form.instance.Product_EANCode |default_if_none:''}}" class="rounded-3 w-75 px-2">
             <label for="" class="mx-2 pe-4">Rating :</label>
-            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating" value="{{form.instance.Product_Rating}}" min="0" max="5" class="rounded-3 w-75 px-2">
+            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating" value="{{form.instance.Product_Rating |default_if_none:0}}" min="0" max="5" class="rounded-3 w-75 px-2">
           </div>
         </div>
         <div class="col-lg-2">
@@ -656,7 +656,7 @@
 </script>
 
 <script>
-  let popupWindow = null;
+  var popupWindow = null;
 
   function editSetProduction(button) {
     if (popupWindow === null || popupWindow.closed) {
