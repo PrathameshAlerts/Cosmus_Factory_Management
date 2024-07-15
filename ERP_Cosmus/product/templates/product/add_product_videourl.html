@@ -32,11 +32,15 @@
         </div>
     </div>
 
-    <button type="button" class="add_btn" id="addForm">Add</button>
-    <input type="submit" class="add_btn">
+    <button type="button" class="add_btn mb-3" id="addForm">Add</button>
+    <div>
+        <input type="submit" class="create-btn">
+    </div>
+    
 </form>
 
 <script>
+    let formSubmitted = false;
     document.addEventListener("DOMContentLoaded", function () {
         const addFormButton = document.getElementById("addForm");
         const tableBody = document.querySelector("#myTable tbody");

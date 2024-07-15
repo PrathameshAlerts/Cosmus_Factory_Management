@@ -42,10 +42,10 @@
     {% for form in formset %}
     <div class="card rounded-3 mb-3 px-2 py-3 border-3">
       <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-9">
           <div class=" d-flex mb-3">
-            <label class="mx-2">Color:</label>
-            <select class="item-selects" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
+            <label class="mx-2 me-4">Color:</label>
+            <select class="item-select ms-4" name="{{ form.prefix }}-PProduct_color" id="{{ form.prefix }}-PProduct_color">
               {% if form.instance.PProduct_color.id %}
               <option value="{{form.instance.PProduct_color.id}}">{{form.instance.PProduct_color}}</option>
               {%elif not form.instance %}
@@ -55,23 +55,31 @@
               <option value="{{color.id}}">{{color.color_name}}</option>
               {% endfor %}
             </select>
-
-            <div class=" d-flex mb-3">
-              <label for="{{ form.prefix }}-PProduct_image" class="mx-3">Image:</label>
-              <input type="file" class="my-files" name="{{ form.prefix }}-PProduct_image" accept="image/*" id="{{ form.prefix }}-PProduct_image">
-            </div>
+            <label class="mx-2 me-5">SKU:</label>
+            <input type="text" class="item-select" name="{{form.prefix}}-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly id="{{form.prefix}}-PProduct_SKU">
+            <label for="{{ form.prefix }}-PProduct_image" class="mx-3">Image:</label>
+            <input type="file" class="my-files" name="{{ form.prefix }}-PProduct_image" accept="image/*" id="{{ form.prefix }}-PProduct_image">
+          
           </div>
           <div class=" d-flex mb-3">
-            <label class="mx-2">SKU:</label>
-            <input type="text" class="item-select me-3" name="{{form.prefix}}-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" min="-9223372036854775808" max="9223372036854775807" readonly id="{{form.prefix}}-PProduct_SKU">
-            <button type="button" class="add_btn me-2" id="edit_images" onclick="editImages(this)">Add Image</button>
-            <button type="button" class="video_btn ms-2" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
-          </div>
-          <div class="mb-2 d-flex">
             <label for="" class="mx-2 pe-2">EAN Code:</label>
             <input type="text" class="item-select" name="{{form.prefix}}-Product_EANCode" value="{{form.instance.Product_EANCode |default_if_none:''}}" class="rounded-3 w-75 px-2">
-            <label for="" class="mx-2 pe-4">Rating :</label>
-            <input type="number" class="item-select" name="{{form.prefix}}-Product_Rating" value="{{form.instance.Product_Rating |default_if_none:0}}" min="0" max="5" class="rounded-3 w-75 px-2">
+            <label class="mx-2 me-4">Rating :</label>
+            <input type="number" class="item-select me-3" name="{{form.prefix}}-Product_Rating" value="{{form.instance.Product_Rating |default_if_none:0}}" min="0" max="5" class="rounded-3 w-75 px-2">
+            <button type="button" class="add_btn me-3" id="edit_images" onclick="editImages(this)">Add Image</button>
+            <button type="button" class="video_btn ms-2" id="edit_video_url" onclick="editVideoUrl(this)">Youtube Link</button>
+
+          </div>
+          <label for="" class="form-label fw-bold ps-2">Links</label>
+          <div class="mb-3 d-flex">
+            <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo mx-2">
+            <span>{{form.Amazon_Link}}</span>
+
+            <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo mx-2">
+            <span>{{form.Flipkart_Link}}</span>
+
+            <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo mx-2">
+            <span>{{form.Cosmus_link}}</span>
           </div>
         </div>
         <div class="col-lg-2">
@@ -81,21 +89,10 @@
         </div>
         <div class="col-lg-1">
           <div class="delete-btn border-0 bg-transparent mt-5" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="product_delete_related px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value=""></i></div>
-
         </div>
 
       </div>
-      <label for="" class="form-label fw-bold ps-2">Links</label>
-      <div class="d-flex">
-        <img src="../../../static/images/Amazon 01.png" alt="logo" class="product_logo mx-2">
-        <span>{{form.Amazon_Link}}</span>
-
-        <img src="../../../static/images/FLIPKART 01.png" alt="logo" class="product_logo mx-2">
-        <span>{{form.Flipkart_Link}}</span>
-
-        <img src="../../../static/images/Cosmus.png" alt="logo" class="product_logo mx-2">
-        <span>{{form.Cosmus_link}}</span>
-      </div>
+      
     </div>
     {% endfor %}
   </div>
@@ -464,7 +461,7 @@
 
   <button type="button" class="edit_btn w-75 mb-3" id="set_production_btn">Set Production<span class="production_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="set_production" style="display: none;">
-    <div class="row mt-3">
+    <div class="row mt-3 mb-3">
       <div class="col-lg-3 ms-2">
         <div class="d-flex">
           <lable>Set Production:</lable>
@@ -601,6 +598,7 @@
       preview.src = "";
     }
   }
+  previewFile()
 </script>
 
 <script>
@@ -639,12 +637,18 @@
         const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
         popupWindow = window.open(baseUrl + '/product' + path + productSku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
-        window.addEventListener('message', handlePopupMessage);
+        window.addEventListener('message', function (event) {
+      if (event.data.message === 'close') {
+        $('body').removeClass('popup-open');
+        $('.popup-overlay').remove();
+        popupWindow.close();
+      }
+    });
 
-        // Listen for messages from the popup window
-        window.addEventListener('click', function (event) {
-          handleOutsideView(event);
-        });
+    // Listen for messages from the popup window
+    window.addEventListener('click', function (event) {
+      handleOutsideView(event);
+    });
 
       } else {
         console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
