@@ -30,7 +30,7 @@
       {{ formset.management_form }}
       {% for form in formset %}
       {% if form.instance.PProduct_image %}
-      <img src="{{ form.instance.PProduct_image.url }}" alt="Image Preview" style="width: 70px;">
+      <img src="{{ form.instance.PProduct_image.url }}" alt="Images" style="width: 70px;">
       {% endif %}
       {% endfor %}
     </div>
@@ -508,7 +508,7 @@
   </div>
 
   <div class="mb-5">
-    <input type="submit" class="item-btn mx-5" value="submit">
+    <input type="submit" class="newProductCreateBtn mx-5" value="submit">
   </div>
 </form>
 
