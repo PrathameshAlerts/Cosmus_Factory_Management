@@ -185,7 +185,7 @@ urlpatterns = [
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
 
     #common Routes
-    path('dashboard/', views.dashboard , name='dashboard-main'),
+    path('dashboard/', views.dashboard , name ='dashboard-main'),
 
     #login routes
     path('create_custom_user/', views.create_user, name='create_user'),

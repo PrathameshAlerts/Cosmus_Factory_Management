@@ -22,7 +22,7 @@ class Roles(models.Model):
     
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, username,is_active= True,is_superuser=False,is_staff= False,is_admin= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
+    def create_user(self, username,is_active= True, is_superuser=False, is_staff= False,is_admin= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
         if not username:
             raise ValueError('users must have an email address')
         

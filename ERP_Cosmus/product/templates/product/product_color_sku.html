@@ -30,7 +30,7 @@
           </div>
           <div class="mb-2 d-flex">
             <label for="" class="form-label me-1">Color</label>
-            <select required name="{{form.prefix}}-PProduct_color" id="id_{{form.prefix}}-PProduct_color" class="rounded-3">
+            <select name="{{form.prefix}}-PProduct_color" id="id_{{form.prefix}}-PProduct_color" class="rounded-3">
               {% if form.instance.PProduct_SKU %}
               <option value="{{form.instance.PProduct_color.id}}">{{form.instance.PProduct_color.color_name}}</option>
               {%for c in color %}
