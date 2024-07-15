@@ -187,7 +187,11 @@ urlpatterns = [
     #common Routes
     path('dashboard/', views.dashboard , name='dashboard-main'),
 
-    path('', views.login , name='login'),
+    #login routes
+    path('create_custom_user/', views.create_user, name='create_user'),
+    path('edit_user_roles/<int:user_id>/', views.edit_user_roles, name='edit_user_roles'),
+    path('user_list/', views.user_list, name='user_list'),
+
     #testing
     path('testsession/', views.session_data_test, name='test-session'),
 ]   

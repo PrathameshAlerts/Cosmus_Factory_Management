@@ -10,7 +10,9 @@ from django.forms.widgets import PasswordInput, TextInput , DateInput
 from django.forms import IntegerField, modelformset_factory, BaseInlineFormSet 
 from django.db import transaction
 import logging
-
+from django.contrib.auth.models import Group
+from django.contrib.auth.forms import UserCreationForm
+from django.conf import settings
 
 logger = logging.getLogger('product_forms')
 
@@ -513,18 +515,27 @@ class cutting_room_form(forms.ModelForm):
 
 
 
+from django.apps import apps
+# Import the user model directly
+UserModel = apps.get_model(settings.AUTH_USER_MODEL)
 
 
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model = UserModel
 
+        fields = ['username', 'email', 'password1', 'password2']
 
+class UserRoleForm(forms.ModelForm):
+    groups = forms.ModelMultipleChoiceField(
+        queryset=Group.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
 
-
-
-
-
-
-
-
+    class Meta:
+        model = UserModel
+        fields = ['groups']
 
 
 
