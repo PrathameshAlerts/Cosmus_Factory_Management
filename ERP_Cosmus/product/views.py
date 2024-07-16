@@ -3387,6 +3387,7 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 
 def factory_employee_create_update_list(request,pk=None):
+    print(request.POST)
     factory_employees = factory_employee.objects.all()
     cutting_rooms =  cutting_room.objects.all()
     if pk:
@@ -3397,7 +3398,7 @@ def factory_employee_create_update_list(request,pk=None):
         title = 'Create'
         instance = None
     
-    form = factory_employee_form(request.POST or None, instance =instance)
+    form = factory_employee_form(request.POST or None, instance = instance)
 
     if request.method == 'POST':
         if form.is_valid():
