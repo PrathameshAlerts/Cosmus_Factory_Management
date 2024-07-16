@@ -526,6 +526,7 @@ class CreateUserForm(UserCreationForm):
 
         fields = ['username', 'email', 'password1', 'password2']
 
+
 class UserRoleForm(forms.ModelForm):
     groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.all(),

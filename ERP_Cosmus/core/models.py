@@ -17,14 +17,14 @@ class Company(models.Model):
     
 
 class Roles(models.Model):
-    user_type = models.CharField( max_length=100, default = 'base_user') 
+    user_type = models.CharField(max_length=100, default = 'base_user') 
 
     
 class CustomUserManager(BaseUserManager):
 
     def create_user(self, username,is_active= True, is_superuser=False, is_staff= False,is_admin= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
         if not username:
-            raise ValueError('users must have an email address')
+            raise ValueError('users must have an User Name')
         
         if not password:
             raise ValueError('users must have password')
@@ -57,17 +57,16 @@ class CustomUserManager(BaseUserManager):
         user.save()
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
     is_admin =  models.BooleanField(default=False)
     timestamp =  models.DateTimeField(auto_now=True)
     role = models.ManyToManyField(Roles)
-    company = models.ForeignKey(Company,on_delete=models.CASCADE, null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     
     objects = CustomUserManager()
 
