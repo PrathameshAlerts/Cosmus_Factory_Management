@@ -32,9 +32,9 @@
                         {{ formset.management_form }}
                         
                         {% for form in formset %}
-                    
+                        {{ form.id }}
                         <tr>
-                            {{ form.id }}
+                           
                             <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
                             <input type="hidden" value="" id ="{{form.prefix}}-old_godown_id" name="{{form.prefix}}-old_godown_id">
                             
@@ -191,7 +191,7 @@
         
         for (let i = 0; i <= total_form_Value; i++) {
             const oldquantity = document.getElementById('shade_godown_items_set-'+ i + '-new_quantity');
-            const jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value;
+            const jsonQty = document.getElementById('shade_godown_items_set-' + i + '-quantity').value || 0;
             const oldGid = document.getElementById('shade_godown_items_set-'+ i + '-old_godown_id');
             const newGid = document.getElementById('shade_godown_items_set-'+ i + '-godown_id').value;
                 oldquantity.value = jsonQty;
@@ -271,8 +271,14 @@
             //addbutton click then check the rate value is not empty then add a new row
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {  //first find the last row rate value is not empty then add a new row there any one rate value is empty then don't add a new row
+        
+        $(document).on('input',  ' .godown-rate', function() { 
+
+        const newRates = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        console.log("newRate",newRates);
+        })
         const newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
-       
+            console.log(newRate);
         if(newRate != "" && newRate != null){
             const newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
             let formsValue = parseInt(newFormValue.value);
@@ -350,7 +356,7 @@
         const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
         const inputRateValue = parseInt(inputRate);
         let totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
-    
+        console.log('inputRateValue',inputRateValue)
         // Calculate and set the amount for this row
         const amount = inputQtyValue * inputRateValue;
         

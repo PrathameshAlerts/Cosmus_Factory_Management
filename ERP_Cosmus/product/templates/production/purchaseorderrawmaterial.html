@@ -159,26 +159,27 @@
 
 <script>
     // Function to update the consumption value calculated for pahna, units and grand total to assigne the value to consumption field
-       function updateTotal() {
-            const totalForms = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
+    function updateTotal() {
+            var totalForms = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
 
-            for (let i = 0; i < totalForms; i++) {
-                const panha = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-panha').value;
-                const units = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-units').value;
-                const grandTotal = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-g_total').value;
-                const physicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock');
-                const newPhysicalStock = document.getElementById('id_physical_stock').value;
-                const materialName = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-material_name').value;
+            for (var i = 0; i < totalForms; i++) {
+                var panha = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-panha').value;
+                var units = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-units').value;
+                var grandTotal = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-g_total').value;
+                var physicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock');
+                var newPhysicalStock = document.getElementById('id_physical_stock').value;
+                var materialName = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-material_name').value;
             
-                const panhaValue = parseFloat(panha);
-                const unitsValue = parseFloat(units);
-                const grandTotalValue = parseFloat(grandTotal);
+                var panhaValue = parseFloat(panha);
+                var unitsValue = parseFloat(units);
+                var grandTotalValue = parseFloat(grandTotal);
                 if(newPhysicalStock != "None"){
-                    const mainstock = JSON.parse(newPhysicalStock);
+                    var mainstock = JSON.parse(newPhysicalStock);
             
-                    for (const key in mainstock) {
+                    for (var key in mainstock) {
                         if (mainstock.hasOwnProperty(key)) {
                             if(key === materialName){
+
                                 physicalStock.value = mainstock[key];
                             }
                         }
@@ -187,7 +188,7 @@
                 }
             
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
-                    const consumption = (panhaValue * unitsValue) / grandTotalValue;
+                    var consumption = (panhaValue * unitsValue) / grandTotalValue;
               
                     document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-consumption').value = consumption.toFixed(3);
                 } else {
@@ -197,14 +198,13 @@
             calculateTotalConsumption();
         }
 
-        // This calculation is for process quantity to be equal to order quantity
         function updateProcessQuantity() {
-            const newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+            var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
 
-            for (let i = 0; i < newForms; i++) {
-                const orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
-                const processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
-                const orderQuantityValue = parseFloat(orderQuantity);
+            for (var i = 0; i < newForms; i++) {
+                var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
+                var processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
+                var orderQuantityValue = parseFloat(orderQuantity);
               
                 processQuantity.value = orderQuantityValue;
                 processQuantity.readOnly = true;
@@ -212,8 +212,6 @@
             }
         }
         updateProcessQuantity();
-
-        // Function to calculate total consumption for each color in the table and assign the value to consumption field
         function calculateTotalConsumption(){
             let total =0;
             const processQty = document.querySelectorAll('input[name$="-process_quantity"]');
@@ -263,15 +261,13 @@
         }
 
         calculateTotalConsumption();
-
-        // Function to calculate balance stock the calulate the physical stock - total consumption for each color
 function balanceStock(){
-    const totals = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
+    var totals = document.getElementById('id_purchase_order_for_raw_material_set-TOTAL_FORMS').value;
 
-    for (let i = 0; i < totals; i++) {
-        const totalConsumtionValue = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-total_comsumption').value;
-        const newPhysicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock').value;
-        const balanceStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock');
+    for (var i = 0; i < totals; i++) {
+        var totalConsumtionValue = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-total_comsumption').value;
+        var newPhysicalStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-physical_stock').value;
+        var balanceStock = document.getElementById('id_purchase_order_for_raw_material_set-' + i + '-balance_physical_stock');
 
             balanceStock = newPhysicalStock - totalConsumtionValue;
     
@@ -280,8 +276,8 @@ function balanceStock(){
 }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
-        const processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
+        var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
+        var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
             formElements.forEach(element => {
                 element.addEventListener('input', updateTotal);
             });
