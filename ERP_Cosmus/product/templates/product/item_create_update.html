@@ -44,7 +44,7 @@
           {% endif %}
       </select>
       {% if not form.instance.id %}
-      <button class="fab_btn" type="button"  onclick="openFabPopup()">+</button>
+      <button class="itemCreate_btn" type="button"  onclick="openFabPopup()">+</button>
       {% endif %}
   </div>
 
@@ -70,7 +70,7 @@
         {% endif %}
       </select>
       {% if not form.instance.id %}
-      <button type="button" class="col_btn popup-trigger" onclick="opencolorPopup()">+</button>
+      <button type="button" class="itemCreate_btn popup-trigger" onclick="opencolorPopup()">+</button>
       {% endif %}
     </div>
     {% if form.instance.id %}
@@ -130,20 +130,17 @@
              </tr>
              {% endfor %}
           </tbody>
-            
-          
-        
         </table>
       </div>
     </div>
     {% endif %}
 
-    <div class=" d-flex my-3">
+    <div class="d-flex my-3">
       <label for="id_Material_code" class="item-form">Material Code:</label>
       <input type="text" class="item-select" name="Material_code" value="{{form.instance.Material_code}}"
         maxlength="255" required id="id_Material_code">
     </div>
-    <div class=" d-flex my-3">
+    <div class="d-flex my-3">
       <label for="id_Item_Packing" class="item-form">Packing:</label>
       <select name="Item_Packing" class="item-select" required id="Item_Packing">
 
@@ -163,7 +160,7 @@
       <button class="package_btn"  onclick="openPackagePopup()">+</button>
       {% endif %}
     </div>
-    <div class=" d-flex my-3">
+    <div class="d-flex my-3">
       <label for="id_unit_name_item" class="item-form">Unit Name:</label>
       <select name="unit_name_item" class="item-select" required id="id_unit_name_item">
 
@@ -180,11 +177,11 @@
         {% endif %}
       </select>
       {% if not form.instance.id %}
-      <button class="unit_btn"  onclick="openunitPopup()">+</button>
+      <button class="itemCreate_btn"  onclick="openunitPopup()">+</button>
       {% endif %}
     </div>
     <div class=" d-flex my-3">
-      <label for="id_Units" class=" item-form">Units:</label>
+      <label for="id_Units" class="item-form">Units:</label>
       <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required id="id_Units">
     </div>
 
@@ -215,7 +212,7 @@
         {% endfor %}
       </select>
       {% if not form.instance.id %}
-      <button class="finish_btn"  onclick="openFabricFinishPopup()">+</button>
+      <button class="itemCreate_btn"  onclick="openFabricFinishPopup()">+</button>
       {% endif %}
     </div>
     <div class="d-flex my-3">
@@ -232,7 +229,7 @@
         {% endfor %}
       </select>
       {% if not form.instance.id %}
-      <button type="button" class="gst_btn"  onclick="openGstPopup()">+</button>
+      <button type="button" class="itemCreate_btn"  onclick="openGstPopup()">+</button>
       {% endif %}
     </div>
     <div class="d-flex my-3">

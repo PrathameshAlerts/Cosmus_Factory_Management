@@ -244,30 +244,28 @@ input[type=number] {
   }
   .dropdown{
    list-style: none;
-  
   }
 
-  .dropdown .dropdown-menu{
+  /* .dropdown .dropdown-menu{
    display: none;
-   
-  }
+  } */
 
-   .navText{
+  .navText{
     text-decoration: none;
     color: #000;
     font-size: 15px;
     padding-left: 15px;
-  
   }
+
   .dropdown:hover > .dropdown-menu ,.dropend:hover > .dropdown-menu{
    display: block;
    margin-top: .125em;
-  }
-
-  .dropend:hover > .dropdown-menu{
+   left: auto;
+  } 
+   .dropend:hover > .dropdown-menu{
    position: absolute;
    top: 0;
-   left: 100%;
+   left: 180px;
    margin-left: .125em;
   }
   /*=================Item Page=======================*/
@@ -351,8 +349,8 @@ input[type=number] {
 }
 
 .dropdown-menu-end{
-  margin-left: 188px;
-    text-decoration: none;
+  margin-left: 178px;
+  text-decoration: none;
  
 }
 .float-right {
@@ -580,6 +578,7 @@ input[type=number] {
     cursor: pointer;
     list-style: none;
     width: 190px;
+    transition: 0.3s ease;
 }
 .pro-head:hover{
     background: #888;
@@ -591,8 +590,8 @@ input[type=number] {
     color: #f1f1f1;
     transition: 0.2s ease;
     
-}
-.dropdown-menu .dropdown-menu-end li:hover{
+} */
+/* .dropdown-menu .dropdown-menu-end li:hover{
     background: #888;
     color: #f1f1f1;
     transition: 0.2s ease;
@@ -621,12 +620,15 @@ input[type=number] {
     left: 0;
     cursor: pointer;
 }
- /* .dropdown-end {
-    position: relative;
-    width: 190px;
-    left: 100px;
+.navbar-expand-lg .navbar-nav .dropdown-end {
+    position:absolute;
+    width: 179px;
+    left: 185px;
     cursor: pointer;
-} */
+    background:  #f1f1f1;
+    color: #888;
+    top: 10px;
+}
 }
 /*======navbar end====*/
 /*=====Static code for all the pages =======*/
@@ -1024,14 +1026,14 @@ input[type=number] {
     margin-left: 90px;
 }
 
-.fab_btn{
+/* .fab_btn{
     color: #fff;
     border: none;
     border-radius: 6px;
     padding: 2px 7px;
     margin: 2px 5px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-}
+} */
 /*=======Color group item======*/
 .color-list-icons{
     position: absolute;
@@ -1039,7 +1041,7 @@ input[type=number] {
     left: 77px;
 }
 
-.col_btn{
+.itemCreate_btn{
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -1053,7 +1055,7 @@ input[type=number] {
     top: 10px;
     left: 74px; 
 }
-
+/* 
 .unit_btn{
     color: #fff;
     border: none;
@@ -1088,7 +1090,7 @@ input[type=number] {
     padding: 2px 7px;
     margin: 2px 5px;
     background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-}
+} */
 /*=======Account group item======*/
 .account-group-input{
     width: 200px;

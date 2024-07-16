@@ -117,47 +117,48 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item my-3 mx-2 dropdown">
-          <a class="nav-link text-white dropdown-click" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
           </a>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-              <button type="button" class="dropdown-item dropdown-toggle-end " data-bs-toggle="dropdown" aria-expanded="false">Main Category</button>
-              <div class="btn-group dropend">
-                <ul class="dropdown-menu dropdown-menu-end ">
-                <li><a class="pro-head" href="{% url 'pproductlist' %}">Product</a></li>
-                <li><a class="pro-head" href="{% url 'item-list' %}">Raw Material</a></li>
-                <li><a class="pro-head" href="{% url 'godown-list' %}">Godown</a></li>
+          <ul class="dropdown-menu">
+            <li class="nav-item dropend">
+              <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Main Category
+              </a>
+                <ul class="dropdown-menu dropdown dropdown-end">
+                <li><a class="dropdown-item" href="{% url 'pproductlist' %}">Product</a></li>
+                <li><a class="dropdown-item" href="{% url 'item-list' %}">Raw Material</a></li>
+                <li><a class="dropdown-item" href="{% url 'godown-list' %}">Godown</a></li>
               </ul>
-              </div>
+           
             </li>
-            <li>
-              <button type="button" class="dropdown-item dropdown-toggle-end" data-bs-toggle="dropdown" aria-expanded="false">Sub Category</button>
-              <div class="btn-group dropend">
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="pro-head" href="{% url 'simplecolorlist' %}">Colors</a></li>
-                <li><a class="pro-head" href="{% url 'item-fabgroup-create-list' %}">Fabrics Groups</a></li>
-                <li><a class="pro-head" href="{% url 'unit_name-create_list' %}">Units</a></li>
-                <li><a class="pro-head" href="{% url 'gst-create-list' %}">GST</a></li>
-                <li><a class="pro-head" href="{% url 'fabric-finishes-create-list' %}">Fabric Finishes</a></li>
-                <li><a class="pro-head" href="{% url 'packaging-create-list' %}">Packaging List</a></li>
-              </ul>
-            </div>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item dropdown-toggle-end"  data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Product Definition')">Product Definition</button>
-              <div class="btn-group dropend">
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="pro-head" href="{% url 'define-main-category-product' %}">Main Cat Create</a></li>
-                  <li><a class="pro-head" href="{% url 'define-sub-category-product' %}">Sub Cat Create</a></li>
-                  <li><a class="pro-head" href="{% url 'product-2-subcategory' %}">Product 2 Category</a></li>
+            <li class="nav-item dropend">
+              <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sub Category
+              </a>
+                <ul class="dropdown-menu dropdown dropdown-end">
+                  <li><a class="dropdown-item" href="{% url 'simplecolorlist' %}">Colors</a></li>
+                  <li><a class="dropdown-item" href="{% url 'item-fabgroup-create-list' %}">Fabrics Groups</a></li>
+                  <li><a class="dropdown-item" href="{% url 'unit_name-create_list' %}">Units</a></li>
+                  <li><a class="dropdown-item" href="{% url 'gst-create-list' %}">GST</a></li>
+                  <li><a class="dropdown-item" href="{% url 'fabric-finishes-create-list' %}">Fabric Finishes</a></li>
+                  <li><a class="dropdown-item" href="{% url 'packaging-create-list' %}">Packaging List</a></li>
                 </ul>
-              </div>
+            </li>
+            <li class="nav-item dropend">
+              <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Product Definition
+              </a>
+                <ul class="dropdown-menu dropdown dropdown-end">
+                  <li><a class="dropdown-item" href="{% url 'define-main-category-product' %}">Main Cat Create</a></li>
+                  <li><a class="dropdown-item" href="{% url 'define-sub-category-product' %}">Sub Cat Create</a></li>
+                  <li><a class="dropdown-item" href="{% url 'product-2-subcategory' %}">Product 2 Category</a></li>
+                </ul>
             </li>
           </ul>
         </li>
         <li class="nav-item my-3 mx-2  dropdown">
-          <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Accounts')">Accounts</span> 
+          <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Accounts')">Accounts</a> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Groups</a></li> 
            <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
@@ -165,7 +166,7 @@
          </ul>  
          </li>
          <li class="nav-item my-3 mx-2  dropdown">
-          <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Vouchers')">Vouchers</span> 
+          <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"  onclick="showThePopUp('Vouchers')">Vouchers</a> 
           <ul class="dropdown-menu dropdown-menu-right">
           <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice</a></li> 
           <li class="pro-head"><a href="" class="navText">Sales Invoice</a></li>  
@@ -178,7 +179,7 @@
          </ul>  
          </li>
          <li class="nav-item my-3 mx-2 dropdown">
-          <span class="nav-link text-white" style="cursor: pointer;"  onclick="showThePopUp('Reports')">Reports</span> 
+          <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Reports')">Reports</a> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Stock Transfer Report</a></li> 
            <li class="pro-head"><a href="#" class="navText">Purchase Report</a></li>
@@ -186,7 +187,7 @@
          </ul>  
          </li>
          <li class="nav-item my-3 mx-2  dropdown">
-          <span class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Production</span> 
+          <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Production</a> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText">Purchase Order(Raw)</a></li> 
       
@@ -449,9 +450,9 @@
   }
 
 
-  document.addEventListener('DOMContentLoaded', function() {
-   var sideBar = document.querySelector('.side-bar');
-  });
+  // document.addEventListener('DOMContentLoaded', function() {
+  //  var sideBar = document.querySelector('.side-bar');
+  // });
 </script>
 </body>
 </html>

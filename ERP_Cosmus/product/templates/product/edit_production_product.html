@@ -668,25 +668,25 @@
     const minWidth = 1270; // minimum width
     const minHeight = 700;
 
-    $('body').addClass('popup-open');
-    $('body').append('<div class="popup-overlay"></div>');
+    // $('body').addClass('popup-open');
+    // $('body').append('<div class="popup-overlay"></div>');
 
     // this will generate http://127.0.0.1:8000/ 
     const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
     popupWindow = window.open(baseUrl + path + refrence_id, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
-    window.addEventListener('message', function (event) {
-      if (event.data.message === 'close') {
-        $('body').removeClass('popup-open');
-        $('.popup-overlay').remove();
-        popupWindow.close();
-      }
-    });
+    // window.addEventListener('message', function (event) {
+    //   if (event.data.message === 'close') {
+    //     $('body').removeClass('popup-open');
+    //     $('.popup-overlay').remove();
+    //     popupWindow.close();
+    //   }
+    // });
 
-    // Listen for messages from the popup window
-    window.addEventListener('click', function (event) {
-      handleOutsideView(event);
-    });
+    // // Listen for messages from the popup window
+    // window.addEventListener('click', function (event) {
+    //   handleOutsideView(event);
+    // });
   }
 
 

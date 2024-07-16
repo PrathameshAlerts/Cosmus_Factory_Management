@@ -95,7 +95,7 @@
                 </table>
                 <button type="button" class="add_btn mb-3" id="addNewRow">Add</button>
         </div>
-        <input type="submit" class="add_btn">
+        <input type="submit" class="create-btn">
     </form>
 
 
@@ -496,7 +496,7 @@
 
 
 <script>
-    let formSubmitted = false;
+
     // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
         const addFormButton = document.getElementById('addForm');
@@ -592,13 +592,7 @@
         deleteRow();
     });
 
-    // Handle the case when the window is closed without form submission
-    window.addEventListener('beforeunload', function (event) {
-        if (!formSubmitted) {
-            const data = { message: 'close' };
-            window.opener.postMessage(data, '*');
-        }
-    });
+
 
 </script>
 
@@ -693,5 +687,13 @@
         deletedRow();
     });
 
+// var formSubmitted = false;
+//     // Handle the case when the window is closed without form submission
+//     window.addEventListener('beforeunload', function (event) {
+//         if (!formSubmitted) {
+//             const data = { message: 'close' };
+//             window.opener.postMessage(data, '*');
+//         }
+//     });
 </script>
 {% endblock body %}
