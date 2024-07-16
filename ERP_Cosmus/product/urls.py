@@ -5,7 +5,7 @@ handler404 = 'product.views.custom_404_view'
 
 urlpatterns = [
     #authentication routes
-    path('login/',views.login , name='login'),
+    path('',views.login , name='login'),
     path('register/',views.register , name= 'register'),
 
     #factoryroutes
@@ -174,18 +174,16 @@ urlpatterns = [
     path('factory_emp_delete/<int:pk>',views.factoryempdelete, name = 'factory-emp-delete'),
 
     # cutting Room 
-    
     path('cutting_room_create/',views.cutting_room_create_update_list, name = 'cutting_room-create'),
     path('cutting_room_update/<int:pk>',views.cutting_room_create_update_list, name = 'cutting_room-update'),
     path('cutting_room_delete/<int:pk>',views.factoryempdelete, name = 'cutting_room-delete'),
-
 
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
 
     #common Routes
-    path('dashboard/', views.dashboard , name='dashboard-main'),
+    path('dashboard/', views.dashboard , name ='dashboard-main'),
 
     #login routes
     path('create_custom_user/', views.create_user, name='create_user'),

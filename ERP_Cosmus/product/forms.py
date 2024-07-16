@@ -49,7 +49,7 @@ class PProductCreateFormset(BaseInlineFormSet):
 ProductCreateSkuFormsetUpdate = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
                                                 formset=PProductCreateFormset,
-                                                extra=0, can_delete=False)
+                                                extra=1, can_delete=False)
 
 
 ProductCreateSkuFormsetCreate = inlineformset_factory(Product, PProduct_Creation,
@@ -525,6 +525,7 @@ class CreateUserForm(UserCreationForm):
         model = UserModel
 
         fields = ['username', 'email', 'password1', 'password2']
+
 
 class UserRoleForm(forms.ModelForm):
     groups = forms.ModelMultipleChoiceField(

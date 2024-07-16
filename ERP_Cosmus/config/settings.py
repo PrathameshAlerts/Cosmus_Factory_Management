@@ -171,7 +171,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-MEDIA_URL = '/Media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 USE_L10N = False

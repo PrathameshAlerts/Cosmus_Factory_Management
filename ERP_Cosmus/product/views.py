@@ -3528,7 +3528,7 @@ def create_user(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('user_list')  # Redirect to a list of users or another appropriate page
+            return redirect('user_list')  #Redirect to a list of users or another appropriate page
     else:
         form = CreateUserForm()
     return render(request, 'misc/create_user.html', {'form': form})
@@ -3544,7 +3544,7 @@ def edit_user_roles(request, user_id):
             form.save()
             return redirect('user_list')  # Redirect to a list of users or another appropriate page
     else:
-        form = UserRoleForm(instance=user)
+        form = UserRoleForm(instance = user)
     return render(request, 'misc/edit_user_roles.html', {'form': form, 'user': user})
 
 
@@ -3585,7 +3585,6 @@ def login(request):
             user = auth.authenticate(request, username=username,password=password)
             if user is not None:
                 auth.login(request,user)
-                
                 return redirect('index')
     context = {'form':form}
     return render(request, 'misc/login.html', context=context)
