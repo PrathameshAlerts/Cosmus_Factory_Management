@@ -285,7 +285,7 @@
 
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
-                const totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
+                let totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
             
                 if(currentColor == productColor){
                     const consumptionInput =document.querySelector('input[name$="-consumption"]');
@@ -321,10 +321,16 @@
         let newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
 
         for(let i =0 ; i<newForm; i++){
+            const panha = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-panha').value;
+            const units = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-units').value;
+            const gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
+            const consumptions = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption');
             const TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
             const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
             const balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
-                
+              
+            let consumption = parseFloat(panha) * parseFloat(units) / parseFloat(gTotal);
+            consumptions.value = consumption.toFixed(3);
             let balanceStock = parseFloat(physicalStock) - parseFloat(TotalConsumtion);
             balancePhysicalStock.value = balanceStock.toFixed(3);
         }
