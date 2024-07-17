@@ -1742,6 +1742,14 @@ styles.css */
     height: 28px;
     margin-left: 10px;
 }
+.productShadeCutting_Material_input{
+    width: 208px;
+    border-radius: 3px;
+    border: none;
+    padding-left: 6px;
+    height: 28px;
+    background-color: transparent;
+}
 .productorderrawqty-input{
     width: 73px;
     border-radius: 3px;

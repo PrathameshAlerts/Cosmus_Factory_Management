@@ -58,8 +58,8 @@
           <a href="{% url 'gst-create-list' %}" class="sub-item">GST</a>
           <a href="{% url 'fabric-finishes-create-list' %}" class="sub-item">Fabric Finishes</a>
           <a href="{% url 'packaging-create-list' %}" class="sub-item">Packaging</a>
-          <a href="{% url 'factory-emp-create' %}" class="sub-item">Factory Workers</a>
           <a href="{% url 'cutting_room-create' %}" class="sub-item">Cutting Room</a>
+          <a href="{% url 'factory-emp-create' %}" class="sub-item">Factory Workers</a> 
         </div>
       </div> 
       <div class="item">
@@ -144,10 +144,12 @@
                   <li><a class="dropdown-item" href="{% url 'gst-create-list' %}">GST</a></li>
                   <li><a class="dropdown-item" href="{% url 'fabric-finishes-create-list' %}">Fabric Finishes</a></li>
                   <li><a class="dropdown-item" href="{% url 'packaging-create-list' %}">Packaging List</a></li>
+                  <li><a class="dropdown-item" href="{% url 'cutting_room-create' %}">Cutting Room</a></li>
+                  <li><a class="dropdown-item" href="{% url 'factory-emp-create' %}">Factory Workers</a></li>
                 </ul>
             </li>
             <li class="nav-item dropend">
-              <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Product Definition
               </a>
                 <ul class="dropdown-menu dropdown dropdown-end">
