@@ -65,7 +65,7 @@
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Accounts')"><img src="../../../static/images/document.png" alt="document" style="width: 33px; padding-right: 10px;">Accounts<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'account_sub_group-list' %}" class="sub-item">Groups</a>
+          <a href="{% url 'account_sub_group-create' %}" class="sub-item">Groups</a>
           <a href="{% url 'ledger-list' %}" class="sub-item">Ledgers</a>
           <a href="{% url 'stock-item-create' %}" class="sub-item">Stock Items</a>
         </div>
@@ -163,7 +163,7 @@
         <li class="nav-item my-3 mx-2  dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Accounts')">Accounts</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Groups</a></li> 
+           <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText">Groups</a></li> 
            <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
            <li class="pro-head"><a href="{% url 'stock-item-create' %}" class="navText">Stock Item</a></li> 
          </ul>  
@@ -184,7 +184,7 @@
          <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Reports')">Reports</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'account_sub_group-list' %}" class="navText">Stock Transfer Report</a></li> 
+           <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText">Stock Transfer Report</a></li> 
            <li class="pro-head"><a href="#" class="navText">Purchase Report</a></li>
            <li class="pro-head"><a href="#" class="navText">Sales Report</a></li>   
          </ul>  
@@ -346,6 +346,99 @@
         {% endif %}
         {% endfor %}
       </div>
+
+
+      {% if formset.non_form_errors %}
+      <ul id="errorform">
+        {% for error in formset.non_form_errors %}
+          <li class="errorShow">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div>
+        {% for form in master_form %}
+        {% if form.errors %}
+        <ul class="errorlist" id="errorform">
+          {% for field, error_list in form.errors.items %}
+            {% for error in error_list %}
+              <li class="errorShow">
+                {% if field == "__all__" %}
+                  {{ error }}
+                {% else %}
+                  {{ field|title }}: {{ error }}
+                {% endif %}
+              </li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+
+      {% if purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors %}
+      <ul id="errorform">
+        {% for error in purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors %}
+          <li class="errorShow">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div>
+        {% for form in purchase_order_for_raw_material_cutting_items_formset_form %}
+        {% if form.errors %}
+        <ul class="errorlist" id="errorform">
+          {% for field, error_list in form.errors.items %}
+            {% for error in error_list %}
+              <li class="errorShow">
+                {% if field == "__all__" %}
+                  {{ error }}
+                {% else %}
+                  {{ field|title }}: {{ error }}
+                {% endif %}
+              </li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+
+      {% if purchase_order_to_product_formset_form.non_form_errors %}
+      <ul id="errorform">
+        {% for error in purchase_order_to_product_formset_form.non_form_errors %}
+          <li class="errorShow">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div>
+        {% for form in purchase_order_to_product_formset_form %}
+        {% if form.errors %}
+        <ul class="errorlist" id="errorform">
+          {% for field, error_list in form.errors.items %}
+            {% for error in error_list %}
+              <li class="errorShow">
+                {% if field == "__all__" %}
+                  {{ error }}
+                {% else %}
+                  {{ field|title }}: {{ error }}
+                {% endif %}
+              </li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+
+
+
+
+
 
       {% for message in messages %}
       {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
