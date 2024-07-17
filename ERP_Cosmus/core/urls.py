@@ -7,6 +7,6 @@ from . import views
 urlpatterns = [
 
     #authentication routes
-    path('',views.login , name='login'), 
-    path('logout/',views.logout , name='logout'),
+    path('login/',views.login_user , name='login'), 
+    path('logout/',views.logout_user , name='logout'),
 ] 
