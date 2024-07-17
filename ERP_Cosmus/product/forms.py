@@ -545,17 +545,6 @@ class UserRoleForm(forms.ModelForm):
 
 
 
-class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=TextInput())
-    password = forms.CharField(widget=PasswordInput())
-
-
-
-# Register a user
-class CreateUserForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ['username', "password1" , "password2"]
 
 
 

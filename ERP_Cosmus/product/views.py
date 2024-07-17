@@ -44,7 +44,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 
 from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate, ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
-                     LoginForm,OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
+                     OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
                         ProductImagesFormSet, ProductVideoFormSet, purchase_order_form,purchase_voucher_items_godown_formset_shade_change,
                          gst_form, item_purchase_voucher_master_form,
@@ -1375,7 +1375,7 @@ def account_sub_group_create_update(request, pk=None):
 
 
 
-def account_sub_group_delete(request, pk):
+def account_sub_group_delete(request, pk):  
     try:
         group = get_object_or_404(AccountSubGroup ,pk=pk)
         group.delete()
@@ -3558,19 +3558,6 @@ def group_required(*group_names):
 
 
 
-def login(request):
-    form = LoginForm()
-    if request.method == 'POST':
-        form = LoginForm(request,data=request.POST)
-        if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
-            user = auth.authenticate(request, username=username,password=password)
-            if user is not None:
-                auth.login(request,user)
-                return redirect('index')
-    context = {'form':form}
-    return render(request, 'misc/login.html', context=context)
 
 
 

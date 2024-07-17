@@ -4,10 +4,6 @@ from . import views
 handler404 = 'product.views.custom_404_view'
 
 urlpatterns = [
-    #authentication routes
-    path('',views.login , name='login'),
-    path('register/',views.register , name= 'register'),
-
     #factoryroutes
     #product_routes
     path('editpproduct/<int:pk>',views.edit_production_product , name= 'edit_production_product'),
