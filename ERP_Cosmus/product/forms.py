@@ -464,6 +464,8 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                         total_consumption = form.cleaned_data.get('total_comsumption')
                         material_color_shade = form.cleaned_data.get('material_color_shade')
                         
+                        
+
                         if material_color_shade.items.Fabric_nonfabric == 'Fabric':
 
                             try:
@@ -487,14 +489,17 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                     
                     except item_godown_quantity_through_table.DoesNotExist as e:
                         logger.error(f'Item not found in godown: {e}')
+                        form.add_error(None, e)
                         raise
 
                     except ValidationError as e:
                         logger.error(f'Validation error: {e}')
+                        form.add_error(None, e)
                         raise
 
                     except Exception as e:
                         logger.error(f'Unexpected error occurred: {e}', exc_info=True)
+                        form.add_error(None, e)
                         raise ValidationError(f'An unexpected error occurred: {e}')
 
 

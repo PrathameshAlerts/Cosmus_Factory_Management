@@ -22,7 +22,7 @@ class Roles(models.Model):
     
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, username,is_active= True, is_superuser=False, is_staff= False,is_admin= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
+    def create_user(self, username,is_active= True, is_superuser=False, is_staff= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
         if not username:
             raise ValueError('users must have an User Name')
         
@@ -32,7 +32,6 @@ class CustomUserManager(BaseUserManager):
         user_obj = self.model(username=username, **extra_fields) # The line is creating a new user instance (user) by calling the model constructor (self.model) and providing values for the username field and any additional fields specified in extra_fields
         user_obj.set_password(password) # The set_password method is typically called later to set the user's password before saving the user instance to the database.
         user_obj.is_staff = is_staff
-        user_obj.is_admin = is_admin
         user_obj.is_active = is_active
         user_obj.is_superuser = is_superuser
         user_obj.save(using=self._db) # save user
@@ -43,7 +42,7 @@ class CustomUserManager(BaseUserManager):
         return user_obj
 
     def create_superuser(self, username, password=None, **extra_fields): #takes createuser and sets superuser attributes to true
-        user = self.create_user(username, password = password, is_superuser=True ,is_admin=True, is_staff=True)
+        user = self.create_user(username, password = password, is_superuser=True , is_staff=True)
 
         return user
     
@@ -63,7 +62,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    is_admin =  models.BooleanField(default=False)
     timestamp =  models.DateTimeField(auto_now=True)
     role = models.ManyToManyField(Roles)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)

@@ -504,7 +504,6 @@ class RawStockTransferMaster(models.Model):
     updated_date = models.DateTimeField(auto_now_add = True)
 
 
-
 class RawStockTrasferRecords(models.Model):
     master_instance = models.ForeignKey(RawStockTransferMaster, on_delete = models.CASCADE)
     item_shade_transfer = models.ForeignKey(item_color_shade , on_delete= models.CASCADE)

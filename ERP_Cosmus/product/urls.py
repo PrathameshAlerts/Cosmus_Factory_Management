@@ -80,15 +80,14 @@ urlpatterns = [
     path('units_popup/',views.unit_name_create_update, name='unit-name-popup'),
 
     #accountsubgrp
-    path('accsubgrpcreate/',views.account_sub_group_create , name= 'account_sub_group-create'),
-    path('accsubgrpupdate/<int:pk>',views.account_sub_group_update , name= 'account_sub_group-update'),
-    path('accsubgrplist/',views.account_sub_group_list , name='account_sub_group-list'),
+    path('accsubgrpcreate/',views.account_sub_group_create_update , name= 'account_sub_group-create'),
+    path('accsubgrpupdate/<int:pk>',views.account_sub_group_create_update , name= 'account_sub_group-update'),
     path('accsubgrpdelete/<int:pk>',views.account_sub_group_delete , name= 'account_sub_group-delete'),
 
     #stockitem
-    path('stockitemcreate/',views.stock_item_create_update , name= 'stock-item-create'),
-    path('stockitemupdate/<int:pk>',views.stock_item_create_update , name= 'stock_item-update'),
-    path('stockitemdelete/<int:pk>',views.stock_item_delete , name= 'stock_item-delete'),
+    path('stockitemcreate/', views.stock_item_create_update, name= 'stock-item-create'),
+    path('stockitemupdate/<int:pk>', views.stock_item_create_update, name= 'stock_item-update'),
+    path('stockitemdelete/<int:pk>', views.stock_item_delete, name= 'stock_item-delete'),
 
 
     #ledger
@@ -107,7 +106,7 @@ urlpatterns = [
     # #stocktransfer
     path('stocktransferrawcreate/', views.stockTrasferRaw, name = 'stock-transfer-raw-create'),
     path('stocktransferrawupdate/<int:pk>', views.stockTrasferRaw, name = 'stock-transfer-raw-update'),
-     path('stocktransferrawdelete/<int:pk>', views.stockTrasferRawDelete, name = 'stock-transfer-raw-delete'),
+    path('stocktransferrawdelete/<int:pk>', views.stockTrasferRawDelete, name = 'stock-transfer-raw-delete'),
     path('stocktransferrawlist/', views.stockTrasferRawList, name = 'stock-transfer-raw-list'),
 
 

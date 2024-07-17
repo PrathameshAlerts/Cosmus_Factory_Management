@@ -1344,54 +1344,35 @@ def unit_name_delete(request,pk):
 
 #_________________________Accounts start___________________________
 
-def account_sub_group_create(request):
+def account_sub_group_create_update(request, pk=None):
     print(request.POST)
+
+    groups = AccountSubGroup.objects.select_related('acc_grp').all()
+
+    if pk:
+        instance = get_object_or_404(AccountSubGroup ,pk=pk)
+        title = 'Update'
+    else:
+        instance = None
+        title = 'Create'
+
     main_grp = AccountGroup.objects.all()
-    form = account_sub_grp_form()
+    form = account_sub_grp_form(request.POST or None, instance=instance)
+
     if request.method == 'POST':
-        form = account_sub_grp_form(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Account sub-group created sucessfully')
-            if 'save' in request.POST:
-                return redirect('account_sub_group-list')
-            elif 'save_and_add_another' in request.POST:
-                return redirect('account_sub_group-create')
+            return redirect('account_sub_group-create')
         else:
-            print(form.errors)
             return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
-                                                                             'title':'Account Sub-Group Create',
-                                                                             'form':form})
-        
+                                                                             'title':title,
+                                                                             'form':form, "groups":groups})
+
     return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp, 
-                                                                     'title':'Account Sub-Group Create',
-                                                                     'form':form})
+                                                                     'title':title,
+                                                                     'form':form, "groups":groups})
 
-
-def account_sub_group_update(request, pk):
-    main_grp = AccountGroup.objects.all()
-    group = get_object_or_404(AccountSubGroup ,pk=pk)
-    form = account_sub_grp_form(instance = group)
-    if request.method == 'POST':
-        form = account_sub_grp_form(request.POST, instance = group)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Account sub-group updated sucessfully')
-            return redirect('account_sub_group-list')
-        else:
-            print(form.errors)
-            return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
-                                                                              'title':'Account Sub-Group Update',
-                                                                              'form':form})
-        
-    return render(request, 'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
-                                                                      'title':'Account Sub-Group Update',
-                                                                      'form':form})
-
-
-def account_sub_group_list(request):
-    groups = AccountSubGroup.objects.select_related('acc_grp').all()
-    return render(request,'product/acc_sub_grp_list.html', {"groups":groups})
 
 
 def account_sub_group_delete(request, pk):
@@ -1401,7 +1382,7 @@ def account_sub_group_delete(request, pk):
         messages.success(request,f'Account Sub Group {group.account_sub_group} was deleted')
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {group.account_sub_group} because it is referenced by other objects.')
-    return redirect('account_sub_group-list')
+    return redirect('account_sub_group-create')
 
 
 
@@ -1808,7 +1789,7 @@ def stockTrasferRaw(request, pk=None):
                         transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
                         transfer_instance.save()
 
-            return redirect('stock-transfer-list')
+            return redirect('stock-transfer-raw-list')
 
 
     context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'source_godown_items':source_godown_items}
@@ -1826,7 +1807,7 @@ def stockTrasferRawList(request):
 def stockTrasferRawDelete(request,pk):
     stocktrasferinstance =  get_object_or_404(RawStockTransferMaster,pk = pk)
     stocktrasferinstance.delete()
-    return redirect('stock-transfer-list')
+    return redirect('stock-transfer-raw-list')
 
 #__________________________stock transfer end__________________________
 
@@ -3357,12 +3338,13 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 messages.error(request, f'An unexpected error occurred: {e}')
 
         else:
-            logger.error(f'Purchase Order Form Errors {purchase_order_cutting_form.errors}')
-            logger.error(f'Purcahse Order To product Cutting Forms Errors {purchase_order_to_product_formset_form.errors}')
-            logger.error(f'Raw Material Cutting Items Formset Errors {purchase_order_for_raw_material_cutting_items_formset_form.errors}')
-            messages.error(request,f'Purchase Order Form Errors {purchase_order_cutting_form.errors}')
-            messages.error(request,f'Purcahse Order To product Cutting Forms Errors {purchase_order_to_product_formset_form.errors}')
-            messages.error(request,f'Raw Material Cutting Items Formset Errors {purchase_order_for_raw_material_cutting_items_formset_form.errors}')
+            # messages.error(request,f'Purchase Order Form Errors {purchase_order_cutting_form.errors}')
+            # messages.error(request,f'Purcahse Order To product Cutting Forms Errors {purchase_order_to_product_formset_form.errors}')
+            # messages.error(request,f'Raw Material Cutting Items Formset Errors {purchase_order_for_raw_material_cutting_items_formset_form.errors}')
+
+            # messages.error(request,f'Purcahse Order To product Cutting Forms Errors {purchase_order_to_product_formset_form.non_form_errors()}')
+            # messages.error(request,f'Raw Material Cutting Items Formset Errors {purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors()}')
+
 
             return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
                                                                     'purchase_order_to_product_formset_form':purchase_order_to_product_formset_form,
