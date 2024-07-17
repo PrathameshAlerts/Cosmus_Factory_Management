@@ -79,29 +79,7 @@
 
 
 <script>
-  document.body.appendChild(document.getElementById('exampleModal'));
-
-  $(document).ready(function () {
-    $('.delete-btn').click(function () {
-      const itemId = $(this).data('item-id');
-      const name = $(this).closest('tr').find('td').eq(2).text();
-      const coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-      $('#modal-body-text').html('Are you sure you want to delete the sub group ' + coloredName + '?');
-      $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
-      $('#confirmDeleteModal').modal('show');
-    });
-
-    // Confirm delete button click event
-    $('#confirmDeleteButton').click(function () {
-      const itemId = $(this).data('item-id');
-      // Redirect to delete view
-      window.location.href = '/accsubgrpdelete/' + itemId;
-    });
-  });
-
-  function redirectaccsubgrp() {
-    window.location.href = "{% url 'account_sub_group-create' %}"
-  }
+ 
 </script>
 
 
