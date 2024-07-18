@@ -73,6 +73,7 @@ def custom_404_view(request, exception):
 
 #____________________________Production-Product-View-Start__________________________________
 
+@login_required(login_url='login')
 def dashboard(request):
     return render(request,'misc/dashboard.html')
 

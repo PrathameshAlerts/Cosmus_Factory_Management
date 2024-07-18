@@ -69,7 +69,10 @@
   <section >
     <div class="container">
       <div class="form-back">
-      
+        {% for message in messages %}
+        {{message}}
+        {% endfor %}
+
         <form method="POST">
           {% csrf_token %}
           <h2 class="pb-2  pt-4 fw-bold">LOGIN</h2>
