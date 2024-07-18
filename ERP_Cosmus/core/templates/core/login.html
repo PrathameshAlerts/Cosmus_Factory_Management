@@ -72,20 +72,20 @@
       
         <form method="POST">
           {% csrf_token %}
-          <!-- <h2 class="pb-2 fw-bold">LOGIN</h2>
-          <lable>User Name:</lable>
+          <h2 class="pb-2  pt-4 fw-bold">LOGIN</h2>
+          <label for="id_username">UserName:</label>
           <div class="mb-2">
-            <input type="text" class="form-page" id="exampleInputEmail1" placeholder="Email*" required>
+            <input type="text" class="form-page" name="username" maxlength="30" id="id_username" placeholder="Email*" required>
           </div>
-          <lable>Password:</lable>
+          <label for="id_password">Password:</label>
           <div class="mb-2">
-            <input type="password" class="form-page" id="exampleInputPassword1" placeholder="Password*" min="8" required>
+            <input type="password" class="form-page" name="password" id="id_password" placeholder="Password*" min="8" required>
           </div>
           <div class="mb-3 fs-6">
             <span for="exampleCheck1" class="text-dark px-2">Forget Password?</span>
-          </div> -->
+          </div>
 
-          {{form}}
+          <!-- {{form}} -->
 
           <button type="submit" class="button1 ">Login</button>
         </form>

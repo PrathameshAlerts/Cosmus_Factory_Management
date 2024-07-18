@@ -16,11 +16,11 @@
   <div class="d-flex flex-wrap">
     {{formset.management_form}}
     {% for form in formset %}
-    {{form.id}}
+    <!-- <input type="hidden" id="id_{{forloop.counter0}}-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" name="{{forloop.counter0}}-PProduct_SKU"> -->
     <div id="cardContainer">
-      <div class="card card-clone" style="width: 15rem;">
+      <div class="card card-clone" style="width: 15rem; display: block; ">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
-        <img id="id_frame-{{forloop.counter0}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %} " class="card-img-top card-img p-1" alt="..." name="frame-{{forloop.counter0}}" />
+        <img id="id_frame-{{forloop.counter0}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %}" class="card-img-top card-img p-1" alt="..." name="frame-{{forloop.counter0}}" />
        
       
         <div class="card-body card-input">
@@ -80,14 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function createCard() {
-        const form = document.getElementById('id_productdetails-TOTAL_FORMS');
-        let totalForms = parseInt(form.value);
+        var form = document.getElementById('id_productdetails-TOTAL_FORMS');
+        var totalForms = parseInt(form.value);
    
-        const cardContainer = document.getElementById("cardContainer");
-        const cardClone = document.querySelector(".card-clone");
+        var cardContainer = document.getElementById("cardContainer");
+        var cardClone = document.querySelector(".card-clone");
 
         // Clone the card clone element
-        const newCard = cardClone.cloneNode(true);
+        var newCard = cardClone.cloneNode(true);
         //newCard.classList.remove("card-clone"); // Remove the clone class to make it unique
         
         // Reset values in inputs and selects
@@ -122,9 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Event listener for image preview
         newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
-            const imgPreview = newCard.querySelector(".card-img-top");
-            const file = event.target.files[0];
-            const reader = new FileReader();
+            var imgPreview = newCard.querySelector(".card-img-top");
+            var file = event.target.files[0];
+            var reader = new FileReader();
             
             reader.onload = function () {
                 imgPreview.src = reader.result;
@@ -137,15 +137,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Event listener for canceling the card
         newCard.querySelector(".cancel-btn").addEventListener("click", function (event) {
-            const cards = event.target.closest(".card");
+            var cards = event.target.closest(".card");
             cards.parentNode.removeChild(cards);
             form.value = totalForms - 1; // Decrement the counter
         });
 
-        const existingCards = document.querySelectorAll('.card');
+        var existingCards = document.querySelectorAll('.card');
        
         if (existingCards.length > 0) {
-            const lastCard = existingCards[existingCards.length - 1];
+            var lastCard = existingCards[existingCards.length - 1];
             if (lastCard.nextSibling ) {
            
               lastCard.insertAdjacentElement('afterend', newCard);
@@ -159,18 +159,22 @@ document.addEventListener("DOMContentLoaded", function () {
         form.value = totalForms + 1;
         
     }
-
+    document.querySelector(".cancel-btn").addEventListener("click", function (event) {
+            var cards = event.target.closest(".card");
+            cards.parentNode.removeChild(cards);
+            //form.value = totalForms - 1; // Decrement the counter
+        });
     // Initial image preview setup for existing cards
     document.querySelectorAll('.card').forEach(function (card, index) {
-        const imageInput = card.querySelectorAll('input[type="file"]');
-        const imgPreview = card.querySelector(".card-img-top");
+        var imageInput = card.querySelectorAll('input[type="file"]');
+        var imgPreview = card.querySelector(".card-img-top");
    
         if (imageInput && imageInput.value) {
             imgPreview.src = imageInput.value;
         }
         document.querySelector('input[type="file"]').addEventListener("change", function () {
-        const file = event.target.files[0];
-            const reader = new FileReader();
+          var file = event.target.files[0];
+          var reader = new FileReader();
             
             reader.onload = function () {
                 imgPreview.src = reader.result;
@@ -184,6 +188,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+// function productCardData(){
+//   var form = document.getElementById('id_productdetails-TOTAL_FORMS').value;
+//   console.log(form)
+ 
+
+//   const productSku = document.querySelectorAll('input[name$="-PProduct_SKU');
+//   productSku.forEach(function(e){
+//     if(e.value !== "None"){
+//       e.setAttribute('display', 'block');
+//     }
+//   })
+
+// }
+// productCardData()
 </script>
 
 <script>

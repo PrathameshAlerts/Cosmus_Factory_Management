@@ -210,15 +210,16 @@
       
       <ul class="dropdown-menu dropdown-menu-right">
           <div class="pro-head">
-              <img src="../../../static/images/logo.jpg" class="rounded-circle image-h" alt="User-Profile-Image">
-              <span>John Doe</span>
-              <a href="{% url 'logout' %}" class="" title="Logout">
-                <i class="fa-solid fa-right-from-bracket"></i>
-              </a>
+              <!-- <img src="../../../static/images/logo.jpg" class="rounded-circle image-h" alt="User-Profile-Image"> -->
+              <span>Jone Doe</span>
+             
             </div>
-            <li><a href="user-profile.html" class="dropdown-item "><i class="fa-regular fa-user"></i> Profile</a></li>
+            <li> 
+             <button type="button" class="dropdown-item text-danger fw-bold"><a href="{% url 'logout' %}" title="Logout" style="text-decoration: none; color: red;"> Logout</a></button>
+            </li>
+            <!-- <li><a href="user-profile.html" class="dropdown-item "><i class="fa-regular fa-user"></i> Profile</a></li>
             <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
-            <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li>
+            <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li> -->
       </ul>
      </li>
        </ul>

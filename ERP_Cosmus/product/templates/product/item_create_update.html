@@ -592,7 +592,7 @@ function receiveData(openingValue){
 </script>
 
 <script>
-   let newPopup = null;
+   var newPopup = null;
 $(document).ready(function(){
    
   let itemValue;
@@ -681,8 +681,8 @@ $(document).ready(function(){
 
 <script>
 
-let popUpWindow = null;
 
+var popUpWindow = null;
 function openFabPopup(button) {
   openPopup(button, '{% url "fabric-popup" %}');
 }
@@ -718,8 +718,8 @@ function openPopup(button, url) {
 
 function newPopUpwindow(button, path) {
   // Specify minimum height and width
-  const minWidth = 800; // minimum width
-  const minHeight = 600; // minimum height
+  var minWidth = 800; // minimum width
+  var minHeight = 600; // minimum height
 
   $('body').addClass('popup-open');
   $('body').append('<div class="popup-overlay"></div>');
@@ -729,10 +729,10 @@ function newPopUpwindow(button, path) {
     // Ensure only one event listener is attached
   
     window.addEventListener('message', function(event){
-             if (event.data.message === 'close') {
+        if (event.data.message === 'close') {
                 $('body').removeClass('popup-open');
                 $('.popup-overlay').remove();
-                popupWindow.close();
+                popUpWindow.close();
              }
            });
 
@@ -745,9 +745,9 @@ function newPopUpwindow(button, path) {
 }
 function handleOutsideClick(event) {
 
-  const popUpRect = document.querySelector('body').getBoundingClientRect();
-  const clickX = event.clientX;
-  const clickY = event.clientY;
+  var popUpRect = document.querySelector('body').getBoundingClientRect();
+  var clickX = event.clientX;
+  var clickY = event.clientY;
    
     // Check if the click is outside the popup window
     if (
