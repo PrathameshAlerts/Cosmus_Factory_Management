@@ -3,60 +3,62 @@
 
 {% block body %}
 <div>
-    <h2>Create Packing</h2>
-    <form id="packingForm" class="mt-5" action="" method="POST">
-        {% csrf_token %}
-        <div class="d-flex mb-3">
-            <label for="id_packing_material" class="form-label px-2">Name:</label>
-            <input type="text" class="item-select" value="{{ form.instance.packing_material }}" name="packing_material"
-                maxlength="255" required id="id_packing_material">
-        </div>
 
-        <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    <form id="packingForm" action="" method="POST">
+      {% csrf_token %}
+      <h2 class="mb-3 mt-4">Create Packing</h2>
+      <div class="d-flex">
+        <label for="id_packing_material" class="form-label create_color_lable">Name:</label>
+        <input type="text" class="item-select" value="{{ form.instance.packing_material }}" name="packing_material" maxlength="255" required id="id_packing_material">
+      </div>
+  
+      <input type="submit" class="create-btn mt-4" name="save" value="Save">
     </form>
-</div>
+  </div>
+  
 
 <script>
     let formSubmitted = false;  // Flag to track whether form is submitted
+  
     document.getElementById('packingForm').addEventListener('submit', async function (event) {
-        event.preventDefault();  // Prevent the default form submission
-
-        const form = event.target;
-        const formData = new FormData(form);
-
-        formData.append('save', 'Save');
-
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                }
-            });
-
-            if (response.ok) {
-                const data = await response.json();  // Await the response.json() call
-                window.opener.postMessage(data, '*');
-                window.close();
-
-                formSubmitted = true;  // Set flag to true after successful submission
-            } else {
-                console.error('Failed to update Packing.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
+      event.preventDefault();  // Prevent the default form submission
+  
+      const form = event.target;
+      const formData = new FormData(form);
+      formData.append('save', 'Save');
+      try {
+  
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+          }
+        });
+  
+        if (response.ok) {
+  
+          const data = await response.json();  // Await the response.json() call
+          window.opener.postMessage(data, '*');
+          window.close();  // Now you can access the JSON data
+          formSubmitted = true;  // Set flag to true after successful submission
+        } else {
+          console.error('Failed to create color.');
         }
-
+  
+      } catch (error) {
+        console.error('Error:', error);
+      }
     });
-
+  
     // Handle the case when the window is closed without form submission
-    window.addEventListener('beforeunload', async function (event) {
-        if (!formSubmitted) {
-            const data = { message: 'close' };
-            window.opener.postMessage(data, '*');
-        }
+    window.addEventListener('beforeunload', function (event) {
+      if (!formSubmitted) {
+        const data = { message: 'close' };
+        window.opener.postMessage(data, '*');
+      }
     });
-</script>
+  </script>
+  
 
 {% endblock body %}

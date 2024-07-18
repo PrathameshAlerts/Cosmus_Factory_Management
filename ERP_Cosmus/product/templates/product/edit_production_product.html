@@ -496,6 +496,7 @@
 
 
 <script>
+  // Add click event listener to all delete buttons
   document.addEventListener('DOMContentLoaded', function () {
     // Add click event listener to all delete buttons
     document.querySelectorAll('.delete-btn').forEach(function (button) {
@@ -516,6 +517,7 @@
 </script>
 
 <script>
+  // THis code for a main catagory and sub catagory show in the form
   $(document).ready(function () {
     $('#id_Product_MainCatagory').change(function () {
       const p_main_cat = $(this).val(); // Get the value of the selected option
@@ -551,39 +553,39 @@
 
 <script>
   function redirectDownloadSetProduction() {
-    const ref_id = document.getElementById('id_Product_Refrence_ID').value
+    var ref_id = document.getElementById('id_Product_Refrence_ID').value
     window.location.href = '/export_Product2Item_excel/' + encodeURIComponent(ref_id)
   }
 
   function checkAll(source) {
-    const checkboxes = document.querySelectorAll('input[name="Product_Channel"]');
-    for (let i = 0; i < checkboxes.length; i++) {
+    var checkboxes = document.querySelectorAll('input[name="Product_Channel"]');
+    for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = source.checked;
     }
   }
 
   function redirectPproduct() {
-    const ref_id_value = document.getElementById('id_Product_Refrence_ID').value
+    var ref_id_value = document.getElementById('id_Product_Refrence_ID').value
 
     window.location.href = '/pproduct_creation_ref_id/' + encodeURIComponent(ref_id_value);
   }
 
-  function previewFile(event, counter) {
-    const preview = document.getElementById('previewImage_');
-    const file = event.target.files[0];
-    const reader = new FileReader();
+  // function previewFile(event, counter) {
+  //   const preview = document.getElementById('previewImage_');
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
 
-    reader.onloadend = function () {
-      preview.src = reader.result;
-    }
+  //   reader.onloadend = function () {
+  //     preview.src = reader.result;
+  //   }
 
-    if (file) {
-      reader.readAsDataURL(file);
-    } else {
-      preview.src = "";
-    }
-  }
-  previewFile()
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   } else {
+  //     preview.src = "";
+  //   }
+  // }
+  // previewFile()
 </script>
 
 <script>
@@ -607,19 +609,19 @@
 
 
   function openPopup(button, path) {
-    const card = button.closest('.card');
+    var card = button.closest('.card');
     if (card) {
-      const productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
+      var productSkuInput = card.querySelector('input[name^="productdetails-"][name$="-PProduct_SKU"]');
       if (productSkuInput) {
-        const productSku = productSkuInput.value;
-        const minWidth = 800; // minimum width
-        const minHeight = 600;
+        var productSku = productSkuInput.value;
+        var minWidth = 800; // minimum width
+        var minHeight = 600;
 
         $('body').addClass('popup-open');
         $('body').append('<div class="popup-overlay"></div>');
 
         // this will generate http://127.0.0.1:8000/ 
-        const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+        var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
         popupWindow = window.open(baseUrl + '/product' + path + productSku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
         window.addEventListener('message', function (event) {
@@ -645,35 +647,35 @@
 </script>
 
 <script>
-  var popupWindow = null;
+  var popupWindows = null;
 
   function editSetProduction(button) {
-    if (popupWindow === null || popupWindow.closed) {
+    if (popupWindows === null || popupWindows.closed) {
       newPopup(button, 'product2item/')
     } else {
-      popupWindow.focus();
+      popupWindows.focus();
     }
   }
   function productView(button) {
-    if (popupWindow === null || popupWindow.closed) {
+    if (popupWindows === null || popupWindows.closed) {
       newViewPopup(button, 'viewproduct2item_configs/')
     } else {
-      popupWindow.focus();
+      popupWindows.focus();
     }
   }
 
 
   function newPopup(button, path) {
-    const refrence_id = document.getElementById('id_Product_Refrence_ID').value;
-    const minWidth = 1270; // minimum width
-    const minHeight = 700;
+    var refrence_id = document.getElementById('id_Product_Refrence_ID').value;
+    var minWidth = 1270; // minimum width
+    var minHeight = 700;
 
     // $('body').addClass('popup-open');
     // $('body').append('<div class="popup-overlay"></div>');
 
     // this will generate http://127.0.0.1:8000/ 
-    const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
-    popupWindow = window.open(baseUrl + path + refrence_id, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+    popupWindows = window.open(baseUrl + path + refrence_id, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
     // window.addEventListener('message', function (event) {
     //   if (event.data.message === 'close') {
@@ -692,22 +694,22 @@
 
 
   function newViewPopup(button, path) {
-    const sku = document.getElementById('id_Products').value
-    const minWidth = 1270; // minimum width
-    const minHeight = 700;
+    var sku = document.getElementById('id_Products').value
+    var minWidth = 1270; // minimum width
+    var minHeight = 700;
 
     $('body').addClass('popup-open');
     $('body').append('<div class="popup-overlay"></div>');
 
     // this will generate http://127.0.0.1:8000/ 
-    const baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
-    popupWindow = window.open(baseUrl + path + sku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+    popupWindows = window.open(baseUrl + path + sku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
     window.addEventListener('message', function (event) {
       if (event.data.message === 'close') {
         $('body').removeClass('popup-open');
         $('.popup-overlay').remove();
-        popupWindow.close();
+        popupWindows.close();
       }
     });
 
@@ -718,14 +720,15 @@
   }
   function handleOutsideView(event) {
 
-    const popUpRect = document.querySelector('body').getBoundingClientRect();
-    const clickX = event.clientX;
-    const clickY = event.clientY;
+    var popUpRect = document.querySelector('body').getBoundingClientRect();
+    var clickX = event.clientX;
+    var clickY = event.clientY;
 
     // Check if the click is outside the popup window
     if (clickX > popUpRect.left || clickX <= popUpRect.right ||clickY > popUpRect.top || clickY <= popUpRect.bottom) {
 
       popupWindow.focus();
+      popupWindows.focus();
 
     }
 
