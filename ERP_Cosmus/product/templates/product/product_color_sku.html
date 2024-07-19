@@ -102,23 +102,28 @@ document.addEventListener("DOMContentLoaded", function () {
         newCard.querySelector('img').id = `id_frame-${totalForms}`;
         newCard.querySelector('img').setAttribute("name", `frame-${totalForms}`);
         newCard.querySelector('img').src = "";
+      
 
         newCard.querySelector('input[type="file"]').id = `id_productdetails-${totalForms}-PProduct_image`;
         newCard.querySelector('input[type="file"]').setAttribute("name", `productdetails-${totalForms}-PProduct_image`);
         newCard.querySelector('input[type="file"]').value = "";
+      
 
         newCard.querySelector('select[name$="-PProduct_color"]').id = `id_productdetails-${totalForms}-PProduct_color`;
         newCard.querySelector('select[name$="-PProduct_color"]').setAttribute("name", `productdetails-${totalForms}-PProduct_color`);
         newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
         newCard.querySelector('select[name$="-PProduct_color"]').value = "";
+       
 
         newCard.querySelector('input[name$="-PProduct_SKU"]').id = `id_productdetails-${totalForms}-PProduct_SKU`;
         newCard.querySelector('input[name$="-PProduct_SKU"]').setAttribute("name", `productdetails-${totalForms}-PProduct_SKU`);
         newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
+ 
 
         newCard.querySelector('input[name$="-Product_EANCode"]').id = `id_productdetails-${totalForms}-Product_EANCode`;
         newCard.querySelector('input[name$="-Product_EANCode"]').setAttribute("name", `productdetails-${totalForms}-Product_EANCode`);
         newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
+    
 
         // Event listener for image preview
         newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
@@ -145,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var existingCards = document.querySelectorAll('.card');
         var addButton = document.getElementById('addNewProductButton');
        
-        if (existingCards.length > 0 && existingCards % 4 === 0) {
+        if (existingCards.length > 0) {
             var lastCard = existingCards[existingCards.length - 1];
           
             if (lastCard.nextSibling ) {
@@ -224,24 +229,19 @@ function productCardData(){
         var images = cards[i].querySelectorAll('input[type="file"]');
         var productEnvCode = cards[i].querySelector('input[name$="-Product_EANCode"]');
     
-        productSkuInputs.setAttribute('readonly', 'readonly');
-        productColor.setAttribute('disabled', 'disabled');
-        productEnvCode.setAttribute('readonly', 'readonly');
-        images.forEach(function (input) {
-            input.disabled = true; // Prevent user from interacting with the file input
-        });
+        // productSkuInputs.setAttribute('readonly', 'readonly');
+        // productColor.setAttribute('disabled', 'disabled');
+        // productEnvCode.setAttribute('readonly', 'readonly');
+        // images.forEach(function (input) {
+        //     input.disabled = true; // Prevent user from interacting with the file input
+        // });
       
       }
     }
    
   }
-  console.log(cards)
-  document.querySelector(".cancel-btn").addEventListener("click", function (event) {
-            var card = event.target.closest(".card");
-            console,log('Test')
-            card.parentNode.removeChild(card);
-           
-        });
+
+
 }
 productCardData();
 </script>
