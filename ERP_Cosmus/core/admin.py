@@ -22,7 +22,7 @@ class CustomUserAdmin(UserAdmin):
     # for detail page
     fieldsets = (
         (None, {'fields': ('username', 'password',)}),
-        ('Permissions', {'fields': ( ('is_staff' , 'is_active',) )}),
+        ('Permissions', {'fields': ('is_staff' , 'is_active', )}),
 
         ('Advanced options', {
             'classes': ('collapse',),
