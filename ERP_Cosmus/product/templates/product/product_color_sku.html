@@ -16,9 +16,9 @@
   <div class="d-flex flex-wrap">
     {{formset.management_form}}
     {% for form in formset %}
-     <!-- <input type="hidden" id="id_{{forloop.counter0}}-PProduct_SKUs" value="{{form.instance.PProduct_SKU}}" name="{{forloop.counter0}}-PProduct_SKUs"> -->
+     <input type="hidden" id="id_{{forloop.counter0}}-PProduct_SKUs" value="{{form.instance.PProduct_SKU}}" name="{{forloop.counter0}}-PProduct_SKUs">
     <div id="cardContainer">
-      <div class="card card-clone" style="width: 15rem; display: none; ">
+      <div class="card card-clone" style="width: 15rem;  display: none;">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
         <img id="id_frame-{{forloop.counter0}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %}" class="card-img-top card-img p-1" alt="..." name="frame-{{forloop.counter0}}" />
        
@@ -72,7 +72,7 @@
  <script>
 
 document.addEventListener("DOMContentLoaded", function () {
-   
+
 
     // Event listener for adding new cards
     document.getElementById("addNewProductButton").addEventListener("click", function () {
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var imgPreview = newCard.querySelector(".card-img-top");
             var file = event.target.files[0];
             var reader = new FileReader();
-            console.log(imgPreview)
+          
             reader.onload = function () {
                 imgPreview.src = reader.result;
             };
@@ -143,11 +143,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         var existingCards = document.querySelectorAll('.card');
+        var addButton = document.getElementById('addNewProductButton');
        
-        if (existingCards.length > 0) {
+        if (existingCards.length > 0 && existingCards % 4 === 0) {
             var lastCard = existingCards[existingCards.length - 1];
+          
             if (lastCard.nextSibling ) {
-           
+              lastCard.insertAdjacentElement('afterend', addButton);
               lastCard.insertAdjacentElement('afterend', newCard);
             } else {
               
@@ -159,23 +161,19 @@ document.addEventListener("DOMContentLoaded", function () {
         form.value = totalForms + 1;
         
     }
-    document.querySelector(".cancel-btn").addEventListener("click", function (event) {
-            var cards = event.target.closest(".card");
-            cards.parentNode.removeChild(cards);
-            //form.value = totalForms - 1; // Decrement the counter
-        });
+ 
     // Initial image preview setup for existing cards
     document.querySelectorAll('.card').forEach(function (card, index) {
         var imageInput = card.querySelectorAll('input[type="file"]');
         var imgPreview = card.querySelector(".card-img-top");
-        console.log(imageInput)
+
         if (imageInput && imageInput.value) { 
             imgPreview.src = imageInput.value;
         }
         document.querySelector('input[type="file"]').addEventListener("change", function () {
           var file = event.target.files[0];
           var reader = new FileReader();
-            
+          
             reader.onload = function () {
                 imgPreview.src = reader.result;
             };
@@ -185,16 +183,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         
       })
+      
     });
 
+     var lastCard = document.querySelectorAll('.card');
+     var lastCards = lastCard[lastCard.length -1];
 
-  
-    document.querySelector('input[type="file"]').addEventListener("click", function () {
+     lastCards.querySelector('input[type="file"]').addEventListener("change", function () {
           var file = event.target.files[0];
-          var imgPreview = document.querySelector(".card-img-top");
+          var imgPreview = lastCards.querySelector(".card-img-top");
           var reader = new FileReader();
-            console.log(imgPreview)
+        
             reader.onload = function () {
+                console.log('imgPreview',imgPreview.src)
                 imgPreview.src = reader.result;
             };
 
@@ -204,19 +205,43 @@ document.addEventListener("DOMContentLoaded", function () {
         
       })
 
+  
+   
 }); 
 
 function productCardData(){
   var cards = document.querySelectorAll('.card');
-  console.log(cards);
+ 
   var productSku = document.getElementById('id_productdetails-0-PProduct_SKU').value;
 
   if(productSku){
     for(var i = 0 ; i < cards.length; i++){
       cards[i].style.display = "block";
+      var productSkuInput = cards[i].querySelector('input[name$="-PProduct_SKU"]').value;
+      if(productSkuInput !== ""){
+        var productSkuInputs = cards[i].querySelector('input[name$="-PProduct_SKU"]')
+        var productColor = cards[i].querySelector('select[name$="-PProduct_color"]');
+        var images = cards[i].querySelectorAll('input[type="file"]');
+        var productEnvCode = cards[i].querySelector('input[name$="-Product_EANCode"]');
     
+        productSkuInputs.setAttribute('readonly', 'readonly');
+        productColor.setAttribute('disabled', 'disabled');
+        productEnvCode.setAttribute('readonly', 'readonly');
+        images.forEach(function (input) {
+            input.disabled = true; // Prevent user from interacting with the file input
+        });
+      
+      }
     }
+   
   }
+  console.log(cards)
+  document.querySelector(".cancel-btn").addEventListener("click", function (event) {
+            var card = event.target.closest(".card");
+            console,log('Test')
+            card.parentNode.removeChild(card);
+           
+        });
 }
 productCardData();
 </script>
