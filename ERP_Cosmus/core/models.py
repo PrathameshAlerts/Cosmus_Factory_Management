@@ -10,7 +10,7 @@ from django.dispatch import receiver
 class Company(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    gst_number = models.CharField(max_length = 15,validators = [MinLengthValidator(15), MaxLengthValidator(15)])
+    gst_number = models.CharField(max_length = 15, validators = [MinLengthValidator(15), MaxLengthValidator(15)])
 
     def __str__(self):
         return self.name

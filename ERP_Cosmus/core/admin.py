@@ -5,6 +5,9 @@ from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 
+
+admin.site.site_header = 'Cosmus Management Pannel'
+
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -12,18 +15,18 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
 
     # for list page
-    list_display = ('email','username', 'is_staff', 'is_active')
-    list_filter = ('email', 'username','is_staff', 'is_active',)
+    list_display = ('username', 'is_staff', 'is_active')
+    list_filter = ('username','is_staff', 'is_active',)
 
 
     # for detail page
     fieldsets = (
         (None, {'fields': ('username', 'password',)}),
-        ('Permissions', {'fields': ( ('is_staff' , 'is_active') )}),
+        ('Permissions', {'fields': ('is_staff' , 'is_active', )}),
 
         ('Advanced options', {
             'classes': ('collapse',),
-            'fields': ('groups', 'user_permissions'),
+            'fields': ('groups', 'user_permissions',),
         }),
     )
     add_fieldsets = (

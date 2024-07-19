@@ -4,6 +4,7 @@ from .decorators import authenticated_user
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from .models import Company
 
 
 
@@ -36,3 +37,10 @@ def logout_user(request):
     logout(request)
     messages.success(request,'You have been logged out ')
     return redirect('login')
+
+
+def create_update_delete_list_company(request,pk=None):
+
+    company_all = Company.objects.all()
+
+    return render(request,'core/company_create_update_list.html', {'company_all':company_all})

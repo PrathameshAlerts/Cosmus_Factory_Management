@@ -40,19 +40,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "debug_toolbar",
-    #'inventory',
+
     'core',
+    'product',
+     #'inventory',
     #'discount',
     #'logistics',
     #'order',
-    'product',
     #'returns',
     #'tax',
+
+    
     'bootstrap5',
-    #'cities_light',
     'django_htmx',
+    "debug_toolbar",
     #'django_select2',
+    #'cities_light',
+    
 ]
 
 
