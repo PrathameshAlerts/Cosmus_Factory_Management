@@ -41,4 +41,6 @@ def logout_user(request):
 
 def create_update_delete_list_company(request,pk=None):
 
-    company_all= Company.objects.all()
+    company_all = Company.objects.all()
+
+    return render(request,'core/company_create_update_list.html', {'company_all':company_all})
