@@ -16,9 +16,9 @@
   <div class="d-flex flex-wrap">
     {{formset.management_form}}
     {% for form in formset %}
-    <!-- <input type="hidden" id="id_{{forloop.counter0}}-PProduct_SKU" value="{{form.instance.PProduct_SKU}}" name="{{forloop.counter0}}-PProduct_SKU"> -->
+     <!-- <input type="hidden" id="id_{{forloop.counter0}}-PProduct_SKUs" value="{{form.instance.PProduct_SKU}}" name="{{forloop.counter0}}-PProduct_SKUs"> -->
     <div id="cardContainer">
-      <div class="card card-clone" style="width: 15rem; display: block; ">
+      <div class="card card-clone" style="width: 15rem; display: none; ">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
         <img id="id_frame-{{forloop.counter0}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %}" class="card-img-top card-img p-1" alt="..." name="frame-{{forloop.counter0}}" />
        
@@ -69,7 +69,7 @@
 
 </form>
 
-<script>
+ <script>
 
 document.addEventListener("DOMContentLoaded", function () {
    
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
         newCard.querySelectorAll('input, select').forEach(function (el) {
             el.value = "";
         });
-
+        // newCard.classList.remove("card");
         // Display the new card
         newCard.style.display = "block";
 
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var imgPreview = newCard.querySelector(".card-img-top");
             var file = event.target.files[0];
             var reader = new FileReader();
-            
+            console.log(imgPreview)
             reader.onload = function () {
                 imgPreview.src = reader.result;
             };
@@ -168,8 +168,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.card').forEach(function (card, index) {
         var imageInput = card.querySelectorAll('input[type="file"]');
         var imgPreview = card.querySelector(".card-img-top");
-   
-        if (imageInput && imageInput.value) {
+        console.log(imageInput)
+        if (imageInput && imageInput.value) { 
             imgPreview.src = imageInput.value;
         }
         document.querySelector('input[type="file"]').addEventListener("change", function () {
@@ -187,23 +187,40 @@ document.addEventListener("DOMContentLoaded", function () {
       })
     });
 
-});
 
-// function productCardData(){
-//   var form = document.getElementById('id_productdetails-TOTAL_FORMS').value;
-//   console.log(form)
- 
+  
+    document.querySelector('input[type="file"]').addEventListener("click", function () {
+          var file = event.target.files[0];
+          var imgPreview = document.querySelector(".card-img-top");
+          var reader = new FileReader();
+            console.log(imgPreview)
+            reader.onload = function () {
+                imgPreview.src = reader.result;
+            };
 
-//   const productSku = document.querySelectorAll('input[name$="-PProduct_SKU');
-//   productSku.forEach(function(e){
-//     if(e.value !== "None"){
-//       e.setAttribute('display', 'block');
-//     }
-//   })
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        
+      })
 
-// }
-// productCardData()
+}); 
+
+function productCardData(){
+  var cards = document.querySelectorAll('.card');
+  console.log(cards);
+  var productSku = document.getElementById('id_productdetails-0-PProduct_SKU').value;
+
+  if(productSku){
+    for(var i = 0 ; i < cards.length; i++){
+      cards[i].style.display = "block";
+    
+    }
+  }
+}
+productCardData();
 </script>
+
 
 <script>
   let popUpWindow = null;

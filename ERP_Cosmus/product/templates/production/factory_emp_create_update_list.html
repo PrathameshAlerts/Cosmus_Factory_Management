@@ -101,10 +101,10 @@
 
   $(document).ready(function () {
     $('.delete-btn').click(function () {
-      const itemId = $(this).data('item-id');
-      const name = $(this).closest('tr').find('td').eq(1).text();
+      var itemId = $(this).data('item-id');
+      var name = $(this).closest('tr').find('td').eq(1).text();
 
-      const EmployeeName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+      var EmployeeName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
       $('#modal-body-text').html(' Are you sure you want to delete this Employee name ' + EmployeeName + '?');
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
       $('#exampleModal').modal('show');
@@ -114,7 +114,7 @@
 
     // Confirm delete button click event
     $('#confirmDeleteButton').click(function () {
-      const itemId = $(this).data('item-id');
+      var itemId = $(this).data('item-id');
       // Redirect to delete view
       window.location.href = '/factory_emp_delete/' + itemId;
     });

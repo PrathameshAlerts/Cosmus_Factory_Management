@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="post" enctype="multipart/form-data">
+<form  id="myForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ formset.management_form }}
     <div class="row">
@@ -41,6 +41,10 @@
 
 <script>
     let formSubmitted = false;
+
+  document.getElementById('myForm').addEventListener('submit', function() {
+    formSubmitted = true;
+  });
     document.addEventListener("DOMContentLoaded", function () {
         const addFormButton = document.getElementById("addForm");
         const tableBody = document.querySelector("#myTable tbody");
