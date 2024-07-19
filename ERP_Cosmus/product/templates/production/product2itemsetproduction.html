@@ -578,10 +578,11 @@
                     // Find the row containing the clicked delete button
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
+                    const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
-
+                        rowValue.required = false;
                         row.style.display = 'none';
 
                     } else {
@@ -678,9 +679,11 @@
                     // Find the row containing the clicked delete button
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
+                    const rowValue = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
+                        rowValue.required = false;
                         row.style.display = 'none';
 
                     } else {

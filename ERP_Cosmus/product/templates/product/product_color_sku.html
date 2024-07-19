@@ -13,11 +13,11 @@
     <input type="number" name="Product_Refrence_ID" id="Product_Refrence_ID" value="{{ref_id | default_if_none:''}}">
   </div>
  
-  <div class="d-flex flex-wrap">
+  <div class="">
     {{formset.management_form}}
     {% for form in formset %}
      <input type="hidden" id="id_{{forloop.counter0}}-PProduct_SKUs" value="{{form.instance.PProduct_SKU}}" name="{{forloop.counter0}}-PProduct_SKUs">
-    <div id="cardContainer">
+    <div id="cardContainer" class="">
       <div class="card card-clone" style="width: 15rem;  display: none;">
         <button type="button" value="cancel" class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
         <img id="id_frame-{{forloop.counter0}}" src="{% if form.instance.PProduct_image %}{{ form.instance.PProduct_image.url }}{% else %}...{% endif %}" class="card-img-top card-img p-1" alt="..." name="frame-{{forloop.counter0}}" />
@@ -54,7 +54,6 @@
             <input type="number" name="{{form.prefix}}-Product_EANCode" maxlength="100" id="id_{{form.prefix}}-Product_EANCode" class="rounded-3 w-75 px-2" value="{{form.instance.Product_EANCode}}" />
           </div>
         </div>
-        
       </div>
     </div>
     {% endfor %}
@@ -69,149 +68,141 @@
 
 </form>
 
- <script>
-
+<script>
 document.addEventListener("DOMContentLoaded", function () {
-
-
-    // Event listener for adding new cards
-    document.getElementById("addNewProductButton").addEventListener("click", function () {
-        createCard();
-    });
-
-    function createCard() {
-        var form = document.getElementById('id_productdetails-TOTAL_FORMS');
-        var totalForms = parseInt(form.value);
    
-        var cardContainer = document.getElementById("cardContainer");
-        var cardClone = document.querySelector(".card-clone");
 
-        // Clone the card clone element
-        var newCard = cardClone.cloneNode(true);
-        //newCard.classList.remove("card-clone"); // Remove the clone class to make it unique
-        
-        // Reset values in inputs and selects
-        newCard.querySelectorAll('input, select').forEach(function (el) {
-            el.value = "";
-        });
-        // newCard.classList.remove("card");
-        // Display the new card
-        newCard.style.display = "block";
+  // Event listener for adding new cards
+  document.getElementById("addNewProductButton").addEventListener("click", function () {
+      createCard();
+  });
 
-        // Set IDs and names dynamically based on totalForms
-        newCard.querySelector('img').id = `id_frame-${totalForms}`;
-        newCard.querySelector('img').setAttribute("name", `frame-${totalForms}`);
-        newCard.querySelector('img').src = "";
-      
-
-        newCard.querySelector('input[type="file"]').id = `id_productdetails-${totalForms}-PProduct_image`;
-        newCard.querySelector('input[type="file"]').setAttribute("name", `productdetails-${totalForms}-PProduct_image`);
-        newCard.querySelector('input[type="file"]').value = "";
-      
-
-        newCard.querySelector('select[name$="-PProduct_color"]').id = `id_productdetails-${totalForms}-PProduct_color`;
-        newCard.querySelector('select[name$="-PProduct_color"]').setAttribute("name", `productdetails-${totalForms}-PProduct_color`);
-        newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
-        newCard.querySelector('select[name$="-PProduct_color"]').value = "";
-       
-
-        newCard.querySelector('input[name$="-PProduct_SKU"]').id = `id_productdetails-${totalForms}-PProduct_SKU`;
-        newCard.querySelector('input[name$="-PProduct_SKU"]').setAttribute("name", `productdetails-${totalForms}-PProduct_SKU`);
-        newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
+  function createCard() {
+      var form = document.getElementById('id_productdetails-TOTAL_FORMS');
+      var totalForms = parseInt(form.value);
  
+      var cardContainer = document.getElementById("cardContainer");
+      var cardClone = document.querySelector(".card-clone");
 
-        newCard.querySelector('input[name$="-Product_EANCode"]').id = `id_productdetails-${totalForms}-Product_EANCode`;
-        newCard.querySelector('input[name$="-Product_EANCode"]').setAttribute("name", `productdetails-${totalForms}-Product_EANCode`);
-        newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
-    
+      // Clone the card clone element
+      var newCard = cardClone.cloneNode(true);
+      //newCard.classList.remove("card-clone"); // Remove the clone class to make it unique
+      
+      // Reset values in inputs and selects
+      newCard.querySelectorAll('input, select').forEach(function (el) {
+          el.value = "";
+      });
+      // newCard.classList.remove("card");
+      // Display the new card
+      newCard.style.display = "block";
 
-        // Event listener for image preview
-        newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
-            var imgPreview = newCard.querySelector(".card-img-top");
-            var file = event.target.files[0];
-            var reader = new FileReader();
-          
-            reader.onload = function () {
-                imgPreview.src = reader.result;
-            };
+      // Set IDs and names dynamically based on totalForms
+      newCard.querySelector('img').id = `id_frame-${totalForms}`;
+      newCard.querySelector('img').setAttribute("name", `frame-${totalForms}`);
+      newCard.querySelector('img').src = "";
 
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        });
+      newCard.querySelector('input[type="file"]').id = `id_productdetails-${totalForms}-PProduct_image`;
+      newCard.querySelector('input[type="file"]').setAttribute("name", `productdetails-${totalForms}-PProduct_image`);
+      newCard.querySelector('input[type="file"]').value = "";
 
-        // Event listener for canceling the card
-        newCard.querySelector(".cancel-btn").addEventListener("click", function (event) {
-            var cards = event.target.closest(".card");
-            cards.parentNode.removeChild(cards);
-            form.value = totalForms - 1; // Decrement the counter
-        });
+      newCard.querySelector('select[name$="-PProduct_color"]').id = `id_productdetails-${totalForms}-PProduct_color`;
+      newCard.querySelector('select[name$="-PProduct_color"]').setAttribute("name", `productdetails-${totalForms}-PProduct_color`);
+      newCard.querySelector('select[name$="-PProduct_color"]').selectedIndex = 0;
+      newCard.querySelector('select[name$="-PProduct_color"]').value = "";
 
-        var existingCards = document.querySelectorAll('.card');
-        var addButton = document.getElementById('addNewProductButton');
-       
-        if (existingCards.length > 0) {
-            var lastCard = existingCards[existingCards.length - 1];
-          
-            if (lastCard.nextSibling ) {
-              lastCard.insertAdjacentElement('afterend', addButton);
-              lastCard.insertAdjacentElement('afterend', newCard);
-            } else {
-              
-                cardContainer.appendChild(newCard); // Fallback if nextSibling is null
-            }
-        } else {
-            cardContainer.appendChild(newCard);
-        }
-        form.value = totalForms + 1;
-        
-    }
- 
-    // Initial image preview setup for existing cards
-    document.querySelectorAll('.card').forEach(function (card, index) {
-        var imageInput = card.querySelectorAll('input[type="file"]');
-        var imgPreview = card.querySelector(".card-img-top");
+      newCard.querySelector('input[name$="-PProduct_SKU"]').id = `id_productdetails-${totalForms}-PProduct_SKU`;
+      newCard.querySelector('input[name$="-PProduct_SKU"]').setAttribute("name", `productdetails-${totalForms}-PProduct_SKU`);
+      newCard.querySelector('input[name$="-PProduct_SKU"]').value = "";
 
-        if (imageInput && imageInput.value) { 
-            imgPreview.src = imageInput.value;
-        }
-        document.querySelector('input[type="file"]').addEventListener("change", function () {
+      newCard.querySelector('input[name$="-Product_EANCode"]').id = `id_productdetails-${totalForms}-Product_EANCode`;
+      newCard.querySelector('input[name$="-Product_EANCode"]').setAttribute("name", `productdetails-${totalForms}-Product_EANCode`);
+      newCard.querySelector('input[name$="-Product_EANCode"]').value = "";
+
+      // Event listener for image preview
+      newCard.querySelector('input[type="file"]').addEventListener("change", function (event) {
+          var imgPreview = newCard.querySelector(".card-img-top");
           var file = event.target.files[0];
           var reader = new FileReader();
-          
-            reader.onload = function () {
-                imgPreview.src = reader.result;
-            };
+       
+          reader.onload = function () {
+              imgPreview.src = reader.result;
+          };
 
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        
-      })
+          if (file) {
+              reader.readAsDataURL(file);
+          }
+      });
+
+      // Event listener for canceling the card
+      newCard.querySelector(".cancel-btn").addEventListener("click", function (event) {
+          var cards = event.target.closest(".card");
+          cards.parentNode.removeChild(cards);
+          form.value = totalForms - 1; // Decrement the counter
+      });
+
+      var existingCards = document.querySelectorAll('.card');
+      var mainCard = document.getElementById('cardContainer');
+      if (existingCards.length > 0) {
+          var lastCard = existingCards[existingCards.length - 1];
+          console.log(lastCard.nextSibling)
+          if (lastCard.nextSibling ) {
+         
+            lastCard.insertAdjacentElement('afterend', newCard);
+          } else {
+            
+              cardContainer.appendChild(newCard); // Fallback if nextSibling is null
+          }
+      } else {
+          cardContainer.appendChild(newCard);
+      }
+      form.value = totalForms + 1;
       
-    });
+  }
+  // document.querySelector(".cancel-btn").addEventListener("click", function (event) {
+  //         var cards = event.target.closest(".card");
+  //         cards.parentNode.removeChild(cards);
+  //         //form.value = totalForms - 1; // Decrement the counter
+  //     });
+  // Initial image preview setup for existing cards
+  document.querySelectorAll('.card').forEach(function (card, index) {
+      var imageInput = card.querySelectorAll('input[type="file"]');
+      var imgPreview = card.querySelector(".card-img-top");
+      console.log(imageInput)
+      if (imageInput && imageInput.value) { 
+          imgPreview.src = imageInput.value;
+      }
+      document.querySelector('input[type="file"]').addEventListener("change", function () {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+          
+          reader.onload = function () {
+              imgPreview.src = reader.result;
+          };
 
-     var lastCard = document.querySelectorAll('.card');
-     var lastCards = lastCard[lastCard.length -1];
+          if (file) {
+              reader.readAsDataURL(file);
+          }
+      
+    })
+  });
 
-     lastCards.querySelector('input[type="file"]').addEventListener("change", function () {
-          var file = event.target.files[0];
-          var imgPreview = lastCards.querySelector(".card-img-top");
-          var reader = new FileReader();
-        
-            reader.onload = function () {
-                console.log('imgPreview',imgPreview.src)
-                imgPreview.src = reader.result;
-            };
 
-            if (file) {
-                reader.readAsDataURL(file);
-            }
-        
-      })
 
-  
-   
+  document.querySelector('input[type="file"]').addEventListener("click", function () {
+        var file = event.target.files[0];
+        var imgPreview = document.querySelector(".card-img-top");
+        var reader = new FileReader();
+          console.log(imgPreview)
+          reader.onload = function () {
+              imgPreview.src = reader.result;
+          };
+
+          if (file) {
+              reader.readAsDataURL(file);
+          }
+      
+    })
+
 }); 
 
 function productCardData(){
@@ -243,57 +234,59 @@ function productCardData(){
 
 
 }
+
 productCardData();
 </script>
 
 
 <script>
-  let popUpWindow = null;
-  function openNewColor(button) {
-    if (popUpWindow === null || popUpWindow.closed) {
-      newPopUpwindow(button, '{% url "color-popup" %}');
-    } else {
-      popUpWindow.focus();
+let popUpWindow = null;
+function openNewColor(button) {
+  if (popUpWindow === null || popUpWindow.closed) {
+    newPopUpwindow(button, '{% url "color-popup" %}');
+  } else {
+    popUpWindow.focus();
+  }
+}
+
+function newPopUpwindow(button, path) {
+  // Specify minimum height and width
+
+  $('body').addClass('popup-open');
+  $('body').append('<div class="popup-overlay"></div>');
+  const minWidth = 800; // minimum width
+  const minHeight = 600; // minimum height
+
+  // this will generate http://127.0.0.1:8000/ 
+  const baseUrl = "{{ request.scheme }}://{{ request.get_host }}";
+  popUpWindow = window.open(baseUrl + path, "_blank", "width=" + minWidth + ", height=" + minHeight + ", resizable=yes");
+
+  window.addEventListener('message', function(event){
+    if (event.data.message === 'close') {
+      $('body').removeClass('popup-open');
+      $('.popup-overlay').remove();
+        popUpWindow.close();
     }
-  }
+  });
+      
+   // Listen for messages from the popup window
+  window.addEventListener('click', function(event) {
+    handleOutside(event);
+  });
+}
 
-  function newPopUpwindow(button, path) {
-    // Specify minimum height and width
+function handleOutside(event) {
+  const popUpRect = document.querySelector('body').getBoundingClientRect();
+  const clickX = event.clientX;
+  const clickY = event.clientY;
 
-    $('body').addClass('popup-open');
-    $('body').append('<div class="popup-overlay"></div>');
-    const minWidth = 800; // minimum width
-    const minHeight = 600; // minimum height
-
-    // this will generate http://127.0.0.1:8000/ 
-    const baseUrl = "{{ request.scheme }}://{{ request.get_host }}";
-    popUpWindow = window.open(baseUrl + path, "_blank", "width=" + minWidth + ", height=" + minHeight + ", resizable=yes");
-
-    window.addEventListener('message', function(event){
-      if (event.data.message === 'close') {
-        $('body').removeClass('popup-open');
-        $('.popup-overlay').remove();
-          popUpWindow.close();
-      }
-    });
-        
-     // Listen for messages from the popup window
-    window.addEventListener('click', function(event) {
-      handleOutside(event);
-    });
-  }
-
-  function handleOutside(event) {
-    const popUpRect = document.querySelector('body').getBoundingClientRect();
-    const clickX = event.clientX;
-    const clickY = event.clientY;
-
-      // Check if the click is outside the popup window
-      if ( clickX > popUpRect.left || clickX <= popUpRect.right || clickY > popUpRect.top || clickY <= popUpRect.bottom) {
-    
-        popUpWindow.focus();  
-      }
-  }
+    // Check if the click is outside the popup window
+    if ( clickX > popUpRect.left || clickX <= popUpRect.right || clickY > popUpRect.top || clickY <= popUpRect.bottom) {
+  
+      popUpWindow.focus();  
+    }
+}
 </script>
+
 
 {% endblock body %}
