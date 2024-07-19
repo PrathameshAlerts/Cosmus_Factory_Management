@@ -3,7 +3,7 @@
 {% block body %}
 
 <h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="myProductForm">
     {% csrf_token %}
     <h4 class="mb-3">Add Unique Product</h3>
         <div class="">
@@ -497,6 +497,7 @@
 
 <script>
 
+
     // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
         const addFormButton = document.getElementById('addForm');
@@ -597,6 +598,10 @@
 </script>
 
 <script>
+    let formSubmitted = false;
+    document.getElementById('myProductForm').addEventListener('submit', function() {
+    formSubmitted = true;
+  });
     // add a new row to the common product2itemcommonformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
         const addNewButton = document.getElementById('addNewRow');
@@ -687,13 +692,13 @@
         deletedRow();
     });
 
-// var formSubmitted = false;
-//     // Handle the case when the window is closed without form submission
-//     window.addEventListener('beforeunload', function (event) {
-//         if (!formSubmitted) {
-//             const data = { message: 'close' };
-//             window.opener.postMessage(data, '*');
-//         }
-//     });
+
+    // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload', function (event) {
+        if (!formSubmitted) {
+            const data = { message: 'close' };
+            window.opener.postMessage(data, '*');
+        }
+    });
 </script>
 {% endblock body %}
