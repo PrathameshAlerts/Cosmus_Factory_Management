@@ -886,7 +886,7 @@ def item_edit(request,pk):
     fab_finishes = FabricFinishes.objects.all()
     item_pk = get_object_or_404(Item_Creation,pk = pk)
 
-    form = Itemform(instance = item_pk)
+    form = Itemform(instance=item_pk)
     formset = ShadeFormSet(instance= item_pk)
 
     

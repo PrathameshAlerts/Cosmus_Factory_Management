@@ -55,6 +55,7 @@ class CustomUserManager(BaseUserManager):
             user.groups.add(group)
         user.save()
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField()
     username = models.CharField(max_length=30, unique=True)
