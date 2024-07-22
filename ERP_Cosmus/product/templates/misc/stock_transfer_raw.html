@@ -117,6 +117,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
         const addRowButton = document.getElementById('addRowButton');
         const mainTable = document.querySelector('.mainTableList');
 
@@ -203,7 +204,24 @@
         deleteRow();
     });
 
-
+    function editStockTransfer() {
+        var forms = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS').value;
+        for(var i=0; i<forms; i++){
+            var stockId = document.getElementById('id_rawstocktrasferrecords_set-' + i +'-id').value;
+            console.log(stockId)
+            if(stockId !== ""){
+                var stockItemName = document.getElementById('id_stock_name_' + i);
+                stockItemName.disabled = true;
+                console.log(stockItemName)
+                var StockShades = document.getElementById('id_rawstocktrasferrecords_set-'+i+'-item_shade_transfer');
+                StockShades.disabled = true;
+                var stockQty = document.getElementById('id_rawstocktrasferrecords_set-'+i+'-item_quantity_transfer');
+                stockQty.readOnly = true;
+            }
+        }
+      
+    }
+    editStockTransfer()
     $(document).ready(function () {
         $('#id_source_godown').on('change', function () {
             const selectedGodownId = $(this).val();

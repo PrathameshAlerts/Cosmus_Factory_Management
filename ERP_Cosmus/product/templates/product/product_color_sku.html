@@ -13,7 +13,7 @@
     <input type="number" name="Product_Refrence_ID" id="Product_Refrence_ID" value="{{ref_id | default_if_none:''}}">
   </div>
  
-  <div class="">
+  <div class="d-flex flex-wrap">
     {{formset.management_form}}
     {% for form in formset %}
      <input type="hidden" id="id_{{forloop.counter0}}-PProduct_SKUs" value="{{form.instance.PProduct_SKU}}" name="{{forloop.counter0}}-PProduct_SKUs">
@@ -184,7 +184,26 @@ document.addEventListener("DOMContentLoaded", function () {
           }
       
     })
-  });
+  })
+  var lastCard = document.querySelectorAll('.card');
+     var lastCards = lastCard[lastCard.length -1];
+
+     lastCards.querySelector('input[type="file"]').addEventListener("change", function () {
+          var file = event.target.files[0];
+          var imgPreview = lastCards.querySelector(".card-img-top");
+          var reader = new FileReader();
+        
+            reader.onload = function () {
+                console.log('imgPreview',imgPreview.src)
+                imgPreview.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        
+      })
+
 
 
 
@@ -202,6 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
       
     })
+
 
 }); 
 
