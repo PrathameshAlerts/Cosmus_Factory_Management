@@ -884,17 +884,23 @@ def item_edit(request,pk):
     colors = Color.objects.all()
     packaging_material_all = packaging.objects.all()
     fab_finishes = FabricFinishes.objects.all()
-    item_pk = get_object_or_404(Item_Creation,pk = pk)
+    item_pk = get_object_or_404(Item_Creation ,pk = pk)
 
     form = Itemform(instance=item_pk)
-    formset = ShadeFormSet(instance= item_pk)
 
-    
+    queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('godown_shades__quantity'),
+                                                                     total_rate=Sum(F('godown_shades__quantity') * F('godown_shades__item_rate'), 
+                                                                                    output_field=DecimalField(max_digits=10, decimal_places=2)))
+
+    for x in queryset:
+        print(x.total_rate)
+    formset = ShadeFormSet(instance= item_pk, queryset=queryset)
+
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
     # as item_edit instance is also provided while updating or adding with formsets to the shades module
     if request.method == 'POST':
-        form = Itemform(request.POST, request.FILES , instance=item_pk)
-        formset = ShadeFormSet(request.POST , request.FILES, instance=item_pk)
+        form = Itemform(request.POST, request.FILES , instance = item_pk)
+        formset = ShadeFormSet(request.POST , request.FILES, instance = item_pk)
         formset.forms = [form for form in formset if form.has_changed()] # check for changed forms in shadeformset
         try:
             if form.is_valid() and formset.is_valid():
@@ -980,8 +986,7 @@ def item_edit(request,pk):
 
 
 def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
-    print('POST',request.POST)
-
+    
     godowns =  Godown_raw_material.objects.all()
 
     formset = None
@@ -1819,7 +1824,7 @@ def stockTrasferRawDelete(request,pk):
 
 
 def purchasevouchercreateupdate(request, pk=None):
-    print(request.POST)
+    
     item_name_searched = Item_Creation.objects.all()
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
@@ -1863,7 +1868,7 @@ def purchasevouchercreateupdate(request, pk=None):
         item_color_out = ''
         item_per_out = ''
         item_gst_out = 0
-        item_rate_out = 0
+        
     
         if item_value is not None: 
             item_value = int(item_value)
@@ -1878,8 +1883,6 @@ def purchasevouchercreateupdate(request, pk=None):
             item_gst = item.Item_Creation_GST.gst_percentage
             item_gst_out = item_gst_out + item_gst
 
-            item_rate = item.rate
-            item_rate_out = item_rate_out + item_rate
         
         # filter out item shades
         item_shades = item_color_shade.objects.filter(items = item_value)
@@ -1902,7 +1905,7 @@ def purchasevouchercreateupdate(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
-                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,'item_rate':item_rate_out})
+                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no})
 
     if request.method == 'POST':
         
@@ -2174,6 +2177,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
         item_rate_value = decimal.Decimal(item_rate)
     else:
         item_rate_value = None
+    
    
     #unique_id generation is on add button so created rows will not have unique id
     # create dynamic formsets depends on create or update
@@ -2252,8 +2256,9 @@ def purchasevouchercreategodownpopupurl(request):
     unique_id = request.GET.get('unique_invoice_row_id')
     primary_key = request.GET.get('purchase_id')
     prefix_id  = request.GET.get('prefix_id')
-    item_rate = request.GET.get('item_rate')
-    
+    item_instance = item_color_shade.objects.get(id=shade_id)
+    item_rate = item_instance.rate
+    print(item_rate)
 
     #if pk is there in ajax then it generates url for update if unique id is there in rquest then it generates url with unique key
     if primary_key is not None:

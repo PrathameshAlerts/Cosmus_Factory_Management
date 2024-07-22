@@ -299,8 +299,6 @@ def created_updated_purchase_order_product_qty(sender, instance, created, **kwar
         for product in products.productdetails.all():
             purchase_order_to_product.objects.create(purchase_order_id=purchase_order_instance,product_id=product,order_quantity=0)
             
-            
-
 
     if not created:
         products = PProduct_Creation.objects.filter(Product = product_id)
@@ -315,10 +313,10 @@ def created_updated_purchase_order_product_qty(sender, instance, created, **kwar
 @receiver(post_save, sender=purchase_voucher_items)
 def set_item_rate_on_purchase(sender, instance, created, **kwargs):
     item_rate = instance.rate
-    item_id = instance.item_shade.items.id
+    item_shade_id = instance.item_shade.id
 
-    if item_id:
-        item_instance = Item_Creation.objects.get(id=item_id)
+    if item_shade_id:
+        item_instance = item_color_shade.objects.get(id=item_shade_id)
         item_instance.rate = item_rate
         item_instance.save()
 
@@ -328,10 +326,10 @@ def set_item_rate_on_purchase(sender, instance, created, **kwargs):
 @receiver(post_save, sender=opening_shade_godown_quantity)
 def set_item_rate_on_purchase(sender, instance, created, **kwargs):
     item_rate = instance.opening_rate
-    item_id = instance.opening_purchase_voucher_godown_item.items.id
+    item_shade_id = instance.opening_purchase_voucher_godown_item.id
 
-    if item_id:
-        item_instance = Item_Creation.objects.get(id=item_id)  # set item rate only if the rate is 0, which means there is no purchase made. 
+    if item_shade_id:
+        item_instance = item_color_shade.objects.get(id=item_shade_id)  # set item rate only if the rate is 0, which means there is no purchase made. 
         if item_instance.rate == 0:
             item_instance.rate = item_rate
             item_instance.save()

@@ -57,7 +57,7 @@
                             <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}" required ></td>
 
                            
-                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate | default_if_none:item_rate_value}}" required >
+                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate|default_if_none:item_rate_value}}" required >
                             </td>
                             <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount | default_if_none:'' }}" readonly>
                             </td>

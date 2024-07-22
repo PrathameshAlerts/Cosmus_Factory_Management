@@ -509,9 +509,9 @@ function randomValue (){
                 var item_shade__quantity = response.item_shades_total_quantity_dict;
                 
 
-                var itemrateinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-rate');
-                var item_rate_response = response.item_rate;
-                itemrateinput.value = item_rate_response
+                //var itemrateinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-rate');
+                //var item_rate_response = response.item_rate;
+                //itemrateinput.value = item_rate_response
 
 
                 $.each(item_shade_response, function (key, value) {
@@ -664,8 +664,7 @@ function randomValue (){
         const selectedShade = $(this).val();
         const  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
         const purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');
-        const itemrate =  document.getElementById('purchase_voucher_items_set-' + purchaseValue + '-rate');
-        itemratevalue = itemrate.value
+
      
         const prefix_id = purchaseValue;
         let primary_id = null;
@@ -742,7 +741,7 @@ function randomValue (){
                             'selected_shade': selectedShade,
                             'unique_invoice_row_id': uniqueIdValue,
                             'prefix_id':prefix_id,
-                            'item_rate' :itemratevalue,
+                            
                         },
                         success: function (response) {
                             // Open the dynamic URL received from the server

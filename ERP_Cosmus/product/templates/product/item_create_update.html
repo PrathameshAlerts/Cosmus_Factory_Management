@@ -83,8 +83,11 @@
             <tr>
               <th>Rank</th>
               <th>Name</th>
-              <th>Shade Name</th>
+              <th>Image</th>
               <th>Opening Qty</th>
+              <th>Total Quantity</th>
+              <th>Rate</th>
+              <th>Value</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -125,7 +128,9 @@
              </div>
                </td>
              <td><button type="button" class="add_btn itemQty" id="{{ shade_form.prefix }}-opening_qty" name="{{ shade_form.prefix }}-opening_qty" >Add</button></td>
-               
+             <td>{{shade_form.instance.total_quantity}}</td>
+             <td>{{shade_form.instance.rate}}</td>
+             <td>{{shade_form.instance.total_rate}}</td>
                <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="shade_deleteId px-2" style="display: none;"  name="{{shade_form.prefix}}-DELETE" id="{{shade_form.prefix}}-DELETE" value="" ></i></span></td>
              </tr>
              {% endfor %}
