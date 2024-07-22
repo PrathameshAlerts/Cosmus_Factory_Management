@@ -201,7 +201,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
             <thead>
               <tr>
                 <th class="px-2 ">Shade</th>
-                <th class="px-2">Godown<span style="padding-left: 59px;">Qty</span></th>
+                <th class="px-2">Godown<span style="padding-left: 55px;">Qty</span></th>
               </tr>
             </thead>
             <tbody class="mainTableList">
@@ -210,9 +210,9 @@ the input field will be pre-filled with that value when the page is loaded. -->
                 <td>{{shade.item_shade_name}}</td>
                 <td>
                   {% for shade_q in shade.godown_shades.all %}
-                  <table class="table">
+                  <table class="mx-2 mb-2 pt-1" style="border-bottom: 1px solid #888;" >
                     <tr class="text-nowrap">
-                      <td>{{shade_q.godown_name}}</td>
+                      <td class="pe-5 pb-2">{{shade_q.godown_name}}</td>
                       <td>{{shade_q.quantity}}</td>
                     </tr>
                   </table>
