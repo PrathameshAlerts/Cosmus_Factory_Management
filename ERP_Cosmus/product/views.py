@@ -888,12 +888,13 @@ def item_edit(request,pk):
 
     form = Itemform(instance=item_pk)
 
+    # setting filtered queryset with annototed column of total_quantity  and total_rate to the formset 
     queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('godown_shades__quantity'),
-                                                                     total_rate=Sum(F('godown_shades__quantity') * F('godown_shades__item_rate'), 
-                                                                                    output_field=DecimalField(max_digits=10, decimal_places=2)))
-
+                                                                     total_value=Sum(F('godown_shades__quantity') * F('godown_shades__item_rate'), 
+                                                                                output_field=DecimalField(max_digits=10, decimal_places=2)))
     for x in queryset:
-        print(x.total_rate)
+        print(x.total_quantity)
+        print(x.total_value)
     formset = ShadeFormSet(instance= item_pk, queryset=queryset)
 
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
@@ -1121,7 +1122,6 @@ def item_delete(request, pk):
 def color_create_update(request, pk=None):
 
     queryset = Color.objects.all()
-
     color_search = request.GET.get('color_search','')
 
     if color_search != '':
@@ -1158,8 +1158,8 @@ def color_create_update(request, pk=None):
 
         if form.is_valid():
             form.save()
+
             # need to add a verification if getting request from simple form or from modal for save redirection 
-            
             if 'save' in request.POST and request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
@@ -1174,7 +1174,6 @@ def color_create_update(request, pk=None):
                 messages.success(request, 'Color created successfully.')
                 return JsonResponse({'color_all':list(color_all)}) 
         else:
-            print(form.errors)
             return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search})
 
     return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search})
@@ -2389,11 +2388,10 @@ def gst_create_update(request, pk = None):
             elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
                 # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
                 gst_updated = gst.objects.all().values('id', 'gst_percentage')
-                print(list(gst_updated))
+                
                 return JsonResponse({"gst_updated": list(gst_updated)})
         else:
-            print(form.errors)
-            messages.success(request,'An error occured.')
+            return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
 
     return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
 
@@ -2417,8 +2415,6 @@ def fabric_finishes_create_update(request, pk = None):
 
     if fabric_finishes_search != '':
         queryset =  FabricFinishes.objects.filter(fabric_finish__icontains = fabric_finishes_search)
-
-
 
 
     if pk:
@@ -2454,7 +2450,7 @@ def fabric_finishes_create_update(request, pk = None):
                 
                 return JsonResponse({"fabric_finishes_all": list(fabric_finishes_all)})
         else:
-            messages.error(request,'An error occured.')
+            
             return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
 
     return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
@@ -2494,7 +2490,7 @@ def packaging_create_update(request, pk = None):
     form = packaging_form(instance = packaging_instance)
 
     if request.method == 'POST':
-        form = packaging_form(request.POST,instance = packaging_instance)
+        form = packaging_form(request.POST ,instance = packaging_instance)
         if form.is_valid():
             form.save()
 
@@ -2513,7 +2509,7 @@ def packaging_create_update(request, pk = None):
 
                 return JsonResponse({'packaging_all_values': list(packaging_all_values)})
         else:
-            messages.error(request, 'An error accoured.')
+            
             return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset}) 
 
     return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset})

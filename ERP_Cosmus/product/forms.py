@@ -165,7 +165,21 @@ class ColorForm(forms.ModelForm):
     class Meta:
         model = Color
         fields = ['color_name']
+
+    def clean_color_name(self):
+        data = self.cleaned_data['color_name']
         
+        # Exclude current instance from validation logic when updating 
+        colors = Color.objects.exclude(id=self.instance.id)
+
+        for color in colors:
+            if color.color_name.lower() == data.lower():
+                raise ValidationError('Color already created!')
+
+        return data
+            
+
+
 class Itemform(forms.ModelForm):
     
     class Meta:
@@ -188,13 +202,35 @@ class ItemFabricGroup(forms.ModelForm):
         model = Fabric_Group_Model 
         fields = ['fab_grp_name']
 
+    def clean_fab_grp_name(self):
+        data = self.cleaned_data['fab_grp_name']
+        
+        # Exclude current instance from validation logic when updating 
+        fabric_groups = Fabric_Group_Model.objects.exclude(id=self.instance.id)
+        
+        for fabgrp in fabric_groups:
+            if fabgrp.fab_grp_name.lower() == data.lower():
+                raise ValidationError('fabric Group already created!')
 
+        return data
 
 class UnitName(forms.ModelForm):
     class Meta:
         model = Unit_Name_Create
         fields = ['unit_name']
 
+
+    def clean_unit_name(self):
+        data = self.cleaned_data['unit_name']
+        
+        # Exclude current instance from validation logic when updating 
+        unitnames = Unit_Name_Create.objects.exclude(id=self.instance.id)
+        
+        for unitname in unitnames:
+            if unitname.unit_name.lower() == data.lower():
+                raise ValidationError('Unit Name already created!')
+
+        return data
 
 class account_sub_grp_form(forms.ModelForm):
     class Meta:
@@ -257,11 +293,36 @@ class packaging_form(forms.ModelForm):
         fields = ['packing_material']
 
 
+    def clean_packing_material(self):
+        data = self.cleaned_data['packing_material']
+        
+        # Exclude current instance from validation logic when updating 
+        packagings = packaging.objects.exclude(id=self.instance.id)
+        
+        for pack in packagings:
+            if pack.packing_material.lower() == data.lower():
+                raise ValidationError('packaging material already created!')
+
+        return data
+
+
+
 class FabricFinishes_form(forms.ModelForm):
     class Meta:
         model = FabricFinishes
         fields = ['fabric_finish']
+        
+    def clean_fabric_finish(self):
+        data = self.cleaned_data['fabric_finish']
+        
+        # Exclude current instance from validation logic when updating 
+        fab_finishes = FabricFinishes.objects.exclude(id=self.instance.id)
+        
+        for fab_finish in fab_finishes:
+            if fab_finish.fabric_finish.lower() == data.lower():
+                raise ValidationError('fabric finish already created!')
 
+        return data
 
 class product_main_category_form(forms.ModelForm):
     class Meta:
