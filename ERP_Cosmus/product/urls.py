@@ -176,6 +176,8 @@ urlpatterns = [
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
+    path('godownstockrawmaterialreportsingle/<int:g_id>', views.godown_stock_raw_material_report_single, name = 'godown-stock-raw-material-report_single'),
+    
 
     #common Routes
     path('', views.dashboard , name ='dashboard-main'),

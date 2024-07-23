@@ -1,0 +1,23 @@
+{% extends 'product/base.html' %}
+{% block body %}
+  <h2>Raw Material Stock - {{godown_name}} </h2>
+
+  <table>
+    <tr>
+      <th>Fabric Group</th>
+      <th>Quantity</th>
+      <th>Value</th>
+      <th>Fabric Health</th>
+    </tr>
+    {% for fab in fabric_in_godown %}
+    <tr>
+      <td>{{fab.Item_shade_name.items.Fabric_Group.fab_grp_name}}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    
+    </tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}

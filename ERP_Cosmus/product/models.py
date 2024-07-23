@@ -291,17 +291,22 @@ class Unit_Name_Create(models.Model):
     class Meta:
         ordering = ['unit_name']
 
+
 class FabricFinishes(models.Model):
     fabric_finish =  models.CharField(max_length = 100, unique=True)
 
     class Meta:
         ordering = ['fabric_finish']
+
+
 class packaging(models.Model):
     packing_material = models.CharField(max_length = 100, unique=True)
     
     class Meta:
         ordering = ['packing_material']
-        
+
+
+
 class Item_Creation(models.Model):
     STATUS =  [
         ("Unused","Unused"),
@@ -447,8 +452,6 @@ class Ledger(models.Model):
 
 
 
-
-
 class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, blank = False, null = False, related_name = 'transaction_entry')
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
@@ -472,7 +475,6 @@ class Godown_raw_material(models.Model):
 
         if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists():
             raise ValidationError(f'{self.godown_name_raw} already exists!')
-
 
         super().save(*args, **kwargs)
 
