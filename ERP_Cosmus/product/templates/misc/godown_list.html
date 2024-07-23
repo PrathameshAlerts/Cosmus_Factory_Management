@@ -33,7 +33,7 @@
             {% for godown in godowns_raw %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td>{{godown.godown_name_raw}}</td>
+              <td> <a href="{% url 'godown-stock-raw-material-report_single' godown.id %}">{{godown.godown_name_raw}}</a></td>
               <td><a href="{% url 'godown-update' 'raw' godown.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ godown.id }}" data-type="{{ 'raw' }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>

@@ -73,7 +73,7 @@ def custom_404_view(request, exception):
 
 #____________________________Production-Product-View-Start__________________________________
 
-@login_required(login_url='login')
+#@login_required(login_url='login')
 def dashboard(request):
     return render(request,'misc/dashboard.html')
 
@@ -3506,6 +3506,20 @@ def creditdebitreport(request):
     all_reports = account_credit_debit_master_table.objects.all()
 
     return render(request,'misc/credit_debit_master_report.html',{'all_reports':all_reports})
+
+
+def godown_stock_raw_material_report_single(request,g_id):
+    items_in_godown = item_godown_quantity_through_table.objects.filter(godown_name=g_id)
+    
+    
+    fabric_in_godown = items_in_godown.distinct('Item_shade_name__items__Fabric_Group')
+    # get the name of the godown
+    godown_name = items_in_godown.first().godown_name
+
+    
+    return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godown_name':godown_name,'fabric_in_godown':fabric_in_godown})
+
+
 
 #__________________________reports-end____________________________________
 
