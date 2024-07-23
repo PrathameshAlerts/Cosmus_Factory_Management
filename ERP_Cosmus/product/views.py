@@ -1557,28 +1557,47 @@ def ledgerdelete(request, pk):
 
 def godowncreate(request):
     if request.method == 'POST':
-
         godown_name =  request.POST['godown_name']
         godown_type = request.POST['Godown_types']
-        if godown_type == 'Raw Material':
-            godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
-            godown_raw.save()  #save the instance to db 
-            messages.success(request,'Raw material godown created.')
 
-            if 'save' in request.POST:
+        if godown_type == 'Raw Material':
+            try:
+                godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
+                godown_raw.save()  #save the instance to db 
+                messages.success(request,'Raw material godown created.')
+
+                if 'save' in request.POST:
+                    return redirect('godown-list')
+                elif 'save_and_add_another' in request.POST:
+                    return redirect('godown-create')
+                
+            except ValidationError as ve:
+                messages.error(request,f"{ve}")
                 return redirect('godown-list')
-            elif 'save_and_add_another' in request.POST:
-                return redirect('godown-create')
+
+            except Exception as e:
+                messages.error(request,f"{e}")
+                return redirect('godown-list')
         
         elif godown_type == 'Finished Goods':
-            godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
-            godown_finished.save() #save the instance to db 
-            messages.success(request,'Finished goods godown created.')
+            try:
+                godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
+                godown_finished.save() #save the instance to db 
+                messages.success(request,'Finished goods godown created.')
 
-            if 'save' in request.POST:
+                if 'save' in request.POST:
+                    return redirect('godown-list')
+                elif 'save_and_add_another' in request.POST:
+                    return redirect('godown-create')
+            
+            except ValidationError as ve:
+                messages.error(request,f"{ve}")
                 return redirect('godown-list')
-            elif 'save_and_add_another' in request.POST:
-                return redirect('godown-create')
+
+            except Exception as e:
+                messages.error(request,f"{e}")
+                return redirect('godown-list')
+            
         else:
             messages.error(request,'Error Selecting Godown.')
             return redirect('godown-list')
@@ -3409,7 +3428,6 @@ def factoryempdelete(request,pk=None):
 
 
 def cutting_room_create_update_list(request, pk=None):
-    
 
     if pk:
         instance = cutting_room.objects.get(id = pk)
@@ -3430,8 +3448,9 @@ def cutting_room_create_update_list(request, pk=None):
 
 
 def cuttingroomdelete(request,pk):
-    instance = cutting_room.objects.get(id = pk)
-    return render(request,'production/cuttingroomcreateupdatelist.html')
+    instance = cutting_room.objects.get(pk = pk)
+    instance.delete()
+    return redirect('cutting_room-create')
 
 
 #_________________________factory-emp-end_______________________________________

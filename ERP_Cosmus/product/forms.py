@@ -13,6 +13,8 @@ import logging
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
+from .mixins import UniqueFieldMixin
+
 
 logger = logging.getLogger('product_forms')
 
@@ -31,15 +33,17 @@ class PProductCreateFormset(BaseInlineFormSet):
 
     def clean(self):
         super().clean()
-        skus = []
 
+        skus = []
         for form in self.forms:
             if not form.cleaned_data.get('DELETE', False):
                 sku = form.cleaned_data.get('PProduct_SKU')
 
+                # check if sku are not repeated in the same formset
                 if sku in skus:
                     raise ValidationError('Duplicate SKU in the formset.')
-
+                
+                # checks if sku is not present in the database
                 if PProduct_Creation.objects.filter(PProduct_SKU=sku).exists():
                     raise ValidationError('Product SKU already exists in the database')
 
@@ -116,7 +120,7 @@ Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, f
 
 
 
-class PProductAddForm(forms.ModelForm):
+class PProductAddForm(UniqueFieldMixin,forms.ModelForm):
 
     widgets = {
             'Product_Channel': forms.CheckboxSelectMultiple,
@@ -138,6 +142,13 @@ class PProductAddForm(forms.ModelForm):
                   'Product_WRP','Product_CashCounterPrice','Product_IndiaMartPrice','Product_Retailer_dealer_Price',
                   'Product_Wholesaler_DistributorPrice','Product_Gender',
                   'Product_QtyPerBox']
+        
+    def clean_Model_Name(self):
+        return self.clean_unique_field('Model_Name',Product)
+    
+
+    def clean_Product_Name(self):
+        return self.clean_unique_field('Product_Name',Product)
         
 
 PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('PProduct_image', 'PProduct_color', 'PProduct_SKU','Product_EANCode','Product_Rating',
@@ -161,26 +172,32 @@ class CustomPProductaddFormSet(PProductaddFormSet):
             
 
 
-class ColorForm(forms.ModelForm):
+class ColorForm(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = Color
         fields = ['color_name']
 
     def clean_color_name(self):
+        return self.clean_unique_field('color_name',Color)
+    
+    """
+        OR
+            def clean_color_name(self):
         data = self.cleaned_data['color_name']
         
         # Exclude current instance from validation logic when updating 
         colors = Color.objects.exclude(id=self.instance.id)
 
-        for color in colors:
-            if color.color_name.lower() == data.lower():
+        #further filter the excluded query if color_name 
+        if colors.filter(color_name__iexact = data).exists():
                 raise ValidationError('Color already created!')
 
         return data
+    """
             
 
 
-class Itemform(forms.ModelForm):
+class Itemform(UniqueFieldMixin,forms.ModelForm):
     
     class Meta:
         model = Item_Creation
@@ -188,6 +205,8 @@ class Itemform(forms.ModelForm):
                  'unit_name_item','Units','Panha', 'Fabric_nonfabric','Item_Fabric_Finishes','Fabric_Group',
                  'Item_Creation_GST','HSN_Code','status','item_shade_image']
         
+    def clean_item_name(self):
+        return self.clean_unique_field('item_name',Item_Creation)
 
 
 ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
@@ -197,51 +216,39 @@ OpeningShadeFormSetupdate = inlineformset_factory(item_color_shade, opening_shad
 
 
 
-class ItemFabricGroup(forms.ModelForm):
+class ItemFabricGroup(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = Fabric_Group_Model 
         fields = ['fab_grp_name']
 
     def clean_fab_grp_name(self):
-        data = self.cleaned_data['fab_grp_name']
-        
-        # Exclude current instance from validation logic when updating 
-        fabric_groups = Fabric_Group_Model.objects.exclude(id=self.instance.id)
-        
-        for fabgrp in fabric_groups:
-            if fabgrp.fab_grp_name.lower() == data.lower():
-                raise ValidationError('fabric Group already created!')
+        return self.clean_unique_field('fab_grp_name',Fabric_Group_Model)
 
-        return data
-
-class UnitName(forms.ModelForm):
+class UnitName(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = Unit_Name_Create
         fields = ['unit_name']
 
 
     def clean_unit_name(self):
-        data = self.cleaned_data['unit_name']
-        
-        # Exclude current instance from validation logic when updating 
-        unitnames = Unit_Name_Create.objects.exclude(id=self.instance.id)
-        
-        for unitname in unitnames:
-            if unitname.unit_name.lower() == data.lower():
-                raise ValidationError('Unit Name already created!')
+        return self.clean_unique_field('unit_name',Unit_Name_Create)
 
-        return data
-
-class account_sub_grp_form(forms.ModelForm):
+class account_sub_grp_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = AccountSubGroup
         fields = ['acc_grp', 'account_sub_group']
 
+    def clean_account_sub_group(self):
+        return self.clean_unique_field('account_sub_group',AccountSubGroup)
 
-class StockItemForm(forms.ModelForm):
+
+class StockItemForm(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = StockItem
         fields = ['acc_sub_grp','stock_item_name']
+
+    def clean_stock_item_name(self):
+        return self.clean_unique_field('stock_item_name',StockItem)
 
 
 
@@ -287,55 +294,43 @@ class gst_form(forms.ModelForm):
         fields = ['gst_percentage']
 
 
-class packaging_form(forms.ModelForm):
+class packaging_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = packaging
         fields = ['packing_material']
 
 
     def clean_packing_material(self):
-        data = self.cleaned_data['packing_material']
-        
-        # Exclude current instance from validation logic when updating 
-        packagings = packaging.objects.exclude(id=self.instance.id)
-        
-        for pack in packagings:
-            if pack.packing_material.lower() == data.lower():
-                raise ValidationError('packaging material already created!')
-
-        return data
+        return self.clean_unique_field('packing_material',packaging)
 
 
 
-class FabricFinishes_form(forms.ModelForm):
+class FabricFinishes_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = FabricFinishes
         fields = ['fabric_finish']
         
     def clean_fabric_finish(self):
-        data = self.cleaned_data['fabric_finish']
-        
-        # Exclude current instance from validation logic when updating 
-        fab_finishes = FabricFinishes.objects.exclude(id=self.instance.id)
-        
-        for fab_finish in fab_finishes:
-            if fab_finish.fabric_finish.lower() == data.lower():
-                raise ValidationError('fabric finish already created!')
+        return self.clean_unique_field('fabric_finish', FabricFinishes)
 
-        return data
 
-class product_main_category_form(forms.ModelForm):
+class product_main_category_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = MainCategory
         fields = ['product_category_name']
 
+    def clean_product_category_name(self):
+        return self.clean_unique_field('product_category_name',MainCategory)
 
 
-class product_sub_category_form(forms.ModelForm):
+
+class product_sub_category_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = SubCategory
         fields = ['product_sub_category_name','product_main_category']
 
+    def clean_product_sub_category_name(self):
+        return self.clean_unique_field('product_sub_category_name',SubCategory)
 
 
 class purchase_order_form(forms.ModelForm):
@@ -565,18 +560,29 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
 
 
 
-class factory_employee_form(forms.ModelForm):
+class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = factory_employee
         fields = ['factory_emp_name','cutting_room_id']
 
+    def clean_factory_emp_name(self):
+        return self.clean_unique_field('factory_emp_name',factory_employee)
 
-
-class cutting_room_form(forms.ModelForm):
+class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
 
     class Meta:
         model = cutting_room
         fields = ['cutting_room_name']
+
+    # this way we can use a custom mixin or the below commented code 
+    def clean_cutting_room_name(self):
+        return self.clean_unique_field('cutting_room_name',cutting_room)
+
+
+
+
+
+
 
 
 

@@ -171,7 +171,7 @@ urlpatterns = [
     # cutting Room 
     path('cutting_room_create/',views.cutting_room_create_update_list, name = 'cutting_room-create'),
     path('cutting_room_update/<int:pk>',views.cutting_room_create_update_list, name = 'cutting_room-update'),
-    path('cutting_room_delete/<int:pk>',views.factoryempdelete, name = 'cutting_room-delete'),
+    path('cutting_room_delete/<int:pk>',views.cuttingroomdelete, name = 'cutting_room-delete'),
 
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
