@@ -8,7 +8,7 @@
 <div class="col-lg-5">
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-
+    <input type="hidden" name="id" value="{{form.instance.id}}" id="id_items">
     <div class="d-flex mb-3">
       {% if not form.instance.id %}
       <label for="id_item-to-clone" class="item-form">Clone Item: </label>
@@ -127,9 +127,9 @@
                   <input type="file" class="pt-1 itemQty" style="width: 250px;" name="{{ shade_form.prefix }}-item_color_image" accept="image/*" id="{{ shade_form.prefix }}-item_color_image">
                 </div>
               </td>
-              <td><input type="number" class="itemQty" name="{{forloop.counter0}}-total_quantity" id="id_{{forloop.counter0}}-total_quantity" value="{{shade_form.instance.total_quantity}}" readonly></td>
-              <td><input type="number" class="itemQty" name="{{foorloop.counter0}}-total_rate" id="id_{{forloop.counter0}}-total_rate" value="{{shade_form.instance.rate}}"></td>
-              <td><input type="number" class="itemQty" name="{{forloop.counter0}}-total_value" id="id_{{forloop.counter0}}-total_value" value="{{shade_form.instance.total_rate}}"></td>
+              <td><input type="number" class="itemNewQty" name="{{forloop.counter0}}-total_quantity" id="id_{{forloop.counter0}}-total_quantity" value="{{shade_form.instance.total_quantity}}" readonly></td>
+              <td><input type="number" class="itemNewQty" name="{{foorloop.counter0}}-total_rate" id="id_{{forloop.counter0}}-total_rate" value="{{shade_form.instance.rate}}" readonly></td>
+              <td><input type="number" class="itemNewQty" name="{{forloop.counter0}}-total_value" id="id_{{forloop.counter0}}-total_value" value="{{shade_form.instance.total_rate}}" readonly></td>
               <td><button type="button" class="add_btn itemQty" id="{{ shade_form.prefix }}-opening_qty" name="{{ shade_form.prefix }}-opening_qty" >Add</button></td>
               <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="shade_deleteId px-2" style="display: none;"  name="{{shade_form.prefix}}-DELETE" id="{{shade_form.prefix}}-DELETE" value="" ></i></span></td>
              </tr>
@@ -192,8 +192,7 @@
 
     <div class=" d-flex my-3">
       <label for="id_Panha" class=" item-form">Panha:</label>
-      <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha | default_if_none:''}}" step="0.01" required
-        id="id_Panha">
+      <input type="number" class="item-select" name="Panha" value="{{form.instance.Panha | default_if_none:''}}" step="0.01" required min="1" id="id_Panha">
     </div>
     <div class=" d-flex my-3">
       <label for="id_Fabric_nonfabric" class=" item-form">Fabric/Non Fabric:</label>
@@ -282,7 +281,13 @@
 
 <script>
 
-  function TotalValueCalculation(){
+document.addEventListener("DOMContentLoaded",function(){
+  TotalValueCalculation() 
+})
+function TotalValueCalculation(){
+    var shadeId = document.getElementById('id_items').value;
+    console.log(shadeId);
+    if(shadeId != "None"){
     var form = document.getElementById('id_shades-TOTAL_FORMS').value;
     for(var i=0;i<form;i++){
         var quantity = document.getElementById('id_'+i+'-total_quantity').value;
@@ -294,7 +299,8 @@
         console.log(totalValue);
     }
   }
-  TotalValueCalculation() 
+  }
+ 
  window.addEventListener('message', function(event) {
     const data = event.data;
     if (data.gst_updated) {

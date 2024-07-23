@@ -364,6 +364,19 @@ input[type=number] {
 .dud-logout{
     color: black
 }
+
+.itemNewQty{
+    background-color: transparent;
+    border: none;
+    width: 100px;
+    padding-left: 5px;
+    height: 29px;
+}
+.itemNewQty:focus{
+    outline: none;
+}
+
+
 /*====item page end====*/
 /*====siderbar====*/
 
@@ -1757,6 +1770,13 @@ styles.css */
     padding-left: 6px;
     height: 28px;
     background-color: transparent;
+}
+.productorderrawqty-input:focus{
+    outline: none;
+}
+
+.productinput:focus{
+    outline: none;
 }
 .tables-form{
         max-height: 293px !important;
