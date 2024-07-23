@@ -888,12 +888,13 @@ def item_edit(request,pk):
 
     form = Itemform(instance=item_pk)
 
+    # setting filtered queryset with annototed column of total_quantity  and total_rate to the formset 
     queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('godown_shades__quantity'),
-                                                                     total_rate=Sum(F('godown_shades__quantity') * F('godown_shades__item_rate'), 
-                                                                                    output_field=DecimalField(max_digits=10, decimal_places=2)))
-
+                                                                     total_value=Sum(F('godown_shades__quantity') * F('godown_shades__item_rate'), 
+                                                                                output_field=DecimalField(max_digits=10, decimal_places=2)))
     for x in queryset:
-        print(x.total_rate)
+        print(x.total_quantity)
+        print(x.total_value)
     formset = ShadeFormSet(instance= item_pk, queryset=queryset)
 
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
@@ -1121,7 +1122,6 @@ def item_delete(request, pk):
 def color_create_update(request, pk=None):
 
     queryset = Color.objects.all()
-
     color_search = request.GET.get('color_search','')
 
     if color_search != '':
@@ -1158,8 +1158,8 @@ def color_create_update(request, pk=None):
 
         if form.is_valid():
             form.save()
+
             # need to add a verification if getting request from simple form or from modal for save redirection 
-            
             if 'save' in request.POST and request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
@@ -1174,7 +1174,6 @@ def color_create_update(request, pk=None):
                 messages.success(request, 'Color created successfully.')
                 return JsonResponse({'color_all':list(color_all)}) 
         else:
-            print(form.errors)
             return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search})
 
     return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search})
@@ -1558,28 +1557,47 @@ def ledgerdelete(request, pk):
 
 def godowncreate(request):
     if request.method == 'POST':
-
         godown_name =  request.POST['godown_name']
         godown_type = request.POST['Godown_types']
-        if godown_type == 'Raw Material':
-            godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
-            godown_raw.save()  #save the instance to db 
-            messages.success(request,'Raw material godown created.')
 
-            if 'save' in request.POST:
+        if godown_type == 'Raw Material':
+            try:
+                godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
+                godown_raw.save()  #save the instance to db 
+                messages.success(request,'Raw material godown created.')
+
+                if 'save' in request.POST:
+                    return redirect('godown-list')
+                elif 'save_and_add_another' in request.POST:
+                    return redirect('godown-create')
+                
+            except ValidationError as ve:
+                messages.error(request,f"{ve}")
                 return redirect('godown-list')
-            elif 'save_and_add_another' in request.POST:
-                return redirect('godown-create')
+
+            except Exception as e:
+                messages.error(request,f"{e}")
+                return redirect('godown-list')
         
         elif godown_type == 'Finished Goods':
-            godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
-            godown_finished.save() #save the instance to db 
-            messages.success(request,'Finished goods godown created.')
+            try:
+                godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
+                godown_finished.save() #save the instance to db 
+                messages.success(request,'Finished goods godown created.')
 
-            if 'save' in request.POST:
+                if 'save' in request.POST:
+                    return redirect('godown-list')
+                elif 'save_and_add_another' in request.POST:
+                    return redirect('godown-create')
+            
+            except ValidationError as ve:
+                messages.error(request,f"{ve}")
                 return redirect('godown-list')
-            elif 'save_and_add_another' in request.POST:
-                return redirect('godown-create')
+
+            except Exception as e:
+                messages.error(request,f"{e}")
+                return redirect('godown-list')
+            
         else:
             messages.error(request,'Error Selecting Godown.')
             return redirect('godown-list')
@@ -2389,11 +2407,10 @@ def gst_create_update(request, pk = None):
             elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
                 # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
                 gst_updated = gst.objects.all().values('id', 'gst_percentage')
-                print(list(gst_updated))
+                
                 return JsonResponse({"gst_updated": list(gst_updated)})
         else:
-            print(form.errors)
-            messages.success(request,'An error occured.')
+            return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
 
     return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
 
@@ -2417,8 +2434,6 @@ def fabric_finishes_create_update(request, pk = None):
 
     if fabric_finishes_search != '':
         queryset =  FabricFinishes.objects.filter(fabric_finish__icontains = fabric_finishes_search)
-
-
 
 
     if pk:
@@ -2454,7 +2469,7 @@ def fabric_finishes_create_update(request, pk = None):
                 
                 return JsonResponse({"fabric_finishes_all": list(fabric_finishes_all)})
         else:
-            messages.error(request,'An error occured.')
+            
             return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
 
     return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
@@ -2494,7 +2509,7 @@ def packaging_create_update(request, pk = None):
     form = packaging_form(instance = packaging_instance)
 
     if request.method == 'POST':
-        form = packaging_form(request.POST,instance = packaging_instance)
+        form = packaging_form(request.POST ,instance = packaging_instance)
         if form.is_valid():
             form.save()
 
@@ -2513,7 +2528,7 @@ def packaging_create_update(request, pk = None):
 
                 return JsonResponse({'packaging_all_values': list(packaging_all_values)})
         else:
-            messages.error(request, 'An error accoured.')
+            
             return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset}) 
 
     return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset})
@@ -3413,7 +3428,6 @@ def factoryempdelete(request,pk=None):
 
 
 def cutting_room_create_update_list(request, pk=None):
-    
 
     if pk:
         instance = cutting_room.objects.get(id = pk)
@@ -3434,8 +3448,9 @@ def cutting_room_create_update_list(request, pk=None):
 
 
 def cuttingroomdelete(request,pk):
-    instance = cutting_room.objects.get(id = pk)
-    return render(request,'production/cuttingroomcreateupdatelist.html')
+    instance = cutting_room.objects.get(pk = pk)
+    instance.delete()
+    return redirect('cutting_room-create')
 
 
 #_________________________factory-emp-end_______________________________________

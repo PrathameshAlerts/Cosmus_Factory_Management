@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.forms import ValidationError
 from multiselectfield import MultiSelectField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 from numpy import true_divide
@@ -11,11 +12,6 @@ class CompanyMaster(models.Model):
     Gst_number = models.CharField(max_length = 15,validators = [MinLengthValidator(15), MaxLengthValidator(15)])
 
 
-
-class Customer(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=255)
-    birth_date = models.DateField(null=True, blank=True)
 
 
 class MainCategory(models.Model):
@@ -288,7 +284,7 @@ class Fabric_Group_Model(models.Model):
         ordering = ['fab_grp_name']
 
 class Unit_Name_Create(models.Model):
-    unit_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
+    unit_name = models.CharField(max_length=255,unique = True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 
@@ -471,7 +467,14 @@ class Godown_raw_material(models.Model):
     def __str__(self) -> str:
         return self.godown_name_raw      
 
+    def save(self, *args, **kwargs):
+        existing_objects = Godown_raw_material.objects.exclude(id = self.id)
 
+        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists():
+            raise ValidationError(f'{self.godown_name_raw} already exists!')
+
+
+        super().save(*args, **kwargs)
 
 class item_shades_godown_report(models.Model):  
 
@@ -494,7 +497,13 @@ class item_shades_godown_report(models.Model):
 class Godown_finished_goods(models.Model):
     godown_name_finished = models.CharField(max_length = 225, unique= True)
 
+    def save(self,*args, **kwargs):
+        existing_objects = Godown_finished_goods.objects.exclude(id=self.id)
 
+        if existing_objects.filter(godown_name_finished__iexact=self.godown_name_finished).exists():
+            raise ValidationError(f'{self.godown_name_finished} already exists!')
+
+        super().save(*args, **kwargs)
 
 class RawStockTransferMaster(models.Model):
     voucher_no = models.IntegerField(primary_key=True)
@@ -598,7 +607,7 @@ class factory_employee(models.Model):
     cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
 
 class cutting_room(models.Model):
-    cutting_room_name = models.CharField(max_length=100)
+    cutting_room_name = models.CharField(max_length=100, unique=True)
 
 
 class purchase_order(models.Model):
