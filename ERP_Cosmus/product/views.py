@@ -16,7 +16,8 @@ from django.contrib.auth import  update_session_auth_hash ,authenticate # help u
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q, Sum, ProtectedError, Count
+from django.db.models import Q, Sum, ProtectedError, Avg
+from django.db.models.functions import Round
 from django.db import DatabaseError, IntegrityError, transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
@@ -3522,7 +3523,12 @@ def godown_stock_raw_material_report_single(request,g_id):
     fab_grp_querset_qty = []
 
     for items in list_fab_grp:
-        values = Fabric_Group_Model.objects.filter(id=items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = Sum('items__shades__godown_shades__quantity')).first()
+        values = Fabric_Group_Model.objects.filter(id=
+                items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = 
+                Round(Sum('items__shades__godown_shades__quantity'),2),
+                avg_rate=Round(Avg('items__shades__rate'),2)).first()
+        
+
         fab_grp_querset_qty.append(values)
             
 
