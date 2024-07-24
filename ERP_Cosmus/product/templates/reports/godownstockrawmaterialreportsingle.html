@@ -16,12 +16,13 @@
           </tr>
         </thead>
        <tbody class="mainTableList">
+       
         {% for fab in fabric_in_godown %}
         <tr>
-          <td><a href="#" style="text-decoration: none; color: #000">{{fab.fab_grp_name}}</a></td>
-          <td>{{fab.total_qty}}</td>
-          <td>{{fab.avg_rate}}</td>
-          <td></td>
+          <td class="fabricName"><a id="id_fabricName"  href="#" style="text-decoration: none; color: #000">{{fab.fab_grp_name}}</a></td>
+          <td id="id_{{forloop.counter0}}-fabricQty">{{fab.total_qty}}</td>
+          <td id="id_{{forloop.counter0}}-fabricRate">{{fab.avg_rate}}</td>
+          <td id="id_{{forloop.counter0}}-fabricValue"></td>
           <td></td>
         </tr>
         {% endfor %}
@@ -33,5 +34,23 @@
   </div>
 </div>
 
+<script>
+  function totalValueCal(){
+    var fabricName = document.querySelectorAll('.fabricName');
+    for(var i=0; i<fabricName.length; i++){
+
+    var fabricQty = document.getElementById('id_'+i+'-fabricQty').textContent;
+
+    var fabricRate = document.getElementById('id_'+i+'-fabricRate').textContent
+  
+
+    var totalaValues = parseFloat(fabricQty)* parseFloat(fabricRate)
+   
+    document.getElementById('id_'+i+'-fabricValue').textContent =totalaValues
+    }
+  }
+
+  totalValueCal()
+</script>
 
 {% endblock %}
