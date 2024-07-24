@@ -2,12 +2,15 @@
 {% block body %}
 
 <div class="row">
-  <div class="col-lg-7 mt-4">
-    <h2>Raw Material Stock - {{godown_name}}</h2>
+  <div class="col-lg-9 mt-4">
+    <div class="d-flex">
+      <h3>Raw Material Stock - <span class="text-danger text-bold text-capitalize">{{godown_name}}</span></h3>
 
-    {% if page_id == 'item_page' %}
-    <h2> Fabric Group-{{Fabric_grp_name.fab_grp_name}}</h2>
-    {% endif %}
+      {% if page_id == 'item_page' %}
+      <h3 class="ms-5"> Fabric Group- <span class="text-danger text-bold text-capitalize">{{Fabric_grp_name.fab_grp_name}}</span></h3>
+      {% endif %}
+    </div>
+ 
 
 
     <div class="table-responsives">
@@ -15,7 +18,6 @@
 
         {% if page_id == 'fabric_page' %}
         <thead>
-
           <tr>
             <th>Fabric Group</th>
             <th>Quantity</th>
@@ -41,6 +43,7 @@
           <th>Item Name </th>
           <th>Shade</th>
           <th>Quantity</th>
+          <th>T Quantity</th>
           <th>Rate</th>
           <th>Value</th>
           <th>Fabric Health</th>
@@ -48,7 +51,21 @@
       </thead>
      <tbody class="mainTableList">
       {% for item in querylist %}
-      <td>{{item.item_name}}</td>
+      <tr class="text-nowrap">
+        <td>{{item.item_name}}</td>
+        <td></td>
+        <td></td>
+        <td>{{item.total_qty}}</td>
+        {% for shade in item.shades %}
+        <tr>
+          <td></td>
+          <td><a href="#" style="text-decoration: none; color: #000">{{shade.item_shade}}</a></td>
+        <td>{{shade.quantity}}</td>
+        </tr>
+        
+        {% endfor %}
+  
+      </tr>
       {% endfor %}
      </tbody>
 
@@ -59,6 +76,23 @@
     </div>
   </div>
 </div>
+<script>
+  function totalValueCal(){
+    var fabricName = document.querySelectorAll('.fabricName');
+    for(var i=0; i<fabricName.length; i++){
 
+    var fabricQty = document.getElementById('id_'+i+'-fabricQty').textContent;
+
+    var fabricRate = document.getElementById('id_'+i+'-fabricRate').textContent
+  
+
+    var totalaValues = parseFloat(fabricQty)* parseFloat(fabricRate)
+   
+    document.getElementById('id_'+i+'-fabricValue').textContent =totalaValues
+    }
+  }
+
+  totalValueCal()
+</script>
 
 {% endblock %}

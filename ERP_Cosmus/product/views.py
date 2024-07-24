@@ -3515,6 +3515,7 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
     items_in_godown = item_godown_quantity_through_table.objects.filter(godown_name=g_id)
     
     Fabric_grp_name = None
+    querylist = None
 
     if fab_id:
         page_id = 'item_page'
