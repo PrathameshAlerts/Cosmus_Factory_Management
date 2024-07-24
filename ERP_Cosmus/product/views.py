@@ -3513,11 +3513,24 @@ def godown_stock_raw_material_report_single(request,g_id):
     
     
     fabric_in_godown = items_in_godown.distinct('Item_shade_name__items__Fabric_Group')
-    # get the name of the godown
+    
+    list_fab_grp = []
+
+    for fab in fabric_in_godown:
+        list_fab_grp.append(fab.Item_shade_name.items.Fabric_Group.id)
+
+    fab_grp_querset_qty = []
+
+    for items in list_fab_grp:
+        values = Fabric_Group_Model.objects.filter(id=items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = Sum('items__shades__godown_shades__quantity')).first()
+        fab_grp_querset_qty.append(values)
+            
+
+
     godown_name = items_in_godown.first().godown_name
 
     
-    return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godown_name':godown_name,'fabric_in_godown':fabric_in_godown})
+    return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godown_name':godown_name,'fabric_in_godown':fab_grp_querset_qty})
 
 
 

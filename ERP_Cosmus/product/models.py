@@ -330,7 +330,7 @@ class Item_Creation(models.Model):
     Panha = models.DecimalField(max_digits=10, decimal_places=2,null=False, blank=False)
     Fabric_nonfabric = models.CharField(max_length = 255, choices = FandNFB)
     Item_Fabric_Finishes = models.ForeignKey(FabricFinishes, on_delete = models.PROTECT)
-    Fabric_Group = models.ForeignKey(Fabric_Group_Model, on_delete= models.PROTECT)
+    Fabric_Group = models.ForeignKey(Fabric_Group_Model,related_name='items' ,on_delete= models.PROTECT)
     Item_Creation_GST = models.ForeignKey(gst, on_delete = models.PROTECT)
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status = models.CharField(max_length = 50, choices= STATUS)
