@@ -3588,7 +3588,8 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
                                                                              'godown_id':g_id,
                                                                              'godown_name':godown_name,
                                                                              'Fabric_grp_name':Fabric_grp_name,
-                                                                             'queryset':queryset})
+                                                                             'queryset':queryset,
+                                                                             'querylist':querylist})
 
 
 
