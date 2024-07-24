@@ -3544,7 +3544,7 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
 
         
 
-        items_in_fab_grp = Item_Creation.objects.filter(Fabric_Group=fab_id).annotate(total_qty =Round(Sum('shades__godown_shades__quantity')))
+        items_in_fab_grp = Item_Creation.objects.filter(Fabric_Group=fab_id).filter(shades__godown_shades__godown_name__id=g_id).annotate(total_qty =Round(Sum('shades__godown_shades__quantity')))
         
         querylist = []
 
@@ -3582,13 +3582,13 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
         Fabric_grp_name = Fabric_Group_Model.objects.get(id=fab_id)
 
     godown_name = items_in_godown.first().godown_name
-    
+    print(queryset)
     
     return render(request,'reports/godownstockrawmaterialreportfabgrp.html',{'page_id':page_id,
                                                                              'godown_id':g_id,
                                                                              'godown_name':godown_name,
                                                                              'Fabric_grp_name':Fabric_grp_name,
-                                                                             'queryset':queryset,'querylist':querylist})
+                                                                             'queryset':queryset})
 
 
 
