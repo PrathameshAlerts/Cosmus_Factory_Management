@@ -3509,34 +3509,87 @@ def creditdebitreport(request):
     return render(request,'misc/credit_debit_master_report.html',{'all_reports':all_reports})
 
 
-def godown_stock_raw_material_report_single(request,g_id):
+
+
+def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
     items_in_godown = item_godown_quantity_through_table.objects.filter(godown_name=g_id)
     
+    Fabric_grp_name = None
+    querylist = None
+
+    if fab_id:
+        page_id = 'item_page'
+    else:
+        page_id = 'fabric_page'
     
-    fabric_in_godown = items_in_godown.distinct('Item_shade_name__items__Fabric_Group')
-    
-    list_fab_grp = []
 
-    for fab in fabric_in_godown:
-        list_fab_grp.append(fab.Item_shade_name.items.Fabric_Group.id)
+    if page_id == 'fabric_page':
+        fabric_in_godown = items_in_godown.distinct('Item_shade_name__items__Fabric_Group')
+        
+        list_fab_grp = []
 
-    fab_grp_querset_qty = []
+        for fab in fabric_in_godown:
+            list_fab_grp.append(fab.Item_shade_name.items.Fabric_Group.id)
 
-    for items in list_fab_grp:
-        values = Fabric_Group_Model.objects.filter(id=
-                items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = 
-                Round(Sum('items__shades__godown_shades__quantity'),2),
-                avg_rate=Round(Avg('items__shades__rate'),2)).first()
+        queryset = []
+
+        for items in list_fab_grp:
+            values = Fabric_Group_Model.objects.filter(id=
+                    items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = 
+                    Round(Sum('items__shades__godown_shades__quantity'),2),
+                    avg_rate=Round(Avg('items__shades__rate'),2)).first()
+            
+            queryset.append(values)
+
+    elif page_id == 'item_page':
+
         
 
-        fab_grp_querset_qty.append(values)
+        items_in_fab_grp = Item_Creation.objects.filter(Fabric_Group=fab_id).annotate(total_qty =Round(Sum('shades__godown_shades__quantity')))
+        
+        querylist = []
+
+        for query in items_in_fab_grp:
+            item_dict = {}
+            item_dict['item_name'] = query.item_name
+            item_dict['total_qty'] = query.total_qty
+
+            shades_list = []
+            for shade in query.shades.filter(godown_shades__godown_name__id=g_id):
+                shade_dict = {}
+                shade_dict['rate'] = shade.rate
+                shades_list.append(shade_dict)
+
+                shade_godown_list = []
+                for godown_items in shade.godown_shades.filter(godown_name__id=g_id):
+                    godown_shade_dict = {}
+                    shade_dict['item_shade'] = godown_items.Item_shade_name.item_shade_name
+                    shade_dict['quantity'] = godown_items.quantity
+                    shade_godown_list.append(godown_shade_dict)
+                    
+
+            item_dict['shades'] = shades_list
+            querylist.append(item_dict)
+
+        print(querylist)
+            
             
 
 
-    godown_name = items_in_godown.first().godown_name
 
+        items_in_fab_grp1 = item_color_shade.objects.filter(items__Fabric_Group=fab_id).filter(godown_shades__godown_name__id=g_id).annotate(total_qty =Round(Sum('godown_shades__quantity')))
+        queryset = items_in_fab_grp
+
+        Fabric_grp_name = Fabric_Group_Model.objects.get(id=fab_id)
+
+    godown_name = items_in_godown.first().godown_name
     
-    return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godown_name':godown_name,'fabric_in_godown':fab_grp_querset_qty})
+    
+    return render(request,'reports/godownstockrawmaterialreportfabgrp.html',{'page_id':page_id,
+                                                                             'godown_id':g_id,
+                                                                             'godown_name':godown_name,
+                                                                             'Fabric_grp_name':Fabric_grp_name,
+                                                                             'queryset':queryset,'querylist':querylist})
 
 
 
