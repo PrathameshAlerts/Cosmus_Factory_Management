@@ -539,7 +539,7 @@ class item_purchase_voucher_master(models.Model):
 
 
 class purchase_voucher_items(models.Model):
-    item_purchase_master = models.ForeignKey(item_purchase_voucher_master, related_name='voucher_items', on_delete = models.CASCADE)
+    item_purchase_master = models.ForeignKey(item_purchase_voucher_master, on_delete = models.CASCADE)
     item_shade = models.ForeignKey(item_color_shade, on_delete = models.PROTECT)
     quantity_total = models.DecimalField(max_digits=10, decimal_places=2)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
@@ -550,7 +550,7 @@ class purchase_voucher_items(models.Model):
 
 
 class shade_godown_items(models.Model):
-    purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items,related_name='godown_items', on_delete = models.CASCADE)
+    purchase_voucher_godown_item = models.ForeignKey(purchase_voucher_items, on_delete = models.CASCADE)
     godown_id = models.ForeignKey(Godown_raw_material, on_delete = models.PROTECT)
     quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
@@ -706,7 +706,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
 
 
 class item_godown_inward_outward_master(models.Model):
-    date = models.DateField()
+    date_name = models.DateField()
     item_shade = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
     voucher_no = models.IntegerField(blank=True,null=True)
     voucher_type = models.CharField(max_length=100,blank=True,null=True)

@@ -3512,11 +3512,16 @@ def creditdebitreport(request):
 
 
 def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
+    
+    # get all the items in the selected godown
     items_in_godown = item_godown_quantity_through_table.objects.filter(godown_name=g_id)
+    
     
     Fabric_grp_name = None
     querylist = None
 
+
+    # fabric report and item report are on the same page only queries are changed
     if fab_id:
         page_id = 'item_page'
     else:
@@ -3524,59 +3529,67 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
     
 
     if page_id == 'fabric_page':
+        # in all the items in godown get their disticnt fabricgrp items (here we get only the items which are in distint fabric grp) 
         fabric_in_godown = items_in_godown.distinct('Item_shade_name__items__Fabric_Group')
         
         list_fab_grp = []
 
+        # in dinstnt items of fab grp get their fab_grp and append in list  
         for fab in fabric_in_godown:
             list_fab_grp.append(fab.Item_shade_name.items.Fabric_Group.id)
 
         queryset = []
 
+        # now query the fab grp model from the list of distint fab grp in that godown and append in a list 
         for items in list_fab_grp:
             values = Fabric_Group_Model.objects.filter(id=
                     items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = 
                     Round(Sum('items__shades__godown_shades__quantity'),2),
                     avg_rate=Round(Avg('items__shades__rate'),2)).first()
-            
+
+                    # in query filter fab grp by id then by godown id and annotate total qty of all the items of all fab grp in the godown and avg rate
+
             queryset.append(values)
 
     elif page_id == 'item_page':
 
-        
+        # if it is item page (items in selected fab grp)
 
-        items_in_fab_grp = Item_Creation.objects.filter(Fabric_Group=fab_id).filter(shades__godown_shades__godown_name__id=g_id).annotate(total_qty =Round(Sum('shades__godown_shades__quantity')))
-        
+        Fabric_grp_name = Fabric_Group_Model.objects.get(id=fab_id)
+
+        items_in_fab_grp = Item_Creation.objects.filter(Fabric_Group=fab_id).filter(
+            shades__godown_shades__godown_name__id=g_id).annotate(
+                total_qty =Round(Sum('shades__godown_shades__quantity')))
+                # in query filter item creation with the selctd fabgrp then filter by godown and annotate total_qty of all the items of the selcted fabgrp in the godown 
+
         querylist = []
-
-        for query in items_in_fab_grp:
+        
+        # append all the required data from the queryset in a list
+        for query in items_in_fab_grp: # item creation model
             item_dict = {}
             item_dict['item_name'] = query.item_name
             item_dict['total_qty'] = query.total_qty
 
             shades_list = []
-            for shade in query.shades.filter(godown_shades__godown_name__id=g_id):
+            for shade in query.shades.filter(godown_shades__godown_name__id=g_id): # item shades model (filter by g_id while looping)
                 shade_dict = {}
                 shade_dict['rate'] = shade.rate
                 shades_list.append(shade_dict)
 
                 shade_godown_list = []
-                for godown_items in shade.godown_shades.filter(godown_name__id=g_id):
+                for godown_items in shade.godown_shades.filter(godown_name__id=g_id): # item to godown model (filter by g_id while looping)
                     godown_shade_dict = {}
                     shade_dict['item_shade'] = godown_items.Item_shade_name.item_shade_name
                     shade_dict['item_shade_id'] = godown_items.Item_shade_name.id
                     shade_dict['quantity'] = godown_items.quantity
                     shade_godown_list.append(godown_shade_dict)
-                    
 
             item_dict['shades'] = shades_list
+
             querylist.append(item_dict)
 
-        print(querylist)
-            
         queryset = items_in_fab_grp
 
-        Fabric_grp_name = Fabric_Group_Model.objects.get(id=fab_id)
 
     godown_name = items_in_godown.first().godown_name
     
@@ -3590,23 +3603,32 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
 
 
 def godown_item_report(request,g_id,shade_id):
+    
     godown_name = Godown_raw_material.objects.get(id=g_id)
     shade_name = item_color_shade.objects.get(id=shade_id)
 
-    opening_godown_qty = opening_shade_godown_quantity.objects.filter(opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godown_name)
-
     report_data = []
 
+    # opening quantity report query
+    opening_godown_qty = opening_shade_godown_quantity.objects.filter(
+        opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godown_name)
+    
+
+
+    # purchase voucher reqport query
     closing_quantity = decimal.Decimal(0.00)
     closing_value = decimal.Decimal(0.00)
     
-
-    purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(voucher_items__item_shade=shade_name).annotate(godown_qty_total = Sum('godown_items__quantity'))
+    # comments in please check notes/ORM_query_dump.txt line no 34
+    purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
+        purchase_voucher_items__item_shade = shade_name ,purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
+            godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
+                'purchase_voucher_items__rate')), filter=Q(purchase_voucher_items__shade_godown_items__godown_id = godown_name))
     
-    print(purchase_voucher_godown_qty)
-
+    
+    
     for godown_qty in opening_godown_qty:
-        
+
         closing_quantity += godown_qty.opening_quantity
         closing_value += godown_qty.opening_rate * godown_qty.opening_quantity
         report_data.append({
@@ -3620,9 +3642,27 @@ def godown_item_report(request,g_id,shade_id):
             'outward_value': '',
             'closing_quantity': f"{closing_quantity} Meter",
             'closing_value': closing_value,
+            'rate':godown_qty.opening_rate
         })
 
+    for purchase_voucher_item_qty in purchase_voucher_godown_qty:
 
+        closing_quantity += purchase_voucher_item_qty.godown_qty_total
+        closing_value += purchase_voucher_item_qty.item_rate * purchase_voucher_item_qty.godown_qty_total
+        
+        report_data.append({
+            'date': purchase_voucher_item_qty.created_date,
+            'particular': 'Purchase_voucher',
+            'voucher_type': purchase_voucher_item_qty.ledger_type,
+            'vch_no': purchase_voucher_item_qty.purchase_number,
+            'inward_quantity': f"{purchase_voucher_item_qty.godown_qty_total} Meter",
+            'inward_value': purchase_voucher_item_qty.item_rate * purchase_voucher_item_qty.godown_qty_total,
+            'outward_quantity': '',
+            'outward_value': '',
+            'closing_quantity': f"{closing_quantity} Meter",
+            'closing_value': closing_value,
+            'rate': purchase_voucher_item_qty.item_rate
+            })
 
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
                                                                              'shade_name':shade_name,'report_data':report_data})
