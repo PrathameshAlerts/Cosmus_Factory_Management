@@ -78,7 +78,7 @@
 
      
         <script>
-            let formSubmitted = false;
+           // let formSubmitted = false;
                 const primaryId  = document.getElementById('primary_id').value;
                 const shadeId = document.getElementById('id_shade_id').value;
                 const prefixId = document.getElementById('prefix_id').value;
@@ -176,13 +176,13 @@
                 window.close(); // Close the child window
             });
             }
-            window.addEventListener('beforeunload', function(event) {
-                if (!formSubmitted) {
-                    console.log('Form not submitted');
-                    const data = { message: 'close' };
-                    window.opener.postMessage(data, '*');
-                }
-            });
+            // window.addEventListener('beforeunload', function(event) {
+            //     if (!formSubmitted) {
+            //         console.log('Form not submitted');
+            //         const data = { message: 'close' };
+            //         window.opener.postMessage(data, '*');
+            //     }
+            // });
         </script>
 
     <script>

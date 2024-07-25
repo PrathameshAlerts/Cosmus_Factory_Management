@@ -1,40 +1,59 @@
 {% extends 'product/base.html' %}
 {% block body %}
 
-<span>Godown Name - {{godoown_name.godown_name_raw}}</span>
-<span>Item Name - {{shade_name.items.item_name}} --- {{shade_name.item_shade_name}}</span>
+<div class="mt-4 d-flex mb-3">
+    <h3>Godown Name - {{godoown_name.godown_name_raw}}</h3>
+<h3>Item Name - {{shade_name.items.item_name}} --- {{shade_name.item_shade_name}}</h3>
+</div>
 
 
 
-<table>
-<tr>
-<th>Date</th>
-<th>Particular</th>
-<th>Voucher Type</th>
-<th>Voucher No</th>
-<th>quantity</th>
-<th>Value</th>
-<th>quantity</th>
-<th>Value</th>
-<th>quantity</th>
-<th>Value</th>
-</tr>
+<div class="row">
+    <div class="col-lg-10">
 
-{% for data in report_data %}
-<tr>
-<td>{{data.date}}</td>
-<td>{{data.particular}}</td>
-<td>{{data.voucher_type}}</td>
-<td>{{data.vch_no}}</td>
-<td>{{data.inward_quantity}}</td>
-<td>{{data.inward_value}}</td>
-<td>{{data.outward_quantity}}</td>
-<td>{{data.outward_value}}</td>
-<td>{{data.closing_quantity}}</td>
-<td>{{data.closing_value}}</td>
-</tr>
-
-{% endfor %}
-
-</table>
+        <table class="table table-bordered table-hover table-striped">
+            <tbody>
+                <tr>
+                    <th>Date</th>
+                    <th>Particular</th>
+                    <th>Voucher Type</th>
+                    <th>Voucher No</th>
+                    <th colspan="2" class="text-center">InWards<br>
+                       <span>quantity</span>
+                        <span class="ms-3">Value</span>
+                       
+                    </th>
+                    <th colspan="2" class="text-center">Outwards
+                        <span class="ms-3">quantity</span>
+                        <span class="ms-3">Value</span>
+                    </th>
+                    <th colspan="2" class="text-center">Closing
+                        <span>quantity</span>
+                        <span class="ms-3">Value</span>
+                    </th>
+                    </tr>
+            </tbody>
+          
+            <tbody>
+            {% for data in report_data %}
+            <tr>
+            <td>{{data.date}}</td>
+            <td>{{data.particular}}</td>
+            <td>{{data.voucher_type}}</td>
+            <td>{{data.vch_no}}</td>
+            <td>{{data.inward_quantity}}</td>
+            <td>{{data.inward_value}}</td>
+            <td>{{data.outward_quantity}}</td>
+            <td>{{data.outward_value}}</td>
+            <td>{{data.closing_quantity}}</td>
+            <td>{{data.closing_value}}</td>
+            </tr>
+            
+            {% endfor %}
+            </tbody>
+            
+            
+            </table>
+    </div>
+</div>
 {% endblock %}

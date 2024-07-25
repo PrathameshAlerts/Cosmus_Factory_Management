@@ -26,59 +26,14 @@
             <th>Fabric Health</th>
           </tr>
         </thead>
-       <tbody class="mainTableList">
-        {% for fab in queryset %}
-        <tr>
-          <td><a href="{% url 'godown-stock-raw-material-report_items' godown_id fab.id %}" style="text-decoration: none; color: #000">{{fab.fab_grp_name}}</a></td>
-          <td>{{fab.total_qty}}</td>
-          <td>{{fab.avg_rate}}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        {% endfor %}
-       </tbody>
-       {% elif page_id == 'item_page' %}
-       <thead>
-        <tr>
-          <th>Item Name </th>
-          <th>Shade</th>
-          <th>Quantity</th>
-          <th>T Quantity</th>
-          <th>Rate</th>
-          <th>Value</th>
-          <th>Fabric Health</th>
-        </tr>
-      </thead>
-     <tbody class="mainTableList">
-      {% for item in querylist %}
-      <tr class="text-nowrap">
-        <td>{{item.item_name}}</td>
-        <td></td>
-        <td></td>
-        <td>{{item.total_qty}}</td>
-        {% for shade in item.shades %}
-        <tr>
-          <td></td>
-          <td><a href="{% url 'godown-item-report' godown_id shade.item_shade_id %}" style="text-decoration: none; color: #000">{{shade.item_shade}}</a></td>
-        <td>{{shade.quantity}}</td>
-        </tr>
-        
-        {% endfor %}
-  
-      </tr>
-      {% endfor %}
-     </tbody>
-
-     {% endif %}
-        
         <tbody class="mainTableList">
           {% for fab in queryset %}
           <tr>
             <td class="fabricName"><a href="{% url 'godown-stock-raw-material-report_items' godown_id fab.id %}"
                 style="text-decoration: none; color: #000">{{fab.fab_grp_name}}</a></td>
-            <td id="id_{{forloop.counter0}}-fabricQty" class="fabricQty">{{fab.total_qty}}</td>
-            <td id="id_{{forloop.counter0}}-fabricRate" class="fabricRate">{{fab.avg_rate}}</td>
-            <td id="id_{{forloop.counter0}}-fabricValue" class="fabricValue"></td>
+            <td class="fabricQty">{{fab.total_qty}}</td>
+            <td class="fabricRate">{{fab.avg_rate}}</td>
+            <td class="fabricValue"></td>
             <td></td>
           </tr>
           {% endfor %}
@@ -108,7 +63,7 @@
           <tr>
               <td></td>
               <td class="fabricShade">
-                  <a href="#" style="text-decoration: none; color: #000">{{ shade.item_shade }}</a>
+                  <a href="{% url 'godown-item-report' godown_id shade.item_shade_id %}" style="text-decoration: none; color: #000">{{ shade.item_shade }}</a>
               </td>
               <td class="fabricTotalShadeQty">{{ shade.quantity }}</td>
               <td></td>
