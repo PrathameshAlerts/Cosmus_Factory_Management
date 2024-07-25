@@ -17,7 +17,7 @@
       <table class="table table-striped table-hover table-bordered">
     
         {% if page_id == 'fabric_page' %}
-        <thead>
+        <thead class="name_absolute sticky-top">
           <tr>
             <th>Fabric Group</th>
             <th>Quantity</th>
@@ -26,7 +26,7 @@
             <th>Fabric Health</th>
           </tr>
         </thead>
-        <tbody class="mainTableList">
+        <tbody class="mainTableList" >
           {% for fab in queryset %}
           <tr>
             <td class="fabricName"><a href="{% url 'godown-stock-raw-material-report_items' godown_id fab.id %}"
@@ -39,7 +39,7 @@
           {% endfor %}
         </tbody>
         {% elif page_id == 'item_page' %}
-        <thead>
+        <thead class="name_absolute sticky-top">
           <tr>
             <th>Item Name </th>
             <th>Shade</th>

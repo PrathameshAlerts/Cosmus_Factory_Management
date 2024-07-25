@@ -1,59 +1,61 @@
 {% extends 'product/base.html' %}
 {% block body %}
 
-<div class="mt-4 d-flex mb-3">
-    <h3>Godown Name - {{godoown_name.godown_name_raw}}</h3>
-<h3>Item Name - {{shade_name.items.item_name}} --- {{shade_name.item_shade_name}}</h3>
+<div class="mt-4  mb-3">
+    <h3>Godown Name- <span class="text-danger text-bold text-capitalize">{{godoown_name.godown_name_raw}}</span></h3>
+<h3 >Item Name - <span class="text-danger text-bold text-capitalize">{{shade_name.items.item_name}}</span></h3>
+  <h3>Shade Name - <span class="text-danger text-bold text-capitalize">{{shade_name.item_shade_name}}</span></h3>
 </div>
 
 
 
 <div class="row">
-    <div class="col-lg-10">
-
-        <table class="table table-bordered table-hover table-striped">
-            <tbody>
+    <div class="col-lg-12">
+        <div class="table-responsives">
+            <table class="table table-bordered  table-striped" style="width: 100%;">
+                <tbody class="name_absolute sticky-top">
+                    <tr class ="text-nowrap text-center">
+                        <th colspan="4"></th>
+                        <th colspan="2" class="bg-c-blue">InWards</th>
+                        <th colspan="2" class="bg-c-red">Outwards</th>
+                        <th colspan="2" class="bg-c-green">Closing</th>
+                        <tr>
+                            <th>Date</th>
+                            <th>Particular</th>
+                            <th>Voucher Type</th>
+                            <th>Voucher No</th>
+                            <th style="background-color: #90D5FF;">Quantity</th>
+                            <th style="background-color: #90D5FF;" >Value</th>
+                            <th style="background-color: #ffcccb;">Quantity</th>
+                            <th style="background-color: #ffcccb;">Value</th>
+                            <th style="background-color: #a3efe0;">Quantity</th>
+                            <th style="background-color: #a3efe0;" >Value</th>
+                        </tr>
+                        </tr>
+                </tbody>
+              
+                <tbody class="mainTableList">
+                {% for data in report_data %}
                 <tr>
-                    <th>Date</th>
-                    <th>Particular</th>
-                    <th>Voucher Type</th>
-                    <th>Voucher No</th>
-                    <th colspan="2" class="text-center">InWards<br>
-                       <span>quantity</span>
-                        <span class="ms-3">Value</span>
-                       
-                    </th>
-                    <th colspan="2" class="text-center">Outwards
-                        <span class="ms-3">quantity</span>
-                        <span class="ms-3">Value</span>
-                    </th>
-                    <th colspan="2" class="text-center">Closing
-                        <span>quantity</span>
-                        <span class="ms-3">Value</span>
-                    </th>
-                    </tr>
-            </tbody>
-          
-            <tbody>
-            {% for data in report_data %}
-            <tr>
-            <td>{{data.date}}</td>
-            <td>{{data.particular}}</td>
-            <td>{{data.voucher_type}}</td>
-            <td>{{data.vch_no}}</td>
-            <td>{{data.inward_quantity}}</td>
-            <td>{{data.inward_value}}</td>
-            <td>{{data.outward_quantity}}</td>
-            <td>{{data.outward_value}}</td>
-            <td>{{data.closing_quantity}}</td>
-            <td>{{data.closing_value}}</td>
-            </tr>
-            
-            {% endfor %}
-            </tbody>
-            
-            
-            </table>
+                <td>{{data.date}}</td>
+                <td>{{data.particular}}</td>
+                <td>{{data.voucher_type}}</td>
+                <td>{{data.vch_no}}</td>
+                <td style="background-color: #90D5FF;" >{{data.inward_quantity}}</td>
+                <td style="background-color: #90D5FF;">{{data.inward_value}}</td>
+                <td style="background-color: #ffcccb;">{{data.outward_quantity}}</td>
+                <td style="background-color: #ffcccb;">{{data.outward_value}}</td>
+                <td style="background-color: #a3efe0;">{{data.closing_quantity}}</td>
+                <td style="background-color: #a3efe0;">{{data.closing_value}}</td>
+                </tr>
+                
+                {% endfor %}
+                </tbody>
+                
+                
+                </table>
+        </div>
+        
     </div>
 </div>
 {% endblock %}
