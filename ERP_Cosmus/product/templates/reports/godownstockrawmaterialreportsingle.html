@@ -1,10 +1,10 @@
 {% extends 'product/base.html' %}
 {% block body %}
 
-<div class="mt-4  mb-3">
-    <h3>Godown Name- <span class="text-danger text-bold text-capitalize">{{godoown_name.godown_name_raw}}</span></h3>
-<h3 >Item Name - <span class="text-danger text-bold text-capitalize">{{shade_name.items.item_name}}</span></h3>
-  <h3>Shade Name - <span class="text-danger text-bold text-capitalize">{{shade_name.item_shade_name}}</span></h3>
+<div class="mt-4  mb-3 d-flex">
+    <h4>Godown Name - <span class="text-danger text-bold text-capitalize">{{godoown_name.godown_name_raw}}</span></h4>
+<h4 class="ms-3">Item Name - <span class="text-danger text-bold text-capitalize">{{shade_name.items.item_name}}</span></h4>
+  <h4 class="ms-3">Shade Name - <span class="text-danger text-bold text-capitalize">{{shade_name.item_shade_name}}</span></h4>
 </div>
 
 
@@ -15,15 +15,17 @@
             <table class="table table-bordered  table-striped" style="width: 100%;">
                 <tbody class="name_absolute sticky-top">
                     <tr class ="text-nowrap text-center">
-                        <th colspan="4"></th>
+                        <th>Date</th>
+                        <th>Particular</th>
+                        <th>Voucher Type</th>
+                        <th>Voucher No</th>
+                   
                         <th colspan="2" class="bg-c-blue">InWards</th>
                         <th colspan="2" class="bg-c-red">Outwards</th>
                         <th colspan="2" class="bg-c-green">Closing</th>
+                    </tr>
                         <tr>
-                            <th>Date</th>
-                            <th>Particular</th>
-                            <th>Voucher Type</th>
-                            <th>Voucher No</th>
+                            <th colspan="4"></th>
                             <th style="background-color: #90D5FF;">Quantity</th>
                             <th style="background-color: #90D5FF;" >Value</th>
                             <th style="background-color: #ffcccb;">Quantity</th>
@@ -31,7 +33,7 @@
                             <th style="background-color: #a3efe0;">Quantity</th>
                             <th style="background-color: #a3efe0;" >Value</th>
                         </tr>
-                        </tr>
+                       
                 </tbody>
               
                 <tbody class="mainTableList">
