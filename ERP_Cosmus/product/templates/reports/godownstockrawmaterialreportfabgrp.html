@@ -71,55 +71,7 @@
 
      {% endif %}
         
-        <tbody class="mainTableList">
-          {% for fab in queryset %}
-          <tr>
-            <td class="fabricName"><a href="{% url 'godown-stock-raw-material-report_items' godown_id fab.id %}"
-                style="text-decoration: none; color: #000">{{fab.fab_grp_name}}</a></td>
-            <td id="id_{{forloop.counter0}}-fabricQty">{{fab.total_qty}}</td>
-            <td id="id_{{forloop.counter0}}-fabricRate">{{fab.avg_rate}}</td>
-            <td id="id_{{forloop.counter0}}-fabricValue"></td>
-            <td></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-        {% elif page_id == 'item_page' %}
-        <thead>
-          <tr>
-            <th>Item Name </th>
-            <th>Shade</th>
-            <th>Quantity</th>
-            <th>T Quantity</th>
-            <th>Rate</th>
-            <th>Value</th>
-            <th>Fabric Health</th>
-          </tr>
-        </thead>
-        <tbody class="mainTableList newList">
-          {% for item in querylist %}
-          <tr class="text-nowrap">
-              <td class="fabricShadeItemName">{{ item.item_name }}</td>
-              <td></td>
-              <td></td>
-              <td>{{ item.total_qty }}</td>
-              <td></td>
-          </tr>
-          {% for shade in item.shades %}
-          <tr>
-              <td></td>
-              <td class="fabricShade">
-                  <a href="#" style="text-decoration: none; color: #000">{{ shade.item_shade }}</a>
-              </td>
-              <td class="fabricTotalShadeQty">{{ shade.quantity }}</td>
-              <td></td>
-              <td class="fabricTotalRate">{{ shade.rate }}</td>
-              <td class="fabricTotalValue"></td>
-          </tr>
-          {% endfor %}
-          {% endfor %}
-        </tbody>
-    
-        {% endif %}
+       
     
       </table>
     

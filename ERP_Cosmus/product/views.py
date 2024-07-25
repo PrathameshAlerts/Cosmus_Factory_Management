@@ -16,7 +16,7 @@ from django.contrib.auth import  update_session_auth_hash ,authenticate # help u
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q, Sum, ProtectedError, Avg
+from django.db.models import Q, Sum, ProtectedError, Avg, Case, When,F
 from django.db.models.functions import Round
 from django.db import DatabaseError, IntegrityError, transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -3590,16 +3590,19 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
 
 
 def godown_item_report(request,g_id,shade_id):
-    godoown_name = Godown_raw_material.objects.get(id=g_id)
+    godown_name = Godown_raw_material.objects.get(id=g_id)
     shade_name = item_color_shade.objects.get(id=shade_id)
 
-    opening_godown_qty = opening_shade_godown_quantity.objects.filter(opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godoown_name)
+    opening_godown_qty = opening_shade_godown_quantity.objects.filter(opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godown_name)
 
     report_data = []
 
     closing_quantity = decimal.Decimal(0.00)
     closing_value = decimal.Decimal(0.00)
     
+
+    purchase_voucher_godown_qty = purchase_voucher_items.objects.filter(item_shade=shade_name).annotate(
+        godown_qty_total = Sum())
     
     for godown_qty in opening_godown_qty:
         
@@ -3620,7 +3623,7 @@ def godown_item_report(request,g_id,shade_id):
 
 
 
-    return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godoown_name,
+    return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
                                                                              'shade_name':shade_name,'report_data':report_data})
 
 
