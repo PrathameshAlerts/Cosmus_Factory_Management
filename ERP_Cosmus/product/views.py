@@ -3601,9 +3601,10 @@ def godown_item_report(request,g_id,shade_id):
     closing_value = decimal.Decimal(0.00)
     
 
-    purchase_voucher_godown_qty = purchase_voucher_items.objects.filter(item_shade=shade_name).annotate(
-        godown_qty_total = Sum())
+    purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(voucher_items__item_shade=shade_name).annotate(godown_qty_total = Sum('godown_items__quantity'))
     
+    print(purchase_voucher_godown_qty)
+
     for godown_qty in opening_godown_qty:
         
         closing_quantity += godown_qty.opening_quantity

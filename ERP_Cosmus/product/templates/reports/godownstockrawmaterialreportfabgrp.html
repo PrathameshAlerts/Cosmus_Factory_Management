@@ -26,52 +26,55 @@
             <th>Fabric Health</th>
           </tr>
         </thead>
-       <tbody class="mainTableList">
-        {% for fab in queryset %}
-        <tr>
-          <td><a href="{% url 'godown-stock-raw-material-report_items' godown_id fab.id %}" style="text-decoration: none; color: #000">{{fab.fab_grp_name}}</a></td>
-          <td>{{fab.total_qty}}</td>
-          <td>{{fab.avg_rate}}</td>
-          <td></td>
-          <td></td>
-        </tr>
-        {% endfor %}
-       </tbody>
-       {% elif page_id == 'item_page' %}
-       <thead>
-        <tr>
-          <th>Item Name </th>
-          <th>Shade</th>
-          <th>Quantity</th>
-          <th>T Quantity</th>
-          <th>Rate</th>
-          <th>Value</th>
-          <th>Fabric Health</th>
-        </tr>
-      </thead>
-     <tbody class="mainTableList">
-      {% for item in querylist %}
-      <tr class="text-nowrap">
-        <td>{{item.item_name}}</td>
-        <td></td>
-        <td></td>
-        <td>{{item.total_qty}}</td>
-        {% for shade in item.shades %}
-        <tr>
-          <td></td>
-          <td><a href="{% url 'godown-item-report' godown_id shade.item_shade_id %}" style="text-decoration: none; color: #000">{{shade.item_shade}}</a></td>
-        <td>{{shade.quantity}}</td>
-        </tr>
-        
-        {% endfor %}
-  
-      </tr>
-      {% endfor %}
-     </tbody>
-
-     {% endif %}
-        
-       
+        <tbody class="mainTableList">
+          {% for fab in queryset %}
+          <tr>
+            <td class="fabricName"><a href="{% url 'godown-stock-raw-material-report_items' godown_id fab.id %}"
+                style="text-decoration: none; color: #000">{{fab.fab_grp_name}}</a></td>
+            <td class="fabricQty">{{fab.total_qty}}</td>
+            <td class="fabricRate">{{fab.avg_rate}}</td>
+            <td class="fabricValue"></td>
+            <td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        {% elif page_id == 'item_page' %}
+        <thead>
+          <tr>
+            <th>Item Name </th>
+            <th>Shade</th>
+            <th>Quantity</th>
+            <th>T Quantity</th>
+            <th>Rate</th>
+            <th>Value</th>
+            <th>Fabric Health</th>
+          </tr>
+        </thead>
+        <tbody class="mainTableList newList">
+          {% for item in querylist %}
+          <tr class="text-nowrap">
+              <td class="fabricShadeItemName">{{ item.item_name }}</td>
+              <td></td>
+              <td></td>
+              <td>{{ item.total_qty }}</td>
+              <td></td>
+          </tr>
+          {% for shade in item.shades %}
+          <tr>
+              <td></td>
+              <td class="fabricShade">
+                  <a href="{% url 'godown-item-report' godown_id shade.item_shade_id %}" style="text-decoration: none; color: #000">{{ shade.item_shade }}</a>
+              </td>
+              <td class="fabricTotalShadeQty">{{ shade.quantity }}</td>
+              <td></td>
+              <td class="fabricTotalRate">{{ shade.rate }}</td>
+              <td class="fabricTotalValue"></td>
+          </tr>
+          {% endfor %}
+          {% endfor %}
+        </tbody>
+    
+        {% endif %}
     
       </table>
     
@@ -80,38 +83,40 @@
 </div>
 <script>
   function totalValueCal(){
-  
-    var fabricName = document.querySelectorAll('.fabricName');
-    for(var i=0; i<fabricName.length; i++){
+    const mainRows = document.querySelectorAll('.mainTableList tr');
+    mainRows.forEach(function(row){
+      let fabricQty = row.querySelector('.fabricQty');
+      let fabricRate = row.querySelector('.fabricRate');
+      let fabricValue = row.querySelector('.fabricValue');
 
-    var fabricQty = document.getElementById('id_'+i+'-fabricQty').textContent;
-
-    var fabricRate = document.getElementById('id_'+i+'-fabricRate').textContent
-  
-
-    var totalaValues = parseFloat(fabricQty)* parseFloat(fabricRate)
-   
-    document.getElementById('id_'+i+'-fabricValue').textContent =totalaValues
-    }
+      if(fabricQty && fabricRate && fabricValue){
+         const newFabricQty = parseFloat(fabricQty.textContent) || 0;
+         const newFabricRate = parseFloat(fabricRate.textContent) || 0;
+      
+         const totalFabricValue = newFabricQty * newFabricRate;
+        fabricValue.textContent = totalFabricValue;
+      }
+    })
   }
 
   function TotalShadeValueCalculation() {
             // Get all shade rows within the table body
-            var rows = document.querySelectorAll('.mainTableList tr');
+    const rows = document.querySelectorAll('.mainTableList tr');
 
-            rows.forEach(function(row) {
-                var fabricQtyElement = row.querySelector('.fabricTotalShadeQty');
-                var fabricRateElement = row.querySelector('.fabricTotalRate');
-                var fabricValueElement = row.querySelector('.fabricTotalValue');
+      rows.forEach(function(row) {
+        let fabricQtyElement = row.querySelector('.fabricTotalShadeQty');
+        let fabricRateElement = row.querySelector('.fabricTotalRate');
+        let fabricValueElement = row.querySelector('.fabricTotalValue');
 
-                if (fabricQtyElement && fabricRateElement && fabricValueElement) {
-                    var fabricQty = parseFloat(fabricQtyElement.textContent) || 0;
-                    var fabricRate = parseFloat(fabricRateElement.textContent) || 0;
-                    var fabricTotalValue = fabricQty * fabricRate;
-                    fabricValueElement.textContent = fabricTotalValue.toFixed(2);
-                }
-            });
-        }
+          if (fabricQtyElement && fabricRateElement && fabricValueElement) {
+            const fabricQty = parseFloat(fabricQtyElement.textContent) || 0;
+            const fabricRate = parseFloat(fabricRateElement.textContent) || 0;
+            const fabricTotalValue = fabricQty * fabricRate;
+              fabricValueElement.textContent = fabricTotalValue.toFixed(2);
+          }
+      });
+
+  }
 
 
    // Call the function on page load
