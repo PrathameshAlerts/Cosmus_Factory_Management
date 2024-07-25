@@ -706,7 +706,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
 
 
 class item_godown_inward_outward_master(models.Model):
-    date = models.DateField()
+    date_name = models.DateField()
     item_shade = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
     voucher_no = models.IntegerField(blank=True,null=True)
     voucher_type = models.CharField(max_length=100,blank=True,null=True)
