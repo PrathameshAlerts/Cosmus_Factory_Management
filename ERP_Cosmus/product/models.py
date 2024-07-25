@@ -383,6 +383,8 @@ class opening_shade_godown_quantity(models.Model):
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
     opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=1)
     opening_rate = models.DecimalField(max_digits=10, decimal_places=1)
+    created_date = models.DateTimeField(auto_now = True)
+    modified_date_time = models.DateTimeField(auto_now_add = True)
 
 
 
@@ -543,6 +545,8 @@ class purchase_voucher_items(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     deleted_directly = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now = True)
+    updated_date = models.DateTimeField(auto_now_add = True)
 
 
 class shade_godown_items(models.Model):
@@ -567,6 +571,8 @@ class item_godown_quantity_through_table(models.Model):
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
     quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
     item_rate = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
+    created_date = models.DateTimeField(auto_now = True)
+    updated_date = models.DateTimeField(auto_now_add = True)
 
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
@@ -694,7 +700,18 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    created_date = models.DateTimeField(auto_now = True)
+    updated_date = models.DateTimeField(auto_now_add = True)
     
 
+
+class item_godown_inward_outward_master(models.Model):
+    date = models.DateField()
+    item_shade = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
+    voucher_no = models.IntegerField(blank=True,null=True)
+    voucher_type = models.CharField(max_length=100,blank=True,null=True)
+    particular = models.CharField(max_length=100)
+    inward = models.IntegerField(blank=True,null=True)
+    outward = models.IntegerField(blank=True,null=True)
 
 

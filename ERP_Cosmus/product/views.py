@@ -3564,6 +3564,7 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
                 for godown_items in shade.godown_shades.filter(godown_name__id=g_id):
                     godown_shade_dict = {}
                     shade_dict['item_shade'] = godown_items.Item_shade_name.item_shade_name
+                    shade_dict['item_shade_id'] = godown_items.Item_shade_name.id
                     shade_dict['quantity'] = godown_items.quantity
                     shade_godown_list.append(godown_shade_dict)
                     
@@ -3573,17 +3574,12 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
 
         print(querylist)
             
-            
-
-
-
-        items_in_fab_grp1 = item_color_shade.objects.filter(items__Fabric_Group=fab_id).filter(godown_shades__godown_name__id=g_id).annotate(total_qty =Round(Sum('godown_shades__quantity')))
         queryset = items_in_fab_grp
 
         Fabric_grp_name = Fabric_Group_Model.objects.get(id=fab_id)
 
     godown_name = items_in_godown.first().godown_name
-    print(queryset)
+    
     
     return render(request,'reports/godownstockrawmaterialreportfabgrp.html',{'page_id':page_id,
                                                                              'godown_id':g_id,
@@ -3592,6 +3588,40 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
                                                                              'queryset':queryset,
                                                                              'querylist':querylist})
 
+
+def godown_item_report(request,g_id,shade_id):
+    godoown_name = Godown_raw_material.objects.get(id=g_id)
+    shade_name = item_color_shade.objects.get(id=shade_id)
+
+    opening_godown_qty = opening_shade_godown_quantity.objects.filter(opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godoown_name)
+
+    report_data = []
+
+    closing_quantity = decimal.Decimal(0.00)
+    closing_value = decimal.Decimal(0.00)
+    
+    
+    for godown_qty in opening_godown_qty:
+        
+        closing_quantity += godown_qty.opening_quantity
+        closing_value += godown_qty.opening_rate * godown_qty.opening_quantity
+        report_data.append({
+            'date': godown_qty.created_date,
+            'particular': 'Opening Balance',
+            'voucher_type': '',
+            'vch_no': '',
+            'inward_quantity': f"{godown_qty.opening_quantity} Meter",
+            'inward_value': godown_qty.opening_rate * godown_qty.opening_quantity,
+            'outward_quantity': '',
+            'outward_value': '',
+            'closing_quantity': f"{closing_quantity} Meter",
+            'closing_value': closing_value,
+        })
+
+
+
+    return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godoown_name,
+                                                                             'shade_name':shade_name,'report_data':report_data})
 
 
 #__________________________reports-end____________________________________
