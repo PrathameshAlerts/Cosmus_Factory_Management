@@ -647,7 +647,6 @@ class purchase_order_to_product(models.Model):
     def save(self, *args, **kwargs):
         if self.order_quantity:
             self.process_quantity = self.order_quantity
-    
         super().save(*args, **kwargs)
 
     

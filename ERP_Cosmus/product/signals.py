@@ -348,14 +348,15 @@ def set_purchase_order_product_status(sender, instance, created, **kwargs):
         purchase_order_id.save()
 
 
-@receiver(post_save, sender=purchase_order)
+@receiver(post_save, sender=purchase_order_to_product)
 def delete_purchase_order_raw_on_purchase_order_update_signal(sender, instance, created, **kwargs):
     if not created:
         if instance.id:
-            p_o_id = instance.id
+            p_o_id = instance.purchase_order_id
             purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_id)
-
+            print(p_o_id)
             for instances in purchase_order_raw_instances:
+                print(instances)
                 instances.delete()  
 
 

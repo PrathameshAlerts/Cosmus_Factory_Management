@@ -2981,7 +2981,9 @@ def purchaseordercreateupdate(request,pk=None):
 
                         messages.success(request, 'Purchase Order Quantities updated successfully.')
                         logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
-                        return redirect(reverse('purchase-order-rawmaterial', args=[instance.id, instance.product_reference_number.Product_Refrence_ID]))
+
+                        #return redirect(reverse('purchase-order-rawmaterial', args=[instance.id, instance.product_reference_number.Product_Refrence_ID]))
+                        return redirect('purchase-order-raw-material-list')
 
                     except DatabaseError as db_err:
                         logger.error(f'Database error during form save: {db_err}')
@@ -3172,12 +3174,17 @@ def purchase_order_for_raw_material_list(request):
                   {'purchase_orders_pending': purchase_orders_pending,
                    'purchase_orders_completed':purchase_orders_completed})
 
+
+
 def purchase_order_for_raw_material_delete(request,pk):
     purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=pk)
 
     for instances in purchase_order_raw_instances:
         instances.delete()
+
     return redirect('purchase-order-raw-material-list')
+
+
 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     print(request.POST)
