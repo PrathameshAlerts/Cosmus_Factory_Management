@@ -1763,6 +1763,9 @@ styles.css */
     height: 28px;
     background-color: transparent;
 }
+.productShadeCutting_Material_input:focus{
+    outline: none;
+}
 .productorderrawqty-input{
     width: 73px;
     border-radius: 3px;
