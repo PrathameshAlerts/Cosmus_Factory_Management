@@ -3110,7 +3110,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
 
-    
+    print(physical_stock_all_godown_json)
     if request.method == 'POST':
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
 
@@ -3118,7 +3118,6 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
             if purchase_order_raw_formset.is_valid() and purchase_order_raw_sheet_formset.is_valid():
                 
                 try:
-
                     purchase_order_raw_formset.save()
                     purchase_order_raw_sheet_formset.save()
                     
@@ -3169,7 +3168,7 @@ def purchase_order_for_raw_material_list(request):
     purchase_orders_completed = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0)
 
 
-    return render(request,'production/purchase_order_for_raw.html',
+    return render(request,'production/purchase_order_for_raw_material_list.html',
                   {'purchase_orders_pending': purchase_orders_pending,
                    'purchase_orders_completed':purchase_orders_completed})
 
