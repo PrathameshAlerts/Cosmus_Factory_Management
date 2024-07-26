@@ -81,7 +81,7 @@
     <div class="col-lg-6 mt-3" id="productForm-conatiner" style="display: none;">
         <div class="d-flex mb-2">
             <lable>Model Name:</lable>
-            <input class="productinputtext pb-2" id="id_model_name" value="{{model_name | default_if_none:''}}">
+            <input class="productinputtext pb-2  " id="id_model_name" value="{{model_name | default_if_none:''}}">
             <lable>Total:</lable>
             <input type="number" class="purchase-amount border-0 bg-transparent text-danger ms-2 me-4 pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01">
             <input type="hidden" class="" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
@@ -139,6 +139,7 @@
         dateInput.min = today;
         // this script is for other form submit buttons hide adn show when first form submit 
         const id = document.getElementById('id_productRow').value;
+        console.log(id)
 
         if (id != "None") {
             const main_form = document.getElementById('productForm-conatiner');
@@ -165,6 +166,20 @@
                 godownId.disabled = false;
             });
         }
+
+        function IdsValueCalculate(){
+            var mainForms = document.getElementById('id_purchase_order_to_product_set-0-id').value;
+            console.log(mainForms)
+            if(mainForms != "None"){
+               var form = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+                for(var i=0;i<form;i++){
+                    var quantity = document.getElementById('id_purchase_order_to_product_set-'+ i+'-order_quantity').value;
+                 quantity.readOnly = false;
+                }
+            }
+          
+        }
+        IdsValueCalculate()
     });
 </script>
 <script>
@@ -200,10 +215,10 @@
             grandQuantityElement.value = totalQuantity;
 
             // Initially, set all input fields to read-only and reset their border color
-            quantities.forEach(function (q) {
-                q.element.readOnly = true;
-                q.element.style.borderColor = ''; // Reset border color
-            });
+            // quantities.forEach(function (q) {
+            //     q.element.readOnly = true;
+            //     q.element.style.borderColor = ''; // Reset border color
+            // });
 
             // Check if the total quantity equals the allowed quantity
             if (totalQuantity === totalAllowedQuantity) {
@@ -222,6 +237,7 @@
                 // If total quantity is less than allowed quantity, make all fields editable
                 quantities.forEach(function (q) {
                     q.element.readOnly = false;
+                    q.element.style.borderColor = '';
                 });
             }
         }
