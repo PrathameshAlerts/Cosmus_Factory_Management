@@ -22,7 +22,7 @@
                    
                         <th colspan="2" class="bg-c-blue">InWards</th>
                         <th colspan="2" class="bg-c-red">Outwards</th>
-                        <th colspan="2" class="bg-c-green">Closing</th>
+                        <th colspan="3" class="bg-c-green">Closing</th>
                     </tr>
                         <tr>
                             <th colspan="4"></th>
@@ -31,8 +31,9 @@
                             <th style="background-color: #ffcccb;">Quantity</th>
                             <th style="background-color: #ffcccb;">Value</th>
                             <th style="background-color: #a3efe0;">Quantity</th>
-                            <th style="background-color: #a3efe0;" >Value</th>
                             <th style="background-color: #a3efe0;" >Rate</th>
+                            <th style="background-color: #a3efe0;" >Value</th>
+                           
                         </tr>
                        
                 </tbody>
@@ -48,9 +49,10 @@
                 <td style="background-color: #90D5FF;">{{data.inward_value}}</td>
                 <td style="background-color: #ffcccb;">{{data.outward_quantity}}</td>
                 <td style="background-color: #ffcccb;">{{data.outward_value}}</td>
-                <td style="background-color: #a3efe0;">{{data.closing_quantity}}</td>
-                <td style="background-color: #a3efe0;">{{data.closing_value}}</td>
+                <td class="closingQty" style="background-color: #a3efe0;">{{data.closing_quantity}}</td>
                 <td style="background-color: #a3efe0;">{{data.rate}}</td>
+                <td class="closingValue" style="background-color: #a3efe0;">{{data.closing_value}}</td>
+             
                 </tr>
                 
                 {% endfor %}
@@ -58,8 +60,38 @@
                 
                 
                 </table>
+             
         </div>
-        
+        <div class="d-flex justify-content-end name_absolute me-2">
+            <span>Total:</span>
+            <span class="me-5 ms-4"  id="TotalQty"></span>
+            <span class="ms-5" id="TotalValue"></span>
+        </div>
     </div>
 </div>
+
+
+<script>
+    function totalValue(){
+        var totalQty = 0;
+        var table = document.querySelectorAll('.mainTableList tr:last-child');
+        console.log(table);
+
+
+        table.forEach(element => {
+           
+            var qty = element.querySelector('.closingQty').textContent;
+            console.log(qty);
+            var value = element.querySelector('.closingValue').textContent;
+            console.log(value);
+
+            document.getElementById('TotalQty').textContent = qty;
+            document.getElementById('TotalValue').textContent = value;
+         
+        
+        });
+    }
+totalValue()
+</script>
 {% endblock %}
+
