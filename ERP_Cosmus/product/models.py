@@ -652,7 +652,7 @@ class purchase_order_to_product(models.Model):
     
 
 class purchase_order_for_raw_material(models.Model):
-    purchase_order_id = models.ForeignKey(purchase_order, on_delete=models.CASCADE)
+    purchase_order_id = models.ForeignKey(purchase_order,related_name='raw_materials', on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
@@ -705,13 +705,6 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     
 
 
-class item_godown_inward_outward_master(models.Model):
-    date_name = models.DateField()
-    item_shade = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
-    voucher_no = models.IntegerField(blank=True,null=True)
-    voucher_type = models.CharField(max_length=100,blank=True,null=True)
-    particular = models.CharField(max_length=100)
-    inward = models.IntegerField(blank=True,null=True)
-    outward = models.IntegerField(blank=True,null=True)
+
 
 
