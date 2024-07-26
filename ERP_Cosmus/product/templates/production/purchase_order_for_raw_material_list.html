@@ -47,7 +47,8 @@
                 <td>{{po.number_of_pieces}}</td>
                 <td>{{po.balance_number_of_pieces}}</td>
                 <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-                <td></td> 
+                <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
+                <td><a class="mx-2" href=""><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -83,7 +84,7 @@
                     <td>{{po.number_of_pieces}}</td>
                     <td>{{po.balance_number_of_pieces}}</td>
                     <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-                    <td><a href="{% url 'purchase-order-for-raw-material-delete' po.id %}">DELETE</a></td> 
+                    <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -91,9 +92,48 @@
         
     </div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body-text">
+            Are you sure you want to delete this purchase order?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
 
+<script>
+    document.body.appendChild(document.getElementById('exampleModal'));
+    
+    $(document).ready(function(){
+        $('.delete-btn').click(function(){
+            var itemId = $(this).data('item-id');
+            var name = $(this).closest('tr').find('td').eq(1).text();
+            var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+    
+            $('#modal-body-text').html('Are you sure you want to delete the gst ' + coloredName + '?');
+            $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+            $('#exampleModal').modal('show');
+        });
+    
+        // Confirm delete button click event
+        $('#confirmDeleteButton').click(function(){
+            var itemId = $(this).data('item-id');
+            // Redirect to delete view
+            window.location.href = '/purchaseorderforrawmaterialdelete/' + itemId;
+        });
+    });
+    
 
-
+    </script>
 
 
 
