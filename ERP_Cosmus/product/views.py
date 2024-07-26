@@ -3172,7 +3172,12 @@ def purchase_order_for_raw_material_list(request):
                   {'purchase_orders_pending': purchase_orders_pending,
                    'purchase_orders_completed':purchase_orders_completed})
 
+def purchase_order_for_raw_material_delete(request,pk):
+    purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=pk)
 
+    for instances in purchase_order_raw_instances:
+        instances.delete()
+    return redirect('purchase-order-raw-material-list')
 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     print(request.POST)

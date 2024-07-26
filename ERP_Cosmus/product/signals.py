@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from .models import (Ledger, PProduct_Creation, Product, RawStockTrasferRecords,
                       account_credit_debit_master_table,  item_purchase_voucher_master, 
                       item_godown_quantity_through_table,Item_Creation,item_color_shade, 
-                      opening_shade_godown_quantity, product_2_item_through_table, purchase_order,
+                      opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material,
                         purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name,
                           shade_godown_items)
 import logging
@@ -346,6 +346,17 @@ def set_purchase_order_product_status(sender, instance, created, **kwargs):
         purchase_order_id = instance
         purchase_order_id.process_status = '1'
         purchase_order_id.save()
+
+
+@receiver(post_save, sender=purchase_order)
+def delete_purchase_order_raw_on_purchase_order_update_signal(sender, instance, created, **kwargs):
+    if not created:
+        if instance.id:
+            p_o_id = instance.id
+            purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_id)
+
+            for instances in purchase_order_raw_instances:
+                instances.delete()  
 
 
 
