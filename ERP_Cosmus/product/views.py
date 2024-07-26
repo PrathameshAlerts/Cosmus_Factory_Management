@@ -3040,7 +3040,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     product_refrence_no = prod_ref_no
     product_2_items_instances = product_2_item_through_table.objects.filter(
                             PProduct_pk__Product__Product_Refrence_ID = product_refrence_no).order_by(
-                                'Item_pk','id').distinct('Item_pk').annotate(item_rate=Avg('Item_pk__shades__rate'))
+                                'Item_pk','id').distinct('Item_pk')
 
     model_name = purchase_order_instance.product_reference_number.Model_Name
 
@@ -3070,7 +3070,8 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
         initial_data = []
         for query in product_2_items_instances:
-
+            rate_first = query.Item_pk.shades.order_by('id').first() # get the rate of the first shade of the color 
+            
             # for fortend use to mulitply total proccessed qty with consumption for common item
             if query.common_unique == True:
                 product_color_or_common_item = 'Common Item'
@@ -3083,7 +3084,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
             initial_data_dict = {'product_sku': product_sku_or_common_item,
                                 'product_color' : product_color_or_common_item,
                                 'material_name':query.Item_pk.item_name,
-                                'rate':query.item_rate,
+                                'rate':rate_first.rate,
                                 'panha':query.Item_pk.Panha,
                                 'units':query.Item_pk.Units,
                                 'g_total':query.grand_total,
