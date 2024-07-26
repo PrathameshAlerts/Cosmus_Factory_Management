@@ -155,6 +155,7 @@ urlpatterns = [
 
     #purchase_order_for_raw
     path('purchaseorderrawmaterial/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial'),
+    path('purchaseorderrawmateriallist/',views.purchase_order_for_raw_material_list, name = 'purchase-order-raw-material-list'),
 
     #purchase_order_cutting_room
     path('purchaseordercuttinglist/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercuttinglist, name = 'purchase-order-cutting-list'),

@@ -16,7 +16,7 @@ from django.contrib.auth import  update_session_auth_hash ,authenticate # help u
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q, Sum, ProtectedError, Avg, Case, When,F
+from django.db.models import Q, Sum, ProtectedError, Avg, Count,F
 from django.db.models.functions import Round
 from django.db import DatabaseError, IntegrityError, transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -40,10 +40,18 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name, shade_godown_items,
+                                 item_purchase_voucher_master, opening_shade_godown_quantity, 
+                                 packaging, product_2_item_through_table, purchase_order, 
+                                 purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
+                                 purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
+                                   set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate, ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form, factory_employee_form, purchase_order_for_raw_material_cutting_items_form, purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
+from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
+                   CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
+                     ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
+                       factory_employee_form, purchase_order_for_raw_material_cutting_items_form, 
+                       purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -3024,13 +3032,15 @@ def purchaseorderdelete(request,pk):
 
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
-    
+    print(request.POST)
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
 
     product_refrence_no = prod_ref_no
-    product_2_items_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = product_refrence_no).order_by('Item_pk','id').distinct('Item_pk')
+    product_2_items_instances = product_2_item_through_table.objects.filter(
+                            PProduct_pk__Product__Product_Refrence_ID = product_refrence_no).order_by(
+                                'Item_pk','id').distinct('Item_pk').annotate(item_rate=Avg('Item_pk__shades__rate'))
 
     model_name = purchase_order_instance.product_reference_number.Model_Name
 
@@ -3040,7 +3050,8 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         item_id = item.Item_pk
         item_name = item.Item_pk.item_name
         item_quantity = 0
-        item_godowns = item_godown_quantity_through_table.objects.filter(Item_shade_name__items = item_id,godown_name =purchase_order_instance.temp_godown_select) #later filter by godown also after checking user godown location
+        item_godowns = item_godown_quantity_through_table.objects.filter(Item_shade_name__items = item_id,
+                                        godown_name =purchase_order_instance.temp_godown_select) #later filter by godown also after checking user godown location
         
         if item_godowns:
             for query in item_godowns:
@@ -3053,7 +3064,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
 
     # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
-    if not purchase_order_instance.purchase_order_for_raw_material_set.all():
+    if not purchase_order_instance.raw_materials.all():
         
         physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) # convert python dict to json and send only on create on update it will be None
 
@@ -3069,12 +3080,10 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                 product_color_or_common_item = query.PProduct_pk.PProduct_color
                 product_sku_or_common_item = query.PProduct_pk.PProduct_SKU
 
-            
-
             initial_data_dict = {'product_sku': product_sku_or_common_item,
                                 'product_color' : product_color_or_common_item,
                                 'material_name':query.Item_pk.item_name,
-                                'rate':query.Item_pk.rate,
+                                'rate':query.item_rate,
                                 'panha':query.Item_pk.Panha,
                                 'units':query.Item_pk.Units,
                                 'g_total':query.grand_total,
@@ -3091,7 +3100,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 
     # for update(to check child instances of p_o_id is avaliable means form is on update)
-    elif purchase_order_instance.purchase_order_for_raw_material_set.all():
+    elif purchase_order_instance.raw_materials.all():
 
         physical_stock_all_godown_json = None # send only on create on update it will be None as saved data will be rendered
 
@@ -3133,6 +3142,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
             
             else:
+                print(purchase_order_raw_formset.errors,purchase_order_raw_sheet_formset.errors)
                 raise ValidationError("No products found for the given reference ID.")
                 # messages.error(request,f' Please enter correct Procurement color wise QTY {purchase_order_raw_sheet_formset.errors}-{purchase_order_raw_sheet_formset.errors}')
                 # return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
@@ -3151,6 +3161,17 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                                                                       'purchase_order_raw_formset':purchase_order_raw_formset,
                                                                       'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
                                                                       'physical_stock_all_godown_json':physical_stock_all_godown_json})
+
+
+def purchase_order_for_raw_material_list(request):
+    purchase_orders_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__lt=1)
+    purchase_orders_completed = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0)
+
+
+    return render(request,'production/purchase_order_for_raw.html',
+                  {'purchase_orders_pending': purchase_orders_pending,
+                   'purchase_orders_completed':purchase_orders_completed})
+
 
 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
@@ -3652,7 +3673,7 @@ def godown_item_report(request,g_id,shade_id):
         
         report_data.append({
             'date': purchase_voucher_item_qty.created_date,
-            'particular': 'Purchase_voucher',
+            'particular': 'Puchase Voucher',
             'voucher_type': purchase_voucher_item_qty.ledger_type,
             'vch_no': purchase_voucher_item_qty.purchase_number,
             'inward_quantity': f"{purchase_voucher_item_qty.godown_qty_total} Meter",
