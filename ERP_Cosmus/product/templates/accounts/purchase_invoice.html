@@ -323,7 +323,7 @@ function getGstNo() {
 
     // this function gereate a randow uuid and store the value in unique id
 function randomValue (){
-    let itemShadeIdValue;
+    var itemShadeIdValue;
     const itemName = document.querySelector('select[name^="purchase_voucher_items_set-"]').closest('tr');
     const selectElement = itemName.querySelector('select[name^="purchase_voucher_items_set-"]');
     const itemShadeName = selectElement.getAttribute('name');
@@ -813,7 +813,7 @@ function randomValue (){
             const sgstValue= row.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
 
             const totalAmountInput = row.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-total_amount"]');
-         
+         console.log(quantityInput.value)
             // Get the values of quantity and rate
             const quantity = parseFloat(quantityInput.value);
             const rate = parseFloat(rateInput.value);
