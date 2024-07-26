@@ -165,6 +165,7 @@
     // Function to update the consumption value calculated for pahna, units and grand total to assigne the value to consumption field
     function updateTotal() {
             var totalForms = document.getElementById('id_raw_materials-TOTAL_FORMS').value;
+            console.log(totalForms);
 
             for (var i = 0; i < totalForms; i++) {
                 var panha = document.getElementById('id_raw_materials-' + i + '-panha').value;
@@ -202,25 +203,27 @@
             calculateTotalConsumption();
         }
 
-        function updateProcessQuantity() {
-            var newForms = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+        // function updateProcessQuantity() {
+        //     var newForms = document.getElementById('id_raw_materials-TOTAL_FORMS').value;
+        //     console.log(newForms);
 
-            for (var i = 0; i < newForms; i++) {
-                var orderQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity').value;
-                var processQuantity = document.getElementById('id_purchase_order_to_product_set-' + i + '-process_quantity');
-                var orderQuantityValue = parseFloat(orderQuantity);
+        //     for (var i = 0; i < newForms; i++) {
+        //         var orderQuantity = document.getElementById('id_raw_materials-' + i + '-order_quantity').value;
+        //         var processQuantity = document.getElementById('id_raw_materials-' + i + '-process_quantity');
+        //         var orderQuantityValue = parseFloat(orderQuantity);
               
-                processQuantity.value = orderQuantityValue;
-                processQuantity.readOnly = true; 
-            }
-        }
-        updateProcessQuantity();
+        //         processQuantity.value = orderQuantityValue;
+        //         processQuantity.readOnly = true; 
+        //     }
+        // }
+        //updateProcessQuantity();
         function calculateTotalConsumption(){
             let total =0;
             const processQty = document.querySelectorAll('input[name$="-process_quantity"]');
+           
 
             processQty.forEach(input =>{
-                const processQuantity = parseInt(input.value) || 0;  
+                const processQuantity = parseInt(input.value) || 0; 
                 const row = input.closest('tr');
                 const productColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
@@ -278,11 +281,11 @@ function balanceStock(){
 }
 
     document.addEventListener('DOMContentLoaded', () => {
-        // var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
-        // var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
-            // formElements.forEach(element => {
-            //     element.addEventListener('focus', updateTotal);
-            // });
+        var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
+        var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
+            formElements.forEach(element => {
+                element.addEventListener('focus', updateTotal);
+            });
 
             // processQuantityElements.forEach(element => {
             //     element.addEventListener('focus', updateProcessQuantity);
