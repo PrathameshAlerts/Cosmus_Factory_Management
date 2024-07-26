@@ -3034,7 +3034,7 @@ def purchaseorderdelete(request,pk):
 
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
-    print(request.POST)
+    
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
@@ -3112,7 +3112,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
 
-    print(physical_stock_all_godown_json)
+    
     if request.method == 'POST':
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
 
@@ -3417,6 +3417,10 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
     Purchase_order_no = purchase_order.objects.get(id=p_o_pk)
     return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_number':Purchase_order_no, 'prod_ref_no':prod_ref_no, 'p_o_pk':p_o_pk})
 
+def purchaseordercuttinglistall(request):
+    p_o_cutting_pending_all = purchase_order_raw_material_cutting.objects.all()
+
+    return render(request,'production/purchaseordercuttinglistall.html', {'p_o_cutting_pending_all':p_o_cutting_pending_all})
 
 #_________________________production-end__________________________________________
 

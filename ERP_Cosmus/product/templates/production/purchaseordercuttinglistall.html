@@ -1,0 +1,8 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+{% for order in p_o_cutting_pending_all %}
+{{order.purchase_order_id}}
+{% endfor %}
+
+{% endblock %}
