@@ -196,7 +196,12 @@
          <li class="nav-item my-3 mx-2  dropdown">
           <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Production</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText">Purchase Order(Raw)</a></li> 
+           <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText">New Order</a></li>
+           <li class="pro-head"><a href="{% url 'purchase-order-raw-material-list' %}"class="navText" >Purchase Order(Raw)</a></li>
+           <li class="pro-head"><a href="{% url 'purchase-order-cutting-list-all' %}" class="navText">Cutting Orders</a></li>
+           <li class="pro-head"><a href="" class="navText">Labour Work Out</a></li>
+           <li class="pro-head"><a href="" class="navText">Labour Work In</a></li>
+           <li class="pro-head"><a href="" class="navText">Repair Pcs In</a></li>
       
          </ul>  
          </li> 
