@@ -110,34 +110,18 @@
                         <td>
                             <input type="text" class="productinput" name="{{forloop.counter0}}-product_color" value="{{form.instance.product_id.PProduct_color | default_if_none:''}}"id="id_{{forloop.counter0}}-product_color" readonly>
                         </td>
-                        
-
-                        {% if form.instance.purchase_order_id.raw_materials.exists %}
                         <td>
-                            <input type="number" class="productorderqty-input" step="0.01" readonly name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
+                            <input type="number" class="productorderqty-input oderedValues" step="0.01" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
                         </td>
-
-                        {% elif not form.instance.purchase_order_id.raw_materials.exists %}
-
-                        <td>
-                            <input type="number" class="productorderqty-input" step="0.01" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
-                        </td>
-
-                        {% endif %}
-
-                        {% if not form.instance.purchase_order_id.raw_materials.exists %}
-
                         <td class="">
                             <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;" name="{{form.prefix}}-DELETE"id="id_{{form.prefix}}-DELETE" value=""></i></span>
                         </td>
-
-                        {% endif %}
-
+                        <input type="hidden" value="{{form.instance.purchase_order_id.raw_materials.exists}}" class="purchaseOderDelete">
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <button type="button" class="add_btn rounded-2" id="id_return">Back</button>
+            <!-- <button type="button" class="add_btn rounded-2" id="id_return">Back</button> -->
             <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="Submit" id="id_submit_2">
             <!-- {% if form.instance.id %}
             {% if form.instance.process_status != '1' %}
@@ -148,19 +132,22 @@
     </div>
 </div>
 <script>
-
+    $(document).ready(function(){
+        var oderedValue = document.querySelectorAll('.oderedValues');
+        oderedValue.forEach(element => {
+            element.readOnly = true;
+        });
+    })
     document.addEventListener('DOMContentLoaded', function () {
         const dateInput = document.getElementById('id_target_date');// this script is for date picker 
         const today = new Date().toISOString().split('T')[0];
         const date = dateInput.value;
         dateInput.min = today;
-
-
-
+    
+       
         // this script is for other form submit buttons hide adn show when first form submit 
         const id = document.getElementById('id_productRow').value;
-        console.log(id)
-
+    
         if (id != "None") {
             const main_form = document.getElementById('productForm-conatiner');
             const submitBtn = document.getElementById('id_submit_1');
@@ -195,23 +182,23 @@
               
                 for(var i=0;i<form;i++){
                     var quantity = document.getElementById('id_p_o_to_products-'+ i+'-order_quantity').value;
-                    var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
-                    var deleteButton = deleteCheckbox.closest('td');
-                    var deleteValue = document.getElementById('myDelete');
-                    //deleteButton.classList.add('deleteHide');
-                    //deleteValue.classList.add('deleteHide');
-                    //deletedData.display = 'none';
+                    // var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
+                    // var deleteButton = deleteCheckbox.closest('td');
+                    // var deleteValue = document.getElementById('myDelete');
+                    // //deleteButton.classList.add('deleteHide');
+                    // //deleteValue.classList.add('deleteHide');
+                    // //deletedData.display = 'none';
                  quantity.readOnly = false;
                 }
             }else{
                
-                for(var i=0;i<form;i++){
-                    var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
-                    var deleteButton = deleteCheckbox.closest('td');
-                    var deleteValue = document.getElementById('myDelete');
-                //deleteButton.classList.remove('deleteHide');
-                //deleteValue.classList.remove('deleteHide');
-                }
+                // for(var i=0;i<form;i++){
+                //     var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
+                //     var deleteButton = deleteCheckbox.closest('td');
+                //     var deleteValue = document.getElementById('myDelete');
+                // //deleteButton.classList.remove('deleteHide');
+                // //deleteValue.classList.remove('deleteHide');
+                // }
             }
           
         }
@@ -292,17 +279,25 @@
     $(document).on('click', '.delete-btn', function () {
 
         const tableRows = $('#productTable tbody tr');
+    
         if (tableRows.length > 1) {
             const row = $(this).closest('tr');
             const checkbox = row.find('.godown_delete[name^="p_o_to_products-"][name$="-DELETE"]');
+            const checkDeleteBox = row.find('.purchaseOderDelete').val();
 
-            checkbox.prop('checked', true);
+            if(checkDeleteBox === "True"){
+                alert('Can not delete the purchase order');
+                return false;
+            }else{
+                checkbox.prop('checked', true);
             checkbox.val('true');
 
             if (checkbox.val() == 'true') {
                 row.hide();
                 deleteRowCalculate();
             }
+            }
+            
 
         } else {
             alert('The table must have at least one godown item');
