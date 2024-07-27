@@ -45,8 +45,9 @@
                 <td>{{po.balance_number_of_pieces}}</td>
                 <td><a href="{% url 'purchase-order-update' po.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                 <td><button class="border-0 bg-transparent deletes-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></i></button></td> 
-                  
-              </tr>
+                  <input type="hidden" value="{{po.raw_materials.exists}}" class="purchaseOderDelete">
+             
+                </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -64,7 +65,7 @@
           Are you sure you want to delete this Purchase Order No?
       </div>
       <div class="modal-footer">
-        <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+        <button type="button" class="add_btn rounded-2" id="noButton" data-bs-dismiss="modal">No</button>
         <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
       </div>
     </div>
@@ -87,10 +88,17 @@
         var itemId = $(this).data('item-id');
         var name = $(this).closest('tr').find('td').eq(1).text();
         var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-
+        var oderedIdDelete = $(this).closest('tr').find('.purchaseOderDelete').val();
+        if(oderedIdDelete == 'True'){
+          $('#modal-body-text').html('Can not delete the Purchase Order ' + coloredName + '?');
+          $('#confirmDeleteButton').hide();
+          $('#noButton').hide();
+        }else{
           $('#modal-body-text').html('Are you sure you want to delete the Purchase Order ' + coloredName + '?');
           $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
           $('#confirmDeleteModal').modal('show');
+        }
+          
       });
 
       // Confirm delete button click event
