@@ -3130,7 +3130,8 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                             po_form_instance.process_status = '3'  # change the status to 3
                             po_form_instance.save()  # save the parent form instance 
 
-                    return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+                    #return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+                    return redirect('purchase-order-cutting-list-all')
                 
                 except ValueError as ve:
                     messages.error(request,f'Error Occured - {ve}')
@@ -3190,7 +3191,7 @@ def purchase_order_for_raw_material_delete(request,pk):
 
 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
-    print(request.POST)
+    
     if pk:
         purchase_order_cutting_instance = get_object_or_404(purchase_order_raw_material_cutting, pk=pk)
 

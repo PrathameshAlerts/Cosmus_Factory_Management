@@ -3,21 +3,6 @@
 
 {% block body %}
 
-<!-- <div>
-    <div class="row">
-        <div class="col-lg-12">
-          <h2 class="mb-4">Purchase Order Raw List</h2>
-          <div class="d-flex mb-3">
-            <button class="product-btn" onclick="reversAddRowOrder()">Add Order +</button>
-            <div class="container-flex"> 
-             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
-               <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-            </div>
-            <button class="item-btn ms-1">Clear Filter</button>
-           </div>
-          </div>  
-        </div>   
-</div> -->
 <div class="mt-2">
     <h3>Purchase Order Raw List</h3>
 </div>
@@ -28,11 +13,11 @@
     <table class="table table-striped table-hover  table-bordered mt-3" style="width: 100%;">
         <thead class="name_absolute sticky-top">
             <tr>
+                <th>Created Date</th>
                 <th>Purchase Order No</th>
                 <th>Product Refrence ID</th>
                 <th>Party Name</th>
-                <th>Target Date</th>
-                <th>Created Date</th>
+                <th>Target Date</th> 
                 <th>Total of pieces</th>
                 <th>Balance Quantity</th>
                 <th>Create</th>
@@ -41,11 +26,11 @@
         <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
             {% for po in purchase_orders_pending %}
             <tr>
+                <td>{{po.created_date}}</td>
                 <td>{{po.purchase_order_number}}</td>
                 <td>{{po.product_reference_number.Product_Refrence_ID}}</td>
                 <td>{{po.ledger_party_name.name}}</td>
                 <td>{{po.target_date}}</td>
-                <td>{{po.created_date}}</td>
                 <td>{{po.number_of_pieces}}</td>
                 <td>{{po.balance_number_of_pieces}}</td>
                 <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
@@ -63,11 +48,11 @@
         <table class="table table-striped table-hover  table-bordered mt-3" style="width: 100%;">
             <thead class="name_absolute sticky-top">
                 <tr>
+                    <th>Created Date</th>
                     <th>Purchase Order No</th>
                     <th>Product Refrence ID</th>
                     <th>Party Name</th>
                     <th>Target Date</th>
-                    <th>Created Date</th>
                     <th>Total of pieces</th>
                     <th>Balance Quantity</th>
                     <th>View</th>
@@ -76,16 +61,18 @@
             </thead>
             <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
                 {% for po in purchase_orders_completed %}
+                
                 <tr>
+                    <td>{{po.created_date}}</td>
                     <td>{{po.purchase_order_number}}</td>
                     <td>{{po.product_reference_number.Product_Refrence_ID}}</td>
                     <td>{{po.ledger_party_name.name}}</td>
                     <td>{{po.target_date}}</td>
-                    <td>{{po.created_date}}</td>
                     <td>{{po.number_of_pieces}}</td>
                     <td>{{po.balance_number_of_pieces}}</td>
                     <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-eye px-2"></i></a></td>
                     <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                        <input type="hidden" value="{{po.cutting_pos.exists}}" class="cutting_pos">
                     </tr>
                 {% endfor %}
             </tbody>
@@ -104,7 +91,7 @@
             Are you sure you want to delete this purchase order?
         </div>
         <div class="modal-footer">
-          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="add_btn rounded-2" id="noButton" data-bs-dismiss="modal">No</button>
           <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
         </div>
       </div>
@@ -117,12 +104,21 @@
     $(document).ready(function(){
         $('.delete-btn').click(function(){
             var itemId = $(this).data('item-id');
-            var name = $(this).closest('tr').find('td').eq(0).text();
+            var name = $(this).closest('tr').find('td').eq(1).text();
             var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-    
-            $('#modal-body-text').html('Are you sure you want to delete the purchase order ' + coloredName + '?');
-            $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
-            $('#exampleModal').modal('show');
+            var oderUpdate = $(this).closest('tr').find('.cutting_pos').val();
+            
+            if(oderUpdate === "True"){
+                $('#modal-body-text').html('Can not delete the purchase order ' + coloredName + '?');
+                $('#confirmDeleteButton').hide(); // Set the item id to the confirm button's data
+                $('#noButton').hide();
+            }else{
+         
+                $('#modal-body-text').html('Are you sure you want to delete the purchase order ' + coloredName + '?');
+                $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+                $('#exampleModal').modal('show');
+            }
+            
         });
     
         // Confirm delete button click event
