@@ -364,6 +364,9 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
                 # Get the order_quantity from the cleaned_data of each form:
                 order_quantity = form.cleaned_data.get('order_quantity', 0)
                 total_order_quantity += order_quantity
+
+                # set the process qty same as orderqty using form.insatnce
+                form.instance.process_quantity = order_quantity
         
         # Access the parent model's number_of_pieces field
         parent_quantity = self.instance.number_of_pieces  
