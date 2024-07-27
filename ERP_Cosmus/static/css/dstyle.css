@@ -1468,6 +1468,9 @@ input[type=number] {
     height: 33px; 
     background-color: transparent; 
 }
+.productinputtext:focus{
+    outline: none;
+}
 .productinput{
     width: 110px;
     border: none ;
@@ -1497,6 +1500,17 @@ input[type=number] {
     border-radius: 2px;
     padding-left: 5px; 
     height: 33px;
+}
+.Serial_no{
+    width: 27px;
+    border:none;
+    border-radius: 2px;
+    padding-left: 5px; 
+    height: 33px;
+    background-color: transparent;
+}
+.Serial_no:focus{
+    outline: none;
 }
 .purchase-itemName{
     width: 158px;

@@ -81,9 +81,9 @@
     <div class="col-lg-6 mt-3" id="productForm-conatiner" style="display: none;">
         <div class="d-flex mb-2">
             <lable>Model Name:</lable>
-            <input class="productinputtext pb-2  " id="id_model_name" value="{{model_name | default_if_none:''}}">
+            <input class="productinputtext pb-2 " id="id_model_name" value="{{model_name | default_if_none:''}}" readonly>
             <lable>Total:</lable>
-            <input type="number" class="purchase-amount border-0 bg-transparent text-danger ms-2 me-4 pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01">
+            <input type="number" class="productinputtext  text-danger ms-2 me-4 pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01" readonly>
             <input type="hidden" class="" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
         </div>
         <form method="POST">
@@ -168,12 +168,12 @@
         }
 
         function IdsValueCalculate(){
-            var mainForms = document.getElementById('id_purchase_order_to_product_set-0-id').value;
-            console.log(mainForms)
+            var mainForms = document.getElementById('id_p_o_to_products-0-id').value;
+        
             if(mainForms != "None"){
-               var form = document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value;
+               var form = document.getElementById('id_p_o_to_products-TOTAL_FORMS').value;
                 for(var i=0;i<form;i++){
-                    var quantity = document.getElementById('id_purchase_order_to_product_set-'+ i+'-order_quantity').value;
+                    var quantity = document.getElementById('id_p_o_to_products-'+ i+'-order_quantity').value;
                  quantity.readOnly = false;
                 }
             }
@@ -187,18 +187,18 @@
         // Function to update the total quantity and manage the input fields
         function updateTotalQuantity(event) {
             let totalQuantity = 0;
-            const formCount = parseInt(document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value);
+            const formCount = parseInt(document.getElementById('id_p_o_to_products-TOTAL_FORMS').value);
             const totalAllowedQuantity = parseFloat(document.getElementById('id_total-quantity').value);
             const grandQuantityElement = document.getElementById('id_grand_quantity');
             const quantities = [];
-
+            console.log(totalAllowedQuantity);
             // Get the element that triggered the event
             const currentElement = event ? event.target : null;
             let currentIndex = -1;
 
             // Calculate the total quantity from all form inputs
             for (let i = 0; i < formCount; i++) {
-                const quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+                const quantityElement = document.getElementById('id_p_o_to_products-' + i + '-order_quantity');
                 const quantityValue = parseFloat(quantityElement.value);
                 if (!isNaN(quantityValue)) {
                     totalQuantity += quantityValue;
@@ -243,9 +243,9 @@
         }
 
         // Attach event listeners to the quantity input fields
-        const formCount = parseInt(document.getElementById('id_purchase_order_to_product_set-TOTAL_FORMS').value);
+        const formCount = parseInt(document.getElementById('id_p_o_to_products-TOTAL_FORMS').value);
         for (let i = 0; i < formCount; i++) {
-            const quantityElement = document.getElementById('id_purchase_order_to_product_set-' + i + '-order_quantity');
+            const quantityElement = document.getElementById('id_p_o_to_products-' + i + '-order_quantity');
             quantityElement.addEventListener('input', updateTotalQuantity); // Trigger update on input change
         }
 
@@ -259,7 +259,7 @@
         const tableRows = $('#productTable tbody tr');
         if (tableRows.length > 1) {
             const row = $(this).closest('tr');
-            const checkbox = row.find('.godown_delete[name^="purchase_order_to_product_set-"][name$="-DELETE"]');
+            const checkbox = row.find('.godown_delete[name^="p_o_to_products-"][name$="-DELETE"]');
 
             checkbox.prop('checked', true);
             checkbox.val('true');
