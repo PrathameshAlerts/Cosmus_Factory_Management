@@ -665,7 +665,7 @@ class purchase_order_for_raw_material(models.Model):
 
 
 class purchase_order_raw_material_cutting(models.Model):
-    purchase_order_id = models.ForeignKey(purchase_order, on_delete = models.CASCADE)
+    purchase_order_id = models.ForeignKey(purchase_order, related_name='cutting_pos', on_delete = models.CASCADE)
     raw_material_cutting_id = models.IntegerField(primary_key=True)
     factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
     processed_qty  = models.IntegerField(default=0)
