@@ -1479,6 +1479,17 @@ input[type=number] {
     height: 33px;
     background-color: transparent;  
 }
+.targetDateValue{
+    width: 120px;
+    border: none ;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+    background-color: transparent;
+}
+.targetDateValue:focus{
+    outline: none;
+}
 .product_row{
     width: 50px;
     border: 1px solid #cecdcd ;
