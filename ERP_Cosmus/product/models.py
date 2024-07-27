@@ -644,10 +644,7 @@ class purchase_order_to_product(models.Model):
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
 
-    def save(self, *args, **kwargs):
-        if self.order_quantity:
-            self.process_quantity = self.order_quantity
-        super().save(*args, **kwargs)
+
 
     
 

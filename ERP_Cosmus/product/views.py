@@ -2978,6 +2978,7 @@ def purchaseordercreateupdate(request,pk=None):
                             if p_o_instance.process_status == '1':  # if process_status in parent form is 1
                                 p_o_instance.process_status = '2'  # change the status to 2
                                 p_o_instance.save()  # save the parent form instance
+                                
 
                         messages.success(request, 'Purchase Order Quantities updated successfully.')
                         logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
@@ -3166,6 +3167,8 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
 
 def purchase_order_for_raw_material_list(request):
+    # to know if related multiple records are created or not - create temp column named raw_material_count and 
+    # count the records present in related model and then filter that column if more then 1 record is present
     purchase_orders_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__lt=1)
     purchase_orders_completed = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0)
 
@@ -3333,12 +3336,17 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                             # reduce the process quantity form purchase_order_to_products model
                             product_sku = p_o_to_order_form_instance.product_sku
                             processed_qty = p_o_to_order_form_instance.cutting_quantity
-
+                            print('product_sku',product_sku)
+                            print('processed_qty',processed_qty)
                             p_o_id = p_o_to_order_form_instance.purchase_order_cutting_id.purchase_order_id
+                            print('p_o_id',p_o_id)
                             purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
-
+                            print('purchase_order_products',purchase_order_products)
+                            print('processed_qty',processed_qty)
                             if purchase_order_products:
+                                print('purchase_order_products.process_quantity',purchase_order_products.process_quantity)
                                 purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
+                                print(purchase_order_products.process_quantity)
                                 purchase_order_products.save()
 
                             else:
@@ -3417,10 +3425,15 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
     Purchase_order_no = purchase_order.objects.get(id=p_o_pk)
     return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_number':Purchase_order_no, 'prod_ref_no':prod_ref_no, 'p_o_pk':p_o_pk})
 
-def purchaseordercuttinglistall(request):
-    p_o_cutting_pending_all = purchase_order_raw_material_cutting.objects.all()
 
-    return render(request,'production/purchaseordercuttinglistall.html', {'p_o_cutting_pending_all':p_o_cutting_pending_all})
+
+
+def purchaseordercuttinglistall(request):
+    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0).filter(balance_number_of_pieces__gt=0)
+    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0)
+    return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
+
+
 
 #_________________________production-end__________________________________________
 

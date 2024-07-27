@@ -348,18 +348,29 @@ def set_purchase_order_product_status(sender, instance, created, **kwargs):
         purchase_order_id.save()
 
 
-@receiver(post_save, sender=purchase_order_to_product)
-def delete_purchase_order_raw_on_purchase_order_update_signal(sender, instance, created, **kwargs):
-    if not created:
-        if instance.id:
-            p_o_id = instance.purchase_order_id
-            purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_id)
-            print(p_o_id)
+# @receiver(post_save, sender=purchase_order_to_product)
+# def delete_purchase_order_raw_on_purchase_order_update_signal(sender, instance, created, **kwargs):
+#     if not created:
+#         if instance.id:
+#             # if instance.order_quantity
+#             p_o_id = instance.purchase_order_id
+#             purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_id)
+#             print(p_o_id)
+#             for instances in purchase_order_raw_instances:
+#                 print(instances)
+#                 instances.delete()  
+
+@receiver(pre_save, sender=purchase_order_to_product)
+def handle_purchase_order_update(sender, instance, **kwargs):
+    if instance.id:
+        previous_instance = purchase_order_to_product.objects.get(id=instance.id)
+        previous_purchase_order_qty = previous_instance.order_quantity
+        
+        if  previous_purchase_order_qty != instance.order_quantity:
+            purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=previous_instance.purchase_order_id)
+
             for instances in purchase_order_raw_instances:
-                print(instances)
-                instances.delete()  
-
-
+                instances.delete()
 
 
 
