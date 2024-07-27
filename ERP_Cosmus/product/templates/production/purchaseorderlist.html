@@ -44,7 +44,11 @@
                 <td>{{po.number_of_pieces}}</td>
                 <td>{{po.balance_number_of_pieces}}</td>
                 <td><a href="{% url 'purchase-order-update' po.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+
+                {% if not po.raw_materials.exists %}
+
                 <td><button class="border-0 bg-transparent deletes-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></i></button></td> 
+                {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
