@@ -81,7 +81,7 @@
     <div class="col-lg-6 mt-3" id="productForm-conatiner" style="display: none;">
         <div class="d-flex mb-2">
             <lable>Model Name:</lable>
-            <input class="productinputtext pb-2 " id="id_model_name" value="{{model_name | default_if_none:''}}" readonly>
+            <input class="productinputtext text-danger text-capitalize pb-2 " id="id_model_name" value="{{model_name | default_if_none:''}}" readonly>
             <lable>Total:</lable>
             <input type="number" class="productinputtext  text-danger ms-2 me-4 pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01" readonly>
             <input type="hidden" class="" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
@@ -94,7 +94,7 @@
                         <th>Product Sku</th>
                         <th>Color</th>
                         <th>Order Quantity</th>
-                        <th>Delete</th>
+                        <th id="myDelete" class="">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
@@ -112,7 +112,7 @@
                         <td>
                             <input type="number" class="productorderqty-input" step="0.01" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
                         </td>
-                        <td>
+                        <td class="">
                             <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;" name="{{form.prefix}}-DELETE"id="id_{{form.prefix}}-DELETE" value=""></i></span>
                         </td>
                     </tr>
@@ -137,6 +137,9 @@
         const today = new Date().toISOString().split('T')[0];
         const date = dateInput.value;
         dateInput.min = today;
+
+
+
         // this script is for other form submit buttons hide adn show when first form submit 
         const id = document.getElementById('id_productRow').value;
         console.log(id)
@@ -169,12 +172,28 @@
 
         function IdsValueCalculate(){
             var mainForms = document.getElementById('id_p_o_to_products-0-id').value;
-        
+            
             if(mainForms != "None"){
                var form = document.getElementById('id_p_o_to_products-TOTAL_FORMS').value;
+              
                 for(var i=0;i<form;i++){
                     var quantity = document.getElementById('id_p_o_to_products-'+ i+'-order_quantity').value;
+                    var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
+                    var deleteButton = deleteCheckbox.closest('td');
+                    var deleteValue = document.getElementById('myDelete');
+                    deleteButton.classList.add('deleteHide');
+                    deleteValue.classList.add('deleteHide');
+                    //deletedData.display = 'none';
                  quantity.readOnly = false;
+                }
+            }else{
+               
+                for(var i=0;i<form;i++){
+                    var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
+                    var deleteButton = deleteCheckbox.closest('td');
+                    var deleteValue = document.getElementById('myDelete');
+                deleteButton.classList.remove('deleteHide');
+                deleteValue.classList.remove('deleteHide');
                 }
             }
           
@@ -191,7 +210,6 @@
             const totalAllowedQuantity = parseFloat(document.getElementById('id_total-quantity').value);
             const grandQuantityElement = document.getElementById('id_grand_quantity');
             const quantities = [];
-            console.log(totalAllowedQuantity);
             // Get the element that triggered the event
             const currentElement = event ? event.target : null;
             let currentIndex = -1;

@@ -1501,6 +1501,9 @@ input[type=number] {
     padding-left: 5px; 
     height: 33px;
 }
+.deleteHide{
+    display: none;
+}
 .Serial_no{
     width: 27px;
     border:none;
