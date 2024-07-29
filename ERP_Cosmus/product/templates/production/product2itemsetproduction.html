@@ -75,15 +75,14 @@
                         {{formset_common.management_form}}
                         {% for forms in formset_common %}
                         {{ forms.id }}
-
                         <tr>
+                        
                             <td><input  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                             <td>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
                                     <input type="text" name="{{forms.prefix}}-Item_pks" id="id_{{forms.prefix}}-Item_pks" class="product2Select commom_item search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.item_name}}{% endif %}" data-key="">
                                     <div name="item_input_Name_{{forloop.counter0}}" id="id_item_input_Name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
-
                                     </div>
                                 </div>
                             </td>
@@ -103,7 +102,7 @@
 
 
 <script>
-        let formSubmitted = false;
+    let formSubmitted = false;
     document.getElementById('myProductForm').addEventListener('submit', function() {
     formSubmitted = true;
   });
