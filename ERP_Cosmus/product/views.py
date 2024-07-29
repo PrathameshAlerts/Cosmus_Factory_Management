@@ -3135,7 +3135,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                             po_form_instance.save()  # save the parent form instance 
 
                     #return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
-                    return redirect('purchase-order-cutting-list-all')
+                    return redirect('purchase-order-raw-material-list')
                 
                 except ValueError as ve:
                     messages.error(request,f'Error Occured - {ve}')
@@ -3195,6 +3195,7 @@ def purchase_order_for_raw_material_delete(request,pk):
 
 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
+
     if pk:
         purchase_order_cutting_instance = get_object_or_404(purchase_order_raw_material_cutting, pk=pk)
     else:
@@ -3339,17 +3340,13 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                             # reduce the process quantity form purchase_order_to_products model
                             product_sku = p_o_to_order_form_instance.product_sku
                             processed_qty = p_o_to_order_form_instance.cutting_quantity
-                            print('product_sku',product_sku)
-                            print('processed_qty',processed_qty)
+
                             p_o_id = p_o_to_order_form_instance.purchase_order_cutting_id.purchase_order_id
-                            print('p_o_id',p_o_id)
+                           
                             purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
-                            print('purchase_order_products',purchase_order_products)
-                            print('processed_qty',processed_qty)
+
                             if purchase_order_products:
-                                print('purchase_order_products.process_quantity',purchase_order_products.process_quantity)
                                 purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
-                                print(purchase_order_products.process_quantity)
                                 purchase_order_products.save()
 
                             else:
