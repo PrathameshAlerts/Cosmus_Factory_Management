@@ -329,7 +329,7 @@
             const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
             const balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
               
-            let consumption = parseFloat(panha) * parseFloat(units) / parseFloat(gTotal);
+            let consumption = parseFloat(gTotal) /parseFloat(panha) * parseFloat(units) ;
             consumptions.value = consumption.toFixed(3);
             let balanceStock = parseFloat(physicalStock) - parseFloat(TotalConsumtion);
             balancePhysicalStock.value = balanceStock.toFixed(3);
