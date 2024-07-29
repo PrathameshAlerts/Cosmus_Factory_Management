@@ -558,12 +558,12 @@
                     const inputElement = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
                     inputElement.id = `id_product2itemuniqueformset-${newFormCount}-no_of_rows`;
                     inputElement.name = `product2itemuniqueformset-${newFormCount}-no_of_rows`;
-                    inputElement.value = '';
+                    inputElement.value = '1';
 
                     const grandElement = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
                     grandElement.id = `id_product2itemuniqueformset-${newFormCount}-grand_total`;
                     grandElement.name = `product2itemuniqueformset-${newFormCount}-grand_total`;
-                    grandElement.value = '';
+                    grandElement.value = '0';
 
                     const inputRemark = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
                     inputRemark.id = `id_product2itemuniqueformset-${newFormCount}-Remark`;
@@ -671,12 +671,12 @@
                     const inputNameValue = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="no_of_rows"]');
                     inputNameValue.id = `id_product2itemcommonformset-${newCount}-no_of_rows`;
                     inputNameValue.name = `product2itemcommonformset-${newCount}-no_of_rows`;
-                    inputNameValue.value = '';
+                    inputNameValue.value = '1';
 
                     const grandTotalElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total"]');
                     grandTotalElement.id = `id_product2itemcommonformset-${newCount}-grand_total`;
                     grandTotalElement.name = `product2itemcommonformset-${newCount}-grand_total`;
-                    grandTotalElement.value = '';
+                    grandTotalElement.value = '0';
 
                     const inputElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
                     inputElement.id = `id_product2itemcommonformset-${newCount}-Remark`;
