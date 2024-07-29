@@ -2638,6 +2638,7 @@ def product2item(request,product_refrence_id):
                     messages.error(request, f'Error saving unique records - {e}')  
             
 
+
             #for common records
             if formset_common.is_valid():
                 try:
@@ -2682,7 +2683,6 @@ def product2item(request,product_refrence_id):
                                             for row in range(rows_to_create):
                                                 set_prod_item_part_name.objects.create(producttoitem = obj)
                                                 logger.info(f" set prod item part name created of - {obj.id}")
-
 
                                     formset_common_valid = True
 
