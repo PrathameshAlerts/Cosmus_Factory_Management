@@ -132,12 +132,6 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-        var oderedValue = document.querySelectorAll('.oderedValues');
-        oderedValue.forEach(element => {
-            element.readOnly = true;
-        });
-    })
     document.addEventListener('DOMContentLoaded', function () {
         const dateInput = document.getElementById('id_target_date');// this script is for date picker 
         const today = new Date().toISOString().split('T')[0];
@@ -182,25 +176,9 @@
               
                 for(var i=0;i<form;i++){
                     var quantity = document.getElementById('id_p_o_to_products-'+ i+'-order_quantity').value;
-                    // var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
-                    // var deleteButton = deleteCheckbox.closest('td');
-                    // var deleteValue = document.getElementById('myDelete');
-                    // //deleteButton.classList.add('deleteHide');
-                    // //deleteValue.classList.add('deleteHide');
-                    // //deletedData.display = 'none';
-                 quantity.readOnly = false;
+                    quantity.readOnly = false;
                 }
-            }else{
-               
-                // for(var i=0;i<form;i++){
-                //     var deleteCheckbox = document.getElementById('id_p_o_to_products-' + i + '-DELETE');
-                //     var deleteButton = deleteCheckbox.closest('td');
-                //     var deleteValue = document.getElementById('myDelete');
-                // //deleteButton.classList.remove('deleteHide');
-                // //deleteValue.classList.remove('deleteHide');
-                // }
             }
-          
         }
         IdsValueCalculate()
     });
@@ -237,10 +215,10 @@
             grandQuantityElement.value = totalQuantity;
 
             // Initially, set all input fields to read-only and reset their border color
-            // quantities.forEach(function (q) {
-            //     q.element.readOnly = true;
-            //     q.element.style.borderColor = ''; // Reset border color
-            // });
+            quantities.forEach(function (q) {
+                q.element.readOnly = true;
+                q.element.style.borderColor = ''; // Reset border color
+            });
 
             // Check if the total quantity equals the allowed quantity
             if (totalQuantity === totalAllowedQuantity) {
@@ -284,13 +262,14 @@
             const row = $(this).closest('tr');
             const checkbox = row.find('.godown_delete[name^="p_o_to_products-"][name$="-DELETE"]');
             const checkDeleteBox = row.find('.purchaseOderDelete').val();
-
+          
             if(checkDeleteBox === "True"){
                 alert('Can not delete the purchase order');
+          
                 return false;
             }else{
                 checkbox.prop('checked', true);
-            checkbox.val('true');
+                  checkbox.val('true');
 
             if (checkbox.val() == 'true') {
                 row.hide();
@@ -302,7 +281,12 @@
         } else {
             alert('The table must have at least one godown item');
         }
+
+     
     });
+    $(document).on('focus','.oderedValues' , function (){
+            $(this).prop('readonly', false);
+    }) 
 
 </script>
 

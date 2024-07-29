@@ -625,12 +625,12 @@
         popupWindow = window.open(baseUrl + '/product' + path + productSku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
         window.addEventListener('message', function (event) {
-          console.log(event.data.message);
-      if (event.data.message === 'close') {
-        $('body').removeClass('popup-open');
-        $('.popup-overlay').remove();
-        popupWindow.close();
-      }
+       
+        if (event.data.message === 'close') {
+          $('body').removeClass('popup-open');
+          $('.popup-overlay').remove();
+          popupWindow.close();
+        }
     });
 
     // Listen for messages from the popup window

@@ -90,7 +90,7 @@
                             <td><input type="number" class="product_row" name="{{forms.prefix}}-no_of_rows" required value="{{forms.instance.no_of_rows}}" maxlength="255"id="id_{{forms.prefix}}-no_of_rows"></td>
                             <td><input type="number" class="product_remark" name="{{forms.prefix}}-grand_total" value="{{forms.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{forms.prefix}}-grand_total" readonly></td>
                             <td><input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}" maxlength="255" id="id_{{forms.prefix}}-Remark"></td>
-                            <td><span class="delete border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;" name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE"value=""></i></span></td>
+                            <td><span class="deleteButton border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;" name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE"value=""></i></span></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -103,6 +103,17 @@
 
 
 <script>
+        let formSubmitted = false;
+    document.getElementById('myProductForm').addEventListener('submit', function() {
+    formSubmitted = true;
+  });
+    // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload', function (event) {
+        if (!formSubmitted) {
+            const data = { message: 'close' };
+            window.opener.postMessage(data, '*');
+        }
+    });
 
     $(document).ready(function () {
         let newValueKey;
@@ -558,12 +569,12 @@
                     const inputElement = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
                     inputElement.id = `id_product2itemuniqueformset-${newFormCount}-no_of_rows`;
                     inputElement.name = `product2itemuniqueformset-${newFormCount}-no_of_rows`;
-                    inputElement.value = '';
+                    inputElement.value = '1';
 
                     const grandElement = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
                     grandElement.id = `id_product2itemuniqueformset-${newFormCount}-grand_total`;
                     grandElement.name = `product2itemuniqueformset-${newFormCount}-grand_total`;
-                    grandElement.value = '';
+                    grandElement.value = '0';
 
                     const inputRemark = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
                     inputRemark.id = `id_product2itemuniqueformset-${newFormCount}-Remark`;
@@ -597,11 +608,14 @@
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
                     const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
+                 
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
                         rowValue.required = false;
                         row.style.display = 'none';
+
+                
 
                     } else {
                         console.error("Checkbox for deletion not found in this row");
@@ -617,10 +631,7 @@
 </script>
 
 <script>
-    let formSubmitted = false;
-    document.getElementById('myProductForm').addEventListener('submit', function() {
-    formSubmitted = true;
-  });
+
     // add a new row to the common product2itemcommonformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
         const addNewButton = document.getElementById('addNewRow');
@@ -644,9 +655,9 @@
                     const tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
                     for(let i=0; i<newRowsForm; i++){
                         const newCount = parseInt(tableRow.value);
-                    const lastRow = lastVisibleRow.cloneNode(true);
-                    lastRow.querySelectorAll("input select").forEach(function (e) {
-                        e.value = "";
+                        const lastRow = lastVisibleRow.cloneNode(true);
+                        lastRow.querySelectorAll("input select").forEach(function (e) {
+                            e.value = "";
                     });
 
                     const SerialNo = lastRow.querySelector('[id^="id_serial_no"]');
@@ -671,12 +682,12 @@
                     const inputNameValue = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="no_of_rows"]');
                     inputNameValue.id = `id_product2itemcommonformset-${newCount}-no_of_rows`;
                     inputNameValue.name = `product2itemcommonformset-${newCount}-no_of_rows`;
-                    inputNameValue.value = '';
+                    inputNameValue.value = '1';
 
                     const grandTotalElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total"]');
                     grandTotalElement.id = `id_product2itemcommonformset-${newCount}-grand_total`;
                     grandTotalElement.name = `product2itemcommonformset-${newCount}-grand_total`;
-                    grandTotalElement.value = '';
+                    grandTotalElement.value = '0';
 
                     const inputElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
                     inputElement.id = `id_product2itemcommonformset-${newCount}-Remark`;
@@ -706,18 +717,20 @@
 
         function deletedRow() {
             // Add click event listener to all delete buttons
-            document.querySelectorAll('.delete').forEach(function (button) {
+            document.querySelectorAll('.deleteButton').forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Find the row containing the clicked delete button
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
-                    const rowValue = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
+                    const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
+                    console.log(checkRow)
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
-                        rowValue.required = false;
+                        rowValues.required = false;
                         row.style.display = 'none';
 
+                  
                     } else {
                         console.error("Checkbox for deletion not found in this row");
                     }
@@ -728,12 +741,5 @@
     });
 
 
-    // Handle the case when the window is closed without form submission
-    window.addEventListener('beforeunload', function (event) {
-        if (!formSubmitted) {
-            const data = { message: 'close' };
-            window.opener.postMessage(data, '*');
-        }
-    });
 </script>
 {% endblock body %}
