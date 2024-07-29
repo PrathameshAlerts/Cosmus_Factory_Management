@@ -193,7 +193,7 @@
                 }
             
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
-                    var consumption = (panhaValue * unitsValue) / grandTotalValue;
+                    var consumption = grandTotalValue / (panhaValue * unitsValue)
               
                     document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
                 } else {
