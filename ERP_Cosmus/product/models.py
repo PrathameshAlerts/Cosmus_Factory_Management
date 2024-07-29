@@ -593,7 +593,7 @@ class product_2_item_through_table(models.Model):
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     common_unique = models.BooleanField(default=False)  #True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1)
-    Remark = models.CharField(max_length=100, blank = True, null=True)
+    Remark = models.CharField(max_length=100, blank=True, null=True)
 
 
     class Meta:

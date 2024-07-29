@@ -179,6 +179,7 @@ def edit_production_product(request,pk):
                                         p2i_config_instance.part_pieces = part_pieces
                                         p2i_config_instance.save()   # save model
                                         p2i_config_instance.producttoitem.save()  # save the parent model
+
                                     else:
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
                                         p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
@@ -241,16 +242,15 @@ def edit_production_product(request,pk):
                     logger.error("File with invalid Product Refrence Id uploaded")
                     return redirect('pproductlist')
             
-
         except Exception as e:
             logger.error(f"An error occured - {str(e)} - Product-Name - {pproduct}")
             messages.error(request, f'Error uploading Excel file: {str(e)}')
             return redirect('pproductlist')
         
-
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
-
+        
+        
         if form.is_valid() and formset.is_valid():
             try:
                 with transaction.atomic():
@@ -292,6 +292,8 @@ def edit_production_product(request,pk):
                 messages.error(request, f'An exception occured - {e}')
         
         else:
+            print(form.errors)
+            print(formset.errors)
             logger.error(f"Productform not valid - {form.errors} - Product-name - {pproduct}")
             logger.error(f"Product formsets not valid- {formset.errors} - Product-name - {pproduct}")
 
@@ -1959,6 +1961,7 @@ def purchasevouchercreateupdate(request, pk=None):
                     # delete wont work after default as we are not saving items_formset instead we are saving  in the formsets individually
                     # items_formset.deleted_forms has the forms marked for deletion
                     for form in items_formset.deleted_forms:
+                        print(form)
                         if form.instance.pk:
                             #boolen to check if the instance was directly deleted or via models.CASCADE later used in signals 
                             form.instance.deleted_directly = True
@@ -2562,7 +2565,7 @@ def packaging_delete(request,pk):
 
 
 def product2item(request,product_refrence_id):
-    print(request.POST)
+    
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -2617,7 +2620,7 @@ def product2item(request,product_refrence_id):
 
                                 p2i_instance = form.save(commit = False)
                                 p2i_instance.common_unique = False
-                                p2i_instance.row_number = form.prefix[-1]  #get the prefix no of the form
+                                p2i_instance.row_number = form.prefix[-1]  # get the prefix no of the form
                                 logger.info(f"Product to item created/updated special - {p2i_instance.id}")
                                 p2i_instance.save()
 
@@ -2639,12 +2642,13 @@ def product2item(request,product_refrence_id):
             if formset_common.is_valid():
                 try:
                     for form in formset_common.deleted_forms:
-                        deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
+                        if form.instance.id: # check if there is instance before attempting to delete
+                            deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
 
-                        for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
-                            p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
-                            logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
-                            p2i_to_delete.delete()
+                            for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
+                                p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
+                                logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
+                                p2i_to_delete.delete()
                             
                     for form in formset_common: # duplicate item for the product in the form wont give validation error as the old product will be updated instead of creating a new one and raising error of unique values  
                         if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
@@ -3569,7 +3573,6 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
     Fabric_grp_name = None
     querylist = None
 
-
     # fabric report and item report are on the same page only queries are changed
     if fab_id:
         page_id = 'item_page'
@@ -3640,7 +3643,7 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
         queryset = items_in_fab_grp
 
 
-    godown_name = items_in_godown.first().godown_name
+    godown_name = Godown_raw_material.objects.get(id = g_id)
     
     
     return render(request,'reports/godownstockrawmaterialreportfabgrp.html',{'page_id':page_id,
