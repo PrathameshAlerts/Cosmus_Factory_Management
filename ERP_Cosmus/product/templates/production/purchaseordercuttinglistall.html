@@ -54,7 +54,7 @@
                     <th>Total of pieces</th>
                     <th>Balance Quantity</th>
                     <th>Edit</th>
-                    <th>Delete</th>
+                    <!-- <th>Delete</th> -->
                 </tr>
             </thead>
             <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
@@ -68,7 +68,7 @@
                     <td>{{po.number_of_pieces}}</td>
                     <td>{{po.balance_number_of_pieces}}</td>
                     <td><a href="{% url 'purchase-order-cutting-list' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-                    <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                    <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
                     </tr>
                 {% endfor %}
             </tbody>

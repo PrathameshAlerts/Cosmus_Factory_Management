@@ -3193,7 +3193,6 @@ def purchase_order_for_raw_material_delete(request,pk):
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     if pk:
         purchase_order_cutting_instance = get_object_or_404(purchase_order_raw_material_cutting, pk=pk)
-
     else:
         purchase_order_cutting_instance = None
 
