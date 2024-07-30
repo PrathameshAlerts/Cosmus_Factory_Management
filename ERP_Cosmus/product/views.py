@@ -3311,7 +3311,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         purchase_order_to_product_formset_form = purchase_order_to_product_formset(instance=purchase_order_cutting_instance)
         
     if request.method == 'POST':
-
+        print(request.POST)
         # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)(for post request)
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(request.POST)
 
