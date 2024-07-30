@@ -318,23 +318,24 @@
     }
 
     function balanceQty (){
-        let newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
+        var newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
  
 
-        for(let i =0 ; i<newForm; i++){
-            const panha = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-panha').value;
-            const units = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-units').value;
-            const gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
-            const TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
-            const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
-            const panhaValue = parseFloat(panha) || 0;
-            const UnitValue = parseFloat(units) || 0;
-            const GtotalValue = parseFloat(gTotal) || 0;
-            const TotalConsumtionValue = parseFloat(TotalConsumtion) || 0;
-            const physicalStockValue = parseFloat(physicalStock) || 0;
+        for(var i =0 ; i<newForm; i++){
+            var panha = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-panha').value;
+            var units = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-units').value;
+            var gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
+            var TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
+            var physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
+            var panhaValue = parseFloat(panha) || 0;
+            var UnitValue = parseFloat(units) || 0;
+            var GtotalValue = parseFloat(gTotal) || 0;
+            var TotalConsumtionValue = parseFloat(TotalConsumtion) || 0;
+            var physicalStockValue = parseFloat(physicalStock) || 0;
+
 
               if(!isNaN(panhaValue) && !isNaN(UnitValue) && !isNaN(GtotalValue)){
-                const Comsumption = GtotalValue / (panhaValue * UnitValue);
+                var Comsumption = GtotalValue / (panhaValue * UnitValue);
 
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(3);
               }else{
@@ -342,10 +343,12 @@
               }
        
               if(!isNaN(TotalConsumtionValue) && !isNaN(physicalStockValue)){
-                const balanceStock = physicalStockValue - TotalConsumtionValue;
-                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(3);
+                console.log(TotalConsumtionValue);
+                console.log(physicalStockValue);
+                var balanceStock = physicalStockValue - TotalConsumtionValue;
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(2);
               }else{
-                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = "0.000";
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = "0.00";
               }
            
         }
@@ -439,21 +442,23 @@
 
     // function backgroundColorCheck(){
     //     const productColors = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]');
-    
-    // productColors.forEach(element => {
-    //     const colorValue = element.value;
     //     const rows = $("tbody.mainTableList tr");
-
-    //     rows.each(function() {
-    //         const rowColor = $(this).find('input[name$="-product_color"]').val();
-    //         if (rowColor === colorValue) {
-    //             $(this).css('border', '2px solid red');
-    //         } else {
-    //             $(this).css('border', 'none'); // Reset border for non-matching rows
+   
+    //     productColors.forEach(element => {
+    //     const colorValue = element.value;
+    //     rows.forEach(row => {
+    //         const rowColorInput = row.querySelector('input[name$="-product_color"]');
+    //         if (rowColorInput && rowColorInput.value === colorValue) {
+    //             row.style.backgroundColor = "yellow";
     //         }
     //     });
     // });
+
     // }
+   
+//     document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]').forEach(input => {
+//     input.addEventListener('input', backgroundColorCheck);
+// });
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         qty.forEach(element => {
@@ -463,7 +468,7 @@
                 processValueQty();
                 submitForm();
                 //backgroundColorCheck();
-            
+                balanceQty();
             });
         })
         submitForm();
