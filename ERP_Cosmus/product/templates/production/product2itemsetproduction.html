@@ -24,8 +24,10 @@
                     {{formset_single.management_form}}
                     {% for form in formset_single %}
                     {{ form.id }}
+                    
                     <tr>
-                        <td><input  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
+                        
+                        <td>{{form.instance.row_number}}<input  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                         <td>
                             <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
                                 id="id_{{form.prefix}}-PProduct_pk">
@@ -76,8 +78,8 @@
                         {% for forms in formset_common %}
                         {{ forms.id }}
                         <tr>
-                        
-                            <td><input  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
+                           
+                            <td> <input id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                             <td>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">

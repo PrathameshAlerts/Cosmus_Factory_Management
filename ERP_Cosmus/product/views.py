@@ -2585,7 +2585,9 @@ def product2item(request,product_refrence_id):
         #Within each group of Item_pk, it orders by id.
         #distinct('Item_pk') will keep the first record of each group (based on the smallest id within that group).
         
-        distinct_product2item_commmon_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True).order_by('Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
+        distinct_product2item_commmon_instances = product_2_item_through_table.objects.filter(
+            PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True).order_by(
+                'Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
 
         formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
         
@@ -2600,7 +2602,6 @@ def product2item(request,product_refrence_id):
 
             #for unique records
             if formset_single.is_valid():
-                
                 try:
                     # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
                     for form in formset_single.deleted_forms:
@@ -3316,7 +3317,6 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         # formset for purchase_order_to_products_cutting for POST request
         purchase_order_to_product_formset_form = purchase_order_to_product_formset(request.POST)
-
 
         if purchase_order_cutting_form.is_valid() and purchase_order_to_product_formset_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid():
             try:

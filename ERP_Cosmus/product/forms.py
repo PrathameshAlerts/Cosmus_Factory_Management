@@ -519,40 +519,42 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                             raise ValidationError("Purchase order primary key is missing.")
                         
                         po_instance = purchase_order.objects.get(id=Purchase_order_pk)
-                        po_godown = po_instance.temp_godown_select.id
+                        po_godown = po_instance.temp_godown_select
                         total_consumption = form.cleaned_data.get('total_comsumption')
                         material_color_shade = form.cleaned_data.get('material_color_shade')
                         
+                        if material_color_shade is None and total_consumption != 0:
+                            raise ValidationError("please choose from correct shade")
                         
+                        elif material_color_shade is not None:
+                            if material_color_shade.items.Fabric_nonfabric == 'Fabric':
 
-                        if material_color_shade.items.Fabric_nonfabric == 'Fabric':
+                                # try:
+                                #     item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade)
 
-                            # try:
-                            #     item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade)
+                                # except item_godown_quantity_through_table.DoesNotExist:
+                                #     raise ValidationError(f'No such item {material_color_shade} in godown {po_godown}.')
+                                
+                                # item_quantity_in_godown = item_in_godown.quantity
 
-                            # except item_godown_quantity_through_table.DoesNotExist:
-                            #     raise ValidationError(f'No such item {material_color_shade} in godown {po_godown}.')
-                            
-                            # item_quantity_in_godown = item_in_godown.quantity
+                                # if item_quantity_in_godown >= total_consumption:
+                                #     item_in_godown.quantity = item_in_godown.quantity - total_consumption
+                                #     item_in_godown.save()
 
-                            # if item_quantity_in_godown >= total_consumption:
-                            #     item_in_godown.quantity = item_in_godown.quantity - total_consumption
-                            #     item_in_godown.save()
+                                # else:
+                                #     raise ValidationError(f'Insufficient quantity in godown {po_godown} for material {material_color_shade}. Required: {total_consumption},Available: {item_quantity_in_godown}')
 
-                            # else:
-                            #     raise ValidationError(f'Insufficient quantity in godown {po_godown} for material {material_color_shade}. Required: {total_consumption},Available: {item_quantity_in_godown}')
 
-                            
-                            try:
-                                item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name = material_color_shade)
-                                item_quantity_in_godown = item_in_godown.quantity
+                                try:
+                                    item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name = material_color_shade)
+                                    item_quantity_in_godown = item_in_godown.quantity
 
-                            except item_godown_quantity_through_table.DoesNotExist:
-                                item_in_godown = item_godown_quantity_through_table(godown_name=po_godown,Item_shade_name = material_color_shade)
-                                item_quantity_in_godown = 0
+                                except item_godown_quantity_through_table.DoesNotExist:
+                                    item_in_godown = item_godown_quantity_through_table(godown_name=po_godown,Item_shade_name = material_color_shade)
+                                    item_quantity_in_godown = 0
 
-                            item_in_godown.quantity = item_quantity_in_godown - total_consumption
-                            item_in_godown.save()
+                                item_in_godown.quantity = item_quantity_in_godown - total_consumption
+                                item_in_godown.save()
 
                             
 
