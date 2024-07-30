@@ -12,7 +12,7 @@
                 
                 <div class="d-flex mb-2">
                     <lable for="id_purchase_order_number" class="">Order No:</lable>
-                    <input type="number" name="purchase_o_no" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-4 pb-2" value="{{form.instance.purchase_order_number}}" required id="id_purchase_o_no" readonly>
+                    <input type="number" name="purchase_o_no" class="productinput text-danger ms-3 me-4 pb-2" value="{{form.instance.purchase_order_number}}" required id="id_purchase_o_no" readonly>
                     <input type="hidden" name="purchase_order_id" class="purchase-amount border-0 bg-transparent text-danger ms-3 me-4 pb-2" value="{{p_o_pk}}" required id="id_purchase_order_id" readonly>
                     <lable for="id_raw_material_cutting_id" class="ms-2">Cutting No:</lable>
                     <input type="number" name="raw_material_cutting_id" class="purchase-amount text-danger pb-2 ms-2 me-4" value="{{purchase_order_cutting_form.instance.raw_material_cutting_id | default_if_none:''}}" id="id_raw_material_cutting_id">
@@ -44,21 +44,21 @@
             <div class="d-flex mb-2">
                 <div class="d-flex">
                     <lable for="id_product_reference_number" class="">Reference No:</lable>
-                    <input type="number" name="purchase_order_number" class="purchase-amount  border-0 bg-transparent text-danger me-3 pb-2" value="{{form.instance.product_reference_number.Product_Refrence_ID}}" id="id_purchase_order_number" readonly>
+                    <input type="number" name="purchase_order_number" class="productinput text-danger me-3 pb-2" value="{{form.instance.product_reference_number.Product_Refrence_ID}}" id="id_purchase_order_number" readonly>
                 </div>
                 <div class="d-flex">
                     <label for="id_number_of_pieces" class="">Total P.O Qty:</label>
-                    <input type="number" name="number_of_pieces" class="purchase-input border-0 bg-transparent text-danger ms-3 me-3 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
+                    <input type="number" name="number_of_pieces" class="productinput text-danger ms-2 me-3 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
                 </div> 
                 <div class="d-flex ms-5">
                     <label for="id_target_date" class="">Target date:</label>
-                    <input type="date" name="target_date" class="border-0 bg-transparent text-danger ms-3 me-5 pb-2" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
+                    <input type="date" name="target_date" class="targetDateValue text-danger ms-3 me-5 pb-2" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
                 </div>
                 <div class="d-flex ms-5">
                     <lable for="id_model_name" class="">Model Name : </lable> 
-                    <input class="text-danger purchase-amount border-0 bg-transparent pb-2 " id="id_model_name"value="{{model_name | default_if_none:''}}">
+                    <input class="text-danger item-select border-0 bg-transparent pb-2 " id="id_model_name"value="{{model_name | default_if_none:''}}" readonly>
                 </div>
-                <input type="hidden" class="text-danger purchase-amount border-0 bg-transparent pb-2" name="balance_number_of_pieces" id="id_balance_number_of_pieces"value="{{form.instance.balance_number_of_pieces}}">
+                <input type="hidden"  name="balance_number_of_pieces" id="id_balance_number_of_pieces"value="{{form.instance.balance_number_of_pieces}}">
                 
             </div>
             
@@ -318,16 +318,16 @@
     }
 
     function balanceQty (){
-        let newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
+        var newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
 
-        for(let i =0 ; i<newForm; i++){
-            const panha = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-panha').value;
-            const units = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-units').value;
-            const gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
-            const consumptions = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption');
-            const TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
-            const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
-            const balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
+        for(var i =0 ; i<newForm; i++){
+            var panha = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-panha').value;
+            var units = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-units').value;
+            var gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
+            var consumptions = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption');
+            var TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
+            var physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
+            var balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
               
             var consumption = parseFloat(gTotal) /parseFloat(panha) * parseFloat(units) ;
             consumptions.value = consumption.toFixed(3);
@@ -336,6 +336,7 @@
         }
         
     }
+
   
     function submitForm(){
         const ids = document.querySelectorAll('input[name$="-id"]');
