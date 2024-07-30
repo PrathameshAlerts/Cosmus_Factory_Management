@@ -437,23 +437,23 @@
         }
     }
 
-    function backgroundColorCheck(){
-        const productColors = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]');
+    // function backgroundColorCheck(){
+    //     const productColors = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]');
     
-    productColors.forEach(element => {
-        const colorValue = element.value;
-        const rows = $("tbody.mainTableList tr");
+    // productColors.forEach(element => {
+    //     const colorValue = element.value;
+    //     const rows = $("tbody.mainTableList tr");
 
-        rows.each(function() {
-            const rowColor = $(this).find('input[name$="-product_color"]').val();
-            if (rowColor === colorValue) {
-                $(this).css('border', '2px solid red');
-            } else {
-                $(this).css('border', 'none'); // Reset border for non-matching rows
-            }
-        });
-    });
-    }
+    //     rows.each(function() {
+    //         const rowColor = $(this).find('input[name$="-product_color"]').val();
+    //         if (rowColor === colorValue) {
+    //             $(this).css('border', '2px solid red');
+    //         } else {
+    //             $(this).css('border', 'none'); // Reset border for non-matching rows
+    //         }
+    //     });
+    // });
+    // }
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         qty.forEach(element => {
@@ -462,7 +462,7 @@
                 updateCuttingQuantity();
                 processValueQty();
                 submitForm();
-                backgroundColorCheck();
+                //backgroundColorCheck();
             
             });
         })
