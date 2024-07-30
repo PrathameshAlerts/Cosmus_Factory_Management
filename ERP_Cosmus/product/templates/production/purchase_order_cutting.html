@@ -329,13 +329,14 @@
             const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
             const balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
               
-            let consumption = parseFloat(gTotal) /parseFloat(panha) * parseFloat(units) ;
+            var consumption = parseFloat(gTotal) /parseFloat(panha) * parseFloat(units) ;
             consumptions.value = consumption.toFixed(3);
-            let balanceStock = parseFloat(physicalStock) - parseFloat(TotalConsumtion);
+            var balanceStock = parseFloat(physicalStock) - parseFloat(TotalConsumtion);
             balancePhysicalStock.value = balanceStock.toFixed(3);
         }
         
     }
+  
     function submitForm(){
         const ids = document.querySelectorAll('input[name$="-id"]');
       
@@ -409,8 +410,6 @@
         }
     }
 
-
-
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         qty.forEach(element => {
@@ -419,13 +418,14 @@
                 updateCuttingQuantity();
                 processValueQty();
                 submitForm();
-                balanceQty();
+            
             });
         })
         submitForm();
         processValueQty();
         cuttingOrder();
         updateCuttingQuantity();
+        
     });
 </script>
 {% endblock %}
