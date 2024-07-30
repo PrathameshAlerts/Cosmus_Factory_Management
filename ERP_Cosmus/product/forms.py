@@ -519,7 +519,7 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                             raise ValidationError("Purchase order primary key is missing.")
                         
                         po_instance = purchase_order.objects.get(id=Purchase_order_pk)
-                        po_godown = po_instance.temp_godown_select.id
+                        po_godown = po_instance.temp_godown_select
                         total_consumption = form.cleaned_data.get('total_comsumption')
                         material_color_shade = form.cleaned_data.get('material_color_shade')
                         

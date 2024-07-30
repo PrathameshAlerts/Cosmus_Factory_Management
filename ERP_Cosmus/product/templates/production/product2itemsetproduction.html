@@ -25,7 +25,8 @@
                     {% for form in formset_single %}
                     {{ form.id }}
                     <tr>
-                        <td><input  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
+                        <td><input  id="id_{{form.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" name="{{form.prefix}}-row_number"></input>
+                            <input type="hidden"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                         <td>
                             <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
                                 id="id_{{form.prefix}}-PProduct_pk">
@@ -77,7 +78,8 @@
                         {{ forms.id }}
                         <tr>
                         
-                            <td><input  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
+                            <td><input  id="id_{{forms.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" name="{{forms.prefix}}-row_number"></input>
+                                <input type="hidden"  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                             <td>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
@@ -535,15 +537,20 @@
                     const forms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
 
                     for(let i = 0; i<addInputRow; i++){
-                        const newFormCount = parseInt(forms.value);
+                    const newFormCount = parseInt(forms.value);
                     const newTable = lastVisibleRow.cloneNode(true);
                     newTable.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
                     });
 
+                    const rowNumbers = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="row_number"]');
+                    rowNumbers.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
+                    rowNumbers.name = `product2itemuniqueformset-${newFormCount}-row_number`;
+                    rowNumbers.value = newFormCount + 1;
+
                     const rowValue = newTable.querySelector('[id^="id_serial_no_unique-"]');
                     rowValue.id = `id_serial_no_unique-${newFormCount}`;
-                    rowValue.value = newFormCount + 1;
+                    rowValue.value = '';
 
                     const newSelectElement = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
                     newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;
@@ -654,14 +661,21 @@
                     const tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
                     for(let i=0; i<newRowsForm; i++){
                         const newCount = parseInt(tableRow.value);
+                        console.log(newCount);
                         const lastRow = lastVisibleRow.cloneNode(true);
                         lastRow.querySelectorAll("input select").forEach(function (e) {
                             e.value = "";
                     });
 
+                    const rowValues = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="-row_number"]');
+                    rowValues.id = `id_product2itemcommonformset-${newCount}-row_number`;
+                    rowValues.name = `product2itemcommonformset-${newCount}-row_number`;
+                    rowValues.value = newCount + 1;
+
+                    
                     const SerialNo = lastRow.querySelector('[id^="id_serial_no"]');
                     SerialNo.id = `id_serial_no_${newCount}`;
-                    SerialNo.value = newCount + 1;
+                    SerialNo.value = '';
 
                     const inputnameElement = lastRow.querySelector('[name^="item_input_Name_"]');
                     inputnameElement.id = `id_item_input_Name_${newCount}`;

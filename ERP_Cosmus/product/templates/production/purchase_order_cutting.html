@@ -318,26 +318,40 @@
     }
 
     function balanceQty (){
-        var newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
+        let newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
+ 
 
-        for(var i =0 ; i<newForm; i++){
-            var panha = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-panha').value;
-            var units = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-units').value;
-            var gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
-            var consumptions = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption');
-            var TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
-            var physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
-            var balancePhysicalStock = document.querySelector('#id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock');
-              
-            var consumption = parseFloat(gTotal) /parseFloat(panha) * parseFloat(units) ;
-            consumptions.value = consumption.toFixed(3);
-            var balanceStock = parseFloat(physicalStock) - parseFloat(TotalConsumtion);
-            balancePhysicalStock.value = balanceStock.toFixed(3);
+        for(let i =0 ; i<newForm; i++){
+            const panha = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-panha').value;
+            const units = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-units').value;
+            const gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
+            const TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
+            const physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
+            const panhaValue = parseFloat(panha) || 0;
+            const UnitValue = parseFloat(units) || 0;
+            const GtotalValue = parseFloat(gTotal) || 0;
+            const TotalConsumtionValue = parseFloat(TotalConsumtion) || 0;
+            const physicalStockValue = parseFloat(physicalStock) || 0;
+
+              if(!isNaN(panhaValue) && !isNaN(UnitValue) && !isNaN(GtotalValue)){
+                const Comsumption = GtotalValue / (panhaValue * UnitValue);
+
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(3);
+              }else{
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = "0.000";
+              }
+       
+              if(!isNaN(TotalConsumtionValue) && !isNaN(physicalStockValue)){
+                const balanceStock = physicalStockValue - TotalConsumtionValue;
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(3);
+              }else{
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = "0.000";
+              }
+           
         }
         
     }
 
-  
     function submitForm(){
         const ids = document.querySelectorAll('input[name$="-id"]');
       
@@ -384,16 +398,27 @@
          
                 document.getElementById('id_processQty').value = procumentValue;
                 newValue.readOnly = true;
+                
                 // Update the border and background color of the input elementsid_purchase_order_to_product_cutting_set-0-cutting_quantity
                 document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]').forEach(element => {
-                   
+                  
+                    var forms = element.closest('tr');
+                       
+             
+
                     if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
+                        var values = element.closest('tr');
+                        console.log(values);
                         element.value = newValue.value;
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
+                        element.style.outline = "none";
+
                       
                     }
+
+                
                 });
             });
             
@@ -412,6 +437,23 @@
         }
     }
 
+    function backgroundColorCheck(){
+        const productColors = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]');
+    
+    productColors.forEach(element => {
+        const colorValue = element.value;
+        const rows = $("tbody.mainTableList tr");
+
+        rows.each(function() {
+            const rowColor = $(this).find('input[name$="-product_color"]').val();
+            if (rowColor === colorValue) {
+                $(this).css('border', '2px solid red');
+            } else {
+                $(this).css('border', 'none'); // Reset border for non-matching rows
+            }
+        });
+    });
+    }
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         qty.forEach(element => {
@@ -420,6 +462,7 @@
                 updateCuttingQuantity();
                 processValueQty();
                 submitForm();
+                backgroundColorCheck();
             
             });
         })
@@ -427,7 +470,7 @@
         processValueQty();
         cuttingOrder();
         updateCuttingQuantity();
-        
+        balanceQty();
     });
 </script>
 {% endblock %}
