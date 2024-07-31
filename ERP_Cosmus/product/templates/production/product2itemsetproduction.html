@@ -24,6 +24,7 @@
                     {{formset_single.management_form}}
                     {% for form in formset_single %}
                     {{ form.id }}
+                    
                     <tr>
                         <td><input  id="id_{{form.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" name="{{form.prefix}}-row_number"></input>
                             <input type="hidden"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>

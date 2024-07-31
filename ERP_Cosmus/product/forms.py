@@ -89,7 +89,7 @@ class Product2ItemForm(forms.ModelForm):
         return new_value
 
 # when using modelformset need to add can_delete = True or delete wont be added in form
-Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=1, can_delete=True)
+Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=0, can_delete=True)
 
 
 class Product2CommonItem(forms.ModelForm):
@@ -112,7 +112,7 @@ class Product2CommonItem(forms.ModelForm):
         return new_value
 
 
-Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=1, can_delete=True)
+Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=0, can_delete=True)
 
 
 
@@ -523,36 +523,38 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                         total_consumption = form.cleaned_data.get('total_comsumption')
                         material_color_shade = form.cleaned_data.get('material_color_shade')
                         
+                        if material_color_shade is None and total_consumption != 0:
+                            raise ValidationError("please choose from correct shade")
                         
+                        elif material_color_shade is not None:
+                            if material_color_shade.items.Fabric_nonfabric == 'Fabric':
 
-                        if material_color_shade.items.Fabric_nonfabric == 'Fabric':
+                                # try:
+                                #     item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade)
 
-                            # try:
-                            #     item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade)
+                                # except item_godown_quantity_through_table.DoesNotExist:
+                                #     raise ValidationError(f'No such item {material_color_shade} in godown {po_godown}.')
+                                
+                                # item_quantity_in_godown = item_in_godown.quantity
 
-                            # except item_godown_quantity_through_table.DoesNotExist:
-                            #     raise ValidationError(f'No such item {material_color_shade} in godown {po_godown}.')
-                            
-                            # item_quantity_in_godown = item_in_godown.quantity
+                                # if item_quantity_in_godown >= total_consumption:
+                                #     item_in_godown.quantity = item_in_godown.quantity - total_consumption
+                                #     item_in_godown.save()
 
-                            # if item_quantity_in_godown >= total_consumption:
-                            #     item_in_godown.quantity = item_in_godown.quantity - total_consumption
-                            #     item_in_godown.save()
+                                # else:
+                                #     raise ValidationError(f'Insufficient quantity in godown {po_godown} for material {material_color_shade}. Required: {total_consumption},Available: {item_quantity_in_godown}')
 
-                            # else:
-                            #     raise ValidationError(f'Insufficient quantity in godown {po_godown} for material {material_color_shade}. Required: {total_consumption},Available: {item_quantity_in_godown}')
 
-                            
-                            try:
-                                item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name = material_color_shade)
-                                item_quantity_in_godown = item_in_godown.quantity
+                                try:
+                                    item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name = material_color_shade)
+                                    item_quantity_in_godown = item_in_godown.quantity
 
-                            except item_godown_quantity_through_table.DoesNotExist:
-                                item_in_godown = item_godown_quantity_through_table(godown_name=po_godown,Item_shade_name = material_color_shade)
-                                item_quantity_in_godown = 0
+                                except item_godown_quantity_through_table.DoesNotExist:
+                                    item_in_godown = item_godown_quantity_through_table(godown_name=po_godown,Item_shade_name = material_color_shade)
+                                    item_quantity_in_godown = 0
 
-                            item_in_godown.quantity = item_quantity_in_godown - total_consumption
-                            item_in_godown.save()
+                                item_in_godown.quantity = item_quantity_in_godown - total_consumption
+                                item_in_godown.save()
 
                             
 
