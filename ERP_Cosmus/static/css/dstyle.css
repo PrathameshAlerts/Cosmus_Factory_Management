@@ -1718,6 +1718,11 @@ styles.css */
     color: #fff;
   
 }
+.highlight{
+    background-color: rgb(241, 241, 83);
+    color: black;
+    border: 2px solid rgb(241, 241, 83);
+}
 .custom-select {
     background-color: white;
     width: 180px;
