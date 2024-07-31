@@ -184,8 +184,6 @@
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                     <tr class="text-nowrap">
 
-                     
-
                         <input type="hidden" name="{{form.prefix}}-purchase_order_pk" id="id_{{form.prefix}}-purchase_order_pk" value="{{p_o_pk}}">
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                         <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
@@ -205,15 +203,16 @@
                     </tr>
 
                     {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
-
+                   
                     <tr class="text-nowrap">
-                        {% if form.instance.material_color_shade.items.Fabric_nonfabric == 'Fabric' %}
                         
-                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="True">
+                        {% if form.initial.fabric_non_fab == 'Fabric' %}
+                        
+                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="True" class="fabric_group">
 
-                        {% elif form.instance.material_color_shade.items.Fabric_nonfabric == 'Non Fabric' %}
+                        {% elif form.initial.fabric_non_fab == 'Non Fabric' %}
                         
-                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="False">
+                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="False" class="fabric_group">
 
                         {% endif %}
                         <input type="hidden" name="{{form.prefix}}-purchase_order_pk" id="id_{{form.prefix}}-purchase_order_pk" value="{{p_o_pk}}">
@@ -299,32 +298,28 @@
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 let totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
                 
-                if(currentColor == productColor){
-                    const consumptionInput =document.querySelector('input[name$="-consumption"]');
-                    const consumption = parseFloat(consumptionInput.value) || 0;
-                  
-                    let totalConsumption = CuttingQty * consumption;
-                        if (totalConsumptionInput) {
-                        
-                            totalConsumptionInput.value = totalConsumption.toFixed(2);
-                            
-                        }
-                }else if(currentColor === "Common Item"){
-                    const rows = document.querySelectorAll("tbody.mainTableList tr input[name$='-product_color']")
-                    .forEach(element => {
-                        if (element.value === "Common Item") {
-                            const row = element.closest('tr');
-                            const consumptionInputs = row.querySelector('input[name$="-consumption"]');
-                            const commonConsumptionValue = parseFloat(consumptionInputs.value) || 0;
+                if(totalConsumptionInput){
+                    if(currentColor == productColor){
+                        const consumptionInput =document.querySelector('input[name$="-consumption"]');
+                        const consumption = parseFloat(consumptionInput.value) || 0;
+                        let totalConsumption = CuttingQty * consumption;
+                        totalConsumptionInput.value = totalConsumption.toFixed(2);
+                    
+                    }else if(currentColor === "Common Item"){
+                        const fabricGroup = row.querySelector('.fabric_group').value;
+                        if (fabricGroup === "True") {
+                            const consumptionInput = row.querySelector('input[name$="-consumption"]');
+                            const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
                             const totalValue = parseFloat(cuttingTotal.value) || 0;
                             let commonConsumption = totalValue * commonConsumptionValue;
-
-                            if (totalConsumptionInput) {
-                                totalConsumptionInput.value = commonConsumption.toFixed(2);
-                            }
+                            totalConsumptionInput.value = commonConsumption.toFixed(2);
+                        
+                        } else {
+                            totalConsumptionInput.value = '0.00';
                         }
-                    });
+                    }
                 }
+            
             })
         })
         

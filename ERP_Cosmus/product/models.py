@@ -702,14 +702,37 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
 
 
 class labour_workout_master(models.Model):
-    purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
+    purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
+    challan_no = models.IntegerField()
+    labour_name = models.CharField(max_length=50)
     pending_pcs = models.IntegerField()
     approved_pcs = models.IntegerField()
 
 
 class product_to_item_labour_workout(models.Model):
     labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
+    product_color = models.CharField(max_length=100)
+    product_sku = models.CharField(max_length=100)
+    cutting_quantity = models.IntegerField()
+    assign_cutting_qty = models.IntegerField()
 
+
+class labour_workout_cutting_items(models.Model):
+    labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.CASCADE)
+    product_sku = models.CharField(max_length=50)
+    product_color = models.CharField(max_length = 100, null=False, blank=False)
+    material_name = models.CharField(max_length = 100, null=False, blank=False)
+    material_color_shade = models.CharField(max_length=255)
+    rate = models.DecimalField(max_digits=10, decimal_places=3)
+    panha = models.DecimalField(max_digits=10, decimal_places=3)
+    units = models.DecimalField(max_digits=10, decimal_places=3)
+    g_total = models.DecimalField(max_digits=10, decimal_places=3)
+    consumption = models.DecimalField(max_digits=10, decimal_places=3)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
+    physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    created_date = models.DateTimeField(auto_now = True)
+    updated_date = models.DateTimeField(auto_now_add = True)
 
 
 
