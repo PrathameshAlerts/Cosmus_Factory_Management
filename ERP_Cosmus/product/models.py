@@ -670,7 +670,7 @@ class purchase_order_raw_material_cutting(models.Model):
     factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
     processed_qty  = models.IntegerField(default=0)
     balance_qty = models.IntegerField(default=0)
-
+    approved_qty = models.IntegerField(default=0)
 
 
 class purchase_order_to_product_cutting(models.Model): 
@@ -680,7 +680,7 @@ class purchase_order_to_product_cutting(models.Model):
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
     cutting_quantity = models.IntegerField(default=0)
-
+    approved_pcs = models.IntegerField(default=0)
 
 
 class purchase_order_for_raw_material_cutting_items(models.Model):
@@ -704,17 +704,18 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
 class labour_workout_master(models.Model):
     purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
     challan_no = models.IntegerField()
-    labour_name = models.CharField(max_length=50)
-    pending_pcs = models.IntegerField()
-    approved_pcs = models.IntegerField()
+    labour_name = models.CharField(max_length=50, default='TESTLABOUR')
+    total_approved_pcs = models.IntegerField(default=0)
+    total_pending_pcs = models.IntegerField()
+    
 
 
 class product_to_item_labour_workout(models.Model):
     labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
     product_color = models.CharField(max_length=100)
     product_sku = models.CharField(max_length=100)
-    cutting_quantity = models.IntegerField()
-    assign_cutting_qty = models.IntegerField()
+    approved_pcs = models.IntegerField()
+    pending_pcs = models.IntegerField()
 
 
 class labour_workout_cutting_items(models.Model):

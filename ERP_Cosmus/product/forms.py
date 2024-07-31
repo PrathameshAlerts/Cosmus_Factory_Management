@@ -577,6 +577,13 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                         raise ValidationError(f'An unexpected error occurred: {e}')
 
 
+class purchase_order_cutting_approval_form(forms.ModelForm):
+
+    class Meta:
+        model = purchase_order_to_product_cutting
+        fields = ['product_color','product_sku','cutting_quantity','approved_pcs']
+
+purchase_order_cutting_approval_formset = inlineformset_factory(purchase_order_raw_material_cutting,purchase_order_to_product_cutting,fields=['product_color','product_sku','cutting_quantity','approved_pcs'], extra=0, can_delete=False)
 
 class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
@@ -586,8 +593,8 @@ class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
     def clean_factory_emp_name(self):
         return self.clean_unique_field('factory_emp_name',factory_employee)
 
-class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
 
+class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = cutting_room
         fields = ['cutting_room_name']
@@ -595,7 +602,6 @@ class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
     # this way we can use a custom mixin or the below commented code 
     def clean_cutting_room_name(self):
         return self.clean_unique_field('cutting_room_name',cutting_room)
-
 
 
 

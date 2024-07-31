@@ -61,7 +61,7 @@ from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, Color
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,purchase_order_cutting_approval_formset,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form)
 
 
@@ -3313,7 +3313,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         purchase_order_to_product_formset_form = purchase_order_to_product_formset(instance=purchase_order_cutting_instance)
         
     if request.method == 'POST':
-        print(request.POST)
+        
         # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)(for post request)
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(request.POST)
 
@@ -3435,6 +3435,21 @@ def purchaseordercuttinglistall(request):
     purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0)
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
+
+def purchaseordercuttingpopup(request,cutting_id):
+
+    if cutting_id:
+        cutting_order_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id = cutting_id)
+    else:
+        cutting_order_instance = None
+
+    formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
+
+    if request.method == 'POST':
+        if formset.is_valid():
+            formset.save()
+
+    return render(request,'production/purchaseordercuttingpopup.html',{'formset':formset})
 
 
 def labourworkoutlistall(request):

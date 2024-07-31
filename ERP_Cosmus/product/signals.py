@@ -5,7 +5,7 @@ from .models import (Ledger, PProduct_Creation, Product, RawStockTrasferRecords,
                       account_credit_debit_master_table,  item_purchase_voucher_master, 
                       item_godown_quantity_through_table,Item_Creation,item_color_shade, 
                       opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material,
-                        purchase_order_to_product, purchase_voucher_items, set_prod_item_part_name,
+                        purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name,
                           shade_godown_items)
 import logging
 
@@ -372,6 +372,12 @@ def handle_purchase_order_update(sender, instance, **kwargs):
             for instances in purchase_order_raw_instances:
                 instances.delete()
 
+
+@receiver(post_save, sender=purchase_order_to_product_cutting)
+def create_labourworkout_instances(sender, instance, created, **kwargs):
+    if not created:
+        if instance.approved_pcs != 0 :
+            pass
 
 
 
