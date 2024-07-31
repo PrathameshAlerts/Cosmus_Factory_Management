@@ -699,7 +699,16 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
-    
+
+
+class labour_workout_master(models.Model):
+    purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
+    pending_pcs = models.IntegerField()
+    approved_pcs = models.IntegerField()
+
+
+class product_to_item_labour_workout(models.Model):
+    labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
 
 
 

@@ -40,7 +40,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, opening_shade_godown_quantity, 
+                                 item_purchase_voucher_master, labour_workout_master, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
@@ -82,7 +82,7 @@ def custom_404_view(request, exception):
 
 #____________________________Production-Product-View-Start__________________________________
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 def dashboard(request):
     return render(request,'misc/dashboard.html')
 
@@ -2576,7 +2576,10 @@ def product2item(request,product_refrence_id):
         
         #query for filtering unique to product fields for formset_single
         #filter all record of the products with the ref_id which is marked as unique fields
-        product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color')
+        product2item_instances = product_2_item_through_table.objects.filter(
+            PProduct_pk__Product__Product_Refrence_ID=product_refrence_id,
+              common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color').order_by('row_number')
+        
         formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
 
@@ -2585,13 +2588,14 @@ def product2item(request,product_refrence_id):
         #Within each group of Item_pk, it orders by id.
         #distinct('Item_pk') will keep the first record of each group (based on the smallest id within that group).
         
+        
         distinct_product2item_commmon_instances = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True).order_by(
-                'Item_pk', 'id').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
+                'Item_pk', 'id','row_number').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
 
         formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
         
-
+        
         if request.method == 'POST':
 
             formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
@@ -2621,7 +2625,6 @@ def product2item(request,product_refrence_id):
 
                                 p2i_instance = form.save(commit = False)
                                 p2i_instance.common_unique = False
-                                p2i_instance.row_number = form.prefix[-1]  # get the prefix no of the form
                                 logger.info(f"Product to item created/updated special - {p2i_instance.id}")
                                 p2i_instance.save()
 
@@ -2673,7 +2676,6 @@ def product2item(request,product_refrence_id):
 
                                     obj.no_of_rows =  form.cleaned_data['no_of_rows']
                                     obj.Remark = form.cleaned_data['Remark']
-                                    obj.row_number = form.prefix[-1]   #get the prefix no of the form
                                     logger.info(f"Product to item created/updated common -  {obj.id}")
                                     obj.save()
 
@@ -2772,7 +2774,6 @@ def export_Product2Item_excel(request,product_ref_id):
         sheet2 = wb.worksheets[1]
 
 
-        
         column_widths = [10, 40, 20, 30, 20, 15, 10, 10]  # Adjust these values as needed
 
         #fix the column width  of sheet1
@@ -3434,6 +3435,10 @@ def purchaseordercuttinglistall(request):
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
 
+
+def labourworkoutlistall(request):
+    labour_workout_pending = labour_workout_master.objects.annotate(labour_workout_items_count =Count('labour_workout_items')).filter(raw_material_count__gt=0).filter(pending_pcs__gt=0)
+    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
 #_________________________production-end__________________________________________
 

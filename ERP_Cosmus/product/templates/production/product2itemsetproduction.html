@@ -26,13 +26,8 @@
                     {{ form.id }}
                     
                     <tr>
-<<<<<<< HEAD
-                        
-                        <td>{{form.instance.row_number}}<input  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
-=======
                         <td><input  id="id_{{form.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" name="{{form.prefix}}-row_number"></input>
                             <input type="hidden"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
->>>>>>> 7d2a9316ca26a920ef5a256d04a4949ec00befb1
                         <td>
                             <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
                                 id="id_{{form.prefix}}-PProduct_pk">

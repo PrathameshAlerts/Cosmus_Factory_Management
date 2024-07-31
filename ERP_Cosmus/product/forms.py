@@ -89,7 +89,7 @@ class Product2ItemForm(forms.ModelForm):
         return new_value
 
 # when using modelformset need to add can_delete = True or delete wont be added in form
-Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=1, can_delete=True)
+Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=0, can_delete=True)
 
 
 class Product2CommonItem(forms.ModelForm):
@@ -112,7 +112,7 @@ class Product2CommonItem(forms.ModelForm):
         return new_value
 
 
-Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=1, can_delete=True)
+Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=0, can_delete=True)
 
 
 
