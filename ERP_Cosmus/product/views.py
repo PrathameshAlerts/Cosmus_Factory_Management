@@ -1961,7 +1961,7 @@ def purchasevouchercreateupdate(request, pk=None):
                     # delete wont work after default as we are not saving items_formset instead we are saving  in the formsets individually
                     # items_formset.deleted_forms has the forms marked for deletion
                     for form in items_formset.deleted_forms:
-                        print(form)
+                        
                         if form.instance.pk:
                             #boolen to check if the instance was directly deleted or via models.CASCADE later used in signals 
                             form.instance.deleted_directly = True
@@ -2108,7 +2108,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                 
                                 if popup_godowns_exists != '':
                                     popup_godown_data = json.loads(popup_godowns_exists)
-                                    print('popup_godown_data',popup_godown_data)
+                                
                                     row_prefix_id = popup_godown_data.get('prefix_id')
 
                                     if row_prefix_id == form_prefix_number:
@@ -2121,10 +2121,6 @@ def purchasevouchercreateupdate(request, pk=None):
                                         #function to update popup data on main submit only 
                                         purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade)
                                         
-                        else:
-                            print('form1',form.errors)
-                            
-                    print('all_data', all_purchase_temp_data)
                     return redirect('purchase-voucher-list')
                 else:
                     #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
@@ -2136,8 +2132,7 @@ def purchasevouchercreateupdate(request, pk=None):
                         for data in temp_uuids:
                             temp_uuids_data =  shade_godown_items_temporary_table.objects.filter(unique_id=data)
                             temp_uuids_data.delete()
-                    print('MF',master_form.errors)
-                    print('IF',items_formset.errors)
+
                     return redirect('purchase-voucher-list')
             
         except Exception as e:
@@ -2178,7 +2173,6 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
             if old_item_shade != shade_id:
                 all_godown_old_instances = shade_godown_items.objects.filter(purchase_voucher_godown_item = primarykey)
                 if all_godown_old_instances:
-                    print('all_godown_old_instances',all_godown_old_instances)
                     for items in all_godown_old_instances:
                         items.deleted_directly = True
 
@@ -3446,8 +3440,14 @@ def purchaseordercuttingpopup(request,cutting_id):
     formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
 
     if request.method == 'POST':
+        print(request.POST)
         if formset.is_valid():
-            formset.save()
+            cutting_appproval_formset = formset.save(commit=False)
+            print(formset.cleaned_data)
+            for form in cutting_appproval_formset:
+                form.approval_create_form = True
+                form.save()
+
 
     return render(request,'production/purchaseordercuttingpopup.html',{'formset':formset})
 
@@ -3655,11 +3655,8 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
                     shade_godown_list.append(godown_shade_dict)
 
             item_dict['shades'] = shades_list
-
             querylist.append(item_dict)
-
         queryset = items_in_fab_grp
-
 
     godown_name = Godown_raw_material.objects.get(id = g_id)
     
