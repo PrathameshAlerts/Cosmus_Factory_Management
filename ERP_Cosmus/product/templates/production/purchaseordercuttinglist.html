@@ -42,13 +42,13 @@
             {% for cutting_order in p_o_cutting_order_all %}
             <tr class="text-nowrap">
               <td>{{forloop.counter}}</td>
-              <td>{{cutting_order.raw_material_cutting_id}}</td>
+              <td class="cuttingOderId">{{cutting_order.raw_material_cutting_id}}</td>
               <td>{{cutting_order.purchase_order_id.ledger_party_name.name}}</td>
               <td>{{cutting_order.factory_employee_id.factory_emp_name}}</td>
               <td>{{cutting_order.processed_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
               <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
-              <td><a href="{% url 'purchase-order-cutting-popup' cutting_order.raw_material_cutting_id %}"><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></td>
+              <td><button class="border-0 bg-transparent" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
               <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
             </tr>
             {% endfor %}
@@ -102,4 +102,55 @@
   });
   
 </script> -->
+<script>
+  var popupPage = null;
+
+  function approvedQty(button) {
+    if (popupPage === null || popupPage.closed) {
+      newPopup(button, 'purchaseordercuttingpopup/')
+    } else {
+      popupPage.focus();
+    }
+  }
+  function newPopup(button, path) {
+ 
+    var cuttingOderId = $(button).closest('tr').find('td').eq(1).text();
+   
+    var minWidth = 800; // minimum width
+    var minHeight = 600;
+
+    $('body').addClass('popup-open');
+    $('body').append('<div class="popup-overlay"></div>');
+
+    // this will generate http://127.0.0.1:8000/ 
+    var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+    popupPage = window.open(baseUrl + path + cuttingOderId, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+
+    window.addEventListener('message', function (event) {
+      if (event.data.message === 'close') {
+        $('body').removeClass('popup-open');
+        $('.popup-overlay').remove();
+        popupPage.close();
+      }
+    });
+
+    // // Listen for messages from the popup window
+    window.addEventListener('click', function (event) {
+      handleOutsideView(event);
+    });
+  }
+  function handleOutsideView(event) {
+
+var popUpRect = document.querySelector('body').getBoundingClientRect();
+var clickX = event.clientX;
+var clickY = event.clientY;
+
+// Check if the click is outside the popup window
+if (clickX > popUpRect.left || clickX <= popUpRect.right ||clickY > popUpRect.top || clickY <= popUpRect.bottom) {
+  popupPage.focus();
+
+}
+
+}
+</script>
   {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'product/base.html' %}
+{% extends 'misc/navbar_popup.html' %}
 {% load static %}
 {% block body %}
 
@@ -35,6 +35,15 @@
 <input type="submit" name="" id="" class="create-btn mt-3 mx-3">
 </form>
 
+<script>
+    let formSubmitted = false;
 
+    window.addEventListener('beforeunload', function () {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
+  });
+</script>
 
 {% endblock %}
