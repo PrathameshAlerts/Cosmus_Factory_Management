@@ -184,16 +184,6 @@
                     {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
                     <tr class="text-nowrap">
 
-                        {% if form.instance.material_color_shade.items.Fabric_nonfabric == 'Fabric' %}
-                        
-                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="True">
-
-                        {% elif form.instance.material_color_shade.items.Fabric_nonfabric == 'Non Fabric' %}
-                        
-                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="False">
-
-                        {% endif %}
-
                         <input type="hidden" name="{{form.prefix}}-purchase_order_pk" id="id_{{form.prefix}}-purchase_order_pk" value="{{p_o_pk}}">
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                         <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.instance.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
@@ -218,11 +208,11 @@
                         
                         {% if form.initial.fabric_non_fab == 'Fabric' %}
                         
-                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="True">
+                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="True" class="fabric_group">
 
                         {% elif form.initial.fabric_non_fab == 'Non Fabric' %}
                         
-                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="False">
+                        <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="False" class="fabric_group">
 
                         {% endif %}
                         <input type="hidden" name="{{form.prefix}}-purchase_order_pk" id="id_{{form.prefix}}-purchase_order_pk" value="{{p_o_pk}}">
@@ -307,32 +297,29 @@
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 let totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
-            
-                if(currentColor == productColor){
-                    const consumptionInput =document.querySelector('input[name$="-consumption"]');
-                    const consumption = parseFloat(consumptionInput.value) || 0;
-                   
-                    let totalConsumption = CuttingQty * consumption;
-                    if (totalConsumptionInput) {
-                            totalConsumptionInput.value = totalConsumption.toFixed(2);
-                      
-                    }
-                }else if(currentColor === "Common Item"){
-                    const rows = document.querySelectorAll("tbody.mainTableList tr input[name$='-product_color']")
-                    .forEach(element => {
-                        if (element.value === "Common Item") {
-                            const row = element.closest('tr');
-                            const consumptionInputs = row.querySelector('input[name$="-consumption"]');
-                            const commonConsumptionValue = parseFloat(consumptionInputs.value) || 0;
+                
+                if(totalConsumptionInput){
+                    if(currentColor == productColor){
+                        const consumptionInput =document.querySelector('input[name$="-consumption"]');
+                        const consumption = parseFloat(consumptionInput.value) || 0;
+                        let totalConsumption = CuttingQty * consumption;
+                        totalConsumptionInput.value = totalConsumption.toFixed(2);
+                    
+                    }else if(currentColor === "Common Item"){
+                        const fabricGroup = row.querySelector('.fabric_group').value;
+                        if (fabricGroup === "True") {
+                            const consumptionInput = row.querySelector('input[name$="-consumption"]');
+                            const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
                             const totalValue = parseFloat(cuttingTotal.value) || 0;
                             let commonConsumption = totalValue * commonConsumptionValue;
-
-                            if (totalConsumptionInput) {
-                                totalConsumptionInput.value = commonConsumption.toFixed(2);
-                            }
+                            totalConsumptionInput.value = commonConsumption.toFixed(2);
+                        
+                        } else {
+                            totalConsumptionInput.value = '0.00';
                         }
-                    });
+                    }
                 }
+            
             })
         })
         
@@ -364,8 +351,7 @@
               }
        
               if(!isNaN(TotalConsumtionValue) && !isNaN(physicalStockValue)){
-                console.log(TotalConsumtionValue);
-                console.log(physicalStockValue);
+           
                 var balanceStock = physicalStockValue - TotalConsumtionValue;
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(2);
               }else{
@@ -426,20 +412,13 @@
                 // Update the border and background color of the input elementsid_purchase_order_to_product_cutting_set-0-cutting_quantity
                 document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]').forEach(element => {
                   
-                    var forms = element.closest('tr');
-                       
-             
-
                     if (element.closest('tr').querySelector('.color[name$="-product_color"]').value === color) {
-                        var values = element.closest('tr');
-                        console.log(values);
+                      
                         element.value = newValue.value;
                         element.style.border = "none";
                         element.style.backgroundColor = "transparent";
                         element.readOnly = true;
                         element.style.outline = "none";
-
-                      
                     }
 
                 
@@ -448,7 +427,7 @@
             
         }
     }
-    submitForm();
+
    function processValueQty(){
     let productId = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-0-id').value;
         
@@ -461,25 +440,31 @@
         }
     }
 
-    // function backgroundColorCheck(){
-    //     const productColors = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]');
-    //     const rows = $("tbody.mainTableList tr");
-   
-    //     productColors.forEach(element => {
-    //     const colorValue = element.value;
-    //     rows.forEach(row => {
-    //         const rowColorInput = row.querySelector('input[name$="-product_color"]');
-    //         if (rowColorInput && rowColorInput.value === colorValue) {
-    //             row.style.backgroundColor = "yellow";
-    //         }
-    //     });
-    // });
 
-    // }
-   
-//     document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]').forEach(input => {
-//     input.addEventListener('input', backgroundColorCheck);
-// });
+    function updateCuttingValue(){
+        var cuttingQty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
+            cuttingQty.forEach(input => {
+                var cuttingColor = input.closest('tr').querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]');
+                    cuttingColor.forEach(element =>{
+                        var cuttingColors = element.value;
+                        var materialColor = document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-product_color"]');
+                            materialColor.forEach(ele =>{
+                                if(ele.value == cuttingColors){
+                                    var cuttingQuantitys = parseInt(input.value);
+                                    var materialColorShade = ele.closest('tr').querySelector('select[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-material_color_shade"]');
+                                    if(cuttingQuantitys === 0){
+                                        materialColorShade.style.border = "3px solid red";
+                                        materialColorShade.disabled = true; 
+                                    }else{
+                                        materialColorShade.style.border = "none";
+                                        materialColorShade.disabled = false;
+                                    }
+                                }
+                            })
+                    })    
+            })
+    }
+
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         qty.forEach(element => {
@@ -488,14 +473,14 @@
                 updateCuttingQuantity();
                 processValueQty();
                 submitForm();
-                //backgroundColorCheck();
                 balanceQty();
+                updateCuttingValue();
             });
         })
         submitForm();
         processValueQty();
         cuttingOrder();
-        updateCuttingQuantity();
+        
         balanceQty();
     });
 </script>
