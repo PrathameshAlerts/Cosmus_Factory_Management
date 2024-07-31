@@ -48,7 +48,7 @@
               <td>{{cutting_order.processed_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
               <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
-              <td><a href="{% url 'purchase-order-cutting-popup' cutting_order.raw_material_cutting_id %}">approve</a></td>
+              <td><a href="{% url 'purchase-order-cutting-popup' cutting_order.raw_material_cutting_id %}"><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></td>
               <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
             </tr>
             {% endfor %}

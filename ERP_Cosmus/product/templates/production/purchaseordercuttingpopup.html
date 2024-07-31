@@ -1,6 +1,40 @@
-{{formset.management_form}}
-{% for form in formset %}
-{{form.as_p}}
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
 
-<input type="submit" name="" id="">
-{% endfor %}
+<form>
+    {% csrf_token %}
+
+    <h2 class="mb-3 mt-3">Cutting</h2>
+    <div class="row">
+        <div class="col-lg-7">
+            <table class="table table-striped table-hover table-bordered tables">
+                <thead class="name_absolute text-nowrap">
+                    <tr>
+                        <th>Product Sku</th>
+                        <th>Color</th>
+                        <th>Cutting Qty</th>
+                        <th>Approved pcs</th>
+                    </tr>
+                </thead>
+                <tbody class="mainTableList">
+                    {{formset.management_form}}
+                    {% for form in formset %}
+                    <tr class="text-nowrap">
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.initial.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity" readonly></td>
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="0" id="id_{{form.prefix}}-approved_pcs"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+<input type="submit" name="" id="" class="create-btn mt-3 mx-3">
+</form>
+
+
+
+{% endblock %}
