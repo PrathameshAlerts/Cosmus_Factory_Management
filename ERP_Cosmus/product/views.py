@@ -3246,6 +3246,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'product_color' : purchase_items_raw.product_color,
                 'material_name' : purchase_items_raw.material_name,
                 'material_color_shade': material_color_shade_query,
+                'fabric_non_fab': material_color_shade_query.first().items.Fabric_nonfabric,
                 'rate' : purchase_items_raw.rate,
                 'panha' : purchase_items_raw.panha,
                 'units' : purchase_items_raw.units,
@@ -3438,7 +3439,7 @@ def purchaseordercuttinglistall(request):
 
 def labourworkoutlistall(request):
     labour_workout_pending = labour_workout_master.objects.annotate(labour_workout_items_count =Count('labour_workout_items')).filter(raw_material_count__gt=0).filter(pending_pcs__gt=0)
-    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
+    return render(request,'production/purchaseordercuttinglistall.html', {'labour_workout_pending':labour_workout_pending})
 
 #_________________________production-end__________________________________________
 
