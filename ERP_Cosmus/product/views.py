@@ -1961,7 +1961,7 @@ def purchasevouchercreateupdate(request, pk=None):
                     # delete wont work after default as we are not saving items_formset instead we are saving  in the formsets individually
                     # items_formset.deleted_forms has the forms marked for deletion
                     for form in items_formset.deleted_forms:
-                        print(form)
+                        
                         if form.instance.pk:
                             #boolen to check if the instance was directly deleted or via models.CASCADE later used in signals 
                             form.instance.deleted_directly = True
@@ -3440,14 +3440,14 @@ def purchaseordercuttingpopup(request,cutting_id):
     formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
 
     if request.method == 'POST':
-
-        formset.forms = [form for form in formset.forms if form.has_changed()]
+        print(request.POST)
         if formset.is_valid():
             cutting_appproval_formset = formset.save(commit=False)
-
+            print(formset.cleaned_data)
             for form in cutting_appproval_formset:
                 form.approval_create_form = True
                 form.save()
+
 
     return render(request,'production/purchaseordercuttingpopup.html',{'formset':formset})
 
