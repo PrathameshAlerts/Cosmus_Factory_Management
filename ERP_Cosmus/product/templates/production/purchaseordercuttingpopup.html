@@ -15,6 +15,7 @@
                         <th>Color</th>
                         <th>Cutting Qty</th>
                         <th>Approved pcs</th>
+                        <th>Balance pcs</th>
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
@@ -26,6 +27,8 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"></td>
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs"></td>
+
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -37,14 +40,7 @@
 </form>
 
 <script>
-    let formSubmitted = false;
 
-    window.addEventListener('beforeunload', function () {
-    if (!formSubmitted) {
-      const data = { message: 'close' };
-      window.opener.postMessage(data, '*');
-    }
-  });
 
   function quantityCheck(){
 
@@ -64,7 +60,7 @@
   }
   
   document.addEventListener('DOMContentLoaded', function () {
-    let formSubmitted= true;
+    //let formSubmitted= true;
     quantityCheck();
     let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
     approve.forEach(function(element){

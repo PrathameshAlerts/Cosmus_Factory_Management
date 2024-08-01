@@ -3430,6 +3430,7 @@ def purchaseordercuttinglistall(request):
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
 
+
 def purchaseordercuttingpopup(request,cutting_id):
 
     if cutting_id:
@@ -3440,24 +3441,33 @@ def purchaseordercuttingpopup(request,cutting_id):
     formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
 
     if request.method == 'POST':
-        print(request.POST)
         if formset.is_valid():
-            formset.save()
+            formset_instance = formset.save(commit=False)
 
-            for form in formset:
-                form.purchase_order_cutting_id.approved_qty = form.purchase_order_cutting_id.approved_qty + form.approved_pcs
-                print(form.purchase_order_cutting_id.approved_qty)
-                form.purchase_order_cutting_id.save()
+            raw_material_cutting_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id=cutting_id)
+
+            old_total_approved_qty_total = raw_material_cutting_instance.approved_qty
+
+             
+            for form in formset_instance:
+                old_approved_qty = purchase_order_to_product_cutting.objects.get(id = form.id)
+                old_total_approved_qty_diffrence  =  form.approved_pcs - old_approved_qty.approved_pcs 
+                form.approved_pcs_diffrence = old_total_approved_qty_diffrence
+                old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence
+                form.save() # save the instance model
             
+            raw_material_cutting_instance.approved_qty = old_total_approved_qty_total
+            raw_material_cutting_instance.approval_create_form = True
+            raw_material_cutting_instance.save()
+
+    return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
 
 
-
-    return render(request,'production/purchaseordercuttingpopup.html',{'formset':formset})
 
 
 def labourworkoutlistall(request):
-    labour_workout_pending = labour_workout_master.objects.annotate(labour_workout_items_count =Count('labour_workout_items')).filter(raw_material_count__gt=0).filter(pending_pcs__gt=0)
+    labour_workout_pending = purchase_order_raw_material_cutting.objects.filter(approved_qty_gt=0)
     return render(request,'production/purchaseordercuttinglistall.html', {'labour_workout_pending':labour_workout_pending})
 
 #_________________________production-end__________________________________________
@@ -3466,7 +3476,7 @@ def labourworkoutlistall(request):
 
 
 def factory_employee_create_update_list(request,pk=None):
-    print(request.POST)
+    
     factory_employees = factory_employee.objects.all()
     cutting_rooms =  cutting_room.objects.all()
     if pk:
