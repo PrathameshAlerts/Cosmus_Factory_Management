@@ -17,7 +17,7 @@
                         <th>Total</th>
                         <th>Remark</th>
                         <th>Delete</th>
-                        <td>Add Row</td>
+                        <!-- <td>Add Row</td> -->
                     </tr>
                 </thead>
 
@@ -53,7 +53,7 @@
                         <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total" value="{{form.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total" readonly></td>
                         <td><input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-Remark"></td>
                         <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
-                        <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="Add"></td>
+                        <!-- <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="Add"></td> -->
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -514,30 +514,89 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const addButtonValue = document.querySelectorAll('.add_btn_row');
-        const tableBodys = document.querySelector('#mainProductForm tbody');
-        console.log(addButtonValue)
-        addButtonValue.forEach(function (el){
-            el.addEventListener('click',function(){
-                const tables = el.closest('#mainProductForm tbody tr');
-                const inputValue = tables.querySelector('[name$="-no_of_rows"]').getAttribute('name');
-                const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS').value;
-
-                const formValue = inputValue.split('-')[1];
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const addButtonValue = document.querySelectorAll('.add_btn_row');
+    //     const tableBodys = document.querySelector('#mainProductForm tbody');
+    //     console.log(addButtonValue)
+    //     addButtonValue.forEach(function (el){
+    //         el.addEventListener('click',function(){
+    //             const tables = el.closest('#mainProductForm tbody tr');
+    //             const inputValue = tables.querySelector('[name$="-no_of_rows"]').getAttribute('name');
+    //             const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+    //             const formQty = parseInt(mainForms.value);
+    //             console.log(formQty)
+    //             const formValue = inputValue.split('-')[1];
                 
-                const formsInsertValue = parseInt(formValue) + 1;
+    //             const formsInsertValue = parseInt(formValue) + 1;
 
-                const newRow = tables.cloneNode(true);
-                console.log(newRow)
-                //const newelement = 
+    //             const newRow = tables.cloneNode(true);
+    //             console.log(newRow)
+               
+    //             newRow.querySelectorAll("input select").forEach(function (e) {
+    //                     e.value = "";
+    //             });
 
-          
+    //             const rowNumbers = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="row_number"]');
+    //                 rowNumbers.id = `id_product2itemuniqueformset-${formsInsertValue}-row_number`;
+    //                 rowNumbers.name = `product2itemuniqueformset-${formsInsertValue}-row_number`;
+    //                 rowNumbers.value = formsInsertValue + 1;
+
+    //                 const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
+    //                 rowValue.id = `id_serial_no_unique-${formsInsertValue}`;
+    //                 rowValue.value = '';
+
+    //                 const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
+    //                 newSelectElement.id = `id_product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
+    //                 newSelectElement.name = `product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
+    //                 newSelectElement.value = '';
+
+    //                 const inputValueElement = newRow.querySelector('[name^="itemName_"]');
+    //                 inputValueElement.id = `id_itemName_${formsInsertValue}`;
+    //                 inputValueElement.name = `itemName_${formsInsertValue}`;
+    //                 inputValueElement.value = '';
+
+    //                 const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
+    //                 hiddenValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pks`;
+    //                 hiddenValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pks`;
+    //                 hiddenValueName.value = '';
+
+    //                 const selectValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+    //                 selectValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pk`;
+    //                 selectValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pk`;
+    //                 selectValueName.value = '';
+
+    //                 const inputElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
+    //                 inputElement.id = `id_product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
+    //                 inputElement.name = `product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
+    //                 inputElement.value = '1';
+
+    //                 const grandElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
+    //                 grandElement.id = `id_product2itemuniqueformset-${formsInsertValue}-grand_total`;
+    //                 grandElement.name = `product2itemuniqueformset-${formsInsertValue}-grand_total`;
+    //                 grandElement.value = '0';
+
+    //                 const inputRemark = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
+    //                 inputRemark.id = `id_product2itemuniqueformset-${formsInsertValue}-Remark`;
+    //                 inputRemark.name = `product2itemuniqueformset-${formsInsertValue}-Remark`;
+    //                 inputRemark.value = '';
+
+    //                 const deleteElement = newRow.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
+    //                 deleteElement.id = `id_product2itemuniqueformset-${formsInsertValue}-DELETE`;
+    //                 deleteElement.name = `product2itemuniqueformset-${formsInsertValue}-DELETE`;
+    //                 deleteElement.value = '';
+    //                 deleteElement.checked = false;
+
+    //                 const addButtonElement = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
+    //                 addButtonElement.id = `id_product2itemuniqueformset-${formsInsertValue}-add_btn`;
+    //                 addButtonElement.name = `product2itemuniqueformset-${formsInsertValue}-add_btn`;
+    //                 addButtonElement.value = 'Add';
                 
-            })
-        })
+    //             mainForms.value = formQty + 1;
+    //             tables.appendChild(newRow);
+    //         })
+    //     })
      
-    })
+    // })
 
     // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
