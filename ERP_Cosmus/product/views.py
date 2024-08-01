@@ -3448,17 +3448,17 @@ def purchaseordercuttingpopup(request,cutting_id):
 
             old_total_approved_qty_total = raw_material_cutting_instance.approved_qty
 
-             
+            labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
             for form in formset_instance:
                 old_approved_qty = purchase_order_to_product_cutting.objects.get(id = form.id)
                 old_total_approved_qty_diffrence  =  form.approved_pcs - old_approved_qty.approved_pcs 
                 form.approved_pcs_diffrence = old_total_approved_qty_diffrence
                 old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence
                 form.save() # save the instance model
-            
+
             raw_material_cutting_instance.approved_qty = old_total_approved_qty_total
-            raw_material_cutting_instance.approval_create_form = True
-            raw_material_cutting_instance.save()
+            raw_material_cutting_instance.save() # save the parent model
+
 
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
