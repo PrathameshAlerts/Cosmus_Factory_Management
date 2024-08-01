@@ -17,6 +17,7 @@
                         <th>Total</th>
                         <th>Remark</th>
                         <th>Delete</th>
+                        <td>Add Row</td>
                     </tr>
                 </thead>
 
@@ -52,6 +53,7 @@
                         <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total" value="{{form.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total" readonly></td>
                         <td><input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-Remark"></td>
                         <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
+                        <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="Add"></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -512,7 +514,30 @@
 
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addButtonValue = document.querySelectorAll('.add_btn_row');
+        const tableBodys = document.querySelector('#mainProductForm tbody');
+        console.log(addButtonValue)
+        addButtonValue.forEach(function (el){
+            el.addEventListener('click',function(){
+                const tables = el.closest('#mainProductForm tbody tr');
+                const inputValue = tables.querySelector('[name$="-no_of_rows"]').getAttribute('name');
+                const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS').value;
 
+                const formValue = inputValue.split('-')[1];
+                
+                const formsInsertValue = parseInt(formValue) + 1;
+
+                const newRow = tables.cloneNode(true);
+                console.log(newRow)
+                //const newelement = 
+
+          
+                
+            })
+        })
+     
+    })
 
     // add a new row to the common product2itemUniqueformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
@@ -525,8 +550,8 @@
                
 
                 if (isNaN(addInputRow) || addInputRow <= 0) {
-                    addInputRow = 1;
-            
+                    addInputRow = 0;
+                    return;
                 }
                 let lastVisibleRow = null;
                 tableBody.querySelectorAll('tr').forEach(row => {
@@ -593,6 +618,11 @@
                     deleteElement.name = `product2itemuniqueformset-${newFormCount}-DELETE`;
                     deleteElement.value = '';
                     deleteElement.checked = false;
+
+                    const addButtonElement = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
+                    addButtonElement.id = `id_product2itemuniqueformset-${newFormCount}-add_btn`;
+                    addButtonElement.name = `product2itemuniqueformset-${newFormCount}-add_btn`;
+                    addButtonElement.value = 'Add';
 
                     forms.value = newFormCount + 1;
 

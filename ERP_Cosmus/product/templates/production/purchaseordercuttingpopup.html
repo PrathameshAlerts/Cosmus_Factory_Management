@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="POST">
+<form method="POST" id="myForms">
     {% csrf_token %}
 
     <h2 class="mb-3 mt-3">Cutting</h2>
@@ -37,7 +37,7 @@
 </form>
 
 <script>
-    let formSubmitted = false;
+    var formSubmitted = false;
 
     window.addEventListener('beforeunload', function () {
     if (!formSubmitted) {
@@ -64,7 +64,7 @@
   }
   
   document.addEventListener('DOMContentLoaded', function () {
-    let formSubmitted= true;
+     
     quantityCheck();
     let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
     approve.forEach(function(element){
@@ -72,6 +72,11 @@
             quantityCheck();
         });
     })
+      // Attach event listener to the form submission
+      let form = document.getElementById('myForms'); // Adjust selector to target the correct form
+    form.addEventListener('submit', function () {
+      formSubmitted = true;
+    });
   })
 </script>
 
