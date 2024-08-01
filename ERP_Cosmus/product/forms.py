@@ -577,13 +577,8 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                         raise ValidationError(f'An unexpected error occurred: {e}')
 
 
-class purchase_order_cutting_approval_form(forms.ModelForm):
 
-    class Meta:
-        model = purchase_order_to_product_cutting
-        fields = ['product_color','product_sku','cutting_quantity','approved_pcs']
-
-purchase_order_cutting_approval_formset = inlineformset_factory(purchase_order_raw_material_cutting,purchase_order_to_product_cutting,fields=['product_color','product_sku','cutting_quantity','approved_pcs'], extra=0, can_delete=False)
+purchase_order_cutting_approval_formset = inlineformset_factory(purchase_order_raw_material_cutting,purchase_order_to_product_cutting,fields=['product_color','product_sku','cutting_quantity','approved_pcs','balance_pcs'], extra=0, can_delete=False)
 
 class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
     class Meta:

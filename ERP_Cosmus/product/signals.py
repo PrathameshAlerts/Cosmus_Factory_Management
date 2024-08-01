@@ -3,8 +3,8 @@ from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
 from .models import (Ledger, PProduct_Creation, Product, RawStockTrasferRecords,
                       account_credit_debit_master_table,  item_purchase_voucher_master, 
-                      item_godown_quantity_through_table,Item_Creation,item_color_shade, 
-                      opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material,
+                      item_godown_quantity_through_table,Item_Creation,item_color_shade, labour_workout_master, 
+                      opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting,
                         purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name,
                           shade_godown_items)
 import logging
@@ -373,19 +373,14 @@ def handle_purchase_order_update(sender, instance, **kwargs):
                 instances.delete()
 
 
-@receiver(post_save, sender=purchase_order_to_product_cutting)
+@receiver(post_save, sender=purchase_order_raw_material_cutting)
 def create_labourworkout_instances(sender, instance, created, **kwargs):
     if not created:
-        if instance.approved_pcs != 0 :
-            pass
+        if instance.approved_pcs != 0 and instance.approval_create_form == True:
+            labour_workout_master.objects.create(purchase_order_cutting_master=instance)
 
 
 
-
-# @receiver(pre_save, sender=Item_Creation)
-# def update_combined_field(sender, instance, **kwargs):
-#     # Combine the values of field1 and field2 and save it to combined_field
-#     instance.Description = f"{instance.Fabric_Group} - {instance.Name} - {instance.Item_Color}"
 
 
 """
