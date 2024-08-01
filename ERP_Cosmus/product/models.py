@@ -682,6 +682,7 @@ class purchase_order_to_product_cutting(models.Model):
     cutting_quantity = models.IntegerField(default=0)
     approved_pcs = models.IntegerField(default=0)
     balance_pcs = models.IntegerField(default=0)
+    approved_pcs_diffrence = models.IntegerField(default=0)
 
 
 class purchase_order_for_raw_material_cutting_items(models.Model):

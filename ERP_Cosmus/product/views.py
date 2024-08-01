@@ -3452,6 +3452,7 @@ def purchaseordercuttingpopup(request,cutting_id):
             for form in formset_instance:
                 old_approved_qty = purchase_order_to_product_cutting.objects.get(id = form.id)
                 old_total_approved_qty_diffrence  =  form.approved_pcs - old_approved_qty.approved_pcs 
+                form.approved_pcs_diffrence = old_total_approved_qty_diffrence
                 old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence
                 form.save() # save the instance model
             

@@ -376,8 +376,8 @@ def handle_purchase_order_update(sender, instance, **kwargs):
 @receiver(post_save, sender=purchase_order_raw_material_cutting)
 def create_labourworkout_instances(sender, instance, created, **kwargs):
     if not created:
-        if instance.approved_pcs != 0 and instance.approval_create_form == True:
-            labour_workout_master.objects.create(purchase_order_cutting_master=instance)
+        if instance.approved_qty != 0 and instance.approval_create_form == True:
+            labour_workout_master.objects.create(purchase_order_cutting_master=instance, total_approved_pcs=instance.approved_pcs_diffrence)
 
 
 
