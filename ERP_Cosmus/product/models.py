@@ -703,9 +703,9 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
 
 class labour_workout_master(models.Model):
     purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
-    challan_no = models.IntegerField()
+    challan_no = models.IntegerField(null=True, blank=True)
     labour_name = models.CharField(max_length=50, default='TESTLABOUR')
-    total_approved_pcs = models.IntegerField(default=0)
+    total_approved_pcs = models.IntegerField()
     total_pending_pcs = models.IntegerField()
     
 

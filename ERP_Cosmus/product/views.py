@@ -3442,11 +3442,15 @@ def purchaseordercuttingpopup(request,cutting_id):
     if request.method == 'POST':
         print(request.POST)
         if formset.is_valid():
-            cutting_appproval_formset = formset.save(commit=False)
-            print(formset.cleaned_data)
-            for form in cutting_appproval_formset:
-                form.approval_create_form = True
-                form.save()
+            formset.save()
+
+            for form in formset:
+                form.purchase_order_cutting_id.approved_qty = form.purchase_order_cutting_id.approved_qty + form.approved_pcs
+                print(form.purchase_order_cutting_id.approved_qty)
+                form.purchase_order_cutting_id.save()
+            
+
+
 
 
     return render(request,'production/purchaseordercuttingpopup.html',{'formset':formset})
