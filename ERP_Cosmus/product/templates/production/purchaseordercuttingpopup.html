@@ -47,6 +47,7 @@
   });
 
   function quantityCheck(){
+
     let forms = document.getElementById('id_purchase_order_to_product_cutting_set-TOTAL_FORMS').value;
   
     for(let i=0; i<forms; i++){
@@ -63,6 +64,7 @@
   }
   
   document.addEventListener('DOMContentLoaded', function () {
+    let formSubmitted= true;
     quantityCheck();
     let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
     approve.forEach(function(element){
