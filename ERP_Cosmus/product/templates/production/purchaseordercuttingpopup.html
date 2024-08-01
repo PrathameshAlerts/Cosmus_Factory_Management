@@ -45,6 +45,32 @@
       window.opener.postMessage(data, '*');
     }
   });
+
+  function quantityCheck(){
+    let forms = document.getElementById('id_purchase_order_to_product_cutting_set-TOTAL_FORMS').value;
+  
+    for(let i=0; i<forms; i++){
+        const cuttingQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+i+'-cutting_quantity');
+        const approvedQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+i+ '-approved_pcs');
+        const approvedValue = parseFloat(approvedQty.value);
+        const cuttingValue = parseFloat(cuttingQty.value);
+    
+        if(cuttingValue < approvedValue){
+            approvedQty.value = "0"
+        }
+    }
+    
+  }
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    quantityCheck();
+    let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
+    approve.forEach(function(element){
+        element.addEventListener('input', ()=>{
+            quantityCheck();
+        });
+    })
+  })
 </script>
 
 {% endblock %}
