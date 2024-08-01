@@ -41,7 +41,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_workout_master, opening_shade_godown_quantity, 
-                                 packaging, product_2_item_through_table, purchase_order, 
+                                 packaging, product_2_item_through_table, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
                                    set_prod_item_part_name, shade_godown_items,
@@ -3450,11 +3450,16 @@ def purchaseordercuttingpopup(request,cutting_id):
 
             labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
             for form in formset_instance:
+
                 old_approved_qty = purchase_order_to_product_cutting.objects.get(id = form.id)
                 old_total_approved_qty_diffrence  =  form.approved_pcs - old_approved_qty.approved_pcs 
                 form.approved_pcs_diffrence = old_total_approved_qty_diffrence
                 old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence
                 form.save() # save the instance model
+                
+                product_to_item_labour_workout.objects.create(labour_workout=labour_workout_master_instance,
+                                                              product_color=form.product_color,product_sku=form.product_sku,
+                                                              pending_pcs=old_total_approved_qty_diffrence,processed_pcs=0)
 
             raw_material_cutting_instance.approved_qty = old_total_approved_qty_total
             raw_material_cutting_instance.save() # save the parent model
