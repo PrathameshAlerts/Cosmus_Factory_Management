@@ -179,6 +179,13 @@ urlpatterns = [
     #approval
     path('purchaseordercuttingpopup/<int:cutting_id>',views.purchaseordercuttingpopup, name = 'purchase-order-cutting-popup'),
 
+    #labour workout 
+    path('labourworkoutall',views.labourworkoutlistall, name = 'labour-workout-all'),
+    path('labourworkoutsingle/<int:pk>',views.labourworkoutsingle, name = 'labour-workout-single'),
+
+
+
+
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),

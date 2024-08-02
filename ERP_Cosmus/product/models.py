@@ -714,8 +714,8 @@ class labour_workout_master(models.Model):
 
 class product_to_item_labour_workout(models.Model):
     labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
-    product_color = models.CharField(max_length=100)
     product_sku = models.CharField(max_length=100)
+    product_color = models.CharField(max_length=100)
     processed_pcs = models.IntegerField()
     pending_pcs = models.IntegerField()
 
