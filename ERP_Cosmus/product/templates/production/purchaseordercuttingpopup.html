@@ -28,7 +28,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>
-
+                        <td><input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.approved_pcs_diffrence}}" id="id_{{form.prefix}}-approved_pcs_diffrence"></td>
                     </tr>
                     {% endfor %}
                 </tbody>

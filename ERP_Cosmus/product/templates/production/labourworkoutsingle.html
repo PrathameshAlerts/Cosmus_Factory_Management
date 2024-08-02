@@ -1,0 +1,13 @@
+
+<table>
+<td>
+    <th>Product Sku</th>
+    <th>Color</th>
+    <th>Approved Qty</th>
+    <th>Pending Qty</th>
+</td>
+
+{% for form in product_to_item_formset %}
+{{form.as_p}}
+{% endfor %}
+</table>

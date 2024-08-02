@@ -41,7 +41,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_workout_master, opening_shade_godown_quantity, 
-                                 packaging, product_2_item_through_table, purchase_order, 
+                                 packaging, product_2_item_through_table, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
                                    set_prod_item_part_name, shade_godown_items,
@@ -61,7 +61,9 @@ from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, Color
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,purchase_order_cutting_approval_formset,
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
+                                purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
+                                purchase_order_cutting_approval_formset,labour_workout_product_to_items_formset,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form)
 
 
@@ -3441,6 +3443,7 @@ def purchaseordercuttingpopup(request,cutting_id):
     formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
 
     if request.method == 'POST':
+
         if formset.is_valid():
             formset_instance = formset.save(commit=False)
 
@@ -3448,16 +3451,24 @@ def purchaseordercuttingpopup(request,cutting_id):
 
             old_total_approved_qty_total = raw_material_cutting_instance.approved_qty
 
-             
+            labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
+
             for form in formset_instance:
                 old_approved_qty = purchase_order_to_product_cutting.objects.get(id = form.id)
                 old_total_approved_qty_diffrence  =  form.approved_pcs - old_approved_qty.approved_pcs 
+                form.approved_pcs_diffrence = old_total_approved_qty_diffrence
                 old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence
                 form.save() # save the instance model
-            
+
+                product_to_item_labour_workout.objects.create(labour_workout=labour_workout_master_instance,
+                                                              product_color=form.product_color,product_sku=form.product_sku,
+                                                              pending_pcs=  old_total_approved_qty_diffrence,processed_pcs=0)
+
             raw_material_cutting_instance.approved_qty = old_total_approved_qty_total
-            raw_material_cutting_instance.approval_create_form = True
-            raw_material_cutting_instance.save()
+            raw_material_cutting_instance.save() # save the parent model
+
+            
+            
 
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
@@ -3466,8 +3477,17 @@ def purchaseordercuttingpopup(request,cutting_id):
 
 
 def labourworkoutlistall(request):
-    labour_workout_pending = purchase_order_raw_material_cutting.objects.filter(approved_qty_gt=0)
-    return render(request,'production/purchaseordercuttinglistall.html', {'labour_workout_pending':labour_workout_pending})
+    labour_workout_pending = labour_workout_master.objects.all()
+    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
+
+def labourworkoutsingle(request,pk):
+    labourworkoutinstance = labour_workout_master.objects.get(id=pk)
+
+    product_to_item_formset = labour_workout_product_to_items_formset(request.POST or None, instance = labourworkoutinstance)
+
+    return render(request,'production/labourworkoutsingle.html',{'product_to_item_formset':product_to_item_formset})
+
+
 
 #_________________________production-end__________________________________________
 
