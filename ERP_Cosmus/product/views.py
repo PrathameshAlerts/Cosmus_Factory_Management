@@ -50,7 +50,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
-                       factory_employee_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_workout_master_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -61,7 +61,7 @@ from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, Color
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,labour_workout_cutting_items_form_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
                                 purchase_order_cutting_approval_formset,labour_workout_product_to_items_formset,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form)
@@ -3271,6 +3271,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         # intial data for purchase_order_to_product formset
         initial_data_p_o_to_items = []
+        
         for instances in purchase_order_to_product_instances:
             initial_data_dict = {
                 'product_color': instances.product_id.PProduct_color,
@@ -3443,33 +3444,37 @@ def purchaseordercuttingpopup(request,cutting_id):
     formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
 
     if request.method == 'POST':
-
+        formset.forms = [form for form in formset.forms if form.has_changed()]
         if formset.is_valid():
-            formset_instance = formset.save(commit=False)
+            if any(form.has_changed() for form in formset): # if all the forms are not changed below code will not get executed
+                formset_instance = formset.save(commit=False)
 
-            raw_material_cutting_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id=cutting_id)
+                # get the cutting instance of approval instance
+                raw_material_cutting_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id=cutting_id)
 
-            old_total_approved_qty_total = raw_material_cutting_instance.approved_qty
+                # old approved qty
+                old_total_approved_qty_total = raw_material_cutting_instance.approved_qty
 
-            labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
 
-            for form in formset_instance:
-                old_approved_qty = purchase_order_to_product_cutting.objects.get(id = form.id)
-                old_total_approved_qty_diffrence  =  form.approved_pcs - old_approved_qty.approved_pcs 
-                form.approved_pcs_diffrence = old_total_approved_qty_diffrence
-                old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence
-                form.save() # save the instance model
+                # create an instance in labour workout master of the cutting instance
+                labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
 
-                product_to_item_labour_workout.objects.create(labour_workout=labour_workout_master_instance,
-                                                              product_color=form.product_color,product_sku=form.product_sku,
-                                                              pending_pcs=  old_total_approved_qty_diffrence,processed_pcs=0)
+                for form in formset_instance:
+                    p_o_to_cutting_instance = purchase_order_to_product_cutting.objects.get(id = form.id) # p_o_cutting_instance
+                    old_total_approved_qty_diffrence  =  form.approved_pcs - p_o_to_cutting_instance.approved_pcs  # current qty - old qty to get the diffrence in qty
+                    form.approved_pcs_diffrence = old_total_approved_qty_diffrence  # assign the difrence qty to form variable
+                    old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence # add the diffrence qty to total qty of parent model
+                    form.save() # save the instance model
+                    
+                    # create new instance of the data in product_to_item_labour_workout with the created labour_workout_master_instance as parent model
+                    product_to_item_labour_workout.objects.create(labour_workout=labour_workout_master_instance,
+                                                                product_color=form.product_color,product_sku=form.product_sku,
+                                                                pending_pcs = old_total_approved_qty_diffrence,processed_pcs=0)
 
-            raw_material_cutting_instance.approved_qty = old_total_approved_qty_total
-            raw_material_cutting_instance.save() # save the parent model
+                raw_material_cutting_instance.approved_qty = old_total_approved_qty_total # save the total diffrence total qty to parent model
+                raw_material_cutting_instance.save() # save the parent model
 
             
-            
-
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
 
@@ -3480,12 +3485,22 @@ def labourworkoutlistall(request):
     labour_workout_pending = labour_workout_master.objects.all()
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
+
 def labourworkoutsingle(request,pk):
     labourworkoutinstance = labour_workout_master.objects.get(id=pk)
 
+    labour_work_out = labour_workout_master_form(request.POST or None, instance = labourworkoutinstance)
+
     product_to_item_formset = labour_workout_product_to_items_formset(request.POST or None, instance = labourworkoutinstance)
 
-    return render(request,'production/labourworkoutsingle.html',{'product_to_item_formset':product_to_item_formset})
+    labour_workout_cutting_items_formset_form = labour_workout_cutting_items_form_formset() 
+
+
+
+
+    return render(request,'production/labourworkoutsingle.html',
+                  {'product_to_item_formset':product_to_item_formset,'labour_work_out':labour_work_out,
+                   'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form})
 
 
 
