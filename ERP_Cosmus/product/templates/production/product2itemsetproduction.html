@@ -518,114 +518,111 @@
 <script>
     // THis code are using a single row created by clicking add button
     document.addEventListener('DOMContentLoaded', function () {
-        const addButtonValue = document.querySelectorAll('.add_btn_row');
-        const tableBodys = document.querySelector('#mainProductForm tbody');
-     
-        addButtonValue.forEach(function (el){
-            el.addEventListener('click',function(){
-                const currentRow = el.closest('tr');
-                const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
-                const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
-                const formsInsertValue = parseInt(mainForms.value);
-                console.log(formsInsertValue)
-                const formValue = inputValue.split('-')[1];
-                
-                const formsInsert = parseInt(formValue) + 2;
+    const addButtonValue = document.querySelectorAll('.add_btn_row');
+    const tableBodys = document.querySelector('#mainProductForm tbody');
 
-                const newRow = currentRow.cloneNode(true);
-                console.log(newRow)
-               
-                newRow.querySelectorAll("input select").forEach(function (e) {
-                        e.value = "";
-                });
+    addButtonValue.forEach(function (el) {
+        el.addEventListener('click', function () {
+            const currentRow = el.closest('tr');
+            const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
+            const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+            const formsInsertValue = parseInt(mainForms.value);
+            const formValue = inputValue.split('-')[1];
+            const formsInsert = parseInt(formValue) + 2;
 
-                const rowNumbers = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="row_number"]');
-                    rowNumbers.id = `id_product2itemuniqueformset-${formsInsertValue}-row_number`;
-                    rowNumbers.name = `product2itemuniqueformset-${formsInsertValue}-row_number`;
-                    rowNumbers.value = formsInsert + 1;
+            const newRow = currentRow.cloneNode(true);
 
-                    const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
-                    rowValue.id = `id_serial_no_unique-${formsInsertValue}`;
-                    rowValue.value = '';
-
-                    const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
-                    newSelectElement.id = `id_product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
-                    newSelectElement.name = `product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
-                    newSelectElement.value = '';
-
-                    const inputValueElement = newRow.querySelector('[name^="itemName_"]');
-                    inputValueElement.id = `id_itemName_${formsInsertValue}`;
-                    inputValueElement.name = `itemName_${formsInsertValue}`;
-                    inputValueElement.value = '';
-
-                    const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
-                    hiddenValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pks`;
-                    hiddenValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pks`;
-                    hiddenValueName.value = '';
-
-                    const selectValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
-                    selectValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pk`;
-                    selectValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pk`;
-                    selectValueName.value = '';
-
-                    const inputElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
-                    inputElement.id = `id_product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
-                    inputElement.name = `product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
-                    inputElement.value = '1';
-
-                    const grandElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
-                    grandElement.id = `id_product2itemuniqueformset-${formsInsertValue}-grand_total`;
-                    grandElement.name = `product2itemuniqueformset-${formsInsertValue}-grand_total`;
-                    grandElement.value = '0';
-
-                    const inputRemark = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
-                    inputRemark.id = `id_product2itemuniqueformset-${formsInsertValue}-Remark`;
-                    inputRemark.name = `product2itemuniqueformset-${formsInsertValue}-Remark`;
-                    inputRemark.value = '';
-
-                    const deleteElement = newRow.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
-                    deleteElement.id = `id_product2itemuniqueformset-${formsInsertValue}-DELETE`;
-                    deleteElement.name = `product2itemuniqueformset-${formsInsertValue}-DELETE`;
-                    deleteElement.value = '';
-                    deleteElement.checked = false;
-
-                    const addButtonElement = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
-                    addButtonElement.id = `id_product2itemuniqueformset-${formsInsertValue}-add_btn`;
-                    addButtonElement.name = `product2itemuniqueformset-${formsInsertValue}-add_btn`;
-                    addButtonElement.value = 'Add';
-                
-                 mainForms.value = formsInsertValue + 1;
-                currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
-            })
-            deleteRowHide();
-        })
-    
-     function deleteRowHide() {
-            // Add click event listener to all delete buttons
-            document.querySelectorAll('.delete-btn').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    // Find the row containing the clicked delete button
-                    const row = this.closest('tr');
-                    const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
-                    const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
-                 
-                    if (checkRow) {
-                        checkRow.checked = true; // Mark as checked
-                        checkRow.value = 'true'; // Set the value to 'true'
-                        rowValue.required = false;
-                        row.style.display = 'none';
-
-                
-
-                    } else {
-                        console.error("Checkbox for deletion not found in this row");
-                    }
-                });
+            newRow.querySelectorAll("input, select").forEach(function (e) {
+                e.value = "";
             });
-        };
-        deleteRowHide();
-    })
 
+            const rowNumbers = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="row_number"]');
+            rowNumbers.id = `id_product2itemuniqueformset-${formsInsertValue}-row_number`;
+            rowNumbers.name = `product2itemuniqueformset-${formsInsertValue}-row_number`;
+            rowNumbers.value = formsInsert + 1;
+
+            const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
+            rowValue.id = `id_serial_no_unique-${formsInsertValue}`;
+            rowValue.value = '';
+
+            const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
+            newSelectElement.id = `id_product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
+            newSelectElement.name = `product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
+            newSelectElement.value = '';
+
+            const inputValueElement = newRow.querySelector('[name^="itemName_"]');
+            inputValueElement.id = `id_itemName_${formsInsertValue}`;
+            inputValueElement.name = `itemName_${formsInsertValue}`;
+            inputValueElement.value = '';
+
+            const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
+            hiddenValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pks`;
+            hiddenValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pks`;
+            hiddenValueName.value = '';
+
+            const selectValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+            selectValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pk`;
+            selectValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pk`;
+            selectValueName.value = '';
+
+            const inputElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
+            inputElement.id = `id_product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
+            inputElement.name = `product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
+            inputElement.value = '1';
+
+            const grandElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
+            grandElement.id = `id_product2itemuniqueformset-${formsInsertValue}-grand_total`;
+            grandElement.name = `product2itemuniqueformset-${formsInsertValue}-grand_total`;
+            grandElement.value = '0';
+
+            const inputRemark = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
+            inputRemark.id = `id_product2itemuniqueformset-${formsInsertValue}-Remark`;
+            inputRemark.name = `product2itemuniqueformset-${formsInsertValue}-Remark`;
+            inputRemark.value = '';
+
+            const deleteElement = newRow.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
+            deleteElement.id = `id_product2itemuniqueformset-${formsInsertValue}-DELETE`;
+            deleteElement.name = `product2itemuniqueformset-${formsInsertValue}-DELETE`;
+            deleteElement.value = '';
+            deleteElement.checked = false;
+
+            const addButtonElement = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
+            addButtonElement.id = `id_product2itemuniqueformset-${formsInsertValue}-add_btn`;
+            addButtonElement.name = `product2itemuniqueformset-${formsInsertValue}-add_btn`;
+            addButtonElement.value = '+';
+
+            mainForms.value = formsInsertValue + 1;
+            currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
+
+            // Re-bind delete functionality after adding a new row
+            deleteRowSingle();
+        });
+    });
+
+    function deleteRowSingle() {
+        document.querySelectorAll('.delete-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const row = this.closest('tr');
+                const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
+                const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
+
+                if (checkRow) {
+                    checkRow.checked = true;
+                    checkRow.value = 'true';
+                    rowValue.required = false;
+                    row.style.display = 'none';
+                } else {
+                    console.error("Checkbox for deletion not found in this row");
+                }
+            });
+        });
+    };
+
+    // Bind delete functionality on initial load
+    deleteRowSingle();
+});
+
+    
 
 
 
@@ -830,13 +827,37 @@ document.addEventListener('DOMContentLoaded', function () {
                     const addButtonElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btn"]');
                     addButtonElement.id = `id_product2itemcommonformset-${formsInsertValue}-add_btn`;
                     addButtonElement.name = `product2itemcommonformset-${formsInsertValue}-add_btn`;
-                    addButtonElement.value = 'Add';
+                    addButtonElement.value = '+';
                 
                  mainForms.value = formsInsertValue + 1;
                 currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
+                 deletedRowCommonRow();
             })
-            //deletedRow();
+           
         })
+        function deletedRowCommonRow() {
+            // Add click event listener to all delete buttons
+            document.querySelectorAll('.deleteButton').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Find the row containing the clicked delete button
+                    const row = this.closest('tr');
+                    const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
+                    const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
+                    console.log(checkRow)
+                    if (checkRow) {
+                        checkRow.checked = true; // Mark as checked
+                        checkRow.value = 'true'; // Set the value to 'true'
+                        rowValues.required = false;
+                        row.style.display = 'none';
+
+                  
+                    } else {
+                        console.error("Checkbox for deletion not found in this row");
+                    }
+                });
+            });
+        };
+        deletedRowCommonRow();
      
     })
     // add a new row to the common product2itemcommonformset and delete the last row
@@ -914,6 +935,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     deleteElement.name = `product2itemcommonformset-${newCount}-DELETE`;
                     deleteElement.value = '';
                     deleteElement.checked = false;
+
+                    const addButtonElement = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btn"]');
+                    addButtonElement.id = `id_product2itemcommonformset-${formsInsertValue}-add_btn`;
+                    addButtonElement.name = `product2itemcommonformset-${formsInsertValue}-add_btn`;
+                    addButtonElement.value = '+';
 
                     tableRow.value = newCount + 1;
 

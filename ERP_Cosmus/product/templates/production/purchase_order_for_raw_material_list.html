@@ -5,7 +5,7 @@
 
 <div class="mt-2">
     <h3>Purchase Order Raw List</h3>
-</div>
+
 
 
 <div class="table-responsives">
@@ -14,11 +14,11 @@
         <thead class="name_absolute sticky-top">
             <tr>
                 <th>Created Date</th>
-                <th>Purchase Order No</th>
-                <th>Product Refrence ID</th>
+                <th>P.O No</th>
+                <th>Refrence No</th>
                 <th>Party Name</th>
                 <th>Target Date</th> 
-                <th>Total of pieces</th>
+                <th>Total P.O Qty</th>
                 <th>Balance Quantity</th>
                 <th>Create</th>
             </tr>
@@ -49,11 +49,11 @@
             <thead class="name_absolute sticky-top">
                 <tr>
                     <th>Created Date</th>
-                    <th>Purchase Order No</th>
-                    <th>Product Refrence ID</th>
+                    <th>P.O No</th>
+                    <th>Refrence No</th>
                     <th>Party Name</th>
                     <th>Target Date</th>
-                    <th>Total of pieces</th>
+                    <th>Total P.O Qty</th>
                     <th>Balance Quantity</th>
                     <th>View</th>
                     <th>Delete</th>
@@ -61,7 +61,6 @@
             </thead>
             <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
                 {% for po in purchase_orders_completed %}
-                
                 <tr>
                     <td>{{po.created_date}}</td>
                     <td>{{po.purchase_order_number}}</td>
@@ -79,6 +78,7 @@
         </table>
         
     </div>
+</div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
