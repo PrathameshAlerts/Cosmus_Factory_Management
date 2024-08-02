@@ -1,7 +1,21 @@
 {% extends 'product/base.html' %} 
 {% load static %} 
-
 {% block body %}
+
+
+<a href="{% url 'purchase-order-list' %}" >New Order</a> ->
+
+
+{% if request.path == '/purchaseorderrawmateriallist/' %}
+<a>Purchase Order</a> ->
+{% elif request.path != '/purchaseorderrawmateriallist/' %}
+<a href="{% url 'purchase-order-raw-material-list' %}" >Purchase Order</a> ->
+{% endif %}
+
+
+<a href="{% url 'purchase-order-cutting-list-all' %}">Cutting Order</a> ->
+<a href="{% url 'labour-workout-all' %}">labour Workout</a>
+
 
 <div class="mt-2">
     <h3>Purchase Order Raw List</h3>

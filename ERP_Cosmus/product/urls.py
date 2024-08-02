@@ -180,7 +180,7 @@ urlpatterns = [
     path('purchaseordercuttingpopup/<int:cutting_id>',views.purchaseordercuttingpopup, name = 'purchase-order-cutting-popup'),
 
     #labour workout 
-    path('labourworkoutall',views.labourworkoutlistall, name = 'labour-workout-all'),
+    path('labourworkoutall/',views.labourworkoutlistall, name = 'labour-workout-all'),
     path('labourworkoutsingle/<int:pk>',views.labourworkoutsingle, name = 'labour-workout-single'),
 
 

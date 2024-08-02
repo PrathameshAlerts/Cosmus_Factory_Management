@@ -50,7 +50,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
-                       factory_employee_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_workout_master_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -61,7 +61,7 @@ from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, Color
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
-                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
+                                Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,labour_workout_cutting_items_form_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
                                 purchase_order_cutting_approval_formset,labour_workout_product_to_items_formset,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form)
@@ -3271,6 +3271,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         # intial data for purchase_order_to_product formset
         initial_data_p_o_to_items = []
+        
         for instances in purchase_order_to_product_instances:
             initial_data_dict = {
                 'product_color': instances.product_id.PProduct_color,
@@ -3484,12 +3485,22 @@ def labourworkoutlistall(request):
     labour_workout_pending = labour_workout_master.objects.all()
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
+
 def labourworkoutsingle(request,pk):
     labourworkoutinstance = labour_workout_master.objects.get(id=pk)
 
+    labour_work_out = labour_workout_master_form(request.POST or None, instance = labourworkoutinstance)
+
     product_to_item_formset = labour_workout_product_to_items_formset(request.POST or None, instance = labourworkoutinstance)
 
-    return render(request,'production/labourworkoutsingle.html',{'product_to_item_formset':product_to_item_formset})
+    labour_workout_cutting_items_formset_form = labour_workout_cutting_items_form_formset() 
+
+
+
+
+    return render(request,'production/labourworkoutsingle.html',
+                  {'product_to_item_formset':product_to_item_formset,'labour_work_out':labour_work_out,
+                   'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form})
 
 
 

@@ -3,6 +3,18 @@
 
 {% block body %}
 
+
+{% if request.path == '/purchaseorderlist/' %}
+<a>New Order</a> ->
+{% elif request.path != '/purchaseorderlist/' %}
+<a href="{% url 'purchase-order-list' %}" >New Order</a> ->
+{% endif %}
+
+<a href="{% url 'purchase-order-raw-material-list' %}">Purchase Order</a> ->
+<a href="{% url 'purchase-order-cutting-list-all' %}">Cutting Order</a> ->
+<a href="{% url 'labour-workout-all' %}">labour Workout</a>
+
+
 <div>
     <div class="row">
         <div class="col-lg-12">
