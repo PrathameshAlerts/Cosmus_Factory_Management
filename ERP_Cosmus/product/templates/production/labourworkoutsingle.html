@@ -16,17 +16,17 @@
                             <th>Pending Qty</th>
                         </tr>
                     </thead>
-            
                     <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                         {% for form in product_to_item_formset %}
-                    <tr>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
-                        <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.instance.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" readonly></td>  
-                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.instance.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs"></td>
-                    </tr>
-                    {% endfor %}
-                    </table>
+                        <tr>
+                            <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                            <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.instance.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" readonly></td>  
+                            <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.instance.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

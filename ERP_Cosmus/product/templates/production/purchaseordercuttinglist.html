@@ -28,7 +28,6 @@
           <thead class="name_absolute sticky-top">
             <tr class="text-nowrap">
               <th>No</th>
-              <th>P.O NO</th>
               <th>Cutting id</th>
               <th>Party Name</th>
               <th>Cutting Master</th>
@@ -44,7 +43,6 @@
             {% for cutting_order in p_o_cutting_order_all %}
             <tr class="text-nowrap">
               <td>{{forloop.counter}}</td>
-              <td>{{p_o_number.purchase_order_number}}</td>
               <td class="cuttingOderId">{{cutting_order.raw_material_cutting_id}}</td>
               <td>{{cutting_order.purchase_order_id.ledger_party_name.name}}</td>
               <td>{{cutting_order.factory_employee_id.factory_emp_name}}</td>
