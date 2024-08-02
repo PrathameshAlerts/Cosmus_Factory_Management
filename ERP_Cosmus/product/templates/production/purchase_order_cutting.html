@@ -300,7 +300,7 @@
                 
                 if(totalConsumptionInput){
                     if(currentColor == productColor){
-                        const consumptionInput =document.querySelector('input[name$="-consumption"]');
+                        const consumptionInput =row.querySelector('input[name$="-consumption"]');
                         const consumption = parseFloat(consumptionInput.value) || 0;
                         let totalConsumption = CuttingQty * consumption;
                         totalConsumptionInput.value = totalConsumption.toFixed(2);
