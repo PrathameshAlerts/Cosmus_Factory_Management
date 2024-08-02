@@ -37,7 +37,7 @@
     </form>
   </div>
   <div class="col-lg-7 mt-4">
-    <div class="d-flex ">
+    <!-- <div class="d-flex ">
       <lable class="form-label">List Of Sub-Category:</lable>
       <ul style="list-style: none;">
         {% for main_cat in main_categories %}
@@ -53,7 +53,40 @@
         </li>
         {% endfor %}
       </ul>
+    </div> -->
+<div class="row">
+  <div class="col-lg-9">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover">
+        <thead class="name_absolute">
+          <tr>
+            <th>No</th>
+            <th scope="col">Main Category</th>
+            <th scope="col">Sub Category</th>
+          </tr>
+        </thead>
+        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+          {% for main_cat in main_categories %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td class="fw-bold">{{main_cat.product_category_name}}</td>
+            <td>
+              <ol>
+                {% for sub_cat in main_cat.subcategories.all %}
+                <li class="mx-2 my-2"><span class=" ps-2 py-2 rounded ">{{sub_cat.product_sub_category_name}}</span><span class="justify-content-end"><a class="ps-5" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i class="fa-solid fa-pen-to-square px-1 justify-content-end"></i></a></span> 
+                  <span><a class="justify-content-end ps-2" href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></span>
+                </li>
+                {% endfor %}
+              </ol>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
+ 
   </div>
 </div>
 
