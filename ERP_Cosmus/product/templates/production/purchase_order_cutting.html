@@ -275,10 +275,6 @@ function checkOnlyOne(checkbox) {
     });
 }
 
-
-
-
-
  function cuttingOrder(){
 
         let myform = document.getElementById('id_purchase_order_to_product_cutting_set-TOTAL_FORMS').value;
@@ -339,6 +335,8 @@ function checkOnlyOne(checkbox) {
                         if (fabricGroup === "True") {
                             const consumptionInput = row.querySelector('input[name$="-consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
+                            // const cuttingTotal = document.getElementById('id_cuttingTotal');
+                            console.log(cuttingTotal.value)
                             const totalValue = parseFloat(cuttingTotal.value) || 0;
                             let commonConsumption = totalValue * commonConsumptionValue;
                             totalConsumptionInput.value = commonConsumption.toFixed(2);

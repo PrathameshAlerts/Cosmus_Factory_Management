@@ -228,11 +228,11 @@
                 const productColor = row.querySelector('input[name$="-product_color"]').value;
                 const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
                 const processtotalQty = document.getElementById('id_processTotal');
-               console.log('process',processQuantity);
+              
                 total += processQuantity;
                
                 processtotalQty.value = total;
-                console.log(processtotalQty.value);
+              
                 totalConsumptionRows.forEach(totalRow => {
                     const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
                     const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
@@ -248,7 +248,7 @@
                         }else if(totalProductColor === "Common Item"){
                                 
                                 const consumptionInputCommon = totalRow.querySelector('input[name$="-consumption"]').value;
-                                const proccessValue = document.getElementById('id_OderQty');
+                                const proccessValue = document.getElementById('id_processTotal');
                                 const consumptions = parseFloat(consumptionInputCommon) || 0;
                                 const totalValue = parseFloat(proccessValue.value) || 0;
                                 let commonConsumption = totalValue * consumptions;
