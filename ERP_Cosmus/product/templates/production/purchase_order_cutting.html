@@ -305,6 +305,14 @@ function checkOnlyOne(checkbox) {
       
     }
     cuttingOrder()
+ function balanceProcessQty(){
+        const actualQty = document.getElementById('id_processQty').value;
+            const processed_qty = document.getElementById('id_processed_qty').value;
+            const  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
+
+            document.getElementById('id_balanceView_qty').value = balanceViewQty;
+ }
+    
     function updateCuttingQuantity(){
         let totals =0;
         const cuttingQtyElements = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
@@ -315,10 +323,11 @@ function checkOnlyOne(checkbox) {
             const productColor = row.querySelector('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]').value;
             const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
             const cuttingTotal = document.getElementById('id_cuttingTotal');
-          
+           
             totals = totals + CuttingQty;
             cuttingTotal.value = totals;
 
+            
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 let totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
@@ -508,6 +517,7 @@ function checkOnlyOne(checkbox) {
                 submitForm();
                 balanceQty();
                 updateCuttingValue();
+                balanceProcessQty();
             });
         })
         submitForm();
