@@ -3241,8 +3241,8 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'product_sku': purchase_items_raw.product_sku,
                 'product_color' : purchase_items_raw.product_color,
                 'material_name' : purchase_items_raw.material_name,
-                'material_color_shade': material_color_shade_query,
-                'fabric_non_fab': material_color_shade_query.first().items.Fabric_nonfabric,
+                'material_color_shade': material_color_shade_query.order_by('-godown_qty'), # sorting shades based on quantity
+                'fabric_non_fab': material_color_shade_query.first().items.Fabric_nonfabric, #not in database table for computational purpose
                 'rate' : purchase_items_raw.rate,
                 'panha' : purchase_items_raw.panha,
                 'units' : purchase_items_raw.units,
@@ -3271,7 +3271,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         # intial data for purchase_order_to_product formset
         initial_data_p_o_to_items = []
-        
+
         for instances in purchase_order_to_product_instances:
             initial_data_dict = {
                 'product_color': instances.product_id.PProduct_color,
@@ -3488,6 +3488,7 @@ def labourworkoutlistall(request):
 
 def labourworkoutsingle(request,pk):
     labourworkoutinstance = labour_workout_master.objects.get(id=pk)
+    ledger_labour_instances = Ledger.objects.filter()
 
     labour_work_out = labour_workout_master_form(request.POST or None, instance = labourworkoutinstance)
 
