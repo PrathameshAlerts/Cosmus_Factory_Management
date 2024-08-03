@@ -647,8 +647,6 @@ class purchase_order_to_product(models.Model):
 
 
 
-    
-
 class purchase_order_for_raw_material(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order,related_name='raw_materials', on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
@@ -707,7 +705,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
 class labour_workout_master(models.Model):
     purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
     challan_no = models.IntegerField(null=True, blank=True)
-    labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT)
+    labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_approved_pcs = models.IntegerField(default=0)
     total_pending_pcs = models.IntegerField(null=True, blank=True)
     
