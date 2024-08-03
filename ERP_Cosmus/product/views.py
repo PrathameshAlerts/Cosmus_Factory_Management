@@ -3474,6 +3474,18 @@ def purchaseordercuttingpopup(request,cutting_id):
                 raw_material_cutting_instance.approved_qty = old_total_approved_qty_total # save the total diffrence total qty to parent model
                 raw_material_cutting_instance.save() # save the parent model
 
+            # JavaScript to close the popup window
+            close_window_script = """
+            <script>
+            window.opener.location.reload(true);  // Reload parent window if needed
+            window.close();  // Close current window
+            </script>
+            """
+
+            return HttpResponse(close_window_script)
+        else:
+            return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
+
             
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
@@ -3490,9 +3502,12 @@ def labourworkoutsingle(request,pk):
     labourworkoutinstance = labour_workout_master.objects.get(id=pk)
     ledger_labour_instances = Ledger.objects.filter(types = 'labour')
 
+    # labour workout masterform
     labour_work_out = labour_workout_master_form(request.POST or None, instance = labourworkoutinstance)
 
+    # product 2 item form
     product_to_item_formset = labour_workout_product_to_items_formset(request.POST or None, instance = labourworkoutinstance)
+
     raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master)
 
     initial_data_dict = []
@@ -3501,7 +3516,7 @@ def labourworkoutsingle(request,pk):
             'product_sku':instance.product_sku,
             'product_color':instance.product_color,
             'material_name':instance.material_name,
-            'material_color_shade':instance.product_sku,
+            'material_color_shade':instance.material_color_shade,
             'rate':instance.rate,
             'panha':instance.panha,
             'units':instance.units,
@@ -3518,9 +3533,16 @@ def labourworkoutsingle(request,pk):
     labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_master,labour_workout_cutting_items,
                                                                       form = labour_workout_cutting_items_form, 
                                                                       extra=len(initial_data_dict))
-
+    # labour workout items formset
     labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
 
+    if request.method == 'POST':
+        labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(request.POST) 
+
+        if labour_work_out.is_valid() and product_to_item_formset.is_valid() and labour_workout_cutting_items_form_formset.is_valid():
+            labour_work_out.save()
+            product_to_item_formset.save()
+            labour_workout_cutting_items_form_formset.save()
 
 
 
