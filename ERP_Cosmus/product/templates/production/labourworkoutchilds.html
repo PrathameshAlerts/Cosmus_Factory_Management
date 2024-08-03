@@ -1,0 +1,17 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+Labour Workout Create
+
+
+<a href="{% url 'labour-workout-single' labour_master_pk %}"><i class="fa-solid fa-circle-plus px-2">Create</i></a>
+
+
+{% for record in labour_workout_child_instances %}
+{{record.challan_no}}
+{{record.labour_name}}
+
+{% endfor %}
+
+{% endblock %}

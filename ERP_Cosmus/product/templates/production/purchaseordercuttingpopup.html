@@ -66,7 +66,7 @@
   }
   
   document.addEventListener('DOMContentLoaded', function () {
-    //let formSubmitted= true;
+  
     quantityCheck();
     let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
     approve.forEach(function(element){
@@ -74,11 +74,7 @@
             quantityCheck();
         });
     })
-      // Attach event listener to the form submission
-      let form = document.getElementById('myForms'); // Adjust selector to target the correct form
-    form.addEventListener('submit', function () {
-      formSubmitted = true;
-    });
+ 
   })
 </script>
 

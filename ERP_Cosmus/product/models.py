@@ -703,30 +703,45 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
 
 class labour_workout_master(models.Model):
     purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
-    challan_no = models.IntegerField(unique=True)
+    total_approved_pcs = models.IntegerField(default=0)
+    total_pending_pcs = models.IntegerField(null=True, blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     if self._state.adding:
+    #         self.challan_no = self.generate_unique_challan_no()
+    #     super().save(*args, **kwargs)
+
+    # def generate_unique_challan_no(self):
+    #     max_attempts = 1000
+    #     attempts = 0
+        
+    #     while attempts < max_attempts:
+    #         challan_no = int(get_random_string(length=9, allowed_chars='0123456789'))
+    #         if not labour_workout_master.objects.filter(challan_no=challan_no).exists():
+    #             return challan_no
+    #         attempts += 1
+        
+    #     raise ValueError("Unable to generate a unique challan_no after 1000 attempts")
+
+class product_to_item_labour_workout(models.Model):
+    labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
+    product_sku = models.CharField(max_length=100)
+    product_color = models.CharField(max_length=100)
+    processed_pcs = models.IntegerField()
+    pending_pcs = models.IntegerField()
+
+
+
+class labour_workout_childs(models.Model):
+    labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.PROTECT)
+    challan_no = models.CharField(unique=True)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_approved_pcs = models.IntegerField(default=0)
     total_pending_pcs = models.IntegerField(null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        if self._state.adding:
-            self.challan_no = self.generate_unique_challan_no()
-        super().save(*args, **kwargs)
 
-    def generate_unique_challan_no(self):
-        max_attempts = 1000
-        attempts = 0
-        
-        while attempts < max_attempts:
-            challan_no = int(get_random_string(length=9, allowed_chars='0123456789'))
-            if not labour_workout_master.objects.filter(challan_no=challan_no).exists():
-                return challan_no
-            attempts += 1
-        
-        raise ValueError("Unable to generate a unique challan_no after 1000 attempts")
-
-class product_to_item_labour_workout(models.Model):
-    labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
+class product_to_item_labour_child_workout(models.Model):
+    labour_workout = models.ForeignKey(labour_workout_childs,related_name='labour_workout_child_items' ,on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=100)
     product_color = models.CharField(max_length=100)
     processed_pcs = models.IntegerField()
@@ -749,7 +764,6 @@ class labour_workout_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
-
 
 
 

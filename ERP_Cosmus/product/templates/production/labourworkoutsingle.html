@@ -2,36 +2,11 @@
 {% load static %}
 {% block body %}
 
-<div class="mt-2">
+<!-- <div class="mt-2">
     <div class="row">
         <div class="col-lg-5">
             <h2 class="mb-3">Labour Workout</h2>
-            <div class="table-responsives">
-
-                {{labour_work_out}}
-                <table class="table table-striped table-hover table-bordered tables">
-                    <thead class="text-nowrap name_absolute sticky-top">
-                        <tr>
-                            <th>Product Sku</th>
-                            <th>Color</th>
-                            <th>Approved Qty</th>
-                            <th>Pending Qty</th>
-                        </tr>
-                    </thead>
-                    <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-                        {% for form in product_to_item_formset %}
-                        <tr>
-                            <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
-                            <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.instance.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
-                            <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.instance.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>  
-                            
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-            </div>
+            
             {{ labour_workout_cutting_items_formset_form.management_form }}
             {% for form in labour_workout_cutting_items_formset_form %}
             {{form}}
@@ -40,7 +15,178 @@
     </div>
     
   
-</div>
+</div> -->
 
+
+<div class="" >
+    <form method="POST">
+        {% csrf_token %}
+       
+        <div class="row">
+            <div class="col-lg-6 mt-3">
+                <h4 class="">Labour Workout</h4>
+                <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
+                    <div class="d-flex mb-2">
+                        <div class="d-flex">
+                            <lable for="id_challan_no" class="">Challan No:</lable>
+                            <input type="text" name="challan_no" id="id_challan_no" class="purchase-amount text-danger ms-2 me-5 pb-2" value="{{form.instance.challan_no}}" required>
+                        </div>
+                        <div class="d-flex ms-1 ">
+                            <lable for="id_product_reference_number" class="">Labour:</lable>
+                            <select type="number" name="labour_name" id="id_labour_name" class="item-select text-danger ms-2 pb-2" >
+                            {% if form.instance.id %}
+                            <option value="{{form.instance.labour_name.id}}">{{form.instance.labour_name.name}}</option>
+                            {% for ledger in ledger_labour_instances %}
+                                <option value="{{ledger.id}}">{{ledger.name}}</option>
+                            {% endfor %}
+                            {% elif not form.instance.id %}
+                            <option value=""></option>
+                            {% for ledger in ledger_labour_instances %}
+                                <option value="{{ledger.id}}">{{ledger.name}}</option>
+                            {% endfor %}
+
+                            {% endif %}
+                        
+                            </select>
+                        </div>
+                    
+                    </div>
+                    <div class="d-flex mb-2">
+                        <div class="d-flex">
+                            <label for="id_total_approved_pcs" class="">Total approved pcs:</label>
+                            <input name="total_approved_pcs" value="0" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2">
+                        </div>
+                   
+                        <div class="d-flex"> 
+                            <lable for="id_total_pending_pcs" class="">Total pending pcs</lable> 
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" name="total_pending_pcs" id="id_total_pending_pcs">
+                        </div>
+                    </div>
+                    <!-- <div class="d-flex mb-2">
+                        <div class="d-flex">
+                            <label for="id_number_of_pieces" class="">Total P.O Qty:</label>
+                            <input type="number" name="number_of_pieces" class="productinput text-danger ms-2 me-3 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
+                        </div> 
+                        <div class="d-flex ms-5">
+                            <label for="id_target_date" class="">Target date:</label>
+                            <input type="date" name="target_date" class="targetDateValue text-danger ms-2 me-3 pb-2" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
+                        </div> 
+                    </div>
+                    <div class="d-flex mb-2">
+                        <label for="id_temp_godown_select" class="">Godown Name:</label>
+                        <input type="text" name="temp_godown_select" class="product-ModelInput text-danger ms-2 me-3 pb-1" value="{{ form.instance.temp_godown_select }}" required id="id_temp_godown_select" readonly>  
+                    </div>  -->
+                </div>
+            </div>
+            <div class="col-lg-6 mt-3">
+                <div class="table-responsives">
+
+                
+                    <table class="table table-striped table-hover table-bordered tables">
+                        <thead class="text-nowrap name_absolute sticky-top">
+                            <tr>
+                                <th>Product Sku</th>
+                                <th>Color</th>
+                                <th>Approved Qty</th>
+                                <th>Pending Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                            {% for form in product_to_item_formset %}
+                            {% if form.instance.id %}
+                            <tr>
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                                <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.instance.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
+                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.instance.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>  
+                            </tr>
+                            {% elif not form.instance.id %}
+                            <tr>
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                                <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.initial.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
+                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.initial.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>  
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="d-flex pb-2">
+                        <label for="id_OderQty" class="text-danger">Total:</label>
+                        <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 292px;" readonly>
+                        <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 88px;" readonly>
+                        <!-- <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 90px;" readonly>  -->
+                    </div>
+                </div>
+            </div>
+             
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-12">
+                <div class="tables-form">
+                    <table class="table table-striped table-hover table-bordered tables" >
+                        <thead class="name_absolute sticky-top border-1">
+                            <tr >
+                                <th>Product SKU</th>
+                                <th>Product Color</th>
+                                <th>Material Name</th>
+                                <th>Color Shade</th>
+                                <th>Rate</th>
+                                <th>Panha</th>
+                                <th>Units</th>
+                                <th>G-Total</th>
+                                <th>Comsumption</th>
+                                <th>Total Comsumption</th>
+                                <th>Physical Stock</th>
+                                <th>Balance Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                            {{ labour_workout_cutting_items_formset_form.management_form }}
+                            {% for form in labour_workout_cutting_items_formset_form %}
+                            
+                            {{form.id}}
+                            {% if form.instance.id %}
+                            <tr class="text-nowrap">
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                                <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.instance.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                                <td><input type="text"  class="productinput" name="{{form.prefix}}-material_color_shade" value="{{form.instance.material_color_shade}}" maxlength="255" id="id_{{form.prefix}}-material_color_shade"></td>
+                                <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.instance.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.instance.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.instance.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.instance.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                                <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.instance.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.instance.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.instance.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="{{form.instance.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                            </tr>
+                            {% elif not form.instance.id %}
+                            <tr class="text-nowrap">
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                                <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                                <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                                <td><input type="text"  class="productinput" name="{{form.prefix}}-material_color_shade" value="{{form.initial.material_color_shade}}" maxlength="255" id="id_{{form.prefix}}-material_color_shade"></td>
+                                <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.initial.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.initial.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.initial.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.initial.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                                <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.initial.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.initial.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.instance.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                                <td><input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorder_input " value="{{form.initial.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            <input type="hidden" id="id_physical_stock" value="{{physical_stock_all_godown_json}}">
+                        </tbody>
+                    </table>
+                </div>  
+            </div>
+        </div>
+    
+        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
+    </form>
+</div>
 
 {% endblock %}
