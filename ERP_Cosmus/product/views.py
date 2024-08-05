@@ -3527,7 +3527,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'product_color':instance.product_color,
                 'processed_pcs':instance.processed_pcs,
                 'pending_pcs':instance.pending_pcs,
-                'balance_pcs':instance.balance_pcs
+                'balance_pcs':instance.pending_pcs,
             }
 
             initial_items_data_dict.append(data_dict)
