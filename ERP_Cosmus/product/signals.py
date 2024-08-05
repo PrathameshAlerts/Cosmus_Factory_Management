@@ -360,6 +360,7 @@ def set_purchase_order_product_status(sender, instance, created, **kwargs):
 #                 print(instances)
 #                 instances.delete()  
 
+
 @receiver(pre_save, sender=purchase_order_to_product)
 def handle_purchase_order_update(sender, instance, **kwargs):
     if instance.id:
@@ -374,7 +375,7 @@ def handle_purchase_order_update(sender, instance, **kwargs):
 
 
 
-
+    
 
 
 

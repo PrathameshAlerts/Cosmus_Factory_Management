@@ -40,8 +40,8 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, labour_workout_cutting_items, labour_workout_master, opening_shade_godown_quantity, 
-                                 packaging, product_2_item_through_table, product_to_item_labour_workout, purchase_order, 
+                                 item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, opening_shade_godown_quantity, 
+                                 packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
                                    set_prod_item_part_name, shade_godown_items,
@@ -50,7 +50,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
-                       factory_employee_form, labour_workout_cutting_items_form, labour_workout_master_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_workout_child_form, labour_workout_cutting_items_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -63,7 +63,7 @@ from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, Color
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
-                                purchase_order_cutting_approval_formset,labour_workout_product_to_items_formset,
+                                purchase_order_cutting_approval_formset,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form)
 
 
@@ -3474,10 +3474,20 @@ def purchaseordercuttingpopup(request,cutting_id):
                 raw_material_cutting_instance.approved_qty = old_total_approved_qty_total # save the total diffrence total qty to parent model
                 raw_material_cutting_instance.save() # save the parent model
 
+            # JavaScript to close the popup window
+            close_window_script = """
+            <script>
+            window.opener.location.reload(true);  // Reload parent window if needed
+            window.close();  // Close current window
+            </script>
+            """
+
+            return HttpResponse(close_window_script)
+        else:
+            return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
+
             
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
-
-
 
 
 
@@ -3490,9 +3500,38 @@ def labourworkoutsingle(request,pk):
     labourworkoutinstance = labour_workout_master.objects.get(id=pk)
     ledger_labour_instances = Ledger.objects.filter(types = 'labour')
 
-    labour_work_out = labour_workout_master_form(request.POST or None, instance = labourworkoutinstance)
+    # labour workout child masterform
+    labour_work_out = labour_workout_child_form(request.POST or None, instance = labourworkoutinstance)
 
-    product_to_item_formset = labour_workout_product_to_items_formset(request.POST or None, instance = labourworkoutinstance)
+
+    # prodcut to item labour workout instances to set initial data 
+    product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout=labourworkoutinstance)
+   
+    initial_items_data_dict = []
+
+    for instance in product_to_item_instances:
+
+        data_dict = {
+            'product_sku':instance.product_sku,
+            'product_color':instance.product_color,
+            'processed_pcs':instance.processed_pcs,
+            'pending_pcs':instance.pending_pcs,
+
+        }
+
+        initial_items_data_dict.append(data_dict)
+    
+
+    # product 2 item child formset
+    labour_workout_child_product_to_items_formset = inlineformset_factory(
+                            labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
+                                                    'product_color','processed_pcs',
+                                                    'pending_pcs'], can_delete=False,extra=len(initial_items_data_dict))
+    
+    # product 2 item child form
+    product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
+
+
     raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master)
 
     initial_data_dict = []
@@ -3501,7 +3540,7 @@ def labourworkoutsingle(request,pk):
             'product_sku':instance.product_sku,
             'product_color':instance.product_color,
             'material_name':instance.material_name,
-            'material_color_shade':instance.product_sku,
+            'material_color_shade':instance.material_color_shade,
             'rate':instance.rate,
             'panha':instance.panha,
             'units':instance.units,
@@ -3518,9 +3557,16 @@ def labourworkoutsingle(request,pk):
     labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_master,labour_workout_cutting_items,
                                                                       form = labour_workout_cutting_items_form, 
                                                                       extra=len(initial_data_dict))
-
+    # labour workout items formset
     labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
 
+    if request.method == 'POST':
+        labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(request.POST) 
+
+        if labour_work_out.is_valid() and product_to_item_formset.is_valid() and labour_workout_cutting_items_form_formset.is_valid():
+            labour_work_out.save()
+            product_to_item_formset.save()
+            labour_workout_cutting_items_form_formset.save()
 
 
 
@@ -3530,6 +3576,10 @@ def labourworkoutsingle(request,pk):
                    'ledger_labour_instances':ledger_labour_instances})
 
 
+
+def labour_workout_child_list(request,labour_master_pk):
+    labour_workout_child_instances = labour_workout_childs.objects.filter(labour_workout_master_instance = labour_master_pk)
+    return render(request,'production/labourworkoutchilds.html', {'labour_master_pk':labour_master_pk,'labour_workout_child_instances':labour_workout_child_instances})
 
 #_________________________production-end__________________________________________
 
