@@ -182,6 +182,8 @@ urlpatterns = [
     #labour workout 
     path('labourworkoutall/',views.labourworkoutlistall, name = 'labour-workout-all'),
     path('labourworkoutsingle/<int:pk>',views.labourworkoutsingle, name = 'labour-workout-single'),
+    path('labourworkoutsingleview/<int:labour_workout_child_pk>',views.labourworkoutsingle, name = 'labour-workout-single-view'),
+
     path('labourworkoutchildlist/<int:labour_master_pk>',views.labour_workout_child_list, name = 'labour-workout-child-list'),
 
 

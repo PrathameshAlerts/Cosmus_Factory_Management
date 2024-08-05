@@ -8,10 +8,27 @@ Labour Workout Create
 <a href="{% url 'labour-workout-single' labour_master_pk %}"><i class="fa-solid fa-circle-plus px-2">Create</i></a>
 
 
-{% for record in labour_workout_child_instances %}
-{{record.challan_no}}
-{{record.labour_name}}
+<div><table>
+    <tr>
+        <th>Challan No</th>
+        <th>labour_name</th>
+        <th>total_approved_pcs</th>
+        <th>total_pending_pcs</th>
+        <th>View</th>
+    </tr>
+    {% for record in labour_workout_child_instances %}
+    <tr>
+        <td>{{record.challan_no}}</td>
+        <td>{{record.labour_name.name}}</td>
+        <td>{{record.total_approved_pcs}}</td>
+        <td>{{record.total_pending_pcs}}</td>
+        <td><a href="{% url 'labour-workout-single-view' record.id %}">View</a></td>
+    </tr>
+    {% endfor %}
+    </table></div>
 
-{% endfor %}
+
+
+
 
 {% endblock %}

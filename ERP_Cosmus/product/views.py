@@ -3496,82 +3496,145 @@ def labourworkoutlistall(request):
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
 
-def labourworkoutsingle(request,pk):
-    labourworkoutinstance = labour_workout_master.objects.get(id=pk)
+def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
     ledger_labour_instances = Ledger.objects.filter(types = 'labour')
 
-    # labour workout child masterform
-    labour_work_out = labour_workout_child_form(request.POST or None, instance = labourworkoutinstance)
+    # if pk which is parent id is not none means child instance is not created 
+    if pk is not None:
 
+        labourworkoutinstance = labour_workout_master.objects.get(id=pk)
 
-    # prodcut to item labour workout instances to set initial data 
-    product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout=labourworkoutinstance)
-   
-    initial_items_data_dict = []
+        # labour workout child masterform 
+        labour_work_out_child_form = labour_workout_child_form()
 
-    for instance in product_to_item_instances:
-
-        data_dict = {
-            'product_sku':instance.product_sku,
-            'product_color':instance.product_color,
-            'processed_pcs':instance.processed_pcs,
-            'pending_pcs':instance.pending_pcs,
-
-        }
-
-        initial_items_data_dict.append(data_dict)
+        # prodcut to item labour workout instances to set initial data 
+        product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout = labourworkoutinstance)
     
+        initial_items_data_dict = []
 
-    # product 2 item child formset
-    labour_workout_child_product_to_items_formset = inlineformset_factory(
-                            labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
-                                                    'product_color','processed_pcs',
-                                                    'pending_pcs'], can_delete=False,extra=len(initial_items_data_dict))
-    
-    # product 2 item child form
-    product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
+        for instance in product_to_item_instances:
+
+            data_dict = {
+                'product_sku':instance.product_sku,
+                'product_color':instance.product_color,
+                'processed_pcs':instance.processed_pcs,
+                'pending_pcs':instance.pending_pcs,
+            }
+
+            initial_items_data_dict.append(data_dict)
+        
+
+        # product 2 item child formset
+        labour_workout_child_product_to_items_formset = inlineformset_factory(
+                                labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
+                                                        'product_color','processed_pcs',
+                                                        'pending_pcs'], can_delete=False,extra=len(initial_items_data_dict))
+        
+        # product 2 item child form
+        product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
+
+        # raw_material_cutting_items
+        raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master)
+
+        initial_data_dict = []
+        for instance in raw_material_cutting_items_instances:
+            data = {
+                'product_sku':instance.product_sku,
+                'product_color':instance.product_color,
+                'material_name':instance.material_name,
+                'material_color_shade':instance.material_color_shade,
+                'rate':instance.rate,
+                'panha':instance.panha,
+                'units':instance.units,
+                'g_total':instance.g_total,
+                'consumption':instance.consumption,
+                'total_comsumption':instance.total_comsumption,
+                'physical_stock':instance.physical_stock,
+                'balance_physical_stock':instance.balance_physical_stock,
+
+            }
+            initial_data_dict.append(data)
+
+        labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
+                                                                        form = labour_workout_cutting_items_form, 
+                                                                        extra=len(initial_data_dict))
+        # labour workout items formset
+        labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
 
 
-    raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master)
+    # if pk which is parent id is none means child instance is created and page is on view mode 
+    elif pk is None:
 
-    initial_data_dict = []
-    for instance in raw_material_cutting_items_instances:
-        data = {
-            'product_sku':instance.product_sku,
-            'product_color':instance.product_color,
-            'material_name':instance.material_name,
-            'material_color_shade':instance.material_color_shade,
-            'rate':instance.rate,
-            'panha':instance.panha,
-            'units':instance.units,
-            'g_total':instance.g_total,
-            'consumption':instance.consumption,
-            'total_comsumption':instance.total_comsumption,
-            'physical_stock':instance.physical_stock,
-            'balance_physical_stock':instance.balance_physical_stock,
+        labour_workout_child_instance = labour_workout_childs.objects.get(id = labour_workout_child_pk)
+        
 
-        }
-        initial_data_dict.append(data)
+        # labour workout child masterform 
+        labour_work_out_child_form = labour_workout_child_form(instance = labour_workout_child_instance)
+
+        
+
+        # product 2 item child formset
+        labour_workout_child_product_to_items_formset = inlineformset_factory(
+                                labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
+                                                        'product_color','processed_pcs',
+                                                        'pending_pcs'], can_delete=False,extra=0)
+        
+        # product 2 item child form
+        product_to_item_formset = labour_workout_child_product_to_items_formset(instance = labour_workout_child_instance)
+        
+
+        labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
+                                                                        form = labour_workout_cutting_items_form,  can_delete=False,
+                                                                        extra=0)
+        # labour workout items formset
+        labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(instance = labour_workout_child_instance) 
 
 
-    labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_master,labour_workout_cutting_items,
-                                                                      form = labour_workout_cutting_items_form, 
-                                                                      extra=len(initial_data_dict))
-    # labour workout items formset
-    labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
 
     if request.method == 'POST':
+        print(request.POST)
+
+        # child labour workout form
+        labour_work_out_child_form = labour_workout_child_form(request.POST)
+
+        # product2itemformset
+        product_to_item_formset = labour_workout_child_product_to_items_formset(request.POST)
+
+        # itemsformsetform
         labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(request.POST) 
 
-        if labour_work_out.is_valid() and product_to_item_formset.is_valid() and labour_workout_cutting_items_form_formset.is_valid():
-            labour_work_out.save()
-            product_to_item_formset.save()
-            labour_workout_cutting_items_form_formset.save()
+
+        if labour_work_out_child_form.is_valid() and product_to_item_formset.is_valid() and labour_workout_cutting_items_formset_form.is_valid():
+            labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
+            labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
+            labour_workout_form_instance.save()
 
 
+            for form in product_to_item_formset:
+                if form.is_valid():
+                    product_to_item_form = form.save(commit=False)
+                    product_to_item_form.labour_workout = labour_workout_form_instance
+                    product_to_item_form.save()
+
+            
+            for form in labour_workout_cutting_items_formset_form:
+                if form.is_valid():
+                    formset_form = form.save(commit=False)
+                    formset_form.labour_workout_master_instance = labour_workout_form_instance
+                    formset_form.save()
+
+        else:
+            print('labour_work_out.errors',labour_work_out_child_form.errors)
+            print('product_to_item_formset.errors',product_to_item_formset.errors)
+            logger.error(f'labour_workout_cutting_items_formset_form{labour_workout_cutting_items_formset_form.errors}')
+            logger.error(f'product_to_item_formset {product_to_item_formset.non_form_errors()}')
+            logger.error(f'labour_workout_cutting_items_formset_form - {labour_workout_cutting_items_formset_form.non_form_errors()}')
+
+
+            
 
     return render(request,'production/labourworkoutsingle.html',
-                  {'product_to_item_formset':product_to_item_formset,'labour_work_out':labour_work_out,
+                  {'product_to_item_formset':product_to_item_formset,'labour_work_out_child_form':labour_work_out_child_form,
                    'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form,
                    'ledger_labour_instances':ledger_labour_instances})
 
