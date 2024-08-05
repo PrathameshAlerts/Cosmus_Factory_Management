@@ -45,6 +45,11 @@
                             <lable for="id_total_pending_pcs" class="">Total pending pcs</lable> 
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_pending_pcs}}" name="total_pending_pcs" id="id_total_pending_pcs">
                         </div>
+
+                        <div class="d-flex"> 
+                            <lable for="id_total_balance_pcs" class="">Total balance pcs</lable> 
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs">
+                        </div>
                     </div>
                 
                 </div>
@@ -59,7 +64,8 @@
                                 <th>Product Sku</th>
                                 <th>Color</th>
                                 <th>Approved Qty</th>
-                                <th>Pending Qty</th>
+                                <th>Balance Qty</th>
+                                <th>Process Qty</th>
                             </tr>
                         </thead>
                         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
@@ -69,15 +75,19 @@
                             <tr>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
-                                <td><input type="number" class="productorderrawqty-input pending-qty" name="{{form.prefix}}-pending_pcs" value="{{form.instance.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
-                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.instance.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>  
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.instance.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>
+                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.instance.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>
+                                
                             </tr>
+
                             {% elif not form.instance.id %}
                             <tr>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
-                                <td><input type="number" class="productorderrawqty-input pending-qty" name="{{form.prefix}}-pending_pcs" value="{{form.initial.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
-                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.initial.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>  
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.initial.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.initial.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>  
+                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.initial.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>   
                             </tr>
                             {% endif %}
                             {% endfor %}
@@ -175,14 +185,20 @@ function labourApprovedQty() {
         document.getElementById('id_OderQty').value = total;
     })
 
+   
+
+}
+
+function labourQty(){
     var totalValue =0;
    var forms = document.getElementById('id_labour_workout_child_items-TOTAL_FORMS').value;
    console.log(forms);
    for(var i=0 ; i< forms ; i++){
     var pendingValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-pending_pcs').value);
     var approvedValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-processed_pcs').value);
-    console.log(pendingValues);
-    console.log(approvedValues)
+    var balanceValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-balance_pcs').value);
+    console.log(balanceValues);
+    
     if(pendingValues < approvedValues){
         document.getElementById('id_labour_workout_child_items-'+i+'-processed_pcs').value = "0";
     }
@@ -190,10 +206,13 @@ function labourApprovedQty() {
     totalValue += approvedValues;
     document.getElementById('id_processQty').value = totalValue;
 
-    ;
-   }
+    balanceValues = pendingValues - approvedValues;
+    document.getElementById('id_labour_workout_child_items-'+i+'-balance_pcs').value = balanceValues;
 
+    
+   }
 }
+
 labourApprovedQty();
 document.addEventListener('DOMContentLoaded', function() {
  
@@ -201,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
     pendingQty.forEach(function(el){
       el.addEventListener('input',function(){
         labourApprovedQty();
+        labourQty();
       })
     })
 
