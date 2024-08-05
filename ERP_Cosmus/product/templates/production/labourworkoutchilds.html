@@ -2,10 +2,19 @@
 {% load static %}
 {% block body %}
 
-Labour Workout Create
 
 
-<a href="{% url 'labour-workout-single' labour_master_pk %}"><i class="fa-solid fa-circle-plus px-2">Create</i></a>
+
+<h3 class="mb-3 mt-2">Labour Workout List</h3>
+<div class="d-flex mb-3">
+    <button class="item-btn" onclick="redirectlistCutting()"><a class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
+    <!-- <div class="container-cat">
+        <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
+        <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+      </div>
+      <button class="item-btn mx-2" onclick="">Clear Filter</button>
+    </div> -->
+  </div>
 
 
 {% for record in labour_workout_child_instances %}
