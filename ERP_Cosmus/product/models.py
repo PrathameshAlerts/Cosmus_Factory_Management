@@ -749,7 +749,7 @@ class product_to_item_labour_child_workout(models.Model):
 
 
 class labour_workout_cutting_items(models.Model):
-    labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.CASCADE)
+    labour_workout_master_instance = models.ForeignKey(labour_workout_childs, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)

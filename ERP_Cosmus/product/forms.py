@@ -602,7 +602,6 @@ class labour_workout_cutting_items_form(forms.ModelForm):
                   ,'balance_physical_stock']
         
     
-labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_master,labour_workout_cutting_items,form = labour_workout_cutting_items_form, extra=0)
 
 
 

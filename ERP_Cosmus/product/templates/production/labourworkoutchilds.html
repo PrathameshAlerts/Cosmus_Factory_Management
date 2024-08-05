@@ -16,11 +16,41 @@
     </div> -->
   </div>
 
+<div class="row">
+    <div class="col-lg-6">
+        <div class="table-responsives">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="name_absolute sticky-top">
+                    <tr>
+                        <th>Challan No</th>
+                        <th>labour_name</th>
+                        <th>total_approved_pcs</th>
+                        <th>total_pending_pcs</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                  
+                <tbody class="mainTableList text-nowrap" style="max-height: 450px; overflow-y: auto;">
+                    {% for record in labour_workout_child_instances %}
+                    <tr>
+                        <td>{{record.challan_no}}</td>
+                        <td>{{record.labour_name.name}}</td>
+                        <td>{{record.total_approved_pcs}}</td>
+                        <td>{{record.total_pending_pcs}}</td>
+                        <td><a href="{% url 'labour-workout-single-view' record.id %}"><i class="fa-solid fa-eye px-1"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                    
+         
+            </table>
+        </div>
+    </div>
+</div>
 
-{% for record in labour_workout_child_instances %}
-{{record.challan_no}}
-{{record.labour_name}}
 
-{% endfor %}
+
+
+
 
 {% endblock %}
