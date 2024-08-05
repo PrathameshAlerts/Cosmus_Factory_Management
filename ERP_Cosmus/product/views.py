@@ -3459,6 +3459,8 @@ def purchaseordercuttingpopup(request,cutting_id):
                 # create an instance in labour workout master of the cutting instance
                 labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
 
+                total_approved_pcs = 0
+
                 for form in formset_instance:
                     p_o_to_cutting_instance = purchase_order_to_product_cutting.objects.get(id = form.id) # p_o_cutting_instance
                     old_total_approved_qty_diffrence  =  form.approved_pcs - p_o_to_cutting_instance.approved_pcs  # current qty - old qty to get the diffrence in qty
@@ -3466,13 +3468,19 @@ def purchaseordercuttingpopup(request,cutting_id):
                     old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence # add the diffrence qty to total qty of parent model
                     form.save() # save the instance model
                     
+                    total_approved_pcs = total_approved_pcs + old_total_approved_qty_diffrence
+
                     # create new instance of the data in product_to_item_labour_workout with the created labour_workout_master_instance as parent model
-                    product_to_item_labour_workout.objects.create(labour_workout=labour_workout_master_instance,
+                    product_to_item_labour_workout.objects.create(labour_workout = labour_workout_master_instance,
                                                                 product_color=form.product_color,product_sku=form.product_sku,
                                                                 pending_pcs = old_total_approved_qty_diffrence,processed_pcs=0)
 
                 raw_material_cutting_instance.approved_qty = old_total_approved_qty_total # save the total diffrence total qty to parent model
                 raw_material_cutting_instance.save() # save the parent model
+
+                labour_workout_master_instance.total_approved_pcs = total_approved_pcs # setting the total of approved qty as total approved qty in labour master instsance
+                labour_workout_master_instance.total_pending_pcs = total_approved_pcs # pending qty is total approved qty initially
+                labour_workout_master_instance.save() # save labour workout instance
 
             # JavaScript to close the popup window
             close_window_script = """
@@ -3519,6 +3527,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'product_color':instance.product_color,
                 'processed_pcs':instance.processed_pcs,
                 'pending_pcs':instance.pending_pcs,
+                'balance_pcs':instance.balance_pcs
             }
 
             initial_items_data_dict.append(data_dict)
@@ -3528,7 +3537,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         labour_workout_child_product_to_items_formset = inlineformset_factory(
                                 labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
                                                         'product_color','processed_pcs',
-                                                        'pending_pcs'], can_delete=False,extra=len(initial_items_data_dict))
+                                                        'pending_pcs','balance_pcs'], can_delete=False,extra=len(initial_items_data_dict))
         
         # product 2 item child form
         product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
@@ -3577,7 +3586,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         labour_workout_child_product_to_items_formset = inlineformset_factory(
                                 labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
                                                         'product_color','processed_pcs',
-                                                        'pending_pcs'], can_delete=False,extra=0)
+                                                        'pending_pcs','balance_pcs'], can_delete=False,extra=0)
         
         # product 2 item child form
         product_to_item_formset = labour_workout_child_product_to_items_formset(instance = labour_workout_child_instance)

@@ -14,6 +14,7 @@ Labour Workout Create
         <th>labour_name</th>
         <th>total_approved_pcs</th>
         <th>total_pending_pcs</th>
+        <th>total balance qty</th>
         <th>View</th>
     </tr>
     {% for record in labour_workout_child_instances %}
@@ -22,6 +23,7 @@ Labour Workout Create
         <td>{{record.labour_name.name}}</td>
         <td>{{record.total_approved_pcs}}</td>
         <td>{{record.total_pending_pcs}}</td>
+        <td>{{record.total_balance_pcs}}</td>
         <td><a href="{% url 'labour-workout-single-view' record.id %}">View</a></td>
     </tr>
     {% endfor %}

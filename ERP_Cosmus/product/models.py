@@ -738,6 +738,7 @@ class labour_workout_childs(models.Model):
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_approved_pcs = models.IntegerField(default=0)
     total_pending_pcs = models.IntegerField(null=True, blank=True)
+    total_balance_pcs = models.IntegerField()
 
 
 class product_to_item_labour_child_workout(models.Model):
@@ -746,6 +747,7 @@ class product_to_item_labour_child_workout(models.Model):
     product_color = models.CharField(max_length=100)
     processed_pcs = models.IntegerField()
     pending_pcs = models.IntegerField()
+    balance_pcs = models.IntegerField()
 
 
 class labour_workout_cutting_items(models.Model):
