@@ -184,7 +184,6 @@
                     for (var key in mainstock) {
                         if (mainstock.hasOwnProperty(key)) {
                             if(key === materialName){
-
                                 physicalStock.value = mainstock[key];
                             }
                         }
@@ -276,7 +275,15 @@ function balanceStock(){
             document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
     }               
 }
-
+function submitForm(){
+    const ids = document.getElementById('id_raw_materials-0-id').value;
+    console.log(ids);
+    if(ids !== ""){
+        var submitButton = document.getElementById('id_submit');
+        submitButton.style.display = 'none';
+    }
+}
+submitForm();
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"]');
         var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
@@ -289,7 +296,7 @@ function balanceStock(){
             //     element.addEventListener('focus', updateProcessQuantity);
             //     element.addEventListener('focus', calculateTotalConsumption);
             // });
-           
+            submitForm();
             calculateTotalConsumption();
             updateTotal(); // Initialize the calculation on page load
             //updateProcessQuantity(); // Initialize the validation on page load
