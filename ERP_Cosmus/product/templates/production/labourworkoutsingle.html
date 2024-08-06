@@ -95,8 +95,9 @@
                     </table>
                     <div class="d-flex pb-2">
                         <label for="id_OderQty" class="text-danger">Total:</label>
-                        <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 292px;" readonly>
-                        <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 88px;" readonly>
+                        <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 232px;" readonly>
+                        <input type="number" class="productorderqty-input text-danger " name="balanceQtys" id="id_balanceQtys" value="0" style="margin-left: 60px;" readonly>
+                        <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 47px;" readonly>
                     
                     </div>
                 </div>
@@ -176,13 +177,17 @@
    
 function labourApprovedQty() {
     var total =0;
+    var balance =0;
     var approvedsValue = document.querySelectorAll('[name$="-pending_pcs"]');
     approvedsValue.forEach(function(el){
         var approvedQty = parseFloat(el.value || 0);
-        console.log(approvedQty);
+        var balncePic = el.closest('tr').querySelector('[name$="-balance_pcs"]').value;
+        var blanceAQty = parseFloat(balncePic || 0);
+        balance += blanceAQty;
         total += approvedQty;
-        console.log(total);
+
         document.getElementById('id_OderQty').value = total;
+        document.getElementById('id_balanceQtys').value =balance;
     })
 
    
@@ -191,29 +196,28 @@ function labourApprovedQty() {
 
 function labourQty(){
     var totalValue =0;
-   var forms = document.getElementById('id_labour_workout_child_items-TOTAL_FORMS').value;
-   console.log(forms);
-   for(var i=0 ; i< forms ; i++){
-    var pendingValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-pending_pcs').value);
-    var approvedValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-processed_pcs').value);
-    var balanceValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-balance_pcs').value);
-    console.log(balanceValues);
-    
-    if(pendingValues < approvedValues){
-        document.getElementById('id_labour_workout_child_items-'+i+'-processed_pcs').value = "0";
-    }
+    var balanceValue = 0;
+    var processQty = document.querySelectorAll('[name$="-processed_pcs"]');
+    processQty.forEach(function(element){
+       var processValue = parseInt(element.value) || 0;
+       var approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
+       //var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
+       if(approvedValue < processValue){
+        element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
+       }
+       if(!isNaN(processValue) && !isNaN(approvedValue)){
+        totalValue += processValue;
+        document.getElementById('id_processQty').value = totalValue;
+         balanceValue = approvedValue - processValue;
+        element.closest('tr').querySelector('[name$="-balance_pcs"]').value = balanceValue;
 
-    totalValue += approvedValues;
-    document.getElementById('id_processQty').value = totalValue;
+       }
 
-    balanceValues = pendingValues - approvedValues;
-    document.getElementById('id_labour_workout_child_items-'+i+'-balance_pcs').value = balanceValues;
+    })
 
-    
-   }
 }
 
-labourApprovedQty();
+
 document.addEventListener('DOMContentLoaded', function() {
  
     var pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
