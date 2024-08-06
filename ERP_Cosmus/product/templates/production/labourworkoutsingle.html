@@ -202,9 +202,11 @@ function labourQty(){
        var processValue = parseInt(element.value) || 0;
        var approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
        //var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
+
        if(approvedValue < processValue){
         element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
        }
+       
        if(!isNaN(processValue) && !isNaN(approvedValue)){
         totalValue += processValue;
         document.getElementById('id_processQty').value = totalValue;
@@ -227,9 +229,6 @@ document.addEventListener('DOMContentLoaded', function() {
         labourQty();
       })
     })
-
-    
-    
 });
 
 </script>
