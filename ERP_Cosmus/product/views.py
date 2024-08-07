@@ -3449,7 +3449,7 @@ def purchaseordercuttingpopup(request,cutting_id):
     formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
 
     if request.method == 'POST':
-        formset.forms = [form for form in formset.forms if form.has_changed()]
+        
         if formset.is_valid():
             if any(form.has_changed() for form in formset): # if all the forms are not changed below code will not get executed
                 formset_instance = formset.save(commit=False)

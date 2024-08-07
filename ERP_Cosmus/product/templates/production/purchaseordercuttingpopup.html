@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="POST" id="myForms">
+<form method="POST">
     {% csrf_token %}
 
     <h2 class="mb-3 mt-3">Cutting</h2>
@@ -14,9 +14,8 @@
                         <th>Product Sku</th>
                         <th>Color</th>
                         <th>Cutting Qty</th>
-                        <th>Balance pcs</th>
                         <th>Approved pcs</th>
-                      
+                        <th>Balance pcs</th>
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
@@ -27,10 +26,9 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity" readonly></td>
-                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"></td>
-                       <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.approved_pcs_diffrence}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
-                    <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-diffrence_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-diffrence_pcs">
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs"></td>
+                        <td><input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.approved_pcs_diffrence}}" id="id_{{form.prefix}}-approved_pcs_diffrence"></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -44,54 +42,32 @@
 <script>
 
 
-  function quantityCheck() {
-        var blance = 0;
-        var approved = document.querySelectorAll('[name$= "-approved_pcs"]');
+  function quantityCheck(){
 
-        approved.forEach(element => {
-            var approvedValues = parseInt(element.value) || 0;
-            var balanceApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-balance_pcs"]').value);
-            var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-cutting_quantity"]').value);
-            var diffrenceApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-diffrence_pcs"]').value);
-            var approvedDiffrenceValues = parseInt(element.closest('tr').querySelector('[name$= "-approved_pcs_diffrence"]').value);
-
-
-            if (cuttingApprovedValue < approvedValues) {
-                element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
-            }
-            if (!isNaN(approvedValues) && !isNaN(balanceApprovedValue) && !isNaN(cuttingApprovedValue)) {
-                if (approvedDiffrenceValues == 0) {
-                    balanceApprovedValue = cuttingApprovedValue - approvedValues
-
-                    element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValue
-                } else {
-                    
-                    if (diffrenceApprovedValue < approvedValues) {
-                        element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
-                    }
-                    if (diffrenceApprovedValue == 0) {
-                        var approvedinput = element.closest('tr').querySelector('[name$= "-approved_pcs"]');
-                        approvedinput.readOnly = true;
-                    }
-
-                    balance = diffrenceApprovedValue - approvedValues
-
-                    element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = balance;
-            }
+    let forms = document.getElementById('id_purchase_order_to_product_cutting_set-TOTAL_FORMS').value;
+  
+    for(let i=0; i<forms; i++){
+        const cuttingQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+i+'-cutting_quantity');
+        const approvedQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+i+ '-approved_pcs');
+        const approvedValue = parseFloat(approvedQty.value);
+        const cuttingValue = parseFloat(cuttingQty.value);
+    
+        if(cuttingValue < approvedValue){
+            approvedQty.value = "0"
         }
-    })    
-}
+    }
+    
+  }
   
   document.addEventListener('DOMContentLoaded', function () {
-  
-    //quantityCheck()
+    //let formSubmitted= true;
+    quantityCheck();
     let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
     approve.forEach(function(element){
         element.addEventListener('input', ()=>{
             quantityCheck();
         });
     })
- 
   })
 </script>
 
