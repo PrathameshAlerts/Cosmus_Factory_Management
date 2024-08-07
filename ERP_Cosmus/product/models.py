@@ -625,7 +625,7 @@ class purchase_order(models.Model):
         ('3', '3'),
         ('4', '4'),
     ]
-    purchase_order_number = models.CharField(max_length=255,unique=True, blank=False, null=False)
+    purchase_order_number = models.CharField(max_length=255, unique=True, blank=False, null=False)
     product_reference_number = models.ForeignKey(Product, on_delete=models.PROTECT)
     ledger_party_name = models.ForeignKey(Ledger, on_delete= models.PROTECT)
     target_date = models.DateField()

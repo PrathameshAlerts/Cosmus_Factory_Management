@@ -2,22 +2,6 @@
 {% load static %}
 {% block body %}
 
-<!-- <div class="mt-2">
-    <div class="row">
-        <div class="col-lg-5">
-            <h2 class="mb-3">Labour Workout</h2>
-            
-            {{ labour_workout_cutting_items_formset_form.management_form }}
-            {% for form in labour_workout_cutting_items_formset_form %}
-            {{form}}
-            {% endfor %}
-        </div>
-    </div>
-    
-  
-</div> -->
-
-
 <div class="" >
     <form method="POST">
         {% csrf_token %}
@@ -32,7 +16,7 @@
                             <input type="text" name="challan_no" id="id_challan_no" class="purchase-amount text-danger ms-2 me-5 pb-2" value="{{labour_work_out_child_form.instance.challan_no}}" required>
                         </div>
                         <div class="d-flex ms-1 ">
-                            <lable for="id_product_reference_number" class="">Labour:</lable>
+                            <lable for="id_labour_name" class="">Labour:</lable>
                             <select type="number" name="labour_name" id="id_labour_name" class="item-select text-danger ms-2 pb-2" >
                             {% if labour_work_out_child_form.instance.id %}
                             <option value="{{labour_work_out_child_form.instance.labour_name.id}}">{{labour_work_out_child_form.instance.labour_name.name}}</option>
@@ -54,12 +38,21 @@
                     <div class="d-flex mb-2">
                         <div class="d-flex">
                             <label for="id_total_approved_pcs" class="">Total approved pcs:</label>
+                            {% if labour_work_out_child_form.instance.id %}
                             <input name="total_approved_pcs" value="0" value ="{{labour_work_out_child_form.instance.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2">
+                            {% elif not labour_work_out_child_form.instance.id %}
+                            <input name="total_approved_pcs" value="0" value ="{{labour_work_out_child_form.initial.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2">
+                            {% endif %}
                         </div>
                    
                         <div class="d-flex"> 
                             <lable for="id_total_pending_pcs" class="">Total pending pcs</lable> 
+                            {% if labour_work_out_child_form.instance.id %}
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_pending_pcs}}" name="total_pending_pcs" id="id_total_pending_pcs">
+                            {% elif not labour_work_out_child_form.instance.id %}
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_pending_pcs}}" name="total_pending_pcs" id="id_total_pending_pcs">
+
+                            {% endif %}
                         </div>
 
                         <div class="d-flex"> 
@@ -67,20 +60,7 @@
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs">
                         </div>
                     </div>
-                    <!-- <div class="d-flex mb-2">
-                        <div class="d-flex">
-                            <label for="id_number_of_pieces" class="">Total P.O Qty:</label>
-                            <input type="number" name="number_of_pieces" class="productinput text-danger ms-2 me-3 pb-2 "  value="{{form.instance.number_of_pieces}}" required id="id_number_of_pieces" readonly>
-                        </div> 
-                        <div class="d-flex ms-5">
-                            <label for="id_target_date" class="">Target date:</label>
-                            <input type="date" name="target_date" class="targetDateValue text-danger ms-2 me-3 pb-2" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly>  
-                        </div> 
-                    </div>
-                    <div class="d-flex mb-2">
-                        <label for="id_temp_godown_select" class="">Godown Name:</label>
-                        <input type="text" name="temp_godown_select" class="product-ModelInput text-danger ms-2 me-3 pb-1" value="{{ form.instance.temp_godown_select }}" required id="id_temp_godown_select" readonly>  
-                    </div>  -->
+                
                 </div>
             </div>
             <div class="col-lg-6 mt-3">
@@ -105,7 +85,7 @@
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.instance.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
-                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" ></td>
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>
                                 <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.instance.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>
                                 
                             </tr>
@@ -115,7 +95,7 @@
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput"  name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_pcs" value="{{form.initial.pending_pcs}}" id="id_{{form.prefix}}-pending_pcs" readonly></td>
-                                <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.initial.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs"></td>  
+                                <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.initial.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>  
                                 <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-processed_pcs" value="{{form.initial.processed_pcs}}" id="id_{{form.prefix}}-processed_pcs" ></td>   
                             </tr>
                             {% endif %}
@@ -126,7 +106,7 @@
                         <label for="id_OderQty" class="text-danger">Total:</label>
                         <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 292px;" readonly>
                         <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 88px;" readonly>
-                        <!-- <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 90px;" readonly>  -->
+                    
                     </div>
                 </div>
             </div>
@@ -200,4 +180,62 @@
     </form>
 </div>
 
+
+<script>
+   
+function labourApprovedQty() {
+    var total =0;
+    var approvedsValue = document.querySelectorAll('[name$="-pending_pcs"]');
+    approvedsValue.forEach(function(el){
+        var approvedQty = parseFloat(el.value || 0);
+        console.log(approvedQty);
+        total += approvedQty;
+        console.log(total);
+        document.getElementById('id_OderQty').value = total;
+    })
+
+   
+
+}
+
+function labourQty(){
+    var totalValue =0;
+   var forms = document.getElementById('id_labour_workout_child_items-TOTAL_FORMS').value;
+   console.log(forms);
+   for(var i=0 ; i< forms ; i++){
+    var pendingValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-pending_pcs').value);
+    var approvedValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-processed_pcs').value);
+    var balanceValues = parseFloat(document.getElementById('id_labour_workout_child_items-'+i+'-balance_pcs').value);
+    console.log(balanceValues);
+    
+    if(pendingValues < approvedValues){
+        document.getElementById('id_labour_workout_child_items-'+i+'-processed_pcs').value = "0";
+    }
+
+    totalValue += approvedValues;
+    document.getElementById('id_processQty').value = totalValue;
+
+    balanceValues = pendingValues - approvedValues;
+    document.getElementById('id_labour_workout_child_items-'+i+'-balance_pcs').value = balanceValues;
+
+    
+   }
+}
+
+labourApprovedQty();
+document.addEventListener('DOMContentLoaded', function() {
+ 
+    var pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
+    pendingQty.forEach(function(el){
+      el.addEventListener('input',function(){
+        labourApprovedQty();
+        labourQty();
+      })
+    })
+
+    
+    
+});
+
+</script>
 {% endblock %}
