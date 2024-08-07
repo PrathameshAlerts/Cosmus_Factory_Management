@@ -902,8 +902,8 @@ def item_edit(request,pk):
     form = Itemform(instance=item_pk)
 
     # setting filtered queryset with annototed column of total_quantity  and total_rate to the formset 
-    queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('godown_shades__quantity'),
-                                                                     total_value=Sum(F('godown_shades__quantity') * F('godown_shades__item_rate'), 
+    queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('opening_shade_godown_quantity__opening_quantity'),
+                                                                     total_value=Sum(F('opening_shade_godown_quantity__opening_quantity') * F('opening_shade_godown_quantity__opening_rate'), 
                                                                                 output_field=DecimalField(max_digits=10, decimal_places=2)))
     for x in queryset:
         print(x.total_quantity)
@@ -3321,6 +3321,9 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             try:
                 # cutting form save
                 cutting_form_instance = purchase_order_cutting_form.save()
+                cutting_form_instance.purchase_order_id.cutting_total_processed_qty = cutting_form_instance.purchase_order_id.cutting_total_processed_qty + cutting_form_instance.processed_qty
+                cutting_form_instance.purchase_order_id.save()
+                
                 # change the status in purchase order model 
                 if cutting_form_instance.purchase_order_id.process_status == '3':
                     cutting_form_instance.purchase_order_id.process_status = '4'
@@ -3428,8 +3431,10 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 
 def purchaseordercuttinglistall(request):
-    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0).filter(balance_number_of_pieces__gt=0)
-    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0)
+    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0)
+    
+
+    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'))
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
 
@@ -3473,13 +3478,13 @@ def purchaseordercuttingpopup(request,cutting_id):
                     # create new instance of the data in product_to_item_labour_workout with the created labour_workout_master_instance as parent model
                     product_to_item_labour_workout.objects.create(labour_workout = labour_workout_master_instance,
                                                                 product_color=form.product_color,product_sku=form.product_sku,
-                                                                pending_pcs = old_total_approved_qty_diffrence,processed_pcs=0)
+                                                                pending_pcs = old_total_approved_qty_diffrence,processed_pcs=old_total_approved_qty_diffrence)
 
                 raw_material_cutting_instance.approved_qty = old_total_approved_qty_total # save the total diffrence total qty to parent model
                 raw_material_cutting_instance.save() # save the parent model
 
-                labour_workout_master_instance.total_approved_pcs = total_approved_pcs # setting the total of approved qty as total approved qty in labour master instsance
-                labour_workout_master_instance.total_pending_pcs = total_approved_pcs # pending qty is total approved qty initially
+                labour_workout_master_instance.total_approved_pcs = total_approved_pcs # setting the total of all approved qty as total approved qty in labour master instsance
+                labour_workout_master_instance.total_pending_pcs = total_approved_pcs # pending qty is total of all approved qty initially
                 labour_workout_master_instance.save() # save labour workout instance
 
             # JavaScript to close the popup window
@@ -3512,8 +3517,12 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
         labourworkoutinstance = labour_workout_master.objects.get(id=pk)
 
+        child_master_intial_data = {'total_approved_pcs' : labourworkoutinstance.total_approved_pcs,
+                                    'total_pending_pcs' : labourworkoutinstance.total_pending_pcs,
+                                    }
+
         # labour workout child masterform 
-        labour_work_out_child_form = labour_workout_child_form()
+        labour_work_out_child_form = labour_workout_child_form(child_master_intial_data)
 
         # prodcut to item labour workout instances to set initial data 
         product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout = labourworkoutinstance)
@@ -3525,9 +3534,9 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
             data_dict = {
                 'product_sku':instance.product_sku,
                 'product_color':instance.product_color,
-                'processed_pcs':instance.processed_pcs,
-                'pending_pcs':instance.pending_pcs,
-                'balance_pcs':instance.pending_pcs
+                'processed_pcs': 0,
+                'pending_pcs':instance.pending_pcs, # approved_qty
+                'balance_pcs':instance.processed_pcs, # this qty will update on each successful form labour wrkout form submission 
             }
 
             initial_items_data_dict.append(data_dict)
@@ -3625,6 +3634,11 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                     product_to_item_form.labour_workout = labour_workout_form_instance
                     product_to_item_form.save()
 
+                    # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
+                    single_p2i_instance = product_to_item_instances.get(product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
+
+                    single_p2i_instance.processed_pcs = single_p2i_instance.processed_pcs - product_to_item_form.processed_pcs
+                    single_p2i_instance.save()
             
             for form in labour_workout_cutting_items_formset_form:
                 if form.is_valid():

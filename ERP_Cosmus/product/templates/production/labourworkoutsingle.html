@@ -38,12 +38,21 @@
                     <div class="d-flex mb-2">
                         <div class="d-flex">
                             <label for="id_total_approved_pcs" class="">Total approved pcs:</label>
+                            {% if labour_work_out_child_form.instance.id %}
                             <input name="total_approved_pcs" value="0" value ="{{labour_work_out_child_form.instance.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2">
+                            {% elif not labour_work_out_child_form.instance.id %}
+                            <input name="total_approved_pcs" value="0" value ="{{labour_work_out_child_form.initial.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2">
+                            {% endif %}
                         </div>
                    
                         <div class="d-flex"> 
                             <lable for="id_total_pending_pcs" class="">Total pending pcs</lable> 
+                            {% if labour_work_out_child_form.instance.id %}
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_pending_pcs}}" name="total_pending_pcs" id="id_total_pending_pcs">
+                            {% elif not labour_work_out_child_form.instance.id %}
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_pending_pcs}}" name="total_pending_pcs" id="id_total_pending_pcs">
+
+                            {% endif %}
                         </div>
 
                         <div class="d-flex"> 

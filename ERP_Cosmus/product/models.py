@@ -625,7 +625,7 @@ class purchase_order(models.Model):
         ('3', '3'),
         ('4', '4'),
     ]
-    purchase_order_number = models.CharField(max_length=255,unique=True, blank=False, null=False)
+    purchase_order_number = models.CharField(max_length=255, unique=True, blank=False, null=False)
     product_reference_number = models.ForeignKey(Product, on_delete=models.PROTECT)
     ledger_party_name = models.ForeignKey(Ledger, on_delete= models.PROTECT)
     target_date = models.DateField()
@@ -635,7 +635,7 @@ class purchase_order(models.Model):
     balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
     temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
-    
+    cutting_total_processed_qty = models.IntegerField(default=0)
 
 
 class purchase_order_to_product(models.Model):
