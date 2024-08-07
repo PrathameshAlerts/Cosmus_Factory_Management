@@ -59,13 +59,18 @@
             if (cuttingApprovedValue < approvedValues) {
                 element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
+
+            // if(balanceApprovedValue == 0){
+            //     var approvedinputs = element.closest('tr').querySelector('[name$= "-approved_pcs"]');
+            //     approvedinputs.readOnly = true; 
+            // }
             if (!isNaN(approvedValues) && !isNaN(balanceApprovedValue) && !isNaN(cuttingApprovedValue)) {
                 if (approvedDiffrenceValues == 0) {
                     balanceApprovedValue = cuttingApprovedValue - approvedValues
 
                     element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValue
                 } else {
-                    
+
                     if (diffrenceApprovedValue < approvedValues) {
                         element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
                     }
