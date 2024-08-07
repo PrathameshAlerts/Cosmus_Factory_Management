@@ -314,7 +314,7 @@ function checkOnlyOne(checkbox) {
  }
     
     function updateCuttingQuantity(){
-        let totals =0;
+        let totals = 0;
         const cuttingQtyElements = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         
         cuttingQtyElements.forEach(input =>{
@@ -333,27 +333,26 @@ function checkOnlyOne(checkbox) {
                 let totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
                 
                 if(totalConsumptionInput){
-                    if(currentColor == productColor){
-                        const consumptionInput =row.querySelector('input[name$="-consumption"]');
-                        const consumption = parseFloat(consumptionInput.value) || 0;
-                        let totalConsumption = CuttingQty * consumption;
-                        totalConsumptionInput.value = totalConsumption.toFixed(2);
-                    
-                    }else if(currentColor === "Common Item"){
-                        const fabricGroup = row.querySelector('.fabric_group').value;
-                        if (fabricGroup === "True") {
+                    const fabricGroup = row.querySelector('.fabric_group').value;
+                    if (fabricGroup === "True") {
+                        if(currentColor == productColor){
+                            const consumptionInput =row.querySelector('input[name$="-consumption"]');
+                            const consumption = parseFloat(consumptionInput.value) || 0;
+                            let totalConsumption = CuttingQty * consumption;
+                            totalConsumptionInput.value = totalConsumption.toFixed(2);
+                        
+                        }else if(currentColor === "Common Item"){
+                        
                             const consumptionInput = row.querySelector('input[name$="-consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
-                            // const cuttingTotal = document.getElementById('id_cuttingTotal');
-                            console.log(cuttingTotal.value)
+                                // const cuttingTotal = document.getElementById('id_cuttingTotal');
                             const totalValue = parseFloat(cuttingTotal.value) || 0;
                             let commonConsumption = totalValue * commonConsumptionValue;
                             totalConsumptionInput.value = commonConsumption.toFixed(2);
-                        
-                        } else {
+                        }
+                    } else {
                             totalConsumptionInput.value = '0.00';
                         }
-                    }
                 }
             
             })
@@ -493,14 +492,35 @@ function checkOnlyOne(checkbox) {
                             materialColor.forEach(ele =>{
                                 if(ele.value == cuttingColors){
                                     var cuttingQuantitys = parseInt(input.value);
-                                    var materialColorShade = ele.closest('tr').querySelector('.checkBox-row');
-                                    if(cuttingQuantitys === 0){
-                                        materialColorShade.style.border = "3px solid red";
-                                        materialColorShade.disabled = true; 
+                                    //console.log(cuttingQuantitys);
+                                    var materialColorShade = ele.closest('tr').querySelector('.checkBox-row')
+                                    var materialColorShadeValue = ele.closest('tr').querySelector('.checkBox-row').querySelectorAll('input[type="checkbox"]').length;
+                                    console.log(materialColorShadeValue);
+                                    if(materialColorShadeValue > 1){
+                                     
+                                      
+                                            materialColorShade.style.border = "3px solid red";
+                                            materialColorShade.disabled = true; 
+                                        
+                                        
                                     }else{
                                         materialColorShade.style.border = "none";
                                         materialColorShade.disabled = false;
                                     }
+                                }else{
+                                    var materialColorShade = ele.closest('tr').querySelector('.checkBox-row')
+                                    var materialColorShadeValue = ele.closest('tr').querySelector('.checkBox-row').querySelectorAll('input[type="checkbox"]').length;
+                                    if(materialColorShadeValue > 1){
+                                     
+                                      
+                                     materialColorShade.style.border = "3px solid red";
+                                     materialColorShade.disabled = true; 
+                                 
+                                 
+                             }else{
+                                 materialColorShade.style.border = "none";
+                                 materialColorShade.disabled = false;
+                             }
                                 }
                             })
                     })    
