@@ -902,8 +902,8 @@ def item_edit(request,pk):
     form = Itemform(instance=item_pk)
 
     # setting filtered queryset with annototed column of total_quantity  and total_rate to the formset 
-    queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('godown_shades__quantity'),
-                                                                     total_value=Sum(F('godown_shades__quantity') * F('godown_shades__item_rate'), 
+    queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('opening_shade_godown_quantity__opening_quantity'),
+                                                                     total_value=Sum(F('opening_shade_godown_quantity__opening_quantity') * F('opening_shade_godown_quantity__opening_rate'), 
                                                                                 output_field=DecimalField(max_digits=10, decimal_places=2)))
     for x in queryset:
         print(x.total_quantity)
@@ -3321,6 +3321,9 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             try:
                 # cutting form save
                 cutting_form_instance = purchase_order_cutting_form.save()
+                cutting_form_instance.purchase_order_id.cutting_total_processed_qty = cutting_form_instance.purchase_order_id.cutting_total_processed_qty + cutting_form_instance.processed_qty
+                cutting_form_instance.purchase_order_id.save()
+                
                 # change the status in purchase order model 
                 if cutting_form_instance.purchase_order_id.process_status == '3':
                     cutting_form_instance.purchase_order_id.process_status = '4'
@@ -3428,8 +3431,10 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 
 def purchaseordercuttinglistall(request):
-    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0).filter(balance_number_of_pieces__gt=0)
-    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0)
+    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0)
+    
+
+    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'))
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
 

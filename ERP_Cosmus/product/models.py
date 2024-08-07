@@ -635,7 +635,7 @@ class purchase_order(models.Model):
     balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
     temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
-    
+    cutting_total_processed_qty = models.IntegerField(default=0)
 
 
 class purchase_order_to_product(models.Model):

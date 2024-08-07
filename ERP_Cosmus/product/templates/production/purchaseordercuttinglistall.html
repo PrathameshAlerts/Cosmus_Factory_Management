@@ -27,7 +27,8 @@
                     <th>Party Name</th>
                     <th>Target Date</th>
                     <th>Total P.O Qty</th>
-                    <th>Balance Quantity</th>
+                    <th>Total Processed Qty</th>
+                    <th>Balance Qty</th>
                     <th>Create</th>
                 </tr>
             </thead>
@@ -40,6 +41,7 @@
                     <td>{{po.ledger_party_name.name}}</td>
                     <td>{{po.target_date}}</td>
                     <td>{{po.number_of_pieces}}</td>
+                    <td>{{po.cutting_total_processed_qty}}</td>
                     <td>{{po.balance_number_of_pieces}}</td>
                     <td><a href="{% url 'purchase-order-cutting-list' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
                    
@@ -65,6 +67,7 @@
                     <th>Party Name</th>
                     <th>Target Date</th>
                     <th>Total P.O Qty</th>
+                    <td>Total Processed Qty</td>
                     <th>Balance Quantity</th>
                     <th>Edit</th>
                     <!-- <th>Delete</th> -->
@@ -79,6 +82,7 @@
                     <td>{{po.ledger_party_name.name}}</td>
                     <td>{{po.target_date}}</td>
                     <td>{{po.number_of_pieces}}</td>
+                    <td>{{po.total_processed_qty}}</td>
                     <td>{{po.balance_number_of_pieces}}</td>
                     <td><a href="{% url 'purchase-order-cutting-list' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                     <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
