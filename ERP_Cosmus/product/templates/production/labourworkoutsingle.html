@@ -215,7 +215,7 @@ function labourQty(){
        if(approvedValue < processValue){
         element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
        }
-       
+
        if(!isNaN(processValue) && !isNaN(approvedValue)){
         totalValue += processValue;
         document.getElementById('id_processQty').value = totalValue;
