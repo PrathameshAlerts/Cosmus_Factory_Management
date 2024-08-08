@@ -45,60 +45,43 @@
 <script>
 
   
-function quantityCheck(element) {
-    var approvedValues = parseInt(element.value) || 0;
-    var row = element.closest('tr');
-    var cuttingApprovedValue = parseInt(row.querySelector('[name$= "-cutting_quantity"]').value);
-    var approvedDiffrenceValues = parseInt(row.querySelector('[name$= "-approved_pcs_diffrence"]').value);
-    var balanceApprovedValues = parseInt(row.querySelector('[name$= "-balance_pcs"]').value);
-    if (cuttingApprovedValue < approvedValues) {
-        element.value = 0;
-        approvedValues = 0; // Reset approvedValues after setting to 0
-    }
+    function quantityCheck() {
+        var approved = document.querySelectorAll('[name$= "-approved_pcs"]');
 
-    if (!isNaN(approvedValues) && !isNaN(cuttingApprovedValue) && !isNaN(approvedDiffrenceValues) && !isNaN(balanceApprovedValues)) {
-        if (approvedDiffrenceValues == 0) {
-            var balanceApprovedValue = cuttingApprovedValue - approvedValues;
-            balanceApprovedValue = balanceApprovedValue < 0 ? 0 : balanceApprovedValue; // Ensure balanceApprovedValue is not negative
-            row.querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValue;
-        } else {
-          
+        approved.forEach(element => {
+            var approvedValues = parseInt(element.value) || 0;
+            var balanceApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-balance_pcs"]').value);
+            var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-cutting_quantity"]').value);
+            var approvedDiffrenceValues = parseInt(element.closest('tr').querySelector('[name$= "-approved_pcs_diffrence"]').value);
 
-            if (balanceApprovedValues < approvedValues) {
-                element.value = 0;
-                approvedValues = 0; // Reset approvedValues after setting to 0
+
+            if (cuttingApprovedValue < approvedValues) {
+                element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
 
-            if (balanceApprovedValues >= 0) {
-                var balance = balanceApprovedValues - approvedValues;
-                balance = balance < 0 ? 0 : balance; // Ensure balance is not negative
-                row.querySelector('[name$= "-balance_pcs"]').value = balance;
-            }
-        }
-    }
-}
 
-document.addEventListener('DOMContentLoaded', function () {
-    let approveInputs = document.querySelectorAll('input[name$="-approved_pcs"]');
-    approveInputs.forEach(function(element) {
-        element.addEventListener('input', () => {
-            // Calculate the current row
-            quantityCheck();
-            
-            // Check all rows to ensure no approved values are above their balance
-            // approveInputs.forEach(function(input) {
-            //     var row = input.closest('tr');
-            //     var balanceApprovedValues = parseInt(row.querySelector('[name$= "-balance_pcs"]').value) || 0;
-            //     var approvedValues = parseInt(input.value) || 0;
-                
-            //     if (approvedValues > balanceApprovedValues) {
-            //         input.value = 0;
-            //         row.querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValues;
-            //     }
-            // });
-        });
-    });
-});
+            if (!isNaN(approvedValues) && !isNaN(balanceApprovedValue) && !isNaN(cuttingApprovedValue)) {
+
+             var balanceApprovedValue = cuttingApprovedValue - approvedValues;
+
+                element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValue;
+
+
+            }
+        })
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+    
+        quantityCheck()
+        let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
+        approve.forEach(function (element) {
+            element.addEventListener('input', () => {
+                quantityCheck();
+            });
+        })
+
+    })
 
 </script>
 
