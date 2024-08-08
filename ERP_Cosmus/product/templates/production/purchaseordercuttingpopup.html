@@ -58,7 +58,12 @@
             if (cuttingApprovedValue < approvedValues) {
                 element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
-
+            console.log(approvedValues)
+            console.log(cuttingApprovedValue)
+            if(cuttingApprovedValue === approvedValues){
+                var approvedDiffrenceValues = element.closest('tr').querySelector('[name$= "-approved_pcs"]');
+                approvedDiffrenceValues.setAttribute('readonly', true);
+            }
 
             if (!isNaN(approvedValues) && !isNaN(balanceApprovedValue) && !isNaN(cuttingApprovedValue)) {
 
