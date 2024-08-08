@@ -31,7 +31,7 @@
                 </div>
                 <div class="d-flex mb-3">
                     <label for="id_party_name" class="item-form" >Party A/C Name</label>
-                    <select class="item-select" name="party_name" required id="id_party_name">
+                    <select class="product2Select" name="party_name" required id="id_party_name">
                         {% if master_form.instance.id %}
                         {% for x in party_names %}
                         <option value="{{x.id}}">{{x.name}}</option>
@@ -154,8 +154,8 @@
                 <tbody>
                     <tr>
                         <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
-                        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 527px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
-                        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 152px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
+                        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 533px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
+                        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 162px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
                         <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 69px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
                         <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
                         <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
@@ -200,6 +200,7 @@
     window.addEventListener('message', receiveMessage, false);
     function receiveMessage(event) {
         const dataWithPrefix = event.data;
+        console.log(dataWithPrefix);
         const convertedData = {};
 
         if (typeof dataWithPrefix === 'object' && Object.keys(dataWithPrefix).length > 0) {
@@ -235,10 +236,13 @@
             }
 
         }
+        console.log(convertedData);
+        console.log(datasId)
              // Set the popupData with convertedData
-        if(datasId){
-        let data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData').value;
-         data = JSON.stringify(convertedData);
+        if(datasId != ''){
+        var data = document.getElementById('purchase_voucher_items_set-' + datasId + '-popupData');
+        console.log(data);
+         data.value = JSON.stringify(convertedData);
         }
     }
 
@@ -555,10 +559,10 @@ function randomValue (){
         const newHeight = $inputField.offset();
         const windowHeight = $(window).height();
         const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
-         $dropdownOptions.css({
-        'max-height': availableSpace + 'px',
-        'overflow-y': 'auto'
-         });
+        //  $dropdownOptions.css({
+        // 'max-height': availableSpace + 'px',
+        // 'overflow-y': 'auto'
+        //  });
 
         if (event.key === 'ArrowDown') {
             event.preventDefault();
@@ -685,10 +689,7 @@ function randomValue (){
                 if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                     const minWidth = 800;
                     const minHeight = 600;
-                    // $('body').addClass('popup-open');
-                    // $('body').append('<div class="popup-overlay"></div>');
-                  
-                  
+               
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',
@@ -705,17 +706,6 @@ function randomValue (){
                            
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                            
-                                // window.addEventListener('message', function(event){
-                                // if (event.data.message === 'close') {
-                                //     $('body').removeClass('popup-open');
-                                //     $('.popup-overlay').remove();
-                                //     popupWindow.close();
-                                // }
-                                //  });
-                                // // Listen for messages from the popup window
-                                // window.addEventListener('click', function(event) {
-                                //     handleOutsidePurchase(event);
-                                // });
                         },
                         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
@@ -731,8 +721,6 @@ function randomValue (){
                     const minWidth = 800;
                     const minHeight = 600;
                   
-                    // $('body').addClass('popup-open');
-                    // $('body').append('<div class="popup-overlay"></div>');
                     $.ajax({
                         // Use Django URL name to fetch the URL dynamically
                         url: '{% url "purchasevoucher-createpopup-ajax" %}',
@@ -747,19 +735,7 @@ function randomValue (){
                             // Open the dynamic URL received from the server
                             popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                         
-                            
-                            // window.addEventListener('message', function(event){
-                            //     if (event.data.message === 'close') {
-                            //         $('body').removeClass('popup-open');
-                            //         $('.popup-overlay').remove();
-                            //         popupWindow.close();
-                            //     }
-                            //      });
-
-                            // // Listen for messages from the popup window
-                            // window.addEventListener('click', function(event) {
-                            //     handleOutsidePurchase(event);
-                            // });
+            
                         },
                         error: function (xhr, errmsg, err) {
                             console.log('Error getting popup URL');
@@ -772,19 +748,7 @@ function randomValue (){
             }
             
         });
-        // function handleOutsidePurchase(event) {
-        //     const popUpRect = document.querySelector('body').getBoundingClientRect();
-        //     const clickX = event.clientX;
-        //     const clickY = event.clientY;
-
-        //     // Check if the click is outside the popup window
-        //     if (clickX > popUpRect.left || clickX <= popUpRect.right || clickY > popUpRect.top || clickY <= popUpRect.bottom) {
         
-        //         popupWindow.focus();
-            
-        //     }
-
-        // }
     });
 </script>
 
