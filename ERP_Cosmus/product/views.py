@@ -1855,7 +1855,7 @@ def stockTrasferRawDelete(request,pk):
 
 
 def purchasevouchercreateupdate(request, pk=None):
-    
+    print(request.POST)
     item_name_searched = Item_Creation.objects.all()
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
@@ -2040,7 +2040,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                         for key, value in new_row.items():
                                             godown_id = int(value['gId'])    # new godown id
                                             updated_quantity = value['jsonQty']   # new quantity
-
+                                            print('updated_quantity',updated_quantity)
                                             # Check for empty string specifically
                                             godown_old_id = value.get('popup_old_id', None)   # old_godown_id 
                                             if godown_old_id == '':
@@ -2067,7 +2067,8 @@ def purchasevouchercreateupdate(request, pk=None):
                                                     initial_quantity = initial_quantity.quantity
                                                 
                                                 qty_to_update = updated_quantity - initial_quantity
-                                                
+                                                print(qty_to_update)
+                                                print(Item.quantity)
                                                 Item.quantity = Item.quantity + qty_to_update
                                                 Item.item_rate = new_rate
                                                 Item.save()
@@ -3021,7 +3022,6 @@ def purchaseorderlist(request):
     return render(request,'production/purchaseorderlist.html',{'purchase_orders': purchase_orders})
 
 
-
 def purchaseorderdelete(request,pk):
     try:
         instance = get_object_or_404(purchase_order, pk = pk)
@@ -3056,7 +3056,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         item_name = item.Item_pk.item_name
         item_quantity = 0
         item_godowns = item_godown_quantity_through_table.objects.filter(Item_shade_name__items = item_id,
-                                        godown_name =purchase_order_instance.temp_godown_select) #later filter by godown also after checking user godown location
+                                        godown_name = purchase_order_instance.temp_godown_select) #later filter by godown also after checking user godown location
         
         if item_godowns:
             for query in item_godowns:
@@ -3432,8 +3432,6 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 def purchaseordercuttinglistall(request):
     purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0)
-    
-
     purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'))
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
