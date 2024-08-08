@@ -47,11 +47,11 @@
               <td class="cuttingOderId">{{cutting_order.raw_material_cutting_id}}</td>
               <td>{{cutting_order.purchase_order_id.ledger_party_name.name}}</td>
               <td>{{cutting_order.factory_employee_id.factory_emp_name}}</td>
-              <td>{{cutting_order.processed_qty}}</td>
+              <td class="processedQty">{{cutting_order.processed_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
-              <td>{{cutting_order.approved_qty}}</td>
+              <td class="approvedQty">{{cutting_order.approved_qty}}</td>
               <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
-              <td><button class="border-0 bg-transparent" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
+              <td><button class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
               <!-- <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td> -->
             </tr>
             {% endfor %}
@@ -106,6 +106,26 @@
   
 </script> -->
 <script>
+function approvedValues(){
+  var processValue = document.querySelectorAll('.processedQty');
+ 
+  processValue.forEach(function(el){
+    var processQty = parseFloat(el.textContent || 0);
+    var approvedValue = el.closest('tr').querySelector('.approvedQty');
+    var approvedQty = parseFloat(approvedValue.textContent || 0);
+
+
+    if(processQty === approvedQty){
+      var approvedButton = el.closest('tr').querySelector('.approved-btn');
+      approvedButton.style.color = 'green';
+      approvedButton.innerHTML = '<i class="fa-solid fa-circle-check px-2 fs-5"></i>';
+      
+     
+    }
+  })
+
+}
+
   var popupPage = null;
 
   function approvedQty(button) {
@@ -131,6 +151,9 @@
 
    
   }
-  
+  document.addEventListener("DOMContentLoaded",function(){
+    approvedValues();
+  })
+
 </script>
   {% endblock %}
