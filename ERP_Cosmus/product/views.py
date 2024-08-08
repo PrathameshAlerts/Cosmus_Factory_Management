@@ -2040,7 +2040,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                         for key, value in new_row.items():
                                             godown_id = int(value['gId'])    # new godown id
                                             updated_quantity = value['jsonQty']   # new quantity
-                                            print('updated_quantity',updated_quantity)
+                                            
                                             # Check for empty string specifically
                                             godown_old_id = value.get('popup_old_id', None)   # old_godown_id 
                                             if godown_old_id == '':
@@ -2067,8 +2067,7 @@ def purchasevouchercreateupdate(request, pk=None):
                                                     initial_quantity = initial_quantity.quantity
                                                 
                                                 qty_to_update = updated_quantity - initial_quantity
-                                                print(qty_to_update)
-                                                print(Item.quantity)
+
                                                 Item.quantity = Item.quantity + qty_to_update
                                                 Item.item_rate = new_rate
                                                 Item.save()
@@ -3516,7 +3515,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         labourworkoutinstance = labour_workout_master.objects.get(id=pk)
 
         child_master_intial_data = {'total_approved_pcs' : labourworkoutinstance.total_approved_pcs,
-                                    'total_pending_pcs' : labourworkoutinstance.total_pending_pcs,
+                                    'total_balance_pcs' : labourworkoutinstance.total_pending_pcs,
                                     }
 
         # labour workout child masterform 
@@ -3661,9 +3660,12 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
 
 
-def labour_workout_child_list(request,labour_master_pk):
+def labour_workout_child_list(request, labour_master_pk):
+    labour_work_out_master = labour_workout_master.objects.get(id=labour_master_pk)
     labour_workout_child_instances = labour_workout_childs.objects.filter(labour_workout_master_instance = labour_master_pk)
-    return render(request,'production/labourworkoutchilds.html', {'labour_master_pk':labour_master_pk,'labour_workout_child_instances':labour_workout_child_instances})
+    return render(request,'production/labourworkoutchilds.html', {'labour_master_pk':labour_master_pk,
+                                                                  'labour_workout_child_instances':labour_workout_child_instances,
+                                                                  'labour_work_out_master':labour_work_out_master})
 
 #_________________________production-end__________________________________________
 
