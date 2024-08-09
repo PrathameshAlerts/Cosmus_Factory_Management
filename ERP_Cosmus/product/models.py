@@ -669,6 +669,7 @@ class purchase_order_raw_material_cutting(models.Model):
     processed_qty  = models.IntegerField(default=0)
     balance_qty = models.IntegerField(default=0)
     approved_qty = models.IntegerField(default=0)
+    cutting_cancelled = models.BooleanField(default=False)
 
 
 class purchase_order_to_product_cutting(models.Model): 
