@@ -81,67 +81,50 @@
      
 
   <script>
-
-
-    document.body.appendChild(document.getElementById('exampleModal'));
+  
+  document.body.appendChild(document.getElementById('exampleModal'));
   
   $(document).ready(function(){
-      $('.delete-btn').click(function(){
-        var cuttingId = $(this).closest('tr').find('td').eq(1).text();
-        console.log(cuttingId);
-        var approvedValue = $(this).closest('tr').find('.approvedQty').text();
-        console.log(approvedValue);
-        if(approvedValue == 0){
+    $('.delete-btn').click(()=>{
+      var name = $(this).closest('tr').find('td').eq(1).text();
+      var cuttingData = $(this).closest('tr').find('.cuttingOderId').text();
+      var approvedValue = $(this).closest('tr').find('.approvedQty').text();
+      var CuttingId = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+
+      $('#modal-body-text').html(' Are you sure you want to delete this cutting ' + CuttingId + '?');
+      $('#exampleModal').modal('show');
+
+      //Confirm delete button click eve
+      $('#confirmDeleteButton').click(()=>{
+        var cuttingId = cuttingData;
+        var approvedValues = approvedValue;
+          if(approvedValue == 0){
           $.ajax({
             type: 'POST',
-            url: "",
+            url: " {% url 'purchase-order-cutting-master-cancel' %}",
             data: {
               'cuttingId':cuttingId,
               'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
             success: function (response){
               console.log(response);
-              console.log('Data sent successfully')
-
-              var itemId = $(this).data('item-id');
-              var name = $(this).closest('tr').find('td').eq(1).text();
   
-            var EmployeeName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-          $('#modal-body-text').html('Can not Delete this cutting ' + EmployeeName + '?');
-          $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
-          $('#exampleModal').modal('show');
-
-
-          
-         
             }
           })
         }else{
-
-          var itemId = $(this).data('item-id');
           var name = $(this).closest('tr').find('td').eq(1).text();
-  
           var CuttingId = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-          $('#modal-body-text').html(' Are you sure you want to delete this cutting ' + CuttingId + '?');
-          $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+          $('#modal-body-text').html('Can not delete this approved cutting ' + CuttingId + '?');
           $('#exampleModal').modal('show');
-
-
-          //Confirm delete button click event
-          $('#confirmDeleteButton').click(function(){
-              var itemId = $(this).data('item-id');
-              // Redirect to delete view
-              window.location.href = '//' + itemId;
-          });
-         
-
+          $('.modal-footer').hide();
+          $('.btn-close').on('click' , function(){
+            $('.modal-footer').show();
+            $('.btn-close').off('click');
+          })
         }
         
-      
-        
       });
-  
-      
+    });   
   });
   
 </script>

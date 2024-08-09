@@ -4,6 +4,7 @@ from io import BytesIO
 from itertools import count
 from operator import is_
 from sys import exception
+from telnetlib import STATUS
 from django.conf import settings
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
@@ -3499,6 +3500,18 @@ def purchaseordercuttingpopup(request,cutting_id):
             
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
+def purchaseordercuttingmastercancel(request):
+
+    if request.method == 'POST':
+        cutting_key = request.POST.get('cuttingId')
+
+        cutting_instance =  get_object_or_404(purchase_order_raw_material_cutting,pk=cutting_key)
+        if cutting_instance:
+            cutting_instance.cutting_cancelled = True
+            cutting_instance.save()
+            return JsonResponse({'status':'success'}, status = 200)
+        else:
+            return JsonResponse({'status':'Instance Not Found'}, status=404)
 
 
 def labourworkoutlistall(request):
@@ -3607,7 +3620,6 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
 
     if request.method == 'POST':
-        print(request.POST)
 
         # child labour workout form
         labour_work_out_child_form = labour_workout_child_form(request.POST)
