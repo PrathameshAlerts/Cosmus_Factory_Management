@@ -3520,7 +3520,8 @@ def purchaseordercuttingmastercancel(request):
                         cutting_instance.purchase_order_id.save()
 
                         for record in cutting_instance.purchase_order_to_product_cutting_set:
-                            print(record)
+                            record.process_quantity = record.process_quantity + record.cutting_quantity 
+                            record.save()
 
 
 
