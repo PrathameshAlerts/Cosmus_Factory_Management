@@ -50,7 +50,7 @@
 
         approved.forEach(element => {
             var approvedValues = parseInt(element.value) || 0;
-            var balanceApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-balance_pcs"]').value);
+         
             var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-cutting_quantity"]').value);
             var approvedDiffrenceValues = parseInt(element.closest('tr').querySelector('[name$= "-approved_pcs_diffrence"]').value);
 
@@ -58,27 +58,41 @@
             if (cuttingApprovedValue < approvedValues) {
                 element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
-            console.log(approvedValues)
-            console.log(cuttingApprovedValue)
+       
             if(cuttingApprovedValue === approvedValues){
                 var approvedDiffrenceValues = element.closest('tr').querySelector('[name$= "-approved_pcs"]');
                 approvedDiffrenceValues.setAttribute('readonly', true);
             }
 
-            if (!isNaN(approvedValues) && !isNaN(balanceApprovedValue) && !isNaN(cuttingApprovedValue)) {
+            if (!isNaN(approvedValues) && !isNaN(cuttingApprovedValue)) {
 
              var balanceApprovedValue = cuttingApprovedValue - approvedValues;
 
                 element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValue;
 
-
             }
+        })
+    }
+
+    function submitForm(){
+        var balanceApprove = document.querySelectorAll('[name$= "-balance_pcs"]');
+
+        balanceApprove.forEach(ele =>{
+            var balance = parseInt(ele.value);
+            console.log(balance);
+            if(balance == 0){
+                var submitBtn = document.querySelector('.create-btn');
+                console.log(submitBtn);
+                submitBtn.style.display = 'none';
+            }
+            
         })
     }
 
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
+        submitForm()
         let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
         approve.forEach(function (element) {
             element.addEventListener('input', () => {

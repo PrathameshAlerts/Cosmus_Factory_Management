@@ -16,7 +16,7 @@
             <label for="" class="item-form">Source Godown:</label>
             <p>(Transfer from)</p>
         </div>
-        <div class="d-flex mb-3 my-3">
+        <div class="d-flex mb-3 ms-3 my-2">
             <select name="source_godown" required class="item-select" id="id_source_godown">
 
                 {% if masterstockform.instance.pk %}
@@ -36,12 +36,12 @@
                 {% endif %}
             </select>
         </div>
-        <span class="pt-3 pe-4 mx-3 ">To</span>
+        <span class="pt-3 pe-4 mx-4 ">To</span>
         <div class="mx-2">
             <label for="" class="item-form">Target Godown:</label>
             <p>(Transfer to)</p>
         </div>
-        <div class=" d-flex mb-3 my-3">
+        <div class=" d-flex mb-3 ms-3 my-2">
             <select class="item-select destination_godowns" required name="destination_godown" id="id_destination_godown">
                 {% if masterstockform.instance.pk %}
                 <option value="{{masterstockform.instance.destination_godown.id}}">
@@ -70,7 +70,7 @@
                 {{ form.id }}
                 <tr>
                     <td>
-                        <select name="stock_name_{{forloop.counter0}}" class="stock_input stock_input_name" placeholder="Item Name" id="id_stock_name_{{forloop.counter0}}">
+                        <select name="stock_name_{{forloop.counter0}}" class="acc-subInput stock_input_name" placeholder="Item Name" id="id_stock_name_{{forloop.counter0}}">
                             <!-- if master form is on update show the data of the source godown  -->
                             {% if masterstockform.instance.pk %}
                             <option value="{{form.instance.item_shade_transfer.items.pk}}">

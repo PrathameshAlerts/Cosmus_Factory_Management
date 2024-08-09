@@ -9,11 +9,11 @@
         <h2 class="mb-4">Worker- {{title}}</h2>
        <div class="d-flex mb-3">
         <label for="id_factory_emp_name" class="item-form">Worker Name:</label>
-        <input type="text" class="item-select rounded" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
+        <input type="text" class="item-select search-input" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
        </div>
        <div class="d-flex mb-3">
         <label for="id_factory_emp_name" class="item-form">Cutting Room:</label>
-        <select name="cutting_room_id" id="id_cutting_room_id" class="item-select rounded">
+        <select name="cutting_room_id" id="id_cutting_room_id" class="item-select search-input">
           {% if form.instance.id %}
           <option value="{{form.instance.cutting_room_id.id}}">{{form.instance.cutting_room_id.cutting_room_name}}</option>
           {% for room in cutting_rooms %}

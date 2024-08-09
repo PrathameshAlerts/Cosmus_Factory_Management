@@ -56,13 +56,13 @@
     </div> -->
 <div class="row">
   <div class="col-lg-9">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-hover">
-        <thead class="name_absolute">
+    <div class="table-res">
+      <table class="table table-bordered table-striped table-hover" style="width: 100%;">
+        <thead class="name_absolute sticky-top text-nowrap">
           <tr>
             <th>No</th>
-            <th scope="col">Main Category</th>
-            <th scope="col">Sub Category</th>
+            <th>Main Category</th>
+            <th colspan="3">Category</th>
           </tr>
         </thead>
         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
@@ -70,15 +70,25 @@
           <tr>
             <td>{{forloop.counter}}</td>
             <td class="fw-bold">{{main_cat.product_category_name}}</td>
+            
             <td>
-              <ol>
-                {% for sub_cat in main_cat.subcategories.all %}
-                <li class="mx-2 my-2"><span class=" ps-2 py-2 rounded ">{{sub_cat.product_sub_category_name}}</span><span class="justify-content-end"><a class="ps-5" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i class="fa-solid fa-pen-to-square px-1 justify-content-end"></i></a></span> 
-                  <span><a class="justify-content-end ps-2" href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></span>
-                </li>
+              <table class="table table-bordered table-striped table-hover">
+               <tr>
+                <th>Sub Category</th>
+                <th>Edit</th>
+                <th>Delete</th>
+               </tr>
+               {% for sub_cat in main_cat.subcategories.all %}
+                <tr>
+                  <td>{{sub_cat.product_sub_category_name}}</td>
+                  <td><a class="ps-2" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                  <td><a class="ps-2" href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
+                </tr>
                 {% endfor %}
-              </ol>
+              </table>
+            
             </td>
+           
           </tr>
           {% endfor %}
         </tbody>
