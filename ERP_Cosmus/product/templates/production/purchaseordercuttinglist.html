@@ -94,9 +94,11 @@
         if(approvedValue == 0){
           $.ajax({
             type: 'POST',
-            url: "",
+            url: " {% url 'purchase-order-cutting-master-cancel' %}",
             data: {
+              
               'cuttingId':cuttingId,
+              'csrfmiddlewaretoken' : '{{csrf_token}}'
             },
             success: function (response){
               console.log('Data sent successfully')

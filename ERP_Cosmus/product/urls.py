@@ -164,6 +164,7 @@ urlpatterns = [
     path('purchaseordercuttingcreate/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-create'),
     path('purchaseordercuttingupdate/<int:p_o_pk>/<int:prod_ref_no>/<int:pk>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-update'),
     path('purchaseordercuttinglistall/', views.purchaseordercuttinglistall, name = 'purchase-order-cutting-list-all'),
+    path('purchaseordercuttingmastercancel',views.purchaseordercuttingmastercancel,name = 'purchase-order-cutting-master-cancel'),
 
 
     # factory worker routes
