@@ -115,6 +115,9 @@
             success: function (response){
               console.log(response);
               $('#exampleModal').modal('hide');
+              var rows = $('.delete-btn').closest('tr');
+              console.log(rows);
+  
             }
           })
         }else{
