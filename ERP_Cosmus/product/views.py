@@ -3505,20 +3505,28 @@ def purchaseordercuttingmastercancel(request):
     if request.method == 'POST':
         try:
             cutting_key = request.POST.get('cuttingId')
-
+            print(cutting_key)
             cutting_instance = get_object_or_404(purchase_order_raw_material_cutting,pk=cutting_key)
             if cutting_instance:
-                cutting_instance.cutting_cancelled = True
-                cutting_instance.save()
-                if cutting_instance.approved_qty == 0:
-                    processed_qty_to_revert = cutting_instance.processed_qty
-                    print(processed_qty_to_revert)
-                    print(cutting_instance.purchase_order_id.cutting_total_processed_qty)
-                    cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty - processed_qty_to_revert
-                    cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces + processed_qty_to_revert
-                    cutting_instance.purchase_order_id.save()
+                with transaction.atomic:
+                    cutting_instance.cutting_cancelled = True
+                    cutting_instance.save()
+                    if cutting_instance.approved_qty == 0:
+                        processed_qty_to_revert = cutting_instance.processed_qty
+                        print(processed_qty_to_revert)
+                        print(cutting_instance.purchase_order_id.cutting_total_processed_qty)
+                        cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty - processed_qty_to_revert
+                        cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces + processed_qty_to_revert
+                        cutting_instance.purchase_order_id.save()
 
-                return JsonResponse({'status' : 'success'}, status=200)
+                        for record in cutting_instance.purchase_order_to_product_cutting_set:
+                            print(record)
+
+
+
+                        return JsonResponse({'status' : 'success'}, status=200)
+                    else:
+                        return JsonResponse({'status':'Cutting Already Approved'}, status=404)
             else:
                 return JsonResponse({'status':'Instance not found'}, status=404)
             
