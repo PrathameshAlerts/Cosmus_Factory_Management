@@ -88,6 +88,7 @@
   $(document).ready(function(){
   $('.delete-btn').click(function(){
     // Fetching data from the clicked row
+    var CancelBtn = $(this);
     var row = $(this).closest('tr');
     var name = row.find('td').eq(1).text();
     var cuttingData = row.find('.cuttingOderId').text();
@@ -117,7 +118,12 @@
           success: function(response){
             console.log(response);
             $('#exampleModal').modal('hide');
-            row.style.backgroundColor = 'red'; // Remove the row from the table on success
+            // Disable buttons and visually "disable" the row
+            row.css('opacity', '0.5'); // Gray out the row
+            row.find('a, button').prop('disabled', true); // Disable all links and buttons within the row
+
+            // Optionally, remove the event listeners from the buttons
+            row.find('a, button').off('click');
           },
           error: function(xhr, status, error){
             console.error("Error occurred: " + error);
