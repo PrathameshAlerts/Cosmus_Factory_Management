@@ -86,56 +86,57 @@
   document.body.appendChild(document.getElementById('exampleModal'));
   
   $(document).ready(function(){
-    $('.delete-btn').click(function(){
-      var name = $(this).closest('tr').find('td').eq(1).text();
-      var cuttingData = $(this).closest('tr').find('.cuttingOderId').text();
-      var approvedValue = $(this).closest('tr').find('.approvedQty').text();
-      console.log(name);
-      console.log(cuttingData);
-      console.log(approvedValue);
-      var CuttingId = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+  $('.delete-btn').click(function(){
+    // Fetching data from the clicked row
+    var row = $(this).closest('tr');
+    var name = row.find('td').eq(1).text();
+    var cuttingData = row.find('.cuttingOderId').text();
+    var approvedValue = row.find('.approvedQty').text();
+    var CuttingId = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
 
-      $('#modal-body-text').html(' Are you sure you want to delete this cutting ' + CuttingId + '?');
-      //$('#confirmDeleteButton').attr('data-item-id', name); // Set the item id to the confirm button's data
-      $('#exampleModal').modal('show');
+    // Update modal body text
+    $('#modal-body-text').html('Are you sure you want to delete this cutting ' + CuttingId + '?');
 
-      //Confirm delete button click eve
-      $('#confirmDeleteButton').click(function(){
-        var cuttingId = parseInt(cuttingData);
-        var approvedValues = parseInt(approvedValue);
-      
-          if(approvedValues === 0){
-          $.ajax({
-            type: 'POST',
-            url: " {% url 'purchase-order-cutting-master-cancel' %}",
-            data: {
-              'cuttingId':cuttingId,
-              'csrfmiddlewaretoken': '{{ csrf_token }}',
-            },
-            success: function (response){
-              console.log(response);
-              $('#exampleModal').modal('hide');
-              var rows = $('.delete-btn').closest('tr');
-              console.log(rows);
-  
-            }
-          })
-        }else{
-          var name = $(this).closest('tr').find('td').eq(1).text();
-          var CuttingId = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-          $('#modal-body-text').html('Can not delete this approved cutting ' + CuttingId + '?');
-          //$('#confirmDeleteButton').attr('data-item-id', name); // Set the item id to the confirm button's data
-          $('#exampleModal').modal('show');
-          $('.modal-footer').hide();
-          $('.btn-close').on('click' , function(){
-            $('.modal-footer').show();
-            $('.btn-close').off('click');
-          })
-        }
-        
-      });
-    });   
+    // Open the modal
+    $('#exampleModal').modal('show');
+
+    // Attach a one-time click event to the confirm delete button
+    $('#confirmDeleteButton').off('click').on('click', function(){
+      var cuttingId = parseInt(cuttingData);
+      var approvedValues = parseInt(approvedValue);
+
+      if(approvedValues === 0){
+        // Send AJAX request to delete the cutting
+        $.ajax({
+          type: 'POST',
+          url: "{% url 'purchase-order-cutting-master-cancel' %}",
+          data: {
+            'cuttingId': cuttingId,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+          },
+          success: function(response){
+            console.log(response);
+            $('#exampleModal').modal('hide');
+            row.style.backgroundColor = 'red'; // Remove the row from the table on success
+          },
+          error: function(xhr, status, error){
+            console.error("Error occurred: " + error);
+            $('#modal-body-text').html('An error occurred. Please try again.');
+          }
+        });
+      } else {
+        // Cannot delete approved cutting, update modal text
+        $('#modal-body-text').html('Cannot delete this approved cutting ' + CuttingId + '.');
+        $('.modal-footer').hide();
+        $('.btn-close').on('click', function(){
+          $('.modal-footer').show();
+          $('.btn-close').off('click');
+        });
+      }
+    });
   });
+});
+
   
 </script>
 <script>
