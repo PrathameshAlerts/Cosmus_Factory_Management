@@ -3515,8 +3515,8 @@ def purchaseordercuttingmastercancel(request):
                         processed_qty_to_revert = cutting_instance.processed_qty
                         print(processed_qty_to_revert)
                         print(cutting_instance.purchase_order_id.cutting_total_processed_qty)
-                        cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty - processed_qty_to_revert
-                        cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces + processed_qty_to_revert
+                        cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty + processed_qty_to_revert
+                        cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces - processed_qty_to_revert
                         cutting_instance.purchase_order_id.save()
 
                         for record in cutting_instance.purchase_order_to_product_cutting_set:
