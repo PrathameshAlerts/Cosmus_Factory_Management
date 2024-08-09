@@ -7,8 +7,9 @@
     <h3 class="mb-3 ">Cutting Order List</h3>
     <lable class="fw-bold">P.O No:</lable><span class="text-danger mx-3">{{p_o_number.purchase_order_number}}</span>
     <lable class="fw-bold">Refrence No:</lable><span class="text-danger mx-3">{{p_o_number.product_reference_number.Product_Refrence_ID}}</span>
-    <label class="fw-bold">Total Quantity:</label><span class="text-danger mx-3">{{p_o_number.number_of_pieces}}</span>
+    <label class="fw-bold">P.O Qty:</label><span class="text-danger mx-3">{{p_o_number.number_of_pieces}}</span>
     <label class="fw-bold">Total Balance:</label><span class="text-danger mx-3">{{p_o_number.balance_number_of_pieces}}</span>
+    <label class="fw-bold">Processed Qty:</label><span class="text-danger mx-3">{{p_o_number.cutting_total_processed_qty}}</span>
   </div>
 
 
@@ -102,6 +103,7 @@
             },
             success: function (response){
               console.log('Data sent successfully')
+
             }
           })
         }

@@ -3503,15 +3503,31 @@ def purchaseordercuttingpopup(request,cutting_id):
 def purchaseordercuttingmastercancel(request):
 
     if request.method == 'POST':
-        cutting_key = request.POST.get('cuttingId')
+        try:
+            cutting_key = request.POST.get('cuttingId')
 
-        cutting_instance =  get_object_or_404(purchase_order_raw_material_cutting,pk=cutting_key)
-        if cutting_instance:
-            cutting_instance.cutting_cancelled = True
-            cutting_instance.save()
-            return JsonResponse({'status':'success'}, status = 200)
-        else:
-            return JsonResponse({'status':'Instance Not Found'}, status=404)
+            cutting_instance = get_object_or_404(purchase_order_raw_material_cutting,pk=cutting_key)
+            if cutting_instance:
+                cutting_instance.cutting_cancelled = True
+                cutting_instance.save()
+                if cutting_instance.approved_qty == 0:
+                    processed_qty_to_revert = cutting_instance.processed_qty
+                    print(processed_qty_to_revert)
+                    print(cutting_instance.purchase_order_id.cutting_total_processed_qty)
+                    cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty - processed_qty_to_revert
+                    cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces + processed_qty_to_revert
+                    cutting_instance.purchase_order_id.save()
+
+                return JsonResponse({'status' : 'success'}, status=200)
+            else:
+                return JsonResponse({'status':'Instance not found'}, status=404)
+            
+        except ObjectDoesNotExist as ne:
+            return JsonResponse({'status':f'Instance not found -{ne}'}, status=404)
+        
+        except Exception as e:
+            return JsonResponse({'status':f'Instance not found -{e}'}, status=404)
+
 
 
 def labourworkoutlistall(request):
