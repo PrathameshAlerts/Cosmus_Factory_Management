@@ -51,8 +51,8 @@
               <td class="approvedQty">{{cutting_order.approved_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
               <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
-              <td><button class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
-              <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+              <td><button class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
+              <td><button class="border-0 bg-transparent delete-btn" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
             </tr>
             {% endfor %}
           </tbody>
@@ -77,34 +77,53 @@
         </div>
       </div>
     </div>
-  </div>
-     -->
+  </div> -->
+     
 
-  <!-- <script>
-    document.body.appendChild(document.getElementById('exampleModal'));
+  <script>
+
+
+    //document.body.appendChild(document.getElementById('exampleModal'));
   
   $(document).ready(function(){
       $('.delete-btn').click(function(){
-          var itemId = $(this).data('item-id');
-       var name = $(this).closest('tr').find('td').eq(1).text();
+        var cuttingId = $(this).closest('tr').find('td').eq(1).text();
+        console.log(cuttingId);
+        var approvedValue = $(this).closest('tr').find('.approvedQty').text();
+        console.log(approvedValue);
+        if(approvedValue == 0){
+          $.ajax({
+            type: 'POST',
+            url: "",
+            data: {
+              'cuttingId':cuttingId,
+            },
+            success: function (response){
+              console.log('Data sent successfully')
+            }
+          })
+        }
+        
+      //     var itemId = $(this).data('item-id');
+      //  var name = $(this).closest('tr').find('td').eq(1).text();
   
-      var EmployeeName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-          $('#modal-body-text').html(' Are you sure you want to delete this Employee name ' + EmployeeName + '?');
-          $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
-          $('#exampleModal').modal('show');
+      // var EmployeeName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+      //     $('#modal-body-text').html(' Are you sure you want to delete this Employee name ' + EmployeeName + '?');
+      //     $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+      //     $('#exampleModal').modal('show');
          
         
       });
   
       // Confirm delete button click event
-      $('#confirmDeleteButton').click(function(){
-          var itemId = $(this).data('item-id');
-          // Redirect to delete view
-          window.location.href = '//' + itemId;
-      });
+      // $('#confirmDeleteButton').click(function(){
+      //     var itemId = $(this).data('item-id');
+      //     // Redirect to delete view
+      //     window.location.href = '//' + itemId;
+      // });
   });
   
-</script> -->
+</script>
 <script>
 function approvedValues(){
   var processValue = document.querySelectorAll('.processedQty');
@@ -118,7 +137,7 @@ function approvedValues(){
     if(processQty === approvedQty){
       var approvedButton = el.closest('tr').querySelector('.approved-btn');
       approvedButton.style.color = 'green';
-      approvedButton.innerHTML = '<i class="fa-solid fa-circle-check px-2 fs-5"></i>';
+      approvedButton.innerHTML = '<i class="fa-solid fa-circle-check ps-3 fs-5"></i>';
 
     }
   })
