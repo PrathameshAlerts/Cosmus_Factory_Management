@@ -592,7 +592,7 @@ class labour_workout_child_form(forms.ModelForm):
     class Meta:
         model = labour_workout_childs
         fields = ['labour_name' , 'challan_no','total_approved_pcs',
-                  'total_pending_pcs','total_balance_pcs']
+                  'total_process_pcs','total_balance_pcs']
 
 
 class labour_workout_cutting_items_form(forms.ModelForm):

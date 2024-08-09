@@ -17,7 +17,9 @@
         <thead class="text-nowrap name_absolute">
             <tr>
                 <th>P.O No</th>
-                <th>product refrence no</th>
+                <th>P.O Qty</th>
+                <th>Product Ref No</th>
+                <th>Product Name</th>
                 <th>Cutting Order No</th>
                 <th>Approved Pcs</th>
                 <th>Pending Pcs</th>
@@ -28,7 +30,9 @@
         {% for record in labour_workout_pending %}
         <tr>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+            <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+            <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
             <td>{{record.purchase_order_cutting_master.raw_material_cutting_id}}</td>
             <td>{{record.total_approved_pcs}}</td>
             <td>{{record.total_pending_pcs}}</td>

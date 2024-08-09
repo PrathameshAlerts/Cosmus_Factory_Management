@@ -435,7 +435,7 @@ class Ledger(models.Model):
     maintain_billwise = models.CharField(choices = MAINTAIN_BILLWISE, max_length = 30, blank = True)
     default_credit_period = models.CharField(max_length = 100, blank = True)
     types = models.CharField(choices = TYPES , max_length = 30, blank = True)
-    Gst_no = models.CharField(max_length = 100,validators = [MinLengthValidator(15), MaxLengthValidator(15)])
+    Gst_no = models.CharField(max_length = 100, validators = [MinLengthValidator(15), MaxLengthValidator(15)])
     address = models.TextField(blank = True) 
     state = models.CharField(max_length = 255, blank = True)
     country = models.CharField(max_length = 255,  blank=True) 
@@ -669,6 +669,7 @@ class purchase_order_raw_material_cutting(models.Model):
     processed_qty  = models.IntegerField(default=0)
     balance_qty = models.IntegerField(default=0)
     approved_qty = models.IntegerField(default=0)
+    cutting_cancelled = models.BooleanField(default=False)
 
 
 class purchase_order_to_product_cutting(models.Model): 
@@ -737,7 +738,7 @@ class labour_workout_childs(models.Model):
     challan_no = models.CharField(unique=True)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_approved_pcs = models.IntegerField(default=0)
-    total_pending_pcs = models.IntegerField(null=True, blank=True)
+    total_process_pcs = models.IntegerField(null=True, blank=True)
     total_balance_pcs = models.IntegerField()
 
 
