@@ -3505,36 +3505,37 @@ def purchaseordercuttingmastercancel(request):
     if request.method == 'POST':
         try:
             cutting_key = request.POST.get('cuttingId')
-            print(cutting_key)
+            
             cutting_instance = get_object_or_404(purchase_order_raw_material_cutting,pk=cutting_key)
+            
             if cutting_instance:
-                with transaction.atomic:
-                    cutting_instance.cutting_cancelled = True
-                    cutting_instance.save()
-                    if cutting_instance.approved_qty == 0:
-                        processed_qty_to_revert = cutting_instance.processed_qty
-                        print(processed_qty_to_revert)
-                        print(cutting_instance.purchase_order_id.cutting_total_processed_qty)
-                        cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty + processed_qty_to_revert
-                        cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces - processed_qty_to_revert
-                        cutting_instance.purchase_order_id.save()
+                cutting_instance.cutting_cancelled = True
+                cutting_instance.save()
+                if cutting_instance.approved_qty == 0:
+                    processed_qty_to_revert = cutting_instance.processed_qty
 
-                        for record in cutting_instance.purchase_order_to_product_cutting_set:
-                            record.process_quantity = record.process_quantity + record.cutting_quantity 
-                            record.save()
+                    cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty + processed_qty_to_revert
+                    cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces - processed_qty_to_revert
+                    cutting_instance.purchase_order_id.save()
+                    
+                    for record in cutting_instance.purchase_order_to_product_cutting_set.all():
+                        purchase_order_to_product_instance = purchase_order_to_product.objects.get(purchase_order_id=cutting_instance.purchase_order_id.id,product_id__PProduct_SKU=record.product_sku)
+                        purchase_order_to_product_instance.process_quantity = purchase_order_to_product_instance.process_quantity + record.cutting_quantity 
+                        purchase_order_to_product_instance.save()
 
-
-
-                        return JsonResponse({'status' : 'success'}, status=200)
-                    else:
-                        return JsonResponse({'status':'Cutting Already Approved'}, status=404)
+                    return JsonResponse({'status' : 'success'}, status=200)
+                
+                else:
+                    return JsonResponse({'status':'Cutting Already Approved'}, status=404)
             else:
                 return JsonResponse({'status':'Instance not found'}, status=404)
             
         except ObjectDoesNotExist as ne:
+            print(ne)
             return JsonResponse({'status':f'Instance not found -{ne}'}, status=404)
         
         except Exception as e:
+            print(e)
             return JsonResponse({'status':f'Instance not found -{e}'}, status=404)
 
 

@@ -117,10 +117,11 @@
           success: function(response){
             console.log(response);
             $('#exampleModal').modal('hide');
-            row.style.backgroundColor = 'red'; // Remove the row from the table on success
+            //row.style.backgroundColor = 'red'; // Remove the row from the table on success
           },
           error: function(xhr, status, error){
             console.error("Error occurred: " + error);
+            console.error(status)
             $('#modal-body-text').html('An error occurred. Please try again.');
           }
         });
