@@ -3433,8 +3433,7 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 def purchaseordercuttinglistall(request):
     purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0)
     purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'))
-    print(purchase_orders_cutting_completed)
-    print(purchase_orders_cutting_pending)
+
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
 
@@ -3961,6 +3960,7 @@ def godown_item_report(request,g_id,shade_id):
         material_color_shade = shade_name,cutting_room_status='cutting_room', 
         material_color_shade__godown_shades__godown_name=g_id)
     
+
     # P O cutting room qty query for cancelled cutting room
     purchase_order_cutting_room_qty_cancelled = purchase_order_for_raw_material_cutting_items.objects.filter(
         material_color_shade = shade_name,cutting_room_status='cutting_room_cancelled', 

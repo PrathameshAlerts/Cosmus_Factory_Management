@@ -647,7 +647,6 @@ class purchase_order_to_product(models.Model):
 
 
 class purchase_order_for_raw_material(models.Model):
-
     purchase_order_id = models.ForeignKey(purchase_order,related_name='raw_materials', on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 60, null=False, blank=False)

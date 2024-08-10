@@ -54,6 +54,7 @@
               <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
               <td><button class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
+              <td>{{cutting_order.cutting_cancelled}}</td>
             </tr>
             {% endfor %}
           </tbody>
