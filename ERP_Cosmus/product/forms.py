@@ -556,6 +556,8 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                                 item_in_godown.quantity = item_quantity_in_godown - total_consumption
                                 item_in_godown.save()
 
+                                if total_consumption != 0:
+                                    form.instance.cutting_room_status = 'cutting_room'
                             
 
                     except purchase_order.DoesNotExist:
