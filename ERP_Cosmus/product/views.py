@@ -3038,7 +3038,7 @@ def purchaseorderdelete(request,pk):
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     
-    purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
+    purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
 
@@ -3504,6 +3504,7 @@ def purchaseordercuttingpopup(request,cutting_id):
 def purchaseordercuttingmastercancelajax(request):
 
     if request.method == 'POST':
+
         try:
             cutting_key = request.POST.get('cuttingId')
             
