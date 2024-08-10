@@ -54,7 +54,7 @@
               <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
               <td><button class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
-              <td>{{cutting_order.cutting_cancelled}}</td>
+              <input type="hidden" class="cuttingCancelled" value="{{cutting_order.cutting_cancelled}}">
             </tr>
             {% endfor %}
           </tbody>
@@ -142,15 +142,15 @@
         });
       }
     });
+    
   });
 });
 
-  
+
 </script>
 <script>
 function approvedValues(){
-  var processValue = document.querySelectorAll('.processedQty');
- 
+  var processValue = document.querySelectorAll('.processedQty'); 
   processValue.forEach(function(el){
     var processQty = parseFloat(el.textContent || 0);
     var approvedValue = el.closest('tr').querySelector('.approvedQty');
@@ -164,7 +164,24 @@ function approvedValues(){
 
     }
   })
+}
 
+function cancelCutting(){
+      var cancelCutting = document.querySelectorAll('.cuttingCancelled');
+      cancelCutting.forEach(function(elemet){
+        var cancelQty = elemet.value;
+            console.log(cancelQty)
+        if(cancelQty === 'True'){
+          var mainRows = elemet.closest('tr');
+
+          mainRows.style.opacity = '0.5';
+          var linksAndButtons = mainRows.querySelectorAll('a, button');
+          linksAndButtons.forEach(function(item) {
+            item.disabled = true;
+            item.style.pointerEvents = 'none';
+          });
+        }
+      })
 }
 
   var popupPage = null;
@@ -194,7 +211,10 @@ function approvedValues(){
   }
   document.addEventListener("DOMContentLoaded",function(){
     approvedValues();
+    cancelCutting();
   })
+ 
+
 
 </script>
   {% endblock %}
