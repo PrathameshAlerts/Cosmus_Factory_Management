@@ -527,7 +527,7 @@ class RawStockTrasferRecords(models.Model):
 
 
 class item_purchase_voucher_master(models.Model):
-    purchase_number = models.CharField(max_length = 100,unique = True, null = False, blank = False)
+    purchase_number = models.CharField(max_length = 100, unique = True, null = False, blank = False)
     supplier_invoice_number = models.CharField(max_length = 100)
     ledger_type = models.CharField(max_length = 20, default = 'purchase')
     party_name  = models.ForeignKey(Ledger, on_delete = models.PROTECT)
@@ -647,10 +647,7 @@ class purchase_order_to_product(models.Model):
 
 
 class purchase_order_for_raw_material(models.Model):
-    STATUS = [
-        ('cutting_room', 'cutting_room'),
-        ('labour_workout','labour_workout'),
-    ]
+
     purchase_order_id = models.ForeignKey(purchase_order,related_name='raw_materials', on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 60, null=False, blank=False)
@@ -663,7 +660,7 @@ class purchase_order_for_raw_material(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
-    cutting_room_status = models.CharField(max_length=20,choices= STATUS)
+    
 
 
 class purchase_order_raw_material_cutting(models.Model):
@@ -689,6 +686,12 @@ class purchase_order_to_product_cutting(models.Model):
 
 
 class purchase_order_for_raw_material_cutting_items(models.Model):
+
+    STATUS = [
+        ('cutting_room', 'cutting_room'),
+        ('cutting_room_cancelled','cutting_room_cancelled'),
+        ('labour_workout','labour_workout'),
+    ]
     purchase_order_cutting = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
@@ -702,6 +705,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    cutting_room_status = models.CharField(max_length=25, choices = STATUS, blank=True, null=True)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
 

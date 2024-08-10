@@ -3433,6 +3433,8 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 def purchaseordercuttinglistall(request):
     purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0)
     purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'))
+    print(purchase_orders_cutting_completed)
+    print(purchase_orders_cutting_pending)
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
 
@@ -3500,35 +3502,50 @@ def purchaseordercuttingpopup(request,cutting_id):
             
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
-def purchaseordercuttingmastercancel(request):
+def purchaseordercuttingmastercancelajax(request):
 
     if request.method == 'POST':
         try:
             cutting_key = request.POST.get('cuttingId')
             
             cutting_instance = get_object_or_404(purchase_order_raw_material_cutting,pk=cutting_key)
-            
-            if cutting_instance:
-                cutting_instance.cutting_cancelled = True
-                cutting_instance.save()
-                if cutting_instance.approved_qty == 0:
-                    processed_qty_to_revert = cutting_instance.processed_qty
 
-                    cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty + processed_qty_to_revert
-                    cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces - processed_qty_to_revert
-                    cutting_instance.purchase_order_id.save()
-                    
-                    for record in cutting_instance.purchase_order_to_product_cutting_set.all():
-                        purchase_order_to_product_instance = purchase_order_to_product.objects.get(purchase_order_id=cutting_instance.purchase_order_id.id,product_id__PProduct_SKU=record.product_sku)
-                        purchase_order_to_product_instance.process_quantity = purchase_order_to_product_instance.process_quantity + record.cutting_quantity 
-                        purchase_order_to_product_instance.save()
+            with transaction.atomic():
+                if cutting_instance:
+                    cutting_instance.cutting_cancelled = True
+                    cutting_instance.save()
+                    if cutting_instance.approved_qty == 0:
+                        processed_qty_to_revert = cutting_instance.processed_qty
 
-                    return JsonResponse({'status' : 'success'}, status=200)
+                        cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty + processed_qty_to_revert
+                        cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces - processed_qty_to_revert
+                        cutting_instance.purchase_order_id.save()
+                        
+                        for record in cutting_instance.purchase_order_to_product_cutting_set.all():
+                            purchase_order_to_product_instance = purchase_order_to_product.objects.get(purchase_order_id=cutting_instance.purchase_order_id.id,product_id__PProduct_SKU=record.product_sku)
+                            purchase_order_to_product_instance.process_quantity = purchase_order_to_product_instance.process_quantity + record.cutting_quantity 
+                            purchase_order_to_product_instance.save()
+
+                        for cutting_items in cutting_instance.purchase_order_for_raw_material_cutting_items_set.all():
+
+                            item_godown_instance, created = item_godown_quantity_through_table.objects.get_or_create(Item_shade_name=cutting_items.material_color_shade,godown_name=cutting_items.purchase_order_cutting.purchase_order_id.temp_godown_select)
+
+                            if created:
+                                item_godown_instance_qty = 0 
+                            else:
+                                item_godown_instance_qty = item_godown_instance.quantity
+
+                            item_godown_instance.quantity = item_godown_instance_qty + cutting_items.total_comsumption
+                            item_godown_instance.save()
+                            cutting_items.cutting_room_status = 'cutting_room_cancelled'
+                            cutting_items.save()
+
+                        return JsonResponse({'status' : 'success'}, status=200)
                 
+                    else:
+                        return JsonResponse({'status':'Cutting Already Approved'}, status=404)
                 else:
-                    return JsonResponse({'status':'Cutting Already Approved'}, status=404)
-            else:
-                return JsonResponse({'status':'Instance not found'}, status=404)
+                    return JsonResponse({'status':'Instance not found'}, status=404)
             
         except ObjectDoesNotExist as ne:
             print(ne)
@@ -3931,32 +3948,44 @@ def godown_item_report(request,g_id,shade_id):
     
 
 
-    # purchase voucher reqport query
-    closing_quantity = decimal.Decimal(0.00)
-    closing_value = decimal.Decimal(0.00)
-    
+    # purchase voucher report query    
     # comments in please check notes/ORM_query_dump.txt line no 34
     purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
         purchase_voucher_items__item_shade = shade_name ,purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
             godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
                 'purchase_voucher_items__rate')), filter=Q(purchase_voucher_items__shade_godown_items__godown_id = godown_name))
     
+
+    # P O cutting room qty query
+    purchase_order_cutting_room_qty = purchase_order_for_raw_material_cutting_items.objects.filter(
+        material_color_shade = shade_name,cutting_room_status='cutting_room', 
+        material_color_shade__godown_shades__godown_name=g_id)
     
+    # P O cutting room qty query for cancelled cutting room
+    purchase_order_cutting_room_qty_cancelled = purchase_order_for_raw_material_cutting_items.objects.filter(
+        material_color_shade = shade_name,cutting_room_status='cutting_room_cancelled', 
+        material_color_shade__godown_shades__godown_name = g_id)
     
+
+    # addes quantity and value in each for loop in closing_quantity and closing_value which total is carry forwarded to the nxt forloop
+    closing_quantity = decimal.Decimal(0.00)
+    closing_value = decimal.Decimal(0.00)
+
     for godown_qty in opening_godown_qty:
 
         closing_quantity += godown_qty.opening_quantity
         closing_value += godown_qty.opening_rate * godown_qty.opening_quantity
+
         report_data.append({
             'date': godown_qty.created_date,
             'particular': 'Opening Balance',
             'voucher_type': '',
             'vch_no': '',
-            'inward_quantity': f"{godown_qty.opening_quantity} Meter",
+            'inward_quantity': f"{godown_qty.opening_quantity} Mtr",
             'inward_value': godown_qty.opening_rate * godown_qty.opening_quantity,
             'outward_quantity': '',
             'outward_value': '',
-            'closing_quantity': f"{closing_quantity} Meter",
+            'closing_quantity': f"{closing_quantity} Mtr",
             'closing_value': closing_value,
             'rate':godown_qty.opening_rate
         })
@@ -3971,14 +4000,50 @@ def godown_item_report(request,g_id,shade_id):
             'particular': 'Puchase Voucher',
             'voucher_type': purchase_voucher_item_qty.ledger_type,
             'vch_no': purchase_voucher_item_qty.purchase_number,
-            'inward_quantity': f"{purchase_voucher_item_qty.godown_qty_total} Meter",
+            'inward_quantity': f"{purchase_voucher_item_qty.godown_qty_total} Mtr",
             'inward_value': purchase_voucher_item_qty.item_rate * purchase_voucher_item_qty.godown_qty_total,
             'outward_quantity': '',
             'outward_value': '',
-            'closing_quantity': f"{closing_quantity} Meter",
+            'closing_quantity': f"{closing_quantity} Mtr",
             'closing_value': closing_value,
             'rate': purchase_voucher_item_qty.item_rate
             })
+        
+
+    for fabric_cutting_items in purchase_order_cutting_room_qty:
+        closing_quantity = closing_quantity - fabric_cutting_items.total_comsumption
+        closing_value = fabric_cutting_items.total_comsumption * fabric_cutting_items.rate
+
+        report_data.append({
+            'date': fabric_cutting_items.created_date,
+            'particular': 'Cutting Room',
+            'voucher_type': 'Cutting Voucher',
+            'vch_no': fabric_cutting_items.purchase_order_cutting.raw_material_cutting_id,
+            'inward_quantity': '',
+            'inward_value': '',
+            'outward_quantity': f"{fabric_cutting_items.total_comsumption} Mtr",
+            'outward_value': fabric_cutting_items.total_comsumption * fabric_cutting_items.rate,
+            'closing_quantity': f"{closing_quantity} Mtr",
+            'closing_value': closing_value,
+            'rate': fabric_cutting_items.rate})
+    
+
+    for fabric_cutting_cancelled_items in purchase_order_cutting_room_qty_cancelled:
+        closing_quantity = closing_quantity + fabric_cutting_cancelled_items.total_comsumption
+        closing_value = fabric_cutting_cancelled_items.total_comsumption * fabric_cutting_cancelled_items.rate
+
+        report_data.append({
+            'date': fabric_cutting_cancelled_items.created_date,
+            'particular': 'Cutting Room Cancelled',
+            'voucher_type': 'Cancelled Cutting Voucher',
+            'vch_no': fabric_cutting_cancelled_items.purchase_order_cutting.raw_material_cutting_id,
+            'inward_quantity': f"{fabric_cutting_cancelled_items.total_comsumption} Mtr",
+            'inward_value': fabric_cutting_cancelled_items.total_comsumption * fabric_cutting_items.rate,
+            'outward_quantity': '',
+            'outward_value': '',
+            'closing_quantity': f"{closing_quantity} Mtr",
+            'closing_value': closing_value,
+            'rate': fabric_cutting_cancelled_items.rate})
 
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
                                                                              'shade_name':shade_name,'report_data':report_data})
