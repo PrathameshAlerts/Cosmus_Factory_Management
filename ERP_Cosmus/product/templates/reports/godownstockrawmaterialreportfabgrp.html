@@ -94,7 +94,7 @@
          const newFabricRate = parseFloat(fabricRate.textContent) || 0;
       
          const totalFabricValue = newFabricQty * newFabricRate;
-        fabricValue.textContent = totalFabricValue;
+        fabricValue.textContent = totalFabricValue.toFixed(2);
       }
     })
   }

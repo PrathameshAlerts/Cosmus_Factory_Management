@@ -20,7 +20,7 @@
                         <th>Voucher Type</th>
                         <th>Voucher No</th>
                    
-                        <th colspan="2" class="bg-c-blue">InWards</th>
+                        <th colspan="2" class="bg-c-blue">INWards</th>
                         <th colspan="2" class="bg-c-red">Outwards</th>
                         <th colspan="3" class="bg-c-green">Closing</th>
                     </tr>
@@ -38,7 +38,7 @@
                        
                 </tbody>
               
-                <tbody class="mainTableList">
+                <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                 {% for data in report_data %}
                 <tr>
                 <td>{{data.date}}</td>
