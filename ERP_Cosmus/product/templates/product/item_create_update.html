@@ -189,8 +189,8 @@
       {% endif %}
     </div>
     <div class=" d-flex my-3">
-      <label for="id_Units" class="item-form">Units:</label>
-      <input type="number" class="item-select" name="Units" value="{{form.instance.Units}}" step="0.01" required id="id_Units">
+      <label for="id_Units_value" class="item-form">Units:</label>
+      <input type="text" class="item-select unitValue" name="Units" value="{{form.instance.Units}}" step="0.01" required id="id_Units_value" readonly>
     </div>
 
     <div class=" d-flex my-3">
@@ -285,26 +285,27 @@
 <script>
 
 $(document).ready(function(){
-  $(document).on('click','#id_unit_name_item',function(){
-    var unit_name_pk = $(this).val();
-   
-  $.ajax({
-    url: '/itemcreatecloneajax/',
-    method: 'GET',
-    data: {
-        'unit_name_pk': unit_name_pk
-    },
-    success: function (response) {
-      
-    },
-    error: function (xhr, errmsg, err) {
-        console.log('Error sending value to the backend');
-    }
-})
+  $(document).on('change','#id_unit_name_item',function(){
+    let unit_name_pk = $(this).val();
 
-  })
-  
-})
+    $.ajax({
+      url: '/itemnamepkajax/',
+      method: 'GET',
+      data: {
+        'unit_name_pk': unit_name_pk
+      },
+      success: function(response) {
+        let units_value = response.unit_name_units;
+        $('#id_Units_value').val(units_value);
+        
+      },
+      error: function(xhr, errmsg, err) {
+        console.log('Error sending value to the backend');
+      }
+    });
+  });
+});
+
  
 </script>
 
@@ -315,7 +316,6 @@ document.addEventListener("DOMContentLoaded",function(){
 })
 function TotalValueCalculation(){
     var shadeId = document.getElementById('id_items').value;
-    console.log(shadeId);
     if(shadeId != "None"){
     var form = document.getElementById('id_shades-TOTAL_FORMS').value;
     for(var i=0;i<form;i++){

@@ -55,6 +55,8 @@ urlpatterns = [
 
     path('itemcreatecloneajax/',views.item_clone_ajax , name= 'item-create-clone-ajax'),
 
+
+
     #opening_godown_qty
     path('openinggodownquantity/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty'),
     path('openinggodownquantitypk/<int:primary_key>/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty-pk'),
@@ -74,6 +76,7 @@ urlpatterns = [
     path('unitnamedelete/<int:pk>',views.unit_name_delete , name= 'unit_name-delete'),
     #popup
     path('units_popup/',views.unit_name_create_update, name='unit-name-popup'),
+    path('itemnamepkajax/',views.unit_name_units_ajax, name='item-name-pk-ajax'),
 
     #accountsubgrp
     path('accsubgrpcreate/',views.account_sub_group_create_update , name= 'account_sub_group-create'),

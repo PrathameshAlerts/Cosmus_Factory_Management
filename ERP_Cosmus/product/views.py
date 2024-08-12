@@ -1344,7 +1344,11 @@ def unit_name_create_update(request,pk=None):
 
 def unit_name_units_ajax(request):
     unit_name_pk = request.GET.get('unit_name_pk')
-
+    if unit_name_pk is not None:
+        unit_name_instance = get_object_or_404(Unit_Name_Create,pk=unit_name_pk)
+        unit_name_units = unit_name_instance.unit_value
+        return JsonResponse({'unit_name_units':unit_name_units})
+        
 
 def unit_name_delete(request,pk):
     try:
