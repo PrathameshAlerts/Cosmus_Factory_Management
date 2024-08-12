@@ -284,6 +284,28 @@
 
 <script>
 
+$(document).ready(function(){
+  var unit_name_pk = document.getElementById('id_unit_name_item').value 
+  $.ajax({
+    url: '/itemcreatecloneajax/',
+    method: 'GET',
+    data: {
+        'unit_name_pk': unit_name_pk
+    },
+    success: function (response) {
+      
+    },
+    error: function (xhr, errmsg, err) {
+        console.log('Error sending value to the backend');
+    }
+})
+
+})
+ 
+</script>
+
+<script>
+
 document.addEventListener("DOMContentLoaded",function(){
   TotalValueCalculation() 
 })

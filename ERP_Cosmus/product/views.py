@@ -1342,7 +1342,8 @@ def unit_name_create_update(request,pk=None):
         return render(request, template_name, {'title':title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search})
 
 
-
+def unit_name_units_ajax(request):
+    unit_name_pk = request.GET.get('unit_name_pk')
 
 
 def unit_name_delete(request,pk):

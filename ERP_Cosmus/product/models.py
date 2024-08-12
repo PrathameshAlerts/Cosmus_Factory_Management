@@ -326,7 +326,7 @@ class Item_Creation(models.Model):
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Item_Packing = models.ForeignKey(packaging, on_delete=models.PROTECT)
     unit_name_item = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False) 
-    Units = models.DecimalField(max_digits=10, decimal_places=2, default=39.37,null=False, blank=False)
+    Units = models.DecimalField(max_digits=10, decimal_places=2,null=False, blank=False)
     Panha = models.DecimalField(max_digits=10, decimal_places=2,null=False, blank=False)
     Fabric_nonfabric = models.CharField(max_length = 255, choices = FandNFB)
     Item_Fabric_Finishes = models.ForeignKey(FabricFinishes, on_delete = models.PROTECT)

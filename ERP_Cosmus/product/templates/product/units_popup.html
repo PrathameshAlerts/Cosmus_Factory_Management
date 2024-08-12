@@ -12,6 +12,10 @@
       <label for="id_color_name" class="form-label create_color_lable">Name:</label>
       <input type="text" class="item-select" value="{{ form.instance.unit_name }}" name="unit_name" maxlength="255" required id="id_unit_name">
     </div>
+    <div class="d-flex">
+      <label for="id_unit_value" class=" item-form">Units:</label>
+        <input type="text" class="item-select" value="{{form.instance.unit_value}}" name="unit_value" maxlength="255" required id="id_unit_value">
+    </div>
 
     <input type="submit" class="create-btn mt-4" name="save" value="Save">
   </form>
