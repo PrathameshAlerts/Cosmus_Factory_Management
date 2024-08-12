@@ -115,7 +115,7 @@ urlpatterns = [
     path('purchasevoucherlist/', views.purchasevoucherlist, name = 'purchase-voucher-list'),
     path('purchasevoucherdelete/<int:pk>', views.purchasevoucherdelete, name = 'purchase-voucher-delete'),
 
-    path('purchasevouchervalidcheckajax', views.purchasevouchervalidcheckajax, name = 'purchase-voucher-pk-valid-check-ajax'),
+    path('purchasevouchervalidcheckajax/', views.purchasevouchervalidcheckajax, name = 'purchase-voucher-pk-valid-check-ajax'),
 
     path('purchasevoucherpopupcreate/<int:shade_id>/<int:prefix_id>/<str:item_rate>/<str:unique_id>', views.purchasevoucherpopup, name='purchase-voucher-popup-create'),
     path('purchasevoucherpopupupdate/<int:shade_id>/<int:prefix_id>/<int:primarykey>', views.purchasevoucherpopup, name='purchase-voucher-popup-update'),
