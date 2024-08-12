@@ -2312,7 +2312,6 @@ def purchasevoucherlist(request):
 
 def purchasevoucherdelete(request,pk):
     purchase_invoice_pk = get_object_or_404(item_purchase_voucher_master,pk=pk)
-    print(pk)
     purchase_invoice_pk.delete()
     return redirect('purchase-voucher-list')
                     
