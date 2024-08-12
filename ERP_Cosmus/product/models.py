@@ -459,7 +459,7 @@ class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, blank = False, null = False, related_name = 'transaction_entry')
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     credit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
-    voucher_no = models.IntegerField(null = True, blank= True, unique=True)
+    voucher_no = models.CharField(null = True, blank= True, unique=True)
     voucher_type = models.CharField(max_length = 100)
     particulars = models.CharField(max_length = 100)
     create_date = models.DateField(auto_now= True)
@@ -592,7 +592,7 @@ class product_2_item_through_table(models.Model):
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
     grand_total = models.DecimalField(default=0, max_digits=10, decimal_places=2)
-    common_unique = models.BooleanField(default=False)  #True if its common and false if its special
+    common_unique = models.BooleanField(default = False)  #True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1)
     Remark = models.CharField(max_length=100, blank=True, null=True)
 
@@ -655,6 +655,7 @@ class purchase_order_for_raw_material(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=3)
     panha = models.DecimalField(max_digits=10, decimal_places=2)
     units = models.DecimalField(max_digits=10, decimal_places=3)
+    unit_value = models.CharField(max_length=100)
     g_total = models.DecimalField(max_digits=10, decimal_places=3)
     consumption = models.DecimalField(max_digits=10, decimal_places=3)
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
@@ -700,6 +701,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=3)
     panha = models.DecimalField(max_digits=10, decimal_places=3)
     units = models.DecimalField(max_digits=10, decimal_places=3)
+    unit_value = models.CharField(max_length=100)
     g_total = models.DecimalField(max_digits=10, decimal_places=3)
     consumption = models.DecimalField(max_digits=10, decimal_places=3)
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
@@ -768,6 +770,7 @@ class labour_workout_cutting_items(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=3)
     panha = models.DecimalField(max_digits=10, decimal_places=3)
     units = models.DecimalField(max_digits=10, decimal_places=3)
+    unit_value = models.CharField(max_length=100)
     g_total = models.DecimalField(max_digits=10, decimal_places=3)
     consumption = models.DecimalField(max_digits=10, decimal_places=3)
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
@@ -775,6 +778,3 @@ class labour_workout_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
-
-
-

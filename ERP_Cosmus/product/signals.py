@@ -328,16 +328,15 @@ def set_item_rate_on_purchase(sender, instance, created, **kwargs):
 
 
 # signal to set latest rate of an item after opening godown quantity added
-@receiver(post_save, sender=opening_shade_godown_quantity)
+@receiver(post_save, sender = opening_shade_godown_quantity)
 def set_item_rate_on_purchase(sender, instance, created, **kwargs):
     item_rate = instance.opening_rate
     item_shade_id = instance.opening_purchase_voucher_godown_item.id
 
     if item_shade_id:
-        item_instance = item_color_shade.objects.get(id=item_shade_id)  # set item rate only if the rate is 0, which means there is no purchase made. 
-        if item_instance.rate == 0:
-            item_instance.rate = item_rate
-            item_instance.save()
+        item_instance = item_color_shade.objects.get(id=item_shade_id)
+        item_instance.rate = item_rate
+        item_instance.save()
 
 # signal for purchase order status flag while saving purchase_order
 @receiver(post_save, sender=purchase_order)

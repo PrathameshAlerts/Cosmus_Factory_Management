@@ -2269,7 +2269,6 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
             request.session['temp_uuid'] = temp_uuid 
 
             return HttpResponse('<script>window.close();</script>') 
-                    
 
         else:
             context = {
@@ -2317,6 +2316,11 @@ def purchasevoucherdelete(request,pk):
     purchase_invoice_pk.delete()
     return redirect('purchase-voucher-list')
                     
+
+
+def purchasevouchervalidcheckajax(request):
+    pass
+
 
 def session_data_test(request):
     # if request.session['openingquantitytemp']:
@@ -2427,9 +2431,6 @@ def gst_create_update(request, pk = None):
             return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
 
     return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
-
-
-
 
 
 
@@ -3115,6 +3116,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                                 'g_total':query.grand_total,
                                 'consumption':'0',
                                 'total_comsumption':'0',
+                                'unit_value': query.Item_pk.unit_name_item.unit_name,
                                 'physical_stock':'0',
                                 'balance_physical_stock':'0'}
             
@@ -3269,6 +3271,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'g_total' : purchase_items_raw.g_total,
                 'consumption' : purchase_items_raw.consumption,
                 'total_comsumption' :'0',
+                'unit_value':purchase_items_raw.unit_value,
                 'physical_stock' : current_physical_stock,
                 'balance_physical_stock' : '0',
             }
@@ -3640,6 +3643,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'g_total':instance.g_total,
                 'consumption':instance.consumption,
                 'total_comsumption':instance.total_comsumption,
+                'unit_value':instance.unit_value,
                 'physical_stock':instance.physical_stock,
                 'balance_physical_stock':instance.balance_physical_stock,
 
