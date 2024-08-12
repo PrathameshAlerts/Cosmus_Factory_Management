@@ -285,7 +285,9 @@
 <script>
 
 $(document).ready(function(){
-  var unit_name_pk = document.getElementById('id_unit_name_item').value 
+  $(document).on('click','#id_unit_name_item',function(){
+    var unit_name_pk = $(this).val();
+   
   $.ajax({
     url: '/itemcreatecloneajax/',
     method: 'GET',
@@ -300,6 +302,8 @@ $(document).ready(function(){
     }
 })
 
+  })
+  
 })
  
 </script>
