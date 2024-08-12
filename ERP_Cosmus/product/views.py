@@ -2318,8 +2318,21 @@ def purchasevoucherdelete(request,pk):
 
 
 def purchasevouchervalidcheckajax(request):
-    pass
+    purchase_number = request.GET.get('purchase_number')
 
+    if purchase_number:
+        check_instance_valid = item_purchase_voucher_master.objects.get(purchase_number__iexact=purchase_number)
+        
+        validation_flag = False
+        if check_instance_valid:
+            validation_flag = True
+    else:
+        return JsonResponse({'Status':'no data recieved'}, status=404)
+    
+    return JsonResponse({'validation_flag':validation_flag})
+
+            
+        
 
 def session_data_test(request):
     # if request.session['openingquantitytemp']:
