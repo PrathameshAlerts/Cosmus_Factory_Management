@@ -193,15 +193,15 @@ the input field will be pre-filled with that value when the page is loaded. -->
         <td class="text-nowrap">{{item.fab_grp}}</td>
         <td class="text-nowrap">{{item.Color_Name}}
 
-          <span style="color: rgb(166, 0, 0);">{{item.total_quantity | default_if_none:0}}</span>
+          <span class="colorCheck">{{item.total_quantity | default_if_none:0}}</span>
         </td>
         <!-- render reverse related fields -->
         <td>
-          <table class="table  table-bordered text-nowrap ">
+          <table class="table  table-bordered text-nowrap">
             <thead>
               <tr>
                 <th class="px-2 ">Shade</th>
-                <th class="px-2">Godown<span style="padding-left: 55px;">Qty</span></th>
+               <th colspan="2">Godown Details</th>
               </tr>
             </thead>
             <tbody class="mainTableList">
@@ -209,14 +209,20 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <tr>
                 <td>{{shade.item_shade_name}}</td>
                 <td>
-                  {% for shade_q in shade.godown_shades.all %}
-                  <table class="mx-2 mb-2 pt-1" style="border-bottom: 1px solid #888;" >
-                    <tr class="text-nowrap">
-                      <td class="pe-5 pb-2">{{shade_q.godown_name}}</td>
-                      <td>{{shade_q.quantity}}</td>
+                  
+                  <table class="tables table-bordered" style="border-bottom: 1px solid #888;" >
+                    <tr>
+                      <th class="px-2">Godown</th>
+                      <th class="px-2">Qty</th>
                     </tr>
+                    {% for shade_q in shade.godown_shades.all %}
+                    <tr class="text-nowrap">
+                      <td class="px-2">{{shade_q.godown_name}}</td>
+                      <td class="px-2 shadeColor">{{shade_q.quantity}}</td>
+                    </tr>
+                    {% endfor %}
                   </table>
-                  {% endfor %}
+              
                 </td>
               </tr>
               {% endfor %}
@@ -266,6 +272,16 @@ the input field will be pre-filled with that value when the page is loaded. -->
 
 
 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var colorcheck = document.querySelectorAll('.colorCheck');
+    colorcheck.forEach(function(el){
+      el.textContent > 0 ? el.style.color = 'darkgreen' : el.style.color = 'red';  
+    })
+    var shadeColorCheck = document.querySelectorAll('.shadeColor');
+    shadeColorCheck.forEach(function(el){
+      el.textContent > 0 ? el.style.color = 'darkgreen' : el.style.color = 'red';  
+    })
+  });
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
