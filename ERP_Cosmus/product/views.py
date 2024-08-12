@@ -58,7 +58,7 @@ from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, Color
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
                         ProductImagesFormSet, ProductVideoFormSet, purchase_order_form,purchase_voucher_items_godown_formset_shade_change,
                          gst_form, item_purchase_voucher_master_form,
-                           packaging_form, product_main_category_form, 
+                           packaging_form, product_main_category_form,  Product2ItemFormsetExtraForm,Product2CommonItemFormSetExtraForm,
                             product_sub_category_form, purchase_voucher_items_formset,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
@@ -2571,14 +2571,25 @@ def product2item(request,product_refrence_id):
         if not Products_all.exists():
                 raise ValueError("No products found for the given reference ID.")
         
+        extraform = True
+        for product in Products_all:
+            if product.product_2_item_through_table_set.all():
+                extraform = False
+        
+        print(extraform)
+
+
+
         #query for filtering unique to product fields for formset_single
         #filter all record of the products with the ref_id which is marked as unique fields
         product2item_instances = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_refrence_id,
               common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color').order_by('row_number')
         
-        formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
-
+        if extraform:
+            formset_single = Product2ItemFormsetExtraForm(queryset=product2item_instances , prefix='product2itemuniqueformset')
+        else:
+            formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
         # query for filtering all the common items in all the products in the refrence_id after that :
         #It orders by Item_pk first, so all records with the same Item_pk are grouped together.
@@ -2590,8 +2601,12 @@ def product2item(request,product_refrence_id):
             PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True).order_by(
                 'Item_pk', 'id','row_number').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
 
-        formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
-        
+
+        if extraform:
+            formset_common = Product2CommonItemFormSetExtraForm(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
+        else:
+            formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
+
         
         if request.method == 'POST':
 
@@ -2939,7 +2954,7 @@ def purchaseordercreateupdate(request,pk=None):
 
 
     if request.method == 'POST':
-        print(request.POST)
+        
         # both forms are submitted indivially depends on name of submitted button
         # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
@@ -4045,7 +4060,7 @@ def godown_item_report(request,g_id,shade_id):
             'closing_quantity': f"{closing_quantity} Mtr",
             'closing_value': closing_value,
             'rate': fabric_cutting_cancelled_items.rate})
-
+    print(report_data)
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
                                                                              'shade_name':shade_name,'report_data':report_data})
 

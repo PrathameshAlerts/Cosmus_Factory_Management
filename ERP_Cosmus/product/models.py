@@ -283,7 +283,8 @@ class Fabric_Group_Model(models.Model):
         ordering = ['fab_grp_name']
 
 class Unit_Name_Create(models.Model):
-    unit_name = models.CharField(max_length=255,unique = True, null = False, blank = False)
+    unit_name = models.CharField(max_length=100,unique = True, null = False, blank = False)
+    unit_value = models.CharField(max_length=100,null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 

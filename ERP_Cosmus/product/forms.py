@@ -90,7 +90,7 @@ class Product2ItemForm(forms.ModelForm):
 
 # when using modelformset need to add can_delete = True or delete wont be added in form
 Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=0, can_delete=True)
-
+Product2ItemFormsetExtraForm = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=1, can_delete=True)
 
 class Product2CommonItem(forms.ModelForm):
     class Meta:
@@ -114,7 +114,7 @@ class Product2CommonItem(forms.ModelForm):
 
 Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=0, can_delete=True)
 
-
+Product2CommonItemFormSetExtraForm = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=1, can_delete=True)
 
 
 
@@ -227,7 +227,7 @@ class ItemFabricGroup(UniqueFieldMixin,forms.ModelForm):
 class UnitName(UniqueFieldMixin,forms.ModelForm):
     class Meta:
         model = Unit_Name_Create
-        fields = ['unit_name']
+        fields = ['unit_name','unit_value']
 
 
     def clean_unit_name(self):
