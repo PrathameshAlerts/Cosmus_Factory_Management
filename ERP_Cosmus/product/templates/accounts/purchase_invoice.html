@@ -197,6 +197,26 @@
 
 
 <script>
+    $(document).ready(function(){
+        $('#id_purchase_number').on('focusout',function(){
+            var purchase_number = $(this).val();
+            $.ajax({
+                url: '/purchasevouchervalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'purchase_number': purchase_number,
+                },
+                success: function (data) {
+                    console.log('data',data);
+                   
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
+
+            })
+        })
+    })
   
     window.addEventListener('message', receiveMessage, false);
     function receiveMessage(event) {
