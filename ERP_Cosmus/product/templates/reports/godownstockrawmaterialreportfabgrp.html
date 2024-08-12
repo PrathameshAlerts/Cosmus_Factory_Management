@@ -90,11 +90,13 @@
       let fabricValue = row.querySelector('.fabricValue');
 
       if(fabricQty && fabricRate && fabricValue){
-         const newFabricQty = parseFloat(fabricQty.textContent) || 0;
-         const newFabricRate = parseFloat(fabricRate.textContent) || 0;
+         const newFabricQty = parseFloat(fabricQty.textContent);
+         const newFabricRate = parseFloat(fabricRate.textContent);
       
          const totalFabricValue = newFabricQty * newFabricRate;
         fabricValue.textContent = totalFabricValue.toFixed(2);
+        fabricValue.textContent > 0 ? fabricValue.style.color = 'darkgreen' : fabricValue.style.color = 'red';
+        fabricQty.textContent > 0 ? fabricQty.style.color = 'darkgreen' : fabricQty.style.color = 'red';
       }
     })
   }
@@ -113,6 +115,8 @@
             const fabricRate = parseFloat(fabricRateElement.textContent) || 0;
             const fabricTotalValue = fabricQty * fabricRate;
               fabricValueElement.textContent = fabricTotalValue.toFixed(2);
+              fabricValueElement.textContent > 0 ? fabricValueElement.style.color = 'darkgreen' : fabricValueElement.style.color = 'red';
+              fabricQtyElement.textContent > 0 ? fabricQtyElement.style.color = 'darkgreen' : fabricQtyElement.style.color = 'red';
           }
       });
 
@@ -121,6 +125,8 @@
 
    // Call the function on page load
    document.addEventListener('DOMContentLoaded', function() {
+
+
             TotalShadeValueCalculation();
             totalValueCal()
         });
