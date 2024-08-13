@@ -546,15 +546,35 @@ function randomValue (){
 
                 var item_shade_response = response.item_shade;
                 var item_shade__quantity = response.item_shades_total_quantity_dict;
+             
+                
                 
 
                 $.each(item_shade_response, function (key, value) {
                     if (item_shade__quantity.hasOwnProperty(key)) {
-                        $('#' +itemName).append('<option value="' + key + '">' + value + ' - ' + item_shade__quantity[key] + '</option>');
+
+                        var item_shade_qty = item_shade__quantity[key];
+                        var optionHtml;
+
+                        if (item_shade_qty > 0) {
+                            optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
+                        } else {
+                            optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
+                        }
+
+                        var $option = $(optionHtml);
+                        $('#' + itemName).append($option);
+
+                        // Additional fallback for browsers that don't support <span> within <option>
+                        if ($option.find('span').length === 0) {
+                            $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
+                        }
+
                     } else {
-                        $('#' +itemName).append('<option value="' + key + '">' + value + '</option>');
+                        $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
                     }
                 });
+
                 ajaxInProgress = false;
             },
             error: function (xhr, errmsg, err) {
