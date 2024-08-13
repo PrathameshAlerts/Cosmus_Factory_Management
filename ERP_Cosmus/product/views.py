@@ -2321,15 +2321,22 @@ def purchasevouchervalidcheckajax(request):
     purchase_number = request.GET.get('purchase_number')
 
     if purchase_number:
-        check_instance_valid = item_purchase_voucher_master.objects.get(purchase_number__iexact=purchase_number)
-        
         validation_flag = False
-        if check_instance_valid:
+        try:
+            check_instance_valid = item_purchase_voucher_master.objects.get(purchase_number__iexact=purchase_number)
             validation_flag = True
+
+        except item_purchase_voucher_master.DoesNotExist:
+            validation_flag = False
+            
+        except Exception as e:
+            return JsonResponse({f'Status':'Exception Occoured - {e}'}, status=404)
+        
+        print('validation_flag',validation_flag)
+
+        return JsonResponse({'validation_flag':validation_flag})
     else:
-        return JsonResponse({'Status':'no data recieved'}, status=404)
-    
-    return JsonResponse({'validation_flag':validation_flag})
+        return JsonResponse({f'Status':'No data recieved - {e}'}, status=404)
 
             
         

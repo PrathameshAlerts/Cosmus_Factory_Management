@@ -4,11 +4,13 @@
 <div>
     <h2>Purchase invoice</h2>
     <form class="mt-4" action=""method="POST">
+        <span id="purchaseError" class="error-messages"></span>
         {% csrf_token %}
         <div class="">
             <div class="d-flex mb-3">
                
                 <div class="d-flex ">
+                    
                     <label for="id_purchase_number"  class="me-3">Purchase No :</label>
                     {% if master_form.instance.id %}
                     <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required readonly>
@@ -200,6 +202,8 @@
     $(document).ready(function(){
         $('#id_purchase_number').on('focusout',function(){
             var purchase_number = $(this).val();
+            var purchase = $("#id_purchase_number");
+            var errorElement = $('#purchaseError'); // The error message element
             $.ajax({
                 url: '/purchasevouchervalidcheckajax/',
                 method: 'GET',
@@ -207,7 +211,21 @@
                     'purchase_number': purchase_number,
                 },
                 success: function (data) {
-                    console.log('data',data);
+                  
+                    if(data.validation_flag === true){
+                       //alert("Purchase number already exists");
+                       purchase.css('border', '1px solid red');
+                     
+                        errorElement.text('*Purchase number already exists');
+                     errorElement.show();
+                       
+                    }else {
+                        console.log(data.validation_flag);
+                        purchase.css('border', '1px solid black');
+                         
+                    errorElement.text('');
+                    errorElement.hide();
+                    }
                    
                 },
                 error: function (error) {   
