@@ -772,7 +772,7 @@ def item_create(request):
     
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
-
+        
 
         if form.is_valid():
             form_instance = form.save()
@@ -796,6 +796,7 @@ def item_create(request):
                                                                       'title':title,'form':form,'items_to_clone':items_to_clone})
     
     form = Itemform()
+    
     return render(request,'product/item_create_update.html',{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
                                                                  'unit_name':unit_name,
@@ -2288,8 +2289,14 @@ def purchasevouchercreategodownpopupurl(request):
     primary_key = request.GET.get('purchase_id')
     prefix_id  = request.GET.get('prefix_id')
     item_instance = item_color_shade.objects.get(id=shade_id)
-    item_rate = item_instance.rate
-    print(item_rate)
+    fab_grp_instance = Fabric_Group_Model.objects.get(items__shades = shade_id)
+
+    #filter item_color_shade on the fabricgrp of the selected shade then order by date and get the latest instance and get the rate from that
+    query_set_order = item_color_shade.objects.filter(items__Fabric_Group=fab_grp_instance).order_by('-modified_date_time').first()
+
+    item_rate = query_set_order.rate
+
+
 
     #if pk is there in ajax then it generates url for update if unique id is there in rquest then it generates url with unique key
     if primary_key is not None:
