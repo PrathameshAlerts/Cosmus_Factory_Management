@@ -31,12 +31,12 @@
                 </div>
                 <div class="d-flex mb-2"> 
                     <div class="d-flex">
-                        <label for="id_target_date" class="ms-2">Target date:</label>
+                        <label for="id_target_date" class="ms-2">Target Date:</label>
                         <input type="date" name="target_date" class="targetDateValue text-danger  ms-3 pb-2 me-3" value="{{ form.instance.target_date|date:'Y-m-d' }}" required id="id_target_date" readonly> 
                     </div>
                     <div class="d-flex">
                         <lable for="id_model_name" class="">Model Name:</lable> 
-                        <input class="text-danger productShadeCutting_Material_input pb-2  ms-3 " id="id_model_name"value="{{model_name | default_if_none:''}}" readonly>
+                        <input class="text-danger productShadeCutting_Material_input pb-2  " id="id_model_name"value="{{model_name | default_if_none:''}}" readonly>
                         <input type="hidden"  name="balance_number_of_pieces" id="id_balance_number_of_pieces"value="{{form.instance.balance_number_of_pieces}}">
                     </div>
                 </div>
@@ -220,12 +220,12 @@
                             <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                             <td><input type="text" class="productinput color" name="{{form.prefix}}-product_color" value="{{form.initial.product_color | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                             <td><input type="text"  class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name | default_if_none:''}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
-                            <td>
+                            <td class="text-nowrap">
                                 <div class="checkBox-row">
                                     {% for shade in form.initial.material_color_shade %}
                                 <label for="id_{{form.prefix}}-material_color_shade-{{forloop.counter}}" class="px-2 py-2 onlyOneCheckBox">
                                     <input type="checkbox" class="mx-1" name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade-{{forloop.counter}}" value="{{shade.id}}" {% if forloop.first or shade.id in form.initial.material_color_shade %} checked{% endif %} onClick="checkOnlyOne(this)">
-                                    {{shade.item_shade_name}} - {{shade.godown_qty}}
+                                    {{shade.item_shade_name}}&nbsp;&nbsp;<span class="color_Shades" style="border: none;">{{shade.godown_qty}}</span>
                                 </label><br>
                                 {% endfor %}
                                 </div>
@@ -258,7 +258,17 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     var checkboxRows = document.querySelectorAll('.checkBox-row');
+    var colorSearch = document.querySelectorAll('.color_Shades');
 
+    colorSearch.forEach(function(el) {
+    var shadeValue = el.textContent.trim(); // Trim to remove any extra whitespace
+    console.log(shadeValue);
+    if (shadeValue > 0) {
+        el.style.color = 'green';
+    } else {
+        el.style.color = 'red';
+    }
+});
     checkboxRows.forEach(row => {
         var checkboxes = row.querySelectorAll('input[type="checkbox"]');
         if (checkboxes.length > 0) {

@@ -1853,8 +1853,12 @@ styles.css */
         display: none;
     }
 }
-
-
+.error-messages {
+    color: red;
+    font-size: 0.9em;
+    display: none; /* Hide by default */
+    margin-left: 100px; /* Optional, adjust as needed */
+}
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {
