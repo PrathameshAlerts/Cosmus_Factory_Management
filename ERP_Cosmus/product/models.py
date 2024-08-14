@@ -781,12 +781,12 @@ class labour_workout_cutting_items(models.Model):
 
 
 class godown_item_report_for_cutting_room(models.Model):
-    creation_date = models.DateTimeField()
+    creation_date = models.DateTimeField(auto_now = True)
     particular = models.CharField(max_length=100)
     voucher_type = models.CharField(max_length=100)
     voucher_number = models.CharField(max_length=100)
     material_color_shade = models.CharField(max_length=255)
     godown_id = models.CharField(max_length=50)
-    inward_outward = models.BooleanField() #true for inward and false for outward
-    quantity = models.DecimalField(max_digits=10, decimal_places=3)
+    inward = models.BooleanField() # true for inward and false for outward
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
     rate = models.DecimalField(max_digits=10, decimal_places=3)
