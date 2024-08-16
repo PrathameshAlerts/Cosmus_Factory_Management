@@ -611,11 +611,47 @@ purchase_order_cutting_approval_formset = inlineformset_factory(
 
 
 class labour_workout_child_form(forms.ModelForm):
+    total_approved_pcs = forms.IntegerField()
+    
     class Meta:
         model = labour_workout_childs
         fields = ['labour_name' , 'challan_no','total_approved_pcs',
                   'total_process_pcs','total_balance_pcs']
 
+
+
+class Basepurchase_labour_workout_cutting_items_form(BaseInlineFormSet):
+    def clean(self):
+        super().clean()        
+        with transaction.atomic():
+            post_data = self.data
+
+            godown_id = post_data.get('godown_id')
+            
+            godown_instance = Godown_raw_material.objects.get(godown_id)
+            
+            for form in self.forms:
+                material_name = form.cleaned_data.get('material_name')
+                material_color_shade = form.cleaned_data.get('material_color_shade')
+    
+                item_shade_instance = item_color_shade.objects.get(items__item_name=material_name,item_shade_name=material_color_shade)
+
+                if item_shade_instance.items.Fabric_nonfabric == 'Non Fabric':
+                    total_consumption = form.cleaned_data.get('total_comsumption')
+                    
+                    obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown_instance,Item_shade_name=item_shade_instance)
+
+                    if created:
+                        qty_to_deduct = 0
+                    
+                    elif not created:
+                        qty_to_deduct = obj.quantity
+
+                    obj.quantity = qty_to_deduct - total_consumption
+                    obj.save()
+
+                elif item_shade_instance.items.Fabric_nonfabric == 'Fabric':
+                    pass
 
 class labour_workout_cutting_items_form(forms.ModelForm):
     class Meta:
