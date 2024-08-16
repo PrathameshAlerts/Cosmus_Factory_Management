@@ -20,7 +20,7 @@
                         </div>
                         <div class="d-flex ms-1 ">
                             <lable for="id_labour_name" class="">Labour:</lable>
-                            <select type="number" name="labour_name" id="id_labour_name" class="item-select text-danger ms-2 pb-2" >
+                            <select type="number" name="labour_name" id="id_labour_name" class="item-select ms-2 pb-2" >
                             {% if labour_work_out_child_form.instance.id %}
                             <option value="{{labour_work_out_child_form.instance.labour_name.id}}">{{labour_work_out_child_form.instance.labour_name.name}}</option>
                             {% for ledger in ledger_labour_instances %}
@@ -204,7 +204,7 @@ function labourApprovedQty() {
         total += approvedQty;
 
         document.getElementById('id_OderQty').value = total;
-        //document.getElementById('id_balanceQtys').value =balance;
+        document.getElementById('id_balanceQtys').value =balance;
     })
 
    
@@ -218,17 +218,23 @@ function labourQty(){
     processQty.forEach(function(element){
        var processValue = parseInt(element.value) || 0;
        var approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
-       //var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
+       var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
 
-       if(approvedValue < processValue){
+       if(balanceValue < processValue){
         element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
        }
 
        if(!isNaN(processValue) && !isNaN(approvedValue)){
         totalValue += processValue;
         document.getElementById('id_processQty').value = totalValue;
-         balanceValue = approvedValue - processValue;
-        //element.closest('tr').querySelector('[name$="-balance_pcs"]').value = balanceValue;
+        document.getElementById('id_total_process_pcs').value = totalValue;
+
+        var totalApproved = parseInt(document.getElementById('id_total_approved_pcs').value);
+        console.log(totalApproved);
+        console.log(totalValue)
+       var totalbalance = totalApproved - totalValue;
+        document.getElementById('id_total_balance_pcs').value = totalbalance;
+    
 
        }
 
