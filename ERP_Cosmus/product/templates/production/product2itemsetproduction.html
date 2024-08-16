@@ -17,16 +17,17 @@
                         <th>Total</th>
                         <th>Remark</th>
                         <th>Delete</th>
-                        <td>Add Row</td>
+                        <th>Add Row</th>
                     </tr>
                 </thead>
 
                 <tbody class="mainTableList">
                     {{formset_single.management_form}}
                     {% for form in formset_single %}
-                    {{ form.id }}
+                
                     
                     <tr>
+                        {{ form.id }}
                         <td><input  id="id_{{form.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" name="{{form.prefix}}-row_number"></input>
                             <input type="hidden"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                         <td>
@@ -53,13 +54,13 @@
                         <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total" value="{{form.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total" readonly></td>
                         <td><input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-Remark"></td>
                         <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
-                        <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="+"></td>
+                        <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="+" ></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        <input type="number" class="product_row" name="productNoRow" id="id_productNoRow">
+        <input type="number" class="product_row" name="productNoRow" id="id_productNoRow" value="1">
         <button type="button" class="add_btn mb-4" id="addForm">Add</button>
         
         <div>
@@ -73,15 +74,15 @@
                             <th>Total</th>
                             <th>Remark</th>
                             <th>Delete</th>
-                            <td>Add Row</td>
+                            <th>Add Row</th>
                         </tr>
                     </thead>
                     <tbody class="mainTable">
                         {{formset_common.management_form}}
                         {% for forms in formset_common %}
-                        {{ forms.id }}
+                  
                         <tr>
-                        
+                            {{ forms.id }}
                             <td><input  id="id_{{forms.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" name="{{forms.prefix}}-row_number"></input>
                                 <input type="hidden"  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                             <td>
@@ -96,12 +97,12 @@
                             <td><input type="number" class="product_remark" name="{{forms.prefix}}-grand_total" value="{{forms.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{forms.prefix}}-grand_total" readonly></td>
                             <td><input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}" maxlength="255" id="id_{{forms.prefix}}-Remark"></td>
                             <td><span class="deleteButton border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;" name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE"value=""></i></span></td>
-                            <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{forms.prefix}}-add_btn" id="id_{{forms.prefix}}-add_btn" value="+"></td>
+                            <td><input type="button" class="add_btn add_btn_CommonForm mb-3" name="{{forms.prefix}}-add_btns" id="id_{{forms.prefix}}-add_btns" value="+"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <input type="number" class="product_row" name="commonNoRow" id="id_commonNoRow">
+                <input type="number" class="product_row" name="commonNoRow" id="id_commonNoRow" value="1">
                 <button type="button" class="add_btn mb-3" id="addNewRow">Add</button>
         </div>
         <input type="submit" class="create-btn">
@@ -224,11 +225,15 @@
             }
 
             // Calculate available space and set max height
-            const newHeight = $inputField.offset();
+            const inputOffset = $inputField.offset();
             const windowHeight = $(window).height();
-            const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+            const inputHeight = $inputField.outerHeight();
+            const inputBottomOffset = inputOffset.top + inputHeight;
+            const availableSpaceBelow = windowHeight - inputBottomOffset;
+            const maxHeight = Math.max(availableSpaceBelow, 150);
+
             $dropdownOptions.css({
-                'max-height': availableSpace + 'px',
+                'max-height': maxHeight + 'px',
                 'overflow-y': 'auto'
             });
 
@@ -518,13 +523,39 @@
 <script>
     // THis code are using a single row created by clicking add button
     document.addEventListener('DOMContentLoaded', function () {
+
     const addButtonValue = document.querySelectorAll('.add_btn_row');
     const tableBodys = document.querySelector('#mainProductForm tbody');
+      // Function to update the visibility of add buttons
+      function updateAddButtonVisibility() {
+        // Iterate over each add button
+        addButtonValue.forEach(function (button) {
+            // Find the closest <tr> element
+            const currentRow = button.closest('tr');
+        
+            // Get the id value from the corresponding input elementid_product2itemuniqueformset-0-id
+            const idElement = currentRow.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
+          
+            const idValue = idElement.value;
+         
+            // Show or hide the add button based on the id value
+            if (idValue != '' && idValue != null) {
+                button.style.display = 'block'; // Show button
+            } else {
+                button.style.display = 'none'; // Hide button
+            }
+        });
+    }
 
+    // Initial call to update the visibility when the page loads
+    updateAddButtonVisibility();
+
+    if(addButtonValue && tableBodys){
     addButtonValue.forEach(function (el) {
         el.addEventListener('click', function () {
             const currentRow = el.closest('tr');
             const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
+            console.log('inputValue',inputValue);
             const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
             const formsInsertValue = parseInt(mainForms.value);
             const formValue = inputValue.split('-')[1];
@@ -598,6 +629,7 @@
             deleteRowSingle();
         });
     });
+    }
 
     function deleteRowSingle() {
         document.querySelectorAll('.delete-btn').forEach(function (button) {
@@ -637,7 +669,7 @@
                
 
                 if (isNaN(addInputRow) || addInputRow <= 0) {
-                    addInputRow = 0;
+                    addInputRow = 1;
                     return;
                 }
                 let lastVisibleRow = null;
@@ -709,13 +741,13 @@
                     const addButtonElement = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
                     addButtonElement.id = `id_product2itemuniqueformset-${newFormCount}-add_btn`;
                     addButtonElement.name = `product2itemuniqueformset-${newFormCount}-add_btn`;
-                    addButtonElement.value = 'Add';
+                    addButtonElement.value = '+';
 
                     forms.value = newFormCount + 1;
 
                     tableBody.appendChild(newTable);
                     }
-                    document.getElementById('id_productNoRow').value = '';
+                    document.getElementById('id_productNoRow').value = '1';
                     deleteRow();
 
                 } else {
@@ -754,30 +786,55 @@
 
 </script>
 
+<!-- product2itemcommonformset -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-        const addButtonValue = document.querySelectorAll('.add_btn_row');
-        const tableBodys = document.querySelector('#mainProductForm tbody');
-     
-        addButtonValue.forEach(function (el){
+        const addButtonValues = document.querySelectorAll('.add_btn_CommonForm');
+        const tableBodys = document.querySelector('#myProduct tbody');
+
+        function updateAddButton() {
+        // Iterate over each add button
+        addButtonValues.forEach(function (button) {
+            // Find the closest <tr> element
+            const currentRow = button.closest('tr');
+
+            // Get the id value from the corresponding input element
+            const idElement = currentRow.querySelector('[name^="product2itemcommonformset-"][name$="-id"]');
+            const idValue = idElement ? idElement.value : '';
+
+            // Show or hide the add button based on the id value
+            if (idValue !== '') {
+                button.style.display = 'block'; // Show button
+            } else {
+                button.style.display = 'none'; // Hide button
+            }
+        });
+    }
+    
+      // Initial call to update the visibility when the page loads
+      updateAddButton();
+
+        addButtonValues.forEach(function (el){
             el.addEventListener('click',function(){
                 const currentRow = el.closest('tr');
+     
                 const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
+      
                 const mainForms = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
                 const formsInsertValue = parseInt(mainForms.value);
-                console.log(formsInsertValue)
+          
                 const formValue = inputValue.split('-')[1];
                 
                 const formsInsert = parseInt(formValue) + 1;
 
                 const newRow = currentRow.cloneNode(true);
-                console.log(newRow)
+     
                
                 newRow.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
                 });
 
-                const rowValues = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="-row_number"]');
+                    const rowValues = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="-row_number"]');
                     rowValues.id = `id_product2itemcommonformset-${formsInsertValue}-row_number`;
                     rowValues.name = `product2itemcommonformset-${formsInsertValue}-row_number`;
                     rowValues.value = formsInsert + 1;
@@ -824,9 +881,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     deleteElement.value = '';
                     deleteElement.checked = false;
 
-                    const addButtonElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btn"]');
-                    addButtonElement.id = `id_product2itemcommonformset-${formsInsertValue}-add_btn`;
-                    addButtonElement.name = `product2itemcommonformset-${formsInsertValue}-add_btn`;
+                    const addButtonElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btns"]');
+                    addButtonElement.id = `id_product2itemcommonformset-${formsInsertValue}-add_btns`;
+                    addButtonElement.name = `product2itemcommonformset-${formsInsertValue}-add_btns`;
                     addButtonElement.value = '+';
                 
                  mainForms.value = formsInsertValue + 1;
@@ -936,9 +993,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     deleteElement.value = '';
                     deleteElement.checked = false;
 
-                    const addButtonElement = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btn"]');
-                    addButtonElement.id = `id_product2itemcommonformset-${formsInsertValue}-add_btn`;
-                    addButtonElement.name = `product2itemcommonformset-${formsInsertValue}-add_btn`;
+                    const addButtonElement = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btns"]');
+                    addButtonElement.id = `id_product2itemcommonformset-${newCount}-add_btns`;
+                    addButtonElement.name = `product2itemcommonformset-${newCount}-add_btns`;
                     addButtonElement.value = '+';
 
                     tableRow.value = newCount + 1;
@@ -946,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     tableBody.appendChild(lastRow);
                     
                     }
-                    document.getElementById('id_commonNoRow').value = '';
+                    document.getElementById('id_commonNoRow').value = '1';
                     deletedRow();
 
                 } else {
