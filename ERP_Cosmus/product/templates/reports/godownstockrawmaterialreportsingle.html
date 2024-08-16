@@ -25,7 +25,7 @@
                         <th colspan="3" class="bg-c-green">Closing</th>
                     </tr>
                 </thead>
-                <tbody >
+                <tbody class="mainTable" >
                         <tr>
                             <th colspan="4"></th>
                             <th style="background-color: #90D5FF;">Quantity</th>
@@ -64,36 +64,23 @@
             </table>
              
         </div>
-        <div class="d-flex justify-content-end name_absolute me-5">
-            <span>Total:</span>
-            <span class="me-5 ms-4"  id="TotalQty"></span>
-            <span class="ms-5" id="TotalValue"></span>
+        <div class="d-flex justify-content-end name_absolute">
+            <span class="me-3 fw-bold">Total:</span>
+            <span style="margin-right: 135px;"  id="TotalQty"></span>
+            <span style="margin-right: 25px;" id="TotalValue"></span>
         </div>
     </div>
 </div>
 
 
 <script>
-    function totalValue(){
-        var totalQty = 0;
-        var table = document.querySelectorAll('.mainTableList tr:last-child');
-        console.log(table);
+    
+    document.addEventListener('DomContendLoadered',function(){
+ 
+        totalValueCalculation();
+    })
+    
 
-
-        table.forEach(element => {
-           
-            var qty = element.querySelector('.closingQty').textContent;
-      
-            var value = element.querySelector('.closingValue').textContent;
-        
-
-            document.getElementById('TotalQty').textContent = qty;
-            document.getElementById('TotalValue').textContent = value;
-         
-        
-        });
-    }
-    document.addEventListener('DomContendLoadered',totalValue ())
     function totalValueCalculation() {
     var mainTable = document.querySelectorAll('.mainTableList tr');
     var previousClosingQty = 0;
@@ -131,6 +118,8 @@
         // Set the calculated closing values to the current row
         if (closeQtyElement) closeQtyElement.textContent = previousClosingQty.toFixed(2);
         if (closeValueElement) closeValueElement.textContent = previousClosingValue.toFixed(2);
+        document.getElementById('TotalQty').textContent =previousClosingQty.toFixed(2);
+        document.getElementById('TotalValue').textContent = previousClosingValue.toFixed(2);
     });
 }
 
