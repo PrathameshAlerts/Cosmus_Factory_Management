@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from django.db import models
 from django.conf import settings
 from django.forms import ValidationError
@@ -278,7 +279,7 @@ class Fabric_Group_Model(models.Model):
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
-
+    
     class Meta:
         ordering = ['fab_grp_name']
 
@@ -322,7 +323,7 @@ class Item_Creation(models.Model):
 
     #need to add many to many field to vendor 
     item_name = models.CharField(unique = True, null=False, max_length = 255)
-    Material_code = models.CharField(max_length = 255)
+    Material_code = models.CharField(max_length = 255, unique=True, null=False, blank=False)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
     Item_Packing = models.ForeignKey(packaging, on_delete=models.PROTECT)
     unit_name_item = models.ForeignKey(Unit_Name_Create, on_delete = models.PROTECT, null=False) 
@@ -338,8 +339,8 @@ class Item_Creation(models.Model):
     created_date = models.DateTimeField(auto_now =True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
     
-# these functions are used to show related attributes instead of PK id in listview
-   
+
+    # these functions are used to show related attributes instead of PK id in listview
     def Color_Name(self):
         return self.Item_Color.color_name
 
@@ -353,7 +354,6 @@ class Item_Creation(models.Model):
     def Item_GST(self):
         return self.Item_Creation_GST.gst_percentage
     
-
     def Fab_Finishes(self):
         return self.Item_Fabric_Finishes.fabric_finish
     
@@ -778,3 +778,15 @@ class labour_workout_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
+
+
+class godown_item_report_for_cutting_room(models.Model):
+    creation_date = models.DateTimeField(auto_now = True)
+    particular = models.CharField(max_length=100)
+    voucher_type = models.CharField(max_length=100)
+    voucher_number = models.CharField(max_length=100)
+    material_color_shade = models.CharField(max_length=255)
+    godown_id = models.CharField(max_length=50)
+    inward = models.BooleanField() # true for inward and false for outward
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
+    rate = models.DecimalField(max_digits=10, decimal_places=3)

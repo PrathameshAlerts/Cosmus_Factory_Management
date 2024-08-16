@@ -207,12 +207,32 @@ class Itemform(UniqueFieldMixin,forms.ModelForm):
         
     def clean_item_name(self):
         return self.clean_unique_field('item_name',Item_Creation)
+    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Retrieve the last instance of the Item_Creation model
+        last_item = Item_Creation.objects.order_by('pk').last()
+        print(last_item.pk)
+
+        # If there's a previous instance, set Material_code to last_item.pk + 1
+        if last_item:
+            self.fields['Material_code'].initial = last_item.pk + 1
+
+        else:
+            # If no previous instance exists, you can set a default initial value
+            self.fields['Material_code'].initial = 1
+
+""" 
+explaination on rendering data in - notes_forms_form_api.txt
+            
+"""
+
 
 
 ShadeFormSet = inlineformset_factory(Item_Creation, item_color_shade, fields=('item_name_rank', 'item_shade_name', 'item_color_image'), extra=1)
 OpeningShadeFormSetupdate = inlineformset_factory(item_color_shade, opening_shade_godown_quantity, fields=('opening_godown_id', 'opening_quantity', 'opening_rate'), extra=1)
-
-
 
 
 

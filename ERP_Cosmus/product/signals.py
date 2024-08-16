@@ -2,9 +2,9 @@
 from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
 from .models import (Ledger, PProduct_Creation, Product, RawStockTrasferRecords,
-                      account_credit_debit_master_table,  item_purchase_voucher_master, 
+                      account_credit_debit_master_table, godown_item_report_for_cutting_room,  item_purchase_voucher_master, 
                       item_godown_quantity_through_table,Item_Creation,item_color_shade, labour_workout_master, 
-                      opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_raw_material_cutting,
+                      opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting,
                         purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name,
                           shade_godown_items)
 import logging
@@ -326,7 +326,6 @@ def set_item_rate_on_purchase(sender, instance, created, **kwargs):
         item_instance.save()
 
 
-
 # signal to set latest rate of an item after opening godown quantity added
 @receiver(post_save, sender = opening_shade_godown_quantity)
 def set_item_rate_on_purchase(sender, instance, created, **kwargs):
@@ -338,6 +337,7 @@ def set_item_rate_on_purchase(sender, instance, created, **kwargs):
         item_instance.rate = item_rate
         item_instance.save()
 
+
 # signal for purchase order status flag while saving purchase_order
 @receiver(post_save, sender=purchase_order)
 def set_purchase_order_product_status(sender, instance, created, **kwargs):
@@ -347,17 +347,7 @@ def set_purchase_order_product_status(sender, instance, created, **kwargs):
         purchase_order_id.save()
 
 
-# @receiver(post_save, sender=purchase_order_to_product)
-# def delete_purchase_order_raw_on_purchase_order_update_signal(sender, instance, created, **kwargs):
-#     if not created:
-#         if instance.id:
-#             # if instance.order_quantity
-#             p_o_id = instance.purchase_order_id
-#             purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_id)
-#             print(p_o_id)
-#             for instances in purchase_order_raw_instances:
-#                 print(instances)
-#                 instances.delete()  
+ 
 
 
 @receiver(pre_save, sender=purchase_order_to_product)
@@ -375,6 +365,45 @@ def handle_purchase_order_update(sender, instance, **kwargs):
 
 
     
+# signal to save cutting_room_cancelled 
+
+@receiver(post_save, sender = purchase_order_for_raw_material_cutting_items)
+def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
+    
+
+    if instance.material_color_shade.items.Fabric_nonfabric == 'Fabric' and instance.total_comsumption != 0:
+
+        instance_material_color_shade = instance.material_color_shade.id
+        instance_particular = 'cutting_room'
+        instance_voucher_type = 'Purchase Voucher-Cutting'
+        instance_voucher_number = instance.purchase_order_cutting.raw_material_cutting_id
+        instance_godown_id = instance.purchase_order_cutting.purchase_order_id.temp_godown_select.id
+        instance_inward = False
+        instance_total_comsumption = instance.total_comsumption
+        instance_rate = instance.rate
+
+        if instance.cutting_room_status == 'cutting_room':
+
+            godown_item_report_for_cutting_room.objects.create(particular = instance_particular,
+                                                            voucher_type=instance_voucher_type
+                                                            ,voucher_number = instance_voucher_number,material_color_shade = instance_material_color_shade ,
+                                                            godown_id= instance_godown_id,
+                                                            inward = instance_inward ,total_comsumption = instance_total_comsumption,rate = instance_rate)
+            
+        
+        elif instance.cutting_room_status == 'cutting_room_cancelled':
+
+            instance_voucher_type = 'Purchase Voucher - Cutting Cancelled'
+            instance_inward = True
+
+            godown_item_report_for_cutting_room.objects.create(particular = instance_particular,
+                                                            voucher_type=instance_voucher_type
+                                                            ,voucher_number = instance_voucher_number,material_color_shade = instance_material_color_shade ,
+                                                            godown_id= instance_godown_id,
+                                                            inward = instance_inward ,total_comsumption = instance_total_comsumption,rate = instance_rate)
+
+
+
 
 
 

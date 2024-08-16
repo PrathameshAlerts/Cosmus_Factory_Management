@@ -1,15 +1,11 @@
 import decimal
-from email import message
 from io import BytesIO
-from itertools import count
-from operator import is_
+from operator import itemgetter
 from sys import exception
-from telnetlib import STATUS
 from django.conf import settings
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
-from pandas import json_normalize
 from python_utils import raise_exception
 import requests
 from django.contrib.auth.models import auth 
@@ -21,7 +17,6 @@ from django.db.models import Q, Sum, ProtectedError, Avg, Count,F
 from django.db.models.functions import Round
 from django.db import DatabaseError, IntegrityError, transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.utils.timezone import now
 import logging
 import urllib.parse
 from django.contrib import messages
@@ -30,7 +25,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import inlineformset_factory, modelformset_factory
-from django.http import Http404, HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse, QueryDict
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse
 
 from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
@@ -39,7 +34,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
-                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee,
+                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
@@ -772,7 +767,7 @@ def item_create(request):
     
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
-
+        
 
         if form.is_valid():
             form_instance = form.save()
@@ -796,6 +791,7 @@ def item_create(request):
                                                                       'title':title,'form':form,'items_to_clone':items_to_clone})
     
     form = Itemform()
+    
     return render(request,'product/item_create_update.html',{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
                                                                  'unit_name':unit_name,
@@ -2288,8 +2284,14 @@ def purchasevouchercreategodownpopupurl(request):
     primary_key = request.GET.get('purchase_id')
     prefix_id  = request.GET.get('prefix_id')
     item_instance = item_color_shade.objects.get(id=shade_id)
-    item_rate = item_instance.rate
-    print(item_rate)
+    fab_grp_instance = Fabric_Group_Model.objects.get(items__shades = shade_id)
+
+    #filter item_color_shade on the fabricgrp of the selected shade then order by date and get the latest instance and get the rate from that
+    query_set_order = item_color_shade.objects.filter(items__Fabric_Group=fab_grp_instance).order_by('-modified_date_time').first()
+
+    item_rate = query_set_order.rate
+
+
 
     #if pk is there in ajax then it generates url for update if unique id is there in rquest then it generates url with unique key
     if primary_key is not None:
@@ -2601,10 +2603,6 @@ def product2item(request,product_refrence_id):
             if product.product_2_item_through_table_set.all():
                 extraform = False
         
-        print(extraform)
-
-
-
         #query for filtering unique to product fields for formset_single
         #filter all record of the products with the ref_id which is marked as unique fields
         product2item_instances = product_2_item_through_table.objects.filter(
@@ -3074,7 +3072,7 @@ def purchaseorderdelete(request,pk):
         logger.error(f"Cannot delete {instance.purchase_order_number} - {e}.")
     return redirect('purchase-order-list')
      
-
+from django.db.models import Prefetch
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     
@@ -3106,7 +3104,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
         else:
             physical_stock_all_godowns[item_name] = str(item_quantity)
 
-    purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST or None, instance = purchase_order_instance)
+    purchase_order_raw_formset = purchase_order_raw_product_qty_formset(instance = purchase_order_instance)
 
     # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
     if not purchase_order_instance.raw_materials.all():
@@ -3158,6 +3156,9 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 
     
     if request.method == 'POST':
+
+        purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST)
+
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
 
         try:
@@ -3250,7 +3251,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
 
     #purchase_order_to_product_instances
-    purchase_order_to_product_instances = purchase_order_to_product.objects.filter(purchase_order_id=p_o_pk)
+    purchase_order_to_product_instances = purchase_order_to_product.objects.filter(purchase_order_id = p_o_pk)
 
     # purchase_order_form
     form = purchase_order_form(instance = purchase_order_instance)
@@ -3465,7 +3466,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
 
 def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
-    p_o_cutting_order_all =  purchase_order_raw_material_cutting.objects.filter(purchase_order_id = p_o_pk)
+    p_o_cutting_order_all =  purchase_order_raw_material_cutting.objects.filter(purchase_order_id = p_o_pk).select_related('purchase_order_id__ledger_party_name','factory_employee_id')
     Purchase_order_no = purchase_order.objects.get(id=p_o_pk)
     return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_number':Purchase_order_no, 'prod_ref_no':prod_ref_no, 'p_o_pk':p_o_pk})
 
@@ -3556,18 +3557,22 @@ def purchaseordercuttingmastercancelajax(request):
                 if cutting_instance:
                     cutting_instance.cutting_cancelled = True
                     cutting_instance.save()
+
                     if cutting_instance.approved_qty == 0:
                         processed_qty_to_revert = cutting_instance.processed_qty
 
-                        cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty + processed_qty_to_revert
-                        cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces - processed_qty_to_revert
+                        # increase balance qty and decrease total qty from purchase order total balance  
+                        cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty - processed_qty_to_revert
+                        cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces + processed_qty_to_revert
                         cutting_instance.purchase_order_id.save()
                         
+                        # for adding quantity in purchase_order_to_product table 
                         for record in cutting_instance.purchase_order_to_product_cutting_set.all():
                             purchase_order_to_product_instance = purchase_order_to_product.objects.get(purchase_order_id=cutting_instance.purchase_order_id.id,product_id__PProduct_SKU=record.product_sku)
                             purchase_order_to_product_instance.process_quantity = purchase_order_to_product_instance.process_quantity + record.cutting_quantity 
                             purchase_order_to_product_instance.save()
 
+                        # for creation or updating quantity in godown  
                         for cutting_items in cutting_instance.purchase_order_for_raw_material_cutting_items_set.all():
 
                             item_godown_instance, created = item_godown_quantity_through_table.objects.get_or_create(Item_shade_name=cutting_items.material_color_shade,godown_name=cutting_items.purchase_order_cutting.purchase_order_id.temp_godown_select)
@@ -4000,25 +4005,17 @@ def godown_item_report(request,g_id,shade_id):
     
 
     # P O cutting room qty query
-    purchase_order_cutting_room_qty = purchase_order_for_raw_material_cutting_items.objects.filter(
-        material_color_shade = shade_name,cutting_room_status='cutting_room', 
-        material_color_shade__godown_shades__godown_name=g_id)
+    purchase_order_cutting_room_qty = godown_item_report_for_cutting_room.objects.filter(
+        material_color_shade = shade_id, inward = False, godown_id = g_id)
     
-
+    
+   
     # P O cutting room qty query for cancelled cutting room
-    purchase_order_cutting_room_qty_cancelled = purchase_order_for_raw_material_cutting_items.objects.filter(
-        material_color_shade = shade_name,cutting_room_status='cutting_room_cancelled', 
-        material_color_shade__godown_shades__godown_name = g_id)
+    purchase_order_cutting_room_qty_cancelled =  godown_item_report_for_cutting_room.objects.filter(
+        material_color_shade = shade_id, inward = True, godown_id = g_id)
     
-
-    # addes quantity and value in each for loop in closing_quantity and closing_value which total is carry forwarded to the nxt forloop
-    closing_quantity = decimal.Decimal(0.00)
-    closing_value = decimal.Decimal(0.00)
 
     for godown_qty in opening_godown_qty:
-
-        closing_quantity += godown_qty.opening_quantity
-        closing_value += godown_qty.opening_rate * godown_qty.opening_quantity
 
         report_data.append({
             'date': godown_qty.created_date,
@@ -4029,16 +4026,13 @@ def godown_item_report(request,g_id,shade_id):
             'inward_value': godown_qty.opening_rate * godown_qty.opening_quantity,
             'outward_quantity': '',
             'outward_value': '',
-            'closing_quantity': f"{closing_quantity} Mtr",
-            'closing_value': closing_value,
+            'closing_quantity': 0,
+            'closing_value': 0,
             'rate':godown_qty.opening_rate
         })
 
     for purchase_voucher_item_qty in purchase_voucher_godown_qty:
 
-        closing_quantity += purchase_voucher_item_qty.godown_qty_total
-        closing_value += purchase_voucher_item_qty.item_rate * purchase_voucher_item_qty.godown_qty_total
-        
         report_data.append({
             'date': purchase_voucher_item_qty.created_date,
             'particular': 'Puchase Voucher',
@@ -4048,49 +4042,59 @@ def godown_item_report(request,g_id,shade_id):
             'inward_value': purchase_voucher_item_qty.item_rate * purchase_voucher_item_qty.godown_qty_total,
             'outward_quantity': '',
             'outward_value': '',
-            'closing_quantity': f"{closing_quantity} Mtr",
-            'closing_value': closing_value,
+            'closing_quantity':0,
+            'closing_value': 0,
             'rate': purchase_voucher_item_qty.item_rate
             })
         
 
     for fabric_cutting_items in purchase_order_cutting_room_qty:
-        closing_quantity = closing_quantity - fabric_cutting_items.total_comsumption
-        closing_value = fabric_cutting_items.total_comsumption * fabric_cutting_items.rate
-
+        outward_value = round(fabric_cutting_items.total_comsumption * fabric_cutting_items.rate , 2)
         report_data.append({
-            'date': fabric_cutting_items.created_date,
+            'date': fabric_cutting_items.creation_date,
             'particular': 'Cutting Room',
-            'voucher_type': 'Cutting Voucher',
-            'vch_no': fabric_cutting_items.purchase_order_cutting.raw_material_cutting_id,
+            'voucher_type': 'Cutting Room',
+            'vch_no': fabric_cutting_items.voucher_number,
             'inward_quantity': '',
             'inward_value': '',
             'outward_quantity': f"{fabric_cutting_items.total_comsumption} Mtr",
-            'outward_value': fabric_cutting_items.total_comsumption * fabric_cutting_items.rate,
-            'closing_quantity': f"{closing_quantity} Mtr",
-            'closing_value': closing_value,
+            'outward_value': outward_value,
+            'closing_quantity': 0,
+            'closing_value': 0,
             'rate': fabric_cutting_items.rate})
     
 
     for fabric_cutting_cancelled_items in purchase_order_cutting_room_qty_cancelled:
-        closing_quantity = closing_quantity + fabric_cutting_cancelled_items.total_comsumption
-        closing_value = fabric_cutting_cancelled_items.total_comsumption * fabric_cutting_cancelled_items.rate
-
+        inward_value = round(fabric_cutting_cancelled_items.total_comsumption * fabric_cutting_items.rate, 2)
         report_data.append({
-            'date': fabric_cutting_cancelled_items.created_date,
+            'date': fabric_cutting_cancelled_items.creation_date,
             'particular': 'Cutting Room Cancelled',
-            'voucher_type': 'Cancelled Cutting Voucher',
-            'vch_no': fabric_cutting_cancelled_items.purchase_order_cutting.raw_material_cutting_id,
+            'voucher_type': 'Cutting Room',
+            'vch_no': fabric_cutting_cancelled_items.voucher_number,
             'inward_quantity': f"{fabric_cutting_cancelled_items.total_comsumption} Mtr",
-            'inward_value': fabric_cutting_cancelled_items.total_comsumption * fabric_cutting_items.rate,
+            'inward_value': inward_value,
             'outward_quantity': '',
             'outward_value': '',
-            'closing_quantity': f"{closing_quantity} Mtr",
-            'closing_value': closing_value,
+            'closing_quantity': 0,
+            'closing_value': 0,
             'rate': fabric_cutting_cancelled_items.rate})
-    print(report_data)
+    
+    report_data_sorted = sorted(report_data, key = itemgetter('date'), reverse=False)
+
+    """
+    The sorted() function is used to sort the list. It returns a new list that is sorted 
+    according to the specified key.
+
+    The key parameter specifies a function that is used to extract the sorting key from each
+    dictionary. Here, itemgetter('date') is used to get the value associated with the date
+    key in each dictionary.
+
+    If you set reverse=False, it would sort the list in ascending order.
+
+    """
+    print(report_data_sorted)
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
-                                                                             'shade_name':shade_name,'report_data':report_data})
+                                                                             'shade_name':shade_name,'report_data':report_data_sorted})
 
 
 #__________________________reports-end____________________________________
