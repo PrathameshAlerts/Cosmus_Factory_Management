@@ -628,7 +628,7 @@ class Basepurchase_labour_workout_cutting_items_form(BaseInlineFormSet):
 
             godown_id = post_data.get('godown_id')
             
-            godown_instance = Godown_raw_material.objects.get(godown_id)
+            godown_instance = Godown_raw_material.objects.get(id=godown_id)
             
             for form in self.forms:
                 material_name = form.cleaned_data.get('material_name')
