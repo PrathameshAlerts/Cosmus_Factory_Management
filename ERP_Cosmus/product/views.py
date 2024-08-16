@@ -3676,7 +3676,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'units':instance.units,
                 'g_total':instance.g_total,
                 'consumption':instance.consumption,
-                'total_comsumption':instance.total_comsumption,
+                'total_comsumption':0,
                 'unit_value':instance.unit_value,
                 'physical_stock':instance.physical_stock,
                 'balance_physical_stock':instance.balance_physical_stock
