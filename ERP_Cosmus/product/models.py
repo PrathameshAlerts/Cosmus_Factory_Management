@@ -373,6 +373,9 @@ class item_color_shade(models.Model):
     created_date = models.DateTimeField(auto_now = True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
 
+    class Meta:
+        unique_together = [['items','item_shade_name']]
+
 
     def __str__(self):
         return self.item_shade_name
@@ -708,8 +711,10 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     cutting_room_status = models.CharField(max_length=25, choices = STATUS, blank=True, null=True)
+    total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=3)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
+
 
 
 class labour_workout_master(models.Model):
@@ -747,9 +752,8 @@ class labour_workout_childs(models.Model):
     labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.PROTECT)
     challan_no = models.CharField(unique=True)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
-    total_approved_pcs = models.IntegerField(default=0)
     total_process_pcs = models.IntegerField(null=True, blank=True)
-    total_balance_pcs = models.IntegerField()
+    total_balance_pcs = models.IntegerField(null=True, blank=True)
 
 
 class product_to_item_labour_child_workout(models.Model):
@@ -762,7 +766,7 @@ class product_to_item_labour_child_workout(models.Model):
 
 
 class labour_workout_cutting_items(models.Model):
-    labour_workout_master_instance = models.ForeignKey(labour_workout_childs, on_delete=models.CASCADE)
+    labour_workout_child_instance = models.ForeignKey(labour_workout_childs, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
@@ -780,6 +784,9 @@ class labour_workout_cutting_items(models.Model):
     updated_date = models.DateTimeField(auto_now_add = True)
 
 
+
+
+# reports
 class godown_item_report_for_cutting_room(models.Model):
     creation_date = models.DateTimeField(auto_now = True)
     particular = models.CharField(max_length=100)

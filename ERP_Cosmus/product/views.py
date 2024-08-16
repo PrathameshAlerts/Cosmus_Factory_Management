@@ -43,7 +43,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                    set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
+from .forms import(Basepurchase_labour_workout_cutting_items_form, Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
                        factory_employee_form, labour_workout_child_form, labour_workout_cutting_items_form, purchase_order_for_raw_material_cutting_items_form, 
@@ -3409,6 +3409,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                         try:
                             form_instance = form.save(commit=False)
                             form_instance.purchase_order_cutting = cutting_form_instance
+                            form_instance.total_comsumption_in_cutting = form_instance.total_comsumption
                             form_instance.save()
                         
 
@@ -3520,7 +3521,7 @@ def purchaseordercuttingpopup(request,cutting_id):
                     # create new instance of the data in product_to_item_labour_workout with the created labour_workout_master_instance as parent model
                     product_to_item_labour_workout.objects.create(labour_workout = labour_workout_master_instance,
                                                                 product_color=form.product_color,product_sku=form.product_sku,
-                                                                pending_pcs = old_total_approved_qty_diffrence,processed_pcs=old_total_approved_qty_diffrence)
+                                                                pending_pcs = old_total_approved_qty_diffrence, processed_pcs = old_total_approved_qty_diffrence)
 
                 raw_material_cutting_instance.approved_qty = old_total_approved_qty_total # save the total diffrence total qty to parent model
                 raw_material_cutting_instance.save() # save the parent model
@@ -3585,6 +3586,7 @@ def purchaseordercuttingmastercancelajax(request):
                             item_godown_instance.quantity = item_godown_instance_qty + cutting_items.total_comsumption
                             item_godown_instance.save()
                             cutting_items.cutting_room_status = 'cutting_room_cancelled'
+                            cutting_items.total_comsumption_in_cutting = 0
                             cutting_items.save()
 
                         return JsonResponse({'status' : 'success'}, status=200)
@@ -3609,21 +3611,26 @@ def labourworkoutlistall(request):
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
 
+
 def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
+
     ledger_labour_instances = Ledger.objects.filter(types = 'labour')
+
+    godown_id = None
 
     # if pk which is parent id is not none means child instance is not created 
     if pk is not None:
+        
+        labourworkoutinstance = labour_workout_master.objects.get(id = pk)
 
-        labourworkoutinstance = labour_workout_master.objects.get(id=pk)
+        godown_id = labourworkoutinstance.purchase_order_cutting_master.purchase_order_id.temp_godown_select.id
 
         child_master_intial_data = {'total_approved_pcs' : labourworkoutinstance.total_approved_pcs,
-                                    'total_balance_pcs' : labourworkoutinstance.total_pending_pcs,
-                                    }
+                                    'total_balance_pcs' : labourworkoutinstance.total_pending_pcs}
 
         # labour workout child masterform 
-        labour_work_out_child_form = labour_workout_child_form(child_master_intial_data)
-
+        labour_work_out_child_form = labour_workout_child_form(initial=child_master_intial_data)
+        
         # prodcut to item labour workout instances to set initial data 
         product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout = labourworkoutinstance)
     
@@ -3634,9 +3641,10 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
             data_dict = {
                 'product_sku':instance.product_sku,
                 'product_color':instance.product_color,
-                'processed_pcs': 0,
-                'pending_pcs':instance.pending_pcs, # approved_qty
-                'balance_pcs':instance.processed_pcs, # this qty will update on each successful form labour wrkout form submission 
+                'pending_pcs': instance.processed_pcs, #approved qty
+                'balance_pcs': instance.pending_pcs, #this qty will update on each successful form labour workout form submission 
+                'processed_pcs':0,
+                
             }
 
             initial_items_data_dict.append(data_dict)
@@ -3655,7 +3663,9 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master)
 
         initial_data_dict = []
+
         for instance in raw_material_cutting_items_instances:
+    
             data = {
                 'product_sku':instance.product_sku,
                 'product_color':instance.product_color,
@@ -3666,17 +3676,18 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'units':instance.units,
                 'g_total':instance.g_total,
                 'consumption':instance.consumption,
-                'total_comsumption':instance.total_comsumption,
+                'total_comsumption':0,
                 'unit_value':instance.unit_value,
                 'physical_stock':instance.physical_stock,
-                'balance_physical_stock':instance.balance_physical_stock,
-
-            }
+                'balance_physical_stock':instance.balance_physical_stock
+                }
             initial_data_dict.append(data)
 
         labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
-                                                                        form = labour_workout_cutting_items_form, 
+                                                                        form = labour_workout_cutting_items_form,
+                                                                        formset = Basepurchase_labour_workout_cutting_items_form, 
                                                                         extra=len(initial_data_dict))
+        
         # labour workout items formset
         labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
 
@@ -3703,7 +3714,9 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         
 
         labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
-                                                                        form = labour_workout_cutting_items_form,  can_delete=False,
+                                                                        form = labour_workout_cutting_items_form, 
+                                                                        formset = Basepurchase_labour_workout_cutting_items_form,
+                                                                        can_delete=False,
                                                                         extra=0)
         # labour workout items formset
         labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(instance = labour_workout_child_instance) 
@@ -3723,28 +3736,32 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
 
         if labour_work_out_child_form.is_valid() and product_to_item_formset.is_valid() and labour_workout_cutting_items_formset_form.is_valid():
-            labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
-            labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
-            labour_workout_form_instance.save()
 
+            with transaction.atomic():
 
-            for form in product_to_item_formset:
-                if form.is_valid():
-                    product_to_item_form = form.save(commit=False)
-                    product_to_item_form.labour_workout = labour_workout_form_instance
-                    product_to_item_form.save()
+                labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
+                labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
+                labour_workout_form_instance.save()
 
-                    # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
-                    single_p2i_instance = product_to_item_instances.get(product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
+                
+                for form in product_to_item_formset:
+                    if form.is_valid():
+                        product_to_item_form = form.save(commit=False)
+                        product_to_item_form.labour_workout = labour_workout_form_instance
+                        product_to_item_form.save()
 
-                    single_p2i_instance.processed_pcs = single_p2i_instance.processed_pcs - product_to_item_form.processed_pcs
-                    single_p2i_instance.save()
-            
-            for form in labour_workout_cutting_items_formset_form:
-                if form.is_valid():
-                    formset_form = form.save(commit=False)
-                    formset_form.labour_workout_master_instance = labour_workout_form_instance
-                    formset_form.save()
+                        # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
+                        single_p2i_instance = product_to_item_instances.get(product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
+
+                        single_p2i_instance.pending_pcs = single_p2i_instance.pending_pcs - product_to_item_form.processed_pcs
+                        single_p2i_instance.save()
+                
+
+                for form in labour_workout_cutting_items_formset_form:
+                    if form.is_valid():
+                        formset_form = form.save(commit=False)
+                        formset_form.labour_workout_child_instance = labour_workout_form_instance
+                        formset_form.save()
 
         else:
             print('labour_work_out.errors',labour_work_out_child_form.errors)
@@ -3759,7 +3776,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
     return render(request,'production/labourworkoutsingle.html',
                   {'product_to_item_formset':product_to_item_formset,'labour_work_out_child_form':labour_work_out_child_form,
                    'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form,
-                   'ledger_labour_instances':ledger_labour_instances})
+                   'ledger_labour_instances':ledger_labour_instances,'godown_id':godown_id})
 
 
 

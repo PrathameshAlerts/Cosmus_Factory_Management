@@ -30,9 +30,10 @@
                 <thead class="name_absolute sticky-top">
                     <tr>
                         <th>Challan No</th>
-                        <th>labour_name</th>
-                        <th>total_approved_pcs</th>
-                        <th>total_pending_pcs</th>
+                        <th>labour name</th>
+                        <th>Balance Pcs</th>
+                        <th>Processed Pcs</th>
+                        
                         <th>View</th>
                     </tr>
                 </thead>
@@ -43,7 +44,7 @@
                         <td>{{record.challan_no}}</td>
                         <td>{{record.labour_name.name}}</td>
                         <td>{{record.total_approved_pcs}}</td>
-                        <td>{{record.total_pending_pcs}}</td>
+                        <td>{{record.total_process_pcs}}</td>
                         <td><a href="{% url 'labour-workout-single-view' record.id %}"><i class="fa-solid fa-eye px-1"></i></a></td>
                     </tr>
                     {% endfor %}
