@@ -3644,7 +3644,6 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'pending_pcs': instance.processed_pcs, #approved qty
                 'balance_pcs': instance.pending_pcs, #this qty will update on each successful form labour workout form submission 
                 'processed_pcs':0,
-                
             }
 
             initial_items_data_dict.append(data_dict)
@@ -3676,11 +3675,13 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'units':instance.units,
                 'g_total':instance.g_total,
                 'consumption':instance.consumption,
-                'total_comsumption':0,
+                'total_comsumption':instance.total_comsumption,
                 'unit_value':instance.unit_value,
                 'physical_stock':instance.physical_stock,
-                'balance_physical_stock':instance.balance_physical_stock
+                'balance_physical_stock':instance.balance_physical_stock,
+                'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
                 }
+            print(instance.material_color_shade.items.Fabric_nonfabric)
             initial_data_dict.append(data)
 
         labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
@@ -3743,7 +3744,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
                 labour_workout_form_instance.save()
                 processed_qty = labour_workout_form_instance.total_process_pcs
-                
+
                 labourworkoutinstance.total_pending_pcs = labourworkoutinstance.total_pending_pcs - processed_qty
                 labourworkoutinstance.save()
                 

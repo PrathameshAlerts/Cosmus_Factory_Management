@@ -654,11 +654,12 @@ class Basepurchase_labour_workout_cutting_items_form(BaseInlineFormSet):
                     pass
 
 class labour_workout_cutting_items_form(forms.ModelForm):
+    fab_non_fab = forms.CharField(max_length=25)
     class Meta:
         model = labour_workout_cutting_items
         fields = ['product_sku','product_color','material_name','material_color_shade','rate'
                   ,'panha','units','g_total','consumption','total_comsumption','physical_stock','unit_value'
-                  ,'balance_physical_stock']
+                  ,'balance_physical_stock','fab_non_fab']
         
     
 
