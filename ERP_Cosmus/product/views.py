@@ -3742,7 +3742,10 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
                 labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
                 labour_workout_form_instance.save()
-
+                processed_qty = labour_workout_form_instance.total_process_pcs
+                
+                labourworkoutinstance.total_pending_pcs = labourworkoutinstance.total_pending_pcs - processed_qty
+                labourworkoutinstance.save()
                 
                 for form in product_to_item_formset:
                     if form.is_valid():
@@ -3755,6 +3758,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
                         single_p2i_instance.pending_pcs = single_p2i_instance.pending_pcs - product_to_item_form.processed_pcs
                         single_p2i_instance.save()
+                
                 
 
                 for form in labour_workout_cutting_items_formset_form:
