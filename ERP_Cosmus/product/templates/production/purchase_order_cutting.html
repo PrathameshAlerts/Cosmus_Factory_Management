@@ -62,7 +62,7 @@
                             {% endif %}
                         </select>
                     </div>
-                    
+                    <input type="hidden" value="{{purchase_order_cutting_form.instance.raw_material_cutting_id}}" id="id_raw_material_cutting_id">
                 </div>
                 <div class="d-flex">
                     <div class="d-flex me-4">
@@ -95,7 +95,7 @@
                         <th>Product Sku</th>
                         <th>Color</th>
                         <th>Order Qty</th>
-                        <th>Procurement Qty</th>
+                        <th>Processed Qty</th>
                         <th>Balance Qty</th>
                         <th>Cutting Qty</th>
                     </tr>
@@ -119,7 +119,9 @@
                         <td>
                             <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-process_quantity" value="{{form.instance.process_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-process_quantity" readonly>
                         </td>
-                        <td></td>
+                        <td>
+                            <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_quantity" value="{{form.instance.process_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-balance_quantity" readonly>
+                        </td>
                         <td>
                             <input type="number" class="productorderqty-input currentQty" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-cutting_quantity">
                         </td>
@@ -139,7 +141,9 @@
                         <td>
                             <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-process_quantity" value="{{form.initial.process_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-process_quantity" readonly>
                         </td>
-                        <td></td>   
+                        <td>
+                            <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_quantity" value="{{form.initial.process_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-balance_quantity" readonly>
+                        </td>   
                         <td>
                             <input type="number" class="productorderqty-input currentQty" name="{{form.prefix}}-cutting_quantity" value="{{form.initial.cutting_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-cutting_quantity">
                         </td>
@@ -152,9 +156,10 @@
             </table>
             <div class="d-flex pb-2">
                 <label for="id_OderQty" class="text-danger">Total:</label>
-                <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 232px;" readonly>
+                <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 182px;" readonly>
                 <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 25px;" readonly>
-                <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 90px;" readonly> 
+                <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_balanceQty" value="0" style="margin-left: 48px;" readonly>
+                <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 35px;" readonly> 
             </div>
         </div>
     </div>
@@ -265,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     colorSearch.forEach(function(el) {
     var shadeValue = el.textContent.trim(); // Trim to remove any extra whitespace
-    console.log(shadeValue);
     if (shadeValue > 0) {
         el.style.color = 'green';
     } else {
@@ -296,27 +300,42 @@ function checkOnlyOne(checkbox) {
         let myform = document.getElementById('id_purchase_order_to_product_cutting_set-TOTAL_FORMS').value;
         let total =0;
         let process = 0;
+        let balance =0;
 
         for(let i = 0;i < myform; i++){
             
             const processQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-process_quantity');
             const cuttingQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity');
+            const balanceQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-balance_quantity');
             const totalCuttingQty = document.getElementById('id_cuttingTotal');
             const totalProcessQty = document.getElementById('id_processQty');
-            const totalValue = document.getElementById('id_processed_qty')
-            const processQtyValue = parseFloat(processQty.value);
-            const cuttingQtyValue = parseFloat(cuttingQty.value);
+            const totalValue = document.getElementById('id_processed_qty');
+            const totalBalance = document.getElementById('id_balanceQty');
+            const processQtyValue = parseFloat(processQty.value) || 0;
+            const cuttingQtyValue = parseFloat(cuttingQty.value) || 0;
+           
            
             if(cuttingQtyValue > processQtyValue){
                 document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity').value = 0;
             }
+            
+           
             if(!isNaN(totalCuttingQty)){
                 total = total + cuttingQtyValue;
                 totalCuttingQty.value = total;
+
+                var balanceValue = processQtyValue - cuttingQtyValue;
+           
+           balanceQty.value = balanceValue;
+           balance = balance + balanceValue;
+           totalBalance.value = balance;
             }
            
             process = process + processQtyValue;
             totalProcessQty.value = process;
+
+            
+      
         }
       
     }
@@ -331,6 +350,7 @@ function checkOnlyOne(checkbox) {
     
     function updateCuttingQuantity(){
         let totals = 0;
+        let balance = 0;
         const cuttingQtyElements = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         
         cuttingQtyElements.forEach(input =>{
@@ -343,7 +363,6 @@ function checkOnlyOne(checkbox) {
             totals = totals + CuttingQty;
             cuttingTotal.value = totals;
 
-            
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 let totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
@@ -414,19 +433,13 @@ function checkOnlyOne(checkbox) {
     }
 
     function submitForm(){
-        const ids = document.querySelectorAll('input[name$="-id"]');
-      
-        let hasIdValue = false;
-            ids.forEach(element =>{
-
-                if (element.value) {
-
-                  hasIdValue = true;
-                }
-            })
-        if(hasIdValue){
+        const ids = document.getElementById('id_raw_material_cutting_id').value ;
+      console.log('ids',ids);
+       
+        if(ids !== ""){
             let procumentValue =0;
             let CuttingValue =0;
+            let balanceValue = 0;
             
             const rowMaterial = document.getElementById('id_raw_material_cutting_id');
             const cuttingMaster = document.getElementById('id_factory_employee_id');
@@ -454,16 +467,22 @@ function checkOnlyOne(checkbox) {
                 const row = newValue.closest('tr');
                 const color = row.querySelector('input[name$="-product_color"]').value;
                 const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
-                const  cuttingQty = row.querySelector('input[name$="-cutting_quantity"]').value;
+                const cuttingQty = row.querySelector('input[name$="-cutting_quantity"]').value;
+              
             
                 const procumentQtyValue = parseFloat(procumentQty) || 0;
                 const cuttingQtyValue = parseFloat(cuttingQty) || 0;
 
                 procumentValue  += procumentQtyValue; 
                 CuttingValue += cuttingQtyValue;
-         
+                
+               let balnaceQty = procumentQtyValue - cuttingQtyValue;
+               balanceValue += balnaceQty
+               row.querySelector('input[name$="-balance_quantity"]').value = balnaceQty;
                 document.getElementById('id_processQty').value = procumentValue;
                 document.getElementById('id_cuttingTotal').value = CuttingValue;
+                document.getElementById('id_balanceQty').value = balanceValue;
+
                 newValue.readOnly = true;
                 
                 // Update the border and background color of the input elementsid_purchase_order_to_product_cutting_set-0-cutting_quantity
@@ -508,10 +527,10 @@ function checkOnlyOne(checkbox) {
                             materialColor.forEach(ele =>{
                                 if(ele.value == cuttingColors){
                                     var cuttingQuantitys = parseInt(input.value);
-                                    //console.log(cuttingQuantitys);
+                                  
                                     var materialColorShade = ele.closest('tr').querySelector('.checkBox-row')
                                     var materialColorShadeValue = ele.closest('tr').querySelector('.checkBox-row').querySelectorAll('input[type="checkbox"]').length;
-                                    console.log(materialColorShadeValue);
+                              
                                     if(materialColorShadeValue > 1){
                                      
                                       
