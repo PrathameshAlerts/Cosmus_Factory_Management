@@ -242,11 +242,11 @@ labourApprovedQty()
     function labourQty() {
         let totalValue = 0;
         let balanceValue = 0;
-        let processQty = document.querySelectorAll('[name$="-processed_pcs"]');
+        const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
         processQty.forEach(function (element) {
-            var processValue = parseInt(element.value) || 0;
-            var approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
-            var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
+            const processValue = parseInt(element.value) || 0;
+            const approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
+            const balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
 
             if (balanceValue < processValue) {
                 element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
@@ -257,10 +257,10 @@ labourApprovedQty()
                 document.getElementById('id_processQty').value = totalValue;
                 document.getElementById('id_total_process_pcs').value = totalValue;
 
-                var totalApproved = parseInt(document.getElementById('id_total_approved_pcs').value);
+                const totalApproved = parseInt(document.getElementById('id_total_approved_pcs').value);
 
-                var totalbalance = totalApproved - totalValue;
-                document.getElementById('id_total_balance_pcs').value = totalbalance;
+                //var totalbalance = totalApproved - totalValue;
+                //document.getElementById('id_total_balance_pcs').value = totalbalance;
             }
 
         })
@@ -286,9 +286,6 @@ labourApprovedQty()
 
                 if (totalConsumtion) {
 
-                    const fabric = el.querySelector('.fab_non_fab').value;
-
-                    if (fabric !== "Fabric") {
 
                         if (color === mainColor) {
 
@@ -304,7 +301,7 @@ labourApprovedQty()
                             totalConsumtion.value = tConsumtion.toFixed(2);
 
                         }
-                    }
+                    
                 }
 
 
