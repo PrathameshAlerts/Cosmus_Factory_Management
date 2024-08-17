@@ -74,7 +74,20 @@
         })
     }
 
-
+    function submitForm(){
+        var balanceApprove = document.querySelectorAll('[name$= "-balance_pcs"]');
+        var totalQty = 0;
+        balanceApprove.forEach(ele =>{
+            var balance = parseInt(ele.value);
+            totalQty = totalQty + balance;
+            if(totalQty == 0){
+                var submitBtn = document.querySelector('.create-btn');
+                console.log(submitBtn);
+                submitBtn.style.display = 'none';
+            }
+            
+        })
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
     

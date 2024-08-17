@@ -95,7 +95,8 @@
                         <th>Product Sku</th>
                         <th>Color</th>
                         <th>Order Qty</th>
-                        <th>Procurement QTY</th>
+                        <th>Procurement Qty</th>
+                        <th>Balance Qty</th>
                         <th>Cutting Qty</th>
                     </tr>
                 </thead>
@@ -118,6 +119,7 @@
                         <td>
                             <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-process_quantity" value="{{form.instance.process_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-process_quantity" readonly>
                         </td>
+                        <td></td>
                         <td>
                             <input type="number" class="productorderqty-input currentQty" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-cutting_quantity">
                         </td>
@@ -137,6 +139,7 @@
                         <td>
                             <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-process_quantity" value="{{form.initial.process_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-process_quantity" readonly>
                         </td>
+                        <td></td>   
                         <td>
                             <input type="number" class="productorderqty-input currentQty" name="{{form.prefix}}-cutting_quantity" value="{{form.initial.cutting_quantity | default_if_none:'0'}}" id="id_{{form.prefix}}-cutting_quantity">
                         </td>

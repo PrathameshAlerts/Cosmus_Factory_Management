@@ -2617,7 +2617,7 @@ def product2item(request,product_refrence_id):
         #Within each group of Item_pk, it orders by id.
         #distinct('Item_pk') will keep the first record of each group (based on the smallest id within that group).
         
-        # changed Item_pk to row_number in orderby and distinct (revertback if necessary)
+        # changed Item_pk to row_number in order by and distinct (revertback if necessary)
         distinct_product2item_commmon_instances = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_refrence_id,common_unique = True).order_by(
                 'row_number','id').distinct('row_number').select_related('PProduct_pk','Item_pk')
@@ -2637,7 +2637,10 @@ def product2item(request,product_refrence_id):
             
             formset_single_valid = False
             formset_common_valid = False
-
+            
+            
+            total_row_number = 0
+            
             #for unique records
             if formset_single.is_valid():
                 try:
@@ -2659,8 +2662,10 @@ def product2item(request,product_refrence_id):
 
                                 p2i_instance = form.save(commit = False)
                                 p2i_instance.common_unique = False
-                                logger.info(f"Product to item created/updated special - {p2i_instance.id}")
+                                p2i_instance.row_number = total_row_number
+                                total_row_number = total_row_number + 1
                                 p2i_instance.save()
+                                logger.info(f"Product to item created/updated special - {p2i_instance.id}")
 
                                 no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
 
@@ -2676,7 +2681,7 @@ def product2item(request,product_refrence_id):
                     messages.error(request, f'Error saving unique records - {e}')  
             
 
-            print(request.POST)
+            
             #for common records
             if formset_common.is_valid():
                 try:
@@ -2707,12 +2712,15 @@ def product2item(request,product_refrence_id):
 
                                     if not created:
                                         initial_rows = obj.no_of_rows
-
+                                    
                                     obj.no_of_rows = form.cleaned_data['no_of_rows']
                                     obj.Remark = form.cleaned_data['Remark']
-                                    obj.row_number = form.cleaned_data['row_number']
+                                    obj.row_number = total_row_number
                                     logger.info(f"Product to item created/updated common -  {obj.id}")
                                     obj.save()
+                                
+
+                                    
 
 
                                     # create records in set_prod_item_part_name table with the saved obj as FK 
@@ -2723,6 +2731,8 @@ def product2item(request,product_refrence_id):
                                                 logger.info(f" set prod item part name created of - {obj.id}")
 
                                     formset_common_valid = True
+                                    
+                                total_row_number = total_row_number + 1
 
                 except Exception as e:
                     logger.error(f'Error saving common records - {e}')
@@ -3133,13 +3143,18 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
                                 'total_comsumption':'0',
                                 'unit_value': query.Item_pk.unit_name_item.unit_name,
                                 'physical_stock':'0',
-                                'balance_physical_stock':'0'}
+                                'balance_physical_stock':'0',
+                                'row_number':query.row_number}
             
             initial_data.append(initial_data_dict)
 
-        purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_data) if initial_data else 0, can_delete=False)
+        initial_sorted_data = sorted(initial_data, key = itemgetter('row_number'), reverse=False)
 
-        purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_data, instance=purchase_order_instance)
+        
+
+        purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_sorted_data) if initial_data else 0, can_delete=False)
+
+        purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_sorted_data, instance=purchase_order_instance)
 
 
     # for update(to check child instances of p_o_id is avaliable means form is on update)
@@ -3291,8 +3306,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'total_comsumption' :'0',
                 'unit_value':purchase_items_raw.unit_value,
                 'physical_stock' : current_physical_stock,
-                'balance_physical_stock' : '0',
-            }
+                'balance_physical_stock' : '0'}
             
             initial_data.append(initial_data_dict)
 
@@ -3492,6 +3506,7 @@ def purchaseordercuttingpopup(request,cutting_id):
     if request.method == 'POST':
         
         if formset.is_valid():
+
             if any(form.has_changed() for form in formset): # if all the forms are not changed below code will not get executed
                 formset_instance = formset.save(commit=False)
 
@@ -3500,7 +3515,6 @@ def purchaseordercuttingpopup(request,cutting_id):
 
                 # old approved qty
                 old_total_approved_qty_total = raw_material_cutting_instance.approved_qty
-
 
                 # create an instance in labour workout master of the cutting instance
                 labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
@@ -3671,7 +3685,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'units':instance.units,
                 'g_total':instance.g_total,
                 'consumption':instance.consumption,
-                'total_comsumption':instance.total_comsumption,
+                'total_comsumption':0,
                 'unit_value':instance.unit_value,
                 'physical_stock':instance.physical_stock,
                 'balance_physical_stock' : instance.balance_physical_stock,

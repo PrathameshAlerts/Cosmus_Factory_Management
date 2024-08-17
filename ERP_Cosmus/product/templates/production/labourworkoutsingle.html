@@ -43,15 +43,15 @@
                         <div class="d-flex">
                             <label for="id_total_approved_pcs" class="">Total approved pcs:</label>
                             {% if labour_work_out_child_form.instance.id %}
-                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2">
+                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2" readonly>
                             {% elif not labour_work_out_child_form.instance.id %}
-                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.initial.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2">
+                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.initial.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2" readonly>
                             {% endif %}
                         </div>
                    
                         <div class="d-flex"> 
                             <lable for="id_total_process_pcs" class="">Total processed Pcs</lable> 
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_process_pcs | default_if_none:0}}" name="total_process_pcs" id="id_total_process_pcs">
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_process_pcs | default_if_none:0}}" name="total_process_pcs" id="id_total_process_pcs" readonly>
                             
                         </div>
 
@@ -59,9 +59,9 @@
                             <lable for="id_total_balance_pcs" class="">Total balance pcs</lable> 
 
                             {% if labour_work_out_child_form.instance.id %}
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_pending_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs">
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_pending_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly>
                             {% elif not labour_work_out_child_form.instance.id %}
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs">
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly>
                             {% endif %}
                         </div>
                     </div>
@@ -123,7 +123,7 @@
         <div class="row mt-2">
             <div class="col-lg-12">
                 <div class="tables-form">
-                    <table class="table table-striped table-hover table-bordered tables" >
+                    <table class="table table-striped table-hover table-bordered tables"  >
                         <thead class="name_absolute sticky-top border-1">
                             <tr >
                                 <th>Product SKU</th>
@@ -141,7 +141,7 @@
                                 <th>Balance Stock</th>
                             </tr>
                         </thead>
-                        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;" id="labourTable">
                             {{ labour_workout_cutting_items_formset_form.management_form }}
                             {% for form in labour_workout_cutting_items_formset_form %}
                             
@@ -163,8 +163,9 @@
                                 <td><input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="{{form.instance.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
                             </tr>
                             {% elif not form.instance.id %}
-                            <input type="hidden" name="fab_non_fab" id="id_fab_non_fab" value="{{form.initial.fab_non_fab}}">
+                           
                             <tr class="text-nowrap">
+                                <input type="hidden" name="{{form.prefix}}-fab_non_fab" id="id_{{form.prefix}}-fab_non_fab" value="{{form.initial.fab_non_fab}}" class="fab_non_fab">
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
@@ -194,15 +195,15 @@
 
 
 <script>
-   
+
 function labourApprovedQty() {
-    var total =0;
-    var balance =0;
-    var approvedsValue = document.querySelectorAll('[name$="-pending_pcs"]');
+    let total = 0;
+    let balance =0;
+    const approvedsValue = document.querySelectorAll('[name$="-pending_pcs"]');
     approvedsValue.forEach(function(el){
-        var approvedQty = parseFloat(el.value || 0);
-        var balncePic = el.closest('tr').querySelector('[name$="-balance_pcs"]').value;
-        var blanceAQty = parseFloat(balncePic || 0);
+        const approvedQty = parseFloat(el.value || 0);
+        const balncePic = el.closest('tr').querySelector('[name$="-balance_pcs"]').value;
+        const blanceAQty = parseFloat(balncePic || 0);
         balance += blanceAQty;
         total += approvedQty;
 
@@ -210,49 +211,112 @@ function labourApprovedQty() {
         document.getElementById('id_balanceQtys').value =balance;
     })
 
-   
+    const ids = document.getElementById('id_labour_workout_cutting_items_set-0-id').value;
 
+    if(ids !== ""){
+        const submitButton = document.getElementById('id_submit');
+        const challanNo = document.getElementById('id_challan_no');
+        const labourname = document.getElementById('id_labour_name');
+        let totals =0;
+        challanNo.readOnly = 'true';
+        challanNo.style.backgroundColor = 'transparent';
+        challanNo.style.border = 'none';
+        submitButton.style.display = 'none';
+        labourname.disabled = 'true';
+        labourname.style.backgroundColor = 'transparent';
+        const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
+        processQty.forEach(function(element){
+            element.readOnly = 'true';
+            element.style.backgroundColor = 'transparent';
+            element.style.border = 'none';
+            element.style.outline = 'none';
+            const approvedQty = parseInt(element.value);
+            totals += approvedQty;
+            document.getElementById('id_processQty').value = totals;
+        })
+
+       
+    }
 }
+labourApprovedQty()
+    function labourQty() {
+        let totalValue = 0;
+        let balanceValue = 0;
+        const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
+        processQty.forEach(function (element) {
+            const processValue = parseInt(element.value) || 0;
+            const approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
+            const balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
 
-function labourQty(){
-    var totalValue =0;
-    var balanceValue = 0;
-    var processQty = document.querySelectorAll('[name$="-processed_pcs"]');
-    processQty.forEach(function(element){
-       var processValue = parseInt(element.value) || 0;
-       var approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
-       var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
+            if (balanceValue < processValue) {
+                element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
+            }
 
-       if(balanceValue < processValue){
-        element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
-       }
+            if (!isNaN(processValue) && !isNaN(approvedValue)) {
+                totalValue += processValue;
+                document.getElementById('id_processQty').value = totalValue;
+                document.getElementById('id_total_process_pcs').value = totalValue;
 
-       if(!isNaN(processValue) && !isNaN(approvedValue)){
-        totalValue += processValue;
-        document.getElementById('id_processQty').value = totalValue;
-        document.getElementById('id_total_process_pcs').value = totalValue;
+                const totalApproved = parseInt(document.getElementById('id_total_approved_pcs').value);
 
-        var totalApproved = parseInt(document.getElementById('id_total_approved_pcs').value);
-        console.log(totalApproved);
-        console.log(totalValue)
-       var totalbalance = totalApproved - totalValue;
-        document.getElementById('id_total_balance_pcs').value = totalbalance;
-    
+                //var totalbalance = totalApproved - totalValue;
+                //document.getElementById('id_total_balance_pcs').value = totalbalance;
+            }
 
-       }
+        })
 
-    })
+    }
 
-}
+    function fabricQty() {
+        let totalFabric = 0;
+        const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
 
+        processQty.forEach(function (element) {
+            const processValue = parseInt(element.value) || 0;
+            const color = element.closest('tr').querySelector('[name$="-product_color"]').value;
+
+            totalFabric += processValue;
+
+            const mainTables = document.querySelectorAll('#labourTable tr');
+
+            mainTables.forEach(function (el) {
+                const mainColor = el.querySelector('[name$="-product_color"]').value;
+
+                let totalConsumtion = el.querySelector('[name$="-total_comsumption"]');
+
+                if (totalConsumtion) {
+
+
+                        if (color === mainColor) {
+
+                            const consumtion = el.querySelector('[name$="-consumption"]').value;
+                            let tConsumtion = consumtion * processValue;
+                            totalConsumtion.value = tConsumtion.toFixed(2);
+
+                        } else if (color === "Common Item") {
+
+                            const consumtion = el.querySelector('[name$="-consumption"]').value || 0;
+
+                            let tConsumtion = consumtion * totalFabric;
+                            totalConsumtion.value = tConsumtion.toFixed(2);
+
+                        }
+                    
+                }
+
+
+            })
+        })
+    }
 
 document.addEventListener('DOMContentLoaded', function() {
  
-    var pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
+    const pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
     pendingQty.forEach(function(el){
       el.addEventListener('input',function(){
         labourApprovedQty();
         labourQty();
+        fabricQty();
       })
     })
 });
