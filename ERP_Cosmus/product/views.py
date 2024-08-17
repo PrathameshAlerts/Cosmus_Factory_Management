@@ -2528,7 +2528,6 @@ def packaging_create_update(request, pk = None):
     if packaging_search != '':
         queryset =  packaging.objects.filter(packing_material__icontains = packaging_search)
 
-
     if pk:
         packaging_instance = packaging.objects.get(pk=pk)
         title = 'Update'
@@ -2564,7 +2563,6 @@ def packaging_create_update(request, pk = None):
 
                 return JsonResponse({'packaging_all_values': list(packaging_all_values)})
         else:
-            
             return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset}) 
 
     return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset})
@@ -2576,7 +2574,7 @@ def packaging_create_update(request, pk = None):
 def packaging_delete(request,pk):
     packaging_pk =  packaging.objects.get(pk=pk)
     packaging_pk.delete()
-    messages.success(request,'Packing deleted.')
+    messages.success(request, 'Packing deleted.')
     return redirect('packaging-create-list')
 
 
@@ -2619,14 +2617,15 @@ def product2item(request,product_refrence_id):
         #Within each group of Item_pk, it orders by id.
         #distinct('Item_pk') will keep the first record of each group (based on the smallest id within that group).
         
-        
+        # changed Item_pk to row_number in orderby and distinct (revertback if necessary)
         distinct_product2item_commmon_instances = product_2_item_through_table.objects.filter(
-            PProduct_pk__Product__Product_Refrence_ID=product_refrence_id, common_unique = True).order_by(
-                'Item_pk', 'id','row_number').distinct('Item_pk').select_related('PProduct_pk','Item_pk')
+            PProduct_pk__Product__Product_Refrence_ID=product_refrence_id,common_unique = True).order_by(
+                'row_number','id').distinct('row_number').select_related('PProduct_pk','Item_pk')
 
 
         if extraform:
             formset_common = Product2CommonItemFormSetExtraForm(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
+
         else:
             formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
 
@@ -2677,7 +2676,7 @@ def product2item(request,product_refrence_id):
                     messages.error(request, f'Error saving unique records - {e}')  
             
 
-
+            print(request.POST)
             #for common records
             if formset_common.is_valid():
                 try:
@@ -2709,8 +2708,9 @@ def product2item(request,product_refrence_id):
                                     if not created:
                                         initial_rows = obj.no_of_rows
 
-                                    obj.no_of_rows =  form.cleaned_data['no_of_rows']
+                                    obj.no_of_rows = form.cleaned_data['no_of_rows']
                                     obj.Remark = form.cleaned_data['Remark']
+                                    obj.row_number = form.cleaned_data['row_number']
                                     logger.info(f"Product to item created/updated common -  {obj.id}")
                                     obj.save()
 
@@ -2789,7 +2789,7 @@ def export_Product2Item_excel(request,product_ref_id):
     
         products_in_i2p_common = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by(
-            'Item_pk', 'id').distinct('Item_pk')
+            'row_number', 'id').distinct('row_number')
 
         
         if not products_in_i2p_special and not products_in_i2p_common:
@@ -2951,7 +2951,6 @@ def viewproduct2items_configs(request, product_sku):
 
 
 
-
 def purchaseordercreateupdate(request,pk=None):
     
     try:
@@ -2985,7 +2984,6 @@ def purchaseordercreateupdate(request,pk=None):
         
             if form.is_valid():
                 try:
-                    
                     form_instance = form.save(commit=False)
                     form_instance.balance_number_of_pieces = form.instance.number_of_pieces
                     form_instance.save()
@@ -3072,7 +3070,7 @@ def purchaseorderdelete(request,pk):
         logger.error(f"Cannot delete {instance.purchase_order_number} - {e}.")
     return redirect('purchase-order-list')
      
-from django.db.models import Prefetch
+
 
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     
@@ -3637,18 +3635,16 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         initial_items_data_dict = []
 
         for instance in product_to_item_instances:
-
             data_dict = {
                 'product_sku':instance.product_sku,
                 'product_color':instance.product_color,
                 'pending_pcs': instance.processed_pcs, #approved qty
                 'balance_pcs': instance.pending_pcs, #this qty will update on each successful form labour workout form submission 
-                'processed_pcs':0,
-            }
+                'processed_pcs': 0
+                }
 
             initial_items_data_dict.append(data_dict)
         
-
         # product 2 item child formset
         labour_workout_child_product_to_items_formset = inlineformset_factory(
                                 labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
@@ -3678,7 +3674,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'total_comsumption':instance.total_comsumption,
                 'unit_value':instance.unit_value,
                 'physical_stock':instance.physical_stock,
-                'balance_physical_stock':instance.balance_physical_stock,
+                'balance_physical_stock' : instance.balance_physical_stock,
                 'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
                 }
             print(instance.material_color_shade.items.Fabric_nonfabric)

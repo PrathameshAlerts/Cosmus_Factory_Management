@@ -74,25 +74,12 @@
         })
     }
 
-    function submitForm(){
-        var balanceApprove = document.querySelectorAll('[name$= "-balance_pcs"]');
 
-        balanceApprove.forEach(ele =>{
-            var balance = parseInt(ele.value);
-            console.log(balance);
-            if(balance == 0){
-                var submitBtn = document.querySelector('.create-btn');
-                console.log(submitBtn);
-                submitBtn.style.display = 'none';
-            }
-            
-        })
-    }
 
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
-        submitForm()
+   
         let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
         approve.forEach(function (element) {
             element.addEventListener('input', () => {
