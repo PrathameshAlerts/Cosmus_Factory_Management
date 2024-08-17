@@ -163,8 +163,9 @@
                                 <td><input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="{{form.instance.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
                             </tr>
                             {% elif not form.instance.id %}
-                            <input type="hidden" name="{{form.prefix}}-fab_non_fab-" id="id_{{form.prefix}}-fab_non_fab-" value="{{form.initial.fab_non_fab}}">
+                           
                             <tr class="text-nowrap">
+                                <input type="hidden" name="{{form.prefix}}-fab_non_fab" id="id_{{form.prefix}}-fab_non_fab" value="{{form.initial.fab_non_fab}}" class="fab_non_fab">
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
@@ -196,13 +197,13 @@
 <script>
 
 function labourApprovedQty() {
-    var total =0;
-    var balance =0;
-    var approvedsValue = document.querySelectorAll('[name$="-pending_pcs"]');
+    let total = 0;
+    let balance =0;
+    const approvedsValue = document.querySelectorAll('[name$="-pending_pcs"]');
     approvedsValue.forEach(function(el){
-        var approvedQty = parseFloat(el.value || 0);
-        var balncePic = el.closest('tr').querySelector('[name$="-balance_pcs"]').value;
-        var blanceAQty = parseFloat(balncePic || 0);
+        const approvedQty = parseFloat(el.value || 0);
+        const balncePic = el.closest('tr').querySelector('[name$="-balance_pcs"]').value;
+        const blanceAQty = parseFloat(balncePic || 0);
         balance += blanceAQty;
         total += approvedQty;
 
@@ -210,99 +211,110 @@ function labourApprovedQty() {
         document.getElementById('id_balanceQtys').value =balance;
     })
 
-    var ids = document.getElementById('id_labour_workout_cutting_items_set-0-id').value;
+    const ids = document.getElementById('id_labour_workout_cutting_items_set-0-id').value;
 
     if(ids !== ""){
-        var submitButton = document.getElementById('id_submit');
-        var challanNo = document.getElementById('id_challan_no');
-        var labourname = document.getElementById('id_labour_name');
-        var total =0;
-        console.log(challanNo);
+        const submitButton = document.getElementById('id_submit');
+        const challanNo = document.getElementById('id_challan_no');
+        const labourname = document.getElementById('id_labour_name');
+        let totals =0;
         challanNo.readOnly = 'true';
         challanNo.style.backgroundColor = 'transparent';
         challanNo.style.border = 'none';
         submitButton.style.display = 'none';
         labourname.disabled = 'true';
         labourname.style.backgroundColor = 'transparent';
-        var processQty = document.querySelectorAll('[name$="-processed_pcs"]');
+        const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
         processQty.forEach(function(element){
             element.readOnly = 'true';
             element.style.backgroundColor = 'transparent';
             element.style.border = 'none';
             element.style.outline = 'none';
-            var approvedQty = parseInt(element.value);
-            total += approvedQty;
-            document.getElementById('id_processQty').value = total;
+            const approvedQty = parseInt(element.value);
+            totals += approvedQty;
+            document.getElementById('id_processQty').value = totals;
         })
 
        
     }
 }
 labourApprovedQty()
-function labourQty(){
-    var totalValue =0;
-    var balanceValue = 0;
-    var processQty = document.querySelectorAll('[name$="-processed_pcs"]');
-    processQty.forEach(function(element){
-       var processValue = parseInt(element.value) || 0;
-       var approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
-       var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
-     
-       if(balanceValue < processValue){
-        element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
-       }
+    function labourQty() {
+        let totalValue = 0;
+        let balanceValue = 0;
+        let processQty = document.querySelectorAll('[name$="-processed_pcs"]');
+        processQty.forEach(function (element) {
+            var processValue = parseInt(element.value) || 0;
+            var approvedValue = parseInt(element.closest('tr').querySelector('[name$="-pending_pcs"]').value);
+            var balanceValue = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value);
 
-       if(!isNaN(processValue) && !isNaN(approvedValue)){
-        totalValue += processValue;
-        document.getElementById('id_processQty').value = totalValue;
-        document.getElementById('id_total_process_pcs').value = totalValue;
-
-        var totalApproved = parseInt(document.getElementById('id_total_approved_pcs').value);
-        console.log(totalApproved);
-        console.log(totalValue)
-       var totalbalance = totalApproved - totalValue;
-        document.getElementById('id_total_balance_pcs').value = totalbalance;
-        }
-
-    })
-
-}
-
-function fabricQty(){
-    var processQty = document.querySelectorAll('[name$="-processed_pcs"]');
-    var totalFabric = 0;
-    processQty.forEach(function(element){
-       var processValue = parseInt(element.value) || 0;
-       var color = element.closest('tr').querySelector('[name$="-product_color"]').value;
-        totalFabric += processValue;
-        //document.querySelector
-       var mainTables = document.querySelectorAll('#labourTable tr');
-       mainTables.forEach(function(el){
-        var mainColor = el.querySelector('[name$="-product_color"]').value;
-        
-        var totalConsumtion = el.querySelector('[name$="-total_consumtion"]').value;
-        var fabric = el.querySelector('[name$="-fab_non_fab"]').value;
-        if(fabric !== "Fabric"){
-
-            if(color === mainColor){
-                var consumtion = el.querySelector('[name$="-consumtion"]').value;
-                totalConsumtion = consumtion * processValue;
-                el.querySelector('[name$="-total_consumtion"]').value = totalConsumtion.toFixed(2);
-            }else if(color === "Common Item"){ 
-                var consumtion = el.querySelector('[name$="-consumtion"]').value || 0;
-             
-                totalConsumtion = consumtion * totalFabric;
-                el.querySelector('[name$="-total_consumtion"]').value = totalConsumtion.toFixed(2);
+            if (balanceValue < processValue) {
+                element.closest('tr').querySelector('[name$="-processed_pcs"]').value = 0;
             }
-        }
 
-       })
-    })
-}
+            if (!isNaN(processValue) && !isNaN(approvedValue)) {
+                totalValue += processValue;
+                document.getElementById('id_processQty').value = totalValue;
+                document.getElementById('id_total_process_pcs').value = totalValue;
+
+                var totalApproved = parseInt(document.getElementById('id_total_approved_pcs').value);
+
+                var totalbalance = totalApproved - totalValue;
+                document.getElementById('id_total_balance_pcs').value = totalbalance;
+            }
+
+        })
+
+    }
+
+    function fabricQty() {
+        let totalFabric = 0;
+        const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
+
+        processQty.forEach(function (element) {
+            const processValue = parseInt(element.value) || 0;
+            const color = element.closest('tr').querySelector('[name$="-product_color"]').value;
+
+            totalFabric += processValue;
+
+            const mainTables = document.querySelectorAll('#labourTable tr');
+
+            mainTables.forEach(function (el) {
+                const mainColor = el.querySelector('[name$="-product_color"]').value;
+
+                let totalConsumtion = el.querySelector('[name$="-total_comsumption"]');
+
+                if (totalConsumtion) {
+
+                    const fabric = el.querySelector('.fab_non_fab').value;
+
+                    if (fabric !== "Fabric") {
+
+                        if (color === mainColor) {
+
+                            const consumtion = el.querySelector('[name$="-consumption"]').value;
+                            let tConsumtion = consumtion * processValue;
+                            totalConsumtion.value = tConsumtion.toFixed(2);
+
+                        } else if (color === "Common Item") {
+
+                            const consumtion = el.querySelector('[name$="-consumption"]').value || 0;
+
+                            let tConsumtion = consumtion * totalFabric;
+                            totalConsumtion.value = tConsumtion.toFixed(2);
+
+                        }
+                    }
+                }
+
+
+            })
+        })
+    }
 
 document.addEventListener('DOMContentLoaded', function() {
  
-    var pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
+    const pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
     pendingQty.forEach(function(el){
       el.addEventListener('input',function(){
         labourApprovedQty();
