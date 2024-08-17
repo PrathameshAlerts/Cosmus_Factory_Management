@@ -62,7 +62,7 @@
                             {% endif %}
                         </select>
                     </div>
-                    <input type="hidden" value="{{purchase_order_cutting_form.instance.raw_material_cutting_id}}" id="id_raw_material_cutting_id">
+                    <input type="hidden" value="{{purchase_order_cutting_form.instance.raw_material_cutting_id}}" id="cutting_id">
                 </div>
                 <div class="d-flex">
                     <div class="d-flex me-4">
@@ -433,10 +433,10 @@ function checkOnlyOne(checkbox) {
     }
 
     function submitForm(){
-        const ids = document.getElementById('id_raw_material_cutting_id').value ;
+        const ids = document.getElementById('cutting_id').value ;
       console.log('ids',ids);
        
-        if(ids !== ""){
+        if(ids !== "" && ids !== "None"){
             let procumentValue =0;
             let CuttingValue =0;
             let balanceValue = 0;
