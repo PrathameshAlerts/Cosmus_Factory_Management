@@ -830,7 +830,6 @@ def item_list(request):
     
     g_search = request.GET.get('item_search','')
 
-
     #select related for loading forward FK relationships and prefetch related for reverse relationship  
     #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
     queryset = Item_Creation.objects.all().annotate(total_quantity=Sum('shades__godown_shades__quantity')).order_by('item_name').select_related('Item_Color','unit_name_item',
@@ -838,10 +837,9 @@ def item_list(request):
                                                     'Item_Packing').prefetch_related('shades',
                                                     'shades__godown_shades')
 
-
     # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '':
-        queryset = Item_Creation.objects.filter(Q(item_name__icontains=g_search)|
+        queryset = queryset.filter(Q(item_name__icontains=g_search)|
                                                 Q(Item_Color__color_name__icontains=g_search)|
                                                 Q(Fabric_Group__fab_grp_name__icontains=g_search))
         
@@ -2638,7 +2636,7 @@ def product2item(request,product_refrence_id):
             formset_single_valid = False
             formset_common_valid = False
             
-            
+            # row_number for sorting the order of forms
             total_row_number = 0
             
             #for unique records
@@ -2662,8 +2660,8 @@ def product2item(request,product_refrence_id):
 
                                 p2i_instance = form.save(commit = False)
                                 p2i_instance.common_unique = False
-                                p2i_instance.row_number = total_row_number
-                                total_row_number = total_row_number + 1
+                                p2i_instance.row_number = total_row_number # assign th row no
+                                total_row_number = total_row_number + 1 # add row no  
                                 p2i_instance.save()
                                 logger.info(f"Product to item created/updated special - {p2i_instance.id}")
 
@@ -2715,14 +2713,12 @@ def product2item(request,product_refrence_id):
                                     
                                     obj.no_of_rows = form.cleaned_data['no_of_rows']
                                     obj.Remark = form.cleaned_data['Remark']
-                                    obj.row_number = total_row_number
+                                    obj.row_number = total_row_number # start from the last row no of unique form 
                                     logger.info(f"Product to item created/updated common -  {obj.id}")
                                     obj.save()
                                 
 
-                                    
-
-
+                                
                                     # create records in set_prod_item_part_name table with the saved obj as FK 
                                     rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
                                     if rows_to_create > 0:
