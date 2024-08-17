@@ -3687,7 +3687,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'balance_physical_stock' : instance.balance_physical_stock,
                 'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
                 }
-            print(instance.material_color_shade.items.Fabric_nonfabric)
+            
             initial_data_dict.append(data)
 
         labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
@@ -3773,6 +3773,8 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                         formset_form = form.save(commit=False)
                         formset_form.labour_workout_child_instance = labour_workout_form_instance
                         formset_form.save()
+                
+                return redirect(reverse('labour-workout-child-list', args=[pk]))
 
         else:
             print('labour_work_out.errors',labour_work_out_child_form.errors)
@@ -3780,6 +3782,11 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
             logger.error(f'labour_workout_cutting_items_formset_form{labour_workout_cutting_items_formset_form.errors}')
             logger.error(f'product_to_item_formset {product_to_item_formset.non_form_errors()}')
             logger.error(f'labour_workout_cutting_items_formset_form - {labour_workout_cutting_items_formset_form.non_form_errors()}')
+
+            return render(request,'production/labourworkoutsingle.html',
+                  {'product_to_item_formset':product_to_item_formset,'labour_work_out_child_form':labour_work_out_child_form,
+                   'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form,
+                   'ledger_labour_instances':ledger_labour_instances,'godown_id':godown_id})
 
 
             
@@ -3807,6 +3814,7 @@ def factory_employee_create_update_list(request,pk=None):
     
     factory_employees = factory_employee.objects.all()
     cutting_rooms =  cutting_room.objects.all()
+    
     if pk:
         title = 'Update'
         instance = get_object_or_404(factory_employee,pk=pk)

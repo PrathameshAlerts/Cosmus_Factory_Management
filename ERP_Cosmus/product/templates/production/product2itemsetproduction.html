@@ -32,8 +32,8 @@
                     
                     <tr>
                         {{ form.id }}
-                        <td><input type="number"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td></td>
-                            
+                        <td></td>
+                            <input type="hidden"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                         <td>
                             <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
                                 id="id_{{form.prefix}}-PProduct_pk">
@@ -68,7 +68,11 @@
         <button type="button" class="add_btn mb-4" id="addForm">Add</button>
         
         <div>
+            
                 <h4 class="mb-3">Add common Items</h3>
+               
+    
+              
                 <table class="table table-responsive table-striped table-bordered" id="myProduct">
                     <thead class="text-nowrap name_absolute">
                         <tr>
@@ -87,8 +91,8 @@
                   
                         <tr>
                             {{ forms.id }}
-                            <td><input type="number"  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
-                                
+                            <td></td>
+                                <input type="hidden"  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
                             <td>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
@@ -127,6 +131,8 @@
     });
 
     function addItemClick(event){
+      
+
         document.getElementById('itemCreate').addEventListener('click', function(){
             var data = {message: 'itemCreate'};
             window.opener.postMessage(data, '*');
@@ -563,28 +569,26 @@
     // Initial call to update the visibility when the page loads
     updateAddButtonVisibility();
 
-    if (addButtonValue && tableBodys) {
+    if(addButtonValue && tableBodys){
     addButtonValue.forEach(function (el) {
         el.addEventListener('click', function () {
             const currentRow = el.closest('tr');
             const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
-            console.log('inputValue', inputValue);
+            console.log('inputValue',inputValue);
             const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
             const formsInsertValue = parseInt(mainForms.value);
             const formValue = inputValue.split('-')[1];
-            console.log('formValue', formValue);
             const formsInsert = parseInt(formValue) + 2;
-            console.log('formsInsert', formsInsert);
+
             const newRow = currentRow.cloneNode(true);
 
             newRow.querySelectorAll("input, select").forEach(function (e) {
                 e.value = "";
             });
 
-            // Update IDs and names for the new row
             const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
             rowValue.id = `id_serial_no_unique-${formsInsertValue}`;
-            rowValue.value = formsInsert;
+            rowValue.value = '';
 
             const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
             newSelectElement.id = `id_product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
@@ -632,32 +636,14 @@
             addButtonElement.name = `product2itemuniqueformset-${formsInsertValue}-add_btn`;
             addButtonElement.value = '+';
 
-            // Insert the new row after the current row
+            mainForms.value = formsInsertValue + 1;
             currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
 
-            // Re-bind delete functionality after adding a new rowdeleteRowSingle();
-
-            // Update the prefix of the rows below the newly added rowlet nextRow = newRow.nextElementSibling;
-            let rowIndex = formsInsertValue + 1;
-
-            while (nextRow) {
-                nextRow.querySelectorAll('[id^="id_serial_no_unique-"], [name^="product2itemuniqueformset-"]').forEach(function (elem) {
-                    const newName = elem.name.replace(/product2itemuniqueformset-\d+/, `product2itemuniqueformset-${rowIndex}`);
-                    elem.name = newName;
-                    if (elem.id) {
-                        const newId = elem.id.replace(/id_product2itemuniqueformset-\d+/, `id_product2itemuniqueformset-${rowIndex}`);
-                        elem.id = newId;
-                    }
-                });
-                nextRow = nextRow.nextElementSibling;
-                rowIndex++;
-            }
-
-            // Update the total forms count
-            mainForms.value = parseInt(mainForms.value) + 1;
+            // Re-bind delete functionality after adding a new row
+            deleteRowSingle();
         });
     });
-}
+    }
 
     function deleteRowSingle() {
         document.querySelectorAll('.delete-btn').forEach(function (button) {
@@ -850,7 +836,7 @@ document.addEventListener('DOMContentLoaded', function () {
           
                 const formValue = inputValue.split('-')[1];
                 
-                const formsInsert = parseInt(formValue) + 2;
+                const formsInsert = parseInt(formValue) + 1;
 
                 const newRow = currentRow.cloneNode(true);
      
@@ -859,9 +845,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         e.value = "";
                 });
 
+
+
+                    
                     const SerialNo = newRow.querySelector('[id^="id_serial_no"]');
                     SerialNo.id = `id_serial_no_${formsInsertValue}`;
-                    SerialNo.value = formsInsert ;
+                    SerialNo.value = '';
 
                     const inputnameElement = newRow.querySelector('[name^="item_input_Name_"]');
                     inputnameElement.id = `id_item_input_Name_${formsInsertValue}`;
