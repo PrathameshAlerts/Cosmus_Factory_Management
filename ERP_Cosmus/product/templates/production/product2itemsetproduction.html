@@ -32,8 +32,10 @@
                     
                     <tr>
                         {{ form.id }}
-                        <td><input type="number"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td></td>
-                            
+                        <td> <input type="hidden"  id="id_{{form.prefix}}-row_number" name="{{form.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" readonly>
+                            <input type="number"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}" readonly></td>
+                     
+                       
                         <td>
                             <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
                                 id="id_{{form.prefix}}-PProduct_pk">
@@ -68,7 +70,11 @@
         <button type="button" class="add_btn mb-4" id="addForm">Add</button>
         
         <div>
+            
                 <h4 class="mb-3">Add common Items</h3>
+               
+    
+              
                 <table class="table table-responsive table-striped table-bordered" id="myProduct">
                     <thead class="text-nowrap name_absolute">
                         <tr>
@@ -87,8 +93,11 @@
                   
                         <tr>
                             {{ forms.id }}
-                            <td><input type="number"  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}"></input></td>
-                                
+                            <td><input type="number"  id="id_serial_no-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}">
+                                <input type="hidden"  id="id_{{forms.prefix}}-row_number" name="{{forms.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}">
+                                <!-- <input type="hidden"  id="id_{{forms.prefix}}-numbers" name="{{forms.prefix}}-numbers" class="Serial_no" value="{{forloop.counter}}"> -->
+                            </td>
+                            
                             <td>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
@@ -127,6 +136,8 @@
     });
 
     function addItemClick(event){
+      
+
         document.getElementById('itemCreate').addEventListener('click', function(){
             var data = {message: 'itemCreate'};
             window.opener.postMessage(data, '*');
@@ -534,9 +545,26 @@
 
 
 <script>
+
+// function noRowId (){
+//         const tableid = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+//         const addUniqueBtn = document.getElementById('addForm');
+        
+//         const idValues = parseInt(tableid.value);
+//         const id = idValues + 1;
+        
+//         const tableBody = document.querySelector('#myProduct tbody');
+    
+//         const rows = tableBody.querySelector('tr').querySelector('[id="id_product2itemcommonformset-0-row_number"]');
+//         rows.value = id;
+//         const newRowId = tableBody.querySelector('tr').querySelector('[id="id_product2itemcommonformset-0-numbers"]');
+//         newRowId.value = id;
+
+// }
+
     // THis code are using a single row created by clicking add button
     document.addEventListener('DOMContentLoaded', function () {
-
+   
     const addButtonValue = document.querySelectorAll('.add_btn_row');
     const tableBodys = document.querySelector('#mainProductForm tbody');
       // Function to update the visibility of add buttons
@@ -563,7 +591,7 @@
     // Initial call to update the visibility when the page loads
     updateAddButtonVisibility();
 
-    if (addButtonValue && tableBodys) {
+    if(addButtonValue && tableBodys){
     addButtonValue.forEach(function (el) {
         el.addEventListener('click', function () {
             const currentRow = el.closest('tr');
@@ -573,6 +601,7 @@
             const formValue = inputValue.split('-')[1];
         
             const formsInsert = parseInt(formValue) + 2;
+            console.log(formsInsert);
             const formDataValue = parseInt(formValue) + 1;
            
             const newRow = currentRow.cloneNode(true);
@@ -581,10 +610,14 @@
                 e.value = "";
             });
 
-            // Update IDs and names for the new row
             const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
             rowValue.id = `id_serial_no_unique-${formDataValue}`;
             rowValue.value = formsInsert;
+
+            const rowNumber = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-row_number"]');
+            rowNumber.id = `id_product2itemuniqueformset-${formDataValue}-row_number`;
+            rowNumber.name = `product2itemuniqueformset-${formDataValue}-row_number`;
+            rowNumber.value = formsInsert;
 
             const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
             newSelectElement.id = `id_product2itemuniqueformset-${formDataValue}-PProduct_pk`;
@@ -647,11 +680,8 @@
 
             // Update the prefix of the rows below the newly added row
             let nextRow = newRow.nextElementSibling;
-            console.log('nextRow', nextRow);
+       
             let rowIndex = formDataValue + 1;
-
-            console.log('rowIndex', rowIndex);
-
             while (nextRow) {
                 nextRow.querySelectorAll('[id^="id_serial_no_unique-"], [name^="product2itemuniqueformset-"]').forEach(function (elem) {
                     const newName = elem.name.replace(/product2itemuniqueformset-\d+/, `product2itemuniqueformset-${rowIndex}`);
@@ -665,6 +695,9 @@
                     if (elem.id && elem.id.startsWith('id_serial_no_unique-')) {
                         elem.value = rowIndex + 1;  // Set the serial number value to the row index
                     }
+                    if (elem.id && elem.id.endsWith('-row_number')) {
+                        elem.value = rowIndex + 1;  // Set the serial number value to the row index
+                    }
                 });
                 nextRow = nextRow.nextElementSibling;
                 rowIndex++;
@@ -672,10 +705,11 @@
 
             // Update the total forms count
             mainForms.value = parseInt(mainForms.value) + 1;
+            //noRowId();
            
         });
     });
-}
+    }
 
     function deleteRowSingle() {
         document.querySelectorAll('.delete-btn').forEach(function (button) {
@@ -726,6 +760,7 @@
                 });
                 if (lastVisibleRow) {
                     const forms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+                
 
                     for(let i = 0; i<addInputRow; i++){
                     const newFormCount = parseInt(forms.value);
@@ -740,6 +775,11 @@
                     const rowValue = newTable.querySelector('[id^="id_serial_no_unique-"]');
                     rowValue.id = `id_serial_no_unique-${newFormCount}`;
                     rowValue.value = formValue;
+
+                    const numberRow = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="row_number"]');
+                    numberRow.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
+                    numberRow.name = `product2itemuniqueformset-${newFormCount}-row_number`;
+                    numberRow.value = formValue;
 
                     const newSelectElement = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
                     newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;
@@ -793,6 +833,7 @@
                     }
                     document.getElementById('id_productNoRow').value = '1';
                     deleteRow();
+                    //noRowId();
 
                 } else {
                     console.error("No visible rows found to clone.");
@@ -832,6 +873,7 @@
 
 <!-- product2itemcommonformset -->
 <script>
+    
 document.addEventListener('DOMContentLoaded', function () {
         const addButtonValues = document.querySelectorAll('.add_btn_CommonForm');
         const tableBodys = document.querySelector('#myProduct tbody');
@@ -860,11 +902,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         addButtonValues.forEach(function (el){
             el.addEventListener('click',function(){
+             
+              
                 const currentRow = el.closest('tr');
      
                 const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
       
                 const mainForms = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
+                //const newrow = document.getElementById('id_product2itemcommonformset-0-numbers'); // rownumber value instert form unique row noumber last value + 1
+               //const rowNumbersValue = parseInt(newrow.value);
+              
+               //console.log('rowNumbersValue',rowNumbersValue)
+            
+              // const rowNumbers = rowNumbersValue + 1;
+               //console.log('rowNumbers',rowNumbers)
                 const formsInsertValue = parseInt(mainForms.value);
           
                 const formValue = inputValue.split('-')[1];
@@ -882,6 +933,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const SerialNo = newRow.querySelector('[id^="id_serial_no-"]');
                     SerialNo.id = `id_serial_no-${formDataValues}`;
                     SerialNo.value = formsInsert ;
+
+                    const Numbers = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-row_number"]');
+                    Numbers.id = `id_product2itemcommonformset-${formDataValues}-row_number`;
+                    Numbers.name = `product2itemcommonformset-${formDataValues}-row_number`;
+                    Numbers.value = '';
 
                     const inputnameElement = newRow.querySelector('[name^="item_input_Name_"]');
                     inputnameElement.id = `id_item_input_Name_${formDataValues}`;
@@ -948,11 +1004,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (elem.id && elem.id.startsWith('id_serial_no-')) {
                     elem.value = rowIndex + 1; // Set the serial number value to the row index
                 }
+                if (elem.id && elem.id.endsWith('-row_number')) {
+                    elem.value = rowIndex + 1; // Set the serial number value to the row index
+                }
                 });
                 
                 nextRow = nextRow.nextElementSibling;
                 rowIndex++;
             }
+            //newrow.value = parseInt(newrow.value) + 1;
             mainForms.value = parseInt(mainForms.value) + 1;
                  deletedRowCommonRow();
             })
@@ -1004,6 +1064,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 if (lastVisibleRow) {
                     const tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
+                    //const uniqueRowValue = document.getElementById('id_product2itemcommonformset-0-numbers');
+                    //const uniqueRows = parseInt(uniqueRowValue.value)
+                    // console.log('uniqueRows',uniqueRows)
+                    //     const unique = uniqueRows + 1;
+                    //     console.log('unique',unique)
+                    
                     for(let i=0; i<newRowsForm; i++){
                         const newCount = parseInt(tableRow.value);
                        const tableValue = newCount  + 1;
@@ -1013,11 +1079,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
 
 
-
-                    
                     const SerialNo = lastRow.querySelector('[id^="id_serial_no-"]');
                     SerialNo.id = `id_serial_no-${newCount}`;
                     SerialNo.value = tableValue;
+
+                    const Serial = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="-row_number"]');
+                    Serial.id = `id_product2itemcommonformset-${newCount}-row_number`;
+                    Serial.name = `product2itemcommonformset-${newCount}-row_number`;
+                    Serial.value = '';
 
                     const inputnameElement = lastRow.querySelector('[name^="item_input_Name_"]');
                     inputnameElement.id = `id_item_input_Name_${newCount}`;
@@ -1061,8 +1130,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     addButtonElement.name = `product2itemcommonformset-${newCount}-add_btns`;
                     addButtonElement.value = '+';
 
-                    tableRow.value = newCount + 1;
+                    const addButtonId = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="-id"]');
+                    addButtonId.id = `id_product2itemcommonformset-${newCount}-id`;
+                    addButtonId.name = `product2itemcommonformset-${newCount}-id`;
+                    addButtonId.value = '';
 
+                    tableRow.value = newCount + 1;
+                    //console.log(uniqueRows + 1)
+                    //uniqueRowValue.value = uniqueRows + 1;
                     tableBody.appendChild(lastRow);
                     
                     }
@@ -1101,5 +1176,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+function submitFormRowNumber(){
+    document.getElementById('myProductForm').addEventListener('submit',function(){
+        var uniqueTotalForm = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+        var uniqueTotal = parseInt(uniqueTotalForm.value);
+       var unique = uniqueTotal + 1;
+       console.log('unique',unique)
+        var commonForm = parseInt(document.getElementById('id_product2itemcommonformset-TOTAL_FORMS').value);
+        console.log('commonForm',commonForm)
+        for(var i = 0; i < commonForm; i++){
+            var commonRowNumber = document.getElementById('id_product2itemcommonformset-'+ i +'-row_number');
+            console.log('commonRowNumber',commonRowNumber)
+          
+             commonRowNumber.value = unique;
+             unique++;
+        }
+        
+    })
+}
+submitFormRowNumber();
 </script>
 {% endblock body %}

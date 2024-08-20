@@ -166,7 +166,7 @@ def edit_production_product(request,pk):
                                     dimention_total = row[5].value
                                     part_pieces = row[6].value
                                     grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
-
+                                    print(part_name,part_dimention)
                                     if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
@@ -830,7 +830,6 @@ def item_list(request):
     
     g_search = request.GET.get('item_search','')
 
-
     #select related for loading forward FK relationships and prefetch related for reverse relationship  
     #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
     queryset = Item_Creation.objects.all().annotate(total_quantity=Sum('shades__godown_shades__quantity')).order_by('item_name').select_related('Item_Color','unit_name_item',
@@ -838,10 +837,9 @@ def item_list(request):
                                                     'Item_Packing').prefetch_related('shades',
                                                     'shades__godown_shades')
 
-
     # cannot use icontains on foreignkey fields even if it has data in the fields
     if g_search != '':
-        queryset = Item_Creation.objects.filter(Q(item_name__icontains=g_search)|
+        queryset = queryset.filter(Q(item_name__icontains=g_search)|
                                                 Q(Item_Color__color_name__icontains=g_search)|
                                                 Q(Fabric_Group__fab_grp_name__icontains=g_search))
         
@@ -2639,7 +2637,6 @@ def product2item(request,product_refrence_id):
             formset_common_valid = False
             
             
-            total_row_number = 0
             
             #for unique records
             if formset_single.is_valid():
@@ -2662,14 +2659,12 @@ def product2item(request,product_refrence_id):
                                     initial_rows = 0
 
                                 p2i_instance = form.save(commit = False)
-                                p2i_instance.common_unique = False
-                                p2i_instance.row_number = total_row_number
-                                total_row_number = total_row_number + 1
+                                p2i_instance.common_unique = False 
                                 p2i_instance.save()
                                 logger.info(f"Product to item created/updated special - {p2i_instance.id}")
 
                                 no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
-
+                                p2i_instance.row_number = form.cleaned_data['row_number']
                                 if no_of_rows_to_create > 0:
                                     for row in range(no_of_rows_to_create):
                                         logger.info(f" set prod item part name created of p2i instance - {p2i_instance.id}")
@@ -2721,14 +2716,10 @@ def product2item(request,product_refrence_id):
                                     
                                     obj.no_of_rows = form.cleaned_data['no_of_rows']
                                     obj.Remark = form.cleaned_data['Remark']
-                                    obj.row_number = total_row_number
+                                    obj.row_number = form.cleaned_data['row_number']
                                     logger.info(f"Product to item created/updated common -  {obj.id}")
                                     obj.save()
                                 
-
-                                    
-
-
                                     # create records in set_prod_item_part_name table with the saved obj as FK 
                                     rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
                                     if rows_to_create > 0:
@@ -2738,7 +2729,6 @@ def product2item(request,product_refrence_id):
 
                                     formset_common_valid = True
                                     
-                                total_row_number = total_row_number + 1
 
                 except Exception as e:
                     logger.error(f'Error saving common records - {e}')
@@ -3697,7 +3687,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 'balance_physical_stock' : instance.balance_physical_stock,
                 'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
                 }
-            print(instance.material_color_shade.items.Fabric_nonfabric)
+            
             initial_data_dict.append(data)
 
         labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
@@ -3783,6 +3773,8 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                         formset_form = form.save(commit=False)
                         formset_form.labour_workout_child_instance = labour_workout_form_instance
                         formset_form.save()
+                
+                return redirect(reverse('labour-workout-child-list', args=[pk]))
 
         else:
             print('labour_work_out.errors',labour_work_out_child_form.errors)
@@ -3790,6 +3782,11 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
             logger.error(f'labour_workout_cutting_items_formset_form{labour_workout_cutting_items_formset_form.errors}')
             logger.error(f'product_to_item_formset {product_to_item_formset.non_form_errors()}')
             logger.error(f'labour_workout_cutting_items_formset_form - {labour_workout_cutting_items_formset_form.non_form_errors()}')
+
+            return render(request,'production/labourworkoutsingle.html',
+                  {'product_to_item_formset':product_to_item_formset,'labour_work_out_child_form':labour_work_out_child_form,
+                   'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form,
+                   'ledger_labour_instances':ledger_labour_instances,'godown_id':godown_id})
 
 
             
@@ -3817,6 +3814,7 @@ def factory_employee_create_update_list(request,pk=None):
     
     factory_employees = factory_employee.objects.all()
     cutting_rooms =  cutting_room.objects.all()
+    
     if pk:
         title = 'Update'
         instance = get_object_or_404(factory_employee,pk=pk)
