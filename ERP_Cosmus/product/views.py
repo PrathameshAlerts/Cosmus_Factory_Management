@@ -2587,7 +2587,7 @@ def packaging_delete(request,pk):
 
 
 def product2item(request,product_refrence_id):
-    
+    print(request.POST)
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -2643,6 +2643,7 @@ def product2item(request,product_refrence_id):
             
             #for unique records
             if formset_single.is_valid():
+                
                 try:
                     # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
                     for form in formset_single.deleted_forms:
@@ -2676,9 +2677,14 @@ def product2item(request,product_refrence_id):
 
                                 p2i_instance.save()
                                 formset_single_valid = True
+                                
                 except Exception as e:
                     logger.error(f'Error saving unique records - {e}')
                     messages.error(request, f'Error saving unique records - {e}')  
+            
+            else:
+                print(formset_single.errors)
+                
             
 
             

@@ -568,13 +568,13 @@
         el.addEventListener('click', function () {
             const currentRow = el.closest('tr');
             const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
-            console.log('inputValue', inputValue);
             const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
             const formsInsertValue = parseInt(mainForms.value);
             const formValue = inputValue.split('-')[1];
-            console.log('formValue', formValue);
+        
             const formsInsert = parseInt(formValue) + 2;
-            console.log('formsInsert', formsInsert);
+            const formDataValue = parseInt(formValue) + 1;
+           
             const newRow = currentRow.cloneNode(true);
 
             newRow.querySelectorAll("input, select").forEach(function (e) {
@@ -583,70 +583,87 @@
 
             // Update IDs and names for the new row
             const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
-            rowValue.id = `id_serial_no_unique-${formsInsertValue}`;
+            rowValue.id = `id_serial_no_unique-${formDataValue}`;
             rowValue.value = formsInsert;
 
             const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
-            newSelectElement.id = `id_product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
-            newSelectElement.name = `product2itemuniqueformset-${formsInsertValue}-PProduct_pk`;
+            newSelectElement.id = `id_product2itemuniqueformset-${formDataValue}-PProduct_pk`;
+            newSelectElement.name = `product2itemuniqueformset-${formDataValue}-PProduct_pk`;
             newSelectElement.value = '';
 
             const inputValueElement = newRow.querySelector('[name^="itemName_"]');
-            inputValueElement.id = `id_itemName_${formsInsertValue}`;
-            inputValueElement.name = `itemName_${formsInsertValue}`;
+            inputValueElement.id = `id_itemName_${formDataValue}`;
+            inputValueElement.name = `itemName_${formDataValue}`;
             inputValueElement.value = '';
 
             const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
-            hiddenValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pks`;
-            hiddenValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pks`;
+            hiddenValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pks`;
+            hiddenValueName.name = `product2itemuniqueformset-${formDataValue}-Item_pks`;
             hiddenValueName.value = '';
 
             const selectValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
-            selectValueName.id = `id_product2itemuniqueformset-${formsInsertValue}-Item_pk`;
-            selectValueName.name = `product2itemuniqueformset-${formsInsertValue}-Item_pk`;
+            selectValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pk`;
+            selectValueName.name = `product2itemuniqueformset-${formDataValue}-Item_pk`;
             selectValueName.value = '';
 
             const inputElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
-            inputElement.id = `id_product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
-            inputElement.name = `product2itemuniqueformset-${formsInsertValue}-no_of_rows`;
+            inputElement.id = `id_product2itemuniqueformset-${formDataValue}-no_of_rows`;
+            inputElement.name = `product2itemuniqueformset-${formDataValue}-no_of_rows`;
             inputElement.value = '1';
 
             const grandElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
-            grandElement.id = `id_product2itemuniqueformset-${formsInsertValue}-grand_total`;
-            grandElement.name = `product2itemuniqueformset-${formsInsertValue}-grand_total`;
+            grandElement.id = `id_product2itemuniqueformset-${formDataValue}-grand_total`;
+            grandElement.name = `product2itemuniqueformset-${formDataValue}-grand_total`;
             grandElement.value = '0';
 
             const inputRemark = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
-            inputRemark.id = `id_product2itemuniqueformset-${formsInsertValue}-Remark`;
-            inputRemark.name = `product2itemuniqueformset-${formsInsertValue}-Remark`;
+            inputRemark.id = `id_product2itemuniqueformset-${formDataValue}-Remark`;
+            inputRemark.name = `product2itemuniqueformset-${formDataValue}-Remark`;
             inputRemark.value = '';
 
             const deleteElement = newRow.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
-            deleteElement.id = `id_product2itemuniqueformset-${formsInsertValue}-DELETE`;
-            deleteElement.name = `product2itemuniqueformset-${formsInsertValue}-DELETE`;
+            deleteElement.id = `id_product2itemuniqueformset-${formDataValue}-DELETE`;
+            deleteElement.name = `product2itemuniqueformset-${formDataValue}-DELETE`;
             deleteElement.value = '';
             deleteElement.checked = false;
 
             const addButtonElement = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
-            addButtonElement.id = `id_product2itemuniqueformset-${formsInsertValue}-add_btn`;
-            addButtonElement.name = `product2itemuniqueformset-${formsInsertValue}-add_btn`;
+            addButtonElement.id = `id_product2itemuniqueformset-${formDataValue}-add_btn`;
+            addButtonElement.name = `product2itemuniqueformset-${formDataValue}-add_btn`;
             addButtonElement.value = '+';
+
+            
+            const mainId = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
+            mainId.id = `id_product2itemuniqueformset-${formDataValue}-id`;
+            mainId.name = `product2itemuniqueformset-${formDataValue}-id`;
+            mainId.value = '';
+            
 
             // Insert the new row after the current row
             currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
 
-            // Re-bind delete functionality after adding a new rowdeleteRowSingle();
+            // Re-bind delete functionality after adding a new 
+            deleteRowSingle();
 
-            // Update the prefix of the rows below the newly added rowlet nextRow = newRow.nextElementSibling;
-            let rowIndex = formsInsertValue + 1;
+            // Update the prefix of the rows below the newly added row
+            let nextRow = newRow.nextElementSibling;
+            console.log('nextRow', nextRow);
+            let rowIndex = formDataValue + 1;
+
+            console.log('rowIndex', rowIndex);
 
             while (nextRow) {
                 nextRow.querySelectorAll('[id^="id_serial_no_unique-"], [name^="product2itemuniqueformset-"]').forEach(function (elem) {
                     const newName = elem.name.replace(/product2itemuniqueformset-\d+/, `product2itemuniqueformset-${rowIndex}`);
+        
                     elem.name = newName;
                     if (elem.id) {
                         const newId = elem.id.replace(/id_product2itemuniqueformset-\d+/, `id_product2itemuniqueformset-${rowIndex}`);
                         elem.id = newId;
+                    }
+                    // Update the value for the serial number input field
+                    if (elem.id && elem.id.startsWith('id_serial_no_unique-')) {
+                        elem.value = rowIndex + 1;  // Set the serial number value to the row index
                     }
                 });
                 nextRow = nextRow.nextElementSibling;
@@ -655,6 +672,7 @@
 
             // Update the total forms count
             mainForms.value = parseInt(mainForms.value) + 1;
+           
         });
     });
 }
@@ -711,6 +729,7 @@
 
                     for(let i = 0; i<addInputRow; i++){
                     const newFormCount = parseInt(forms.value);
+                    const formValue = newFormCount + 1;
                     const newTable = lastVisibleRow.cloneNode(true);
                     newTable.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
@@ -720,7 +739,7 @@
 
                     const rowValue = newTable.querySelector('[id^="id_serial_no_unique-"]');
                     rowValue.id = `id_serial_no_unique-${newFormCount}`;
-                    rowValue.value = '';
+                    rowValue.value = formValue;
 
                     const newSelectElement = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
                     newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;
@@ -851,6 +870,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const formValue = inputValue.split('-')[1];
                 
                 const formsInsert = parseInt(formValue) + 2;
+                const formDataValues = parseInt(formValue) + 1;
 
                 const newRow = currentRow.cloneNode(true);
      
@@ -859,54 +879,81 @@ document.addEventListener('DOMContentLoaded', function () {
                         e.value = "";
                 });
 
-                    const SerialNo = newRow.querySelector('[id^="id_serial_no"]');
-                    SerialNo.id = `id_serial_no_${formsInsertValue}`;
+                    const SerialNo = newRow.querySelector('[id^="id_serial_no-"]');
+                    SerialNo.id = `id_serial_no-${formDataValues}`;
                     SerialNo.value = formsInsert ;
 
                     const inputnameElement = newRow.querySelector('[name^="item_input_Name_"]');
-                    inputnameElement.id = `id_item_input_Name_${formsInsertValue}`;
-                    inputnameElement.name = `item_input_Name_${formsInsertValue}`;
+                    inputnameElement.id = `id_item_input_Name_${formDataValues}`;
+                    inputnameElement.name = `item_input_Name_${formDataValues}`;
                     inputnameElement.value = '';
 
                     const hiddenElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pks"]');
-                    hiddenElement.id = `id_product2itemcommonformset-${formsInsertValue}-Item_pks`;
-                    hiddenElement.name = `product2itemcommonformset-${formsInsertValue}-Item_pks`;
+                    hiddenElement.id = `id_product2itemcommonformset-${formDataValues}-Item_pks`;
+                    hiddenElement.name = `product2itemcommonformset-${formDataValues}-Item_pks`;
                     hiddenElement.value = "";
 
                     const selectElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pk"]');
-                    selectElement.id = `id_product2itemcommonformset-${formsInsertValue}-Item_pk`;
-                    selectElement.name = `product2itemcommonformset-${formsInsertValue}-Item_pk`;
+                    selectElement.id = `id_product2itemcommonformset-${formDataValues}-Item_pk`;
+                    selectElement.name = `product2itemcommonformset-${formDataValues}-Item_pk`;
                     selectElement.value = '';
 
                     const inputNameValue = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="no_of_rows"]');
-                    inputNameValue.id = `id_product2itemcommonformset-${formsInsertValue}-no_of_rows`;
-                    inputNameValue.name = `product2itemcommonformset-${formsInsertValue}-no_of_rows`;
+                    inputNameValue.id = `id_product2itemcommonformset-${formDataValues}-no_of_rows`;
+                    inputNameValue.name = `product2itemcommonformset-${formDataValues}-no_of_rows`;
                     inputNameValue.value = '1';
 
                     const grandTotalElement = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total"]');
-                    grandTotalElement.id = `id_product2itemcommonformset-${formsInsertValue}-grand_total`;
-                    grandTotalElement.name = `product2itemcommonformset-${formsInsertValue}-grand_total`;
+                    grandTotalElement.id = `id_product2itemcommonformset-${formDataValues}-grand_total`;
+                    grandTotalElement.name = `product2itemcommonformset-${formDataValues}-grand_total`;
                     grandTotalElement.value = '0';
 
                     const inputElement = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
-                    inputElement.id = `id_product2itemcommonformset-${formsInsertValue}-Remark`;
-                    inputElement.name = `product2itemcommonformset-${formsInsertValue}-Remark`;
+                    inputElement.id = `id_product2itemcommonformset-${formDataValues}-Remark`;
+                    inputElement.name = `product2itemcommonformset-${formDataValues}-Remark`;
                     inputElement.value = '';
 
 
                     const deleteElement = newRow.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
-                    deleteElement.id = `id_product2itemcommonformset-${formsInsertValue}-DELETE`;
-                    deleteElement.name = `product2itemcommonformset-${formsInsertValue}-DELETE`;
+                    deleteElement.id = `id_product2itemcommonformset-${formDataValues}-DELETE`;
+                    deleteElement.name = `product2itemcommonformset-${formDataValues}-DELETE`;
                     deleteElement.value = '';
                     deleteElement.checked = false;
 
                     const addButtonElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btns"]');
-                    addButtonElement.id = `id_product2itemcommonformset-${formsInsertValue}-add_btns`;
-                    addButtonElement.name = `product2itemcommonformset-${formsInsertValue}-add_btns`;
+                    addButtonElement.id = `id_product2itemcommonformset-${formDataValues}-add_btns`;
+                    addButtonElement.name = `product2itemcommonformset-${formDataValues}-add_btns`;
                     addButtonElement.value = '+';
-                
-                 mainForms.value = formsInsertValue + 1;
+
+                    const mainId = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-id"]');
+                    mainId.id = `id_product2itemcommonformset-${formDataValues}-id`;
+                    mainId.name = `product2itemcommonformset-${formDataValues}-id`;
+                    mainId.value = '';
+            
                 currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
+                // Update the prefix of the rows below the newly added row
+            let nextRow = newRow.nextElementSibling;
+        
+            let rowIndex = formDataValues + 1;
+            while (nextRow) {
+                nextRow.querySelectorAll('[id^="id_serial_no-"], [name^="product2itemcommonformset-"]').forEach(function (elem) {
+                const newName = elem.name.replace(/product2itemcommonformset-\d+/, `product2itemcommonformset-${rowIndex}`);
+                elem.name = newName;
+                if (elem.id) {
+                    const newId = elem.id.replace(/product2itemcommonformset-\d+/, `product2itemcommonformset-${rowIndex}`);
+                    elem.id = newId;
+                }
+
+                // Update the value for the serial number input field
+                if (elem.id && elem.id.startsWith('id_serial_no-')) {
+                    elem.value = rowIndex + 1; // Set the serial number value to the row index
+                }
+                });
+                
+                nextRow = nextRow.nextElementSibling;
+                rowIndex++;
+            }
+            mainForms.value = parseInt(mainForms.value) + 1;
                  deletedRowCommonRow();
             })
            
@@ -959,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
                     for(let i=0; i<newRowsForm; i++){
                         const newCount = parseInt(tableRow.value);
-                        console.log(newCount);
+                       const tableValue = newCount  + 1;
                         const lastRow = lastVisibleRow.cloneNode(true);
                         lastRow.querySelectorAll("input select").forEach(function (e) {
                             e.value = "";
@@ -968,9 +1015,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                     
-                    const SerialNo = lastRow.querySelector('[id^="id_serial_no"]');
-                    SerialNo.id = `id_serial_no_${newCount}`;
-                    SerialNo.value = '';
+                    const SerialNo = lastRow.querySelector('[id^="id_serial_no-"]');
+                    SerialNo.id = `id_serial_no-${newCount}`;
+                    SerialNo.value = tableValue;
 
                     const inputnameElement = lastRow.querySelector('[name^="item_input_Name_"]');
                     inputnameElement.id = `id_item_input_Name_${newCount}`;
