@@ -166,7 +166,7 @@ def edit_production_product(request,pk):
                                     dimention_total = row[5].value
                                     part_pieces = row[6].value
                                     grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
-
+                                    print(part_name,part_dimention)
                                     if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
@@ -2636,8 +2636,7 @@ def product2item(request,product_refrence_id):
             formset_single_valid = False
             formset_common_valid = False
             
-            # row_number for sorting the order of forms
-            total_row_number = 0
+            
             
             #for unique records
             if formset_single.is_valid():
@@ -2659,14 +2658,12 @@ def product2item(request,product_refrence_id):
                                     initial_rows = 0
 
                                 p2i_instance = form.save(commit = False)
-                                p2i_instance.common_unique = False
-                                p2i_instance.row_number = total_row_number # assign th row no
-                                total_row_number = total_row_number + 1 # add row no  
+                                p2i_instance.common_unique = False 
                                 p2i_instance.save()
                                 logger.info(f"Product to item created/updated special - {p2i_instance.id}")
 
                                 no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
-
+                                p2i_instance.row_number = form.cleaned_data['row_number']
                                 if no_of_rows_to_create > 0:
                                     for row in range(no_of_rows_to_create):
                                         logger.info(f" set prod item part name created of p2i instance - {p2i_instance.id}")
@@ -2713,11 +2710,9 @@ def product2item(request,product_refrence_id):
                                     
                                     obj.no_of_rows = form.cleaned_data['no_of_rows']
                                     obj.Remark = form.cleaned_data['Remark']
-                                    obj.row_number = total_row_number # start from the last row no of unique form 
+                                    obj.row_number = form.cleaned_data['row_number']
                                     logger.info(f"Product to item created/updated common -  {obj.id}")
                                     obj.save()
-                                
-
                                 
                                     # create records in set_prod_item_part_name table with the saved obj as FK 
                                     rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
@@ -2728,7 +2723,6 @@ def product2item(request,product_refrence_id):
 
                                     formset_common_valid = True
                                     
-                                total_row_number = total_row_number + 1
 
                 except Exception as e:
                     logger.error(f'Error saving common records - {e}')
