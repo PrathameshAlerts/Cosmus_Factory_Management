@@ -43,7 +43,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                    set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
-from .forms import(Basepurchase_labour_workout_cutting_items_form, Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
+from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
                        factory_employee_form, labour_workout_child_form, labour_workout_cutting_items_form, purchase_order_for_raw_material_cutting_items_form, 
@@ -3632,7 +3632,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         labourworkoutinstance = labour_workout_master.objects.get(id = pk)
 
         godown_id = labourworkoutinstance.purchase_order_cutting_master.purchase_order_id.temp_godown_select.id
-
+        godown_instance = Godown_raw_material.objects.get(id=godown_id)
         child_master_intial_data = {'total_approved_pcs' : labourworkoutinstance.total_approved_pcs,
                                     'total_balance_pcs' : labourworkoutinstance.total_pending_pcs}
 
@@ -3691,8 +3691,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
             initial_data_dict.append(data)
 
         labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
-                                                                        form = labour_workout_cutting_items_form,
-                                                                        formset = Basepurchase_labour_workout_cutting_items_form, 
+                                                                        form = labour_workout_cutting_items_form,               
                                                                         extra=len(initial_data_dict))
         
         # labour workout items formset
@@ -3722,7 +3721,6 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
         labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
                                                                         form = labour_workout_cutting_items_form, 
-                                                                        formset = Basepurchase_labour_workout_cutting_items_form,
                                                                         can_delete=False,
                                                                         extra=0)
         # labour workout items formset
@@ -3731,7 +3729,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
 
     if request.method == 'POST':
-
+        print(request.POST)
         # child labour workout form
         labour_work_out_child_form = labour_workout_child_form(request.POST)
 
@@ -3745,7 +3743,6 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         if labour_work_out_child_form.is_valid() and product_to_item_formset.is_valid() and labour_workout_cutting_items_formset_form.is_valid():
 
             with transaction.atomic():
-
                 labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
                 labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
                 labour_workout_form_instance.save()
@@ -3766,14 +3763,39 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                         single_p2i_instance.pending_pcs = single_p2i_instance.pending_pcs - product_to_item_form.processed_pcs
                         single_p2i_instance.save()
                 
-                
-
+                print(labour_workout_cutting_items_formset_form.cleaned_data)
                 for form in labour_workout_cutting_items_formset_form:
                     if form.is_valid():
                         formset_form = form.save(commit=False)
                         formset_form.labour_workout_child_instance = labour_workout_form_instance
+                        material_name = formset_form.material_name
+                        material_color_shade = formset_form.material_color_shade
+
+                        item_shade_instance = item_color_shade.objects.get(items__item_name=material_name,item_shade_name = material_color_shade)
+
+                        if item_shade_instance.items.Fabric_nonfabric == 'Non Fabric':
+                            total_comsumption = formset_form.total_comsumption
+                            obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown_instance,Item_shade_name=item_shade_instance)
+
+                            if created:
+                                qty_to_deduct = 0
+                    
+                            elif not created:
+                                qty_to_deduct = obj.quantity
+
+                            obj.quantity = qty_to_deduct - total_comsumption
+                            obj.save()
+
+                        elif item_shade_instance.items.Fabric_nonfabric == 'Fabric':
+                            purchase_order_cutting_items = purchase_order_for_raw_material_cutting_items.objects.get(
+                                purchase_order_cutting__raw_material_cutting_id=labour_workout_form_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id,
+                                product_sku = formset_form.product_sku, material_color_shade = item_shade_instance)
+                            
+                            purchase_order_cutting_items.total_comsumption_in_cutting = purchase_order_cutting_items.total_comsumption_in_cutting - formset_form.total_comsumption
+                            purchase_order_cutting_items.save()
+
                         formset_form.save()
-                
+
                 return redirect(reverse('labour-workout-child-list', args=[pk]))
 
         else:
