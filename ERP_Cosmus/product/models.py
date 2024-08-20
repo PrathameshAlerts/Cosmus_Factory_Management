@@ -694,7 +694,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     STATUS = [
         ('cutting_room', 'cutting_room'),
         ('cutting_room_cancelled','cutting_room_cancelled'),
-        ('labour_workout','labour_workout'),
+        
     ]
     purchase_order_cutting = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
@@ -711,7 +711,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     cutting_room_status = models.CharField(max_length=25, choices = STATUS, blank=True, null=True)
-    total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=3)
+    total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
 
@@ -782,6 +782,17 @@ class labour_workout_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
+
+
+
+class labour_work_in_master(models.Model):
+    voucher_number = models.IntegerField(primary_key=True)
+    created_date = models.DateTimeField(auto_now = True)
+    labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT)
+    labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
+    description = models.CharField(max_length=255)
+
+
 
 
 
