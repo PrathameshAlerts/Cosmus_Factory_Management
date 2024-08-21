@@ -661,12 +661,10 @@
 
             // Re-bind delete functionality after adding a new 
             deleteRowSingle();
-
+            updateAddButtonVisibility();
             // Update the total forms count
             mainForms.value = formsInsertValue + 1;
-            submitFormRowNumber();
-            updateRowValue();
-           
+    
         });
     });
     }
@@ -686,14 +684,14 @@
                 } else {
                     console.error("Checkbox for deletion not found in this row");
                 }
+                    submitFormRowNumber();
             });
         });
     };
 
     // Bind delete functionality on initial load
     deleteRowSingle();
-    submitFormRowNumber();
-    updateRowValue();
+
 });
 
     
@@ -794,11 +792,13 @@
                     forms.value = newFormCount + 1;
 
                     tableBody.appendChild(newTable);
+                    submitFormRowNumber();
                     }
                     document.getElementById('id_productNoRow').value = '1';
                     deleteRow();
-                    submitFormRowNumber();
-                    updateRowValue();
+                   
+                    updateAddButtonVisibility();
+               
                 } else {
                     console.error("No visible rows found to clone.");
                 }
@@ -823,12 +823,13 @@
                     } else {
                         console.error("Checkbox for deletion not found in this row");
                     }
+                    submitFormRowNumber();
                 });
             });
         };
         deleteRow();
-        submitFormRowNumber();
-        updateRowValue();
+      
+     
     });
 
 
@@ -949,8 +950,7 @@ document.addEventListener('DOMContentLoaded', function () {
        
             mainForms.value = formDataValues + 1;
                  deletedRowCommonRow();
-                 submitFormRowNumber();
-                 updateRowValue();
+                 updateAddButton();
             })
            
         })
@@ -962,7 +962,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
                     const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
-                    console.log(checkRow)
+                   
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
@@ -973,12 +973,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     } else {
                         console.error("Checkbox for deletion not found in this row");
                     }
+                    submitFormRowNumber();
                 });
             });
         };
         deletedRowCommonRow();
-        submitFormRowNumber();
-        updateRowValue();
+        
+  
      
     })
     // add a new row to the common product2itemcommonformset and delete the last row
@@ -1062,6 +1063,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     addButtonElement.id = `id_product2itemcommonformset-${newCount}-add_btns`;
                     addButtonElement.name = `product2itemcommonformset-${newCount}-add_btns`;
                     addButtonElement.value = '+';
+                    addButtonElement.style.display = 'none';
 
                     const addButtonId = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="-id"]');
                     addButtonId.id = `id_product2itemcommonformset-${newCount}-id`;
@@ -1071,12 +1073,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     tableRow.value = newCount + 1;
                  
                     tableBody.appendChild(lastRow);
-                    
+                    submitFormRowNumber();
                     }
                     document.getElementById('id_commonNoRow').value = '1';
                     deletedRow();
-                    submitFormRowNumber();
-                    updateRowValue()
+                 
+            
 
                 } else {
                     console.error("No visible rows found to clone.");
@@ -1106,63 +1108,51 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         };
-        submitFormRowNumber();
+    
         deletedRow();
-        updateRowValue();
+       
     });
 
 
 function submitFormRowNumber(){
-    
-      
-       uniqueValue = 0;
-      
-           var uniquerowNumberValue = document.querySelector('#mainProductForm tbody').querySelectorAll('[name$="-row_number"]');
+    var uniqueValue = 0;
+    var uniqueTotalForm = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+        var uniqueTotal = parseInt(uniqueTotalForm.value);
+ 
+       var unique = uniqueTotal + 1;
+       var uniquerowNumberValue = document.querySelector('#mainProductForm tbody').querySelectorAll('[name$="-row_number"]');
            uniquerowNumberValue.forEach(input =>{
-            console.log(input);
                input.value = uniqueValue + 1;
                uniqueValue++;
            })
-       
-        // var commonForm = parseInt(document.getElementById('id_product2itemcommonformset-TOTAL_FORMS').value);
-       
-}
-function updateRowValue(){
-    var uniqueTotalForm = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
-        var uniqueTotal = parseInt(uniqueTotalForm.value);
-        console.log(uniqueTotal);
-       var unique = uniqueTotal + 1;
-    var commonRowNumber = document.querySelector('#myProduct tbody').querySelectorAll('[name$="-row_number"]');
-        console.log(commonRowNumber);
-        console.log(unique);
+        var commonRowNumber = document.querySelector('#myProduct tbody').querySelectorAll('[name$="-row_number"]');
         commonRowNumber.forEach(ele =>{
-            console.log(ele);
             ele.value = unique ;
             unique++;
-        })
-       
+        })       
 }
-submitFormRowNumber();
-updateRowValue();
+
+
+
 
 // Call the function on page load
 document.addEventListener('DOMContentLoaded', function() {
     submitFormRowNumber();
-    updateRowValue();
+ 
 });
 
 // Update the row numbers when an "Add" button is clicked
 document.querySelectorAll('.add_btn_row').forEach(function(addBtn) {
     addBtn.addEventListener('click', function() {
         submitFormRowNumber();
-        updateRowValue();
+  
     });
 });
 
 document.querySelectorAll('.add_btn_CommonForm').forEach(function(addBtn) {
     addBtn.addEventListener('click', function() {
         submitFormRowNumber();
-        updateRowValue();
+       
     });
 });
 </script>
