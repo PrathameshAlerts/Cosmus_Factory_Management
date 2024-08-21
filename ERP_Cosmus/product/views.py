@@ -2594,19 +2594,29 @@ def product2item(request,product_refrence_id):
         if not Products_all.exists():
                 raise ValueError("No products found for the given reference ID.")
         
-        extraform = True
+        # add an extra row in special if there are no special items
+        extraformspecial = True
         for product in Products_all:
-            if product.product_2_item_through_table_set.all():
-                extraform = False
+            if product.product_2_item_through_table_set.filter(common_unique = False):
+                extraformspecial = False
+
+        # add an extra row in common if there are no special items
+        extraformcommon = True
+        for product in Products_all:
+            if product.product_2_item_through_table_set.filter(common_unique = True):
+                extraformcommon = False
         
+
         #query for filtering unique to product fields for formset_single
         #filter all record of the products with the ref_id which is marked as unique fields
         product2item_instances = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_refrence_id,
               common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color').order_by('row_number')
         
-        if extraform:
+
+        if extraformspecial:
             formset_single = Product2ItemFormsetExtraForm(queryset=product2item_instances , prefix='product2itemuniqueformset')
+            
         else:
             formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
@@ -2621,7 +2631,7 @@ def product2item(request,product_refrence_id):
                 'row_number','id').distinct('row_number').select_related('PProduct_pk','Item_pk')
 
 
-        if extraform:
+        if extraformcommon:
             formset_common = Product2CommonItemFormSetExtraForm(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
 
         else:
@@ -2635,8 +2645,6 @@ def product2item(request,product_refrence_id):
             
             formset_single_valid = False
             formset_common_valid = False
-            
-            
             
             #for unique records
             if formset_single.is_valid():
