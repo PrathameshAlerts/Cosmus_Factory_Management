@@ -2585,7 +2585,6 @@ def packaging_delete(request,pk):
 
 
 def product2item(request,product_refrence_id):
-    print(request.POST)
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -2616,7 +2615,7 @@ def product2item(request,product_refrence_id):
 
         if extraformspecial:
             formset_single = Product2ItemFormsetExtraForm(queryset=product2item_instances , prefix='product2itemuniqueformset')
-            
+
         else:
             formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
 
@@ -2639,7 +2638,7 @@ def product2item(request,product_refrence_id):
 
         
         if request.method == 'POST':
-
+            print(request.POST)
             formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
             formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
             
@@ -2680,17 +2679,18 @@ def product2item(request,product_refrence_id):
 
                                 p2i_instance.save()
                                 formset_single_valid = True
+
+                            else:
+                                raise ValidationError('Please select existing Item Name or select from the dropdown')
                                 
                 except Exception as e:
                     logger.error(f'Error saving unique records - {e}')
                     messages.error(request, f'Error saving unique records - {e}')  
             
             else:
-                print(formset_single.errors)
-                
-            
-
-            
+                logger.error(f'Error saving unique records - {e}')
+                messages.error(request, f'Error saving unique records - {e}') 
+                            
             #for common records
             if formset_common.is_valid():
                 try:
@@ -2736,11 +2736,18 @@ def product2item(request,product_refrence_id):
                                                 logger.info(f" set prod item part name created of - {obj.id}")
 
                                     formset_common_valid = True
+
+                            else:
+                                raise ValidationError('Please select existing Item Name or select from the dropdown')
                                     
 
                 except Exception as e:
                     logger.error(f'Error saving common records - {e}')
                     messages.error(request, f'Error saving common records{e}.') 
+
+            else:
+                logger.error(f'Error saving unique records - {e}')
+                messages.error(request, f'Error saving unique records - {e}')
         
 
             if formset_common_valid and formset_single_valid:
