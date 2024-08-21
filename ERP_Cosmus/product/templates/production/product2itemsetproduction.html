@@ -62,7 +62,7 @@
                         <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total" value="{{form.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total" readonly></td>
                         <td><input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-Remark"></td>
                         <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
-                        <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="+" ></td>
+                        <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="+" style="display: none;" ></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -108,7 +108,7 @@
                             <td><input type="number" class="product_remark" name="{{forms.prefix}}-grand_total" value="{{forms.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{forms.prefix}}-grand_total" readonly></td>
                             <td><input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}" maxlength="255" id="id_{{forms.prefix}}-Remark"></td>
                             <td><span class="deleteButton border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;" name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE"value=""></i></span></td>
-                            <td><input type="button" class="add_btn add_btn_CommonForm mb-3" name="{{forms.prefix}}-add_btns" id="id_{{forms.prefix}}-add_btns" value="+"></td>
+                            <td><input type="button" class="add_btn add_btn_CommonForm mb-3" name="{{forms.prefix}}-add_btns" id="id_{{forms.prefix}}-add_btns" value="+" style="display: none;"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -220,15 +220,18 @@
                 $(this).closest('.custom-dropdown-container').find('.input_text').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
 
-                suggestionsContainerUniqueId.css('display', 'none');
+                if(dataKey){
+                    suggestionsContainerUniqueId.css('display', 'none');
+                }
+                
             })
         })
 
-        $(document).on('click', '.input_text', function () {
-            const selectValue = $(this).next('.s-suggestion-container');
-            selectValue.css('display', 'none');
-            selectValue.empty();
-        })
+        // $(document).on('click', '.input_text', function () {
+        //     const selectValue = $(this).next('.s-suggestion-container');
+        //     selectValue.css('display', 'none');
+        //     selectValue.empty();
+        // })
 
 
         $(document).on('keydown', 'input[name^="product2itemuniqueformset-"][name$="Item_pks"]', function (e) {
@@ -411,15 +414,18 @@
                 $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
 
-                suggestionsContainerCommon.css('display', 'none');
+                if(dataKey){
+                    suggestionsContainerCommon.css('display', 'none');
+                }
+                
 
             })
         })
-        $(document).on('click', '.commom_item', function () {
-            const selectValue = $(this).next('.s-suggestion-container');
-            selectValue.css('display', 'none');
-            selectValue.empty();
-        })
+        // $(document).on('click', '.commom_item', function () {
+        //     const selectValue = $(this).next('.s-suggestion-container');
+        //     selectValue.css('display', 'none');
+        //     selectValue.empty();
+        // })
 
         $(document).on('keydown', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function (e) {
             const $inputField = $(this);
@@ -543,9 +549,6 @@
 
 
 <script>
-
-
-
     // THis code are using a single row created by clicking add button
     document.addEventListener('DOMContentLoaded', function () {
    
@@ -562,6 +565,7 @@
             const idElement = currentRow.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
           
             const idValue = idElement.value;
+            console.log('idValue',idValue);
          
             // Show or hide the add button based on the id value
             if (idValue != '' && idValue != null) {
@@ -648,6 +652,7 @@
             addButtonElement.id = `id_product2itemuniqueformset-${formDataValue}-add_btn`;
             addButtonElement.name = `product2itemuniqueformset-${formDataValue}-add_btn`;
             addButtonElement.value = '+';
+            addButtonElement.style.display = 'none';
 
             
             const mainId = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
@@ -691,6 +696,7 @@
 
     // Bind delete functionality on initial load
     deleteRowSingle();
+
 
 });
 
@@ -783,6 +789,7 @@
                     addButtonElement.id = `id_product2itemuniqueformset-${newFormCount}-add_btn`;
                     addButtonElement.name = `product2itemuniqueformset-${newFormCount}-add_btn`;
                     addButtonElement.value = '+';
+                    addButtonElement.style.display = 'none';
 
                     const addIdValue = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
                     addIdValue.id = `id_product2itemuniqueformset-${newFormCount}-id`;
@@ -828,7 +835,6 @@
             });
         };
         deleteRow();
-      
      
     });
 
@@ -860,7 +866,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 button.style.display = 'none'; // Hide button
             }
         });
-    }
+     }
     
       // Initial call to update the visibility when the page loads
       updateAddButton();
@@ -939,6 +945,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     addButtonElement.id = `id_product2itemcommonformset-${formDataValues}-add_btns`;
                     addButtonElement.name = `product2itemcommonformset-${formDataValues}-add_btns`;
                     addButtonElement.value = '+';
+                    addButtonElement.style.display = 'none';
 
                     const mainId = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-id"]');
                     mainId.id = `id_product2itemcommonformset-${formDataValues}-id`;
@@ -978,9 +985,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         };
         deletedRowCommonRow();
-        
-  
-     
+
     })
     // add a new row to the common product2itemcommonformset and delete the last row
     document.addEventListener('DOMContentLoaded', function () {
@@ -1110,7 +1115,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     
         deletedRow();
-       
     });
 
 
@@ -1127,13 +1131,14 @@ function submitFormRowNumber(){
            })
         var commonRowNumber = document.querySelector('#myProduct tbody').querySelectorAll('[name$="-row_number"]');
         commonRowNumber.forEach(ele =>{
+            console.log(ele)
             ele.value = unique ;
             unique++;
         })       
 }
 
 
-
+submitFormRowNumber();
 
 // Call the function on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -1154,6 +1159,11 @@ document.querySelectorAll('.add_btn_CommonForm').forEach(function(addBtn) {
         submitFormRowNumber();
        
     });
+});
+
+document.querySelector('#myProductForm').addEventListener('submit', function() {
+  
+        submitFormRowNumber();
 });
 </script>
 {% endblock body %}
