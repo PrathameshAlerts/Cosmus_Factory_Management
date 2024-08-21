@@ -1929,12 +1929,20 @@ def purchasevouchercreateupdate(request, pk=None):
             for godown in shade_godowns:
                 godown_shade_quantity = godown_shade_quantity + godown.quantity
             item_shades_total_quantity_dict[shade.id] = godown_shade_quantity
-        
+
+        auto_popup_flag = False
+
+        shade_count = len(item_shades_total_quantity_dict)
+
+        if shade_count == 1:
+            auto_popup_flag = True
+
+
     except Exception as e:
         print(f'exception occoured {e}')
     
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-             return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,
+             return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,'auto_popup_flag':auto_popup_flag,
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
                                   'item_gst_out':item_gst_out,'party_gst_no':party_gst_no})
 
@@ -2970,8 +2978,6 @@ def viewproduct2items_configs(request, product_sku):
         return HttpResponseServerError(f'An unexpected error occurred: {e}')
     
 
-
-
 def purchaseordercreateupdate(request,pk=None):
     
     try:
@@ -3271,7 +3277,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
     # purchase_order_raw_material_instances
-    purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_pk)
+    purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_pk).order_by('id')
 
 
     #purchase_order_to_product_instances
@@ -3680,7 +3686,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
         product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
 
         # raw_material_cutting_items
-        raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master)
+        raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master).order_by('id')
 
         initial_data_dict = []
 
@@ -3841,6 +3847,13 @@ def labour_workout_child_list(request, labour_master_pk):
     return render(request,'production/labourworkoutchilds.html', {'labour_master_pk':labour_master_pk,
                                                                   'labour_workout_child_instances':labour_workout_child_instances,
                                                                   'labour_work_out_master':labour_work_out_master})
+
+
+
+    
+
+
+
 
 #_________________________production-end__________________________________________
 
