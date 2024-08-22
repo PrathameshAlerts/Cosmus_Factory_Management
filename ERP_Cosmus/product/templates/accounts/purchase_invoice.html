@@ -103,6 +103,7 @@
                         
                     </td>
                     <td>
+                        <input type="hidden" id="id_item_checkshade-{{forloop.counter0}}" name="item_checkshade-{{forloop.counter0}}" value=""> 
                         <input type ="text" name="input_item_shade_{{forloop.counter0}}" id="input_item_shade_{{forloop.counter0}}" class="purchase-select" style="border: none ;color: #000; background-color: transparent; display: none;" readonly value="">
                         <select name="{{forms.prefix}}-item_shade" class="purchase-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
@@ -528,53 +529,86 @@ function randomValue (){
             success: function (response) {
                 console.log('Data sent successfully');
                 var itemrownameid = itemName.split('-')[1];
-             
-                $('#' + itemName).empty().append('<option value="">Select Shade</option>');
-
-                var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
-                var item_color = response.item_color;
-
-                var itemperinput = document.querySelector('#item_per_' + itemrownameid);
-                var itemperinput_response = response.item_per;
-
-                itemcolorinput.value = item_color;
-                itemperinput.value = itemperinput_response;
-
-                var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst');
-                var item_gst_value_response = response.item_gst_out;
-                itemgstinput.value = item_gst_value_response;
-
-                var item_shade_response = response.item_shade;
-                var item_shade__quantity = response.item_shades_total_quantity_dict;
-             
+                var differentShades = Object.keys(response.item_shade).length;
                 
-                
+                var itemCheckshadeValue = document.querySelector('#id_item_checkshade-' + itemrownameid);
+                itemCheckshadeValue.value = response.auto_popup_flag;
+                    var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
+                    var item_color = response.item_color;
 
-                $.each(item_shade_response, function (key, value) {
-                    if (item_shade__quantity.hasOwnProperty(key)) {
+                    var itemperinput = document.querySelector('#item_per_' + itemrownameid);
+                    var itemperinput_response = response.item_per;
 
-                        var item_shade_qty = item_shade__quantity[key];
-                        var optionHtml;
+                    itemcolorinput.value = item_color;
+                    itemperinput.value = itemperinput_response;
 
-                        if (item_shade_qty > 0) {
-                            optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
+                    var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst');
+                    var item_gst_value_response = response.item_gst_out;
+                    itemgstinput.value = item_gst_value_response;
+
+                if(differentShades > 1){
+                    $('#' + itemName).empty().append('<option value="">Select Shade</option>');
+
+                    
+                    var item_shade_response = response.item_shade;
+                    var item_shade__quantity = response.item_shades_total_quantity_dict;
+
+                    $.each(item_shade_response, function (key, value) {
+                        if (item_shade__quantity.hasOwnProperty(key)) {
+
+                            var item_shade_qty = item_shade__quantity[key];
+                            var optionHtml;
+
+                            if (item_shade_qty > 0) {
+                                optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
+                            } else {
+                                optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
+                            }
+
+                            var $option = $(optionHtml);
+                            $('#' + itemName).append($option);
+
+                            // Additional fallback for browsers that don't support <span> within <option>
+                            if ($option.find('span').length === 0) {
+                                $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
+                            }
+
                         } else {
-                            optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
+                            $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
                         }
+                    }); 
+                }else{
 
-                        var $option = $(optionHtml);
-                        $('#' + itemName).append($option);
+                    $('#' + itemName).empty();
+                    var item_shade_response = response.item_shade;
+                    var item_shade__quantity = response.item_shades_total_quantity_dict;
 
-                        // Additional fallback for browsers that don't support <span> within <option>
-                        if ($option.find('span').length === 0) {
-                            $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
+                    $.each(item_shade_response, function (key, value) {
+                        if (item_shade__quantity.hasOwnProperty(key)) {
+
+                            var item_shade_qty = item_shade__quantity[key];
+                            var optionHtml;
+
+                            if (item_shade_qty > 0) {
+                                optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
+                            } else {
+                                optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
+                            }
+
+                            var $option = $(optionHtml);
+                            $('#' + itemName).append($option);
+
+                            // Additional fallback for browsers that don't support <span> within <option>
+                            if ($option.find('span').length === 0) {
+                                $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
+                            }
+
+                        } else {
+                            $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
                         }
+                    }); 
 
-                    } else {
-                        $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
-                    }
-                });
-
+                }
                 ajaxInProgress = false;
             },
             error: function (xhr, errmsg, err) {
@@ -639,7 +673,7 @@ function randomValue (){
                 const itemOffsetTop = $nextItem.position().top;
                 const itemHeight = $nextItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
-                const selectHeight = $dropdownOptions.height();
+        const selectHeight = $dropdownOptions.height();
 
                 if (itemOffsetTop + itemHeight > selectHeight) {
                     $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
@@ -722,92 +756,112 @@ function randomValue (){
 
 
      // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
-        let popupWindow = null; // Variable to hold the reference to the popup window
-        $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-        const selectedShade = $(this).val();
-        const  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-        const purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');
+        var popupWindow = null; // Variable to hold the reference to the popup window
 
-     
-        const prefix_id = purchaseValue;
-        let primary_id = null;
-        //var test = null;
-        if(purchaseId ){
-            primary_id = purchaseId.value
-
-            if (primary_id === "") {
-                primary_id = null
+        $(document).on('focusout', 'input[name^="item_name_"]', function () {
+            var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
+            if (shadeValue == "false") {
+                handleShadeValueFalse();
+            } else if (shadeValue == "true") {
+                handleShadeValueTrue();
             }
+        })
 
-        }else{
-    
-            console.log('purchaseId',purchaseId)
+    function handleShadeValueFalse() {
+    $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
+        const selectedShade = $(this).val();
+        const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+        handlePopup(selectedShade, uniqueIdValue);
+    });
+}
+
+function handleShadeValueTrue() {
+    $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
+        if (event.key === 'Enter') {
+            const selectedShade = $(this).val();
+            const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+            $(this).attr('disabled', 'disabled');
+            handlePopup(selectedShade, uniqueIdValue);
+          
+            $(this).removeAttr('disabled');
         }
+    });
+}
+        function handlePopup(selectedShade, uniqueIdValue) {
+            const purchaseId = $('#id_purchase_voucher_items_set-' + purchaseValue + '-id').val();
+
+            const prefix_id = purchaseValue;
+                let primary_id = null;
+                
+                if(purchaseId ){
+                    primary_id = purchaseId
+
+                    if (primary_id === "") {
+                        primary_id = null
+                    }
+
+                }
 
                 if (selectedShade !== "" && primary_id !== null ) {
-                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
-                    const minWidth = 800;
-                    const minHeight = 600;
-               
-                    $.ajax({
-                        // Use Django URL name to fetch the URL dynamically
-                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                        method: 'GET',
-                        data: {
-                            'selected_shade': selectedShade,
-                            'purchase_id': primary_id,
-                            'prefix_id':prefix_id, 
-                            
-                            
-                        },
-                        success: function (response) {
-                            // Open the dynamic URL received from the server
-                           
-                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-                           
-                        },
-                        error: function (xhr, errmsg, err) {
-                            console.log('Error getting popup URL');
-                        }
-                    });
-                } else {
-                    // If a popup window is already open, notify the user or take appropriate action
-                    console.log('A popup window is already open');
-                }
+                        if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                            const minWidth = 800;
+                            const minHeight = 600;
+                    
+                            $.ajax({
+                                // Use Django URL name to fetch the URL dynamically
+                                url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                                method: 'GET',
+                                data: {
+                                    'selected_shade': selectedShade,
+                                    'purchase_id': primary_id,
+                                    'prefix_id':prefix_id, 
             
-            }else if (uniqueIdValue !== "" && selectedShade !== "" ) {
-                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
-                    const minWidth = 800;
-                    const minHeight = 600;
-                  
-                    $.ajax({
-                        // Use Django URL name to fetch the URL dynamically
-                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                        method: 'GET',
-                        data: {
-                            'selected_shade': selectedShade,
-                            'unique_invoice_row_id': uniqueIdValue,
-                            'prefix_id':prefix_id,
+                                },
+                                success: function (response) {
+                                    // Open the dynamic URL received from the server
+                                
+                                    popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                             
-                        },
-                        success: function (response) {
-                            // Open the dynamic URL received from the server
-                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                                },
+                                error: function (xhr, errmsg, err) {
+                                    console.log('Error getting popup URL');
+                                }
+                            });
+                        } else {
+                            // If a popup window is already open, notify the user or take appropriate action
+                            console.log('A popup window is already open');
+                        }
+                    
+                    }else if (uniqueIdValue !== "" && selectedShade !== "" ) {
+                        if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                            const minWidth = 800;
+                            const minHeight = 600;
                         
-            
-                        },
-                        error: function (xhr, errmsg, err) {
-                            console.log('Error getting popup URL');
+                            $.ajax({
+                                // Use Django URL name to fetch the URL dynamically
+                                url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                                method: 'GET',
+                                data: {
+                                    'selected_shade': selectedShade,
+                                    'unique_invoice_row_id': uniqueIdValue,
+                                    'prefix_id':prefix_id,
+                                    
+                                },
+                                success: function (response) {
+                                    // Open the dynamic URL received from the server
+                                    popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                    
+                                },
+                                error: function (xhr, errmsg, err) {
+                                    console.log('Error getting popup URL');
+                                }
+                            });
+                        } else {
+                            // If a popup window is already open, notify the user or take appropriate action
+                            console.log('A popup window is already open');
                         }
-                    });
-                } else {
-                    // If a popup window is already open, notify the user or take appropriate action
-                    console.log('A popup window is already open');
-                }
-            }
-            
-        });
-        
+                    }
+        }
     });
 </script>
 
