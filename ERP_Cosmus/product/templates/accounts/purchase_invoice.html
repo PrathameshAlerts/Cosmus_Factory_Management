@@ -203,17 +203,14 @@
     $(document).ready(function(){
         $('#id_purchase_number').on('focusout',function(){
             var purchase_number = $(this).val();
-            var searchData = {
-                'purchase_number': purchase_number
-            };
-            console.log(searchData);
+           
             var purchase = $("#id_purchase_number");
             var errorElement = $('#purchaseError'); // The error message element
             $.ajax({
                 url: '/purchasevouchervalidcheckajax/',
                 method: 'GET',
                 data: {
-                    'searchData': searchData,
+                    'purchase_number': purchase_number,
                     
                 },
                 success: function (data) {
@@ -221,7 +218,7 @@
                     if(data.validation_flag === true){
                        //alert("Purchase number already exists");
                        purchase.css('border', '1px solid red');
-                     
+                        console.log(data)
                         errorElement.text('*Purchase number already exists');
                         errorElement.show();
                        

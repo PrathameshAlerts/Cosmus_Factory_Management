@@ -2324,14 +2324,12 @@ def purchasevoucherdelete(request,pk):
     return redirect('purchase-voucher-list')
                     
 
-
 def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
-    print(searched_value)
 
     if searched_value:
         validation_flag = False
         try:
-            # please refer to mixins.py for docs
+            # Dynamic field lookup
             lookup = {f"{col_name}__iexact": searched_value}
             check_instance_valid = model_name.objects.get(**lookup)
             
@@ -2350,10 +2348,10 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
 
 
 def purchasevouchervalidcheckajax(request):
-    searched_from = request.GET.get('searchData')
-    print(searched_from)
-    if searched_from[0] == 'purchase_no':  
-        searched_value = searched_from[1]
+    searched_from = 'purchase_no'
+
+    if searched_from == 'purchase_no':
+        searched_value = request.GET.get('purchase_number')
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
 
