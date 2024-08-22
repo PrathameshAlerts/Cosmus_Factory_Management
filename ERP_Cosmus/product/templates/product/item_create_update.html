@@ -589,6 +589,7 @@ $(document).on('click', '.product2Select',function(){
             },
             success: function (response) {
               const item_data_response = response.response_data
+              console.log(item_data_response)
               
                 $('#id_Fabric_Group').val(item_data_response.fabric_group.fab_g_key);
                 $('#id_Item_Color').val(item_data_response.color.color_key);

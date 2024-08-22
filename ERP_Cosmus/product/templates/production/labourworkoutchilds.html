@@ -16,26 +16,24 @@
     </div> -->
   </div>
 
-  <div>
-    P.O No : {{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}
+  <div class="d-flex mb-3">
+    <label class="fw-bold ps-1">P.O No :</label>
+   <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</span>
+   <label class="fw-bold ps-3">P.O Quantity :</label>
+   <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</span>
+   <label class="fw-bold ps-3">Cutting Quantity :</label>
+   <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.processed_qty}}</span>
+   <label class="fw-bold ps-3">Approved Pcs :</label>
+   <span class="text-danger ps-2">{{labour_work_out_master.total_approved_pcs}}</span>
+   <label class="fw-bold ps-3">Pending Pcs :</label>
+   <span class="text-danger ps-2">{{labour_work_out_master.total_pending_pcs}}</span>
   </div>
 
-  <div>
-    P.O Quantity : {{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}
-  </div>
+ 
   
-  <div>
-    Cutting Quantity : {{labour_work_out_master.purchase_order_cutting_master.processed_qty}}
-  </div>
-  
-  <div>
-    <span>Approved Pcs - {{labour_work_out_master.total_approved_pcs}}</span>
-</div>
-    <div>
-  <span>Pending Pcs - {{labour_work_out_master.total_pending_pcs}}</span>
-</div>
+
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-7">
         <div class="table-responsives">
             <table class="table table-striped table-hover table-bordered">
                 <thead class="name_absolute sticky-top">
