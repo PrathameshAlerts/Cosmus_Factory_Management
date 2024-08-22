@@ -86,7 +86,7 @@
             <input type="number" class="productinputtext  text-danger ms-2 me-4 pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01" readonly>
             <input type="hidden" class="" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
             {% for img in model_images.all %}
-            <span>{{img.PProduct_image}}</span>
+            <span>{{img.PProduct_image.url}}</span>
             {% endfor %}
         </div>
         <form method="POST">

@@ -2325,26 +2325,40 @@ def purchasevoucherdelete(request,pk):
                     
 
 
-def purchasevouchervalidcheckajax(request):
-    purchase_number = request.GET.get('purchase_number')
+def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
+    print(searched_value)
 
-    if purchase_number:
+    if searched_value:
         validation_flag = False
         try:
-            check_instance_valid = item_purchase_voucher_master.objects.get(purchase_number__iexact=purchase_number)
+            # please refer to mixins.py for docs
+            lookup = {f"{col_name}__iexact": searched_value}
+            check_instance_valid = model_name.objects.get(**lookup)
+            
             validation_flag = True
 
-        except item_purchase_voucher_master.DoesNotExist:
+        except model_name.DoesNotExist:
             validation_flag = False
             
         except Exception as e:
             return JsonResponse({f'Status':'Exception Occoured - {e}'}, status=404)
         
-        print('validation_flag',validation_flag)
-
         return JsonResponse({'validation_flag':validation_flag})
     else:
         return JsonResponse({f'Status':'No data recieved - {e}'}, status=404)
+
+
+
+def purchasevouchervalidcheckajax(request):
+    searched_from = request.GET.get('search_data')
+    print(searched_from)
+    if searched_from[0] == 'purchase_no':  
+        searched_value = searched_from[1]
+        model_name = item_purchase_voucher_master
+        col_name = 'purchase_number'
+
+    return CheckUniqueFieldDuplicate(model_name,searched_value,col_name)
+
 
             
         
@@ -2994,6 +3008,7 @@ def purchaseordercreateupdate(request,pk=None):
         else:
             instance = None
             model_name = None
+            model_images = None
         
         formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
         form = purchase_order_form(instance=instance)
@@ -3637,7 +3652,7 @@ def purchaseordercuttingmastercancelajax(request):
 
 
 def labourworkoutlistall(request):
-    labour_workout_pending = labour_workout_master.objects.all()
+    labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs'))
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
 
