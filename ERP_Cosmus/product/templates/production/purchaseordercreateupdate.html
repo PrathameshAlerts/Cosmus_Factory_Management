@@ -85,10 +85,10 @@
             <lable>Total:</lable>
             <input type="number" class="productinputtext  text-danger ms-2 me-4 pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01" readonly>
             <input type="hidden" class="" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
-            {% for img in model_images.all %}
-            <span>{{img.PProduct_image.url}}</span>
-            {% endfor %}
+
+            
         </div>
+       
         <form method="POST">
             {% csrf_token %}
             <table class="table table-striped table-hover table-bordered tables" id="productTable">
@@ -131,6 +131,14 @@
             {% endif %}
             {% endif %} -->
         </form>
+    </div>
+    <div class="col-lg-6 mt-3">
+        <div class="mb-2">
+            {% for img in model_images.all %}
+            <img src="{{img.PProduct_image.url}}" alt="images" style="width: 70px; padding:2px ;">
+          
+            {% endfor %}
+          </div>
     </div>
 </div>
 <script>

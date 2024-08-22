@@ -2350,7 +2350,7 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
 
 
 def purchasevouchervalidcheckajax(request):
-    searched_from = request.GET.get('search_data')
+    searched_from = request.GET.get('searchData')
     print(searched_from)
     if searched_from[0] == 'purchase_no':  
         searched_value = searched_from[1]

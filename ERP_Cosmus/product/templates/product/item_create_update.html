@@ -449,11 +449,10 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
             },
             success: function (response) {
              const item_data_response = response.response_data;
-             console.log(item_data_response);
-        
+            
              $('#id_Fabric_Group').val(item_data_response.fabric_group.fab_g_key);
                 $('#id_Item_Color').val(item_data_response.color.color_key);
-                //$('#id_Material_code').val(item_data_response.material_code);
+                $('#id_Units_value').val(item_data_response.unit_name_units);
                 $('#Item_Packing').val(item_data_response.packing.packing_key);
                 $('#id_unit_name_item').val(item_data_response.unit_name.unit_name_key);
                 $('#id_Panha').val(item_data_response.panha);
@@ -589,11 +588,10 @@ $(document).on('click', '.product2Select',function(){
             },
             success: function (response) {
               const item_data_response = response.response_data
-              console.log(item_data_response)
               
                 $('#id_Fabric_Group').val(item_data_response.fabric_group.fab_g_key);
                 $('#id_Item_Color').val(item_data_response.color.color_key);
-                //$('#id_Material_code').val(item_data_response.material_code);
+                $('#id_Units_value').val(item_data_response.unit_name_units);
                 $('#Item_Packing').val(item_data_response.packing.packing_key);
                 $('#id_unit_name_item').val(item_data_response.unit_name.unit_name_key);
                 $('#id_Panha').val(item_data_response.panha);
