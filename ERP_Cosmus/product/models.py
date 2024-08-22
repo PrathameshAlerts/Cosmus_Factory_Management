@@ -795,8 +795,6 @@ class labour_work_in_master(models.Model):
 
 
 
-
-
 # reports
 class godown_item_report_for_cutting_room(models.Model):
     creation_date = models.DateTimeField(auto_now = True)

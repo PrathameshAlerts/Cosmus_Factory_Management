@@ -821,8 +821,8 @@ def item_clone_ajax(request):
                         'panha':selected_item.Panha,'fab_non_fab':selected_item.Fabric_nonfabric,
                         'fab_finishes':{'fab_finishes_key':selected_item.Item_Fabric_Finishes.id,'fab_finishes_value':selected_item.Item_Fabric_Finishes.fabric_finish},
                         'gst':{'gst_key':selected_item.Item_Creation_GST.id,'gst_value':selected_item.Item_Creation_GST.gst_percentage},
-                        'hsn_code':selected_item.HSN_Code,'status':selected_item.status}
-    
+                        'hsn_code':selected_item.HSN_Code,'status':selected_item.status, 'unit_name_units':selected_item.unit_name_item.unit_value}
+       
     return JsonResponse({'response_data':response_data})
 
 
@@ -2990,7 +2990,7 @@ def purchaseordercreateupdate(request,pk=None):
         if pk:
             instance = get_object_or_404(purchase_order,pk=pk)
             model_name = instance.product_reference_number.Model_Name
-
+            model_images = instance.product_reference_number.productdetails
         else:
             instance = None
             model_name = None
@@ -3031,7 +3031,7 @@ def purchaseordercreateupdate(request,pk=None):
             
 
         if 'submit-form-2' in request.POST:
-
+            
             try:
                 formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
                 
@@ -3053,6 +3053,7 @@ def purchaseordercreateupdate(request,pk=None):
                         return redirect('purchase-order-raw-material-list')
 
                     except DatabaseError as db_err:
+
                         logger.error(f'Database error during form save: {db_err}')
                         messages.error(request, 'A database error occurred during form save.')
 
@@ -3076,7 +3077,7 @@ def purchaseordercreateupdate(request,pk=None):
 
     return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,'raw_material_godowns':raw_material_godowns,
                                                                           'ledger_party_names':ledger_party_names,
-                                                                          "products":products,'model_name':model_name})
+                                                                          "products":products,'model_name':model_name,'model_images':model_images})
 
 
 
