@@ -2994,6 +2994,7 @@ def purchaseordercreateupdate(request,pk=None):
         else:
             instance = None
             model_name = None
+            model_images = None
         
         formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
         form = purchase_order_form(instance=instance)

@@ -209,7 +209,10 @@
                 url: '/purchasevouchervalidcheckajax/',
                 method: 'GET',
                 data: {
-                    'purchase_number': purchase_number,
+                    searchData:{
+                        'purchase_number': purchase_number
+                    },
+                    
                 },
                 success: function (data) {
                   

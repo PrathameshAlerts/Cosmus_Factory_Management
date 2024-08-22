@@ -372,9 +372,26 @@ function checkOnlyOne(checkbox) {
                     if (fabricGroup === "True") {
                         if(currentColor == productColor){
                             const consumptionInput =row.querySelector('input[name$="-consumption"]');
+                            const colorShade = row.querySelector('.checkBox-row');
+                          
+                            const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
+                            
                             const consumption = parseFloat(consumptionInput.value) || 0;
                             let totalConsumption = CuttingQty * consumption;
                             totalConsumptionInput.value = totalConsumption.toFixed(2);
+                            if(CuttingQty > 0){
+                                if(colorshadeValue > 1){
+                                    colorShade.style.border = "3px solid red";
+                                    colorShade.disabled = true; 
+                                }else{
+                                    colorShade.style.border = "none";
+                                    colorShade.disabled = false;
+                                }
+                            }else{
+                                colorShade.style.border = "none";
+                                colorShade.disabled = false;
+                            }
+                           
                         
                         }else if(currentColor === "Common Item"){
                         
@@ -434,8 +451,6 @@ function checkOnlyOne(checkbox) {
 
     function submitForm(){
         const ids = document.getElementById('cutting_id').value ;
-      console.log('ids',ids);
-       
         if(ids !== "" && ids !== "None"){
             let procumentValue =0;
             let CuttingValue =0;
@@ -517,50 +532,7 @@ function checkOnlyOne(checkbox) {
     }
 
 
-    function updateCuttingValue(){
-        var cuttingQty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
-            cuttingQty.forEach(input => {
-                var cuttingColor = input.closest('tr').querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-product_color"]');
-                    cuttingColor.forEach(element =>{
-                        var cuttingColors = element.value;
-                        var materialColor = document.querySelectorAll('input[name^="purchase_order_for_raw_material_cutting_items_set-"][name$="-product_color"]');
-                            materialColor.forEach(ele =>{
-                                if(ele.value == cuttingColors){
-                                    var cuttingQuantitys = parseInt(input.value);
-                                  
-                                    var materialColorShade = ele.closest('tr').querySelector('.checkBox-row')
-                                    var materialColorShadeValue = ele.closest('tr').querySelector('.checkBox-row').querySelectorAll('input[type="checkbox"]').length;
-                              
-                                    if(materialColorShadeValue > 1){
-                                     
-                                      
-                                            materialColorShade.style.border = "3px solid red";
-                                            materialColorShade.disabled = true; 
-                                        
-                                        
-                                    }else{
-                                        materialColorShade.style.border = "none";
-                                        materialColorShade.disabled = false;
-                                    }
-                                }else{
-                                    var materialColorShade = ele.closest('tr').querySelector('.checkBox-row')
-                                    var materialColorShadeValue = ele.closest('tr').querySelector('.checkBox-row').querySelectorAll('input[type="checkbox"]').length;
-                                    if(materialColorShadeValue > 1){
-                                     
-                                      
-                                     materialColorShade.style.border = "3px solid red";
-                                     materialColorShade.disabled = true; 
-                                 
-                                 
-                             }else{
-                                 materialColorShade.style.border = "none";
-                                 materialColorShade.disabled = false;
-                             }
-                                }
-                            })
-                    })    
-            })
-    }
+    
 
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
@@ -571,7 +543,6 @@ function checkOnlyOne(checkbox) {
                 processValueQty();
                 submitForm();
                 balanceQty();
-                updateCuttingValue();
                 balanceProcessQty();
             });
         })
