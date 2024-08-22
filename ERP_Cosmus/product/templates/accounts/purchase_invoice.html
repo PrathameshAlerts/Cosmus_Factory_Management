@@ -203,15 +203,17 @@
     $(document).ready(function(){
         $('#id_purchase_number').on('focusout',function(){
             var purchase_number = $(this).val();
+            var searchData = {
+                'purchase_number': purchase_number
+            };
+            console.log(searchData);
             var purchase = $("#id_purchase_number");
             var errorElement = $('#purchaseError'); // The error message element
             $.ajax({
                 url: '/purchasevouchervalidcheckajax/',
                 method: 'GET',
                 data: {
-                    searchData:{
-                        'purchase_number': purchase_number
-                    },
+                    'searchData': searchData,
                     
                 },
                 success: function (data) {
