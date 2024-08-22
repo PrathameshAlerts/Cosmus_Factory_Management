@@ -103,7 +103,7 @@
                         
                     </td>
                     <td>
-                        <input type="hidden" id="item_checkshade_{{forloop.counter0}}" name="item_checkshade_{{forloop.counter0}}" value=""> 
+                        <input type="hidden" id="id_item_checkshade-{{forloop.counter0}}" name="item_checkshade-{{forloop.counter0}}" value=""> 
                         <input type ="text" name="input_item_shade_{{forloop.counter0}}" id="input_item_shade_{{forloop.counter0}}" class="purchase-select" style="border: none ;color: #000; background-color: transparent; display: none;" readonly value="">
                         <select name="{{forms.prefix}}-item_shade" class="purchase-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
@@ -531,8 +531,8 @@ function randomValue (){
                 var itemrownameid = itemName.split('-')[1];
                 var differentShades = Object.keys(response.item_shade).length;
                 
-                var itemCheckshadeValue = document.querySelector('#item_checkshade_' + itemrownameid);
-                itemCheckshadeValue.value = differentShades;
+                var itemCheckshadeValue = document.querySelector('#id_item_checkshade-' + itemrownameid);
+                itemCheckshadeValue.value = response.auto_popup_flag;
                     var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
                     var item_color = response.item_color;
 
@@ -757,177 +757,111 @@ function randomValue (){
 
      // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
         var popupWindow = null; // Variable to hold the reference to the popup window
-        var shadeValue = $('[name^="item_checkshade_"]');
-        console.log(shadeValue)
-        
-        $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
+
+        $(document).on('focusout', 'input[name^="item_name_"]', function () {
+            var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
+            if (shadeValue == "false") {
+                handleShadeValueFalse();
+            } else if (shadeValue == "true") {
+                handleShadeValueTrue();
+            }
+        })
+
+    function handleShadeValueFalse() {
+    $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
         const selectedShade = $(this).val();
-        const  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-        const purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');
+        const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+        handlePopup(selectedShade, uniqueIdValue);
+    });
+}
 
-     
-        const prefix_id = purchaseValue;
-        let primary_id = null;
-  
-        if(purchaseId ){
-            primary_id = purchaseId.value
-
-            if (primary_id === "") {
-                primary_id = null
-            }
-
-        }
-
-            if (selectedShade !== "" && primary_id !== null ) {
-                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
-                    const minWidth = 800;
-                    const minHeight = 600;
-               
-                    $.ajax({
-                        // Use Django URL name to fetch the URL dynamically
-                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                        method: 'GET',
-                        data: {
-                            'selected_shade': selectedShade,
-                            'purchase_id': primary_id,
-                            'prefix_id':prefix_id, 
-                            
-                            
-                        },
-                        success: function (response) {
-                            // Open the dynamic URL received from the server
-                           
-                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-                           
-                        },
-                        error: function (xhr, errmsg, err) {
-                            console.log('Error getting popup URL');
-                        }
-                    });
-                } else {
-                    // If a popup window is already open, notify the user or take appropriate action
-                    console.log('A popup window is already open');
-                }
-            
-            }else if (uniqueIdValue !== "" && selectedShade !== "" ) {
-                if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
-                    const minWidth = 800;
-                    const minHeight = 600;
-                  
-                    $.ajax({
-                        // Use Django URL name to fetch the URL dynamically
-                        url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                        method: 'GET',
-                        data: {
-                            'selected_shade': selectedShade,
-                            'unique_invoice_row_id': uniqueIdValue,
-                            'prefix_id':prefix_id,
-                            
-                        },
-                        success: function (response) {
-                            // Open the dynamic URL received from the server
-                            popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-            
-                        },
-                        error: function (xhr, errmsg, err) {
-                            console.log('Error getting popup URL');
-                        }
-                    });
-                } else {
-                    // If a popup window is already open, notify the user or take appropriate action
-                    console.log('A popup window is already open');
-                }
-            }
-            
-        });
-
-        $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
-        if(event.key === 'Enter'){
+function handleShadeValueTrue() {
+    $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
+        if (event.key === 'Enter') {
             const selectedShade = $(this).val();
-            const selectValue = $(this);
-            selectValue.attr('disabled', 'disabled');
-            const  uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-            const purchaseId = document.getElementById('id_purchase_voucher_items_set-' + purchaseValue + '-id');
+            const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+            $(this).attr('disabled', 'disabled');
+            handlePopup(selectedShade, uniqueIdValue);
+          
+            $(this).removeAttr('disabled');
+        }
+    });
+}
+        function handlePopup(selectedShade, uniqueIdValue) {
+            const purchaseId = $('#id_purchase_voucher_items_set-' + purchaseValue + '-id').val();
 
-        
             const prefix_id = purchaseValue;
-            let primary_id = null;
-            //var test = null;
-            if(purchaseId ){
-                primary_id = purchaseId.value
+                let primary_id = null;
+                
+                if(purchaseId ){
+                    primary_id = purchaseId
 
-                if (primary_id === "") {
-                    primary_id = null
+                    if (primary_id === "") {
+                        primary_id = null
+                    }
+
                 }
-
-            }
 
                 if (selectedShade !== "" && primary_id !== null ) {
-                    if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
-                        const minWidth = 800;
-                        const minHeight = 600;
-                
-                        $.ajax({
-                            // Use Django URL name to fetch the URL dynamically
-                            url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                            method: 'GET',
-                            data: {
-                                'selected_shade': selectedShade,
-                                'purchase_id': primary_id,
-                                'prefix_id':prefix_id, 
-                                
-                                
-                            },
-                            success: function (response) {
-                                // Open the dynamic URL received from the server
-                            
-                                popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-                            
-                            },
-                            error: function (xhr, errmsg, err) {
-                                console.log('Error getting popup URL');
-                            }
-                        });
-                    } else {
-                        // If a popup window is already open, notify the user or take appropriate action
-                        console.log('A popup window is already open');
-                    }
-                
-                }else if (uniqueIdValue !== "" && selectedShade !== "" ) {
-                    if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
-                        const minWidth = 800;
-                        const minHeight = 600;
+                        if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                            const minWidth = 800;
+                            const minHeight = 600;
                     
-                        $.ajax({
-                            // Use Django URL name to fetch the URL dynamically
-                            url: '{% url "purchasevoucher-createpopup-ajax" %}',
-                            method: 'GET',
-                            data: {
-                                'selected_shade': selectedShade,
-                                'unique_invoice_row_id': uniqueIdValue,
-                                'prefix_id':prefix_id,
+                            $.ajax({
+                                // Use Django URL name to fetch the URL dynamically
+                                url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                                method: 'GET',
+                                data: {
+                                    'selected_shade': selectedShade,
+                                    'purchase_id': primary_id,
+                                    'prefix_id':prefix_id, 
+            
+                                },
+                                success: function (response) {
+                                    // Open the dynamic URL received from the server
                                 
-                            },
-                            success: function (response) {
-                                // Open the dynamic URL received from the server
-                                popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                                    popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
                             
-                
-                            },
-                            error: function (xhr, errmsg, err) {
-                                console.log('Error getting popup URL');
-                            }
-                        });
-                    } else {
-                        // If a popup window is already open, notify the user or take appropriate action
-                        console.log('A popup window is already open');
+                                },
+                                error: function (xhr, errmsg, err) {
+                                    console.log('Error getting popup URL');
+                                }
+                            });
+                        } else {
+                            // If a popup window is already open, notify the user or take appropriate action
+                            console.log('A popup window is already open');
+                        }
+                    
+                    }else if (uniqueIdValue !== "" && selectedShade !== "" ) {
+                        if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
+                            const minWidth = 800;
+                            const minHeight = 600;
+                        
+                            $.ajax({
+                                // Use Django URL name to fetch the URL dynamically
+                                url: '{% url "purchasevoucher-createpopup-ajax" %}',
+                                method: 'GET',
+                                data: {
+                                    'selected_shade': selectedShade,
+                                    'unique_invoice_row_id': uniqueIdValue,
+                                    'prefix_id':prefix_id,
+                                    
+                                },
+                                success: function (response) {
+                                    // Open the dynamic URL received from the server
+                                    popupWindow = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+                    
+                                },
+                                error: function (xhr, errmsg, err) {
+                                    console.log('Error getting popup URL');
+                                }
+                            });
+                        } else {
+                            // If a popup window is already open, notify the user or take appropriate action
+                            console.log('A popup window is already open');
+                        }
                     }
-                }
-          
-                selectValue.removeAttr('disabled');
-            }
-        });
-
+        }
     });
 </script>
 
