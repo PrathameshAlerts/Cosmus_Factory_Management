@@ -4,11 +4,11 @@
 <div>
     <h2>Purchase invoice</h2>
     <form class="mt-4" action=""method="POST">
-        <span id="purchaseError" class="error-messages"></span>
+        
         {% csrf_token %}
         <div class="">
             <div class="d-flex mb-3">
-               
+                <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ">
                     
                     <label for="id_purchase_number"  class="me-3">Purchase No :</label>
@@ -207,14 +207,14 @@
             var purchase = $("#id_purchase_number");
             var errorElement = $('#purchaseError'); // The error message element
             $.ajax({
-                url: '/purchasevouchervalidcheckajax/',
+                url: '/uniquevalidcheckajax/',
                 method: 'GET',
                 data: {
                     'purchase_number': purchase_number,
                     
                 },
                 success: function (data) {
-                  
+                  console.log(data);
                     if(data.validation_flag === true){
                        //alert("Purchase number already exists");
                        purchase.css('border', '1px solid red');

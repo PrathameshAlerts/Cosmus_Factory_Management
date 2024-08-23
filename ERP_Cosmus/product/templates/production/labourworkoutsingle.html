@@ -5,7 +5,7 @@
 <div class="" >
     <form method="POST">
         {% csrf_token %}
-       
+        <span id="challanError" class="error-messages"></span>
         <div class="row">
             <div class="col-lg-6 mt-3">
                 <h4 class="">Labour Workout</h4>
@@ -195,7 +195,45 @@
 
 
 <script>
+ $(document).ready(function(){
+        $('#id_challan_no').on('focusout',function(){
+            var challanNo = $(this).val();
+           
+            var challanId = $("#id_challan_no");
+            var errorElement = $('#challanError'); // The error message element
+            console.log(challanNo);
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'labour_workout_challan_no': challanNo,
+                    
+                },
+                success: function (data) {
+                  console.log(data);
+                    if(data.validation_flag === true){
+                       //alert("Purchase number already exists");
+                       challanId.css('border', '1px solid red');
+                        console.log(data)
+                        errorElement.text('*Challan number already exists');
+                        errorElement.show();
+                       
+                    }else {
+                        console.log(data.validation_flag);
+                        challanId.css('border', '1px solid black');
+                         
+                    errorElement.text('');
+                    errorElement.hide();
+                    }
+                   
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
 
+            })
+        })
+    })
 function labourApprovedQty() {
     let total = 0;
     let balance =0;

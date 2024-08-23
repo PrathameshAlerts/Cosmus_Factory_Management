@@ -3,6 +3,7 @@
 {% block body %}
 
 <h2 class="mt-3 mb-4">{{title}}</h2>
+
 {% if form.instance.id %}
 <button type="button" class="itemCreate_btn"><a class="text-decoration-none text-white" href="{% url 'item-create' %}">Create</a></button>
 {% endif %}
@@ -22,10 +23,10 @@
       </div>
       {% endif %}
     </div>
+    <span id="itemError" class="error-messages"></span>
     <div class=" d-flex my-3">
       <label for="id_item_name" class="item-form">Name:</label>
-      <input type="text" class="product2Select" value="{{form.instance.item_name}}" name="item_name" maxlength="255"
-        required id="id_item_name">
+      <input type="text" class="product2Select" value="{{form.instance.item_name}}" name="item_name" maxlength="255" required id="id_item_name">
     </div>
 
     <!-- {{form.instance.fab_grp }} - from a function def fab_grp(self): return self.Fabric_Group.fab_grp_name -->
@@ -141,9 +142,10 @@
       </div>
     </div>
     {% endif %}
+    <span id="itemError" class="error-messages"></span>
     {% if form.instance.id %}
     <div class="d-flex my-3">
-    
+   
       <label for="id_Material_code" class="item-form">Material Code:</label>
       <input type="text" class="item-select" name="Material_code" value= "{{form.initial.Material_code}}" maxlength="255" required id="id_Material_code">
     </div>
@@ -367,6 +369,82 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
         dropdown.append('<option value="' + item.id + '">' + item[valueKey] + '</option>');
     });
 }
+$(document).ready(function(){
+        $('#id_item_name').on('focusout',function(){
+            var item_name = $(this).val();
+           
+            var itemcreateName = $("#id_item_name");
+            var errorElement = $('#itemError'); // The error message element
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'item_name': item_name,
+                    
+                },
+                success: function (data) {
+                  console.log(data);
+                    if(data.validation_flag === true){
+                       //alert("Purchase number already exists");
+                       itemcreateName.css('border', '1px solid red');
+                        console.log(data)
+                        errorElement.text('*Purchase number already exists');
+                        errorElement.show();
+                       
+                    }else {
+                        console.log(data.validation_flag);
+                        itemcreateName.css('border', '1px solid black');
+                         
+                    errorElement.text('');
+                    errorElement.hide();
+                    }
+                   
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
+
+            })
+        })
+    })
+    $(document).ready(function(){
+        $('#id_Material_code').on('focusout',function(){
+            var item_material_code = $(this).val();
+           
+            var material_code = $("#id_Material_code");
+            var errorElement = $('#itemError'); // The error message element
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'item_material_code': item_material_code,
+                    
+                },
+                success: function (data) {
+                  console.log(data);
+                    if(data.validation_flag === true){
+                       //alert("Purchase number already exists");
+                       material_code.css('border', '1px solid red');
+                        console.log(data)
+                        errorElement.text('*Purchase number already exists');
+                        errorElement.show();
+                       
+                    }else {
+                        console.log(data.validation_flag);
+                        material_code.css('border', '1px solid black');
+                         
+                    errorElement.text('');
+                    errorElement.hide();
+                    }
+                   
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
+
+            })
+        })
+    })
  </script>
 
 
@@ -382,15 +460,15 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
 
       const nameValue = $(this).val().trim();
      
-   if(nameValue === '') {
-    suggestions.css('display', 'none');
-        $(this).attr('data-key', '');
-        return;
-   }
-   if(!enterValue){             // Show the dropdown only if Enter key was not pressed
-    suggestions.css('display', 'block');
-    }
-    enterValue = false;
+        if(nameValue === '') {
+          suggestions.css('display', 'none');
+              $(this).attr('data-key', '');
+              return;
+        }
+          if(!enterValue){             // Show the dropdown only if Enter key was not pressed
+            suggestions.css('display', 'block');
+            }
+            enterValue = false;
     
     if(nameValue.length >= 1){
  
