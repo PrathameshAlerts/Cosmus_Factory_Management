@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput , DateInput
-from django.forms import IntegerField, modelformset_factory, BaseInlineFormSet 
+from django.forms import modelformset_factory, BaseInlineFormSet 
 from django.db import transaction
 import logging
 from django.contrib.auth.models import Group
@@ -169,8 +169,6 @@ class CustomPProductaddFormSet(PProductaddFormSet):
 
 
 
-            
-
 
 class ColorForm(UniqueFieldMixin,forms.ModelForm):
     class Meta:
@@ -290,7 +288,16 @@ class item_purchase_voucher_master_form(forms.ModelForm):
             'party_name','fright_transport','gross_total','grand_total'
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        last_item = item_purchase_voucher_master.objects.order_by('id').last()
+
+        if last_item:
+
+            self.fields['purchase_number'].initial = last_item.id + 1
+        else:
+            self.fields['purchase_number'].initial = 1
 
 purchase_voucher_items_formset = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=1)
 purchase_voucher_items_formset_update = inlineformset_factory(item_purchase_voucher_master, purchase_voucher_items, fields=('item_shade', 'quantity_total','rate','amount'), extra=0)
@@ -361,6 +368,7 @@ class purchase_order_form(forms.ModelForm):
         fields = ['purchase_order_number','product_reference_number','ledger_party_name',
                   'target_date','number_of_pieces','temp_godown_select','balance_number_of_pieces']
         
+
 
 
 class purchase_order_to_product_form(forms.ModelForm):
@@ -490,7 +498,17 @@ class purchase_order_raw_material_cutting_form(forms.ModelForm):
             'purchase_order_id': forms.TextInput(attrs={'readonly': 'readonly'})
         }
 
-    # def clean_processed_qty(self)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        auto_field_last = purchase_order_raw_material_cutting.objects.order_by('auto_id').last()
+
+        if auto_field_last:
+            self.fields['raw_material_cutting_id'].initial = auto_field_last.auto_id + 1
+        else:
+            self.fields['raw_material_cutting_id'].initial = 1
+
+        
 
 
 
@@ -615,8 +633,20 @@ class labour_workout_child_form(forms.ModelForm):
     
     class Meta:
         model = labour_workout_childs
-        fields = ['labour_name' , 'challan_no','total_approved_pcs',
+        fields = ['labour_name', 'challan_no','total_approved_pcs',
                   'total_process_pcs','total_balance_pcs']
+        
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        last_id = labour_workout_childs.objects.order_by('id').last()
+
+        if last_id:
+            self.fields['challan_no'].initial = last_id.id + 1
+        else:
+            self.fields['challan_no'].initial = 1
+
 
 
 

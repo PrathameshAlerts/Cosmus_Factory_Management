@@ -670,11 +670,29 @@ class purchase_order_for_raw_material(models.Model):
 class purchase_order_raw_material_cutting(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, related_name='cutting_pos', on_delete = models.CASCADE)
     raw_material_cutting_id = models.IntegerField(primary_key=True)
+    auto_id = models.PositiveIntegerField(unique=True,blank=False, null= False)
     factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
     processed_qty  = models.IntegerField(default=0)
     balance_qty = models.IntegerField(default=0)
     approved_qty = models.IntegerField(default=0)
     cutting_cancelled = models.BooleanField(default=False)
+
+    # to save an auto field which acts as an autoincrement field
+    def save(self, *args, **kwargs):
+        if self._state.adding:
+            last_id = purchase_order_raw_material_cutting.objects.order_by('auto_id').last()
+
+            if last_id:
+                self.auto_id = last_id.auto_id + 1
+            else:
+                self.auto_id = 1
+
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ["auto_id"]
+
+    
 
 
 class purchase_order_to_product_cutting(models.Model): 
@@ -750,10 +768,13 @@ class product_to_item_labour_workout(models.Model):
 
 class labour_workout_childs(models.Model):
     labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.PROTECT)
-    challan_no = models.CharField(unique=True)
+    challan_no = models.CharField(unique=True, null=False, blank=False)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_process_pcs = models.IntegerField(null=True, blank=True)
     total_balance_pcs = models.IntegerField(null=True, blank=True)
+
+
+
 
 
 class product_to_item_labour_child_workout(models.Model):

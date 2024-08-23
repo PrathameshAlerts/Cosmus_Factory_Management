@@ -24,7 +24,7 @@
                 <div class="d-flex mb-2">
                     <div class="d-flex">
                         <lable for="id_product_reference_number" class="ms-2">Reference No:</lable>
-                        <input type="number" name="purchase_order_number" class="productinput text-danger  ms-3 me-2 pb-2 " value="{{form.instance.product_reference_number.Product_Refrence_ID}}" id="id_purchase_order_number" readonly>
+                        <input type="number" name="purchase_order_number" class="productinput text-danger  ms-3 me-2 pb-2 " value="{{form.instance.product_reference_number.Product_Refrence_ID }}" id="id_purchase_order_number" readonly>
                     </div>
                     <div class="d-flex">
                         <label for="id_number_of_pieces" class="">Total P.O Qty:</label>
@@ -48,7 +48,15 @@
                     <div class="d-flex">
                         
                         <lable for="id_raw_material_cutting_id" class="ms-2">Cutting No:</lable>
+                        {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
+
                         <input type="number" name="raw_material_cutting_id" class="purchase-amount text-danger  ms-3 pb-2" value="{{purchase_order_cutting_form.instance.raw_material_cutting_id | default_if_none:''}}" id="id_raw_material_cutting_id" required>
+                        
+                        {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
+                        <input type="number" name="raw_material_cutting_id" class="purchase-amount text-danger  ms-3 pb-2" value="{{purchase_order_cutting_form.raw_material_cutting_id.initial }}" id="id_raw_material_cutting_id" required>
+
+                        {% endif %}
+
                     </div>
                     <div class="d-flex">
                         <label for="id_factory_employee_id" class="ms-4">Cutting Master:</label>

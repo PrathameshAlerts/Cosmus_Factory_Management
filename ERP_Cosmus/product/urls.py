@@ -95,6 +95,8 @@ urlpatterns = [
     path('ledgerlist/', views.ledgerlist, name = 'ledger-list'),
     path('ledgerdelete/<int:pk>', views.ledgerdelete, name = 'ledger-delete'),
 
+    path('ledgerpopupcreate/', views.ledgercreate, name = 'ledger-popup-create'),
+
     #godown
     path('godowncreate/', views.godowncreate, name = 'godown-create'),
     path('godownupdateraw/<str:str>/<int:pk>', views.godownupdate, name = 'godown-update'),
