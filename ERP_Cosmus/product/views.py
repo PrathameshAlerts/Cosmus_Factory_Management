@@ -2355,9 +2355,37 @@ def UniqueValidCheckAjax(request):
     col_name = None
 
     if 'purchase_number' in searched_from:
-        searched_value = request.GET.get('purchase_number')
+        searched_value = request.GET.get('purchase_number').strip()
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
+
+    
+    if 'new_order_number' in searched_from:
+        searched_value = request.GET.get('new_order_number').strip()
+        model_name = purchase_order
+        col_name = 'purchase_order_number'
+
+
+    if 'cutting_order_number' in searched_from:
+        searched_value = request.GET.get('cutting_order_number').strip()
+        model_name = purchase_order_raw_material_cutting
+        col_name = 'raw_material_cutting_id'
+
+    if 'labour_workout_challan_no' in searched_from:
+        searched_value = request.GET.get('labour_workout_challan_no').strip()
+        model_name = labour_workout_childs
+        col_name = 'challan_no'
+
+
+    if 'item_name' in searched_from:
+        searched_value = request.GET.get('item_name').strip()
+        model_name = Item_Creation
+        col_name = 'item_name'
+
+    if 'item_material_code' in searched_from:
+        searched_value = request.GET.get('item_material_code').strip()
+        model_name = Item_Creation
+        col_name = 'Material_code'
 
     return CheckUniqueFieldDuplicate(model_name,searched_value,col_name)
 

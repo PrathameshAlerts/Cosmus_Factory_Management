@@ -267,10 +267,10 @@
 
 <script>
 $(document).ready(function(){
-        $('#id_purchase_o_no').on('focusout',function(){
+        $('#id_raw_material_cutting_id').on('focusout',function(){
             var cutting_number = $(this).val();
-           
-            var cutting_order = $("#id_purchase_o_no");
+           console.log(cutting_number)
+            var cutting_order = $("#id_raw_material_cutting_id");
             var errorElement = $('#cuttingError'); // The error message element
             $.ajax({
                 url: '/uniquevalidcheckajax/',
