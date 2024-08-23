@@ -16,7 +16,15 @@
                             <input type="hidden" name="godown_id" id="id_godown_id" value="{{godown_id}}">
 
                             <lable for="id_challan_no" class="">Challan No:</lable>
+
+                             
+                            {% if labour_work_out_child_form.instance.id %}
+
                             <input type="text" name="challan_no" id="id_challan_no" class="purchase-amount text-danger ms-2 me-5 pb-2" value="{{labour_work_out_child_form.instance.challan_no}}" required>
+                            {% elif not labour_work_out_child_form.instance.id %}
+                            <input type="text" name="challan_no" id="id_challan_no" class="purchase-amount text-danger ms-2 me-5 pb-2" value="{{labour_work_out_child_form.challan_no.initial}}" required>
+                            {% endif %}
+
                         </div>
                         <div class="d-flex ms-1 ">
                             <lable for="id_labour_name" class="">Labour:</lable>

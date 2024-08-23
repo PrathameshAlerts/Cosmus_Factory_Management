@@ -1363,7 +1363,6 @@ def unit_name_delete(request,pk):
 #_________________________Accounts start___________________________
 
 def account_sub_group_create_update(request, pk=None):
-    print(request.POST)
 
     groups = AccountSubGroup.objects.select_related('acc_grp').all()
 
@@ -1457,6 +1456,11 @@ def stock_item_delete(request, pk):
 
 @transaction.atomic
 def ledgercreate(request):
+    if request.path == 'ledgerpopupcreate/':
+        template_name = 'accounts/ledger_create_update.html'
+    else:
+        template_name = 'accounts/ledger_create_popup.html'
+
     under_groups = AccountSubGroup.objects.all()
     form = LedgerForm()
     if request.method == 'POST':
@@ -1481,9 +1485,9 @@ def ledgercreate(request):
         
         else:
 
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
+            return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Create'})
+    return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
 
 @transaction.atomic
@@ -2349,43 +2353,42 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
 
 def UniqueValidCheckAjax(request):
     searched_from = request.GET.keys()
-    
-    model_name = None
-    searched_value = None
-    col_name = None
 
     if 'purchase_number' in searched_from:
         searched_value = request.GET.get('purchase_number').strip()
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
 
-    
     if 'new_order_number' in searched_from:
         searched_value = request.GET.get('new_order_number').strip()
         model_name = purchase_order
         col_name = 'purchase_order_number'
 
-
-    if 'cutting_order_number' in searched_from:
+    elif 'cutting_order_number' in searched_from:
         searched_value = request.GET.get('cutting_order_number').strip()
         model_name = purchase_order_raw_material_cutting
         col_name = 'raw_material_cutting_id'
 
-    if 'labour_workout_challan_no' in searched_from:
+    elif 'labour_workout_challan_no' in searched_from:
         searched_value = request.GET.get('labour_workout_challan_no').strip()
         model_name = labour_workout_childs
         col_name = 'challan_no'
 
-
-    if 'item_name' in searched_from:
+    elif 'item_name' in searched_from:
         searched_value = request.GET.get('item_name').strip()
         model_name = Item_Creation
         col_name = 'item_name'
 
-    if 'item_material_code' in searched_from:
+    elif 'item_material_code' in searched_from:
         searched_value = request.GET.get('item_material_code').strip()
         model_name = Item_Creation
         col_name = 'Material_code'
+
+    else:
+        model_name = None
+        searched_value = None
+        col_name = None
+
 
     return CheckUniqueFieldDuplicate(model_name,searched_value,col_name)
 

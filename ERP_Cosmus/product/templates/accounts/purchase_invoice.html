@@ -14,8 +14,8 @@
                     <label for="id_purchase_number"  class="me-3">Purchase No :</label>
                     {% if master_form.instance.id %}
                     <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required readonly>
-                    {% else %}
-                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required>
+                    {% elif not master_form.instance.id %}
+                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.purchase_number.initial}}" maxlength="255" required>
                     {% endif %}
                 </div>
                 <div class="d-flex ms-3">
