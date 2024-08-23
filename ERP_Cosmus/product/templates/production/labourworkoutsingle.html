@@ -265,9 +265,8 @@ var clickY = event.clientY;
 
 window.addEventListener('message', function(event) {
     const data = event.data;
-    console.log(data);
-    if (data) {
-        populateDropdown(data, '#id_labour_name', 'labour_name', 'Select Name');
+    if (data.ledger_labour) {
+        populateDropdown(data.ledger_labour, '#id_labour_name', 'name', 'Select Name');
     }
 });
 
