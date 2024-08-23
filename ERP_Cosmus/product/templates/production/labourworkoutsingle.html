@@ -37,6 +37,7 @@
                             {% endif %}
                         
                             </select>
+                            <button type="button" class="itemCreate_btn popup-trigger" onclick="openlabourPopup()">+</button>
                         </div>
                     
                     </div>
@@ -194,7 +195,65 @@
         <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
     </form>
 </div>
+<script>
+    var popUpWindow = null;
+function openlabourPopup(button){
+    openNewPopup(button, '{% url "ledger-create" %}');
+}
 
+function openNewPopup(button, url){
+    if (popUpWindow === null || popUpWindow.closed) {
+    newPopUpwindow(button, url);
+  } else {
+  
+    popUpWindow.focus();
+  }
+}
+
+function newPopUpwindow(button, path){
+    // Specify minimum height and width
+  var minWidth = 800; // minimum width
+  var minHeight = 600; // minimum height
+
+  $('body').addClass('popup-open');
+  $('body').append('<div class="popup-overlay"></div>');
+
+  // Open new page with specified dimensions
+  popUpWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    // Ensure only one event listener is attached
+  
+    window.addEventListener('message', function(event){
+        if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                popUpWindow.close();
+             }
+           });
+
+
+    // Listen for messages from the popup window
+    window.addEventListener('click', function(event) {
+    handleOutsideClick(event);
+  });
+}
+function handleOutsideClick(event) {
+
+var popUpRect = document.querySelector('body').getBoundingClientRect();
+var clickX = event.clientX;
+var clickY = event.clientY;
+ 
+  // Check if the click is outside the popup window
+  if (
+    clickX > popUpRect.left || clickX <= popUpRect.right ||
+    clickY > popUpRect.top || clickY <= popUpRect.bottom
+  ) {
+   
+    popUpWindow.focus();
+    
+  }
+
+}
+</script>
 
 <script>
  $(document).ready(function(){
