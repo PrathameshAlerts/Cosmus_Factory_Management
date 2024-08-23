@@ -148,13 +148,13 @@ document.getElementById('ledgerForm').addEventListener('submit', async function 
     });
 
     if (response.ok) {
-
-      const data = await response.json();  // Await the response.json() call
+    console.log('Form submitted successfully', response);
+      const data = await response.ok;  // Await the response.json() call
       window.opener.postMessage(data, '*');
       window.close();  // Now you can access the JSON data
       formSubmitted = true;  // Set flag to true after successful submission
     } else {
-      console.error('Failed to create color.');
+      console.error('Failed to create ledger.');
     }
 
   } catch (error) {

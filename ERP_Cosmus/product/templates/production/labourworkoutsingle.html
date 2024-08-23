@@ -235,6 +235,7 @@ function newPopUpwindow(button, path){
                 $('body').removeClass('popup-open');
                 $('.popup-overlay').remove();
                 popUpWindow.close();
+                
              }
            });
 
@@ -260,6 +261,24 @@ var clickY = event.clientY;
     
   }
 
+}
+
+window.addEventListener('message', function(event) {
+    const data = event.data;
+    console.log(data);
+    if (data) {
+        populateDropdown(data, '#id_labour_name', 'labour_name', 'Select Name');
+    }
+});
+
+function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
+    const dropdown = $(dropdownSelector);
+    dropdown.empty();
+    dropdown.append('<option value="">' + defaultText + '</option>');
+
+    items.forEach(item => {
+        dropdown.append('<option value="' + item.id + '">' + item[valueKey] + '</option>');
+    });
 }
 </script>
 
