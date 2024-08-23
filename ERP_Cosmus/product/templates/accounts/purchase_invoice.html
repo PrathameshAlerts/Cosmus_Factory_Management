@@ -212,12 +212,9 @@
             $.ajax({
                 url: '/purchasevouchervalidcheckajax/',
                 method: 'GET',
-                data: {
-                    'searchData': searchData,
-                    
-                },
+                data: searchData,
                 success: function (data) {
-                  
+                  console.log(data);
                     if(data.validation_flag === true){
                        //alert("Purchase number already exists");
                        purchase.css('border', '1px solid red');
