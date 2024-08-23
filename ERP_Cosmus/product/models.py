@@ -162,7 +162,7 @@ class Product(models.Model):
 
 
     Product_Name = models.CharField(max_length=255, blank = True, null = True, unique=True)
-    Model_Name = models.CharField(max_length=255, blank = True ,null =True)
+    Model_Name = models.CharField(unique=True,max_length=255, blank = True ,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
     Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True)
@@ -170,7 +170,7 @@ class Product(models.Model):
     Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
     Product_MRP = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
     Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
-    Product_BulkPrice=models.DecimalField( max_digits=10, decimal_places=3, blank = True, null = True)
+    Product_BulkPrice=models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
     Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, null = True)
     Product_HSNCode = models.BigIntegerField(blank = True,null =True)
     Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, null = True)

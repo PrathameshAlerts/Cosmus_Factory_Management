@@ -214,7 +214,7 @@ class Itemform(UniqueFieldMixin,forms.ModelForm):
 
         # Retrieve the last instance of the Item_Creation model
         last_item = Item_Creation.objects.order_by('pk').last()
-        print(last_item.pk)
+        
 
         # If there's a previous instance, set Material_code to last_item.pk + 1
         if last_item:
