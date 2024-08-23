@@ -36,7 +36,7 @@
                     </div>
                     <div class="d-flex">
                         <lable for="id_model_name" class="">Model Name:</lable> 
-                        <input class="text-danger productShadeCutting_Material_input pb-2  " id="id_model_name"value="{{model_name | default_if_none:''}}" readonly>
+                        <input class="text-danger productShadeCutting_Material_input pb-2  " id="id_model_name"value="{{form.instance.product_reference_number.Model_Name | default_if_none:''}}" readonly>
                         <input type="hidden"  name="balance_number_of_pieces" id="id_balance_number_of_pieces"value="{{form.instance.balance_number_of_pieces}}">
                     </div>
                 </div>

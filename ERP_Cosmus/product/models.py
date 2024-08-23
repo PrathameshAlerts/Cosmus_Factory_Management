@@ -784,15 +784,12 @@ class labour_workout_cutting_items(models.Model):
     updated_date = models.DateTimeField(auto_now_add = True)
 
 
-
 class labour_work_in_master(models.Model):
     voucher_number = models.IntegerField(primary_key=True)
     created_date = models.DateTimeField(auto_now = True)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT)
     labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
     description = models.CharField(max_length=255)
-
-
 
 
 # reports

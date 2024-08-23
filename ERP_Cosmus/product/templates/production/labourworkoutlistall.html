@@ -19,10 +19,11 @@
                 <th>P.O No</th>
                 <th>P.O Qty</th>
                 <th>Product Ref No</th>
-                <th>Product Name</th>
+                <th>Model Name</th>
                 <th>Cutting Order No</th>
                 <th>Approved Pcs</th>
                 <th>Pending Pcs</th>
+                <th>Processed Qty</th>
                 <th>Create</th>
             </tr>
         </thead>
@@ -36,6 +37,7 @@
             <td>{{record.purchase_order_cutting_master.raw_material_cutting_id}}</td>
             <td>{{record.total_approved_pcs}}</td>
             <td>{{record.total_pending_pcs}}</td>
+            <td>{{record.total_processed_qty | default_if_none:0}}</td>
             <td><a href="{% url 'labour-workout-child-list' record.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
 
         </tr>
