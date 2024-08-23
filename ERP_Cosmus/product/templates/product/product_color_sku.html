@@ -6,10 +6,9 @@
   <button class="add_btn" onclick="openNewColor()">Add Color +</button>
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
-  
+  <span id="materialError" class="error-messages"></span>
   <div class="d-flex mt-4 mb-4">
-    <label for="id_Product_Refrence_ID" class="item-form fw-bold">Refrence ID :
-    </label>
+    <label for="id_Product_Refrence_ID" class="item-form fw-bold">Refrence ID :</label>
     <input type="number" name="Product_Refrence_ID" id="Product_Refrence_ID" value="{{ref_id | default_if_none:''}}">
   </div>
  
@@ -64,12 +63,43 @@
   </div>
 
 
-  <div><input type="submit" class="newProductCreateBtn mt-5" name="save" value="Save"></div>
+  <div><input type="submit" class="newProductCreateBtn mt-5" name="save" value="Save" id="id_submit"></div>
 
 </form>
 
 <script>
+$(document).ready(function(){
+        $('#Product_Refrence_ID').on('focusout',function(){
+            var product_ref_no = $(this).val();  
+            var Product_Refrence = $("#Product_Refrence_ID");
+            var errorElement = $('#purchaseCreateError'); // The error message element
+            var submitButton = $('#id_submit');
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'product_ref_no': product_ref_no, 
+                },
+                success: function (data) {
+                    if(data.validation_flag === true){
+                      Product_Refrence.css('border', '1px solid red');
+                      errorElement.text('*New order number already exists');
+                      errorElement.show();
+                      submitButton.attr('disabled', 'disabled');
+                    }else {
+                      Product_Refrence.css('border', '1px solid black');
+                      errorElement.text('');
+                      errorElement.hide();
+                      submitButton.removeAttr('disabled');
+                    }
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
 
+            })
+        })
+    })
 
 document.addEventListener("DOMContentLoaded", function () {
 

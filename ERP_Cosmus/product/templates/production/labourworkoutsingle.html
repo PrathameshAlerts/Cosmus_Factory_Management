@@ -5,12 +5,14 @@
 <div class="" >
     <form method="POST">
         {% csrf_token %}
-        <span id="challanError" class="error-messages"></span>
+       
         <div class="row">
             <div class="col-lg-6 mt-3">
                 <h4 class="">Labour Workout</h4>
                 <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
+                    <span id="challanError" class="error-messagescuttingCreate"></span>
                     <div class="d-flex mb-2">
+                        
                         <div class="d-flex">
                             
                             <input type="hidden" name="godown_id" id="id_godown_id" value="{{godown_id}}">
@@ -198,10 +200,9 @@
  $(document).ready(function(){
         $('#id_challan_no').on('focusout',function(){
             var challanNo = $(this).val();
-           
             var challanId = $("#id_challan_no");
             var errorElement = $('#challanError'); // The error message element
-            console.log(challanNo);
+            var submitButton = $('#id_submit');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -210,20 +211,17 @@
                     
                 },
                 success: function (data) {
-                  console.log(data);
                     if(data.validation_flag === true){
-                       //alert("Purchase number already exists");
-                       challanId.css('border', '1px solid red');
-                        console.log(data)
+                        challanId.css('border', '1px solid red');
                         errorElement.text('*Challan number already exists');
                         errorElement.show();
-                       
+                        submitButton.attr('disabled', 'disabled');
                     }else {
-                        console.log(data.validation_flag);
-                        challanId.css('border', '1px solid black');
-                         
-                    errorElement.text('');
-                    errorElement.hide();
+                        
+                        challanId.css('border', '1px solid black'); 
+                        errorElement.text('');
+                        errorElement.hide();
+                        submitButton.removeAttr('disabled');
                     }
                    
                 },
