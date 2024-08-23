@@ -1457,10 +1457,10 @@ def stock_item_delete(request, pk):
 @transaction.atomic
 def ledgercreate(request):
 
-    if request.path == 'ledgerpopupcreate/':
-        template_name = 'accounts/ledger_create_update.html'
-    else:
+    if request.path == '/ledgerpopupcreate/':
         template_name = 'accounts/ledger_create_popup.html'
+    else:
+        template_name = 'accounts/ledger_create_update.html'
 
     under_groups = AccountSubGroup.objects.all()
     form = LedgerForm()
@@ -1484,10 +1484,13 @@ def ledgercreate(request):
 
             messages.success(request,'Ledger Created')
             
-            return redirect('ledger-list')
-        
+            if request.path == '/ledgerpopupcreate/':
+                ledger_labour = Ledger.objects.filter(types='labour').values('id','name')
+                messages.success(request, 'Color created successfully.')
+                return JsonResponse({'ledger_labour':list(ledger_labour)})
+            else:
+                return redirect('ledger-list')
         else:
-
             return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
     return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
