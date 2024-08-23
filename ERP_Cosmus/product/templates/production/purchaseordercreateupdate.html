@@ -10,6 +10,7 @@
         {% csrf_token %}
         <input type="hidden" name="productRowCreate" value="{{form.instance.id}}" id="id_productRow">
         <div class="d-flex mb-2">
+            <span id="purchaseCreateError" class="error-messages"></span>
             <div class="d-flex mb-3">
                 <label for="id_purchase_order_number" class="">P.O No:</label>
                 <input type="text" name="purchase_order_number" class="purchase-amount ms-2 me-4" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number">
@@ -142,6 +143,44 @@
     </div>
 </div>
 <script>
+    $(document).ready(function(){
+        $('#id_purchase_order_number').on('focusout',function(){
+            var newOrdernumber = $(this).val();
+           
+            var new_order = $("#id_purchase_order_number");
+            var errorElement = $('#purchaseCreateError'); // The error message element
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'new_order_number': newOrdernumber,
+                    
+                },
+                success: function (data) {
+                  console.log(data);
+                    if(data.validation_flag === true){
+                       //alert("Purchase number already exists");
+                       new_order.css('border', '1px solid red');
+                        console.log(data)
+                        errorElement.text('*Purchase number already exists');
+                        errorElement.show();
+                       
+                    }else {
+                        console.log(data.validation_flag);
+                        new_order.css('border', '1px solid black');
+                         
+                    errorElement.text('');
+                    errorElement.hide();
+                    }
+                   
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
+
+            })
+        })
+    })
     document.addEventListener('DOMContentLoaded', function () {
         const dateInput = document.getElementById('id_target_date');// this script is for date picker 
         const today = new Date().toISOString().split('T')[0];

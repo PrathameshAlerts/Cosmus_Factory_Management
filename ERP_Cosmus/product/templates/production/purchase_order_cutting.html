@@ -3,12 +3,15 @@
 {% block body %}
 
 <form method="POST">
+    
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-6 mt-3">
             <h4 class="">Cutting Order Production</h4>
             <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
+                <span id="cuttingError" class="error-messages"></span>
                 <div class="d-flex mb-2">
+             
                     <div class="d-flex">
                         <lable for="id_purchase_order_number" class="ms-2">P.O No:</lable>
                         <input type="text" name="purchase_o_no" class="productinput text-danger  ms-3 me-5 pb-2 " value="{{form.instance.purchase_order_number}}" required id="id_purchase_o_no" readonly>
@@ -263,7 +266,44 @@
 
 
 <script>
+$(document).ready(function(){
+        $('#id_purchase_o_no').on('focusout',function(){
+            var cutting_number = $(this).val();
+           
+            var cutting_order = $("#id_purchase_o_no");
+            var errorElement = $('#cuttingError'); // The error message element
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'cutting_order_number': cutting_number,
+                    
+                },
+                success: function (data) {
+                  console.log(data);
+                    if(data.validation_flag === true){
+                       //alert("Purchase number already exists");
+                       cutting_order.css('border', '1px solid red');
+                        console.log(data)
+                        errorElement.text('*Purchase number already exists');
+                        errorElement.show();
+                       
+                    }else {
+                        console.log(data.validation_flag);
+                        cutting_order.css('border', '1px solid black');
+                         
+                    errorElement.text('');
+                    errorElement.hide();
+                    }
+                   
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
 
+            })
+        })
+    })
 document.addEventListener('DOMContentLoaded', function() {
     var checkboxRows = document.querySelectorAll('.checkBox-row');
     var colorSearch = document.querySelectorAll('.color_Shades');
