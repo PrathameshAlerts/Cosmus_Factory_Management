@@ -9,7 +9,6 @@
         <div class="col-lg-6 mt-3">
             <h4 class="">Cutting Order Production</h4>
             <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
-                <span id="cuttingError" class="error-messages"></span>
                 <div class="d-flex mb-2">
              
                     <div class="d-flex">
@@ -43,8 +42,11 @@
                         <input type="hidden"  name="balance_number_of_pieces" id="id_balance_number_of_pieces"value="{{form.instance.balance_number_of_pieces}}">
                     </div>
                 </div>
+                <span id="cuttingError" class="error-messagescuttingCreate"></span>
                 <div class="d-flex mb-2">
+                    
                     <div class="d-flex">
+                        
                         <lable for="id_raw_material_cutting_id" class="ms-2">Cutting No:</lable>
                         {% if purchase_order_cutting_form.instance.raw_material_cutting_id %}
 
@@ -277,9 +279,9 @@
 $(document).ready(function(){
         $('#id_raw_material_cutting_id').on('focusout',function(){
             var cutting_number = $(this).val();
-           console.log(cutting_number)
             var cutting_order = $("#id_raw_material_cutting_id");
             var errorElement = $('#cuttingError'); // The error message element
+            var submitButton = $('#id_submit');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -290,18 +292,15 @@ $(document).ready(function(){
                 success: function (data) {
                   console.log(data);
                     if(data.validation_flag === true){
-                       //alert("Purchase number already exists");
                        cutting_order.css('border', '1px solid red');
-                        console.log(data)
-                        errorElement.text('*Purchase number already exists');
+                        errorElement.text('*Cutting number already exists');
                         errorElement.show();
-                       
+                        submitButton.attr('disabled', 'disabled');
                     }else {
-                        console.log(data.validation_flag);
                         cutting_order.css('border', '1px solid black');
-                         
-                    errorElement.text('');
-                    errorElement.hide();
+                        errorElement.text('');
+                        errorElement.hide();    
+                        submitButton.removeAttr('disabled');
                     }
                    
                 },

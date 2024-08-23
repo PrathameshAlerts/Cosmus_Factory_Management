@@ -23,7 +23,7 @@
       </div>
       {% endif %}
     </div>
-    <span id="itemError" class="error-messages"></span>
+    <span id="itemError" class="error-messagesItem"></span>
     <div class=" d-flex my-3">
       <label for="id_item_name" class="item-form">Name:</label>
       <input type="text" class="product2Select" value="{{form.instance.item_name}}" name="item_name" maxlength="255" required id="id_item_name">
@@ -52,7 +52,7 @@
   </div>
 
     <div class=" d-flex my-3">
-      <label for="id_Item_Color" class=" item-form">Color:</label>
+      <label for="id_Item_Color" class="item-form">Color:</label>
       <select class="item-select" name="Item_Color" required id="id_Item_Color" required>
 
         <!-- form.instance.Color_Name got from (def Color_Name(self):) which returns Item_Color.color_name the actual color
@@ -142,15 +142,16 @@
       </div>
     </div>
     {% endif %}
-    <span id="itemError" class="error-messages"></span>
+    <span id="materialError" class="error-messagesItem"></span>
     {% if form.instance.id %}
     <div class="d-flex my-3">
-   
+  
       <label for="id_Material_code" class="item-form">Material Code:</label>
       <input type="text" class="item-select" name="Material_code" value= "{{form.initial.Material_code}}" maxlength="255" required id="id_Material_code">
     </div>
     {% elif not form.instance.id %}
     <div class="d-flex my-3">
+      
     <label for="id_Material_code" class="item-form">Material Code:</label> 
     <input type="text" class="item-select" name="Material_code" value="{{form.Material_code.initial}}" maxlength="255" required id="id_Material_code">
     </div>
@@ -275,7 +276,7 @@
       
     </div>
     {% endif %}
-    <input type="submit" class="newProductCreateBtn" name="save" value="Save">
+    <input type="submit" class="newProductCreateBtn" name="save" value="Save" id="id_save">
   </form>
 </div>
 
@@ -375,6 +376,7 @@ $(document).ready(function(){
            
             var itemcreateName = $("#id_item_name");
             var errorElement = $('#itemError'); // The error message element
+            var submitButton = $('#id_save');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -388,8 +390,9 @@ $(document).ready(function(){
                        //alert("Purchase number already exists");
                        itemcreateName.css('border', '1px solid red');
                         console.log(data)
-                        errorElement.text('*Purchase number already exists');
+                        errorElement.text('*Item Name already exists');
                         errorElement.show();
+                        submitButton.attr('disabled', 'disabled');
                        
                     }else {
                         console.log(data.validation_flag);
@@ -397,6 +400,7 @@ $(document).ready(function(){
                          
                     errorElement.text('');
                     errorElement.hide();
+                    submitButton.removeAttr('disabled');
                     }
                    
                 },
@@ -412,7 +416,8 @@ $(document).ready(function(){
             var item_material_code = $(this).val();
            
             var material_code = $("#id_Material_code");
-            var errorElement = $('#itemError'); // The error message element
+            var errorElement = $('#materialError'); // The error message element
+            var submitButton = $('#id_save');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -426,8 +431,9 @@ $(document).ready(function(){
                        //alert("Purchase number already exists");
                        material_code.css('border', '1px solid red');
                         console.log(data)
-                        errorElement.text('*Purchase number already exists');
+                        errorElement.text('*Material number already exists');
                         errorElement.show();
+                        submitButton.attr('disabled', 'disabled');
                        
                     }else {
                         console.log(data.validation_flag);
@@ -435,6 +441,7 @@ $(document).ready(function(){
                          
                     errorElement.text('');
                     errorElement.hide();
+                    submitButton.removeAttr('disabled');
                     }
                    
                 },

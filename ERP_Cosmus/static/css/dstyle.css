@@ -1859,6 +1859,26 @@ styles.css */
     display: none; /* Hide by default */
     margin-left: 100px; /* Optional, adjust as needed */
 }
+
+.error-messagesItem {
+    color: red;
+    font-size: 0.9em;
+    display: none; /* Hide by default */
+    margin-left: 163px; /* Optional, adjust as needed */
+}
+
+.error-messagesorderCreate {
+    color: red;
+    font-size: 0.9em;
+    display: none; /* Hide by default */
+    margin-left: 53px; /* Optional, adjust as needed */
+}
+.error-messagescuttingCreate {
+    color: red;
+    font-size: 0.9em;
+    display: none; /* Hide by default */
+    margin-left: 10px; /* Optional, adjust as needed */
+}
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
         .side-bar {

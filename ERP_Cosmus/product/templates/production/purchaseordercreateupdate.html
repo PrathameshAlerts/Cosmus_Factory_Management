@@ -9,8 +9,9 @@
 
         {% csrf_token %}
         <input type="hidden" name="productRowCreate" value="{{form.instance.id}}" id="id_productRow">
+        <span id="purchaseCreateError" class="error-messagesorderCreate"></span>
         <div class="d-flex mb-2">
-            <span id="purchaseCreateError" class="error-messages"></span>
+            
             <div class="d-flex mb-3">
                 <label for="id_purchase_order_number" class="">P.O No:</label>
                 <input type="text" name="purchase_order_number" class="purchase-amount ms-2 me-4" value="{{form.instance.purchase_order_number | default_if_none:''}}" required id="id_purchase_order_number">
@@ -149,6 +150,7 @@
            
             var new_order = $("#id_purchase_order_number");
             var errorElement = $('#purchaseCreateError'); // The error message element
+            var submitButton = $('#id_submit_1');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -159,20 +161,18 @@
                 success: function (data) {
                   console.log(data);
                     if(data.validation_flag === true){
-                       //alert("Purchase number already exists");
+                      
                        new_order.css('border', '1px solid red');
-                        console.log(data)
-                        errorElement.text('*Purchase number already exists');
+                        errorElement.text('*New order number already exists');
                         errorElement.show();
-                       
+                        submitButton.attr('disabled', 'disabled');
                     }else {
-                        console.log(data.validation_flag);
+                       
                         new_order.css('border', '1px solid black');
-                         
-                    errorElement.text('');
-                    errorElement.hide();
+                        errorElement.text('');
+                        errorElement.hide();
+                        submitButton.removeAttr('disabled');
                     }
-                   
                 },
                 error: function (error) {   
                     console.log(error);
