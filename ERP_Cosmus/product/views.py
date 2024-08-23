@@ -2329,7 +2329,7 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
     if searched_value:
         validation_flag = False
         try:
-            # Dynamic field lookup
+            #Dynamic field lookup
             lookup = {f"{col_name}__iexact": searched_value}
             check_instance_valid = model_name.objects.get(**lookup)
             
@@ -2347,10 +2347,14 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
 
 
 
-def purchasevouchervalidcheckajax(request):
-    searched_from = 'purchase_no'
+def UniqueValidCheckAjax(request):
+    searched_from = request.GET.keys()
+    
+    model_name = None
+    searched_value = None
+    col_name = None
 
-    if searched_from == 'purchase_no':
+    if 'purchase_number' in searched_from:
         searched_value = request.GET.get('purchase_number')
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
