@@ -1456,15 +1456,17 @@ def stock_item_delete(request, pk):
 
 @transaction.atomic
 def ledgercreate(request):
-    if request.path == 'ledgerpopupcreate/':
-        template_name = 'accounts/ledger_create_update.html'
-    else:
+
+    if request.path == '/ledgerpopupcreate/':
         template_name = 'accounts/ledger_create_popup.html'
+    else:
+        template_name = 'accounts/ledger_create_update.html'
 
     under_groups = AccountSubGroup.objects.all()
     form = LedgerForm()
     if request.method == 'POST':
         form = LedgerForm(request.POST)
+
         if form.is_valid():
             ledger_instance = form.save(commit = False) #ledger_instance this has the instance of ledger form
             form.save()
@@ -1481,10 +1483,14 @@ def ledgercreate(request):
                 account_credit_debit_master_table.objects.create(ledger = ledger_instance, voucher_type = 'Ledger',credit= 0, debit= 0)
 
             messages.success(request,'Ledger Created')
-            return redirect('ledger-list')
-        
+            
+            if request.path == '/ledgerpopupcreate/':
+                ledger_labour = Ledger.objects.filter(types='labour').values('id','name')
+                messages.success(request, 'Color created successfully.')
+                return JsonResponse({'ledger_labour':list(ledger_labour)})
+            else:
+                return redirect('ledger-list')
         else:
-
             return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
     
     return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
