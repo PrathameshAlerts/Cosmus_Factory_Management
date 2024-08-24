@@ -3564,6 +3564,9 @@ def purchaseordercuttinglistall(request):
 
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
+def pendingapprovall(request):
+    pending_approval_query = purchase_order_raw_material_cutting.objects.exclude(processed_qty = F('approved_qty')) # comparing processed_qty with approved_qty from same instance using F function
+    return render(request,'production/cuttingapprovallistall.html',{'pending_approval_query': pending_approval_query})
 
 
 def purchaseordercuttingpopup(request,cutting_id):
@@ -3805,7 +3808,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
 
     if request.method == 'POST':
-        print(request.POST)
+        
         # child labour workout form
         labour_work_out_child_form = labour_workout_child_form(request.POST)
 
@@ -3839,7 +3842,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                         single_p2i_instance.pending_pcs = single_p2i_instance.pending_pcs - product_to_item_form.processed_pcs
                         single_p2i_instance.save()
                 
-                print(labour_workout_cutting_items_formset_form.cleaned_data)
+                
                 for form in labour_workout_cutting_items_formset_form:
                     if form.is_valid():
                         formset_form = form.save(commit=False)

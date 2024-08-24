@@ -172,7 +172,9 @@ urlpatterns = [
     path('purchaseordercuttingupdate/<int:p_o_pk>/<int:prod_ref_no>/<int:pk>', views.purchaseordercuttingcreateupdate, name = 'purchase-order-cutting-update'),
     path('purchaseordercuttinglistall/', views.purchaseordercuttinglistall, name = 'purchase-order-cutting-list-all'),
     path('purchaseordercuttingmastercancel',views.purchaseordercuttingmastercancelajax,name = 'purchase-order-cutting-master-cancel'),
+    path('pendingapprovall',views.pendingapprovall,name = 'pending-approv-all'),
 
+    
 
     # factory worker routes
     path('factory_emp_create/',views.factory_employee_create_update_list, name = 'factory-emp-create'),
