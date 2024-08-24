@@ -755,6 +755,7 @@ def product2subcategoryajax(request):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
+    
     title = 'Item Create'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
