@@ -2,6 +2,7 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 from sys import exception
+from telnetlib import STATUS
 from django.conf import settings
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
@@ -755,7 +756,7 @@ def product2subcategoryajax(request):
 #_____________________Item-Views-start_______________________
 
 def item_create(request):
-    
+
     title = 'Item Create'
     gsts = gst.objects.all()
     fab_grp = Fabric_Group_Model.objects.all()
@@ -778,7 +779,7 @@ def item_create(request):
             form_instance = form.save()
 
             if request.path == '/itemcreatepopup/':
-                return HttpResponse('<script>window.close();</script>') 
+                return HttpResponse('item created',status=200) 
 
             else:
                 logger.info("Item Successfully Created")
@@ -3207,7 +3208,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
             else:
                 product_color_or_common_item = query.PProduct_pk.PProduct_color
                 product_sku_or_common_item = query.PProduct_pk.PProduct_SKU
-
+            
             initial_data_dict = {'product_sku': product_sku_or_common_item,
                                 'product_color' : product_color_or_common_item,
                                 'material_name':query.Item_pk.item_name,
