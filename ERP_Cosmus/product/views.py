@@ -766,7 +766,8 @@ def item_create(request):
     items_to_clone = Item_Creation.objects.all()
     colors = Color.objects.all()
     form = Itemform()
-    print(request.POST)
+    
+
     if request.path == '/itemcreatepopup/':
         template_name = 'product/item_create_popup.html'
 
@@ -2472,9 +2473,6 @@ def gst_create_update(request, pk = None):
         queryset =  gst.objects.filter(gst_percentage__contains = gst_search)
 
 
-
-
-
     if pk:
         instance = gst.objects.get(pk=pk)
         title = 'Update'
@@ -3092,7 +3090,6 @@ def purchaseordercreateupdate(request,pk=None):
             
 
         if 'submit-form-2' in request.POST:
-            
             try:
                 formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
                 
@@ -3257,17 +3254,18 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
             if purchase_order_raw_formset.is_valid() and purchase_order_raw_sheet_formset.is_valid():
                 
                 try:
-                    purchase_order_raw_formset.save()
-                    purchase_order_raw_sheet_formset.save()
-                    
-                    for form in purchase_order_raw_sheet_formset:
-                        po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
-                        if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
-                            po_form_instance.process_status = '3'  # change the status to 3
-                            po_form_instance.save()  # save the parent form instance 
+                    with transaction.atomic():
+                        purchase_order_raw_formset.save()
+                        purchase_order_raw_sheet_formset.save()
+                        
+                        for form in purchase_order_raw_sheet_formset:
+                            po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                            if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
+                                po_form_instance.process_status = '3'  # change the status to 3
+                                po_form_instance.save()  # save the parent form instance 
 
-                    #return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
-                    return redirect('purchase-order-raw-material-list')
+                        #return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+                        return redirect('purchase-order-raw-material-list')
                 
                 except ValueError as ve:
                     messages.error(request,f'Error Occured - {ve}')
@@ -3317,12 +3315,18 @@ def purchase_order_for_raw_material_list(request):
 
 
 def purchase_order_for_raw_material_delete(request,pk):
-    purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=pk)
 
-    for instances in purchase_order_raw_instances:
-        instances.delete()
+    try:
+        purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=pk)
 
-    return redirect('purchase-order-raw-material-list')
+        for instances in purchase_order_raw_instances:
+            instances.delete()
+        messages.success(request,'Deleted Successfully')
+        return redirect('purchase-order-raw-material-list')
+    
+    except Exception as e:
+        messages.error(request,f'Error While Deleting purchase Order {e}')
+        return redirect('purchase-order-raw-material-list')
 
 
 
@@ -3453,74 +3457,75 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         if purchase_order_cutting_form.is_valid() and purchase_order_to_product_formset_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid():
             try:
-                # cutting form save
-                cutting_form_instance = purchase_order_cutting_form.save()
-                cutting_form_instance.purchase_order_id.cutting_total_processed_qty = cutting_form_instance.purchase_order_id.cutting_total_processed_qty + cutting_form_instance.processed_qty
-                cutting_form_instance.purchase_order_id.save()
-                
-                # change the status in purchase order model 
-                if cutting_form_instance.purchase_order_id.process_status == '3':
-                    cutting_form_instance.purchase_order_id.process_status = '4'
+                with transaction.atomic():
+                    # cutting form save
+                    cutting_form_instance = purchase_order_cutting_form.save()
+                    cutting_form_instance.purchase_order_id.cutting_total_processed_qty = cutting_form_instance.purchase_order_id.cutting_total_processed_qty + cutting_form_instance.processed_qty
                     cutting_form_instance.purchase_order_id.save()
-                
+                    
+                    # change the status in purchase order model 
+                    if cutting_form_instance.purchase_order_id.process_status == '3':
+                        cutting_form_instance.purchase_order_id.process_status = '4'
+                        cutting_form_instance.purchase_order_id.save()
+                    
 
-                # purchase_order to product formset 
-                for form in purchase_order_to_product_formset_form:
+                    # purchase_order to product formset 
+                    for form in purchase_order_to_product_formset_form:
 
-                    if form.is_valid(): 
-                        try:
-                            p_o_to_order_form_instance = form.save(commit = False)
-                            p_o_to_order_form_instance.purchase_order_cutting_id = cutting_form_instance
-                            p_o_to_order_form_instance.save()
+                        if form.is_valid(): 
+                            try:
+                                p_o_to_order_form_instance = form.save(commit = False)
+                                p_o_to_order_form_instance.purchase_order_cutting_id = cutting_form_instance
+                                p_o_to_order_form_instance.save()
 
-                            # reduce the process quantity form purchase_order_to_products model
-                            product_sku = p_o_to_order_form_instance.product_sku
-                            processed_qty = p_o_to_order_form_instance.cutting_quantity
+                                # reduce the process quantity form purchase_order_to_products model
+                                product_sku = p_o_to_order_form_instance.product_sku
+                                processed_qty = p_o_to_order_form_instance.cutting_quantity
 
-                            p_o_id = p_o_to_order_form_instance.purchase_order_cutting_id.purchase_order_id
-                           
-                            purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
+                                p_o_id = p_o_to_order_form_instance.purchase_order_cutting_id.purchase_order_id
+                            
+                                purchase_order_products = purchase_order_to_product.objects.filter(purchase_order_id =p_o_id,product_id =product_sku).first()
 
-                            if purchase_order_products:
-                                purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
-                                purchase_order_products.save()
+                                if purchase_order_products:
+                                    purchase_order_products.process_quantity =  purchase_order_products.process_quantity - processed_qty
+                                    purchase_order_products.save()
 
-                            else:
-                                logger.error(f'Product {product_sku} not found in purchase order {p_o_id}')
-                                messages.error(request, f'Product {product_sku} not found in the purchase order.')
+                                else:
+                                    logger.error(f'Product {product_sku} not found in purchase order {p_o_id}')
+                                    messages.error(request, f'Product {product_sku} not found in the purchase order.')
 
-                        except Exception as e:
-                            logger.error(f'Error processing product form: {e}')
-                            messages.error(request, f'An error occurred while processing the product form: {e}')
+                            except Exception as e:
+                                logger.error(f'Error processing product form: {e}')
+                                messages.error(request, f'An error occurred while processing the product form: {e}')
 
 
-                # purchase_order_cutting_items formset
-                for form in purchase_order_for_raw_material_cutting_items_formset_form:
-                    if form.is_valid(): 
-                        try:
-                            form_instance = form.save(commit=False)
-                            form_instance.purchase_order_cutting = cutting_form_instance
-                            form_instance.total_comsumption_in_cutting = form_instance.total_comsumption
-                            form_instance.save()
+                    # purchase_order_cutting_items formset
+                    for form in purchase_order_for_raw_material_cutting_items_formset_form:
+                        if form.is_valid(): 
+                            try:
+                                form_instance = form.save(commit=False)
+                                form_instance.purchase_order_cutting = cutting_form_instance
+                                form_instance.total_comsumption_in_cutting = form_instance.total_comsumption
+                                form_instance.save()
+                            
+
+                            except ValidationError as ve:
+                                logger.error(f'Error with: {e}')
+
+                            except Exception as e:
+                                logger.error(f'Error processing raw material form: {e}')
+                                messages.error(request, f'An error occurred while processing the raw material form: {e}')
                         
+                        
+                    # updating balance quantity of purchase order form 
+                    processed_quantity = int(request.POST['processed_qty'])
+                    qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces  # get the quanitty from purchase_order
+                    qty_to_process_minus_processed_qty = qty_to_process - processed_quantity  # reduce the purchase_order_qty with the processed qty
+                    cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty  # assign the value
+                    cutting_form_instance.purchase_order_id.save() # save changes
 
-                        except ValidationError as ve:
-                            logger.error(f'Error with: {e}')
-
-                        except Exception as e:
-                            logger.error(f'Error processing raw material form: {e}')
-                            messages.error(request, f'An error occurred while processing the raw material form: {e}')
-                    
-                    
-                # updating balance quantity of purchase order form 
-                processed_quantity = int(request.POST['processed_qty'])
-                qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces  # get the quanitty from purchase_order
-                qty_to_process_minus_processed_qty = qty_to_process - processed_quantity  # reduce the purchase_order_qty with the processed qty
-                cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty  # assign the value
-                cutting_form_instance.purchase_order_id.save() # save changes
-
-                messages.success(request, f'Cutting Order Created SuccessFully')
-                return(redirect(reverse('purchase-order-cutting-list', args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
+                    messages.success(request, f'Cutting Order Created SuccessFully')
+                    return(redirect(reverse('purchase-order-cutting-list', args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
 
 
             except ValidationError as val_err:
@@ -3640,7 +3645,6 @@ def purchaseordercuttingpopup(request,cutting_id):
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
 def purchaseordercuttingmastercancelajax(request):
-
     if request.method == 'POST':
 
         try:
@@ -3885,8 +3889,6 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 return redirect(reverse('labour-workout-child-list', args=[pk]))
 
         else:
-            print('labour_work_out.errors',labour_work_out_child_form.errors)
-            print('product_to_item_formset.errors',product_to_item_formset.errors)
             logger.error(f'labour_workout_cutting_items_formset_form{labour_workout_cutting_items_formset_form.errors}')
             logger.error(f'product_to_item_formset {product_to_item_formset.non_form_errors()}')
             logger.error(f'labour_workout_cutting_items_formset_form - {labour_workout_cutting_items_formset_form.non_form_errors()}')

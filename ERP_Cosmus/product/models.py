@@ -765,15 +765,12 @@ class product_to_item_labour_workout(models.Model):
     pending_pcs = models.IntegerField()
 
 
-
 class labour_workout_childs(models.Model):
     labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.PROTECT)
     challan_no = models.CharField(unique=True, null=False, blank=False)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_process_pcs = models.IntegerField(null=True, blank=True)
     total_balance_pcs = models.IntegerField(null=True, blank=True)
-
-
 
 
 
