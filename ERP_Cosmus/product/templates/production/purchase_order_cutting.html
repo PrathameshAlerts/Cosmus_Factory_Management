@@ -479,7 +479,7 @@ function checkOnlyOne(checkbox) {
               if(!isNaN(panhaValue) && !isNaN(UnitValue) && !isNaN(GtotalValue)){
                 var Comsumption = GtotalValue / (panhaValue * UnitValue);
 
-                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(3);
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(2);
               }else{
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = "0.000";
               }

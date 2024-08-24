@@ -777,7 +777,7 @@ def item_create(request):
             form_instance = form.save()
 
             if request.path == '/itemcreatepopup/':
-                return HttpResponse('<script>window.close();</script>') 
+                return HttpResponse('item created', status = 200) 
 
             else:
                 logger.info("Item Successfully Created")

@@ -148,14 +148,7 @@
   // Open new page with specified dimensions
   newPopupWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
     // Ensure only one event listener is attached
-    window.addEventListener('message', function (event) {
-        if (event.source === newPopupWindow) {
-            const data = event.data;
-            if (data && data.message === 'success') {
-                newPopupWindow.close();
-            }
-        }
-    });
+   
 }
 
  // Handle the case when the window is closed without form submission

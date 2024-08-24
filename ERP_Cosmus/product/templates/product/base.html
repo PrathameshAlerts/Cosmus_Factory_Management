@@ -114,14 +114,21 @@
     </div>
 </div> 
 <nav class="navbar navbar-expand-lg coder-navbar navbar-light headerpos-fixed header-blue navbar-fixed-top ">
-  <div class="container">
-    <a class="navbar-brand text-white" href="{% url 'dashboard-main' %}" ><img src="../../../static/images/CosmusTechLogo_White-p-1600.png" class="brand_image">Cosmus</a>
+  <div class="container-fluid">
+    <a class="navbar-brand text-white ms-5" href="{% url 'dashboard-main' %}" ><img src="../../../static/images/CosmusTechLogo_White-p-1600.png" class="brand_image">Cosmus</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item my-3 mx-2 dropdown">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+        <li class="nav-item my-3 ms-5">
+          <h3 class="text-white" style="display: none;  " id="productTitle">Product List</h3>
+          <h3 class="text-white" style="display: none;  " id="itemTitle">Item List</h3>
+          <h3 class="text-white" style="display: none; " id="GodownTitle">Godown List</h3>
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0" style="margin-left: 400px;" >
+        <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
           </a>
@@ -164,7 +171,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item my-3 mx-2  dropdown">
+        <li class="nav-item my-3 mx-3  dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Accounts')">Accounts</a> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText">Groups</a></li> 
@@ -172,7 +179,7 @@
            <li class="pro-head"><a href="{% url 'stock-item-create' %}" class="navText">Stock Item</a></li> 
          </ul>  
          </li>
-         <li class="nav-item my-3 mx-2  dropdown">
+         <li class="nav-item my-3 mx-3  dropdown">
           <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"  onclick="showThePopUp('Vouchers')">Vouchers</a> 
           <ul class="dropdown-menu dropdown-menu-right">
           <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice</a></li> 
@@ -185,7 +192,7 @@
           <li class="pro-head"><a href="" class="navText">Journal Entry</a></li>   
          </ul>  
          </li>
-         <li class="nav-item my-3 mx-2 dropdown">
+         <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Reports')">Reports</a> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText">Stock Transfer Report</a></li> 
@@ -193,7 +200,7 @@
            <li class="pro-head"><a href="#" class="navText">Sales Report</a></li>   
          </ul>  
          </li>
-         <li class="nav-item my-3 mx-2  dropdown">
+         <li class="nav-item my-3 mx-3  dropdown">
           <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Production</a> 
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText">New Order</a></li>
@@ -205,32 +212,21 @@
       
          </ul>  
          </li> 
-      </ul>
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown notifiaction">
+        
+        <li class="nav-item dropdown mx-3">
           <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <span class="fs-5"><i class="fa-regular fa-bell"></i></span>
+            <img alt="user-profile" src="../../../static/images/logo.jpg" class="rounded-circle image-h">
           </a>
+          <ul class="dropdown-menu dropdown-menu-right">
+              <div class="pro-head">
+                  <span>Jone Doe</span>
+              </div>
+                <li> 
+                <button type="button" class="dropdown-item text-danger fw-bold"><a href="{% url 'logout' %}" title="Logout" style="text-decoration: none; color: red;"> Logout</a></button>
+                </li>
+              
+          </ul>
         </li>
-     <li class="nav-item dropdown">
-      <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img alt="user-profile" src="../../../static/images/logo.jpg" class="rounded-circle image-h">
-      </a>
-      
-      <ul class="dropdown-menu dropdown-menu-right">
-          <div class="pro-head">
-              <!-- <img src="../../../static/images/logo.jpg" class="rounded-circle image-h" alt="User-Profile-Image"> -->
-              <span>Jone Doe</span>
-             
-            </div>
-            <li> 
-             <button type="button" class="dropdown-item text-danger fw-bold"><a href="{% url 'logout' %}" title="Logout" style="text-decoration: none; color: red;"> Logout</a></button>
-            </li>
-            <!-- <li><a href="user-profile.html" class="dropdown-item "><i class="fa-regular fa-user"></i> Profile</a></li>
-            <li><a href="email_inbox.html" class="dropdown-item"><i class="fa-regular fa-message"></i> My Messages</a></li>
-            <li><a href="auth-signin.html" class="dropdown-item"><i class="fa-solid fa-lock"></i> Lock Screen</a></li> -->
-      </ul>
-     </li>
        </ul>
     </div>
     
@@ -530,8 +526,39 @@
       }
     }
 
+    function createNewNavBar(){
+      var side_bar = document.querySelector('.side-bar');
+      var nav_bar = side_bar.querySelectorAll('.sub-item');
+      nav_bar.forEach(function(nav){
+        var headerTitle = document.getElementById('productTitle');
+        var itemTitle = document.getElementById('itemTitle');
+        var GodownTitle = document.getElementById('GodownTitle');
+       console.log(nav.textContent);
+       nav.addEventListener('click',function(){
+         if(nav.textContent == 'Product'){
+         
+           headerTitle.style.display = 'block';
+           itemTitle.style.display = 'none';
+           GodownTitle.style.display = 'none';
+         }
+          if(nav.textContent == 'Raw Material'){
+      
+          itemTitle.style.display = 'block';
+          headerTitle.style.display = 'none';
+          GodownTitle.style.display = 'none';
+         }
+          if(nav.textContent == 'Godown'){
+          headerTitle.style.display = 'none';
+          itemTitle.style.display = 'none';
+          GodownTitle.style.display = 'block';
+         }
+        })
+       
+      })
+    }
     document.addEventListener('DOMContentLoaded', function() {
       simulateError(); // Check for error and show alert if necessary
+      createNewNavBar();
     });
 
   //This function is used to toggle the sidebar

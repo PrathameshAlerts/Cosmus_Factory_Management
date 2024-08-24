@@ -5,7 +5,7 @@
 <h2 class="mt-3 mb-4">{{title}}</h2>
 <div class="row">
 <div class="col-lg-5">
-  <form method="POST" enctype="multipart/form-data" id="mItemForm">
+  <form method="POST" enctype="multipart/form-data" id="itemForm">
     {% csrf_token %}
     <input type="hidden" name="id" value="{{form.instance.id}}" id="id_items">
     <div class="d-flex mb-3">
@@ -659,7 +659,7 @@ $(document).on('click', '.product2Select',function(){
 </script>
 
 <script>
-document.getElementById('mItemForm').addEventListener('submit', async function (event) {
+document.getElementById('itemForm').addEventListener('submit', async function (event) {
   event.preventDefault();  // Prevent the default form submission
 
   const form = event.target;
@@ -676,12 +676,10 @@ document.getElementById('mItemForm').addEventListener('submit', async function (
     });
 
     if (response.ok) {
-      const data = await response.json();  // Await the response.json() call
-      window.opener.postMessage(data, '*');
       window.close();  // Now you can access the JSON data
       formSubmitted = true;  // Set flag to true after successful submission
     } else {
-      console.error('Failed to create ledger.');
+      console.error('Failed to create item.');
     }
 
   } catch (error) {
