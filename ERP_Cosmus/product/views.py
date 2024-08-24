@@ -1466,7 +1466,7 @@ def ledgercreate(request):
     form = LedgerForm()
     if request.method == 'POST':
         form = LedgerForm(request.POST)
-
+        print(request.POST)
         if form.is_valid():
             ledger_instance = form.save(commit = False) #ledger_instance this has the instance of ledger form
             form.save()
@@ -1486,7 +1486,7 @@ def ledgercreate(request):
             
             if request.path == '/ledgerpopupcreate/':
                 ledger_labour = Ledger.objects.filter(types='labour').values('id','name')
-                messages.success(request, 'Color created successfully.')
+                              
                 return JsonResponse({'ledger_labour':list(ledger_labour)})
             else:
                 return redirect('ledger-list')
