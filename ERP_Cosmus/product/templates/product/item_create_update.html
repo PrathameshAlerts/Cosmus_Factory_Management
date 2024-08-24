@@ -397,7 +397,7 @@ $(document).ready(function(){
                        
                     }else {
                         console.log(data.validation_flag);
-                        itemcreateName.css('border', '1px solid black');
+                        itemcreateName.css('border', '1px solid lightgray');
                          
                     errorElement.text('');
                     errorElement.hide();
@@ -411,15 +411,28 @@ $(document).ready(function(){
 
             })
         })
-    })
-    $(document).ready(function(){
+
         $('#id_Material_code').on('focusout',function(){
             var item_material_code = $(this).val();
            
             var material_code = $("#id_Material_code");
             var errorElement = $('#materialError'); // The error message element
             var submitButton = $('#id_save');
-            $.ajax({
+             validFlagCheck(item_material_code,material_code,errorElement,submitButton);
+            
+        })
+        
+        $('#id_item-to-clone').on('click',function(){
+            var item_material_code = $('#id_Material_code').val();
+           
+            var material_code = $("#id_Material_code");
+            var errorElement = $('#materialError'); // The error message element
+            var submitButton = $('#id_save');
+            validFlagCheck( item_material_code,material_code,errorElement,submitButton);
+            
+        })
+        function validFlagCheck( item_material_code,material_code,errorElement,submitButton){
+          $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
                 data: {
@@ -438,7 +451,7 @@ $(document).ready(function(){
                        
                     }else {
                         console.log(data.validation_flag);
-                        material_code.css('border', '1px solid black');
+                        material_code.css('border', '1px solid lightgray');
                          
                     errorElement.text('');
                     errorElement.hide();
@@ -451,8 +464,9 @@ $(document).ready(function(){
                 }
 
             })
-        })
+        }
     })
+ 
  </script>
 
 

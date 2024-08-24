@@ -766,7 +766,7 @@ def item_create(request):
     items_to_clone = Item_Creation.objects.all()
     colors = Color.objects.all()
     form = Itemform()
-
+    print(request.POST)
     if request.path == '/itemcreatepopup/':
         template_name = 'product/item_create_popup.html'
 
@@ -779,7 +779,7 @@ def item_create(request):
             form_instance = form.save()
 
             if request.path == '/itemcreatepopup/':
-                return HttpResponse('item created',status=200) 
+                return HttpResponse('item created', status = 200) 
 
             else:
                 logger.info("Item Successfully Created")
@@ -788,6 +788,8 @@ def item_create(request):
     
         else:
             logger.error(f"item form not valid{form.errors}")
+            messages.error(f"item form not valid{form.errors}")
+           
             return render(request,template_name, {'gsts':gsts,
                                                                       'fab_grp':fab_grp,
                                                                       'unit_name':unit_name,

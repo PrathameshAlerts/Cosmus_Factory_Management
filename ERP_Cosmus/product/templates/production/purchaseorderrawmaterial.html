@@ -197,7 +197,7 @@
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
                     var consumption = grandTotalValue / (panhaValue * unitsValue)
                 
-                    document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
+                    document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(2);
                 } else {
                     document.getElementById('id_raw_materials-' + i + '-consumption').value = '0.000';
                 }
@@ -275,7 +275,7 @@ function balanceStock(){
 
             balanceStock = newPhysicalStock - totalConsumtionValue;
     
-            document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
+            document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(2);
     }               
 }
 function submitForm(){
