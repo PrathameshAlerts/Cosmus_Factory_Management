@@ -763,26 +763,30 @@ def item_create(request):
     fab_finishes = FabricFinishes.objects.all()
     items_to_clone = Item_Creation.objects.all()
     colors = Color.objects.all()
+    form = Itemform()
 
+    if request.path == '/itemcreatepopup/':
+        template_name = 'product/item_create_popup.html'
+
+    else:
+        template_name = 'product/item_create_update.html'
     
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
-        
-
         if form.is_valid():
             form_instance = form.save()
 
+            if request.path == '/itemcreatepopup/':
+                return HttpResponse('<script>window.close();</script>') 
 
-            logger.info("Item Successfully Created")
-            messages.success(request,'Item has been created')
-            return redirect(reverse('item-edit', args=[form_instance.id]))
+            else:
+                logger.info("Item Successfully Created")
+                messages.success(request,'Item has been created')
+                return redirect(reverse('item-edit', args=[form_instance.id]))
     
         else:
-            print(form.errors)
             logger.error(f"item form not valid{form.errors}")
-            messages.error(request,'Error with item creation')
-            
-            return render(request,'product/item_create_update.html', {'gsts':gsts,
+            return render(request,template_name, {'gsts':gsts,
                                                                       'fab_grp':fab_grp,
                                                                       'unit_name':unit_name,
                                                                       'colors':colors,
@@ -790,9 +794,8 @@ def item_create(request):
                                                                       'fab_finishes':fab_finishes,
                                                                       'title':title,'form':form,'items_to_clone':items_to_clone})
     
-    form = Itemform()
     
-    return render(request,'product/item_create_update.html',{'gsts':gsts,
+    return render(request,template_name,{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
                                                                  'unit_name':unit_name,
                                                                  'colors':colors,

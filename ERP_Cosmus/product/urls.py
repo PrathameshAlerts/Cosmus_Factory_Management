@@ -55,7 +55,7 @@ urlpatterns = [
 
     path('itemcreatecloneajax/',views.item_clone_ajax , name= 'item-create-clone-ajax'),
 
-
+    path('itemcreatepopup/',views.item_create , name= 'item-create-popup'),
 
     #opening_godown_qty
     path('openinggodownquantity/<int:parent_row_id>',views.openingquantityformsetpopup , name= 'opening-godown-qty'),
