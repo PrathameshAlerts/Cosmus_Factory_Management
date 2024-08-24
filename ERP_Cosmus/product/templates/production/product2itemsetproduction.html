@@ -128,9 +128,37 @@
   });
 
   function openItemCreatePopup(button){
-    openItem(button, '')
+    openItem(button, '{% url "item-create-popup" %}');
   }
-    // Handle the case when the window is closed without form submission
+
+  function openItem(button,url){
+    if (newPopupWindow === null || newPopupWindow.closed) {
+    newItemwindow(button, url);
+  } else {
+  
+    newPopupWindow.focus();
+  }
+  }
+
+  function newItemwindow(button, path){
+    // Specify minimum height and width
+  var minWidth = 800; // minimum width
+  var minHeight = 700; // minimum height
+
+  // Open new page with specified dimensions
+  newPopupWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    // Ensure only one event listener is attached
+    window.addEventListener('message', function (event) {
+        if (event.source === newPopupWindow) {
+            const data = event.data;
+            if (data && data.message === 'success') {
+                newPopupWindow.close();
+            }
+        }
+    });
+}
+
+ // Handle the case when the window is closed without form submission
     window.addEventListener('beforeunload', function (event) {
         if (!formSubmitted) {
             const data = { message: 'close' };
@@ -138,17 +166,7 @@
         }
     });
 
-    function addItemClick(event){
-      
 
-        document.getElementById('itemCreate').addEventListener('click', function(){
-            var data = {message: 'itemCreate'};
-            window.opener.postMessage(data, '*');
-            window.opener.postMessage({ message: 'close' }, '*');
-        })
-        
-    }
-    addItemClick(event);
     $(document).ready(function () {
         let newValueKey;
         let enterValue = false;
@@ -570,7 +588,6 @@
             const idElement = currentRow.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
           
             const idValue = idElement.value;
-            console.log('idValue',idValue);
          
             // Show or hide the add button based on the id value
             if (idValue != '' && idValue != null) {
@@ -1136,7 +1153,6 @@ function submitFormRowNumber(){
            })
         var commonRowNumber = document.querySelector('#myProduct tbody').querySelectorAll('[name$="-row_number"]');
         commonRowNumber.forEach(ele =>{
-            console.log(ele)
             ele.value = unique ;
             unique++;
         })       
