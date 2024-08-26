@@ -167,10 +167,10 @@ class Product(models.Model):
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
     Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True)
     Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False,null =False)
-    Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
-    Product_MRP = models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
-    Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
-    Product_BulkPrice=models.DecimalField(max_digits=10, decimal_places=3, blank = True, null = True)
+    Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_MRP = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_SalePrice_CustomerPrice= models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
+    Product_BulkPrice=models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
     Product_WarrantyTime= models.CharField(max_length=15, choices=WARRANTY_TIME, blank = True, null = True)
     Product_HSNCode = models.BigIntegerField(blank = True,null =True)
     Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, null = True)
@@ -384,8 +384,8 @@ class item_color_shade(models.Model):
 class opening_shade_godown_quantity(models.Model):
     opening_purchase_voucher_godown_item = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
-    opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=1)
-    opening_rate = models.DecimalField(max_digits=10, decimal_places=1)
+    opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=2)
+    opening_rate = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now = True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
 
@@ -462,7 +462,7 @@ class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, blank = False, null = False, related_name = 'transaction_entry')
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     credit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
-    voucher_no = models.CharField(null = True, blank= True, unique=True)
+    voucher_no = models.CharField(null = True, blank= True)
     voucher_type = models.CharField(max_length = 100)
     particulars = models.CharField(max_length = 100)
     create_date = models.DateField(auto_now= True)
@@ -524,7 +524,7 @@ class RawStockTransferMaster(models.Model):
 class RawStockTrasferRecords(models.Model):
     master_instance = models.ForeignKey(RawStockTransferMaster, on_delete = models.CASCADE)
     item_shade_transfer = models.ForeignKey(item_color_shade , on_delete= models.CASCADE)
-    item_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=3)
+    item_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=2)
     remarks = models.CharField(max_length = 255, blank=True, null=True)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
@@ -635,18 +635,19 @@ class purchase_order(models.Model):
     target_date = models.DateField()
     created_date = models.DateField(auto_now=True)
     modified_created_date = models.DateField(auto_now_add=True)
-    number_of_pieces = models.IntegerField(default=0)
+    number_of_pieces = models.IntegerField(validators=[MinValueValidator(1)])
     balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
     temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
     cutting_total_processed_qty = models.IntegerField(default=0)
-
+    purchase_order_to_product_saved = models.BooleanField(default=False)
 
 class purchase_order_to_product(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order,related_name= 'p_o_to_products',on_delete=models.CASCADE)
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
+    
 
 
 
@@ -655,15 +656,15 @@ class purchase_order_for_raw_material(models.Model):
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 60, null=False, blank=False)
     material_name = models.CharField(max_length = 60, null=False, blank=False)
-    rate = models.DecimalField(max_digits=10, decimal_places=3)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
     panha = models.DecimalField(max_digits=10, decimal_places=2)
-    units = models.DecimalField(max_digits=10, decimal_places=3)
+    units = models.DecimalField(max_digits=10, decimal_places=2)
     unit_value = models.CharField(max_length=100)
-    g_total = models.DecimalField(max_digits=10, decimal_places=3)
-    consumption = models.DecimalField(max_digits=10, decimal_places=3)
-    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
-    physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
-    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2)
+    consumption = models.DecimalField(max_digits=10, decimal_places=2)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=2)
+    physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
+    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
     
 
 
@@ -719,15 +720,15 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
     material_color_shade = models.ForeignKey(item_color_shade, on_delete=models.PROTECT, null=True, blank=True)
-    rate = models.DecimalField(max_digits=10, decimal_places=3)
-    panha = models.DecimalField(max_digits=10, decimal_places=3)
-    units = models.DecimalField(max_digits=10, decimal_places=3)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    panha = models.DecimalField(max_digits=10, decimal_places=2)
+    units = models.DecimalField(max_digits=10, decimal_places=2)
     unit_value = models.CharField(max_length=100)
-    g_total = models.DecimalField(max_digits=10, decimal_places=3)
-    consumption = models.DecimalField(max_digits=10, decimal_places=3)
-    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
-    physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
-    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2)
+    consumption = models.DecimalField(max_digits=10, decimal_places=2)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=2)
+    physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
+    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
     cutting_room_status = models.CharField(max_length=25, choices = STATUS, blank=True, null=True)
     total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now = True)
@@ -765,15 +766,12 @@ class product_to_item_labour_workout(models.Model):
     pending_pcs = models.IntegerField()
 
 
-
 class labour_workout_childs(models.Model):
     labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.PROTECT)
     challan_no = models.CharField(unique=True, null=False, blank=False)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_process_pcs = models.IntegerField(null=True, blank=True)
     total_balance_pcs = models.IntegerField(null=True, blank=True)
-
-
 
 
 
@@ -792,15 +790,15 @@ class labour_workout_cutting_items(models.Model):
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
     material_color_shade = models.CharField(max_length=255)
-    rate = models.DecimalField(max_digits=10, decimal_places=3)
-    panha = models.DecimalField(max_digits=10, decimal_places=3)
-    units = models.DecimalField(max_digits=10, decimal_places=3)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    panha = models.DecimalField(max_digits=10, decimal_places=2)
+    units = models.DecimalField(max_digits=10, decimal_places=2)
     unit_value = models.CharField(max_length=100)
-    g_total = models.DecimalField(max_digits=10, decimal_places=3)
-    consumption = models.DecimalField(max_digits=10, decimal_places=3)
-    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
-    physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
-    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=3)
+    g_total = models.DecimalField(max_digits=10, decimal_places=2)
+    consumption = models.DecimalField(max_digits=10, decimal_places=2)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=2)
+    physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
+    balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
 
@@ -822,5 +820,5 @@ class godown_item_report_for_cutting_room(models.Model):
     material_color_shade = models.CharField(max_length=255)
     godown_id = models.CharField(max_length=50)
     inward = models.BooleanField() # true for inward and false for outward
-    total_comsumption = models.DecimalField(max_digits=10, decimal_places=3)
-    rate = models.DecimalField(max_digits=10, decimal_places=3)
+    total_comsumption = models.DecimalField(max_digits=10, decimal_places=2)
+    rate = models.DecimalField(max_digits=10, decimal_places=2)

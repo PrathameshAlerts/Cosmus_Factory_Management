@@ -54,7 +54,6 @@ urlpatterns = [
     path('itemdelete/<int:pk>',views.item_delete , name= 'item-delete'),
 
     path('itemcreatecloneajax/',views.item_clone_ajax , name= 'item-create-clone-ajax'),
-
     path('itemcreatepopup/',views.item_create , name= 'item-create-popup'),
 
     #opening_godown_qty
@@ -174,7 +173,7 @@ urlpatterns = [
     path('purchaseordercuttingmastercancel',views.purchaseordercuttingmastercancelajax,name = 'purchase-order-cutting-master-cancel'),
     path('pendingapprovall',views.pendingapprovall,name = 'pending-approv-all'),
 
-    
+    path('cuttingroomqty',views.cuttingroomqty,name = 'cutting-room-qty'),
 
     # factory worker routes
     path('factory_emp_create/',views.factory_employee_create_update_list, name = 'factory-emp-create'),
