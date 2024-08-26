@@ -3711,7 +3711,8 @@ def purchaseordercuttingmastercancelajax(request):
 
 
 def labourworkoutlistall(request):
-    labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).order_by('created_date')
+    labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__gt=0).order_by('created_date')
+    labour_workout_completed = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__lt=1).order_by('created_date')
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
 
