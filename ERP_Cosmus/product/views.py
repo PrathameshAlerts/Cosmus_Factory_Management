@@ -3054,7 +3054,7 @@ def purchaseordercreateupdate(request,pk=None):
             model_name = None
             model_images = None
         
-        formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+        formset = purchase_order_product_qty_formset(instance=instance)
         form = purchase_order_form(instance=instance)
 
     except Exception as e:
@@ -3091,7 +3091,7 @@ def purchaseordercreateupdate(request,pk=None):
 
         if 'submit-form-2' in request.POST:
             try:
-                formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+                formset = purchase_order_product_qty_formset(request.POST, instance=instance)
                 
                 if formset.is_valid():
                     try:
@@ -3106,7 +3106,6 @@ def purchaseordercreateupdate(request,pk=None):
                                 p_o_instance.save()  # save the parent form instance
                             
                             
-
                         messages.success(request, 'Purchase Order Quantities updated successfully.')
                         logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
 
@@ -3143,7 +3142,7 @@ def purchaseordercreateupdate(request,pk=None):
 
 
 def purchaseorderlist(request):
-    purchase_orders = purchase_order.objects.all()
+    purchase_orders = purchase_order.objects.all().order_by('created_date')
     return render(request,'production/purchaseorderlist.html',{'purchase_orders': purchase_orders})
 
 
