@@ -3060,8 +3060,7 @@ def purchaseordercreateupdate(request,pk=None):
     except Exception as e:
         logger.error(f'An Exception Occoured {e}')
 
-    print('print(request.POST)',request.POST)
-    print('request',request)
+    
     if request.method == 'POST':
         print(request.POST)
         # both forms are submitted indivially depends on name of submitted button

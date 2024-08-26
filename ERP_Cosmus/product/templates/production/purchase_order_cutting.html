@@ -174,7 +174,7 @@
                 <label for="id_OderQty" class="text-danger">Total:</label>
                 <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 182px;" readonly>
                 <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 25px;" readonly>
-                <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_balanceQty" value="0" style="margin-left: 48px;" readonly>
+                <input type="number" class="productorderqty-input text-danger " name="balanceQty" id="id_balanceQty" value="0" style="margin-left: 48px;" readonly>
                 <input type="number" class="productorderqty-input text-danger " name="cuttingTotal" id="id_cuttingTotal" value="0" style="margin-left: 35px;" readonly> 
             </div>
         </div>
@@ -357,45 +357,45 @@ function checkOnlyOne(checkbox) {
             const processQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-process_quantity');
             const cuttingQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity');
             const balanceQty = document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-balance_quantity');
-            const totalCuttingQty = document.getElementById('id_cuttingTotal');
+            const totalCuttingQty = document.getElementById('id_cuttingTotal').value;
             const totalProcessQty = document.getElementById('id_processQty');
             const totalValue = document.getElementById('id_processed_qty');
             const totalBalance = document.getElementById('id_balanceQty');
             const processQtyValue = parseFloat(processQty.value) || 0;
             const cuttingQtyValue = parseFloat(cuttingQty.value) || 0;
            
-           
             if(cuttingQtyValue > processQtyValue){
+
                 document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity').value = 0;
             }
-            
-           
+          
+        
             if(!isNaN(totalCuttingQty)){
                 total = total + cuttingQtyValue;
                 totalCuttingQty.value = total;
 
                 var balanceValue = processQtyValue - cuttingQtyValue;
-           
-           balanceQty.value = balanceValue;
-           balance = balance + balanceValue;
-           totalBalance.value = balance;
+                if(cuttingQtyValue > processQtyValue){
+                    balanceQty.value = processQtyValue;
+                }else{
+                    balanceQty.value = balanceValue;
+                    balance = balance + balanceValue;
+                    totalBalance.value = balance;
+                }
             }
            
             process = process + processQtyValue;
             totalProcessQty.value = process;
-
-            
-      
         }
-      
     }
-    cuttingOrder()
+    
  function balanceProcessQty(){
         const actualQty = document.getElementById('id_processQty').value;
             const processed_qty = document.getElementById('id_processed_qty').value;
             const  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
 
-            document.getElementById('id_balanceView_qty').value = balanceViewQty;
+            //document.getElementById('id_balanceView_qty').value = balanceViewQty;
+    
  }
     
     function updateCuttingQuantity(){
@@ -522,7 +522,7 @@ function checkOnlyOne(checkbox) {
             rowMaterial.style.outline = "none";
           
 
-            document.getElementById('id_balanceView_qty').value = balanceViewQty;
+            //document.getElementById('id_balanceView_qty').value = balanceViewQty;
 
             document.getElementById('id_submit').style.display = "none";
 
@@ -534,16 +534,19 @@ function checkOnlyOne(checkbox) {
                 const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
                 const cuttingQty = row.querySelector('input[name$="-cutting_quantity"]').value;
               
-            
-                const procumentQtyValue = parseFloat(procumentQty) || 0;
-                const cuttingQtyValue = parseFloat(cuttingQty) || 0;
+            console.log(procumentQty, cuttingQty);
+                const procumentQtyValue = parseInt(procumentQty) || 0;
+                const cuttingQtyValue = parseInt(cuttingQty) || 0;
 
                 procumentValue  += procumentQtyValue; 
                 CuttingValue += cuttingQtyValue;
                 
                let balnaceQty = procumentQtyValue - cuttingQtyValue;
-               balanceValue += balnaceQty
+
                row.querySelector('input[name$="-balance_quantity"]').value = balnaceQty;
+               balanceValue += balnaceQty
+               
+
                 document.getElementById('id_processQty').value = procumentValue;
                 document.getElementById('id_cuttingTotal').value = CuttingValue;
                 document.getElementById('id_balanceQty').value = balanceValue;
