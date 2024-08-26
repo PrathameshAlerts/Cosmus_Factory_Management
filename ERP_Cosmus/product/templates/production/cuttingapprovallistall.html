@@ -15,6 +15,7 @@
           <thead class="name_absolute sticky-top">
             <tr class="text-nowrap">
               <th>No</th>
+              <th>Date</th>
               <th>Cutting No</th>
               <th>P.O No</th>
               <th>Party Name</th>
@@ -30,6 +31,7 @@
             {% for cutting_order in pending_approval_query %}
             <tr class="text-nowrap">
               <td>{{forloop.counter}}</td>
+              <td>{{cutting_order.created_date}}</td>
               <td class="cuttingOderId">{{cutting_order.raw_material_cutting_id}}</td>
               <td>{{cutting_order.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
               <td>{{cutting_order.purchase_order_id.ledger_party_name.name}}</td>
