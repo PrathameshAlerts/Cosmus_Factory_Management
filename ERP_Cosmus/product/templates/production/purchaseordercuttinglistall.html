@@ -17,7 +17,7 @@
 <div>
     <div class="d-flex my-3">
         <h3>Purchase Order Cutting List</h3>
-        <button  class=" border-0 py-1 px-3 rounded-2" style="margin-left: 680px; background-color: rgba(167, 25, 25, 0.7);"><a  class="text-decoration-none text-white " href="{% url 'pending-approv-all' %}">Cutting All</a></button>     
+        <button  class=" border-0 py-1 px-3 rounded-2" style="margin-left: 680px; background-color: rgba(167, 25, 25, 0.7);"><a  class="text-decoration-none text-white " href="{% url 'pending-approv-all' %}">CAP List</a></button>     
     </div>
      <div class="table-responsives">
         <h5 class="fw-bold mt-2 text-danger">Purchase Order Cutting - Pending</h5> 
@@ -32,7 +32,7 @@
                     <th>Target Date</th>
                     <th>Total P.O Qty</th>
                     <th>Total Processed Qty</th>
-                    <th>Balance Qty</th>
+                    <th>Pend QTY at Cutting Stage</th>
                     <th>Create</th>
                 </tr>
             </thead>
@@ -74,7 +74,7 @@
                     <th>Target Date</th>
                     <th>Total P.O Qty</th>
                     <th>Total Processed Qty</th>
-                    <th>Balance Quantity</th>
+                    <th>Pend QTY at Cutting Stage</th>
                     <th>Edit</th>
                     <!-- <th>Delete</th> -->
                 </tr>

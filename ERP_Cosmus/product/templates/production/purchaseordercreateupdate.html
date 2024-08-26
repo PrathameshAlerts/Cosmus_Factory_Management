@@ -134,7 +134,7 @@
             {% endif %} -->
         </form>
     </div>
-    <div class="col-lg-6 mt-3">
+    <div class="col-lg-6 mt-3" id="images-conatiner" style="display: none;">
         <div class="mb-2">
             {% for img in model_images.all %}
             <img src="{{img.PProduct_image.url}}" alt="images" style="width: 70px; padding:2px ;">
@@ -147,7 +147,6 @@
     $(document).ready(function(){
         $('#id_purchase_order_number').on('focusout',function(){
             var newOrdernumber = $(this).val();
-           
             var new_order = $("#id_purchase_order_number");
             var errorElement = $('#purchaseCreateError'); // The error message element
             var submitButton = $('#id_submit_1');
@@ -156,13 +155,10 @@
                 method: 'GET',
                 data: {
                     'new_order_number': newOrdernumber,
-                    
                 },
                 success: function (data) {
-                  console.log(data);
                     if(data.validation_flag === true){
-                      
-                       new_order.css('border', '1px solid red');
+                        new_order.css('border', '1px solid red');
                         errorElement.text('*New order number already exists');
                         errorElement.show();
                         submitButton.attr('disabled', 'disabled');
@@ -181,6 +177,13 @@
             })
         })
     })
+
+ 
+       
+    
+    
+
+  
     document.addEventListener('DOMContentLoaded', function () {
         const dateInput = document.getElementById('id_target_date');// this script is for date picker 
         const today = new Date().toISOString().split('T')[0];
@@ -192,15 +195,19 @@
         dateInput.value = formattedDate;
         const date = dateInput.value;
         dateInput.min = today;
-    
+       
+       
+   
        
         // this script is for other form submit buttons hide and show when first form submit 
-        const id = document.getElementById('id_productRow').value;
+        const id = document.getElementById('id_productRow').value ;
+        const totalPoQty = document.getElementById('id_number_of_pieces').value;
+        console.log(totalPoQty);
     
-        if (id != "None") {
+        if (id != "None" && totalPoQty > 0) {
             const main_form = document.getElementById('productForm-conatiner');
             const submitBtn = document.getElementById('id_submit_1');
-            //const backbutton = document.getElementById('id_return');
+            const imageContainer = document.getElementById('images-conatiner');
             const orderNo = document.getElementById('id_purchase_order_number')
             const productOderQty = document.getElementById('id_number_of_pieces')
             const refrenceId = document.getElementById('id_product_reference_number');
@@ -211,7 +218,7 @@
             productOderQty.readOnly = true;
             refrenceId.disabled = true;
             godownId.disabled = true;
-
+            imageContainer.style.display = 'block';
 
             // backbutton.addEventListener('click', function () {
             //     main_form.style.display = 'none';
