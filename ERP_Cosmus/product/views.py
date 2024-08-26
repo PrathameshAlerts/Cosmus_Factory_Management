@@ -3108,7 +3108,6 @@ def purchaseordercreateupdate(request,pk=None):
                                 p_o_instance.save()  # save the parent form instance
                             
                             
-
                         messages.success(request, 'Purchase Order Quantities updated successfully.')
                         logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
 
@@ -3145,7 +3144,7 @@ def purchaseordercreateupdate(request,pk=None):
 
 
 def purchaseorderlist(request):
-    purchase_orders = purchase_order.objects.all()
+    purchase_orders = purchase_order.objects.all().order_by('created_date')
     return render(request,'production/purchaseorderlist.html',{'purchase_orders': purchase_orders})
 
 
