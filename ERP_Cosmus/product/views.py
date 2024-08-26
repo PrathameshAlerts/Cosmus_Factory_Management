@@ -3307,8 +3307,8 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 def purchase_order_for_raw_material_list(request):
     # to know if related multiple records are created or not - create temp column named raw_material_count and 
     # count the records present in related model and then filter that column if more then 1 record is present
-    purchase_orders_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__lt=1, purchase_order_to_product_saved=True)
-    purchase_orders_completed = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0)
+    purchase_orders_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__lt=1, purchase_order_to_product_saved=True).order_by('created_date')
+    purchase_orders_completed = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0).order_by('created_date')
 
 
     return render(request,'production/purchase_order_for_raw_material_list.html',
@@ -3565,22 +3565,24 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
 
 
+
+
+def purchaseordercuttinglistall(request):
+    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0).order_by('created_date')
+    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty')).order_by('created_date')
+
+    return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
+
+
 def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
-    p_o_cutting_order_all =  purchase_order_raw_material_cutting.objects.filter(purchase_order_id = p_o_pk).select_related('purchase_order_id__ledger_party_name','factory_employee_id')
+    p_o_cutting_order_all =  purchase_order_raw_material_cutting.objects.filter(purchase_order_id = p_o_pk).select_related('purchase_order_id__ledger_party_name','factory_employee_id').order_by('created_date')
     Purchase_order_no = purchase_order.objects.get(id=p_o_pk)
     return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_number':Purchase_order_no, 'prod_ref_no':prod_ref_no, 'p_o_pk':p_o_pk})
 
 
 
-
-def purchaseordercuttinglistall(request):
-    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0)
-    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'))
-
-    return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
-
 def pendingapprovall(request):
-    pending_approval_query = purchase_order_raw_material_cutting.objects.exclude(processed_qty = F('approved_qty')) # comparing processed_qty with approved_qty from same instance using F function
+    pending_approval_query = purchase_order_raw_material_cutting.objects.exclude(processed_qty = F('approved_qty')).order_by('created_date') # comparing processed_qty with approved_qty from same instance using F function
     return render(request,'production/cuttingapprovallistall.html',{'pending_approval_query': pending_approval_query})
 
 
@@ -3708,7 +3710,7 @@ def purchaseordercuttingmastercancelajax(request):
 
 
 def labourworkoutlistall(request):
-    labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs'))
+    labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).order_by('created_date')
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
 
 

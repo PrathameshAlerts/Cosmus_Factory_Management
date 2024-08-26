@@ -43,7 +43,7 @@
             <tr class="text-nowrap">
               <th>No</th>
               <th>Cutting VCh No</th>
-              <th>Date</th>
+              <th>Create Date</th>
               <th>Cutting Name</th>
               <th>Processed QTY</th>
               <th>Cutting Apr QTY</th>
@@ -58,7 +58,7 @@
             <tr class="text-nowrap">
               <td>{{forloop.counter}}</td>
               <td class="cuttingOderId">{{cutting_order.raw_material_cutting_id}}</td>
-              <td></td>
+              <td>{{cutting_order.created_date}}</td>
               <td>{{cutting_order.factory_employee_id.factory_emp_name}}</td>
               <td class="processedQty">{{cutting_order.processed_qty}}</td>
               <td class="approvedQty">{{cutting_order.approved_qty}}</td>

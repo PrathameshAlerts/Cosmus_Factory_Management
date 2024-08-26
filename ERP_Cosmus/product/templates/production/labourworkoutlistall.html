@@ -18,6 +18,7 @@
             <tr>
                 <th>P.O Date</th>
                 <th>P.O No</th>
+                <th>Created Date</th>
                 <th>P.O Qty</th>
                 <th>Product Ref No</th>
                 <th>Model Name</th>
@@ -34,6 +35,7 @@
         {% for record in labour_workout_pending %}
         <tr>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+            <td>{{record.created_date}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
