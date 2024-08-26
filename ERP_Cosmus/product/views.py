@@ -3099,10 +3099,13 @@ def purchaseordercreateupdate(request,pk=None):
                         # set the status to 2
                         for form in formset:
                             p_o_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                            p_o_instance.purchase_order_to_product_saved = True
+                            p_o_instance.save()
                             if p_o_instance.process_status == '1':  # if process_status in parent form is 1
                                 p_o_instance.process_status = '2'  # change the status to 2
                                 p_o_instance.save()  # save the parent form instance
-                                
+                            
+                            
 
                         messages.success(request, 'Purchase Order Quantities updated successfully.')
                         logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
@@ -3304,7 +3307,7 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
 def purchase_order_for_raw_material_list(request):
     # to know if related multiple records are created or not - create temp column named raw_material_count and 
     # count the records present in related model and then filter that column if more then 1 record is present
-    purchase_orders_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__lt=1)
+    purchase_orders_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__lt=1, purchase_order_to_product_saved=True)
     purchase_orders_completed = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0)
 
 
@@ -3917,9 +3920,10 @@ def labour_workout_child_list(request, labour_master_pk):
 
 
 
-    
+def cuttingroomqty(request):
+    cutting_room_items = purchase_order_for_raw_material_cutting_items.objects.filter(total_comsumption_in_cutting__gt=0)
 
-
+    return render(request,'production/cuttingroomqty.html',{'cutting_room_items':cutting_room_items})
 
 
 #_________________________production-end__________________________________________

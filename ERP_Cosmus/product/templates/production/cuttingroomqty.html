@@ -1,0 +1,28 @@
+
+
+
+<table>
+    <tr>
+        <th>Cutting Master Name</th>
+        <th>Purchase Order No </th>
+        <th>Cutting ID </th>
+        <th>Material Name </th>
+        <th>Color Name</th>
+        <th>Quantity</th>
+    </tr>
+    {% for qty in cutting_room_items %}
+    <tr>
+        <td>{{qty.purchase_order_cutting.factory_employee_id.factory_emp_name}}</td>
+        <td>{{qty.purchase_order_cutting.purchase_order_id.purchase_order_number}}</td>
+        <td>{{qty.purchase_order_cutting.raw_material_cutting_id}}</td>
+        <td>{{qty.material_name}}</td>
+        <td>{{qty.material_color_shade}}</td>
+        <td>{{qty.total_comsumption_in_cutting}}</td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+

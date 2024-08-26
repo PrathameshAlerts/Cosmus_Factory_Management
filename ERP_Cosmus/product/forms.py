@@ -390,7 +390,7 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
         for form in self.forms:
             if not form.cleaned_data.get('DELETE', False):
                 # Get the order_quantity from the cleaned_data of each form:
-                order_quantity = form.cleaned_data.get('order_quantity', 0)
+                order_quantity = form.cleaned_data.get('order_quantity')
                 total_order_quantity += order_quantity
 
                 # set the process qty same as orderqty using form.insatnce

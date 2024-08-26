@@ -462,7 +462,7 @@ class account_credit_debit_master_table(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, blank = False, null = False, related_name = 'transaction_entry')
     debit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
     credit = models.DecimalField(max_digits=12, decimal_places=2, default = 0)
-    voucher_no = models.CharField(null = True, blank= True, unique=True)
+    voucher_no = models.CharField(null = True, blank= True)
     voucher_type = models.CharField(max_length = 100)
     particulars = models.CharField(max_length = 100)
     create_date = models.DateField(auto_now= True)
@@ -635,18 +635,19 @@ class purchase_order(models.Model):
     target_date = models.DateField()
     created_date = models.DateField(auto_now=True)
     modified_created_date = models.DateField(auto_now_add=True)
-    number_of_pieces = models.IntegerField(default=0)
+    number_of_pieces = models.IntegerField(validators=[MinValueValidator(1)])
     balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
     process_status = models.CharField(choices=STATUS, blank=True, null= True)
     temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
     cutting_total_processed_qty = models.IntegerField(default=0)
-
+    purchase_order_to_product_saved = models.BooleanField(default=False)
 
 class purchase_order_to_product(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order,related_name= 'p_o_to_products',on_delete=models.CASCADE)
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
+    
 
 
 

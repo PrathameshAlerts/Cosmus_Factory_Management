@@ -173,7 +173,7 @@ urlpatterns = [
     path('purchaseordercuttingmastercancel',views.purchaseordercuttingmastercancelajax,name = 'purchase-order-cutting-master-cancel'),
     path('pendingapprovall',views.pendingapprovall,name = 'pending-approv-all'),
 
-    
+    path('cuttingroomqty',views.cuttingroomqty,name = 'cutting-room-qty'),
 
     # factory worker routes
     path('factory_emp_create/',views.factory_employee_create_update_list, name = 'factory-emp-create'),
