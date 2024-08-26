@@ -738,6 +738,7 @@ function randomValue (){
         indexbool = false;
 
         const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+        
         const itemShade = $('#input_item_shade_' + purchaseValue);
         const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
       
@@ -781,7 +782,9 @@ function handleShadeValueTrue() {
         if (event.key === 'Enter') {
             const selectedShade = $(this).val();
             const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+            const itemShades = $(this).closest('tr').find('[name^="input_item_shade_"]');
             $(this).attr('disabled', 'disabled');
+            itemShades.hide();
             handlePopup(selectedShade, uniqueIdValue);
           
             $(this).removeAttr('disabled');
@@ -1176,6 +1179,11 @@ function handleShadeValueTrue() {
             olditemshadeElementforupdate.id = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
             olditemshadeElementforupdate.name = `purchase_voucher_items_set-${formIndex}-old_item_shade_for_dropdown_change`;
             olditemshadeElementforupdate.value = '';
+
+            const checkIdElement = lastRow.querySelector('input[name^="item_checkshade-"]');
+            checkIdElement.id = `id_item_checkshade-${formIndex}`;
+            checkIdElement.name = `item_checkshade-${formIndex}`;
+            checkIdElement.value= '';
             
             tableBody.appendChild(lastRow);
            

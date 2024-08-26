@@ -127,7 +127,7 @@
           <h3 class="text-white" style="display: none; " id="GodownTitle">Godown List</h3>
         </li>
       </ul>
-      <ul class="navbar-nav mb-2 mb-lg-0" style="margin-left: 400px;" >
+      <ul class="navbar-nav mb-2 me-auto mb-lg-0" style="margin-left: 200px;" >
         <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
@@ -533,8 +533,8 @@
         var headerTitle = document.getElementById('productTitle');
         var itemTitle = document.getElementById('itemTitle');
         var GodownTitle = document.getElementById('GodownTitle');
-       console.log(nav.textContent);
-       nav.addEventListener('click',function(){
+    
+       nav.addEventListener('',function(){
          if(nav.textContent == 'Product'){
          
            headerTitle.style.display = 'block';
