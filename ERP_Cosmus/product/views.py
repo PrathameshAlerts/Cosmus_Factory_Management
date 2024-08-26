@@ -3062,7 +3062,7 @@ def purchaseordercreateupdate(request,pk=None):
 
     
     if request.method == 'POST':
-        print(request.POST)
+
         # both forms are submitted indivially depends on name of submitted button
         # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
@@ -3712,7 +3712,7 @@ def purchaseordercuttingmastercancelajax(request):
 def labourworkoutlistall(request):
     labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__gt=0).order_by('created_date')
     labour_workout_completed = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__lt=1).order_by('created_date')
-    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending})
+    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending,'labour_workout_completed':labour_workout_completed})
 
 
 

@@ -69,7 +69,7 @@
             </tr>
         </thead>
      <tbody class="mainTableList">
-        {% for record in labour_workout_pending %}
+        {% for record in labour_workout_completed %}
         <tr>
             <td class="text-nowrap">{{record.created_date}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
