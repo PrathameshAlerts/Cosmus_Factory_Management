@@ -1,6 +1,7 @@
 from dataclasses import fields
 from pyexpat import model
 from django import forms
+from django.shortcuts import get_object_or_404
 from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
@@ -382,10 +383,11 @@ class purchase_order_to_product_form(forms.ModelForm):
         }
 
 # custom formset for validation extended form BaseInlineFormset
+
 class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
     def clean(self):
         super().clean()
-
+        
         total_order_quantity = 0
         for form in self.forms:
             if not form.cleaned_data.get('DELETE', False):
@@ -546,17 +548,17 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
 
         # get the data from parent instance
         # po_godown = self.instance.purchase_order_cutting_id.purchase_order_id.temp_godown_select
-
-        with transaction.atomic():
-            for form in self.forms:
-                if not form.cleaned_data.get('DELETE', False):
-                    try:
+        
+        for form in self.forms:
+            if not form.cleaned_data.get('DELETE', False):
+                try:
+                    with transaction.atomic():
                         Purchase_order_pk = form.cleaned_data.get('purchase_order_pk')
 
                         if not Purchase_order_pk:
                             raise ValidationError("Purchase order primary key is missing.")
                         
-                        po_instance = purchase_order.objects.get(id=Purchase_order_pk)
+                        po_instance = get_object_or_404(purchase_order,id=Purchase_order_pk)
                         po_godown = po_instance.temp_godown_select
                         total_consumption = form.cleaned_data.get('total_comsumption')
                         material_color_shade = form.cleaned_data.get('material_color_shade')
@@ -596,25 +598,25 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
 
                                 if total_consumption != 0:
                                     form.instance.cutting_room_status = 'cutting_room'
-                            
+                        
 
-                    except purchase_order.DoesNotExist:
-                        raise ValidationError(f'Purchase order with ID {Purchase_order_pk} does not exist.')
-                    
-                    except item_godown_quantity_through_table.DoesNotExist as e:
-                        logger.error(f'Item not found in godown: {e}')
-                        form.add_error(None, e)
-                        raise
+                except purchase_order.DoesNotExist:
+                    raise ValidationError(f'Purchase order with ID {Purchase_order_pk} does not exist.')
+                
+                except item_godown_quantity_through_table.DoesNotExist as e:
+                    logger.error(f'Item not found in godown: {e}')
+                    form.add_error(None, e)
+                    raise
 
-                    except ValidationError as e:
-                        logger.error(f'Validation error: {e}')
-                        form.add_error(None, e)
-                        raise
+                except ValidationError as e:
+                    logger.error(f'Validation error: {e}')
+                    form.add_error(None, e)
+                    raise
 
-                    except Exception as e:
-                        logger.error(f'Unexpected error occurred: {e}', exc_info=True)
-                        form.add_error(None, e)
-                        raise ValidationError(f'An unexpected error occurred: {e}')
+                except Exception as e:
+                    logger.error(f'Unexpected error occurred: {e}', exc_info=True)
+                    form.add_error(None, e)
+                    raise ValidationError(f'An unexpected error occurred: {e}')
 
 
 

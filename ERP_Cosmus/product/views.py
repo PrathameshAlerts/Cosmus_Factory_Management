@@ -27,7 +27,7 @@ from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse
-
+from django.views.decorators.cache import cache_control
 from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
 
@@ -1871,7 +1871,7 @@ def stockTrasferRawDelete(request,pk):
 #__________________________purchase voucher start__________________________
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)  # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchasevouchercreateupdate(request, pk=None):
     print(request.POST)
     item_name_searched = Item_Creation.objects.all()
@@ -3036,6 +3036,11 @@ def viewproduct2items_configs(request, product_sku):
         return HttpResponseServerError(f'An unexpected error occurred: {e}')
     
 
+
+
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchaseordercreateupdate(request,pk=None):
     
     try:
@@ -3160,7 +3165,7 @@ def purchaseorderdelete(request,pk):
     return redirect('purchase-order-list')
      
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     
     purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
@@ -3331,8 +3336,8 @@ def purchase_order_for_raw_material_delete(request,pk):
         messages.error(request,f'Error While Deleting purchase Order {e}')
         return redirect('purchase-order-raw-material-list')
 
-
-
+ 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
     if pk:
@@ -3715,112 +3720,124 @@ def labourworkoutlistall(request):
     return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending,'labour_workout_completed':labour_workout_completed})
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
-    ledger_labour_instances = Ledger.objects.filter(types = 'labour')
+    try:
+        ledger_labour_instances = Ledger.objects.filter(types = 'labour')
 
-    godown_id = None
+        godown_id = None
 
-    # if pk which is parent id is not none means child instance is not created 
-    if pk is not None:
-        
-        labourworkoutinstance = labour_workout_master.objects.get(id = pk)
-
-        godown_id = labourworkoutinstance.purchase_order_cutting_master.purchase_order_id.temp_godown_select.id
-        godown_instance = Godown_raw_material.objects.get(id=godown_id)
-        child_master_intial_data = {'total_approved_pcs' : labourworkoutinstance.total_approved_pcs,
-                                    'total_balance_pcs' : labourworkoutinstance.total_pending_pcs}
-
-        # labour workout child masterform 
-        labour_work_out_child_form = labour_workout_child_form(initial=child_master_intial_data)
-        
-        # prodcut to item labour workout instances to set initial data 
-        product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout = labourworkoutinstance)
-    
-        initial_items_data_dict = []
-
-        for instance in product_to_item_instances:
-            data_dict = {
-                'product_sku':instance.product_sku,
-                'product_color':instance.product_color,
-                'pending_pcs': instance.processed_pcs, #approved qty
-                'balance_pcs': instance.pending_pcs, #this qty will update on each successful form labour workout form submission 
-                'processed_pcs': 0
-                }
-
-            initial_items_data_dict.append(data_dict)
-        
-        # product 2 item child formset
-        labour_workout_child_product_to_items_formset = inlineformset_factory(
-                                labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
-                                                        'product_color','processed_pcs',
-                                                        'pending_pcs','balance_pcs'], can_delete=False,extra=len(initial_items_data_dict))
-        
-        # product 2 item child form
-        product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
-
-        # raw_material_cutting_items
-        raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master).order_by('id')
-
-        initial_data_dict = []
-
-        for instance in raw_material_cutting_items_instances:
-    
-            data = {
-                'product_sku':instance.product_sku,
-                'product_color':instance.product_color,
-                'material_name':instance.material_name,
-                'material_color_shade':instance.material_color_shade,
-                'rate':instance.rate,
-                'panha':instance.panha,
-                'units':instance.units,
-                'g_total':instance.g_total,
-                'consumption':instance.consumption,
-                'total_comsumption':0,
-                'unit_value':instance.unit_value,
-                'physical_stock':instance.physical_stock,
-                'balance_physical_stock' : instance.balance_physical_stock,
-                'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
-                }
+        # if pk which is parent id is not none means child instance is not created 
+        if pk is not None:
             
-            initial_data_dict.append(data)
+            labourworkoutinstance = get_object_or_404(labour_workout_master,id = pk)
 
-        labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
-                                                                        form = labour_workout_cutting_items_form,               
-                                                                        extra=len(initial_data_dict))
+            if labourworkoutinstance:
+                godown_id = labourworkoutinstance.purchase_order_cutting_master.purchase_order_id.temp_godown_select.id
+
+            else:
+                
+                raise ObjectDoesNotExist
+
+            godown_instance = get_object_or_404(Godown_raw_material,id=godown_id)
+
+
+            child_master_intial_data = {'total_approved_pcs' : labourworkoutinstance.total_approved_pcs,
+                                        'total_balance_pcs' : labourworkoutinstance.total_pending_pcs}
+
+            # labour workout child masterform 
+            labour_work_out_child_form = labour_workout_child_form(initial=child_master_intial_data)
+            
+            # prodcut to item labour workout instances to set initial data 
+            product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout = labourworkoutinstance)
         
-        # labour workout items formset
-        labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
+            initial_items_data_dict = []
 
+            for instance in product_to_item_instances:
+                data_dict = {
+                    'product_sku':instance.product_sku,
+                    'product_color':instance.product_color,
+                    'pending_pcs': instance.processed_pcs, #approved qty
+                    'balance_pcs': instance.pending_pcs, #this qty will update on each successful form labour workout form submission 
+                    'processed_pcs': 0
+                    }
 
-    # if pk which is parent id is none means child instance is created and page is on view mode 
-    elif pk is None:
+                initial_items_data_dict.append(data_dict)
+            
+            # product 2 item child formset
+            labour_workout_child_product_to_items_formset = inlineformset_factory(
+                                    labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
+                                                            'product_color','processed_pcs',
+                                                            'pending_pcs','balance_pcs'], can_delete=False,extra=len(initial_items_data_dict))
+            
+            # product 2 item child form
+            product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
 
-        labour_workout_child_instance = labour_workout_childs.objects.get(id = labour_workout_child_pk)
+            # raw_material_cutting_items
+            raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master).order_by('id')
+
+            initial_data_dict = []
+
+            for instance in raw_material_cutting_items_instances:
         
+                data = {
+                    'product_sku':instance.product_sku,
+                    'product_color':instance.product_color,
+                    'material_name':instance.material_name,
+                    'material_color_shade':instance.material_color_shade,
+                    'rate':instance.rate,
+                    'panha':instance.panha,
+                    'units':instance.units,
+                    'g_total':instance.g_total,
+                    'consumption':instance.consumption,
+                    'total_comsumption':0,
+                    'unit_value':instance.unit_value,
+                    'physical_stock':instance.physical_stock,
+                    'balance_physical_stock' : instance.balance_physical_stock,
+                    'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
+                    }
+                
+                initial_data_dict.append(data)
 
-        # labour workout child masterform 
-        labour_work_out_child_form = labour_workout_child_form(instance = labour_workout_child_instance)
+            labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
+                                                                            form = labour_workout_cutting_items_form,               
+                                                                            extra=len(initial_data_dict))
+            
+            # labour workout items formset
+            labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
 
-        
 
-        # product 2 item child formset
-        labour_workout_child_product_to_items_formset = inlineformset_factory(
-                                labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
-                                                        'product_color','processed_pcs',
-                                                        'pending_pcs','balance_pcs'], can_delete=False,extra=0)
-        
-        # product 2 item child form
-        product_to_item_formset = labour_workout_child_product_to_items_formset(instance = labour_workout_child_instance)
-        
+        # if pk which is parent id is none means child instance is created and page is on view mode 
+        elif pk is None:
 
-        labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
-                                                                        form = labour_workout_cutting_items_form, 
-                                                                        can_delete=False,
-                                                                        extra=0)
-        # labour workout items formset
-        labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(instance = labour_workout_child_instance) 
+            labour_workout_child_instance = labour_workout_childs.objects.get(id = labour_workout_child_pk)
+            
+
+            # labour workout child masterform 
+            labour_work_out_child_form = labour_workout_child_form(instance = labour_workout_child_instance)
+
+            
+
+            # product 2 item child formset
+            labour_workout_child_product_to_items_formset = inlineformset_factory(
+                                    labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
+                                                            'product_color','processed_pcs',
+                                                            'pending_pcs','balance_pcs'], can_delete=False,extra=0)
+            
+            # product 2 item child form
+            product_to_item_formset = labour_workout_child_product_to_items_formset(instance = labour_workout_child_instance)
+            
+
+            labour_workout_cutting_items_form_formset = inlineformset_factory(labour_workout_childs,labour_workout_cutting_items,
+                                                                            form = labour_workout_cutting_items_form, 
+                                                                            can_delete=False,
+                                                                            extra=0)
+            # labour workout items formset
+            labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(instance = labour_workout_child_instance)
+
+    except Exception as e:
+        logger.error(f'exception occured at labour workout create GET {e}')
 
 
 
@@ -3837,62 +3854,66 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
 
         if labour_work_out_child_form.is_valid() and product_to_item_formset.is_valid() and labour_workout_cutting_items_formset_form.is_valid():
+            try:
+                with transaction.atomic():
+                    labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
+                    labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
+                    labour_workout_form_instance.save()
+                    processed_qty = labour_workout_form_instance.total_process_pcs
 
-            with transaction.atomic():
-                labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
-                labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
-                labour_workout_form_instance.save()
-                processed_qty = labour_workout_form_instance.total_process_pcs
-
-                labourworkoutinstance.total_pending_pcs = labourworkoutinstance.total_pending_pcs - processed_qty
-                labourworkoutinstance.save()
-                
-                for form in product_to_item_formset:
-                    if form.is_valid():
-                        product_to_item_form = form.save(commit=False)
-                        product_to_item_form.labour_workout = labour_workout_form_instance
-                        product_to_item_form.save()
-
-                        # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
-                        single_p2i_instance = product_to_item_instances.get(product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
-
-                        single_p2i_instance.pending_pcs = single_p2i_instance.pending_pcs - product_to_item_form.processed_pcs
-                        single_p2i_instance.save()
-                
-                
-                for form in labour_workout_cutting_items_formset_form:
-                    if form.is_valid():
-                        formset_form = form.save(commit=False)
-                        formset_form.labour_workout_child_instance = labour_workout_form_instance
-                        material_name = formset_form.material_name
-                        material_color_shade = formset_form.material_color_shade
-
-                        item_shade_instance = item_color_shade.objects.get(items__item_name=material_name,item_shade_name = material_color_shade)
-
-                        if item_shade_instance.items.Fabric_nonfabric == 'Non Fabric':
-                            total_comsumption = formset_form.total_comsumption
-                            obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown_instance,Item_shade_name=item_shade_instance)
-
-                            if created:
-                                qty_to_deduct = 0
+                    labourworkoutinstance.total_pending_pcs = labourworkoutinstance.total_pending_pcs - processed_qty
+                    labourworkoutinstance.save()
                     
-                            elif not created:
-                                qty_to_deduct = obj.quantity
+                    for form in product_to_item_formset:
+                        if form.is_valid():
+                            product_to_item_form = form.save(commit=False)
+                            product_to_item_form.labour_workout = labour_workout_form_instance
+                            product_to_item_form.save()
 
-                            obj.quantity = qty_to_deduct - total_comsumption
-                            obj.save()
+                            # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
+                            single_p2i_instance = product_to_item_instances.get(product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
 
-                        elif item_shade_instance.items.Fabric_nonfabric == 'Fabric':
-                            purchase_order_cutting_items = purchase_order_for_raw_material_cutting_items.objects.get(
-                                purchase_order_cutting__raw_material_cutting_id=labour_workout_form_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id,
-                                product_sku = formset_form.product_sku, material_color_shade = item_shade_instance)
-                            
-                            purchase_order_cutting_items.total_comsumption_in_cutting = purchase_order_cutting_items.total_comsumption_in_cutting - formset_form.total_comsumption
-                            purchase_order_cutting_items.save()
+                            single_p2i_instance.pending_pcs = single_p2i_instance.pending_pcs - product_to_item_form.processed_pcs
+                            single_p2i_instance.save()
+                    
+                    
+                    for form in labour_workout_cutting_items_formset_form:
+                        if form.is_valid():
+                            formset_form = form.save(commit=False)
+                            formset_form.labour_workout_child_instance = labour_workout_form_instance
+                            material_name = formset_form.material_name
+                            material_color_shade = formset_form.material_color_shade
 
-                        formset_form.save()
+                            item_shade_instance = item_color_shade.objects.get(items__item_name=material_name,item_shade_name = material_color_shade)
 
-                return redirect(reverse('labour-workout-child-list', args=[pk]))
+                            if item_shade_instance.items.Fabric_nonfabric == 'Non Fabric':
+                                total_comsumption = formset_form.total_comsumption
+                                obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown_instance,Item_shade_name=item_shade_instance)
+
+                                if created:
+                                    qty_to_deduct = 0
+                        
+                                elif not created:
+                                    qty_to_deduct = obj.quantity
+
+                                obj.quantity = qty_to_deduct - total_comsumption
+                                obj.save()
+
+                            elif item_shade_instance.items.Fabric_nonfabric == 'Fabric':
+                                purchase_order_cutting_items = purchase_order_for_raw_material_cutting_items.objects.get(
+                                    purchase_order_cutting__raw_material_cutting_id=labour_workout_form_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id,
+                                    product_sku = formset_form.product_sku, material_color_shade = item_shade_instance)
+                                
+                                purchase_order_cutting_items.total_comsumption_in_cutting = purchase_order_cutting_items.total_comsumption_in_cutting - formset_form.total_comsumption
+                                purchase_order_cutting_items.save()
+
+                            formset_form.save()
+
+                    return redirect(reverse('labour-workout-child-list', args=[pk]))
+                
+                
+            except Exception as e:
+                logger.error(f'An exception occoured in labour workout create {e}')
 
         else:
             logger.error(f'labour_workout_cutting_items_formset_form{labour_workout_cutting_items_formset_form.errors}')
@@ -3981,7 +4002,7 @@ def cutting_room_create_update_list(request, pk=None):
     else:
         instance = None
 
-    form = cutting_room_form(request.POST or None, instance= instance)
+    form = cutting_room_form(request.POST or None, instance = instance)
 
     cutting_rooms = cutting_room.objects.all()
 
