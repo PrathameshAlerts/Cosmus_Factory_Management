@@ -8,10 +8,17 @@
     <div class="row">
         <div class="col-lg-6 mt-3">
             <h4 class="">Cutting Order Production</h4>
+            <div>
+                {% for img in form.instance.product_reference_number.productdetails.all %}
+                {{img.PProduct_image.url}}
+                {% endfor %}
+            </div>
             <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
                 <div class="d-flex mb-2">
-             
+                    
                     <div class="d-flex">
+
+
                         <lable for="id_purchase_order_number" class="ms-2">P.O No:</lable>
                         <input type="text" name="purchase_o_no" class="productinput text-danger  ms-3 me-5 pb-2 " value="{{form.instance.purchase_order_number}}" required id="id_purchase_o_no" readonly>
                         <input type="hidden" name="purchase_order_id" class="purchase-amount border-0 bg-transparent text-danger " value="{{p_o_pk}}" required id="id_purchase_order_id" readonly>
