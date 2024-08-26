@@ -11,13 +11,7 @@
                 <h4 class="">Purchase Order raw material</h4>
                 <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
 
-                    <div>
-                        <div>
-                            {% for img in form.instance.product_reference_number.productdetails.all %}
-                            {{img.PProduct_image.url}}
-                            {% endfor %}
-                        </div>
-                    </div>
+                
                     <div class="d-flex mb-2">
                         <div class="d-flex">
                             <lable for="id_purchase_order_number" class="">P.O No:</lable>
@@ -53,6 +47,12 @@
                     <div class="d-flex mb-2">
                         <label for="id_temp_godown_select" class="">Godown Name:</label>
                         <input type="text" name="temp_godown_select" class="product-ModelInput text-danger ms-2 me-3 pb-1" value="{{ form.instance.temp_godown_select }}" required id="id_temp_godown_select" readonly>  
+                    </div>
+                    <div class="d-flex">
+                            {% for img in form.instance.product_reference_number.productdetails.all %}
+                           <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin-left: 2px;">
+                            {% endfor %}
+                      
                     </div> 
                 </div>
             </div>

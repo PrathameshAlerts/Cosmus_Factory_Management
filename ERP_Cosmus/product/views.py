@@ -3054,15 +3054,16 @@ def purchaseordercreateupdate(request,pk=None):
             model_name = None
             model_images = None
         
-        formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+        formset = purchase_order_product_qty_formset(instance=instance)
         form = purchase_order_form(instance=instance)
 
     except Exception as e:
         logger.error(f'An Exception Occoured {e}')
 
-
+    print('print(request.POST)',request.POST)
+    print('request',request)
     if request.method == 'POST':
-        
+        print(request.POST)
         # both forms are submitted indivially depends on name of submitted button
         # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
         if 'submit-form-1' in request.POST:
@@ -3090,8 +3091,9 @@ def purchaseordercreateupdate(request,pk=None):
             
 
         if 'submit-form-2' in request.POST:
+            
             try:
-                formset = purchase_order_product_qty_formset(request.POST or None, instance=instance)
+                formset = purchase_order_product_qty_formset(request.POST, instance=instance)
                 
                 if formset.is_valid():
                     try:
