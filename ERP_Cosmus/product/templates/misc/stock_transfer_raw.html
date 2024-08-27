@@ -55,6 +55,7 @@
         <table class="table table-striped table-hover table-responsive table-bordered" id="mainProductForm">
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>Item Name</th>
                     <th>Color</th>
                     <th>Shades</th>
@@ -69,6 +70,7 @@
                 {% for form in formset %}
                 {{ form.id }}
                 <tr>
+                    <td><span id="id_stock_{{forloop.counter0}}">{{forloop.counter}}</span></td>
                     <td>
                         <select name="stock_name_{{forloop.counter0}}" class="acc-subInput stock_input_name" placeholder="Item Name" id="id_stock_name_{{forloop.counter0}}">
                             <!-- if master form is on update show the data of the source godown  -->
@@ -136,6 +138,11 @@
                     newTable.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
                     });
+
+                    const newId = newTable.querySelector('td:first-child span');
+                    newId.id = `id_stock_${newFormCount}`;
+                    newId.textContent = newFormCount + 1;
+                   
 
                     const itemNameElement = newTable.querySelector('select[name^="stock_name_"]');
                     itemNameElement.id = `id_stock_name_${newFormCount}`;
