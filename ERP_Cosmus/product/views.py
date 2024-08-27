@@ -3758,8 +3758,8 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 data_dict = {
                     'product_sku':instance.product_sku,
                     'product_color':instance.product_color,
-                    'pending_pcs': instance.processed_pcs, #approved qty
-                    'balance_pcs': instance.pending_pcs, #this qty will update on each successful form labour workout form submission 
+                    'pending_pcs': instance.processed_pcs, # approved qty
+                    'balance_pcs': instance.pending_pcs, # this qty will update on each successful form labour workout form submission 
                     'processed_pcs': 0
                     }
 
@@ -3941,6 +3941,30 @@ def labour_workout_child_list(request, labour_master_pk):
     return render(request,'production/labourworkoutchilds.html', {'labour_master_pk':labour_master_pk,
                                                                   'labour_workout_child_instances':labour_workout_child_instances,
                                                                   'labour_work_out_master':labour_work_out_master})
+
+
+
+
+# change this qty pending_pcs
+def labourworkoutsingledeleteajax(request,labour_workout_child_pk):
+    
+    if request.method == 'POST':
+        with transaction.atomic():
+            labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_pk)
+            print(labour_workout_child_instance)
+            labour_master_instance = labour_workout_child_instance.labour_workout_master_instance
+            print(labour_master_instance)
+            labour_master_instance.total_pending_pcs = labour_master_instance.total_pending_pcs + labour_workout_child_instance.total_process_pcs
+            print(labour_master_instance.total_pending_pcs)
+            
+            # labour_master_instance.save()
+
+            # for product_2_Item_child_instancs in labour_workout_child_instance.labour_workout_child_items.all():
+            #     product_2_item_master_instance = product_to_item_labour_workout.objects.filter(labour_workout=labour_master_instance,product_sku=product_2_Item_child_instancs.product_sku,product_color=product_2_Item_child_instancs.product_color)
+            #     product_2_item_master_instance.pending_pcs = product_2_item_master_instance.pending_pcs + product_2_Item_child_instancs.processed_pcs
+            #     product_2_item_master_instance.save()
+
+            # labour_workout_child_instance.delete()  
 
 
 
@@ -4195,6 +4219,8 @@ def godown_item_report(request,g_id,shade_id):
     purchase_order_cutting_room_qty_cancelled =  godown_item_report_for_cutting_room.objects.filter(
         material_color_shade = shade_id, inward = True, godown_id = g_id)
     
+
+    labour_workout_report = labour_workout_cutting_items.objects.filter()
 
     for godown_qty in opening_godown_qty:
 
