@@ -2704,7 +2704,7 @@ def product2item(request,product_refrence_id):
 
         
         if request.method == 'POST':
-            print(request.POST)
+            
             formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
             formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
             
@@ -3946,9 +3946,12 @@ def labour_workout_child_list(request, labour_master_pk):
 
 
 # change this qty pending_pcs
-def labourworkoutsingledeleteajax(request,labour_workout_child_pk):
+def labourworkoutsingledeleteajax(request):
     
     if request.method == 'POST':
+
+        labour_workout_child_pk =  request.POST.get('labour_workout_child_pk')
+
         with transaction.atomic():
             labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_pk)
             print(labour_workout_child_instance)
@@ -3956,15 +3959,15 @@ def labourworkoutsingledeleteajax(request,labour_workout_child_pk):
             print(labour_master_instance)
             labour_master_instance.total_pending_pcs = labour_master_instance.total_pending_pcs + labour_workout_child_instance.total_process_pcs
             print(labour_master_instance.total_pending_pcs)
-            
-            # labour_master_instance.save()
 
-            # for product_2_Item_child_instancs in labour_workout_child_instance.labour_workout_child_items.all():
-            #     product_2_item_master_instance = product_to_item_labour_workout.objects.filter(labour_workout=labour_master_instance,product_sku=product_2_Item_child_instancs.product_sku,product_color=product_2_Item_child_instancs.product_color)
-            #     product_2_item_master_instance.pending_pcs = product_2_item_master_instance.pending_pcs + product_2_Item_child_instancs.processed_pcs
-            #     product_2_item_master_instance.save()
+            labour_master_instance.save()
 
-            # labour_workout_child_instance.delete()  
+            for product_2_Item_child_instancs in labour_workout_child_instance.labour_workout_child_items.all():
+                product_2_item_master_instance = product_to_item_labour_workout.objects.filter(labour_workout=labour_master_instance,product_sku=product_2_Item_child_instancs.product_sku,product_color=product_2_Item_child_instancs.product_color)
+                product_2_item_master_instance.pending_pcs = product_2_item_master_instance.pending_pcs + product_2_Item_child_instancs.processed_pcs
+                product_2_item_master_instance.save()
+
+            labour_workout_child_instance.delete()  
 
 
 
