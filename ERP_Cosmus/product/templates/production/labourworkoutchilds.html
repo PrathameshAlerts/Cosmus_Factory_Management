@@ -7,7 +7,7 @@
 
 <h3 class="mb-3 mt-2">Labour Workout List</h3>
 <div class="d-flex mb-3">
-    <button class="item-btn" onclick="redirectlistCutting()"><a class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
+    <button class="item-btn" onclick="redirectlistCutting()"><a id="create" class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
     <!-- <div class="container-cat">
         <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
         <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -41,7 +41,7 @@
    <label class="fw-bold ps-3">Processed QTY :</label>
    <span class="text-danger ps-2">{{labour_work_out_master.total_approved_pcs}}</span>
    <label class="fw-bold ps-3">Balance Qty for Cutting:</label>
-   <span class="text-danger ps-2">{{labour_work_out_master.total_pending_pcs}}</span>
+   <span class="text-danger ps-2 total_balance">{{labour_work_out_master.total_pending_pcs}}</span>
   </div>
 
  
@@ -102,31 +102,45 @@
 </div>
 
 <script>
+
+function createButton() {
+    var totalBalance = parseFloat(document.querySelector('.total_balance').textContent);
+    console.log(totalBalance);
+    if (totalBalance === 0) {
+        var createButton = document.querySelector('.item-btn');
+        var createLink = document.getElementById('create');
+
+        // Disable the button
+        createButton.disabled = true;
+        createButton.style.cursor = 'not-allowed';
+
+        // Make the anchor tag unclickable
+        createLink.removeAttribute('href');
+        createLink.style.pointerEvents = 'none';
+        createLink.style.color = 'grey'; // Optionally, change the color to indicate it's disabled
+    }
+}
+
+  createButton();
     document.body.appendChild(document.getElementById('exampleModal'));
     
-    $(document).ready(function(){
+$(document).ready(function(){
   $('.delete-btn').click(function(){
     // Fetching data from the clicked row
     var deleteBtn = $(this);
-    console.log(deleteBtn);
     var row = $(this).closest('tr');
     var name = row.find('td').eq(1).text();
-    console.log(name);
     var cuttingData = row.find('.primary_key').val();
-    console.log(cuttingData);
+
     //var approvedValue = row.find('.approvedQty').text();
     var CuttingId = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
 
-    // Update modal body text
     $('#modal-body-text').html('Are you sure you want to delete this cutting ' + CuttingId + '?');
-
-    // Open the modal
     $('#exampleModal').modal('show');
 
     // Attach a one-time click event to the confirm delete button
     $('#confirmDeleteButton').off('click').on('click', function(){
       var labour_workout_child_pk = parseInt(cuttingData);
-      console.log(labour_workout_child_pk);
       //var approvedValues = parseInt(approvedValue);
 
       //if(approvedValues === 0){
@@ -142,11 +156,11 @@
             console.log(response);
             $('#exampleModal').modal('hide');
             // Disable buttons and visually "disable" the row
-            row.css('opacity', '0.5'); // Gray out the row
-            row.find('a, button').prop('disabled', true); // Disable all links and buttons within the row
+            // row.css('opacity', '0.5'); // Gray out the row
+            // row.find('a, button').prop('disabled', true); // Disable all links and buttons within the row
 
-            // Optionally, remove the event listeners from the buttons
-            row.find('a, button').off('click');
+            // // Optionally, remove the event listeners from the buttons
+            // row.find('a, button').off('click');
           },
           error: function(xhr, status, error){
             console.error("Error occurred: " + error);
@@ -168,7 +182,7 @@
   });
 });
 
-    </script>
+</script>
 
 
 
