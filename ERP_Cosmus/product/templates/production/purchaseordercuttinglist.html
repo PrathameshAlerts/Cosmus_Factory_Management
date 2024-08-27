@@ -20,7 +20,7 @@
       <lable class="fw-bold">P.O No:</lable><span class="text-danger mx-3">{{p_o_number.purchase_order_number}}</span>
       <label class="fw-bold">P.O Qty:</label><span class="text-danger mx-3">{{p_o_number.number_of_pieces}}</span>
       <label class="fw-bold">Processed Qty:</label><span class="text-danger mx-3">{{p_o_number.cutting_total_processed_qty}}</span>
-      <label class="fw-bold">Total Balance:</label><span class="text-danger mx-3">{{p_o_number.balance_number_of_pieces}}</span> 
+      <label class="fw-bold">Total Balance:</label><span id="total_balance" class="text-danger mx-3">{{p_o_number.balance_number_of_pieces}}</span> 
     </div>
     
   </div>
@@ -28,13 +28,8 @@
 
   
   <div class="d-flex mb-3">
-    <button class="item-btn" onclick="redirectlistCutting()"><a class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-create' p_o_pk prod_ref_no %}">Create</a></button>
-    <!-- <div class="container-cat">
-        <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
-        <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-      </div>
-      <button class="item-btn mx-2" onclick="">Clear Filter</button>
-    </div> -->
+    <button  class="item-btn" onclick="redirectlistCutting()"><a id="create" class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-create' p_o_pk prod_ref_no %}">Create</a></button>
+ 
   </div>
   <div class="row">
     <div class="col-lg-11">
@@ -96,7 +91,24 @@
      
 
   <script>
-  
+ function createButton() {
+    var totalBalance = parseFloat(document.getElementById('total_balance').innerHTML);
+    if (totalBalance === 0) {
+        var createButton = document.querySelector('.item-btn');
+        var createLink = document.getElementById('create');
+
+        // Disable the button
+        createButton.disabled = true;
+        createButton.style.cursor = 'not-allowed';
+
+        // Make the anchor tag unclickable
+        createLink.removeAttribute('href');
+        createLink.style.pointerEvents = 'none';
+        createLink.style.color = 'grey'; // Optionally, change the color to indicate it's disabled
+    }
+}
+
+  createButton();
   document.body.appendChild(document.getElementById('exampleModal'));
   
   $(document).ready(function(){

@@ -389,14 +389,14 @@ function checkOnlyOne(checkbox) {
         }
     }
     
- function balanceProcessQty(){
-        const actualQty = document.getElementById('id_processQty').value;
-            const processed_qty = document.getElementById('id_processed_qty').value;
-            const  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
+//  function balanceProcessQty(){
+//         const actualQty = document.getElementById('id_processQty').value;
+//             const processed_qty = document.getElementById('id_processed_qty').value;
+//             const  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
 
-            //document.getElementById('id_balanceView_qty').value = balanceViewQty;
+//             //document.getElementById('id_balanceView_qty').value = balanceViewQty;
     
- }
+//  }
     
     function updateCuttingQuantity(){
         let totals = 0;
@@ -534,7 +534,7 @@ function checkOnlyOne(checkbox) {
                 const procumentQty = row.querySelector('input[name$="-process_quantity"]').value;
                 const cuttingQty = row.querySelector('input[name$="-cutting_quantity"]').value;
               
-            console.log(procumentQty, cuttingQty);
+          
                 const procumentQtyValue = parseInt(procumentQty) || 0;
                 const cuttingQtyValue = parseInt(cuttingQty) || 0;
 
@@ -596,7 +596,7 @@ function checkOnlyOne(checkbox) {
                 processValueQty();
                 submitForm();
                 balanceQty();
-                balanceProcessQty();
+                //balanceProcessQty();
             });
         })
         submitForm();
