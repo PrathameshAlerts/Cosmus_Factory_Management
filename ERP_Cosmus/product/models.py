@@ -802,7 +802,7 @@ class labour_workout_cutting_items(models.Model):
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
     material_name = models.CharField(max_length = 100, null=False, blank=False)
-    material_color_shade = models.CharField(max_length=255)
+    material_color_shade = models.CharField(max_length = 255)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     panha = models.DecimalField(max_digits=10, decimal_places=2)
     units = models.DecimalField(max_digits=10, decimal_places=2)
