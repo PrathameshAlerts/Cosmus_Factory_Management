@@ -3655,8 +3655,8 @@ def purchaseordercuttingpopup(request,cutting_id):
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
 def purchaseordercuttingmastercancelajax(request):
-    if request.method == 'POST':
 
+    if request.method == 'POST':
         try:
             cutting_key = request.POST.get('cuttingId')
             
@@ -3697,6 +3697,7 @@ def purchaseordercuttingmastercancelajax(request):
                             cutting_items.total_comsumption_in_cutting = 0
                             cutting_items.save()
 
+                        messages.success(request, 'Cutting Order cancelled successfully')
                         return JsonResponse({'status' : 'success'}, status=200)
                 
                     else:
@@ -3705,12 +3706,24 @@ def purchaseordercuttingmastercancelajax(request):
                     return JsonResponse({'status':'Instance not found'}, status=404)
             
         except ObjectDoesNotExist as ne:
-            print(ne)
+            logger.error(f'Instance not found -{ne}')
+            messages.error(request, f'Error with labour workout: {ne}')
             return JsonResponse({'status':f'Instance not found -{ne}'}, status=404)
         
+        
+        except IntegrityError as ie:
+            messages.error(request, 'Database integrity error occurred. Please try again.')
+            logger.error(f'Database integrity error - {ie}')
+            return JsonResponse({'status': 'Database integrity error occurred.'}, status=500)
+        
+
         except Exception as e:
-            print(e)
+            logger.error(f'Instance not found -{e}')
+            messages.error(request, f'Error with labour workout: {e}')
             return JsonResponse({'status':f'Instance not found -{e}'}, status=404)
+        
+    else:
+        return JsonResponse({'status': 'Invalid request method.'}, status=405)
 
 
 
@@ -3951,23 +3964,68 @@ def labourworkoutsingledeleteajax(request):
     if request.method == 'POST':
 
         labour_workout_child_pk =  request.POST.get('labour_workout_child_pk')
+        try:
+            with transaction.atomic():
+                
+                labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_pk)
+                labour_master_instance = labour_workout_child_instance.labour_workout_master_instance
+                labour_master_instance.total_pending_pcs = labour_master_instance.total_pending_pcs + labour_workout_child_instance.total_process_pcs
 
-        with transaction.atomic():
-            labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_pk)
-            print(labour_workout_child_instance)
-            labour_master_instance = labour_workout_child_instance.labour_workout_master_instance
-            print(labour_master_instance)
-            labour_master_instance.total_pending_pcs = labour_master_instance.total_pending_pcs + labour_workout_child_instance.total_process_pcs
-            print(labour_master_instance.total_pending_pcs)
+                labour_master_instance.save()
+                
+                for product_2_Item_child_instancs in labour_workout_child_instance.labour_workout_child_items.all():
+                    product_2_item_master_instance = product_to_item_labour_workout.objects.get(labour_workout = labour_master_instance,product_sku=product_2_Item_child_instancs.product_sku,product_color=product_2_Item_child_instancs.product_color)
+                    product_2_item_master_instance.pending_pcs = product_2_item_master_instance.pending_pcs + product_2_Item_child_instancs.processed_pcs
+                    product_2_item_master_instance.save()
 
-            labour_master_instance.save()
 
-            for product_2_Item_child_instancs in labour_workout_child_instance.labour_workout_child_items.all():
-                product_2_item_master_instance = product_to_item_labour_workout.objects.filter(labour_workout=labour_master_instance,product_sku=product_2_Item_child_instancs.product_sku,product_color=product_2_Item_child_instancs.product_color)
-                product_2_item_master_instance.pending_pcs = product_2_item_master_instance.pending_pcs + product_2_Item_child_instancs.processed_pcs
-                product_2_item_master_instance.save()
+                for labour_workout_child_items in labour_workout_child_instance.labour_workout_cutting_items_set.all():
+                    item_in_row = item_color_shade.objects.get(items__item_name=labour_workout_child_items.material_name,item_shade_name=labour_workout_child_items.material_color_shade)
+                    
+                    if item_in_row.items.Fabric_nonfabric == 'Fabric':
+                        purchase_order_cutting_item = purchase_order_for_raw_material_cutting_items.objects.get(purchase_order_cutting=labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id,material_color_shade=item_in_row)
 
-            labour_workout_child_instance.delete()  
+                        purchase_order_cutting_item.total_comsumption_in_cutting = purchase_order_cutting_item.total_comsumption_in_cutting + labour_workout_child_items.total_comsumption
+                        
+                        purchase_order_cutting_item.save()
+
+                    elif item_in_row.items.Fabric_nonfabric == 'Non Fabric':
+
+                        obj, created = item_godown_quantity_through_table.objects.get_or_create(Item_shade_name=item_in_row,godown_name=labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.temp_godown_select)
+
+                        if created:
+                            qty_to_add = 0
+                        else:
+                            qty_to_add = obj.quantity
+
+                        obj.quantity = qty_to_add + labour_workout_child_items.total_comsumption
+                        obj.save()
+
+                labour_workout_child_instance.delete()
+
+                messages.success(request,'labour workout deleted successfully')
+                return JsonResponse({'status':'success'}, status=200) 
+             
+
+        except ObjectDoesNotExist as ne:
+            messages.error(request, f'Error with labour workout: {ne}')
+            logger.error(f'Instance not found - {ne}')
+            return JsonResponse({'status': f'Instance not found - {ne}'}, status=404)
+        
+
+        except IntegrityError as ie:
+            messages.error(request, 'Database integrity error occurred. Please try again.')
+            logger.error(f'Database integrity error - {ie}')
+            return JsonResponse({'status': 'Database integrity error occurred.'}, status=500)
+        
+
+        except Exception as e:
+            logger.error(f'An unexpected error occurred - {e}')
+            messages.error(request, f'Error with labour workout: {e}')
+            return JsonResponse({'status': f'An unexpected error occurred - {e}'}, status=500)
+        
+    else:
+        return JsonResponse({'status': 'Invalid request method.'}, status=405)
 
 
 
