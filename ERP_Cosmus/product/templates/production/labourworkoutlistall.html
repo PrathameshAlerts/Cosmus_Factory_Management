@@ -17,7 +17,8 @@
     <table  class="table table-striped table-hover table-bordered">
         <thead class="text-nowrap name_absolute">
             <tr>
-                <th>P.O Date</th>
+                <th>No</th>
+                <th>Date</th>
                 <th>P.O No</th>
                 <th>P.O Qty</th>
                 <th>Product Ref No</th>
@@ -34,6 +35,7 @@
      <tbody class="mainTableList">
         {% for record in labour_workout_pending %}
         <tr>
+            <td>{{forloop.counter}}</td>
             <td class="text-nowrap">{{record.created_date}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
@@ -55,7 +57,8 @@
     <table  class="table table-striped table-hover table-bordered">
         <thead class="text-nowrap name_absolute">
             <tr>
-                <th>P.O Date</th>
+                <th>No</th>
+                <th>Date</th>
                 <th>P.O No</th>
                 <th>P.O Qty</th>
                 <th>Product Ref No</th>
@@ -71,6 +74,7 @@
      <tbody class="mainTableList">
         {% for record in labour_workout_completed %}
         <tr>
+            <td>{{forloop.counter}}</td>
             <td class="text-nowrap">{{record.created_date}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
