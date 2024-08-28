@@ -40,7 +40,7 @@
                             
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
                             <td>
-                            <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="item-select godown-select" required>
+                            <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="item-select godown-select" >
                                 {% if form.instance.id %}
                                 <option value="{{form.instance.godown_id.id}}">{{form.instance.godown_id.godown_name_raw}}</option>
                                 {% for godown in godowns %}
@@ -54,10 +54,10 @@
                                 {% endif %}
                             </select>
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}" required ></td>
+                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}"  ></td>
 
                            
-                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate|default_if_none:item_rate_value}}" required >
+                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate|default_if_none:item_rate_value}}" >
                             </td>
                             <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount | default_if_none:'' }}" readonly>
                             </td>
@@ -350,7 +350,7 @@
         const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
         const inputRateValue = parseInt(inputRate);
         let totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
-        console.log('inputRateValue',inputRateValue)
+        
         // Calculate and set the amount for this row
         const amount = inputQtyValue * inputRateValue;
         
@@ -446,12 +446,16 @@
             if (tableRows.length > 1) { 
                 const row = $(this).closest('tr'); 
                 const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+                const gowdownId = row.find('.godown-select[name^="shade_godown_items_set-"][name$="-id"]');
+                const qty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]')
+                const rate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]')
                 
                 checkbox.prop('checked', true); 
                 checkbox.val('true');
             
                 if(checkbox.val() == 'true'){
                     row.hide();
+                    gowdownId.removeAttr('required');
                     deleteRowCalculate();
                 }
             } else {
