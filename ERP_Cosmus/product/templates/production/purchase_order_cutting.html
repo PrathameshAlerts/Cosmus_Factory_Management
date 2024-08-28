@@ -367,6 +367,7 @@ function checkOnlyOne(checkbox) {
             if(cuttingQtyValue > processQtyValue){
 
                 document.getElementById('id_purchase_order_to_product_cutting_set-'+ i +'-cutting_quantity').value = 0;
+               
             }
           
         
@@ -377,10 +378,16 @@ function checkOnlyOne(checkbox) {
                 var balanceValue = processQtyValue - cuttingQtyValue;
                 if(cuttingQtyValue > processQtyValue){
                     balanceQty.value = processQtyValue;
+                    balance = balance + processQtyValue;
+
+                    totalBalance.value = balance;
+                    document.getElementById('id_balanceView_qty').value = balance;
                 }else{
                     balanceQty.value = balanceValue;
                     balance = balance + balanceValue;
+                   
                     totalBalance.value = balance;
+                    document.getElementById('id_balanceView_qty').value = balance;
                 }
             }
            
@@ -389,15 +396,28 @@ function checkOnlyOne(checkbox) {
         }
     }
     
-//  function balanceProcessQty(){
-//         const actualQty = document.getElementById('id_processQty').value;
-//             const processed_qty = document.getElementById('id_processed_qty').value;
-//             const  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
+    function cuttingBalanceQty(){
+    var totalforms = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
 
-//             //document.getElementById('id_balanceView_qty').value = balanceViewQty;
-    
-//  }
-    
+    for (var i = 0; i < totalforms; i++) {
+        var physicalstock = parseInt(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').value);
+        var balance = parseInt(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').value);
+      
+        if(physicalstock > 0){
+            document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
+        }else{
+            document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').style.color = 'red';
+        }
+
+        if(balance > 0){
+            document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'green';
+        }else{
+            document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'red';
+        }
+    }
+}
+
+cuttingBalanceQty()   
     function updateCuttingQuantity(){
         let totals = 0;
         let balance = 0;
@@ -488,7 +508,7 @@ function checkOnlyOne(checkbox) {
               }
        
               if(!isNaN(TotalConsumtionValue) && !isNaN(physicalStockValue)){
-           
+        
                 var balanceStock = physicalStockValue - TotalConsumtionValue;
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(2);
               }else{
@@ -596,13 +616,13 @@ function checkOnlyOne(checkbox) {
                 processValueQty();
                 submitForm();
                 balanceQty();
-                //balanceProcessQty();
+                cuttingBalanceQty()
             });
         })
         submitForm();
         processValueQty();
         cuttingOrder();
-        
+        cuttingBalanceQty();
         balanceQty();
     });
 </script>

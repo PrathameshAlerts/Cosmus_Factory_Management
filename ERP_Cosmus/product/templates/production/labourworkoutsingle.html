@@ -22,7 +22,7 @@
                              
                             {% if labour_work_out_child_form.instance.id %}
 
-                            <input type="text" name="challan_no" id="id_challan_no" class="purchase-amount text-danger ms-2 me-5 pb-2" value="{{labour_work_out_child_form.instance.challan_no}}" required>
+                            <input type="text" name="challan_no" id="id_challan_no" class="purchase-amount text-danger ms-2 me-5 pb-2 " value="{{labour_work_out_child_form.instance.challan_no}}" required>
                             {% elif not labour_work_out_child_form.instance.id %}
                             <input type="text" name="challan_no" id="id_challan_no" class="purchase-amount text-danger ms-2 me-5 pb-2" value="{{labour_work_out_child_form.challan_no.initial}}" required>
                             {% endif %}
@@ -54,15 +54,15 @@
                         <div class="d-flex">
                             <label for="id_total_approved_pcs" class="">Total approved pcs:</label>
                             {% if labour_work_out_child_form.instance.id %}
-                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2" readonly>
+                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2" style="outline: none;" readonly>
                             {% elif not labour_work_out_child_form.instance.id %}
-                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.initial.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2" readonly>
+                            <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.initial.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2 " readonly style="outline: none;">
                             {% endif %}
                         </div>
                    
                         <div class="d-flex"> 
                             <lable for="id_total_process_pcs" class="">Total processed Pcs</lable> 
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_process_pcs | default_if_none:0}}" name="total_process_pcs" id="id_total_process_pcs" readonly>
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_process_pcs | default_if_none:0}}" name="total_process_pcs" id="id_total_process_pcs" readonly style="outline: none;">
                             
                         </div>
 
@@ -70,9 +70,9 @@
                             <lable for="id_total_balance_pcs" class="">Total balance pcs</lable> 
 
                             {% if labour_work_out_child_form.instance.id %}
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_pending_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly>
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_pending_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
                             {% elif not labour_work_out_child_form.instance.id %}
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly>
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
                             {% endif %}
                         </div>
                     </div>
@@ -355,8 +355,7 @@ function labourApprovedQty() {
             balanceQty += balanceViewValue;
             approveQty += approvedViewValue;
             totals += approvedQty;
-            //let balanceView= balanceQty - totals ;
-            //document.getElementById('id_total_balance_pcs').value = balanceView;
+           
             document.getElementById('id_processQty').value = totals;
             document.getElementById('id_balanceQtys').value = balanceQty;
             document.getElementById('id_OderQty').value = approveQty;
@@ -367,11 +366,17 @@ function labourApprovedQty() {
 }
 labourApprovedQty()
     
-    function updateBalanceAndProcessQty() {
+function updateBalanceAndProcessQty() {
     var approve = 0;
-    var balance = 0;
-    var process = 0;
+    var totalBalance = 0;
+    var totalProcess = 0;
     var forms = parseInt(document.getElementById('id_labour_workout_child_items-TOTAL_FORMS').value);
+    
+    var prcocessMainValue = parseInt(document.getElementById('id_processQty').value) || 0;
+    var balanceMainValue = document.getElementById('id_balanceQtys');
+    var apprvedMainValue = document.getElementById('id_OderQty');
+    var totalProcessElement = document.getElementById('id_total_process_pcs');
+    var totalBalanceElement = document.getElementById('id_total_balance_pcs');
 
     for (var i = 0; i < forms; i++) {
         var processed = document.getElementById('id_labour_workout_child_items-' + i + '-processed_pcs');
@@ -379,42 +384,66 @@ labourApprovedQty()
         var approved = document.getElementById('id_labour_workout_child_items-' + i + '-pending_pcs');
         var balanceView = document.getElementById('id_labour_workout_child_items-' + i + '-balance_pcs_view');
 
-        var prcocessMainValue = parseInt(document.getElementById('id_processQty').value) || 0;
-        var balanceMainValue = document.getElementById('id_balanceQtys');
-        var apprvedMainValue = document.getElementById('id_OderQty');
-        var totalProcess = document.getElementById('id_total_process_pcs');
-        var totalBalance = document.getElementById('id_total_balance_pcs');
-
         var approvedValue = parseInt(approved.value) || 0;
         var balanceValue = parseInt(balanced.value) || 0;
         var processValue = parseInt(processed.value) || 0;
-        var balanceViewvalue = parseInt(balanceView.value) || 0;
+        var balanceViewValue = parseInt(balanceView.value) || 0;
 
-        // Ensure that the processed quantity does not exceed the available balance
-        if (balanceViewvalue < processValue) {
-            processed.value = 0;
-            processValue = 0;  // Reset processValue to 0 since the input is set to 0
+        // Adjust the process value if it exceeds the balance view value
+        if (processValue > balanceViewValue) {
+            totalProcess += balanceViewValue; // Add up the balanced quantity to total process
+            prcocessMainValue -= balanceViewValue; // Decrease the main process value by the balance view value
+            processed.value = balanceViewValue; // Set the processed value to the available balance
+            
+            // Update the balanced value for the current row
+            balanced.value = 0; // No remaining balance if process quantity exceeds balance view
+        } else {
+            totalProcess += processValue; // Accumulate process quantity if it's within the balance
+          var  balance = balanceViewValue - processValue; // Update balance for the row
+     
+            balanced.value = balance;
+            totalBalanceElement.value = balance;
         }
 
-        if (!isNaN(prcocessMainValue)) {
-            approve += approvedValue;
-            apprvedMainValue.value = approve;
-            totalProcess.value = prcocessMainValue;
+        // Update approved quantity
+        approve += approvedValue;
+        apprvedMainValue.value = approve;
 
-            var mainBalance = balanceViewvalue - processValue;
+        // Accumulate total balance
+        totalBalance += balance;
+        balanceMainValue.value = totalBalance; // Update main balance
+        totalBalanceElement.value = totalBalance; // Update total balance
 
-            if (processValue > balanceViewvalue) {
-                balanced.value = balanceViewvalue;
-            } else {
-                balanced.value = mainBalance;
-                balance += mainBalance;
-                balanceMainValue.value = balance;
-                totalBalance.value = balance;
-            }
+        // Update total process quantity field
+        totalProcessElement.value = totalProcess;
+    }
+
+    // Update the main process value
+    prcocessMainValue = totalProcess; // Ensure prcocessMainValue reflects the total processed quantity
+    document.getElementById('id_processQty').value = prcocessMainValue;
+}
+
+function labourworkoutBalanceQty(){
+    var totalforms = document.getElementById('id_labour_workout_cutting_items_set-TOTAL_FORMS').value;
+
+    for (var i = 0; i < totalforms; i++) {
+        var physicalstock = parseInt(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').value);
+        var balance = parseInt(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value);
+      
+        if(physicalstock > 0){
+            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
+        }else{
+            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').style.color = 'red';
+        }
+
+        if(balance > 0){
+            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'green';
+        }else{
+            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'red';
         }
     }
 }
-
+labourworkoutBalanceQty()
    function fabricQty() {
     let totalFabric = 0;
     const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
@@ -422,8 +451,10 @@ labourApprovedQty()
     processQty.forEach(function (element) {
         const processValue = parseInt(element.value) || 0;
         const color = element.closest('tr').querySelector('[name$="-product_color"]').value;
-        const labourValue = document.getElementById('id_processQty')
-
+        const labourValue = document.getElementById('id_processQty');
+        const labourTotalQty = document.getElementById('id_total_process_pcs');
+      
+     
         totalFabric += processValue;
         labourValue.value = totalFabric
 
@@ -432,10 +463,10 @@ labourApprovedQty()
         mainTables.forEach(function (el) {
             const mainColor = el.querySelector('[name$="-product_color"]').value;
             let totalConsumption = el.querySelector('[name$="-total_comsumption"]');
-
             if (totalConsumption) {
                 if (color === mainColor) {
                     const consumption = el.querySelector('[name$="-consumption"]');
+                   
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
                     let tConsumption = consumptionMainValue * processValue;
                     totalConsumption.value = tConsumption.toFixed(2);
@@ -452,7 +483,7 @@ labourApprovedQty()
     });
 }
 
- 
+
 document.addEventListener('DOMContentLoaded', function() {
  
     const pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
@@ -461,10 +492,11 @@ document.addEventListener('DOMContentLoaded', function() {
         labourApprovedQty();
         fabricQty();
         updateBalanceAndProcessQty();
-        
+        labourworkoutBalanceQty();
         
       })
     })
+   
 });
 
 </script>

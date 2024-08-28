@@ -79,6 +79,7 @@
                 {{ forms.id }}
                 
                 <tr>
+                    <input type="hidden" id="id_item_checkshade-{{forloop.counter0}}" name="item_checkshade-{{forloop.counter0}}" value="">
                     <input type="hidden" id="{{forms.prefix}}-popupData" name="{{forms.prefix}}-popupData" value="">    
                     <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
                     <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}">
@@ -101,8 +102,7 @@
                         <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 5px;" readonly>
                         
                     </td>
-                    <td>
-                        <input type="hidden" id="id_item_checkshade-{{forloop.counter0}}" name="item_checkshade-{{forloop.counter0}}" value=""> 
+                    <td> 
                         <input type ="text" name="input_item_shade_{{forloop.counter0}}" id="input_item_shade_{{forloop.counter0}}" class="purchase-select" style="border: none ;color: #000; background-color: transparent; display: none;" readonly value="">
                         <select name="{{forms.prefix}}-item_shade" class="purchase-select item-shade" placeholder="Item Shades"  id="{{forms.prefix}}-item_shade">
 
@@ -518,7 +518,9 @@ function randomValue (){
         function handleSelection(purchaseValue,itemName, item_value) {
 
         if (item_value !== undefined) {
+            console.log('Item value:', item_value);
         var selectedValue = searchedItemNameDict[item_value];
+        console.log('Selected value:', selectedValue);
          $(`input[name^="item_name_${purchaseValue}"]`).val(selectedValue);
 
         $.ajax({
@@ -531,9 +533,11 @@ function randomValue (){
                 console.log('Data sent successfully');
                 var itemrownameid = itemName.split('-')[1];
                 var differentShades = Object.keys(response.item_shade).length;
+               
                 
                 var itemCheckshadeValue = document.querySelector('#id_item_checkshade-' + itemrownameid);
                 itemCheckshadeValue.value = response.auto_popup_flag;
+                console.log(itemCheckshadeValue)
                     var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
                     var item_color = response.item_color;
 
@@ -547,12 +551,15 @@ function randomValue (){
                     var item_gst_value_response = response.item_gst_out;
                     itemgstinput.value = item_gst_value_response;
 
-                if(differentShades > 1){
-                    $('#' + itemName).empty().append('<option value="">Select Shade</option>');
-
-                    
                     var item_shade_response = response.item_shade;
                     var item_shade__quantity = response.item_shades_total_quantity_dict;
+
+                if(differentShades > 1){
+                    $('#' + itemName).empty().append('<option value="">Select Shade</option>').click();
+
+                    
+                    // var item_shade_response = response.item_shade;
+                    // var item_shade__quantity = response.item_shades_total_quantity_dict;
 
                     $.each(item_shade_response, function (key, value) {
                         if (item_shade__quantity.hasOwnProperty(key)) {
@@ -578,11 +585,11 @@ function randomValue (){
                             $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
                         }
                     }); 
-                }else{
+                }else if(differentShades === 1){
 
                     $('#' + itemName).empty();
-                    var item_shade_response = response.item_shade;
-                    var item_shade__quantity = response.item_shades_total_quantity_dict;
+                    // var item_shade_response = response.item_shade;
+                    // var item_shade__quantity = response.item_shades_total_quantity_dict;
 
                     $.each(item_shade_response, function (key, value) {
                         if (item_shade__quantity.hasOwnProperty(key)) {
@@ -762,23 +769,50 @@ function randomValue (){
 
         $(document).on('focusout', 'input[name^="item_name_"]', function () {
             var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
+            console.log('shadeValue',typeof(shadeValue));
+            if (shadeValue === "false") {
+                console.log('test')
+                handleShadeValueFalse();
+            } else if (shadeValue === "true") {
+                handleShadeValueTrue();
+            }
+        })
+        $(document).on('click', '[id^="itemName-div_"]', function () {
+             var shadeValue = document.querySelector('#id_item_checkshade-' + purchaseValue );
+            console.log('shadeValueclick',shadeValue);
+            if (shadeValue === "false") {
+                console.log('test')
+                handleShadeValueFalse();
+            } else if (shadeValue === "true") {
+                handleShadeValueTrue();
+            }
+        })
+        $(document).on('click keydown', '[name^="item_color_"]', function () {
+            var shadeValue = $(this).closest('tr').eq(0);//$('#id_item_checkshade-' + purchaseValue ).val();
+            console.log('testClick')
+            console.log('shadeValue',shadeValue);
             if (shadeValue == "false") {
+                console.log('test')
                 handleShadeValueFalse();
             } else if (shadeValue == "true") {
                 handleShadeValueTrue();
             }
         })
 
+
     function handleShadeValueFalse() {
-    $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-        const selectedShade = $(this).val();
+        console.log('test2');
+    $(document).on('change keydown click', 'select[name^="purchase_voucher_items_set-"]', function (event) {
+        const selectedShade = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').val();
+        console.log('selectedShadeChangeClickKeydown',selectedShade);
         const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+       
         handlePopup(selectedShade, uniqueIdValue);
     });
 }
 
 function handleShadeValueTrue() {
-    $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
+    $(document).on('keydown change', 'select[name^="purchase_voucher_items_set-"]', function (event) {
         if (event.key === 'Enter') {
             const selectedShade = $(this).val();
             const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
@@ -792,12 +826,14 @@ function handleShadeValueTrue() {
     });
 }
         function handlePopup(selectedShade, uniqueIdValue) {
+            //console.log('purchaseValue',purchaseValue);
+          
             const purchaseId = $('#id_purchase_voucher_items_set-' + purchaseValue + '-id').val();
-
+            console.log('purchaseId',purchaseId);
             const prefix_id = purchaseValue;
                 let primary_id = null;
                 
-                if(purchaseId ){
+                if(purchaseId !== "" ){
                     primary_id = purchaseId
 
                     if (primary_id === "") {
@@ -805,8 +841,11 @@ function handleShadeValueTrue() {
                     }
 
                 }
-
-                if (selectedShade !== "" && primary_id !== null ) {
+                console.log('uniqueIdValue',uniqueIdValue);
+                console.log('selectedShade',selectedShade);
+                console.log('primary_id',primary_id);
+          
+                if (selectedShade !== "" && primary_id !== null) {
                         if (popupWindow === null || popupWindow.closed) { // Check if no popup is open or the existing one is closed
                             const minWidth = 800;
                             const minHeight = 600;

@@ -150,6 +150,7 @@
 
             // Optionally, remove the event listeners from the buttons
             row.find('a, button').off('click');
+            window.location.reload();
           },
           error: function(xhr, status, error){
             console.error("Error occurred: " + error);

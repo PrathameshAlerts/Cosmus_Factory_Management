@@ -282,8 +282,18 @@ function balanceStock(){
         var balanceStock = document.getElementById('id_raw_materials-' + i + '-balance_physical_stock');
 
             balanceStock = newPhysicalStock - totalConsumtionValue;
-    
             document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(2);
+            if(balanceStock > 0){
+                document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').style.color = 'green';
+            }else{
+                document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').style.color = 'red';
+            }
+            if(newPhysicalStock > 0){
+                document.getElementById('id_raw_materials-' + i + '-physical_stock').style.color = 'green';
+            }else{
+                document.getElementById('id_raw_materials-' + i + '-physical_stock').style.color = 'red'; 
+            }
+            
     }               
 }
 function submitForm(){
