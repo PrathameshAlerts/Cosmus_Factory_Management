@@ -1947,7 +1947,7 @@ def purchasevouchercreateupdate(request, pk=None):
             for godown in shade_godowns:
                 godown_shade_quantity = godown_shade_quantity + godown.quantity
             item_shades_total_quantity_dict[shade.id] = godown_shade_quantity
-
+        
         auto_popup_flag = False
 
         shade_count = len(item_shades_total_quantity_dict)
@@ -2261,6 +2261,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
 
     #create a formset instance with the selected unique id or PK 
     formset = formsets
+    
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -2271,6 +2272,9 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
 
     if request.method == 'POST':
         formset = formsets
+        
+                
+
         if formset.is_valid():
             for form in formset:
                 if form.is_valid():

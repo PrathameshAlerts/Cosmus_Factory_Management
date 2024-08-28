@@ -57,7 +57,7 @@
                             <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}"  ></td>
 
                            
-                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate|default_if_none:item_rate_value}}" >
+                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate|default_if_none:''}}" >
                             </td>
                             <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount | default_if_none:'' }}" readonly>
                             </td>
@@ -294,12 +294,12 @@
         const newQuantity = tableClone.find('input[name^="shade_godown_items_set-"][name$="-quantity"]');
         newQuantity.attr('name', 'shade_godown_items_set-' + formsValue + '-quantity');
         newQuantity.attr('id', 'shade_godown_items_set-' + formsValue + '-quantity');
-        newQuantity.val(0);
+        newQuantity.val();
         
         const newQuantityValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-new_quantity"]');
         newQuantityValue.attr('name', 'shade_godown_items_set-' + formsValue + '-new_quantity');
         newQuantityValue.attr('id', 'shade_godown_items_set-' + formsValue + '-new_quantity');
-        newQuantityValue.val(0);
+        newQuantityValue.val('');
        
         
         const newRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]');
@@ -307,14 +307,14 @@
         newRate.attr('id', 'shade_godown_items_set-' + formsValue + '-rate');
 
         const firtRowRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]').last().val();
-        newRate.val(firtRowRate);
+        newRate.val('');
         newRate.attr('readonly', true);
        
 
         const newAmount = tableClone.find('input[name^="shade_godown_items_set-"][name$="-amount"]');
         newAmount.attr('name', 'shade_godown_items_set-' + formsValue + '-amount');
         newAmount.attr('id', 'shade_godown_items_set-' + formsValue + '-amount');
-        newAmount.val(0);
+        newAmount.val('');
 
         const newUniqueValue = tableClone.find('input[name^="shade_godown_items_set-"][name$="-unique_id"]');
         newUniqueValue.attr('name', 'shade_godown_items_set-' + formsValue + '-unique_id');
@@ -447,15 +447,21 @@
                 const row = $(this).closest('tr'); 
                 const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
                 const gowdownId = row.find('.godown-select[name^="shade_godown_items_set-"][name$="-id"]');
-                const qty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]')
-                const rate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]')
-                
+                const qty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]');
+                const rate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]');
+                const amount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]')
+                console.log('rate',rate)
                 checkbox.prop('checked', true); 
                 checkbox.val('true');
-            
+                rate.val('');
+                amount.val('')
+                console.log('rates',rate.val())
                 if(checkbox.val() == 'true'){
                     row.hide();
                     gowdownId.removeAttr('required');
+                    //qty.val('');
+                   
+                  
                     deleteRowCalculate();
                 }
             } else {
