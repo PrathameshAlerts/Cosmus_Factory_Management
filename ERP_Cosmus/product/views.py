@@ -2209,7 +2209,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
                         items.delete()
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance ,prefix='shade_godown_items_set')
-            
+            print(formset)
             if formset.is_valid():
                 for form in formset.deleted_forms:
                     if form.instance.pk:
@@ -2704,7 +2704,7 @@ def product2item(request,product_refrence_id):
 
         
         if request.method == 'POST':
-            print(request.POST)
+            
             formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
             formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
             
@@ -3655,6 +3655,7 @@ def purchaseordercuttingpopup(request,cutting_id):
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
 def purchaseordercuttingmastercancelajax(request):
+
     if request.method == 'POST':
 
         try:
@@ -3697,6 +3698,7 @@ def purchaseordercuttingmastercancelajax(request):
                             cutting_items.total_comsumption_in_cutting = 0
                             cutting_items.save()
 
+                        messages.success(request, 'Cutting Order cancelled successfully')
                         return JsonResponse({'status' : 'success'}, status=200)
                 
                     else:
@@ -3705,12 +3707,24 @@ def purchaseordercuttingmastercancelajax(request):
                     return JsonResponse({'status':'Instance not found'}, status=404)
             
         except ObjectDoesNotExist as ne:
-            print(ne)
+            logger.error(f'Instance not found -{ne}')
+            messages.error(request, f'Error with labour workout: {ne}')
             return JsonResponse({'status':f'Instance not found -{ne}'}, status=404)
         
+
+        except IntegrityError as ie:
+            messages.error(request, 'Database integrity error occurred. Please try again.')
+            logger.error(f'Database integrity error - {ie}')
+            return JsonResponse({'status': 'Database integrity error occurred.'}, status=500)
+        
+
         except Exception as e:
-            print(e)
+            logger.error(f'Instance not found -{e}')
+            messages.error(request, f'Error with labour workout: {e}')
             return JsonResponse({'status':f'Instance not found -{e}'}, status=404)
+        
+    else:
+        return JsonResponse({'status': 'Invalid request method.'}, status=405)
 
 
 
@@ -3946,25 +3960,73 @@ def labour_workout_child_list(request, labour_master_pk):
 
 
 # change this qty pending_pcs
-def labourworkoutsingledeleteajax(request,labour_workout_child_pk):
+def labourworkoutsingledeleteajax(request):
     
     if request.method == 'POST':
-        with transaction.atomic():
-            labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_pk)
-            print(labour_workout_child_instance)
-            labour_master_instance = labour_workout_child_instance.labour_workout_master_instance
-            print(labour_master_instance)
-            labour_master_instance.total_pending_pcs = labour_master_instance.total_pending_pcs + labour_workout_child_instance.total_process_pcs
-            print(labour_master_instance.total_pending_pcs)
-            
-            # labour_master_instance.save()
 
-            # for product_2_Item_child_instancs in labour_workout_child_instance.labour_workout_child_items.all():
-            #     product_2_item_master_instance = product_to_item_labour_workout.objects.filter(labour_workout=labour_master_instance,product_sku=product_2_Item_child_instancs.product_sku,product_color=product_2_Item_child_instancs.product_color)
-            #     product_2_item_master_instance.pending_pcs = product_2_item_master_instance.pending_pcs + product_2_Item_child_instancs.processed_pcs
-            #     product_2_item_master_instance.save()
+        labour_workout_child_pk =  request.POST.get('labour_workout_child_pk')
+        try:
+            with transaction.atomic():
+                
+                labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_pk)
+                labour_master_instance = labour_workout_child_instance.labour_workout_master_instance
+                labour_master_instance.total_pending_pcs = labour_master_instance.total_pending_pcs + labour_workout_child_instance.total_process_pcs
 
-            # labour_workout_child_instance.delete()  
+                labour_master_instance.save()
+                
+                for product_2_Item_child_instancs in labour_workout_child_instance.labour_workout_child_items.all():
+                    product_2_item_master_instance = product_to_item_labour_workout.objects.get(labour_workout = labour_master_instance,product_sku=product_2_Item_child_instancs.product_sku,product_color=product_2_Item_child_instancs.product_color)
+                    product_2_item_master_instance.pending_pcs = product_2_item_master_instance.pending_pcs + product_2_Item_child_instancs.processed_pcs
+                    product_2_item_master_instance.save()
+
+
+                for labour_workout_child_items in labour_workout_child_instance.labour_workout_cutting_items_set.all():
+                    item_in_row = item_color_shade.objects.get(items__item_name=labour_workout_child_items.material_name,item_shade_name=labour_workout_child_items.material_color_shade)
+                    
+                    if item_in_row.items.Fabric_nonfabric == 'Fabric':
+                        purchase_order_cutting_item = purchase_order_for_raw_material_cutting_items.objects.get(purchase_order_cutting=labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id,material_color_shade=item_in_row)
+
+                        purchase_order_cutting_item.total_comsumption_in_cutting = purchase_order_cutting_item.total_comsumption_in_cutting + labour_workout_child_items.total_comsumption
+                        
+                        purchase_order_cutting_item.save()
+
+                    elif item_in_row.items.Fabric_nonfabric == 'Non Fabric':
+
+                        obj, created = item_godown_quantity_through_table.objects.get_or_create(Item_shade_name=item_in_row,godown_name=labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.temp_godown_select)
+
+                        if created:
+                            qty_to_add = 0
+                        else:
+                            qty_to_add = obj.quantity
+
+                        obj.quantity = qty_to_add + labour_workout_child_items.total_comsumption
+                        obj.save()
+
+                labour_workout_child_instance.delete()
+
+                messages.success(request,'labour workout deleted successfully')
+                return JsonResponse({'status':'success'}, status=200) 
+             
+
+        except ObjectDoesNotExist as ne:
+            messages.error(request, f'Error with labour workout: {ne}')
+            logger.error(f'Instance not found - {ne}')
+            return JsonResponse({'status': f'Instance not found - {ne}'}, status=404)
+        
+
+        except IntegrityError as ie:
+            messages.error(request, 'Database integrity error occurred. Please try again.')
+            logger.error(f'Database integrity error - {ie}')
+            return JsonResponse({'status': 'Database integrity error occurred.'}, status=500)
+        
+
+        except Exception as e:
+            logger.error(f'An unexpected error occurred - {e}')
+            messages.error(request, f'Error with labour workout: {e}')
+            return JsonResponse({'status': f'An unexpected error occurred - {e}'}, status=500)
+        
+    else:
+        return JsonResponse({'status': 'Invalid request method.'}, status=405)
 
 
 
@@ -4058,23 +4120,32 @@ def itemdynamicsearchajax(request):
 
         if not item_name_typed:
             raise ValidationError("partial name provided.")
+        
         logger.info(f"searched keyword via itemdynamicsearchajax {item_name_typed}")
         
-        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
+        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed).annotate(total_qty= Sum('shades__godown_shades__quantity'))
+        
 
         if item_name_searched:
-            # Prepare a dictionary of searched items with IDs as keys and names as values
-            searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
-            logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
-            """
-            or 
+            # # Prepare a dictionary of searched items with IDs as keys and names as values
+            # searched_item_name_dict = {queryset.id : queryset.item_name for queryset in item_name_searched}
+
+            # or 
+
             searched_item_name_dict = {}
             for queryset in item_name_searched:
-                item_name = queryset.item_name
+
+                if queryset.total_qty is not None:
+                    total_qty = str(queryset.total_qty)
+                else:
+                    total_qty = '0'
+
+                item_name = queryset.item_name + ' | ' + total_qty
                 item_id = queryset.id
                 searched_item_name_dict[item_id] = item_name
-            """
-
+            
+            logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
+            
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
         else:
             return JsonResponse({'error': 'No items found.'}, status=404)
@@ -4084,14 +4155,14 @@ def itemdynamicsearchajax(request):
         logger.error(f"Validaton errorin itemdynamicsearchajax - {ve}")
         return JsonResponse({'error': error_message}, status=400)
     
-    
     except Exception as e:
-        error_message = f"An error occurred: {str(e)}"
+        logger.error(f"Exception in itemdynamicsearchajax - {ve}")
+        error_message = f"An error occurred:{str(e)}"
         return JsonResponse({'error': error_message}, status=500)
 
 
 
-#__________________________reports-start-end_________________________________
+#__________________________reports-start_________________________________
 
 def creditdebitreport(request):
     all_reports = account_credit_debit_master_table.objects.all()
@@ -4204,7 +4275,7 @@ def godown_item_report(request,g_id,shade_id):
     # purchase voucher report query    
     # comments in please check notes/ORM_query_dump.txt line no 34
     purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
-        purchase_voucher_items__item_shade = shade_name ,purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
+        purchase_voucher_items__item_shade = shade_name , purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
             godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
                 'purchase_voucher_items__rate')), filter=Q(purchase_voucher_items__shade_godown_items__godown_id = godown_name))
     
@@ -4220,7 +4291,28 @@ def godown_item_report(request,g_id,shade_id):
         material_color_shade = shade_id, inward = True, godown_id = g_id)
     
 
-    labour_workout_report = labour_workout_cutting_items.objects.filter()
+    labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
+        material_color_shade = shade_name.item_shade_name,labour_workout_child_instance__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__temp_godown_select= g_id)
+
+    for record in labour_workout_report:
+        item_instance = item_color_shade.objects.get(items__item_name=record.material_name,item_shade_name=record.material_color_shade)
+        
+        if item_instance.items.Fabric_nonfabric == 'Non Fabric':
+            outward_value = round(record.total_comsumption * record.rate , 2)
+
+            report_data.append({
+                'date': record.created_date,
+                'particular': 'Labour workout',
+                'voucher_type': 'Labour workout',
+                'vch_no': record.labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                'inward_quantity': '',
+                'inward_value': '',
+                'outward_quantity': f"{record.total_comsumption} Mtr",
+                'outward_value': outward_value,
+                'closing_quantity': 0,
+                'closing_value': 0,
+                'rate': record.rate})
+        
 
     for godown_qty in opening_godown_qty:
 
@@ -4303,6 +4395,10 @@ def godown_item_report(request,g_id,shade_id):
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
                                                                              'shade_name':shade_name,'report_data':report_data_sorted})
 
+
+def allrawmaterialstockreport(request):
+    queryset = item_color_shade.objects.all().annotate(total_qty = Sum('godown_shades__quantity')).prefetch_related('godown_shades','godown_shades__godown_name').select_related('items')
+    return render(request,'reports/allrawmaterialstockreport.html',{'queryset':queryset})
 
 #__________________________reports-end____________________________________
 

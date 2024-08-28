@@ -1,0 +1,36 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<table>
+<tr>
+    <th>No</th>
+    <th>Date</th> 
+    <th>Material Name</th> 
+    <th>Material Shade</th>
+    <th>Total Qty</th> 
+    <th>Quantity</th>
+    
+</tr>
+{% for report in queryset %}
+<tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{report.created_date}}</td>
+    <td>{{report.items.item_name}}</td>
+    <td>{{report.item_shade_name}}</td>
+    <td>{{report.total_qty | default_if_none:0}}</td>
+    {% if report.godown_shades.all %}
+    <td>
+        {% for g_qty in report.godown_shades.all %}
+        <a href="{% url 'godown-item-report' g_qty.godown_name.id report.id %}">{{g_qty.godown_name.godown_name_raw}}</a>
+        {{g_qty.quantity}}
+        {% endfor %}
+    </td>
+    {% else %}
+    <td>
+        <span>Not Present</span>
+    </td>
+    {% endif %}
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
