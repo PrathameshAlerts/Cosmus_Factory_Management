@@ -375,7 +375,7 @@ class item_color_shade(models.Model):
 
     class Meta:
         unique_together = [['items','item_shade_name']]
-
+        ordering = ['items__item_name']
 
     def __str__(self):
         return self.item_shade_name
@@ -451,7 +451,6 @@ class Ledger(models.Model):
     Debit_Credit =  models.CharField( choices = DEBIT_CREDIT ,max_length = 255, blank = True)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
-
 
     def account_sub_group_ledger(self):
         return self.under_group.account_sub_group

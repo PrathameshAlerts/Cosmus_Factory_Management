@@ -2209,7 +2209,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
                         items.delete()
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance ,prefix='shade_godown_items_set')
-            
+            print(formset)
             if formset.is_valid():
                 for form in formset.deleted_forms:
                     if form.instance.pk:
@@ -3657,6 +3657,7 @@ def purchaseordercuttingpopup(request,cutting_id):
 def purchaseordercuttingmastercancelajax(request):
 
     if request.method == 'POST':
+
         try:
             cutting_key = request.POST.get('cuttingId')
             
@@ -3710,7 +3711,7 @@ def purchaseordercuttingmastercancelajax(request):
             messages.error(request, f'Error with labour workout: {ne}')
             return JsonResponse({'status':f'Instance not found -{ne}'}, status=404)
         
-        
+
         except IntegrityError as ie:
             messages.error(request, 'Database integrity error occurred. Please try again.')
             logger.error(f'Database integrity error - {ie}')
@@ -4119,23 +4120,32 @@ def itemdynamicsearchajax(request):
 
         if not item_name_typed:
             raise ValidationError("partial name provided.")
+        
         logger.info(f"searched keyword via itemdynamicsearchajax {item_name_typed}")
         
-        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed)
+        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed).annotate(total_qty= Sum('shades__godown_shades__quantity'))
+        
 
         if item_name_searched:
-            # Prepare a dictionary of searched items with IDs as keys and names as values
-            searched_item_name_dict = {queryset.id: queryset.item_name for queryset in item_name_searched}
-            logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
-            """
-            or 
+            # # Prepare a dictionary of searched items with IDs as keys and names as values
+            # searched_item_name_dict = {queryset.id : queryset.item_name for queryset in item_name_searched}
+
+            # or 
+
             searched_item_name_dict = {}
             for queryset in item_name_searched:
-                item_name = queryset.item_name
+
+                if queryset.total_qty is not None:
+                    total_qty = str(queryset.total_qty)
+                else:
+                    total_qty = '0'
+
+                item_name = queryset.item_name + ' | ' + total_qty
                 item_id = queryset.id
                 searched_item_name_dict[item_id] = item_name
-            """
-
+            
+            logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
+            
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
         else:
             return JsonResponse({'error': 'No items found.'}, status=404)
@@ -4145,14 +4155,14 @@ def itemdynamicsearchajax(request):
         logger.error(f"Validaton errorin itemdynamicsearchajax - {ve}")
         return JsonResponse({'error': error_message}, status=400)
     
-    
     except Exception as e:
-        error_message = f"An error occurred: {str(e)}"
+        logger.error(f"Exception in itemdynamicsearchajax - {ve}")
+        error_message = f"An error occurred:{str(e)}"
         return JsonResponse({'error': error_message}, status=500)
 
 
 
-#__________________________reports-start-end_________________________________
+#__________________________reports-start_________________________________
 
 def creditdebitreport(request):
     all_reports = account_credit_debit_master_table.objects.all()
@@ -4265,7 +4275,7 @@ def godown_item_report(request,g_id,shade_id):
     # purchase voucher report query    
     # comments in please check notes/ORM_query_dump.txt line no 34
     purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
-        purchase_voucher_items__item_shade = shade_name ,purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
+        purchase_voucher_items__item_shade = shade_name , purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
             godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
                 'purchase_voucher_items__rate')), filter=Q(purchase_voucher_items__shade_godown_items__godown_id = godown_name))
     
@@ -4281,7 +4291,28 @@ def godown_item_report(request,g_id,shade_id):
         material_color_shade = shade_id, inward = True, godown_id = g_id)
     
 
-    labour_workout_report = labour_workout_cutting_items.objects.filter()
+    labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
+        material_color_shade = shade_name.item_shade_name,labour_workout_child_instance__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__temp_godown_select= g_id)
+
+    for record in labour_workout_report:
+        item_instance = item_color_shade.objects.get(items__item_name=record.material_name,item_shade_name=record.material_color_shade)
+        
+        if item_instance.items.Fabric_nonfabric == 'Non Fabric':
+            outward_value = round(record.total_comsumption * record.rate , 2)
+
+            report_data.append({
+                'date': record.created_date,
+                'particular': 'Labour workout',
+                'voucher_type': 'Labour workout',
+                'vch_no': record.labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                'inward_quantity': '',
+                'inward_value': '',
+                'outward_quantity': f"{record.total_comsumption} Mtr",
+                'outward_value': outward_value,
+                'closing_quantity': 0,
+                'closing_value': 0,
+                'rate': record.rate})
+        
 
     for godown_qty in opening_godown_qty:
 
@@ -4364,6 +4395,10 @@ def godown_item_report(request,g_id,shade_id):
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
                                                                              'shade_name':shade_name,'report_data':report_data_sorted})
 
+
+def allrawmaterialstockreport(request):
+    queryset = item_color_shade.objects.all().annotate(total_qty = Sum('godown_shades__quantity')).prefetch_related('godown_shades','godown_shades__godown_name').select_related('items')
+    return render(request,'reports/allrawmaterialstockreport.html',{'queryset':queryset})
 
 #__________________________reports-end____________________________________
 

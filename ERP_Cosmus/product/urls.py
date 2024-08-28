@@ -203,6 +203,8 @@ urlpatterns = [
     path('godownstockrawmaterialreportfabgrp/<int:g_id>', views.godown_stock_raw_material_report_fab_grp, name = 'godown-stock-raw-material-report_fab_grp'),
     path('godownstockrawmaterialreportfabgrp/<int:g_id>/<int:fab_id>', views.godown_stock_raw_material_report_fab_grp, name = 'godown-stock-raw-material-report_items'),
 
+    path('allrawmaterialstockreport/', views.allrawmaterialstockreport, name = 'all-raw-material-stock-report'),
+
     path('godownitemreport/<int:g_id>/<int:shade_id>', views.godown_item_report, name = 'godown-item-report'),
 
     #common Routes
