@@ -63,7 +63,7 @@
           <tr>
               <td></td>
               <td class="fabricShade">
-                  <a href="{% url 'godown-item-report' godown_id shade.item_shade_id %}" style="text-decoration: none; color: #000">{{ shade.item_shade }}</a>
+                  <a href="{% url 'godown-item-report' shade.item_shade_id godown_id %}" style="text-decoration: none; color: #000">{{ shade.item_shade }}</a>
               </td>
               <td class="fabricTotalShadeQty">{{ shade.quantity }}</td>
               <td></td>

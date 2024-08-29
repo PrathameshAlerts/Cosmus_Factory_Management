@@ -205,7 +205,8 @@ urlpatterns = [
 
     path('allrawmaterialstockreport/', views.allrawmaterialstockreport, name = 'all-raw-material-stock-report'),
 
-    path('godownitemreport/<int:g_id>/<int:shade_id>', views.godown_item_report, name = 'godown-item-report'),
+    path('godownitemreport/<int:shade_id>/<int:g_id>', views.godown_item_report, name = 'godown-item-report'),
+    path('godownitemreportallgodown/<int:shade_id>', views.godown_item_report, name = 'godown-item-report-all-godowns'),
 
     #common Routes
     path('', views.dashboard , name ='dashboard-main'),
