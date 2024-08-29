@@ -60,6 +60,7 @@
           <a href="{% url 'packaging-create-list' %}" class="sub-item">Packaging</a>
           <a href="{% url 'cutting_room-create' %}" class="sub-item">Cutting Room</a>
           <a href="{% url 'factory-emp-create' %}" class="sub-item">Factory Workers</a> 
+          <a href="" class="sub-item">Ledger Types</a>
         </div>
       </div> 
       <div class="item">
@@ -86,10 +87,12 @@
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Reports')"><img src="../../../static/images/research.png" alt="document" style="width: 33px; padding-right: 10px;">Reports<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="" class="sub-item">Stock Transfer Report</a>
+          <a href="{% url 'all-raw-material-stock-report' %}" class="sub-item">Raw Material Report</a>
           <a href="{% url 'credit-debit-report' %}" class="sub-item">Purchase Report</a>
           <a href="" class="sub-item">Sales Report</a>
-          <a href="{% url 'all-raw-material-stock-report' %}" class="sub-item">Stock Report</a>
+          <a href="" class="sub-item">Stock Transfer Report</a>
+          
+          
         </div>
       </div>
       <div class="item">
