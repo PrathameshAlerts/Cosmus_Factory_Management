@@ -421,24 +421,21 @@
         $('#grand_godown_rate').val(totalRate.toFixed(2));             
     }
    
-
-
-  
-   
-
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
             const tableRows = $('#newTable tbody tr'); 
             if (tableRows.length > 1) { 
                 const row = $(this).closest('tr'); 
                 const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+                const totalForm = $('#id_shade_godown_items_set-TOTAL_FORMS').val();
                 row.find('.godown-select, .godown-rate, .godown-amount')
                     .removeAttr('required')
                     .val(''); // Clear values
                 
                 checkbox.prop('checked', true); 
                 checkbox.val('true');
-            
+                totalForm = parseInt(totalForm) - 1;
+                $('#id_shade_godown_items_set-TOTAL_FORMS').val(totalForm);
                 if(checkbox.val() == 'true'){
                     row.hide();
                     deleteRowCalculate();

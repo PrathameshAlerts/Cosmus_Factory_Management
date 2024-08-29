@@ -623,10 +623,10 @@ function randomValue (){
         $(document).on('click','[name^="item_name_"]', function(event) {
 
             event.preventDefault();
-            const  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
-            const selectItem = $(`#${selectName}`);
+            // const  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
+            // const selectItem = $(`#${selectName}`);
             var purchaseData = $(`#purchase_voucher_items_set-${purchaseValue}-popupData`).val();
-            selectItem.css("display" ,"none");
+            //selectItem.css("display" ,"none");
             if(purchaseData != ""){
                 var itemNames = $(this).closest('tr').find('input[name^="item_name_"]');
                 var itemShade = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
@@ -674,7 +674,7 @@ function randomValue (){
                 const itemOffsetTop = $nextItem.position().top;
                 const itemHeight = $nextItem.outerHeight();
                 const selectScrollTop = $dropdownOptions.scrollTop();
-        const selectHeight = $dropdownOptions.height();
+                const selectHeight = $dropdownOptions.height();
 
                 if (itemOffsetTop + itemHeight > selectHeight) {
                     $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
@@ -769,6 +769,16 @@ function randomValue (){
             }
         })
 
+        $(document).on('focusin', 'select[name^="purchase_voucher_items_set-"]', function () {
+            var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
+            console.log("shadeValueFocusin",shadeValue)
+            if (shadeValue == "false") {
+                handleShadeValueFalse();
+            } else if (shadeValue == "true") {
+                handleShadeValueTrue();
+            }
+        })
+
     function handleShadeValueFalse() {
     $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
         const selectedShade = $(this).val();
@@ -786,10 +796,16 @@ function handleShadeValueTrue() {
             $(this).attr('disabled', 'disabled');
             itemShades.hide();
             handlePopup(selectedShade, uniqueIdValue);
-          
+            moveToNextCell($(this));
             $(this).removeAttr('disabled');
         }
     });
+}
+function moveToNextCell(currentElement) {
+    const nextCell = currentElement.closest('td').next('td').find('input, select').first();
+    if (nextCell.length > 0) {
+        nextCell.focus(); // Set focus to the next input/select element
+    }
 }
         function handlePopup(selectedShade, uniqueIdValue) {
             const purchaseId = $('#id_purchase_voucher_items_set-' + purchaseValue + '-id').val();
