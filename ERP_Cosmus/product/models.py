@@ -642,7 +642,7 @@ class purchase_order(models.Model):
     purchase_order_to_product_saved = models.BooleanField(default=False)
 
 class purchase_order_to_product(models.Model):
-    purchase_order_id = models.ForeignKey(purchase_order,related_name= 'p_o_to_products',on_delete=models.CASCADE)
+    purchase_order_id = models.ForeignKey(purchase_order,related_name = 'p_o_to_products',on_delete=models.CASCADE)
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)

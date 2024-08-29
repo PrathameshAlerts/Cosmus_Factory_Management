@@ -1,3 +1,4 @@
+import datetime
 import decimal
 from io import BytesIO
 from operator import itemgetter
@@ -2262,9 +2263,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
 
     #create a formset instance with the selected unique id or PK 
     formset = formsets
-    # print(formset)
-    print(request.POST)
-    
+
     try:
         godowns = Godown_raw_material.objects.all()
         item = Item_Creation.objects.get(shades__id = shade_id) 
@@ -2272,12 +2271,11 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
 
     except Exception as e:
         messages.error(request,'Error with Shades')
-        
-    print(formset)
+
+    
     if request.method == 'POST':
         formset = formsets
-        
-        print(formset)
+
         if formset.is_valid():
 
             for form in formset.deleted_forms:
@@ -3741,7 +3739,8 @@ def purchaseordercuttingmastercancelajax(request):
 def labourworkoutlistall(request):
     labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__gt=0).order_by('created_date')
     labour_workout_completed = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__lt=1).order_by('created_date')
-    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending,'labour_workout_completed':labour_workout_completed})
+    current_date = datetime.date.today
+    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending,'labour_workout_completed':labour_workout_completed,'current_date':current_date})
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
@@ -4269,60 +4268,78 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
                                                                              'querylist':querylist})
 
 
-def godown_item_report(request,g_id,shade_id):
+def godown_item_report(request,shade_id,g_id=None):
     
-    godown_name = Godown_raw_material.objects.get(id=g_id)
     shade_name = item_color_shade.objects.get(id=shade_id)
+    godown_name = 'All Stock'
 
     report_data = []
+    print('g_id', g_id)
+    print('shade_id', shade_id)
 
-    # opening quantity report query
-    opening_godown_qty = opening_shade_godown_quantity.objects.filter(
-        opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godown_name)
     
+    if g_id is not None:
+        godown_name = Godown_raw_material.objects.get(id=g_id)
 
 
-    # purchase voucher report query    
-    # comments in please check notes/ORM_query_dump.txt line no 34
-    purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
-        purchase_voucher_items__item_shade = shade_name , purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
-            godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
-                'purchase_voucher_items__rate')), filter=Q(purchase_voucher_items__shade_godown_items__godown_id = godown_name))
-    
-
-    # P O cutting room qty query
-    purchase_order_cutting_room_qty = godown_item_report_for_cutting_room.objects.filter(
-        material_color_shade = shade_id, inward = False, godown_id = g_id)
-    
-    
-   
-    # P O cutting room qty query for cancelled cutting room
-    purchase_order_cutting_room_qty_cancelled =  godown_item_report_for_cutting_room.objects.filter(
-        material_color_shade = shade_id, inward = True, godown_id = g_id)
-    
-
-    labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
-        material_color_shade = shade_name.item_shade_name,labour_workout_child_instance__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__temp_godown_select= g_id)
-
-    for record in labour_workout_report:
-        item_instance = item_color_shade.objects.get(items__item_name=record.material_name,item_shade_name=record.material_color_shade)
+        # opening quantity report query
+        opening_godown_qty = opening_shade_godown_quantity.objects.filter(
+            opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godown_name)
         
-        if item_instance.items.Fabric_nonfabric == 'Non Fabric':
-            outward_value = round(record.total_comsumption * record.rate , 2)
 
-            report_data.append({
-                'date': record.created_date,
-                'particular': 'Labour workout',
-                'voucher_type': 'Labour workout',
-                'vch_no': record.labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
-                'inward_quantity': '',
-                'inward_value': '',
-                'outward_quantity': f"{record.total_comsumption} Mtr",
-                'outward_value': outward_value,
-                'closing_quantity': 0,
-                'closing_value': 0,
-                'rate': record.rate})
+
+        # purchase voucher report query    
+        # comments in please check notes/ORM_query_dump.txt line no 34
+        purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
+            purchase_voucher_items__item_shade = shade_name , purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
+                godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
+                    'purchase_voucher_items__rate')), filter=Q(purchase_voucher_items__shade_godown_items__godown_id = godown_name))
         
+
+        # P O cutting room qty query
+        purchase_order_cutting_room_qty = godown_item_report_for_cutting_room.objects.filter(
+            material_color_shade = shade_id, inward = False, godown_id = g_id)
+        
+        
+    
+        # P O cutting room qty query for cancelled cutting room
+        purchase_order_cutting_room_qty_cancelled =  godown_item_report_for_cutting_room.objects.filter(
+            material_color_shade = shade_id, inward = True, godown_id = g_id)
+        
+
+        labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
+            material_color_shade = shade_name.item_shade_name,labour_workout_child_instance__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__temp_godown_select = g_id)
+
+    else:
+    
+        # opening quantity report query
+        opening_godown_qty = opening_shade_godown_quantity.objects.filter(
+            opening_purchase_voucher_godown_item=shade_name)
+        
+
+
+        # purchase voucher report query    
+        # comments in please check notes/ORM_query_dump.txt line no 34
+        purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
+            purchase_voucher_items__item_shade = shade_name).annotate(
+                godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
+                    'purchase_voucher_items__rate')))
+        
+
+        # P O cutting room qty query
+        purchase_order_cutting_room_qty = godown_item_report_for_cutting_room.objects.filter(
+            material_color_shade = shade_id, inward = False)
+        
+        
+    
+        # P O cutting room qty query for cancelled cutting room
+        purchase_order_cutting_room_qty_cancelled =  godown_item_report_for_cutting_room.objects.filter(
+            material_color_shade = shade_id, inward = True)
+        
+
+        labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
+            material_color_shade = shade_name.item_shade_name)
+    
 
     for godown_qty in opening_godown_qty:
 
@@ -4387,6 +4404,25 @@ def godown_item_report(request,g_id,shade_id):
             'closing_quantity': 0,
             'closing_value': 0,
             'rate': fabric_cutting_cancelled_items.rate})
+        
+    for record in labour_workout_report:
+        item_instance = item_color_shade.objects.get(items__item_name=record.material_name,item_shade_name=record.material_color_shade)
+        
+        if item_instance.items.Fabric_nonfabric == 'Non Fabric':
+            outward_value = round(record.total_comsumption * record.rate , 2)
+
+            report_data.append({
+                'date': record.created_date,
+                'particular': 'Labour workout',
+                'voucher_type': 'Labour workout',
+                'vch_no': record.labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                'inward_quantity': '',
+                'inward_value': '',
+                'outward_quantity': f"{record.total_comsumption} Mtr",
+                'outward_value': outward_value,
+                'closing_quantity': 0,
+                'closing_value': 0,
+                'rate': record.rate})
     
     report_data_sorted = sorted(report_data, key = itemgetter('date'), reverse=False)
 
