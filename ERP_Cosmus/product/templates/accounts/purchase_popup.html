@@ -38,7 +38,7 @@
                             <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
                             <input type="hidden" value="" id ="{{form.prefix}}-old_godown_id" name="{{form.prefix}}-old_godown_id">
                             
-                            <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
+                            <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" class="unique_ids" value="{{unique_id}}">
                             <td>
                             <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="item-select godown-select" required>
                                 {% if form.instance.id %}
@@ -431,7 +431,7 @@
                 row.find('.godown-select, .godown-rate, .godown-amount')
                     .removeAttr('required')
                     .val(''); // Clear values
-                
+                row.find('.unique_ids').val('');
                 checkbox.prop('checked', true); 
                 checkbox.val('true');
                 totalForm = parseInt(totalForm) - 1;
