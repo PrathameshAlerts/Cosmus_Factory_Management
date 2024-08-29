@@ -59,7 +59,21 @@
                 <span style="color: green; font-weight : bold;"> +{{ record.purchase_order_cutting_master.purchase_order_id.target_date|subtract_dates:current_date }} Remaining</span>
                 {% endif %}
                 </td>
-            <td></td>
+            <td>
+                {{ record.purchase_order_cutting_master.created_date.date}}
+
+                {% if record.purchase_order_cutting_master.created_date|subtract_datestime:current_date > 0 %}
+
+                
+                <span style="color: red; font-weight : bold;" >{{ record.purchase_order_cutting_master.created_date|subtract_datestime:current_date }} OverDue </span>
+
+                {% else %}
+
+                <span style="color: green; font-weight : bold;"> +{{ record.purchase_order_cutting_master.created_date|subtract_datestime:current_date }} Remaining</span>
+                {% endif %}
+                </td>
+
+            </td>
         </tr>
         {% endfor %}
     </tbody>
