@@ -2275,6 +2275,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
     if request.method == 'POST':
         formset = formsets
         formset.forms = [form for form in formset.forms if form.has_changed()]
+        print(formset.forms)
         if formset.is_valid():
 
             for form in formset.deleted_forms:
