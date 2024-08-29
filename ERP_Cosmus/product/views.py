@@ -2261,6 +2261,8 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
 
     #create a formset instance with the selected unique id or PK 
     formset = formsets
+    # print(formset)
+    print(request.POST)
     
     try:
         godowns = Godown_raw_material.objects.all()
@@ -2272,18 +2274,22 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
 
     if request.method == 'POST':
         formset = formsets
-        
-                
-
+        formset.forms = [form for form in formset.forms if form.has_changed()]
         if formset.is_valid():
+
+            for form in formset.deleted_forms:
+                if form.instance.id:
+                    form.instance.delete()
+
             for form in formset:
-                if form.is_valid():
-                    form.save()
-                else:
-                    context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
+                if not form.cleaned_data.get('DELETE'):
+                    if form.is_valid():
+                        form.save()
+                    else:
+                        context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
                                 'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,'item_rate_value':item_rate_value,
                                                                  'errors': formset.errors,'prefix_id':prefix_id, 'primary_key':primarykey}
-                    return render(request, 'accounts/purchase_popup.html', context)
+                return render(request, 'accounts/purchase_popup.html', context)
                 
             #if form is valid save the uniquekey in session for verification
             # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate  
