@@ -432,7 +432,7 @@
             if (tableRows.length > 1) { 
                 const row = $(this).closest('tr'); 
                 const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
-                row.find('.godown-select, .godown-quantity, .godown-rate, .godown-amount')
+                row.find('.godown-select, .godown-rate, .godown-amount')
                     .removeAttr('required')
                     .val(''); // Clear values
                 
