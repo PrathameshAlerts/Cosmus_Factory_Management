@@ -268,9 +268,9 @@
         // const newRates = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
         // console.log("newRate",newRates);
         // })
-        const newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
-            console.log(newRate);
-        if(newRate != "" && newRate != null && newRate != 0){
+        // const newRates = $('#newTable').find('tbody tr').length;
+        //     console.log(newRates);
+        // if(newRate > 1){
             const newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
             let formsValue = parseInt(newFormValue.value);
             const tableClone = $('#newTable').find('tbody tr').last().clone(true);
@@ -305,7 +305,7 @@
 
         const firtRowRate = tableClone.find('input[name^="shade_godown_items_set-"][name$="-rate"]').last().val();
         newRate.val(firtRowRate);
-        newRate.attr('readonly', true);
+        //newRate.attr('readonly', true);
        
 
         const newAmount = tableClone.find('input[name^="shade_godown_items_set-"][name$="-amount"]');
@@ -336,7 +336,7 @@
        
         deleteRowCalculate();
        
-        }   
+      // }   
     });
    // This funcion calculate the amount for each row then set the total amount and total quantity
    $('input[name$="-quantity"], input[name$="-rate"]').on('input', function() {
@@ -421,27 +421,26 @@
         $('#grand_godown_rate').val(totalRate.toFixed(2));             
     }
    
-
-
-  
-   
-
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
-            const tableRows = $('#newTable tbody tr'); 
+            const tableRows = $('#newTable').find('tbody tr'); 
+            console.log(tableRows.length);
             if (tableRows.length > 1) { 
                 const row = $(this).closest('tr'); 
                 const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+                const totalForm = $('#id_shade_godown_items_set-TOTAL_FORMS').val();
                 row.find('.godown-select, .godown-rate, .godown-amount')
                     .removeAttr('required')
                     .val(''); // Clear values
                 row.find('.unique_ids').val('');
                 checkbox.prop('checked', true); 
                 checkbox.val('true');
-            
+               let totalFormValue = totalForm - 1;
+                
                 if(checkbox.val() == 'true'){
                     row.hide();
                     deleteRowCalculate();
+                    $('#id_shade_godown_items_set-TOTAL_FORMS').val(totalFormValue);
                 }
             } else {
                 alert('The table must have at least one godown item'); 
