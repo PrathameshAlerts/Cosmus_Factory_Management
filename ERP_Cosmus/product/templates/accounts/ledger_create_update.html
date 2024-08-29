@@ -49,10 +49,19 @@
         <div class="d-flex mb-3">
           <label for="id_types" class="form-label item-form">Types:</label>
           <select class="item-select" value="{{form.instance.types}}" name="types" id="id_types" required>
-              <option value="{{form.instance.types}}">{{form.instance.types}}</option>
-              <option value="Trader">Trader</option>
-              <option value="Manufacture">Manufacture</option>
-              <option value="labour">labour</option>
+            
+            {% if form.instance.id %}
+            <option value="{{form.instance.types.id}}">{{form.instance.types.type_name}}</option>
+
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+
+            {% for type in ledgerTypes_query %}
+            <option value="{{type.id}}">{{type.type_name}}</option>
+            {% endfor %}
+
+            
           </select> 
         </div>
         <div class="d-flex mb-3">
