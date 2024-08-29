@@ -2251,6 +2251,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
         godowns_for_selected_shade = shade_godown_items.objects.filter(purchase_voucher_godown_item__item_shade = shade_id,purchase_voucher_godown_item = primarykey)
         
         voucher_item_instance = purchase_voucher_items.objects.get(id=primarykey)
+        
         if godowns_for_selected_shade:
             formsets = purchase_voucher_items_godown_formset(instance = voucher_item_instance,prefix='shade_godown_items_set')
         else:
@@ -2271,11 +2272,12 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
 
     except Exception as e:
         messages.error(request,'Error with Shades')
-
+        
+    print(formset)
     if request.method == 'POST':
         formset = formsets
-        formset.forms = [form for form in formset.forms if form.has_changed()]
-        print(formset.forms)
+        
+        print(formset)
         if formset.is_valid():
 
             for form in formset.deleted_forms:
@@ -2286,12 +2288,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
                 if not form.cleaned_data.get('DELETE'):
                     if form.is_valid():
                         form.save()
-                    else:
-                        context = {'godowns': godowns, 'item': item, 'item_shade': item_shade,
-                                'formset': formset,'unique_id': unique_id, 'shade_id': shade_id,'item_rate_value':item_rate_value,
-                                                                 'errors': formset.errors,'prefix_id':prefix_id, 'primary_key':primarykey}
-                return render(request, 'accounts/purchase_popup.html', context)
-                
+                    
             #if form is valid save the uniquekey in session for verification
             # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate  
             request.session['temp_data_exists'] = True
@@ -2302,6 +2299,8 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
             return HttpResponse('<script>window.close();</script>') 
 
         else:
+            print(formset.errors)
+            print(formset.non_form_errors())
             context = {
                 'godowns': godowns, 'item': item, 'item_shade': item_shade, 'formset': formset, 'item_rate_value':item_rate_value,
                 'unique_id': unique_id, 'shade_id': shade_id, 'errors': formset.errors,'prefix_id':prefix_id, 'primary_key':primarykey
