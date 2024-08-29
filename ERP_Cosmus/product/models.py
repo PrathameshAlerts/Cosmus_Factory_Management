@@ -308,6 +308,7 @@ class packaging(models.Model):
 
 
 
+
 class Item_Creation(models.Model):
     STATUS =  [
         ("Unused","Unused"),
@@ -413,6 +414,9 @@ class StockItem(models.Model):
         return self.acc_sub_grp.account_sub_group
     
 
+class ledgerTypes(models.Model):
+    type_name = models.CharField(max_length=50)
+
 
 class Ledger(models.Model):
     MAINTAIN_BILLWISE = [
@@ -420,11 +424,7 @@ class Ledger(models.Model):
         ("No", 'No'),
     ]
 
-    TYPES = [
-        ("Trader", 'Trader'),
-        ("Manufacture", 'Manufacture'),
-        ("labour","labour")
-    ]
+
 
     DEBIT_CREDIT = [
         ("Debit", 'Debit'),
@@ -438,7 +438,7 @@ class Ledger(models.Model):
     under_group  = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     maintain_billwise = models.CharField(choices = MAINTAIN_BILLWISE, max_length = 30, blank = True)
     default_credit_period = models.CharField(max_length = 100, blank = True)
-    types = models.CharField(choices = TYPES , max_length = 30, blank = True)
+    types = models.ForeignKey(ledgerTypes, blank=True, on_delete=models.PROTECT)
     Gst_no = models.CharField(max_length = 100, validators = [MinLengthValidator(15), MaxLengthValidator(15)])
     address = models.TextField(blank = True) 
     state = models.CharField(max_length = 255, blank = True)

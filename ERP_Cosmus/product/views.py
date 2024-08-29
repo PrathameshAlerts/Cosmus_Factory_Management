@@ -38,7 +38,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, opening_shade_godown_quantity, 
+                                 item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
@@ -48,7 +48,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
-                       factory_employee_form, labour_workout_child_form, labour_workout_cutting_items_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -1579,6 +1579,42 @@ def ledgerdelete(request, pk):
 
 
 
+def ledgerTypes_create_update(request,pk=None):
+    ledger_types = ledgerTypes.objects.all()
+    if request.path == '/ledgertypecreatepopup/':
+        template_name = 'accounts/ledgertypecreatepopup.html'
+    else:
+        template_name = 'accounts/ledgerTypescreateupdate.html'
+
+    if pk is not None:
+        type_instance = ledgerTypes.objects.get(pk=pk)
+    else:
+        type_instance = None
+
+    form = ledger_types_form(request.POST or None, instance = type_instance)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+
+            if request.path == '/ledgertypecreate/':
+                return redirect('ledger-type-list')
+            
+
+    return render(request,template_name,{'form':form,'ledger_types':ledger_types})
+
+
+
+def ledgerTypes_delete(request,pk):
+    type_instance = get_object_or_404(ledgerTypes,pk=pk)
+    if type_instance:
+        type_instance.delete()
+        return redirect('ledger-type-list')
+
+
+def ledgertypelist(request):
+    ledger_types = ledgerTypes.objects.all()
+    return render(request,'accounts/ledger_type_list.html',{'ledger_types':ledger_types})
 
 #_________________________Accounts end___________________________
 
@@ -4277,7 +4313,7 @@ def godown_item_report(request,shade_id,g_id=None):
     print('g_id', g_id)
     print('shade_id', shade_id)
 
-    
+
     if g_id is not None:
         godown_name = Godown_raw_material.objects.get(id=g_id)
 

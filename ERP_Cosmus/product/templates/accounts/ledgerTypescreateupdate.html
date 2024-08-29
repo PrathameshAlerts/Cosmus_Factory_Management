@@ -1,0 +1,10 @@
+
+<form method="POST">
+{% csrf_token %}
+    {{form.as_p}}
+<input type="submit">
+</form>
+
+{% for types in ledger_types %}
+{{types.type_name}}
+{% endfor %}
