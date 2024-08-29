@@ -9,9 +9,8 @@
         <span class="mx-2 fs-5 text-danger">{{item_shade}}</span>
           </div>
         <div class="">
-            <form method="post" id="childform" onsubmit="submitData()">
+            <form method="POST" action="" id="newForm">
                 {% csrf_token %}
-                
                 <table class="table table-striped table-hover" id="newTable">
                     <thead class="name_absolute">
                         <tr>
@@ -23,56 +22,73 @@
                         </tr>
                     </thead>
                     <tbody class="mainTableList">
+                        <!-- Hidden Fields for Metadata -->
                         <input type="hidden" id="id_unique_id_godown" name="unique_id_godown" value="{{unique_id}}">
                         <input type="hidden" id="id_primary_key_godown" name="primary_key_godown" value="{{primary_key_godown}}">
                         <input type="hidden" id="id_shade_id" name="shade_id" value="{{shade_id}}">
                         <input type="hidden" id="prefix_id" name="prefix_id" value="{{prefix_id}}">
-                        <input type="hidden" id="primary_id" name="primary_id" value=" {{primary_key}}">
-                    
+                        <input type="hidden" id="primary_id" name="primary_id" value="{{primary_key}}">
+            
                         {{ formset.management_form }}
-                        
+            
                         {% for form in formset %}
                         {{ form.id }}
                         <tr>
-                           
-                            <input type="hidden" value="" id ="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
-                            <input type="hidden" value="" id ="{{form.prefix}}-old_godown_id" name="{{form.prefix}}-old_godown_id">
-                            
+                            <!-- Additional Hidden Fields -->
+                            <input type="hidden" value="" id="{{form.prefix}}-new_quantity" name="{{form.prefix}}-new_quantity">
+                            <input type="hidden" value="" id="{{form.prefix}}-old_godown_id" name="{{form.prefix}}-old_godown_id">
                             <input type="hidden" id="{{form.prefix}}-unique_id" name="{{form.prefix}}-unique_id" value="{{unique_id}}">
+            
+                            <!-- Godown Dropdown -->
                             <td>
-                            <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="item-select godown-select" >
-                                {% if form.instance.id %}
-                                <option value="{{form.instance.godown_id.id}}">{{form.instance.godown_id.godown_name_raw}}</option>
-                                {% for godown in godowns %}
-                                <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-                                {% endfor %}
-                                {% elif not form.instance.id %}
-                                <option value="" selected disabled></option>
-                                {% for godown in godowns %}
-                                <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
-                                {% endfor %}
-                                {% endif %}
-                            </select>
+                                <select name="{{form.prefix}}-godown_id" id="{{form.prefix}}-godown_id" class="item-select godown-select" required>
+                                    {% if form.instance.id %}
+                                    <option value="{{form.instance.godown_id.id}}">{{form.instance.godown_id.godown_name_raw}}</option>
+                                    {% for godown in godowns %}
+                                    <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                                    {% endfor %}
+                                    {% elif not form.instance.id %}
+                                    <option value="" selected></option>
+                                    {% for godown in godowns %}
+                                    <option value="{{godown.id}}">{{godown.godown_name_raw}}</option>
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}"  ></td>
-
-                           
-                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate|default_if_none:item_rate_value}}" >
+            
+                            <!-- Quantity Input -->
+                            <td><input type="number" name="{{form.prefix}}-quantity" id="{{form.prefix}}-quantity" class="purchase-input godown-quantity" value="{{form.instance.quantity | default_if_none:''}}" required></td>
+            
+                            <!-- Rate Input -->
+                            <td><input type="number" name="{{form.prefix}}-rate" step="0.01" id="{{form.prefix}}-rate" class="purchase-input godown-rate" value="{{form.instance.rate|default_if_none:''}}" required></td>
+            
+                            <!-- Amount Input (Read-Only) -->
+                            <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount | default_if_none:'' }}" readonly></td>
+            
+                            <!-- Delete Button with Hidden Checkbox -->
+                            <td>
+                                <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;">
+                                    <i class="fa-solid fa-trash text-danger px-3"></i>
+                                    <input type="checkbox" class="godown_delete" name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" style="display: none;">
+                                </span>
                             </td>
-                            <td><input type="number" name="{{form.prefix}}-amount" step="0.01" id="{{form.prefix}}-amount" class="purchase-amount godown-amount" value="{{form.instance.amount | default_if_none:'' }}" readonly>
-                            </td>
-                            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;"   name="{{form.prefix}}-DELETE" id="{{form.prefix}}-DELETE" value="" ></i></span></td>
-                                
-                            </tr>
-                            {% endfor %}
-                            <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id ="grand_godown_quantity" value="" maxlength="50" step=".01">
-                                <input type="hidden" class="purchase-amount" name="grand_godown_rate" id ="grand_godown_rate" value="" maxlength="50" step=".01"  >
-                                <input type="hidden" class="purchase-amount" name="grand_godown_amount" id ="grand_godown_amount" value="" maxlength="50" step=".01"  >
+                        </tr>
+                        {% endfor %}
+            
+                        <!-- Hidden Fields for Grand Totals -->
+                        <input type="hidden" class="purchase-amount" name="grand_godown_quantity" id="grand_godown_quantity" value="" maxlength="50" step=".01">
+                        <input type="hidden" class="purchase-amount" name="grand_godown_rate" id="grand_godown_rate" value="" maxlength="50" step=".01">
+                        <input type="hidden" class="purchase-amount" name="grand_godown_amount" id="grand_godown_amount" value="" maxlength="50" step=".01">
                     </tbody>
                 </table>
-               <button type="button" class="create-btn" id="addModalButton">Add +</button>
-               <input type="submit" class="add_btn submitBtn" id="popupData">
+            
+                <!-- Add Button -->
+                <button type="button" class="create-btn" id="addModalButton">Add +</button>
+            
+                <!-- Submit Button -->
+                <input type="submit" class="add_btn submitBtn" id="popupData">
             </form>
+            
             
         </div>
 
@@ -266,14 +282,16 @@
             // otherwise don't add a new row
         $('#addModalButton').on('click', function() {  //first find the last row rate value is not empty then add a new row there any one rate value is empty then don't add a new row
         
-        $(document).on('input',  ' .godown-rate', function() { 
+        // $(document).on('change',  ' .godown-select', function() { 
 
-        const newRates = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
-        console.log("newRate",newRates);
-        })
+        // const newRates = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        // console.log("newRate",newRates);
+        // })
+
+        //add a new row
         const newRate = $('#newTable').find('tbody tr').last().find('input[name^="shade_godown_items_set-"][name$="-rate"]').val();
             console.log(newRate);
-        if(newRate != "" && newRate != null){
+        if(newRate != "" && newRate != null && newRate != 0){
             const newFormValue = document.getElementById('id_shade_godown_items_set-TOTAL_FORMS');
             let formsValue = parseInt(newFormValue.value);
             const tableClone = $('#newTable').find('tbody tr').last().clone(true);
@@ -349,12 +367,12 @@
         const inputQtyValue = parseInt(inputQty);
         const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
         const inputRateValue = parseInt(inputRate);
-        let totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
+        
         
         // Calculate and set the amount for this row
         const amount = inputQtyValue * inputRateValue;
         
-        totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
+       let totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
         row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val(totalAmount);
         
         return amount;
@@ -441,27 +459,33 @@
     });
 
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
-        $(document).on('click', '.delete-btn', function() {
-            const tableRows = $('#newTable tbody tr'); 
-            if (tableRows.length > 1) { 
-                const row = $(this).closest('tr'); 
-                const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
-                const gowdownId = row.find('.godown-select[name^="shade_godown_items_set-"][name$="-id"]');
-                const qty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]')
-                const rate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]')
-                
-                checkbox.prop('checked', true); 
-                checkbox.val('true');
-            
-                if(checkbox.val() == 'true'){
-                    row.hide();
-                    gowdownId.removeAttr('required');
-                    deleteRowCalculate();
-                }
-            } else {
-                alert('The table must have at least one godown item'); 
-            }
-            });
+    $(document).on('click', '.delete-btn', function() {
+    const tableRows = $('#newTable tbody tr'); 
+    if (tableRows.length > 1) { 
+        const row = $(this).closest('tr'); 
+        
+        // Select the form fields within the row
+        const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');
+        row.find('.godown-select, .godown-quantity, .godown-rate, .godown-amount')
+        .removeAttr('required')
+        .val(''); // Clear values
+        // Keep the 'required' attribute and clear the value
+  
+
+        // Mark the checkbox as checked and set its value to 'true'
+        checkbox.prop('checked', true);
+        checkbox.val('true');
+
+        // Hide the row if the checkbox is checked
+        if (checkbox.val() === 'true') {
+            row.hide();
+            deleteRowCalculate(); // Call your function to recalculate totals or update the UI
+        }
+    } else {
+        alert('The table must have at least one godown item'); 
+    }
+});
+
         })
 </script>
 
