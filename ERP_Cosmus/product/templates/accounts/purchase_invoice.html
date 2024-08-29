@@ -45,6 +45,7 @@
                         {% endfor %}
                         {% endif %}
                     </select>
+                    <button type="button" class="itemCreate_btn popup-trigger" onclick="openlabourPopup()">+</button>
                 </div>
                 <div class="d-flex ms-3">
                     <label for="id_GST_number" class="me-2" >Party GST No :</label>
@@ -196,7 +197,85 @@
       <input type="submit" class="ms-5 newProductCreateBtn" id="parentForm">
     </form>
 </div>
+<!--This script use for party name add which use in ledger create popup-->
+<script>
+    var popUpNewWindow = null;
+function openlabourPopup(button){
+    openNewPopup(button, '{% url "ledger-popup-create" %}');
+}
 
+function openNewPopup(button, url){
+    if (popUpNewWindow === null || popUpNewWindow.closed) {
+    newPopUpwindow(button, url);
+  } else {
+  
+    popUpNewWindow.focus();
+  }
+}
+
+function newPopUpwindow(button, path){
+    // Specify minimum height and width
+  var minWidth = 1150; // minimum width
+  var minHeight = 800; // minimum height
+
+  $('body').addClass('popup-open');
+  $('body').append('<div class="popup-overlay"></div>');
+
+  // Open new page with specified dimensions
+  popUpNewWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    // Ensure only one event listener is attached
+  
+    window.addEventListener('message', function(event){
+        if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                popUpNewWindow.close();
+                
+             }
+           });
+
+
+    // Listen for messages from the popup window
+    window.addEventListener('click', function(event) {
+    handleOutsideClick(event);
+  });
+}
+function handleOutsideClick(event) {
+
+var popUpRect = document.querySelector('body').getBoundingClientRect();
+var clickX = event.clientX;
+var clickY = event.clientY;
+ 
+  // Check if the click is outside the popup window
+  if (
+    clickX > popUpRect.left || clickX <= popUpRect.right ||
+    clickY > popUpRect.top || clickY <= popUpRect.bottom
+  ) {
+   
+    popUpNewWindow.focus();
+    
+  }
+
+}
+
+window.addEventListener('message', function(event) {
+    const data = event.data;
+    console.log(data);
+    if (data.ledger_labour) {
+        populateDropdown(data.ledger_labour, '#id_party_name', 'name', 'Select Name');
+    }
+});
+
+function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
+    const dropdown = $(dropdownSelector);
+    dropdown.empty();
+    dropdown.append('<option value="">' + defaultText + '</option>');
+
+    items.forEach(item => {
+        dropdown.append('<option value="' + item.id + '">' + item[valueKey] + '</option>');
+    });
+}
+</script>
 
 <script>
     $(document).ready(function(){
@@ -759,22 +838,25 @@ function randomValue (){
 
      // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
         var popupWindow = null; // Variable to hold the reference to the popup window
-
-        $(document).on('focusout', 'input[name^="item_name_"]', function () {
-            var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
-            if (shadeValue == "false") {
-                handleShadeValueFalse();
-            } else if (shadeValue == "true") {
-                handleShadeValueTrue();
-            }
-        })
+        
+        // $(document).on('focusout', 'input[name^="item_name_"]', function () {
+        //     var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
+        //     if (shadeValue === "false") {
+        //         handleShadeValueFalse();
+        //     } else if (shadeValue === "true") {
+        //         handleShadeValueTrue();
+        //     }
+        // })
 
         $(document).on('focusin', 'select[name^="purchase_voucher_items_set-"]', function () {
             var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
-            console.log("shadeValueFocusin",shadeValue)
-            if (shadeValue == "false") {
+    
+          // Unbind any previously bound events before binding new ones
+            $(document).off('change', 'select[name^="purchase_voucher_items_set-"]');
+            $(document).off('keydown', 'select[name^="purchase_voucher_items_set-"]');
+            if (shadeValue === "false") {
                 handleShadeValueFalse();
-            } else if (shadeValue == "true") {
+            } else if (shadeValue === "true") {
                 handleShadeValueTrue();
             }
         })
@@ -789,24 +871,22 @@ function randomValue (){
 
 function handleShadeValueTrue() {
     $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
+        event.preventDefault();
         if (event.key === 'Enter') {
+            const row = $(this);
             const selectedShade = $(this).val();
+            console.log("selectedShadeEnter",selectedShade)
             const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
             const itemShades = $(this).closest('tr').find('[name^="input_item_shade_"]');
             $(this).attr('disabled', 'disabled');
             itemShades.hide();
             handlePopup(selectedShade, uniqueIdValue);
-            moveToNextCell($(this));
+  
             $(this).removeAttr('disabled');
         }
     });
 }
-function moveToNextCell(currentElement) {
-    const nextCell = currentElement.closest('td').next('td').find('input, select').first();
-    if (nextCell.length > 0) {
-        nextCell.focus(); // Set focus to the next input/select element
-    }
-}
+
         function handlePopup(selectedShade, uniqueIdValue) {
             const purchaseId = $('#id_purchase_voucher_items_set-' + purchaseValue + '-id').val();
 
