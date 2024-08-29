@@ -1598,7 +1598,7 @@ def ledgerTypes_create_update(request,pk=None):
             form.save()
 
             if request.path == '/ledgertypecreate/':
-                return redirect('ledger-type-list')
+                return redirect('ledger-Types-create')
             
 
     return render(request,template_name,{'form':form,'ledger_types':ledger_types})
@@ -1609,12 +1609,8 @@ def ledgerTypes_delete(request,pk):
     type_instance = get_object_or_404(ledgerTypes,pk=pk)
     if type_instance:
         type_instance.delete()
-        return redirect('ledger-type-list')
+        return redirect('ledger-Types-create')
 
-
-def ledgertypelist(request):
-    ledger_types = ledgerTypes.objects.all()
-    return render(request,'accounts/ledger_type_list.html',{'ledger_types':ledger_types})
 
 #_________________________Accounts end___________________________
 

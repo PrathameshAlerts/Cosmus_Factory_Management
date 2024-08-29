@@ -98,6 +98,7 @@ urlpatterns = [
 
     path('ledgertypecreate/', views.ledgerTypes_create_update, name = 'ledger-Types-create'),
     path('ledgertypeupdate/<int:pk>', views.ledgerTypes_create_update, name = 'ledger-Types-update'),
+    path('ledgertypedelete/<int:pk>', views.ledgerTypes_delete, name = 'ledger-Types-delete'),
 
     path('ledgertypecreatepopup/', views.ledgerTypes_create_update, name = 'ledger-Types-create-popup'),
 
