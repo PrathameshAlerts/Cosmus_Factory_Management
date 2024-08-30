@@ -347,12 +347,16 @@
   // This funcion calculate the amount for each row then set the total amount and total quantity
   function calculateNewRow(row) {
         const inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
-        const inputQtyValue = parseInt(inputQty);
+        const inputQtyValue = parseFloat(inputQty);
         const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
-        const inputRateValue = parseInt(inputRate);
+        const inputRateValue = parseFloat(inputRate);
         let totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
         console.log('inputRateValue',inputRateValue)
         // Calculate and set the amount for this row
+
+        if (isNaN(inputQtyValue) || isNaN(inputRateValue)) {
+                return 0;
+            }
         const amount = inputQtyValue * inputRateValue;
         
         totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
@@ -364,13 +368,13 @@
     // calculate the total quantity
     function calculateQty(row) {
         const inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
-        const inputQtyValue = parseInt(inputQty);
+        const inputQtyValue = parseFloat(inputQty);
         return inputQtyValue;
       
     }
     function calculateRate(row){
         const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
-        const inputRateValue = parseInt(inputRate);
+        const inputRateValue = parseFloat(inputRate);
         return inputRateValue;
     }
     // Function to calculate total amount
@@ -420,26 +424,12 @@
         deleteRowCalculate();
     })
 
-    $(document).on('change', '.godown-select', function(){
-        calculateGodownAmount();
-        deleteRowCalculate()
-    })
-
-    $(document).on('input', '.godown-quantity' && ' .godown-rate', function() { 
-        calculateGodownAmount();
-        deleteRowCalculate();
-    })
-
-    $(document).on('input', '.godown-quantity' , function() {
-        calculateGodownAmount();
-        deleteRowCalculate();
-
-    })
-      
-    $(document).on('change', '.godown-select, .godown-quantity, .godown-rate', function() {
-    calculateGodownAmount(); // Recalculate the amount
+    $(document).on('input change', '.godown-quantity, .godown-rate, .godown-select', function() {
+    calculateGodownAmount();
     deleteRowCalculate();
     });
+      
+   
    
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
@@ -467,9 +457,9 @@
             }
             });
 
-            $('#childform').on('submit', function() {
+            $('#childform').on('submit', function(event) {
                 $('#popupData').attr('disabled', 'disabled').val('Saving...');
-               
+                // event.preventDefault(); // Uncomment if you want to prevent form submission for validation
             })
         })
 </script>
