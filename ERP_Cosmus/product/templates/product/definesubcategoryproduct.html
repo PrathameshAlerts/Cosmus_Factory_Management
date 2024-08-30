@@ -36,24 +36,7 @@
       </div>
     </form>
   </div>
-  <div class="col-lg-7 mt-4">
-    <!-- <div class="d-flex ">
-      <lable class="form-label">List Of Sub-Category:</lable>
-      <ul style="list-style: none;">
-        {% for main_cat in main_categories %}
-        <li class=" mx-2 mt-3 mb-2">
-          <p class="fw-bold text-white ps-2 py-2 rounded edit_btn">{{main_cat.product_category_name}}</p>
-          <ol class=''>
-            {% for sub_cat in main_cat.subcategories.all %}
-            <li class="mx-2 my-2 ">{{sub_cat.product_sub_category_name}}<a class="ms-4" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a> 
-                  <a href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a>
-            </li>
-            {% endfor %}
-          </ol>
-        </li>
-        {% endfor %}
-      </ul>
-    </div> -->
+
 <div class="row">
   <div class="col-lg-9">
     <div class="table-res">

@@ -61,7 +61,7 @@
   </div>
   <button type="button" class="add_btn mb-3" id="addForm">Add</button>
   <div>
-    <input type="submit" class="create-btn">
+    <input type="submit" class="create-btn" id="submitButton">
   </div>
 </form>
 
@@ -71,6 +71,9 @@
 
   document.getElementById('myForm').addEventListener('submit', function() {
     formSubmitted = true;
+    var formSubmit = document.getElementById('submitButton');
+    formSubmit.disabled = true;
+    formSubmit.value = 'Saving...';
   });
   document.addEventListener("DOMContentLoaded", function () {
     const addFormButton = document.getElementById("addForm");

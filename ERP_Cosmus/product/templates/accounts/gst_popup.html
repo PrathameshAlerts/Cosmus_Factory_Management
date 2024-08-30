@@ -11,7 +11,7 @@
     </div>
 
 
-    <input type="submit" class="create-btn mt-4" name="save" value="Save" >
+    <input type="submit" class="create-btn mt-4" name="save" value="Save"  id="submitButton">
 
 </form>
 
@@ -19,7 +19,9 @@
     let formSubmitted = false;  // Flag to track whether form is submitted
     document.getElementById('gstForm').addEventListener('submit', async function(event) {
     event.preventDefault();  // Prevent the default form submission
-    
+    var submitBtn = document.getElementById('submitButton');
+    submitBtn.disabled = true;
+    submitBtn.value = "saving...";  
     const form = event.target;
     const formData = new FormData(form);
 

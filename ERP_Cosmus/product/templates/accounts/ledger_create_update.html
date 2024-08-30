@@ -4,7 +4,7 @@
 
 
 <div class="create_item_form">
-  <form action="" method="POST">
+  <form action="" method="POST" id="ledgerForm">
       {% csrf_token %}
     <h2 class="px-5 py-2">{{title}}</h2>
     <div class="row border border-2 border-dark p-3 rounded-3 m-4">
@@ -49,11 +49,21 @@
         <div class="d-flex mb-3">
           <label for="id_types" class="form-label item-form">Types:</label>
           <select class="item-select" value="{{form.instance.types}}" name="types" id="id_types" required>
-              <option value="{{form.instance.types}}">{{form.instance.types}}</option>
-              <option value="Trader">Trader</option>
-              <option value="Manufacture">Manufacture</option>
-              <option value="labour">labour</option>
+            
+            {% if form.instance.id %}
+            <option value="{{form.instance.types.id}}">{{form.instance.types.type_name}}</option>
+
+            {% elif not form.instance.id %}
+            <option value=""></option>
+            {% endif %}
+
+            {% for type in ledgerTypes_query %}
+            <option value="{{type.id}}">{{type.type_name}}</option>
+            {% endfor %}
+
+            
           </select> 
+          <button type="button" class="itemCreate_btn popup-trigger" onclick="openLedgerTypePopup()">+</button>
         </div>
         <div class="d-flex mb-3">
           <label for="id_Gst_no" class="form-label item-form">Gst no:</label>
@@ -124,9 +134,71 @@
         </div>
       </div>
     </div>
-    <input type="submit" class="create-btn mx-5 px-2">
+    <input type="submit" id="submitButton" class="create-btn mx-5 px-2">
   </form>
 </div>
+
+<script>
+  var popUpWindow = null;
+  function openLedgerTypePopup(button){
+    openPopup(button, '{% url "ledger-Types-create-popup" %}');
+  }
+
+function openPopup(button, url) {
+  if (popUpWindow === null || popUpWindow.closed) {
+    newPopUpwindow(button, url);
+  } else {
+  
+    popUpWindow.focus();
+  }
+}
+
+function newPopUpwindow(button, path) {
+  // Specify minimum height and width
+  var minWidth = 800; // minimum width
+  var minHeight = 600; // minimum height
+
+  $('body').addClass('popup-open');
+  $('body').append('<div class="popup-overlay"></div>');
+
+  // Open new page with specified dimensions
+  popUpWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+    // Ensure only one event listener is attached
+  
+    window.addEventListener('message', function(event){
+        if (event.data.message === 'close') {
+                $('body').removeClass('popup-open');
+                $('.popup-overlay').remove();
+                popUpWindow.close();
+             }
+           });
+
+          
+    // Listen for messages from the popup window
+    window.addEventListener('click', function(event) {
+    handleOutsideClick(event);
+  });
+
+}
+function handleOutsideClick(event) {
+
+  var popUpRect = document.querySelector('body').getBoundingClientRect();
+  var clickX = event.clientX;
+  var clickY = event.clientY;
+   
+    // Check if the click is outside the popup window
+    if (
+      clickX > popUpRect.left || clickX <= popUpRect.right ||
+      clickY > popUpRect.top || clickY <= popUpRect.bottom
+    ) {
+     
+      popUpWindow.focus();
+      
+    }
+   
+}
+
+</script>
 {% endblock body %}
 
     

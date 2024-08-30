@@ -45,7 +45,7 @@
                         {% endfor %}
                         {% endif %}
                     </select>
-                    <button type="button" class="itemCreate_btn popup-trigger" onclick="openlabourPopup()">+</button>
+                    <button type="button" class="itemCreate_btn popup-trigger" onclick="openPurchasePartyPopup()">+</button>
                 </div>
                 <div class="d-flex ms-3">
                     <label for="id_GST_number" class="me-2" >Party GST No :</label>
@@ -200,17 +200,17 @@
 <!--This script use for party name add which use in ledger create popup-->
 <script>
     var popUpNewWindow = null;
-function openlabourPopup(button){
+function openPurchasePartyPopup(button){
     openNewPopup(button, '{% url "ledger-popup-create" %}');
 }
 
 function openNewPopup(button, url){
     if (popUpNewWindow === null || popUpNewWindow.closed) {
-    newPopUpwindow(button, url);
-  } else {
+        newPopUpwindow(button, url);
+    } else {
   
-    popUpNewWindow.focus();
-  }
+        popUpNewWindow.focus();
+    }
 }
 
 function newPopUpwindow(button, path){
@@ -260,13 +260,13 @@ var clickY = event.clientY;
 
 window.addEventListener('message', function(event) {
     const data = event.data;
-    console.log(data);
+    console.log(data.ledger_labour);
     if (data.ledger_labour) {
-        populateDropdown(data.ledger_labour, '#id_party_name', 'name', 'Select Name');
+        populateDropdownLedger(data.ledger_labour, '#id_party_name', 'party_name', 'Select Name');
     }
 });
 
-function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
+function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) {
     const dropdown = $(dropdownSelector);
     dropdown.empty();
     dropdown.append('<option value="">' + defaultText + '</option>');

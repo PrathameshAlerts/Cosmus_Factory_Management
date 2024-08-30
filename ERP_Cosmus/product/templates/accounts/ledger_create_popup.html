@@ -124,7 +124,7 @@
         </div>
       </div>
     </div>
-    <input type="submit" class="create-btn mx-5 px-2">
+    <input type="submit" class="create-btn mx-5 px-2" id="submitButton">
   </form>
 </div>
 
@@ -134,7 +134,9 @@
 
 document.getElementById('ledgerForm').addEventListener('submit', async function (event) {
   event.preventDefault();  // Prevent the default form submission
-
+  var submitBtn = document.getElementById('submitButton');
+  submitBtn.disabled = true;
+  submitBtn.value = "saving...";
   const form = event.target;
   const formData = new FormData(form);
   //formData.append('save', 'Save');
@@ -149,7 +151,9 @@ document.getElementById('ledgerForm').addEventListener('submit', async function 
     });
 
     if (response.ok) {
+      
       const data = await response.json();  // Await the response.json() call
+      console.log(data);
       window.opener.postMessage(data, '*');
       window.close();  // Now you can access the JSON data
       formSubmitted = true;  // Set flag to true after successful submission

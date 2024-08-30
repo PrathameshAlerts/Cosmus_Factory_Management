@@ -4,14 +4,14 @@
 
 <div class="row mt-4">
   <div class="col-lg-5">
-    <form action="" method="POST">
+    <form action="" method="POST" id="ledgerTypeForm">
       {% csrf_token %}
       <h2 class="mb-4">Create Ledger Type</h2>
       <div class="d-flex">
-        <label for="id_color_name" class="form-label create_color_lable">Type Name:</label>
+        <label for="id_type_name" class="form-label create_color_lable">Type Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.type_name }}" name="type_name" maxlength="155" required id="id_type_name">
       </div>
-      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
     </form>
 
   </div>
@@ -25,7 +25,7 @@
               <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
           </form>
-          <button class="item-btn mx-3" onclick="redirectColorFilter()">Clear Filter</button>
+          <!-- <button class="item-btn mx-3" onclick="redirectColorFilter()">Clear Filter</button> -->
         </div>
       </div>
     </div>
@@ -36,14 +36,7 @@
             <thead class="name_absolute sticky-top text-nowrap">
               <tr>
                 <th>No</th>
-                <th>Name
-                  <!-- <div class="nav-item dropdown color-list-icons">
-                        <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
-                        <ul class="dropdown-menu">
-                          <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
-                        </ul>
-                      </div> -->
-                </th>
+                <th>Name</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
@@ -88,6 +81,9 @@
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
+    $('#ledgerTypeForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
     $('.delete-btn').click(function () {
       var itemId = $(this).data('item-id');
       var name = $(this).closest('tr').find('td').eq(1).text();
@@ -102,8 +98,9 @@
     // Confirm delete button click event
     $('#confirmDeleteButton').click(function () {
       var itemId = $(this).data('item-id');
+  
       // Redirect to delete view
-      window.location.href = 'ledgertypedelete/' + itemId;
+      window.location.href = '/ledgertypedelete/' + itemId;
     });
   });
 

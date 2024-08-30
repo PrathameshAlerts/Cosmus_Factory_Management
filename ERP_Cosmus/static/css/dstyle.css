@@ -1554,10 +1554,9 @@ input[type=number] {
 }
 
 .acc-subInput{
-    width: 230px;
-    border: none;
-    border-top: 1px solid  #cecdcd ;
-    border-bottom: 1px solid  #cecdcd ;
+    width: 270px;
+    border: 1px solid  #cecdcd ;
+;
     border-radius: 3px;
     padding-left: 5px;
     height: 33px;

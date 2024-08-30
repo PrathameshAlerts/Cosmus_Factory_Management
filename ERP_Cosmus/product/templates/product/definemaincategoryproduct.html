@@ -5,14 +5,14 @@
 
 <div class="row mt-4">
   <div class="col-lg-5">
-    <form action="" method="POST">
+    <form action="" method="POST" id="categoryForm">
       {% csrf_token %}
       <h2 class="mb-4">Product Category-{{title}}</h2>
       <div class="d-flex mb-3">
         <label for="id_product_category_name" class="form-label px-2">Main Category Name:</label>
         <input type="text" class="item-select" value="{{form.instance.product_category_name}}" name="product_category_name" maxlength="255" required id="id_product_category_name">
       </div>
-      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
     </form>
   </div>
 
@@ -77,6 +77,11 @@
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
+
+    $('#categoryForm').on('submit', function (event) {
+
+      $('#submitButton').prop('disabled', true);
+    });
     $('.delete-btn').click(function () {
       const itemId = $(this).data('item-id');
       const itemName = $(this).closest('tr').find('td').eq(1).text();

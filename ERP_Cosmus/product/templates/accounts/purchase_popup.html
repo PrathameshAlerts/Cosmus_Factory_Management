@@ -237,7 +237,8 @@
         }
        // This function for form submit then function call and send the data to the parent page with the value
         function submitData(){
-
+           
+           
             jsondata()
 
             const newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
@@ -465,6 +466,11 @@
                 alert('The table must have at least one godown item'); 
             }
             });
+
+            $('#childform').on('submit', function() {
+                $('#popupData').attr('disabled', 'disabled').val('Saving...');
+               
+            })
         })
 </script>
 

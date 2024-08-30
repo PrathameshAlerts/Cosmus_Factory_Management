@@ -36,7 +36,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
-                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room,  factory_employee, godown_item_report_for_cutting_room,
+                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
@@ -1472,10 +1472,11 @@ def ledgercreate(request):
         template_name = 'accounts/ledger_create_update.html'
 
     under_groups = AccountSubGroup.objects.all()
+    ledgerTypes_query = ledgerTypes.objects.all()
     form = LedgerForm()
     if request.method == 'POST':
         form = LedgerForm(request.POST)
-        print(request.POST)
+        
         if form.is_valid():
             ledger_instance = form.save(commit = False) #ledger_instance this has the instance of ledger form
             form.save()
@@ -1494,15 +1495,17 @@ def ledgercreate(request):
             messages.success(request,'Ledger Created')
             
             if request.path == '/ledgerpopupcreate/':
-                ledger_labour = Ledger.objects.filter(types='labour').values('id','name')
+                ledger_labour = Ledger.objects.filter(types__type_name='labour').values('id','name')
                               
                 return JsonResponse({'ledger_labour':list(ledger_labour)})
+            
+          
             else:
                 return redirect('ledger-list')
         else:
-            return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
+            return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create','ledgerTypes_query':ledgerTypes_query})
     
-    return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create'})
+    return render(request, template_name ,{'form':form,'under_groups':under_groups,'title':'ledger Create','ledgerTypes_query':ledgerTypes_query})
     
 
 @transaction.atomic
@@ -1599,6 +1602,7 @@ def ledgerTypes_create_update(request,pk=None):
 
             if request.path == '/ledgertypecreate/':
                 return redirect('ledger-Types-create')
+                
             
 
     return render(request,template_name,{'form':form,'ledger_types':ledger_types})
@@ -1610,6 +1614,7 @@ def ledgerTypes_delete(request,pk):
     if type_instance:
         type_instance.delete()
         return redirect('ledger-Types-create')
+
 
 
 #_________________________Accounts end___________________________
@@ -3779,7 +3784,7 @@ def labourworkoutlistall(request):
 def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
     try:
-        ledger_labour_instances = Ledger.objects.filter(types = 'labour')
+        ledger_labour_instances = Ledger.objects.filter(types__type_name = 'labour')
 
         godown_id = None
 

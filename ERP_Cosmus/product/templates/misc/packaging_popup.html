@@ -12,7 +12,7 @@
         <input type="text" class="item-select" value="{{ form.instance.packing_material }}" name="packing_material" maxlength="255" required id="id_packing_material">
       </div>
   
-      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
     </form>
   </div>
   
@@ -22,7 +22,9 @@
   
     document.getElementById('packingForm').addEventListener('submit', async function (event) {
       event.preventDefault();  // Prevent the default form submission
-  
+      var submitBtn = document.getElementById('submitButton');
+      submitBtn.disabled = true;
+      submitBtn.value ="Saving...";
       const form = event.target;
       const formData = new FormData(form);
       formData.append('save', 'Save');
