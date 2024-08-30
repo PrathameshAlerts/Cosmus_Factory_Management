@@ -1556,7 +1556,6 @@ input[type=number] {
 .acc-subInput{
     width: 270px;
     border: 1px solid  #cecdcd ;
-;
     border-radius: 3px;
     padding-left: 5px;
     height: 33px;
@@ -1623,6 +1622,11 @@ input[type=number] {
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.labourworkoutlist_table{
+    max-height: 230px ;
+    overflow-y: auto;
 }
 
 /* .custom-dropdown-options {

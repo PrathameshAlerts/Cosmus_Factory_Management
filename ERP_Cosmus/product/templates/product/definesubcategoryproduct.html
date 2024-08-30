@@ -6,7 +6,7 @@
   <h2>Product Sub Category-{{title}}</h2>
   <div class="col-lg-5 mt-2">
 
-    <form action="" method="POST">
+    <form action="" method="POST" id="subCategoryForm">
       {% csrf_token %}
       <div class="d-flex mb-3">
         <label for="id_product_main_category" class="item-form">Main Category:</label>
@@ -32,11 +32,12 @@
           <label for="id_product_sub_category_name" class="item-form">Sub Category:</label>
           <input type="text" class="product2Select" value="{{form.instance.product_sub_category_name}}" name="product_sub_category_name" maxlength="255" required id="id_product_sub_category_name">
         </div>
-        <input type="submit" class="product2create-btn" name="save" value="Save">
+        <input type="submit" id="submitButton" class="product2create-btn" name="save" value="Save">
       </div>
     </form>
   </div>
-
+  <div class="col-lg-7 mt-4">
+    
 <div class="row">
   <div class="col-lg-9">
     <div class="table-res">
@@ -83,5 +84,13 @@
   </div>
 </div>
 
+<script>
+  $(Document).ready(function(){
+   
+    $('#subCategoryForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
+  })
+</script>
 
 {% endblock body %}
