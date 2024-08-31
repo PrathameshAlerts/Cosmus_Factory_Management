@@ -134,7 +134,7 @@
         </div>
       </div>
     </div>
-    <input type="submit" class="create-btn mx-5 px-2" id="submitButton">
+    <input type="submit" class="create-btn mx-5 px-2">
   </form>
 </div>
 
@@ -146,7 +146,7 @@ document.getElementById('ledgerForm').addEventListener('submit', async function 
   event.preventDefault();  // Prevent the default form submission
   const form = event.target;
   const formData = new FormData(form);
-  //formData.append('save', 'Save');
+
   try {
 
     const response = await fetch(form.action, {

@@ -5,7 +5,7 @@
     {% block body %}
     <div>
     
-      <form id="LadgerTypeForm" action="" method="POST">
+      <form id="ledgerTypeForm" action="" method="POST">
         {% csrf_token %}
         <h2 class="mb-3 mt-4">Create Ledger Type</h2>
         <div class="d-flex">
@@ -13,7 +13,7 @@
           <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="type_name" maxlength="255" required id="id_type_name">
         </div>
     
-        <input type="submit" class="create-btn mt-4" name="save" value="Save" id="submitButton">
+        <input type="submit" class="create-btn mt-4">
       </form>
     </div>
     
@@ -22,12 +22,13 @@
     <script>
       let formSubmitted = false;  // Flag to track whether form is submitted
     
-      document.getElementById('LadgerTypeForm').addEventListener('submit', async function (event) {
+      document.getElementById('ledgerTypeForm').addEventListener('submit', async function (event) {
         event.preventDefault();  // Prevent the default form submission
       
         const form = event.target;
+        console.log(form)
         const formData = new FormData(form);
-        formData.append('save', 'Save');
+        console.log(formData)
         try {
     
           const response = await fetch(form.action, {
@@ -39,8 +40,10 @@
           });
     
           if (response.ok) {
-    
+            console.log('Ledger Type created successfully.');
+           
             const data = await response.json();  // Await the response.json() call
+            console.log(data);
             window.opener.postMessage(data, '*');
             window.close();  // Now you can access the JSON data
             formSubmitted = true;  // Set flag to true after successful submission

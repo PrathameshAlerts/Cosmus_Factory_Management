@@ -198,6 +198,23 @@ function handleOutsideClick(event) {
    
 }
 
+window.addEventListener('message', function(event) {
+    const data = event.data;
+    console.log(data.ledger_types);
+    if (data.ledger_types) {
+        populateDropdownLedger(data.ledger_types, '#id_types', 'name', 'Select Name');
+    }
+});
+
+function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) {
+    const dropdown = $(dropdownSelector);
+    dropdown.empty();
+    dropdown.append('<option value="">' + defaultText + '</option>');
+
+    items.forEach(item => {
+        dropdown.append('<option value="' + item.id + '">' + item[valueKey] + '</option>');
+    });
+}
 </script>
 {% endblock body %}
 
