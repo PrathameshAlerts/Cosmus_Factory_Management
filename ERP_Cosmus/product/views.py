@@ -47,7 +47,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
-                     ProductCreateSkuFormsetUpdate, UserRoleForm,  cutting_room_form,
+                     ProductCreateSkuFormsetUpdate, UserRoleForm, cutting_room_form,
                        factory_employee_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
