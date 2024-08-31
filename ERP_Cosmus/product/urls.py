@@ -196,13 +196,15 @@ urlpatterns = [
     path('purchaseordercuttingpopup/<int:cutting_id>',views.purchaseordercuttingpopup, name = 'purchase-order-cutting-popup'),
 
     #labour workout 
-    path('labourworkoutall/',views.labourworkoutlistall, name = 'labour-workout-all'),
+    path('labourworkoutall/',views.labourworkoutlistall, name='labour-workout-all'),
     path('labourworkoutsingle/<int:pk>',views.labourworkoutsingle, name = 'labour-workout-single'),
     path('labourworkoutsingleview/<int:labour_workout_child_pk>',views.labourworkoutsingle, name = 'labour-workout-single-view'),
     path('labourworkoutsingledelete/',views.labourworkoutsingledeleteajax, name = 'labour-workout-single-delete'),
     path('labourworkoutchildlist/<int:labour_master_pk>',views.labour_workout_child_list, name = 'labour-workout-child-list'),
 
-    
+    #labour workin
+    path('labourworkin/',views.labourworkincreate, name='labour-workin-create'),
+
 
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
@@ -214,6 +216,9 @@ urlpatterns = [
 
     path('godownitemreport/<int:shade_id>/<int:g_id>', views.godown_item_report, name = 'godown-item-report'),
     path('godownitemreportallgodown/<int:shade_id>', views.godown_item_report, name = 'godown-item-report-all-godowns'),
+
+    path('rawmaterialexceldownload/', views.raw_material_excel_download, name='raw-material-excel-download'),
+    path('rawmaterialexcelupload/', views.raw_material_excel_upload, name='raw-material-excel-upload'),
 
     #common Routes
     path('', views.dashboard , name ='dashboard-main'),

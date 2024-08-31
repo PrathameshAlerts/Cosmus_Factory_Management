@@ -23,6 +23,15 @@ the input field will be pre-filled with that value when the page is loaded. -->
           </div>
         </form>
         <button class="item-btn mx-4" onclick="redirectlistFilter()">Clear Filter</button>
+        <a href="{% url 'raw-material-excel-download' %}">Download Excel</a>
+
+
+        <form method="POST" action="{% url 'raw-material-excel-upload' %}">
+          {% csrf_token %}
+          <input type="file" name="excel_file" required />
+          <button type="submit">Upload</button>
+      </form>
+    
       </div>
     </div>
   </div>

@@ -480,7 +480,7 @@
             <select class=" productSelect" name="Products" id="id_Products" onchange="productView(this)">
               <option value="">-------------</option>
               {% for product in product_skus %}
-              <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp; &nbsp;{{product.PProduct_color}}
+              <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp; &nbsp; {{product.PProduct_color}}
               </option>
               {% endfor %}
             </select>
@@ -786,13 +786,7 @@ if (clickX > popUpRect.left || clickX <= popUpRect.right ||clickY > popUpRect.to
     toggleVisible("product_pricing_btn", "product_pricing");
     toggleVisible("set_production_btn", "set_production");
 
-    document.getElementById('newForm').addEventListener('submit',function(event){
-      event.preventDefault();
-        var subbtn = document.getElementById('newFormSubmit');
-        subbtn.disabled = true;
-        
-
-    })
+    
   });
 </script>
 

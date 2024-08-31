@@ -3,13 +3,10 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 from sys import exception
-from telnetlib import STATUS
 from django.conf import settings
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
-from python_utils import raise_exception
-import requests
 from django.contrib.auth.models import auth 
 from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
 from django.contrib.auth.decorators import login_required
@@ -27,10 +24,11 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import inlineformset_factory, modelformset_factory
-from django.http import Http404, HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse
+from django.http import HttpResponse, HttpResponseServerError, JsonResponse
 from django.views.decorators.cache import cache_control
 from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
+import pandas as pd
 
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
@@ -48,7 +46,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm, cutting_room_form,
-                       factory_employee_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -139,8 +137,7 @@ def edit_production_product(request,pk):
 
             if excel_file:
                 file_name = excel_file.name
-                product_ref_id_file = file_name.split('_')[-1].split('.')[0]
-                
+                product_ref_id_file = file_name.split('_')[-1].split('.')[0].split(' ')[0]
                 if not excel_file.name.endswith('.xlsx'):
                     messages.error(request, 'Invalid file format. Please upload a valid Excel file.')
                     logger.error('Invalid file format. Please upload a valid Excel file.')
@@ -737,10 +734,9 @@ def product2subcategoryajax(request):
 
     productid = request.GET.get('selected_product_id')
     categoryforselectedproduct = Product2SubCategory.objects.filter(Product_id = productid)
-    print(productid)
-
+    
     dict_result = {}
-    print(categoryforselectedproduct)
+
     for obj in categoryforselectedproduct:
         dict_result[obj.SubCategory_id.id] = obj.SubCategory_id.product_sub_category_name
     
@@ -1915,7 +1911,7 @@ def stockTrasferRawDelete(request,pk):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)  # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchasevouchercreateupdate(request, pk=None):
-    print(request.POST)
+    
     item_name_searched = Item_Creation.objects.all()
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
@@ -4151,9 +4147,15 @@ def cutting_room_create_update_list(request, pk=None):
 
 
 def cuttingroomdelete(request,pk):
-    instance = cutting_room.objects.get(pk = pk)
+    instance = cutting_room.objects.get(pk=pk)
     instance.delete()
     return redirect('cutting_room-create')
+
+
+def labourworkincreate(request):
+    masterform = labour_workin_master_form()
+
+    return render(request,'production/labour_work_in.html',{'masterform':masterform})
 
 
 #_________________________factory-emp-end_______________________________________
@@ -4209,6 +4211,9 @@ def itemdynamicsearchajax(request):
         logger.error(f"Exception in itemdynamicsearchajax - {ve}")
         error_message = f"An error occurred:{str(e)}"
         return JsonResponse({'error': error_message}, status=500)
+
+
+
 
 
 
@@ -4315,9 +4320,6 @@ def godown_item_report(request,shade_id,g_id=None):
     godown_name = 'All Stock'
 
     report_data = []
-    print('g_id', g_id)
-    print('shade_id', shade_id)
-
 
     if g_id is not None:
         godown_name = Godown_raw_material.objects.get(id=g_id)
@@ -4478,7 +4480,7 @@ def godown_item_report(request,shade_id,g_id=None):
     If you set reverse=False, it would sort the list in ascending order.
 
     """
-    print(report_data_sorted)
+    
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
                                                                              'shade_name':shade_name,'report_data':report_data_sorted})
 
@@ -4486,6 +4488,111 @@ def godown_item_report(request,shade_id,g_id=None):
 def allrawmaterialstockreport(request):
     queryset = item_color_shade.objects.all().annotate(total_qty = Sum('godown_shades__quantity')).prefetch_related('godown_shades','godown_shades__godown_name').select_related('items')
     return render(request,'reports/allrawmaterialstockreport.html',{'queryset':queryset})
+
+def raw_material_excel_download(request):
+
+    wb = Workbook()
+
+    default_sheet = wb['Sheet']
+    wb.remove(default_sheet) 
+
+    wb.create_sheet('raw_material_create')
+    sheet1 = wb.worksheets[0]
+    headers =  ['Raw Material Name', 'Material Code','Color', 'Packing','Unit Name','Units','Panha', 
+                'Fabric or Non Fabric','Fabric Finishes',' Fabric Group','GST','HSN Code','Status']
+    
+    sheet1.append(headers)
+
+    fileoutput = BytesIO()
+    wb.save(fileoutput)
+        
+    # Prepare the HTTP response with the Excel file content
+    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    file_name = 'raw_material_create'
+    response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
+
+    return response
+
+
+
+
+def raw_material_excel_upload(request):
+    
+    if request.method == "POST":
+        excel_file = request.FILES.get('raw_material_create')
+        print(excel_file)
+        if excel_file:
+            # read the excel file
+            df = pd.read_excel(excel_file)
+            print(df)
+            
+            required_columns = {
+
+                'Raw Material Name':'item_name',
+                'Material Code':'Material_code',
+                'Color':'Item_Color',
+                'Packing':'Item_Packing',
+                'Unit Name':'unit_name_item',
+                'Units':'Units',
+                'Panha':'Panha', 
+                'Fabric or Non Fabric':'Fabric_nonfabric',
+                'Fabric Finishes':'Item_Fabric_Finishes',
+                'Fabric Group':'Fabric_Group',
+                'GST':'Item_Creation_GST',
+                'HSN Code':'HSN_Code',
+                'Status':'status'
+            }
+
+            # Check if required columns are present
+            for col in required_columns.keys():
+                if col not in df.columns:
+                    return HttpResponse(f"Missing required column: {col}", status=400)
+                
+
+            # Begin transaction to ensure atomicity
+            with transaction.atomic():
+                for index, row in df.iterrows():
+                    try:
+                        # Fetch foreign key related instances
+                        color = Color.objects.get(color_name=row['Color'])
+                        packaging_m = packaging.objects.get(packing_material=row['Packing'])
+                        unit_name = Unit_Name_Create.objects.get(unit_name=row['Units'])
+                        fabric_finish = FabricFinishes.objects.get(fabric_finish=row['Fabric Finishes'])
+                        fabric_group = Fabric_Group_Model.objects.get(fab_grp_name=row['Fabric Group'])
+                        gst_instance = gst.objects.get(gst_percentage=row['GST'])
+
+
+                        # Create or update the Item_Creation object
+                        item, created = Item_Creation.objects.update_or_create(
+                            item_name=row['Raw Material Name'],  # Unique constraint field
+                            defaults={
+                                'Material_code': row['Material Code'],
+                                'Item_Color': color,
+                                'Item_Packing': packaging_m,
+                                'unit_name_item': unit_name,
+                                'Units': row['Units'],
+                                'Panha': row['Panha'],
+                                'Fabric_nonfabric': row['Fabric or Non Fabric'],
+                                'Item_Fabric_Finishes': fabric_finish,
+                                'Fabric_Group': fabric_group,
+                                'Item_Creation_GST': gst_instance,
+                                'HSN_Code': row['HSN Code'],
+                                'status': row['Status'],
+                                # 'item_shade_image': row['Item Shade Image'],  # Handle file paths accordingly
+                            }
+                        )
+                    except Exception as e:
+                        return HttpResponse(f"Error processing row {index + 1}: {str(e)}", status=400)
+            
+            return HttpResponse("Data imported successfully")
+    else:
+        return HttpResponse("Invalid request method", status=405)
+
+
+
+
+
+
 
 #__________________________reports-end____________________________________
 

@@ -2,7 +2,7 @@ from dataclasses import fields
 from pyexpat import model
 from django import forms
 from django.shortcuts import get_object_or_404
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -690,7 +690,12 @@ class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
 
 
 
+class labour_workin_master_form(forms.ModelForm):
+    class Meta:
 
+        model = labour_work_in_master
+        fields = ['voucher_number','labour_name','labour_voucher_number','description','total_pcs',
+                  'total_pending_pcs','total_return_pcs','labour_charges','other_charges','amount']
 
 
 
