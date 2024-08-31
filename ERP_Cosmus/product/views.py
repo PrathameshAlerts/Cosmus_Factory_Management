@@ -1603,14 +1603,12 @@ def ledgerTypes_create_update(request,pk=None):
         if form.is_valid():
             form.save()
 
-            if request.path == '/ledgertypecreate/':
-                return redirect('ledger-Types-create')
-            else:
+            if request.path == '/ledgertypecreatepopup/':
                 ledger_types = ledgerTypes.objects.all().values('id','type_name')
-                JsonResponse({'ledger_type':list(ledger_types)}) 
-                
+                return JsonResponse({'ledger_type':list(ledger_types)}, status = 200)
+            else:  
+                return redirect('ledger-Types-create')
             
-
     return render(request,template_name,{'form':form,'ledger_types':ledger_types})
 
 

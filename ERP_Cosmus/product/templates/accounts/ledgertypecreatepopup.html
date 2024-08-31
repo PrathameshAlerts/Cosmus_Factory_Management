@@ -41,7 +41,7 @@
     
           if (response.ok) {
             console.log('Ledger Type created successfully.');
-           
+            
             const data = await response.json();  // Await the response.json() call
             console.log(data);
             window.opener.postMessage(data, '*');

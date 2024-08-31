@@ -475,7 +475,7 @@
             <label for="file-input">
               <img src="../static/images/file.png" style="width: 40px; height: 40px" alt="Upload File" />
             </label>
-            <input id="file-input" type="file" id="formFile" name="excel_file" style="display: none;" />
+            <input id="file-input" type="file" name="excel_file" style="display: none;" />
             <label for="id_Products" class="mt-1 me-2 ms-4">Product View:</label>
             <select class=" productSelect" name="Products" id="id_Products" onchange="productView(this)">
               <option value="">-------------</option>
@@ -786,13 +786,6 @@ if (clickX > popUpRect.left || clickX <= popUpRect.right ||clickY > popUpRect.to
     toggleVisible("product_pricing_btn", "product_pricing");
     toggleVisible("set_production_btn", "set_production");
 
-    document.getElementById('newForm').addEventListener('submit',function(event){
-      event.preventDefault();
-        var subbtn = document.getElementById('newFormSubmit');
-        subbtn.disabled = true;
-        
-
-    })
   });
 </script>
 

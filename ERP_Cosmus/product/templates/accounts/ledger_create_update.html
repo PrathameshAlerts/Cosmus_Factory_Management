@@ -200,13 +200,13 @@ function handleOutsideClick(event) {
 
 window.addEventListener('message', function(event) {
     const data = event.data;
-    console.log(data.ledger_types);
-    if (data.ledger_types) {
-        populateDropdownLedger(data.ledger_types, '#id_types', 'name', 'Select Name');
+ 
+    if (data.ledger_type) {
+        populateDropdownLedgerTypes(data.ledger_type, '#id_types', 'type_name', 'Select Name');
     }
 });
 
-function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) {
+function populateDropdownLedgerTypes(items, dropdownSelector, valueKey, defaultText) {
     const dropdown = $(dropdownSelector);
     dropdown.empty();
     dropdown.append('<option value="">' + defaultText + '</option>');
