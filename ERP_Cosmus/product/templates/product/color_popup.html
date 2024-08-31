@@ -12,7 +12,7 @@
       <input type="text" class="item-select" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
     </div>
 
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
   </form>
 </div>
 
@@ -23,7 +23,8 @@
 
   document.getElementById('colorForm').addEventListener('submit', async function (event) {
     event.preventDefault();  // Prevent the default form submission
-
+    var submitBtn = document.getElementById('submitButton');
+    submitBtn.disabled = true;
     const form = event.target;
     const formData = new FormData(form);
     formData.append('save', 'Save');

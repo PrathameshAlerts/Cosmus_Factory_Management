@@ -237,7 +237,8 @@
         }
        // This function for form submit then function call and send the data to the parent page with the value
         function submitData(){
-
+           
+           
             jsondata()
 
             const newUniqueId = document.getElementById('shade_godown_items_set-0-unique_id').value;
@@ -334,70 +335,68 @@
         $('#newTable tbody').append(tableClone);
        
        
+        calculateGodownAmount();
         deleteRowCalculate();
        
       // }   
     });
-   // This funcion calculate the amount for each row then set the total amount and total quantity
-   $('input[name$="-quantity"], input[name$="-rate"]').on('input', function() {
-            const row = $(this).closest('tr');
-            const quantity = parseFloat(row.find('input[name$="-quantity"]').val()) || 0;
-            const rate = parseFloat(row.find('input[name$="-rate"]').val()) || 0;
-            const amount = quantity * rate;
-            row.find('input[name$="-amount"]').val(amount.toFixed(2));
+    //deleteRowCalculate();
 
-            let totalQuantity = 0;
-            let totalAmount = 0;
-            $('input[name$="-quantity"]').each(function() {
-                totalQuantity += parseFloat($(this).val()) || 0;
-            });
+   
 
-            $('input[name$="-amount"]').each(function() {
-                totalAmount += parseFloat($(this).val()) || 0;
-            });
+  // This funcion calculate the amount for each row then set the total amount and total quantity
+  function calculateNewRow(row) {
+        const inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        const inputQtyValue = parseFloat(inputQty);
+        const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        const inputRateValue = parseFloat(inputRate);
+        let totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
+        console.log('inputRateValue',inputRateValue)
+        // Calculate and set the amount for this row
 
-            $('#grand_godown_quantity').val(totalQuantity.toFixed(2));
-            $('#grand_godown_amount').val(totalAmount.toFixed(2));
-            if (totalQuantity > 0) {
-                const avgRate = totalAmount / totalQuantity;
-                $('#grand_godown_rate').val(avgRate.toFixed(2));
-            } else {
-                $('#grand_godown_rate').val('0.00');
+        if (isNaN(inputQtyValue) || isNaN(inputRateValue)) {
+                return 0;
             }
-        });
-
+        const amount = inputQtyValue * inputRateValue;
+        
+        totalAmount = isNaN(amount) ? '' : amount.toFixed(2);
+        row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val(totalAmount);
+        
+        return amount;
+       
+    }
     // calculate the total quantity
-    // function calculateQty(row) {
-    //     const inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
-    //     const inputQtyValue = parseInt(inputQty);
-    //     return inputQtyValue;
+    function calculateQty(row) {
+        const inputQty = row.find('.godown-quantity[name^="shade_godown_items_set-"][name$="-quantity"]').val();
+        const inputQtyValue = parseFloat(inputQty);
+        return inputQtyValue;
       
-    // }
-    // function calculateRate(row){
-    //     const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
-    //     const inputRateValue = parseInt(inputRate);
-    //     return inputRateValue;
-    // }
-    // // Function to calculate total amount
-    // function calculateGodownAmount() {
-    //     let total = 0;
-    //     let totalRate = 0;
-    //     let totalQty = 0;
-    //     // Iterate over each row in the table body
-    //     $('#newTable tbody tr').each(function() {
-    //         let newAmount = calculateNewRow($(this));
-    //         let newQty = calculateQty($(this));
-    //         let newRate = calculateRate($(this));
+    }
+    function calculateRate(row){
+        const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
+        const inputRateValue = parseFloat(inputRate);
+        return inputRateValue;
+    }
+    // Function to calculate total amount
+    function calculateGodownAmount() {
+        let total = 0;
+        let totalRate = 0;
+        let totalQty = 0;
+        // Iterate over each row in the table body
+        $('#newTable tbody tr').each(function() {
+            let newAmount = calculateNewRow($(this));
+            let newQty = calculateQty($(this));
+            let newRate = calculateRate($(this));
 
-    //         totalQty += newQty;
-    //         totalRate = newRate;
-    //         total += newAmount;
-    //     });
-    //     // Update the total amount field
-    //     $('#grand_godown_amount').val(total);
-    //     $('#grand_godown_quantity').val(totalQty);
-    //     $('#grand_godown_rate').val(totalRate);
-    // }
+            totalQty += newQty;
+            totalRate = newRate;
+            total += newAmount;
+        });
+        // Update the total amount field
+        $('#grand_godown_amount').val(total);
+        $('#grand_godown_quantity').val(totalQty);
+        $('#grand_godown_rate').val(totalRate);
+    }
 
 
     function deleteRowCalculate(){
@@ -420,6 +419,17 @@
         $('#grand_godown_quantity').val(totalQty.toFixed(2));
         $('#grand_godown_rate').val(totalRate.toFixed(2));             
     }
+    $(document).on('click','#popupData', function(){
+        calculateGodownAmount();
+        deleteRowCalculate();
+    })
+
+    $(document).on('input change', '.godown-quantity, .godown-rate, .godown-select', function() {
+    calculateGodownAmount();
+    deleteRowCalculate();
+    });
+      
+   
    
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
@@ -446,6 +456,11 @@
                 alert('The table must have at least one godown item'); 
             }
             });
+
+            $('#childform').on('submit', function(event) {
+                $('#popupData').attr('disabled', 'disabled').val('Saving...');
+                // event.preventDefault(); // Uncomment if you want to prevent form submission for validation
+            })
         })
 </script>
 

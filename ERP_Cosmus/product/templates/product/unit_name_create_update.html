@@ -5,7 +5,7 @@
 <div class="row mt-4">
   <div class="col-lg-5">
 
-    <form action="" method="POST">
+    <form action="" method="POST" id="unitForm">
       {% csrf_token %}
       <h2 class="mb-3">{{title}}</h2>
       <div class="d-flex mb-3">
@@ -17,7 +17,7 @@
         <label for="id_unit_value" class=" item-form">Units:</label>
           <input type="text" class="item-select" value="{{form.instance.unit_value}}" name="unit_value" maxlength="255" required id="id_unit_value">
       </div>
-      <input type="submit" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
     </form>
   </div>
 
@@ -46,14 +46,7 @@
             <thead class="name_absolute sticky-top">
               <tr>
                 <th>No</th>
-                <th>Unit Name
-                  <!-- <div class="nav-item dropdown unit-list-icons">
-                                <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li><input type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
-                                </ul>
-                            </div> -->
-                </th>
+                <th>Unit Name</th>
                 <th>Units</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -104,6 +97,9 @@
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
+    $('#unitForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
     $('.delete-btn').click(function () {
       const itemId = $(this).data('item-id');
       const name = $(this).closest('tr').find('td').eq(1).text();

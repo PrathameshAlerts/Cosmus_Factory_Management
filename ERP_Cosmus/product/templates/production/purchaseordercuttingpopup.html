@@ -82,20 +82,27 @@
         var totalQty = 0;
         balanceApprove.forEach(ele =>{
             var balance = parseInt(ele.value);
-            totalQty = totalQty + balance;
-            if(totalQty == 0){
+            console.log(balance)
+           totalQty = totalQty + balance;
+        
+            return totalQty
+        })
+      
+        if(totalQty === 0){
                 var submitBtn = document.querySelector('.create-btn');
-              
+               var approveBtn = document.querySelectorAll('[name$= "-approved_pcs"]');
+               approveBtn.forEach(element =>{
+                   element.setAttribute('readonly', true);
+               })
+                
                 submitBtn.style.display = 'none';
             }
-            
-        })
     }
 
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
-   
+        submitForm()
         let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
         approve.forEach(function (element) {
             element.addEventListener('input', () => {

@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="POST">
+<form method="POST" id="cuttingOrderForm">
     
     {% csrf_token %}
     <div class="row">
@@ -312,6 +312,11 @@ $(document).ready(function(){
                 }
 
             })
+
+            $('#cuttingOrderForm').on('submit',function(){
+                $('#id_submit').attr('disabled', 'disabled');
+            })
+           
         })
     })
 document.addEventListener('DOMContentLoaded', function() {

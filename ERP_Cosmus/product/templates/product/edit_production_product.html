@@ -490,7 +490,7 @@
   </div>
 
   <div class="mb-5">
-    <input type="submit" class="newProductCreateBtn mx-5" value="submit">
+    <input type="submit" id="newFormSubmit" class="newProductCreateBtn mx-5" value="submit">
   </div>
 </form>
 
@@ -786,6 +786,13 @@ if (clickX > popUpRect.left || clickX <= popUpRect.right ||clickY > popUpRect.to
     toggleVisible("product_pricing_btn", "product_pricing");
     toggleVisible("set_production_btn", "set_production");
 
+    document.getElementById('newForm').addEventListener('submit',function(event){
+      event.preventDefault();
+        var subbtn = document.getElementById('newFormSubmit');
+        subbtn.disabled = true;
+        
+
+    })
   });
 </script>
 

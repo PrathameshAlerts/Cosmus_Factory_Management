@@ -4,7 +4,7 @@
 
 <div class="row mt-4">
     <div class="col-lg-5">
-        <form action="" method="POST">
+        <form action="" method="POST" id="packagingForm">
 
             {% csrf_token %}
             <h2 class="mb-4">Packaging- {{title}}</h2>
@@ -12,7 +12,7 @@
                 <label for="id_packing_material" class="item-form">Packaging :</label>
                 <input type="text" name="packing_material" class="item-select" required id="id_packing_material" value="{{form.instance.packing_material}}">
             </div>
-            <input type="submit" class="create-btn mt-4" name="save" value="Save">
+            <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
         </form>
     </div>
     <div class="col-lg-5 mt-2">
@@ -73,7 +73,9 @@
 </div>
 <script>
     document.body.appendChild(document.getElementById('exampleModal'));
-
+    $('#packagingForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
     $(document).ready(function () {
         $('.delete-btn').click(function () {
             var itemId = $(this).data('item-id');

@@ -1498,6 +1498,8 @@ def ledgercreate(request):
                 ledger_labour = Ledger.objects.filter(types__type_name='labour').values('id','name')
                               
                 return JsonResponse({'ledger_labour':list(ledger_labour)})
+            
+          
             else:
                 return redirect('ledger-list')
         else:
@@ -1599,7 +1601,8 @@ def ledgerTypes_create_update(request,pk=None):
             form.save()
 
             if request.path == '/ledgertypecreate/':
-                return redirect('ledger-type-list')
+                return redirect('ledger-Types-create')
+                
             
 
     return render(request,template_name,{'form':form,'ledger_types':ledger_types})
@@ -1610,7 +1613,7 @@ def ledgerTypes_delete(request,pk):
     type_instance = get_object_or_404(ledgerTypes,pk=pk)
     if type_instance:
         type_instance.delete()
-        return redirect('ledger-type-list')
+        return redirect('ledger-Types-create')
 
 
 

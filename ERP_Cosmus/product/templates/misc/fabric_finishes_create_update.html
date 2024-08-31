@@ -4,7 +4,7 @@
 
  <div class="row mt-4">
     <div class="col-lg-5">
-        <form action="" method="POST">
+        <form action="" method="POST" id="fabricFinishesForm">
 
             {% csrf_token %}
            <h2 class="mb-4">Fabric Finishes {{title}}</h2>
@@ -13,7 +13,7 @@
                 <input type="text" name="fabric_finish" class="item-select" required id="id_fabric_finish" value="{{form.instance.fabric_finish}}">    
             </div>
         
-            <input type="submit" class="create-btn mt-4" name="save" value="Save">
+            <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save" >
             
         </form>
     </div>
@@ -76,6 +76,9 @@
     <script>
         document.body.appendChild(document.getElementById('exampleModal'));
         
+        $('#fabricFinishesForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
         $(document).ready(function(){
             $('.delete-btn').click(function(){
                 var itemId = $(this).data('item-id');

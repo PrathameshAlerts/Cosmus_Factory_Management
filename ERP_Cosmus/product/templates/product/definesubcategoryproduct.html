@@ -6,7 +6,7 @@
   <h2>Product Sub Category-{{title}}</h2>
   <div class="col-lg-5 mt-2">
 
-    <form action="" method="POST">
+    <form action="" method="POST" id="subCategoryForm">
       {% csrf_token %}
       <div class="d-flex mb-3">
         <label for="id_product_main_category" class="item-form">Main Category:</label>
@@ -32,28 +32,12 @@
           <label for="id_product_sub_category_name" class="item-form">Sub Category:</label>
           <input type="text" class="product2Select" value="{{form.instance.product_sub_category_name}}" name="product_sub_category_name" maxlength="255" required id="id_product_sub_category_name">
         </div>
-        <input type="submit" class="product2create-btn" name="save" value="Save">
+        <input type="submit" id="submitButton" class="product2create-btn" name="save" value="Save">
       </div>
     </form>
   </div>
   <div class="col-lg-7 mt-4">
-    <!-- <div class="d-flex ">
-      <lable class="form-label">List Of Sub-Category:</lable>
-      <ul style="list-style: none;">
-        {% for main_cat in main_categories %}
-        <li class=" mx-2 mt-3 mb-2">
-          <p class="fw-bold text-white ps-2 py-2 rounded edit_btn">{{main_cat.product_category_name}}</p>
-          <ol class=''>
-            {% for sub_cat in main_cat.subcategories.all %}
-            <li class="mx-2 my-2 ">{{sub_cat.product_sub_category_name}}<a class="ms-4" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a> 
-                  <a href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a>
-            </li>
-            {% endfor %}
-          </ol>
-        </li>
-        {% endfor %}
-      </ul>
-    </div> -->
+    
 <div class="row">
   <div class="col-lg-9">
     <div class="table-res">
@@ -100,5 +84,13 @@
   </div>
 </div>
 
+<script>
+  $(Document).ready(function(){
+   
+    $('#subCategoryForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
+  })
+</script>
 
 {% endblock body %}

@@ -4,7 +4,7 @@
 {% block body %}
 
 
-<form action="" method="post">
+<form action="" method="post" id="stockTransferForm">
     {% csrf_token %}
     <h2>Stock Transfer<span>(Raw material)</span></h2>
     <div class="d-flex mb-3">
@@ -114,7 +114,7 @@
         </table>
         <button type="button" class="create-btn" id="addRowButton">Add +</button>
     </div>
-    <input type="submit" type="submit" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
 </form>
 
 <script>
@@ -328,6 +328,9 @@
                     console.log('Error sending value to the backend');
                 }
             })
+        })
+        $('#stockTransferForm').on('submit',function (){
+            $('#submitButton').prop('disabled', true);
         })
     })
 </script>

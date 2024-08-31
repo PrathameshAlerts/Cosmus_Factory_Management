@@ -84,16 +84,17 @@
         </tbody>
     </table>
     <button type="button" class="create-btn" id="addRow">Add +</button>
-    <input type="submit" class="add_btn" id="submitButton">
+    <input type="submit" id="submitBtn" class="add_btn" id="submitButton">
 
 </form>
 
 <script>
 //     let formSubmitted = false;
 
-//   document.getElementById('myOpeningForm').addEventListener('submit', function() {
-//     formSubmitted = true;
-//   });
+  document.getElementById('myOpeningForm').addEventListener('submit', function() {
+    var submitForm = document.getElementById('submitBtn');
+    submitForm.disabled = true;
+  });
 
     document.addEventListener('DOMContentLoaded', function () {
         const addButtonRow = document.getElementById('addRow');
