@@ -1583,9 +1583,12 @@ def ledgerdelete(request, pk):
 
 
 def ledgerTypes_create_update(request,pk=None):
+
     ledger_types = ledgerTypes.objects.all()
+
     if request.path == '/ledgertypecreatepopup/':
         template_name = 'accounts/ledgertypecreatepopup.html'
+
     else:
         template_name = 'accounts/ledgerTypescreateupdate.html'
 
@@ -1602,6 +1605,9 @@ def ledgerTypes_create_update(request,pk=None):
 
             if request.path == '/ledgertypecreate/':
                 return redirect('ledger-Types-create')
+            else:
+                ledger_types = ledgerTypes.objects.all().values('id','type_name')
+                JsonResponse({'ledger_type':list(ledger_types)}) 
                 
             
 
