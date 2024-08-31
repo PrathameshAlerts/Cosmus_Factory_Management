@@ -815,13 +815,27 @@ class labour_workout_cutting_items(models.Model):
 
 
 class labour_work_in_master(models.Model):
-    voucher_number = models.IntegerField(primary_key=True)
+    voucher_number = models.IntegerField(unique=True, null=False, blank=False)
     created_date = models.DateTimeField(auto_now = True)
-    labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT)
+    labour_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
     labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=100)
+    total_pcs = models.IntegerField()
+    total_pending_pcs = models.IntegerField()
+    total_return_pcs = models.IntegerField()
+    labour_charges = models.DecimalField(max_digits=10, decimal_places=2)
+    other_charges = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     modified_date = models.DateTimeField(auto_now_add=True)
 
+
+class labour_work_in_product_to_item(models.Model):
+    labour_workin_instance = models.ForeignKey(labour_work_in_master, on_delete=models.PROTECT, related_name='l_w_in_products')
+    product_sku = models.CharField(max_length=100)
+    product_color = models.CharField(max_length=100)
+    L_work_out_pcs = models.IntegerField()
+    return_pcs = models.IntegerField()
+    pending_to_return_pcs = models.IntegerField()
 
 # reports
 class godown_item_report_for_cutting_room(models.Model):
