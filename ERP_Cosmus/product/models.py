@@ -425,7 +425,6 @@ class Ledger(models.Model):
     ]
 
 
-
     DEBIT_CREDIT = [
         ("Debit", 'Debit'),
         ("Credit", 'Credit'),

@@ -65,14 +65,14 @@
             <td class="text-nowrap">
                 {{ record.purchase_order_cutting_master.created_date.date}}<br>
 
-                {% if record.purchase_order_cutting_master.created_date|subtract_datestime:current_date > 0 %}
+                {% if record.purchase_order_cutting_master.created_date|subtract_datestime:current_date < 0 %}
 
                 
                 <span style="color: red; font-weight : bold;" >{{ record.purchase_order_cutting_master.created_date|subtract_datestime:current_date }} OverDue </span>
 
-                {% else %}
+                {% elif  record.purchase_order_cutting_master.created_date|subtract_datestime:current_date == 0 %}
 
-                <span style="color: green; font-weight : bold;">+{{ record.purchase_order_cutting_master.created_date|subtract_datestime:current_date }} Remaining</span>
+                <span style="color: green; font-weight : bold;">{{ record.purchase_order_cutting_master.created_date|subtract_datestime:current_date }} Remaining</span>
                 {% endif %}
                 </td>
 
