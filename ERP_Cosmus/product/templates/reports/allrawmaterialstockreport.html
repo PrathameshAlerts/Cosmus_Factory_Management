@@ -5,8 +5,7 @@
     <table class="table table-hover table-bordered table-striped">
         <thead class="sticky-top name_absolute">
             <tr>
-                <th>No</th>
-                <th>Date</th> 
+                <th>No</th> 
                 <th>Material Name</th> 
                 <th>Material Shade</th>
                 <th>Total Qty</th> 
@@ -17,8 +16,7 @@
         <tbody class="mainTableList">
             {% for report in queryset %}
             <tr class="text-nowrap">
-                <td>{{forloop.counter}}</td>
-                <td>{{report.created_date.date}}</td>
+                <td>{{forloop.counter}}</td>   
                 <td>{{report.items.item_name}}</td>
                 <td><button style="background-color: #89CFF0;" class=" rounded text-white outline-none p-1 border-0"><a class="text-black text-decoration-none" href="{% url 'godown-item-report-all-godowns' report.id %}">{{report.item_shade_name}}</a></td></button> 
                 <td class="toatlQty">{{report.total_qty | default_if_none:0}}</td>

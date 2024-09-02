@@ -23,7 +23,16 @@ the input field will be pre-filled with that value when the page is loaded. -->
           </div>
         </form>
         <button class="item-btn mx-4" onclick="redirectlistFilter()">Clear Filter</button>
-        <a href="{% url 'raw-material-excel-download' %}">Download Excel</a>
+        
+    
+      </div>
+      <div class="d-flex mb-2">
+        <lable class="mt-1 me-2 ms-4">Download Excel:</lable>
+        <label for="RawDownloadExcel">
+          <img src="../static/images/file down.png" style="width: 40px; height: 40px" />
+        </label>
+        <input type="button" class="edit_btn" onclick="redirectDownloadRowExcel()" id="RawDownloadExcel" value="" style="display: none;" download>
+        
 
 
         <form method="POST" id="uploadForm">
@@ -31,7 +40,6 @@ the input field will be pre-filled with that value when the page is loaded. -->
           <input type="file" name="excel_file" required  id="uploadData"/>
           <button type="submit" id="upload-btn">Upload</button>
       </form>
-    
       </div>
     </div>
   </div>
@@ -286,6 +294,10 @@ the input field will be pre-filled with that value when the page is loaded. -->
 
 
 <script>
+
+    function redirectDownloadRowExcel() {
+    window.location.href = '/rawmaterialexceldownload/' 
+  }
   document.addEventListener("DOMContentLoaded", function () {
     var colorcheck = document.querySelectorAll('.colorCheck');
     colorcheck.forEach(function(el){
