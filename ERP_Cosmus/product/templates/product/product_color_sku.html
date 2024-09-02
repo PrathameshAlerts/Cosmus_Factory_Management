@@ -146,15 +146,6 @@ function createCard() {
         cardContainer.appendChild(newCard);
     }
     form.value = totalForms + 1;
-
-    var cancelBtn = existingCards.querySelector('.cancel-btn');
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', function (event) {
-            var cards = event.target.closest(".card");
-            cards.parentNode.removeChild(cards);
-            form.value = totalForms - 1; // Decrement the counter
-        });
-    }
 }
 
 function resetCardFields(card, totalForms) {
@@ -192,6 +183,22 @@ function setupImagePreview(card) {
         }
     });
 }
+
+// function CancelCard(card){
+//   var cancelBtn = document.querySelector('.cancel-btn');
+//     console.log('cancelBtnClick',cancelBtn);
+//     var form = document.getElementById('id_productdetails-TOTAL_FORMS');
+//     var totalForm = parseInt(form.value);
+   
+//         cancelBtn.addEventListener('click', function (event) {
+
+//             var cards = event.target.closest(".card");
+//             console.log('cancelBtnClick',cards);
+//             cards.parentNode.removeChild(card);
+//             form.value = totalForms - 1; // Decrement the counter
+//         });
+  
+// }
 
 function compressImage(file, callback) {
     var reader = new FileReader();
@@ -249,6 +256,7 @@ function compressImage(file, callback) {
 // Initial image preview setup for existing cards
 document.querySelectorAll('.card').forEach(function (card) {
   setupImagePreview(card);
+  //CancelCard(card);
 });
 
 });
