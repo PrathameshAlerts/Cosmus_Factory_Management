@@ -1601,7 +1601,7 @@ def ledgerTypes_create_update(request,pk=None):
 
             if request.path == '/ledgertypecreatepopup/':
                 ledger_types = ledgerTypes.objects.all().values('id','type_name')
-                JsonResponse({'ledger_type':list(ledger_types)}, status = 200)
+                return JsonResponse({'ledger_type':list(ledger_types)}, status = 200)
             else:  
                 return redirect('ledger-Types-create')
             

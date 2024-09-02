@@ -84,40 +84,40 @@
     var previousClosingValue = 0;
 
     mainTable.forEach((element, index) => {
-        var inwordQty = parseFloat(element.querySelector('.inwardQty').textContent.trim()) || 0;
-        var inwordValue = parseFloat(element.querySelector('.inwardValue').textContent.trim()) || 0;
-        var outwordQty = parseFloat(element.querySelector('.outwardQty').textContent.trim()) || 0;
-        var outwordValue = parseFloat(element.querySelector('.outwardValue').textContent.trim()) || 0;
+        var inwordQtyElement = element.querySelector('.inwardQty');
+        var inwordValueElement = element.querySelector('.inwardValue');
+        var outwordQtyElement = element.querySelector('.outwardQty');
+        var outwordValueElement = element.querySelector('.outwardValue');
+        
+        // Validate elements and extract values
+        var inwordQty = inwordQtyElement ? parseFloat(inwordQtyElement.textContent.trim()) || 0 : 0;
+        var inwordValue = inwordValueElement ? parseFloat(inwordValueElement.textContent.trim()) || 0 : 0;
+        var outwordQty = outwordQtyElement ? parseFloat(outwordQtyElement.textContent.trim()) || 0 : 0;
+        var outwordValue = outwordValueElement ? parseFloat(outwordValueElement.textContent.trim()) || 0 : 0;
 
         var closeQtyElement = element.querySelector('.closingQty');
         var closeValueElement = element.querySelector('.closingValue');
 
-        if (index === 0) {
-            // For the first row, set closing values equal to inward or outward values if available
-            if (inwordQty > 0 && inwordValue > 0) {
-                previousClosingQty = inwordQty;
-                previousClosingValue = inwordValue;
-            } else if (outwordQty > 0 && outwordValue > 0) {
-                previousClosingQty = outwordQty;
-                previousClosingValue = outwordValue;
-            }
-        } else {
-            // For subsequent rows, calculate based on previous row's closing values
-            if (inwordQty > 0 && inwordValue > 0) {
-                previousClosingQty += inwordQty;
-                previousClosingValue += inwordValue;
-            } else if (outwordQty > 0 && outwordValue > 0) {
-                previousClosingQty -= outwordQty;
-                previousClosingValue -= outwordValue;
-            }
+        // Calculate closing quantities and values
+        if ((inwordQty > 0 && inwordValue >= 0) || (inwordQty > 0 && inwordValue == 0)) {
+            previousClosingQty += inwordQty;
+            previousClosingValue += inwordValue;
+        } else if ((outwordQty > 0 && outwordValue >= 0) || (outwordQty > 0 && outwordValue == 0)) {
+            previousClosingQty -= outwordQty;
+            previousClosingValue -= outwordValue;
         }
 
         // Set the calculated closing values to the current row
         if (closeQtyElement) closeQtyElement.textContent = previousClosingQty.toFixed(2);
         if (closeValueElement) closeValueElement.textContent = previousClosingValue.toFixed(2);
-        document.getElementById('TotalQty').textContent =previousClosingQty.toFixed(2);
-        document.getElementById('TotalValue').textContent = previousClosingValue.toFixed(2);
     });
+
+    // Update the total quantity and value on the page
+    var totalQtyElement = document.getElementById('TotalQty');
+    var totalValueElement = document.getElementById('TotalValue');
+
+    if (totalQtyElement) totalQtyElement.textContent = previousClosingQty.toFixed(2);
+    if (totalValueElement) totalValueElement.textContent = previousClosingValue.toFixed(2);
 }
 
 

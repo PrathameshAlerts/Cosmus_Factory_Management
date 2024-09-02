@@ -262,7 +262,7 @@ window.addEventListener('message', function(event) {
     const data = event.data;
     console.log(data.ledger_labour);
     if (data.ledger_labour) {
-        populateDropdownLedger(data.ledger_labour, '#id_party_name', 'party_name', 'Select Name');
+        populateDropdownLedger(data.ledger_labour, '#id_party_name', 'name', 'Select Name');
     }
 });
 

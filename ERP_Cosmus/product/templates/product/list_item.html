@@ -26,10 +26,10 @@ the input field will be pre-filled with that value when the page is loaded. -->
         <a href="{% url 'raw-material-excel-download' %}">Download Excel</a>
 
 
-        <form method="POST" action="{% url 'raw-material-excel-upload' %}">
+        <form method="POST" id="uploadForm">
           {% csrf_token %}
-          <input type="file" name="excel_file" required />
-          <button type="submit">Upload</button>
+          <input type="file" name="excel_file" required  id="uploadData"/>
+          <button type="submit" id="upload-btn">Upload</button>
       </form>
     
       </div>
@@ -299,6 +299,21 @@ the input field will be pre-filled with that value when the page is loaded. -->
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
+    $('#uploadForm').on('submit', function () {
+      var uploadData = $(this).serialize();
+      $.ajax({
+        type: 'POST',
+        url: '{% url "raw-material-excel-upload" %}',
+        data: {
+          'csrfmiddlewaretoken': '{{ csrf_token }}',
+          'uploadData': uploadData},
+
+        success: function (data) {
+          console.log("success");
+        }
+      })
+    })
+
     $('.delete-btn').click(function () {
       var itemId = $(this).data('item-id');
       var name = $(this).closest('tr').find('td').eq(1).text();
