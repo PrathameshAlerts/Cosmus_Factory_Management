@@ -168,7 +168,7 @@ urlpatterns = [
 
     #purchase_order_for_raw
     path('purchaseorderrawmaterial/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial'),
-    path('purchaseorderrawmaterialupdate/<int:p_o_pk>/<int:prod_ref_no>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial'),
+    path('purchaseorderrawmaterialupdate/<int:p_o_pk>/<int:prod_ref_no>/<str:model_name>', views.purchaseorderrawmaterial, name = 'purchase-order-rawmaterial-update'),
     path('purchaseorderrawmateriallist/',views.purchase_order_for_raw_material_list, name = 'purchase-order-raw-material-list'),
     path('purchaseorderforrawmaterialdelete/<int:pk>',views.purchase_order_for_raw_material_delete, name = 'purchase-order-for-raw-material-delete'),
     

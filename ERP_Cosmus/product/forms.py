@@ -288,6 +288,9 @@ class LedgerForm(forms.ModelForm):
                   'default_credit_period','types','Gst_no','address','state',
                   'country','city','pincode','mobile_no','landline_no','bank_details',
                   'Debit_Credit']
+        
+
+    
 
 class item_purchase_voucher_master_form(forms.ModelForm):
     class Meta:
