@@ -32,7 +32,7 @@
  
   </div>
   <div class="row">
-    <div class="col-lg-11">
+    <div class="col-lg-12">
       <div class="table-responsives">
         <table class="table table-striped table-hover  table-bordered">
           <thead class="name_absolute sticky-top">
@@ -51,11 +51,11 @@
           </thead>
           <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
             {% for cutting_order in p_o_cutting_order_all %}
-            <tr class="text-nowrap">
+            <tr>
               <td>{{forloop.counter}}</td>
-              <td>{{cutting_order.created_date}}</td>
+              <td class="text-nowrap">{{cutting_order.created_date}}</td>
               <td class="cuttingOderId">{{cutting_order.raw_material_cutting_id}}</td>
-              <td>{{cutting_order.factory_employee_id.factory_emp_name}}</td>
+              <td class="text-nowrap">{{cutting_order.factory_employee_id.factory_emp_name}}</td>
               <td class="processedQty">{{cutting_order.processed_qty}}</td>
               <td class="approvedQty">{{cutting_order.approved_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
@@ -146,10 +146,11 @@
             $('#exampleModal').modal('hide');
             // Disable buttons and visually "disable" the row
             row.css('opacity', '0.5'); // Gray out the row
-            row.find('a, button').prop('disabled', true); // Disable all links and buttons within the row
+            row.find('button').prop('disabled', true); // Disable all links and buttons within the row
+            //.find('a').prop('pointer-events', 'cursor:allowed'); 
 
             // Optionally, remove the event listeners from the buttons
-            row.find('a, button').off('click');
+            row.find('button').off('click');
             window.location.reload();
           },
           error: function(xhr, status, error){
@@ -201,10 +202,14 @@ function cancelCutting(){
           var mainRows = elemet.closest('tr');
 
           mainRows.style.opacity = '0.5';
-          var linksAndButtons = mainRows.querySelectorAll('a, button');
+          var linksAndButtons = mainRows.querySelectorAll('button');
           linksAndButtons.forEach(function(item) {
             item.disabled = true;
             item.style.pointerEvents = 'none';
+          });
+          var links = mainRows.querySelectorAll('a');
+          links.forEach(function(items) {
+            items.style.pointerEvents = 'cursor:allowed';
           });
         }
       })
