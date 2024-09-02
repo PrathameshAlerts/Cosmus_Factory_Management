@@ -276,6 +276,10 @@ class ledger_types_form(forms.ModelForm):
 
         fields = ['type_name']
 
+
+    def clean_ledger_types_form(self):
+        return self.clean_unique_field('type_name',ledgerTypes)
+
 class LedgerForm(forms.ModelForm):
     opening_balance = forms.IntegerField(label='Opening Balance')
     class Meta:
@@ -284,6 +288,9 @@ class LedgerForm(forms.ModelForm):
                   'default_credit_period','types','Gst_no','address','state',
                   'country','city','pincode','mobile_no','landline_no','bank_details',
                   'Debit_Credit']
+        
+
+    
 
 class item_purchase_voucher_master_form(forms.ModelForm):
     class Meta:
