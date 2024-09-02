@@ -1,5 +1,6 @@
 
 from datetime import datetime
+from pickle import TRUE
 from django.db import models
 from django.conf import settings
 from django.forms import ValidationError
@@ -415,7 +416,7 @@ class StockItem(models.Model):
     
 
 class ledgerTypes(models.Model):
-    type_name = models.CharField(max_length=50)
+    type_name = models.CharField(unique=True, null=False, blank=False ,max_length=50)
 
 
 class Ledger(models.Model):
@@ -423,7 +424,6 @@ class Ledger(models.Model):
         ("Yes", 'Yes'),
         ("No", 'No'),
     ]
-
 
     DEBIT_CREDIT = [
         ("Debit", 'Debit'),
@@ -836,6 +836,8 @@ class labour_work_in_product_to_item(models.Model):
     L_work_out_pcs = models.IntegerField()
     return_pcs = models.IntegerField()
     pending_to_return_pcs = models.IntegerField()
+
+
 
 # reports
 class godown_item_report_for_cutting_room(models.Model):

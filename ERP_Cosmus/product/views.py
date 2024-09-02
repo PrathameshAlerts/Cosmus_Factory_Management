@@ -22,6 +22,7 @@ from django.contrib import messages
 from openpyxl.utils import get_column_letter 
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
+from django.core.management import call_command
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponse, HttpResponseServerError, JsonResponse
@@ -29,7 +30,6 @@ from django.views.decorators.cache import cache_control
 from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
 import pandas as pd
-
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
@@ -3218,9 +3218,22 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
     form = purchase_order_form(instance = purchase_order_instance)
 
     product_refrence_no = prod_ref_no
-    product_2_items_instances = product_2_item_through_table.objects.filter(
-                            PProduct_pk__Product__Product_Refrence_ID = product_refrence_no).order_by(
-                                'Item_pk','id').distinct('Item_pk')
+
+    
+    product_2_items_instances_unique = product_2_item_through_table.objects.filter(
+                            PProduct_pk__Product__Product_Refrence_ID = product_refrence_no,common_unique = False).order_by(
+                                'row_number')
+    
+    product_2_items_instances_common = product_2_item_through_table.objects.filter(
+                            PProduct_pk__Product__Product_Refrence_ID = product_refrence_no,common_unique = True).order_by(
+                                'row_number','id').distinct('row_number')
+    
+    # combine 2 qs from same model  By default, union() removes duplicates, but you can keep them by using the all=True argument.
+    # or combined_qs = list(qs1) + list(qs2)
+    # or combined_qs = list(chain(qs1, qs2))
+    product_2_items_instances = product_2_items_instances_unique.union(product_2_items_instances_common)
+
+
 
     model_name = purchase_order_instance.product_reference_number.Model_Name
 
@@ -3242,6 +3255,9 @@ def purchaseorderrawmaterial(request,p_o_pk,prod_ref_no):
             physical_stock_all_godowns[item_name] = str(item_quantity)
 
     purchase_order_raw_formset = purchase_order_raw_product_qty_formset(instance = purchase_order_instance)
+
+
+
 
     # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
     if not purchase_order_instance.raw_materials.all():

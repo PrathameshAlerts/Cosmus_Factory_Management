@@ -276,6 +276,10 @@ class ledger_types_form(forms.ModelForm):
 
         fields = ['type_name']
 
+
+    def clean_ledger_types_form(self):
+        return self.clean_unique_field('type_name',ledgerTypes)
+
 class LedgerForm(forms.ModelForm):
     opening_balance = forms.IntegerField(label='Opening Balance')
     class Meta:
