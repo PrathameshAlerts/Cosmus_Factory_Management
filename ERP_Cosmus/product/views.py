@@ -4624,8 +4624,9 @@ def raw_material_excel_upload(request):
                                 
 
                     if rows_with_error:
+                        rows_with_error_list = rows_with_error.values.tolist()
                         wb = Workbook()
-
+                        print(rows_with_error_list)
                         default_sheet = wb['Sheet']
                         wb.remove(default_sheet) 
 
@@ -4636,7 +4637,7 @@ def raw_material_excel_upload(request):
     
                         sheet1.append(headers)
 
-                        for row in rows_with_error:
+                        for row in rows_with_error_list:
                             sheet1.append(row)
 
 
