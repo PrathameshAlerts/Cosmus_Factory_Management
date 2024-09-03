@@ -87,7 +87,7 @@ def dashboard(request):
 
 #NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
 def edit_production_product(request,pk):
-
+    print(request.POST)
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     
@@ -289,8 +289,7 @@ def edit_production_product(request,pk):
                 messages.error(request, f'An exception occured - {e}')
         
         else:
-            print(form.errors)
-            print(formset.errors)
+
             logger.error(f"Productform not valid - {form.errors} - Product-name - {pproduct}")
             logger.error(f"Product formsets not valid- {formset.errors} - Product-name - {pproduct}")
 
@@ -4624,20 +4623,24 @@ def raw_material_excel_upload(request):
                                 
 
                     if rows_with_error:
-                        rows_with_error_list = rows_with_error.values.tolist()
+
+                        # Convert each DataFrame to a list of lists
+                        list_of_lists = [df.values.tolist() for df in rows_with_error]
+
+
                         wb = Workbook()
-                        print(rows_with_error_list)
                         default_sheet = wb['Sheet']
                         wb.remove(default_sheet) 
 
-                        wb.create_sheet('raw_material_create_errors')
+                        wb.create_sheet('raw_material_create_with_errors')
+
                         sheet1 = wb.worksheets[0]
                         headers =  ['Raw Material Name', 'Material Code','Color', 'Packing','Unit Name','Units','Panha', 
                                 'Fabric or Non Fabric','Fabric Finishes','Fabric Group','GST','HSN Code','Status']
     
                         sheet1.append(headers)
 
-                        for row in rows_with_error_list:
+                        for row in list_of_lists:
                             sheet1.append(row)
 
 
@@ -4646,9 +4649,10 @@ def raw_material_excel_upload(request):
         
                         # Prepare the HTTP response with the Excel file content
                         response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                        file_name = 'raw_material_create'
+                        file_name = 'raw_material_create_with_errors'
                         response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
-
+                        logging.error(f"Item saved successfully with errors no of errors {len(rows_with_error)}")
+                        messages.error(request, f"Item saved successfully with errors no of errors {len(rows_with_error)}")
                         return response
                             
                     messages.success(request, "Item saved successfully")

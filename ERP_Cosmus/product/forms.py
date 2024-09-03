@@ -68,8 +68,6 @@ ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, 
 
 
 
-
-
 class Product2ItemForm(forms.ModelForm):
     class Meta:
         model = product_2_item_through_table
@@ -135,7 +133,7 @@ class PProductAddForm(UniqueFieldMixin,forms.ModelForm):
                   'Product_ShortName','Product_Refrence_ID',
                   'Product_Compartments','Product_UOM','Product_Accessory_Compartments','Product_CapacityLtrs',
                   'Product_BulletPoint2','Product_BulletPoint1','Product_Material','Product_BulletPoint3',
-                  'Product_BulletPoint4',
+                  'Product_BulletPoint4','labour_charges',
                   'Product_BulletPoint5','Product_ShortDescription','Product_LongDescription','Product_Dimensions_WP_Length',
                   'Product_Dimensions_WP_Width','Product_Dimensions_WP_Height','Product_Dimensions_WP_Weight',
                   'Product_Dimensions_WOP_Length',
