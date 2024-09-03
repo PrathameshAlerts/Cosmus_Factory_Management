@@ -1171,24 +1171,25 @@ def color_create_update(request, pk=None):
 
         if form.is_valid():
             form.save()
-
+            print(request.path)
+            print(request.POST)
             # need to add a verification if getting request from simple form or from modal for save redirection 
             if 'save' in request.POST and request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
                 else:
                     messages.success(request, 'Color created successfully.')
-                
+                print('TESTT')
                 return redirect('simplecolorlist')
             
             elif 'save' in request.POST and template_name == "product/color_popup.html":
-
+                print('TESTT123')
                 color_all = Color.objects.all().values('id','color_name')
                 messages.success(request, 'Color created successfully.')
                 return JsonResponse({'color_all':list(color_all)}) 
         else:
             return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search})
-
+    print('TESTTT123')
     return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search})
         
 
@@ -2548,8 +2549,10 @@ def gst_create_update(request, pk = None):
                 messages.success(request,'GST updated successfully.')
             else:
                 messages.success(request,'GST created successfully.')
-
+            print(template_name)
+            print(request.POST)
             if 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
+                print('test')
                 return redirect('gst-create-list')
 
             elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
@@ -4634,6 +4637,10 @@ def raw_material_excel_upload(request):
                                 'Fabric or Non Fabric','Fabric Finishes','Fabric Group','GST','HSN Code','Status']
     
                         sheet1.append(headers)
+
+                        for row in rows_with_error:
+                            sheet1.append(row)
+
 
                         fileoutput = BytesIO()
                         wb.save(fileoutput)

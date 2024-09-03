@@ -11,7 +11,7 @@
         <label for="id_color_name" class="form-label create_color_lable">Color Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
       </div>
-      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="save">
     </form>
 
   </div>
@@ -100,7 +100,6 @@
       $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
       $('#exampleModal').modal('show');
 
-
     });
 
     // Confirm delete button click event
@@ -112,7 +111,7 @@
   });
 
   function redirectColorFilter() {
-    window.location.href = "{% url 'simplecolorlist'%}"
+    window.location.href = "{% url 'simplecolorlist' %}"
   }
 </script>
 
