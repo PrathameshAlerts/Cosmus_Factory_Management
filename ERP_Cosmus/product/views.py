@@ -1171,24 +1171,25 @@ def color_create_update(request, pk=None):
 
         if form.is_valid():
             form.save()
-
+            print(request.path)
+            print(request.POST)
             # need to add a verification if getting request from simple form or from modal for save redirection 
             if 'save' in request.POST and request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
                 else:
                     messages.success(request, 'Color created successfully.')
-                
+                print('TESTT')
                 return redirect('simplecolorlist')
             
             elif 'save' in request.POST and template_name == "product/color_popup.html":
-
+                print('TESTT123')
                 color_all = Color.objects.all().values('id','color_name')
                 messages.success(request, 'Color created successfully.')
                 return JsonResponse({'color_all':list(color_all)}) 
         else:
             return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search})
-
+    print('TESTTT123')
     return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search})
         
 
@@ -2548,8 +2549,10 @@ def gst_create_update(request, pk = None):
                 messages.success(request,'GST updated successfully.')
             else:
                 messages.success(request,'GST created successfully.')
-
+            print(template_name)
+            print(request.POST)
             if 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
+                print('test')
                 return redirect('gst-create-list')
 
             elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
@@ -4622,32 +4625,32 @@ def raw_material_excel_upload(request):
                                 logger.error(f"Error processing row {index + 1}: {str(e)}")
                                 
 
-                    # if rows_with_error:
-                    #     wb = Workbook()
+                    if rows_with_error:
+                        wb = Workbook()
 
-                    #     default_sheet = wb['Sheet']
-                    #     wb.remove(default_sheet) 
+                        default_sheet = wb['Sheet']
+                        wb.remove(default_sheet) 
 
-                    #     wb.create_sheet('raw_material_create_errors')
-                    #     sheet1 = wb.worksheets[0]
-                    #     headers =  ['Raw Material Name', 'Material Code','Color', 'Packing','Unit Name','Units','Panha', 
-                    #             'Fabric or Non Fabric','Fabric Finishes','Fabric Group','GST','HSN Code','Status']
+                        wb.create_sheet('raw_material_create_errors')
+                        sheet1 = wb.worksheets[0]
+                        headers =  ['Raw Material Name', 'Material Code','Color', 'Packing','Unit Name','Units','Panha', 
+                                'Fabric or Non Fabric','Fabric Finishes','Fabric Group','GST','HSN Code','Status']
     
-                    #     sheet1.append(headers)
+                        sheet1.append(headers)
 
-                    #     for row in rows_with_error:
-                    #         sheet1.append(row)
+                        for row in rows_with_error:
+                            sheet1.append(row)
 
 
-                    #     fileoutput = BytesIO()
-                    #     wb.save(fileoutput)
+                        fileoutput = BytesIO()
+                        wb.save(fileoutput)
         
-                    #     # Prepare the HTTP response with the Excel file content
-                    #     response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                    #     file_name = 'raw_material_create'
-                    #     response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
+                        # Prepare the HTTP response with the Excel file content
+                        response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                        file_name = 'raw_material_create'
+                        response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
 
-                    #     return response
+                        return response
                             
                     messages.success(request, "Item saved successfully")
                     return redirect('item-list')
