@@ -52,13 +52,29 @@
         </thead>
         <tbody class="mainTableList">
           {% for grp in groups %}
+          {% if grp.account_sub_group == 'Sundry Creditors' or grp.account_sub_group == 'Sundry Debtors' or grp.account_sub_group == 'Job charges(Exp of Mfg)' %}
           <tr class="text-nowrap">
+          
+            <td style="background-color: rgb(168, 253, 224);"><span>{{forloop.counter}}</span></td>
+            <td style="background-color: rgb(168, 253, 224);"><span>{{grp.account_main_group}}</span></td>
+            <td style="background-color: rgb(168, 253, 224);"> <span>{{grp.account_sub_group}}</span></td>
+            <td style="background-color: rgb(168, 253, 224);"></td>
+            <td style="background-color: rgb(168, 253, 224);"></td>
+          </tr>
+
+          {% else %}
+
+          <tr class="text-nowrap">
+          
             <td>{{grp.id}}</td>
             <td>{{grp.account_main_group}}</td>
             <td>{{grp.account_sub_group}}</td>
             <td><a href="{% url 'account_sub_group-update' grp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
             <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ grp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+
           </tr>
+
+          {% endif %}
           {% endfor %}
         </tbody>
       </table>

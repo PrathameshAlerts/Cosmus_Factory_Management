@@ -19,7 +19,15 @@
         </div>
         <div class="d-flex mb-3">
           <label for="id_vendor_code"  class="form-label item-form">Vendor code:</label>
+
+          {% if form.instance.id %}
           <input type="text" class="item-select" value="{{form.instance.vendor_code}}" name="vendor_code" maxlength="100" id="id_vendor_code" required>
+
+          {% elif not form.instance.id %}
+          <input type="text" class="item-select" value="{{form.vendor_code.initial}}" name="vendor_code" maxlength="100" id="id_vendor_code" required>
+
+          {% endif %}
+
         </div>
         <div class=" d-flex mb-3">
           <label for="id_under_group" class="form-label item-form">Under:</label>

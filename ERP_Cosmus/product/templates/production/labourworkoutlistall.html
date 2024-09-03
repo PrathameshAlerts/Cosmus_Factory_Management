@@ -24,9 +24,10 @@
                 <th>No</th>
                 <th>Date</th>
                 <th>P.O No</th>
-                <th>P.O Qty</th>
+                <th>Party Name</th>
                 <th>Product Ref No</th>
                 <th>Model Name</th>
+                <th>P.O Qty</th>
                 <th>Cutting VCH No</th>
                 <th>Cutting Apr QTY</th>
                 <th>Balance QTY for LWO</th>
@@ -42,9 +43,10 @@
             <td>{{forloop.counter}}</td>
             <td class="text-nowrap">{{record.created_date}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
-            <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
+            <td>{{record.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
             <td class="text-nowrap">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
+            <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
             <td>{{record.purchase_order_cutting_master.raw_material_cutting_id}}</td>
             <td>{{record.total_approved_pcs}}</td>
             <td>{{record.total_pending_pcs}}</td>
@@ -95,10 +97,13 @@
                 <th>No</th>
                 <th>Date</th>
                 <th>P.O No</th>
-                <th>P.O Qty</th>
+
+                <th>Party Name</th>
                 <th>Product Ref No</th>
                 <th>Model Name</th>
+                <th>P.O Qty</th>
                 <th>Cutting VCH No</th>
+            
                 <th>Cutting Apr QTY</th>
                 <th>Processed QTY (LWO)</th>
                 <th>View</th>
@@ -112,14 +117,17 @@
             <td>{{forloop.counter}}</td>
             <td class="text-nowrap">{{record.created_date}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
-            <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
+            
+            <td>{{record.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
             <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
             <td class="text-nowrap">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
+            <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
             <td>{{record.purchase_order_cutting_master.raw_material_cutting_id}}</td>
+            
             <td>{{record.total_approved_pcs}}</td>
             <td>{{record.total_processed_qty | default_if_none:0}}</td>
             <td><a href="{% url 'labour-workout-child-list' record.id %}"><i class="fa-solid fa-eye px-2"></i></a></td>
-            <td></td>
+            <td>Completed </td>
 
         </tr>
         {% endfor %}

@@ -206,6 +206,7 @@ class Product(models.Model):
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
+    labour_charges = models.IntegerField(default=0)
 
     def P_GST(self):
         if self.Product_GST is not None:
@@ -433,7 +434,7 @@ class Ledger(models.Model):
 
     name = models.CharField(max_length = 100, blank = True, unique=True)
     short_name = models.CharField(max_length = 100, blank = True)
-    vendor_code = models.CharField(max_length = 100, blank = True)
+    vendor_code = models.CharField(max_length = 100, unique= True)
     under_group  = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     maintain_billwise = models.CharField(choices = MAINTAIN_BILLWISE, max_length = 30, blank = True)
     default_credit_period = models.CharField(max_length = 100, blank = True)

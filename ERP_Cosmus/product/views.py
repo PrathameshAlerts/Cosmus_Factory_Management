@@ -1171,25 +1171,24 @@ def color_create_update(request, pk=None):
 
         if form.is_valid():
             form.save()
-            print(request.path)
-            print(request.POST)
+
             # need to add a verification if getting request from simple form or from modal for save redirection 
-            if 'save' in request.POST and request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
+            if request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
                 else:
                     messages.success(request, 'Color created successfully.')
-                print('TESTT')
+                
                 return redirect('simplecolorlist')
             
-            elif 'save' in request.POST and template_name == "product/color_popup.html":
-                print('TESTT123')
+            elif template_name == "product/color_popup.html":
+                
                 color_all = Color.objects.all().values('id','color_name')
                 messages.success(request, 'Color created successfully.')
                 return JsonResponse({'color_all':list(color_all)}) 
         else:
             return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search})
-    print('TESTTT123')
+    
     return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search})
         
 
@@ -1251,10 +1250,10 @@ def item_fabric_group_create_update(request, pk = None):
             else:
                 messages.success(request,'Fabric group created sucessfully.')
 
-            if 'save' in request.POST and template_name == 'product/item_fabric_group_create_update.html':
+            if template_name == 'product/item_fabric_group_create_update.html':
                 return redirect('item-fabgroup-create-list')
 
-            elif 'save' in request.POST and template_name == 'product/fabric_popup.html':
+            elif template_name == 'product/fabric_popup.html':
                 Fabric_Group_all = Fabric_Group_Model.objects.all().values('id','fab_grp_name')
                 return JsonResponse({'Fabric_Group_all':list(Fabric_Group_all)})
 
@@ -1327,15 +1326,15 @@ def unit_name_create_update(request,pk=None):
                 messages.success(request,'Unit created sucessfully.')
 
             
-            if 'save' in request.POST and template_name == 'product/unit_name_create_update.html':
+            if  template_name == 'product/unit_name_create_update.html':
                 return redirect('unit_name-create_list')
 
-            elif 'save' in request.POST and template_name == 'product/units_popup.html':
+            elif template_name == 'product/units_popup.html':
                 Unit_Name_all_values = Unit_Name_Create.objects.all().values('id','unit_name')
                 return JsonResponse({'Unit_Name_all_values':list(Unit_Name_all_values)})
 
         else:
-            print(form.errors)
+            
             return render(request, template_name, {'title': title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search})
         
     else:
@@ -1432,11 +1431,10 @@ def stock_item_create_update(request,pk=None):
             else:
                 messages.success(request, 'Stock item created sucessfully')
 
-            if 'save' in request.POST:
-                return redirect('stock-item-create')
+            
+            return redirect('stock-item-create')
 
         else:
-            print(form.errors)
             return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
                                                                             'accsubgrps':accsubgrps,
                                                                             'form':form,'stocks':stocks})
@@ -1492,7 +1490,7 @@ def ledgercreate(request):
             messages.success(request,'Ledger Created')
             
             if request.path == '/ledgerpopupcreate/':
-                ledger_labour = Ledger.objects.filter(types__type_name='labour').values('id','name')
+                ledger_labour = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)').values('id','name')
                               
                 return JsonResponse({'ledger_labour':list(ledger_labour)})
             
@@ -1936,7 +1934,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
         master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
         
-        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundray Creditor(we buy)').first()
+        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundry Creditors').first()
         
         if account_sub_grp is not None:
             
@@ -2549,13 +2547,12 @@ def gst_create_update(request, pk = None):
                 messages.success(request,'GST updated successfully.')
             else:
                 messages.success(request,'GST created successfully.')
-            print(template_name)
-            print(request.POST)
-            if 'save' in request.POST and template_name == 'accounts/gst_create_update.html':
+
+            if template_name == 'accounts/gst_create_update.html':
                 print('test')
                 return redirect('gst-create-list')
 
-            elif 'save' in request.POST and template_name == 'accounts/gst_popup.html':
+            elif template_name == 'accounts/gst_popup.html':
                 # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
                 gst_updated = gst.objects.all().values('id', 'gst_percentage')
                 
@@ -2609,10 +2606,10 @@ def fabric_finishes_create_update(request, pk = None):
             else:
                 messages.success(request,'fabric finish created sucessfully')
 
-            if 'save' in request.POST and template_name == 'misc/fabric_finishes_create_update.html':
+            if template_name == 'misc/fabric_finishes_create_update.html':
                 return redirect('fabric-finishes-create-list')
             
-            elif 'save' in request.POST and template_name == 'misc/fabric_finishes_popup.html':
+            elif template_name == 'misc/fabric_finishes_popup.html':
                 fabric_finishes_all = FabricFinishes.objects.all().values('id', 'fabric_finish')
                 
                 return JsonResponse({"fabric_finishes_all": list(fabric_finishes_all)})
@@ -2666,10 +2663,10 @@ def packaging_create_update(request, pk = None):
                 messages.success(request,'packing created sucessfully.')
 
             
-            if 'save' in request.POST and template_name == 'misc/packaging_create_update.html':
+            if template_name == 'misc/packaging_create_update.html':
                 return redirect('packaging-create-list')
 
-            elif 'save' in request.POST and template_name == 'misc/packaging_popup.html':
+            elif template_name == 'misc/packaging_popup.html':
 
                 packaging_all_values = packaging.objects.all().values('id','packing_material')
 
@@ -3092,7 +3089,7 @@ def viewproduct2items_configs(request, product_sku):
 def purchaseordercreateupdate(request,pk=None):
     
     try:
-        ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundray Debtor(we sell)')
+        ledger_party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Debtors')
         products = Product.objects.all()
 
         raw_material_godowns = Godown_raw_material.objects.all()
@@ -3806,7 +3803,7 @@ def labourworkoutlistall(request):
 def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
 
     try:
-        ledger_labour_instances = Ledger.objects.filter(types__type_name = 'labour')
+        ledger_labour_instances = Ledger.objects.filter(under_group__account_sub_group = 'Job charges(Exp of Mfg)')
 
         godown_id = None
 
@@ -4109,7 +4106,7 @@ def cuttingroomqty(request):
 #_________________________factory-emp-start_______________________________________
 
 
-def factory_employee_create_update_list(request,pk=None):
+def factory_employee_create_update_list(request ,pk=None):
     
     factory_employees = factory_employee.objects.all()
     cutting_rooms =  cutting_room.objects.all()
@@ -4523,7 +4520,7 @@ def raw_material_excel_download(request):
 
     wb.create_sheet('raw_material_create')
     sheet1 = wb.worksheets[0]
-    headers =  ['Raw Material Name', 'Material Code','Color', 'Packing','Unit Name','Units','Panha', 
+    headers =  ['Raw Material Name', 'Material Code','Color','Units','Packing','Unit Name','Units','Panha', 
                 'Fabric or Non Fabric','Fabric Finishes','Fabric Group','GST','HSN Code','Status']
     
     sheet1.append(headers)
@@ -4564,6 +4561,7 @@ def raw_material_excel_upload(request):
                         'Packing':'Item_Packing',
                         'Unit Name':'unit_name_item',
                         'Panha':'Panha', 
+                        'Units': 'Units',
                         'Fabric or Non Fabric':'Fabric_nonfabric',
                         'Fabric Finishes':'Item_Fabric_Finishes',
                         'Fabric Group':'Fabric_Group',
@@ -4602,7 +4600,7 @@ def raw_material_excel_upload(request):
                                                                             Item_Color = color,
                                                                             Item_Packing = packaging_m,
                                                                             unit_name_item = unit_name,
-                                                                            Units =  unit_name.unit_value,
+                                                                            Units =  row['Units'],
                                                                             Panha =  row['Panha'],
                                                                             Fabric_nonfabric = row['Fabric or Non Fabric'],
                                                                             Item_Fabric_Finishes = fabric_finish,

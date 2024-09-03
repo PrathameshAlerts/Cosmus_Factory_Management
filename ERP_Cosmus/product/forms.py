@@ -289,8 +289,17 @@ class LedgerForm(forms.ModelForm):
                   'country','city','pincode','mobile_no','landline_no','bank_details',
                   'Debit_Credit']
         
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    
+        last_item = Ledger.objects.order_by('id').last()
+
+        if last_item:
+
+            self.fields['vendor_code'].initial = last_item.id + 1
+        else:
+            self.fields['vendor_code'].initial = 1
+
 
 class item_purchase_voucher_master_form(forms.ModelForm):
     class Meta:
