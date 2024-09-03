@@ -68,6 +68,12 @@
 </form>
 
 <script>
+  
+    document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+      document.getElementById("Product_Refrence_ID").focus();
+    };
+  })
 $(document).ready(function(){
         $('#Product_Refrence_ID').on('focusout',function(){
             var product_ref_no = $(this).val();  
@@ -83,7 +89,7 @@ $(document).ready(function(){
                 success: function (data) {
                     if(data.validation_flag === true){
                       Product_Refrence.css('border', '1px solid red');
-                      errorElement.text('*New order number already exists');
+                      errorElement.text('*Product ref number already exists');
                       errorElement.show();
                       submitButton.attr('disabled', 'disabled');
                     }else {

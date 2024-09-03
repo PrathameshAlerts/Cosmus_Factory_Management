@@ -78,6 +78,11 @@
     </div>
 
 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_cutting_room_name").focus();
+    };
+  })
     document.body.appendChild(document.getElementById('exampleModal'));
   
     $(document).ready(function () {

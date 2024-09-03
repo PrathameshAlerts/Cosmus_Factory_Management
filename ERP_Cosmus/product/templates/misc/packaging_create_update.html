@@ -72,10 +72,12 @@
     </div>
 </div>
 <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_packing_material").focus();
+    };
+  })
     document.body.appendChild(document.getElementById('exampleModal'));
-    $('#packagingForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
-    });
     $(document).ready(function () {
         $('.delete-btn').click(function () {
             var itemId = $(this).data('item-id');

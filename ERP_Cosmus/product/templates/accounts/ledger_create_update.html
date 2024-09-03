@@ -65,9 +65,10 @@
           </select> 
           <button type="button" class="itemCreate_btn popup-trigger" onclick="openLedgerTypePopup()">+</button>
         </div>
+        <span id="gstError" class="error-messagesGst"></span>
         <div class="d-flex mb-3">
           <label for="id_Gst_no" class="form-label item-form">Gst no:</label>
-          <input type="text" class="ledger-input" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="100" id="id_Gst_no" required> 
+          <input type="text" class="ledger-input" value = "{{form.instance.Gst_no}}" name="Gst_no" maxlength="15" minlength="15" id="id_Gst_no" required> 
         </div>
         <div class="mt-4">
             {% if form.instance.id %}
@@ -139,6 +140,31 @@
 </div>
 
 <script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+
+    window.onload = function() {
+        document.getElementById("id_name").focus();
+    };
+    document.getElementById('id_Gst_no').addEventListener('focusout',function(el){
+      ledgerGstRequired();
+    })
+  })
+  function ledgerGstRequired(){
+        var gst  = document.getElementById('id_Gst_no').value;
+        var newGst = gst.length;
+        var gstErrors = document.getElementById('gstError');
+        if(newGst < 15){
+            document.getElementById('id_Gst_no').required = true;
+            gstErrors.textContent = "Please enter a valid GST number (at least 15 characters).";
+            gstErrors.style.display = "block";
+        }else{
+          gstErrors.style.display = "none";
+        }
+
+
+   
+  }
+  //ledgerGstRequired();
   var popUpWindow = null;
   function openLedgerTypePopup(button){
     openPopup(button, '{% url "ledger-Types-create-popup" %}');

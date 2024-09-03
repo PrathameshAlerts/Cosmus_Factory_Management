@@ -53,7 +53,7 @@
 
     <div class=" d-flex my-3">
       <label for="id_Item_Color" class="item-form">Color:</label>
-      <select class="item-select" name="Item_Color" required id="id_Item_Color" required>
+      <select class="item-select" name="Item_Color" required id="id_Item_Color">
 
         <!-- form.instance.Color_Name got from (def Color_Name(self):) which returns Item_Color.color_name the actual color
                   When you access a foreign key field in Django templates, by default, it returns the related object, not just its ID.
@@ -291,7 +291,11 @@
 </div>
 
 <script>
-
+document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_item-to-clone").focus();
+    };
+  })
 $(document).ready(function(){
   $(document).on('change','#id_unit_name_item',function(){
     let unit_name_pk = $(this).val();
@@ -340,11 +344,12 @@ function TotalValueCalculation(){
  
  window.addEventListener('message', function(event) {
     const data = event.data;
-    console.log(data);
+    console.log(data.packaging_all_values);
+    console.log(data.Unit_Name_all_values);
+    console.log(data.fabric_finishes_all);
     if (data.gst_updated) {
         populateDropdown(data.gst_updated, '#id_Item_Creation_GST', 'gst_percentage', 'Select GST');
     }
-
     if (data.color_all) {
         populateDropdown(data.color_all, '#id_Item_Color', 'color_name', 'Select Color');
     }

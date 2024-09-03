@@ -74,11 +74,13 @@
     </div>
 
     <script>
+          document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_fabric_finish").focus();
+    };
+  })
         document.body.appendChild(document.getElementById('exampleModal'));
-        
-        $('#fabricFinishesForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
-    });
+    
         $(document).ready(function(){
             $('.delete-btn').click(function(){
                 var itemId = $(this).data('item-id');

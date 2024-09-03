@@ -68,13 +68,6 @@
 
 <script>
   let formSubmitted = false;
-
-  document.getElementById('myForm').addEventListener('submit', function() {
-    formSubmitted = true;
-    var formSubmit = document.getElementById('submitButton');
-    formSubmit.disabled = true;
-    formSubmit.value = 'Saving...';
-  });
   document.addEventListener("DOMContentLoaded", function () {
     const addFormButton = document.getElementById("addForm");
     const tableBody = document.querySelector("#myTable tbody");

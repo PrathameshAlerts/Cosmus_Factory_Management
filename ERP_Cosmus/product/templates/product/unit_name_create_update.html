@@ -94,12 +94,15 @@
 
 
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_unit_name").focus();
+    };
+  })
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
-    $('#unitForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
-    });
     $('.delete-btn').click(function () {
       const itemId = $(this).data('item-id');
       const name = $(this).closest('tr').find('td').eq(1).text();

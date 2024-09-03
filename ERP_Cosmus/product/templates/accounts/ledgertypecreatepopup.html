@@ -21,7 +21,12 @@
     
     <script>
       let formSubmitted = false;  // Flag to track whether form is submitted
-    
+      document.addEventListener("DOMContentLoaded", function () {
+        window.onload = function() {
+        document.getElementById("id_type_name").focus();
+    };
+      })
+     
       document.getElementById('ledgerTypeForm').addEventListener('submit', async function (event) {
         event.preventDefault();  // Prevent the default form submission
       

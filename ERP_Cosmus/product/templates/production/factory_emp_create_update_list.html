@@ -12,7 +12,7 @@
         <input type="text" class="item-select search-input" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
        </div>
        <div class="d-flex mb-3">
-        <label for="id_factory_emp_name" class="item-form">Cutting Room:</label>
+        <label for="id_cutting_room_id" class="item-form">Cutting Room:</label>
         <select name="cutting_room_id" id="id_cutting_room_id" class="item-select" style="width: 300px !important;">
           {% if form.instance.id %}
           <option value="{{form.instance.cutting_room_id.id}}">{{form.instance.cutting_room_id.cutting_room_name}}</option>
@@ -33,7 +33,7 @@
   </form>
 
 </div>
-<div class="col-lg-6 mt-4">
+<div class="col-lg-7 mt-4">
     <div class="container-category  mb-3">
       <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
       <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -68,15 +68,7 @@
     </div>
   </div>
 </div>
-
-
 </div>
-
-
-
-
-
-
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -97,12 +89,15 @@
 
 
 <script>
+     document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_factory_emp_name").focus();
+    };
+  })
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
-    $('#factoryEmpForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
-    });
+  
     $('.delete-btn').click(function () {
       var itemId = $(this).data('item-id');
       var name = $(this).closest('tr').find('td').eq(1).text();

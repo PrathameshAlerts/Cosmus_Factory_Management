@@ -12,7 +12,7 @@
       {% if not form.instance.id %}
       <label for="id_item-to-clone" class="item-form text-primary fw-bold">Clone Item: </label>
       <div class="custom-dropdown-container">
-        <input type="text" class="product2Select" name="item-to-clone"  id="id_item-to-clone" maxlength="255" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}" data-key="" style="border: 2px solid #007df9;">
+        <input type="text" class="product2Select" name="item-to-clone"  id="id_item-to-clone" maxlength="255" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}" data-key="" style="border: 2px solid #007df9;" >
         <div class="item-select item-name s-suggestion-container" id="search-results" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
 
         </div>
@@ -272,7 +272,11 @@
 </div>
 
 <script>
-
+ document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_item-to-clone").focus();
+    };
+  })
 $(document).ready(function(){
   $(document).on('change','#id_unit_name_item',function(){
     let unit_name_pk = $(this).val();

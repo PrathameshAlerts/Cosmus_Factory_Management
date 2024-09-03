@@ -88,12 +88,15 @@
 
 
 <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_account_sub_group").focus();
+    };
+  })
   document.body.appendChild(document.getElementById('exampleModal'));
 
 $(document).ready(function () {
-  $('#accSubForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled').val('Saving...');
-    });
+
   $('.delete-btn').click(function () {
     var itemId = $(this).data('item-id');
     var name = $(this).closest('tr').find('td').eq(2).text();

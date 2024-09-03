@@ -1862,6 +1862,12 @@ styles.css */
     display: none; /* Hide by default */
     margin-left: 100px; /* Optional, adjust as needed */
 }
+.error-messagesGst{
+    color: red;
+    font-size: 0.9em;
+    display: none; /* Hide by default */
+    margin-left: 20px; /* Optional, adjust as needed */
+}
 
 .error-messagesItem {
     color: red;
