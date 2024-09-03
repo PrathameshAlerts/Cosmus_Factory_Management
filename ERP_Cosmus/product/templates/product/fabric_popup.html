@@ -17,10 +17,13 @@
 
 <script>
   let formSubmitted = false;  // Flag to track whether form is submitted
+  document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_fab_grp_name").focus();
+    };
+  })
   document.getElementById('fabricForm').addEventListener('submit', async function (event) {
-    event.preventDefault();  // Prevent the default form submission
-    var submitBtn = document.getElementById('submitButton');
-    submitBtn.disabled = true;
+    event.preventDefault();  // Prevent the default form submissio
 
     const form = event.target;
     const formData = new FormData(form);

@@ -94,6 +94,12 @@
 
 
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_unit_name").focus();
+    };
+  })
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {

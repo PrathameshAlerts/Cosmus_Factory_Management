@@ -104,6 +104,11 @@
 
 
 <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_account_sub_group").focus();
+    };
+  })
   document.body.appendChild(document.getElementById('exampleModal'));
 
 $(document).ready(function () {

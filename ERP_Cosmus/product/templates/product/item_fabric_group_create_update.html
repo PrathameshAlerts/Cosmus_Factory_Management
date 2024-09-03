@@ -87,7 +87,11 @@
 
 <script>
   document.body.appendChild(document.getElementById('exampleModal'));
-
+  document.addEventListener("DOMContentLoaded", function () {
+    window.onload = function() {
+        document.getElementById("id_fab_grp_name").focus();
+    };
+  })
   $(document).ready(function () {
     $('#fabricForm').on('submit', function () {
       $('#submitButton').attr('disabled', 'disabled').val('Saving...');
