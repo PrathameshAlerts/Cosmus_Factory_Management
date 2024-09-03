@@ -28,7 +28,6 @@
       const formData = new FormData(form);
       formData.append('save', 'Save');
       try {
-  
         const response = await fetch(form.action, {
           method: 'POST',
           body: formData,

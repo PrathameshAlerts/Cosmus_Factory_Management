@@ -78,11 +78,14 @@
     };
   })
     document.body.appendChild(document.getElementById('exampleModal'));
+    $('#packagingForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
     $(document).ready(function () {
         $('.delete-btn').click(function () {
             var itemId = $(this).data('item-id');
             var name = $(this).closest('tr').find('td').eq(1).text(); // Get the name of the item
-            console.log(name);
+        
             var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
             $('#modal-body-text').html('Are you sure you want to delete Packaging ' + coloredName + '?');
             $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data

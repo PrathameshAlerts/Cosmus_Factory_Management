@@ -173,7 +173,7 @@
 
       </select>
       {% if not form.instance.id %}
-      <button class="package_btn"  onclick="openPackagePopup()">+</button>
+      <button type="button" class="package_btn"  onclick="openPackagePopup()">+</button>
       {% endif %}
     </div>
     <div class="d-flex my-3">
@@ -193,7 +193,7 @@
         {% endif %}
       </select>
       {% if not form.instance.id %}
-      <button class="itemCreate_btn"  onclick="openunitPopup()">+</button>
+      <button type="button" class="itemCreate_btn"  onclick="openUnitPopup()">+</button>
       {% endif %}
     </div>
     <div class=" d-flex my-3">
@@ -227,7 +227,7 @@
         {% endfor %}
       </select>
       {% if not form.instance.id %}
-      <button class="itemCreate_btn"  onclick="openFabricFinishPopup()">+</button>
+      <button type="button" class="itemCreate_btn"  onclick="openFabricFinishPopup()">+</button>
       {% endif %}
     </div>
     <div class="d-flex my-3">
@@ -858,7 +858,7 @@ function opencolorPopup(button) {
   openPopup(button, '{% url "color-popup" %}');
 }
 
-function openunitPopup(button) {
+function openUnitPopup(button) {
   openPopup(button, '{% url "unit-name-popup" %}');
 }
 

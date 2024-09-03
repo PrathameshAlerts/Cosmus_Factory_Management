@@ -97,7 +97,9 @@
   document.body.appendChild(document.getElementById('exampleModal'));
 
   $(document).ready(function () {
-  
+    $('#factoryEmpForm').on('submit', function () {
+      $('#submitButton').attr('disabled', 'disabled');
+    });
     $('.delete-btn').click(function () {
       var itemId = $(this).data('item-id');
       var name = $(this).closest('tr').find('td').eq(1).text();

@@ -91,6 +91,11 @@
 <script>
 //     let formSubmitted = false;
 
+  document.getElementById('myOpeningForm').addEventListener('submit', function() {
+    var submitForm = document.getElementById('submitBtn');
+    submitForm.disabled = true;
+  });
+
     document.addEventListener('DOMContentLoaded', function () {
         const addButtonRow = document.getElementById('addRow');
         const tableBody = document.querySelector('#tableItem tbody');

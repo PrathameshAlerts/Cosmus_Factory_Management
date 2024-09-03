@@ -30,6 +30,8 @@
     })
   document.getElementById('unitsForm').addEventListener('submit', async function (event) {
     event.preventDefault();  // Prevent the default form submission
+    var submitBtn = document.getElementById('submitButton');
+    submitBtn.disabled = true;
     const form = event.target;
     const formData = new FormData(form);
     formData.append('save', 'Save');
