@@ -53,14 +53,17 @@
         
         checkboxes.forEach(element => {
             var balanceQty = element.closest('tr').querySelector('[name$="-balance_pcs"]');
+            var cuttingQty = element.closest('tr').querySelector('[name$="-cutting_quantity"]');
             var balanceValue = parseInt(balanceQty.value) || 0;
+            var cuttingValue = parseInt(cuttingQty.value) || 0;
             console.log(balanceValue);
             if (checkAll.checked) {
                 element.value = balanceValue;
                 balanceQty.value = 0;
             } else {
                 element.value = 0;
-                balanceQty.value = balanceValue;
+                
+                balanceQty.value = cuttingValue;
             }
         });
     }
