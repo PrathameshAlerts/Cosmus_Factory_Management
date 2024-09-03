@@ -8,15 +8,14 @@
     <h2 class="mb-3 mt-3">Cutting</h2>
     <div class="row">
         <div class="col-lg-7">
-            <table class="table table-striped table-hover table-bordered tables">
+            <table class="table table-striped table-hover table-bordered tables" id="cuttingTable">
                 <thead class="name_absolute text-nowrap">
                     <tr>
                         <th>Product Sku</th>
                         <th>Color</th>
                         <th>Cutting Qty</th>
                         <th>Balance pcs</th>
-                        <th>Approved pcs</th>
-                       
+                        <th>Approved pcs <input type="checkbox" class="checkAll ms-2" id="id_checkAll" name="checkAll"></th>
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
@@ -43,8 +42,30 @@
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var checkAll = document.getElementById('id_checkAll');
+    
+    // Event listener for the "Check All" checkbox
+    checkAll.addEventListener('change', checkboxCheckAll);
 
-  
+    function checkboxCheckAll() {
+        var checkboxes = document.querySelectorAll('[name$="-approved_pcs"]');
+        
+        checkboxes.forEach(element => {
+            var balanceQty = element.closest('tr').querySelector('[name$="-balance_pcs"]');
+            var balanceValue = parseInt(balanceQty.value) || 0;
+            console.log(balanceValue);
+            if (checkAll.checked) {
+                element.value = balanceValue;
+                balanceQty.value = 0;
+            } else {
+                element.value = 0;
+                balanceQty.value = balanceValue;
+            }
+        });
+    }
+});
+
     function quantityCheck() {
         var approved = document.querySelectorAll('[name$= "-approved_pcs"]');
 
@@ -57,11 +78,7 @@
             if (cuttingApprovedValue < approvedValues) {
                 element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
-       
-            // if(cuttingApprovedValue === approvedValues){
-            //     var approvedDiffrenceValues = element.closest('tr').querySelector('[name$= "-approved_pcs"]');
-            //     //approvedDiffrenceValues.setAttribute('readonly', true);
-            // }
+    
 
             if (!isNaN(approvedValues) && !isNaN(cuttingApprovedValue)) {
 
@@ -82,7 +99,6 @@
         var totalQty = 0;
         balanceApprove.forEach(ele =>{
             var balance = parseInt(ele.value);
-            console.log(balance)
            totalQty = totalQty + balance;
         
             return totalQty
