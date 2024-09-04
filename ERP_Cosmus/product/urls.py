@@ -204,7 +204,8 @@ urlpatterns = [
     path('labourworkoutchildlist/<int:labour_master_pk>',views.labour_workout_child_list, name = 'labour-workout-child-list'),
 
     #labour workin
-    path('labourworkin/',views.labourworkincreate, name='labour-workin-create'),
+    path('labourworkinlistall/',views.labourworkinlistall, name='labour-workin-list-all'),
+    path('labourworkincreate/<int:l_w_o_id>',views.labourworkincreate, name ='labour-workin-create'),
 
 
     #reports
