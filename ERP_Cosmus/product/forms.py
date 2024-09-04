@@ -53,13 +53,13 @@ class PProductCreateFormset(BaseInlineFormSet):
 
 ProductCreateSkuFormsetUpdate = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
-                                                formset=PProductCreateFormset,
+                                                # formset=PProductCreateFormset,
                                                 extra=1, can_delete=False)
 
 
 ProductCreateSkuFormsetCreate = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
-                                                formset=PProductCreateFormset,
+                                                # formset=PProductCreateFormset,
                                                 extra=1, can_delete=False)
 
 
