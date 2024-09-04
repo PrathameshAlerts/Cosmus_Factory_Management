@@ -1629,6 +1629,21 @@ input[type=number] {
     overflow-y: auto;
 }
 
+.product_color{
+    width: 154px;
+    border: 1px solid #cecdcd;
+    border-radius: 5px;
+    padding-left: 5px;
+    height: 33px;
+}
+
+.product_color_EAnCode{
+    width: 130px;
+    border: 1px solid #cecdcd;
+    border-radius: 5px;
+    padding-left: 5px;
+    height: 33px;
+}
 /* .custom-dropdown-options {
     position: absolute;
     z-index: 1000;

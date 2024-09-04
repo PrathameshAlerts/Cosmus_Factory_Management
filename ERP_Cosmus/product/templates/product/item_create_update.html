@@ -344,9 +344,6 @@ function TotalValueCalculation(){
  
  window.addEventListener('message', function(event) {
     const data = event.data;
-    console.log(data.packaging_all_values);
-    console.log(data.Unit_Name_all_values);
-    console.log(data.fabric_finishes_all);
     if (data.gst_updated) {
         populateDropdown(data.gst_updated, '#id_Item_Creation_GST', 'gst_percentage', 'Select GST');
     }
