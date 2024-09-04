@@ -385,7 +385,7 @@ input[type=number] {
     color: #666;
     backdrop-filter: blur(15px);
     width: 235px;
-    height: 100dvh;
+    height: 92vh;
     min-height: 46px;
     position: fixed;
     font-size: 20px;

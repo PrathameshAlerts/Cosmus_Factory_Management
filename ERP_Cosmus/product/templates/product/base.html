@@ -92,8 +92,6 @@
           <a href="{% url 'credit-debit-report' %}" class="sub-item">Purchase Report</a>
           <a href="" class="sub-item">Sales Report</a>
           <a href="" class="sub-item">Stock Transfer Report</a>
-          
-          
         </div>
       </div>
       <div class="item">
@@ -199,9 +197,10 @@
          <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Reports')">Reports</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText">Stock Transfer Report</a></li> 
-           <li class="pro-head"><a href="#" class="navText">Purchase Report</a></li>
-           <li class="pro-head"><a href="#" class="navText">Sales Report</a></li>   
+           <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText">Raw Material Report</a></li>
+           <li class="pro-head"><a href="{% url 'credit-debit-report' %}" class="navText">Purchase Report</a></li> 
+           <li class="pro-head"><a href="" class="navText">Stock Transfer Report</a></li> 
+           <li class="pro-head"><a href="" class="navText">Sales Report</a></li> 
          </ul>  
          </li>
          <li class="nav-item my-3 mx-3  dropdown">
@@ -587,11 +586,6 @@
     // Update the header title
     headerTitle.textContent = newTitle;
   }
-
-
-  // document.addEventListener('DOMContentLoaded', function() {
-  //  var sideBar = document.querySelector('.side-bar');
-  // });
 </script>
 </body>
 </html>
