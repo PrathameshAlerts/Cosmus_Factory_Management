@@ -674,9 +674,10 @@ input[type=number] {
     border-radius: 10px;
     margin: 0 0;
     width: 37%;
-    margin-left: 470px;
+    margin-left: 390px;
     margin-right: 10px;
   }
+  
   
   input[type="search"] {
     border: none;
