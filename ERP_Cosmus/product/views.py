@@ -12,7 +12,8 @@ from django.contrib.auth import  update_session_auth_hash ,authenticate # help u
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q, Sum, ProtectedError, Avg, Count,F
+from django.db.models import Q, Sum, ProtectedError, Avg, Count,F,Exists, OuterRef
+
 from django.db.models.functions import Round
 from django.db import DatabaseError, IntegrityError, transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -424,12 +425,15 @@ def product_color_sku(request,ref_id = None):
     color = Color.objects.all()
 
     if ref_id:
-        instance = get_object_or_404(Product, Product_Refrence_ID=ref_id) 
-        formset = ProductCreateSkuFormsetUpdate(request.POST or None,request.FILES or None, instance=instance)
-
+        instance = Product.objects.get(Product_Refrence_ID=ref_id) 
+        # Retrieve and order related ProductDetails
+        ordered_product_details = instance.productdetails.all().order_by('created_date')
+        print(ordered_product_details)
+        formset = ProductCreateSkuFormsetUpdate(request.POST or None, request.FILES or None, instance=instance)
+        print(formset)
     else:
         instance = None
-        formset = ProductCreateSkuFormsetCreate(request.POST or None,request.FILES or None, instance=instance)
+        formset = ProductCreateSkuFormsetCreate(request.POST or None, request.FILES or None, instance=instance)
 
     
 
@@ -3636,8 +3640,34 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
 
 def purchaseordercuttinglistall(request):
-    purchase_orders_cutting_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0, balance_number_of_pieces__gt=0).order_by('created_date')
-    purchase_orders_cutting_completed = purchase_order.objects.filter(balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty')).order_by('created_date')
+
+
+    # Using a subquery to check existence
+    raw_materials_exists = purchase_order_for_raw_material.objects.filter(purchase_order_id=OuterRef('pk')
+                                                ).values('pk')[:1] 
+
+    # Main query
+    purchase_orders_cutting_pending = (
+        purchase_order.objects.annotate(
+            raw_materials_exist=Exists(raw_materials_exists),
+            total_approved_qty_sum=Sum('cutting_pos__approved_qty'),
+        )
+        .filter(
+            balance_number_of_pieces__gt=0,
+            raw_materials_exist=True  # Filtering based on existence of related raw_materials
+        )
+        .annotate(
+            total_approved_balance=F('number_of_pieces') - F('total_approved_qty_sum')
+        )
+        .order_by('created_date')
+    )
+
+
+    purchase_orders_cutting_completed = purchase_order.objects.filter(
+        balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'),
+        total_approved_qty_sum = Sum('cutting_pos__approved_qty')).annotate(total_approved_balance = F(
+        'number_of_pieces') - F('total_approved_qty_sum')).order_by('created_date')
+
 
     return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
 
@@ -4170,10 +4200,23 @@ def cuttingroomdelete(request,pk):
     return redirect('cutting_room-create')
 
 
-def labourworkincreate(request):
+def labourworkincreate(request,l_w_o_id):
+
+
+
     masterform = labour_workin_master_form()
 
     return render(request,'production/labour_work_in.html',{'masterform':masterform})
+
+
+def labourworkinlistall(request):
+    labour_workout_child_instances_all = labour_workout_childs.objects.all()
+
+    purchase_order_instances = purchase_order.objects.all()
+
+    return render(request,'production/labour_workin_listall.html',
+                  {'labour_workout_child_instances_all':labour_workout_child_instances_all,
+                   'purchase_order_instances':purchase_order_instances})
 
 
 #_________________________factory-emp-end_______________________________________

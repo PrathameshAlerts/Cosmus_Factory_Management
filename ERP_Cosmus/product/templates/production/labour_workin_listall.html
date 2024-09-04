@@ -1,0 +1,74 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<h5> Finished Goods Inward - PO-Wise </h5>
+
+<div>
+<table>
+    <tr>
+        <th>No</th>
+        <th>PO No</th>
+        <th>Client Name</th>
+        <th>Ref No</th>
+        <th>PO Qty</th>
+        <th>Model Name</th>
+        <th>Total LWO QTY</th>
+        <th>Total LWI QTY</th>
+        <th>Balance Qty</th>
+        <th>Create</th>
+    </tr>
+    {% for instance in purchase_order_instances %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{instance.purchase_order_number}}</td>
+        <td>{{instance.ledger_party_name.name}}</td>
+        <td>{{instance.product_reference_number.Product_Refrence_ID}}</td>
+        <td>{{instance.number_of_pieces}}</td>
+        <td>{{instance.product_reference_number.Model_Name}}</td>
+        <td>0</td>
+        <th>0</th>
+        <th>0</th>
+        <th>Create</th>
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+
+
+<div>
+
+<table>
+<tr>
+    <th>No</th>
+    <th>PO No</th>
+    <th>Client Name</th>
+    <th>PO Qty</th>
+    <th>Challan No</th>
+    <th>Ref No</th>
+    <th>Model Name</th>
+    <th>Vendor Name</th>
+    <th>Issued Qty</th>
+    <th>Recieved Qty</th>
+    <th>Balance Qty</th>
+    <th>Create</th>
+</tr>
+{% for instance in labour_workout_child_instances_all %}
+<tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
+    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
+    <td>{{instance.challan_no}}</td>
+    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Name}}</td>
+    <td>{{instance.labour_name.name}}</td>
+    <td>{{instance.total_process_pcs}}</td>
+    <th>0</th>
+    <th>0</th>
+    <th>Create</th>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

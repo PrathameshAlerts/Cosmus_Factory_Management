@@ -166,7 +166,7 @@ class Product(models.Model):
     Model_Name = models.CharField(unique=True,max_length=255, blank = True ,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
-    Product_Channel= MultiSelectField(max_length=100 , choices = PRODUCT_CHANNEL , blank = True)
+    Product_Channel= MultiSelectField(max_length=100, choices = PRODUCT_CHANNEL , blank = True)
     Product_Refrence_ID = models.PositiveIntegerField(unique = True, blank = False,null =False)
     Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
     Product_MRP = models.DecimalField(max_digits=10, decimal_places=2, blank = True, null = True)
@@ -177,7 +177,7 @@ class Product(models.Model):
     Product_GST = models.ForeignKey(gst, blank = True, on_delete = models.PROTECT, null = True)
     Product_ShortName = models.CharField(max_length=200, blank = True, null =True)
     Product_Compartments=  models.CharField(max_length=50, choices= PRODUCT_COMPARTMENTS,  blank = True, null =True)
-    Product_UOM = models.CharField(max_length=50, choices =PRODUCT_UCOM ,  blank = True,null =True)
+    Product_UOM = models.CharField(max_length=50, choices = PRODUCT_UCOM ,  blank = True,null =True)
     Product_Accessory_Compartments= models.CharField(max_length=20, choices = PRODUCT_ACCESSORY_COMPARTMENTS, null=True, blank = True)
     Product_CapacityLtrs = models.PositiveIntegerField(blank = True,null =True)
     Product_Material= models.CharField(max_length=100, choices = PRODUCT_MATERIAL, blank = True,null =True)
@@ -202,7 +202,7 @@ class Product(models.Model):
     Product_Retailer_dealer_Price=models.DecimalField(max_digits=10, decimal_places=2,  blank = True,null =True)
     Product_Wholesaler_DistributorPrice=models.DecimalField(max_digits=10, decimal_places=2,  blank = True,null =True)
     Product_Create_Date=models.DateField(auto_now=True)
-    Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank = True, null = True)
+    Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank=True, null = True)
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
@@ -636,7 +636,7 @@ class purchase_order(models.Model):
     modified_created_date = models.DateTimeField(auto_now_add=True)
     number_of_pieces = models.IntegerField(validators=[MinValueValidator(1)])
     balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
-    process_status = models.CharField(choices=STATUS, blank=True, null= True)
+    process_status = models.CharField(max_length=10, choices=STATUS, blank=True, null= True)
     temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
     cutting_total_processed_qty = models.IntegerField(default=0)
     purchase_order_to_product_saved = models.BooleanField(default=False)
@@ -670,7 +670,7 @@ class purchase_order_for_raw_material(models.Model):
 
 
 class purchase_order_raw_material_cutting(models.Model):
-    purchase_order_id = models.ForeignKey(purchase_order, related_name='cutting_pos', on_delete = models.CASCADE)
+    purchase_order_id = models.ForeignKey(purchase_order, related_name ='cutting_pos', on_delete = models.CASCADE)
     raw_material_cutting_id = models.IntegerField(primary_key=True)
     auto_id = models.PositiveIntegerField(unique=True,blank=False, null= False)
     factory_employee_id = models.ForeignKey(factory_employee, on_delete=models.PROTECT, null=True, blank=True)
@@ -816,10 +816,10 @@ class labour_workout_cutting_items(models.Model):
 
 
 class labour_work_in_master(models.Model):
+    labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
     voucher_number = models.IntegerField(unique=True, null=False, blank=False)
     created_date = models.DateTimeField(auto_now = True)
     labour_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
-    labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
     description = models.CharField(max_length=100)
     total_pcs = models.IntegerField()
     total_pending_pcs = models.IntegerField()
