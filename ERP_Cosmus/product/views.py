@@ -4216,7 +4216,7 @@ def labourworkinlistall(request):
 
     return render(request,'production/labour_workin_listall.html',
                   {'labour_workout_child_instances_all':labour_workout_child_instances_all,
-                   'purchase_order_instances':purchase_order_instances})
+                   'purchase_order_instances': purchase_order_instances})
 
 
 #_________________________factory-emp-end_______________________________________
