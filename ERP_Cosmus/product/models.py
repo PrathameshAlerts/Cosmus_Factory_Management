@@ -820,8 +820,6 @@ class labour_work_in_master(models.Model):
     voucher_number = models.IntegerField(unique=True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now = True)
     description = models.CharField(max_length=100)
-    total_pcs = models.IntegerField()
-    total_pending_pcs = models.IntegerField()
     total_return_pcs = models.IntegerField()
     labour_charges = models.DecimalField(max_digits=10, decimal_places=2)
     other_charges = models.DecimalField(max_digits=10, decimal_places=2)

@@ -705,12 +705,21 @@ class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
 
 
 class labour_workin_master_form(forms.ModelForm):
+
+    labour_name = forms.CharField()
+    challan_no = forms.CharField()
+    purchase_order_no = forms.CharField()
+    refrence_number = forms.IntegerField()
+    model_name = forms.CharField()
+    total_p_o_qty = forms.IntegerField()
+    labour_workout_qty = forms.IntegerField()
+
+
     class Meta:
 
         model = labour_work_in_master
-        fields = ['voucher_number','description','total_pcs',
-                  'total_pending_pcs','total_return_pcs','labour_charges','other_charges','amount']
-
+        fields = ['voucher_number', 'total_return_pcs', 'labour_charges', 'other_charges', 'amount', 
+                   'description']
 
 
 

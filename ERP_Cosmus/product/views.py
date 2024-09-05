@@ -4143,7 +4143,19 @@ def labourworkincreatelist(request,l_w_o_id):
 def labourworkincreate(request, l_w_o_id):
 
     labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
-    master_form = labour_workin_master_form()
+
+    initial_data = {
+        'labour_name': labour_workout_child_instance.labour_name.name,
+        'challan_no' : labour_workout_child_instance.challan_no ,
+        'purchase_order_no' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+        'refrence_number' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
+        'model_name': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
+        'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
+        'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
+    }
+
+
+    master_form = labour_workin_master_form(initial=initial_data)
 
 
     if request.method == 'POST':
