@@ -708,7 +708,7 @@ class labour_workin_master_form(forms.ModelForm):
     class Meta:
 
         model = labour_work_in_master
-        fields = ['voucher_number','labour_name','labour_voucher_number','description','total_pcs',
+        fields = ['voucher_number','description','total_pcs',
                   'total_pending_pcs','total_return_pcs','labour_charges','other_charges','amount']
 
 
