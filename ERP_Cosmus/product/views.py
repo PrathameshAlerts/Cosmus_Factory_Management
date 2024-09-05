@@ -4154,7 +4154,6 @@ def labourworkincreate(request, l_w_o_id):
         'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
     }
 
-
     master_form = labour_workin_master_form(initial=initial_data)
 
 
