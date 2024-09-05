@@ -784,6 +784,7 @@ class labour_workout_childs(models.Model):
     created_date = models.DateTimeField(auto_now = True)
     modified_date = models.DateTimeField(auto_now_add=True)
     labour_workin_pcs = models.IntegerField(default = 0)
+    labour_workin_pending_pcs = models.IntegerField()
 
 
 class product_to_item_labour_child_workout(models.Model):
@@ -793,6 +794,7 @@ class product_to_item_labour_child_workout(models.Model):
     processed_pcs = models.IntegerField()
     pending_pcs = models.IntegerField()
     balance_pcs = models.IntegerField()
+    labour_w_in_pending = models.IntegerField()
     created_date = models.DateTimeField(auto_now=True)
     modified_date = models.DateTimeField(auto_now_add=True)
 

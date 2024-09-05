@@ -37,7 +37,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
+                                 item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
@@ -47,7 +47,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                    CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, UserRoleForm, cutting_room_form,
-                       factory_employee_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -3966,10 +3966,12 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                 with transaction.atomic():
                     labour_workout_form_instance = labour_work_out_child_form.save(commit=False)
                     labour_workout_form_instance.labour_workout_master_instance = labourworkoutinstance
-                    labour_workout_form_instance.save()
                     processed_qty = labour_workout_form_instance.total_process_pcs
-
+                    labour_workout_form_instance.labour_workin_pending_pcs = processed_qty
+                    labour_workout_form_instance.save()
+                    
                     labourworkoutinstance.total_pending_pcs = labourworkoutinstance.total_pending_pcs - processed_qty
+                
                     labourworkoutinstance.save()
                     
                     for form in product_to_item_formset:
@@ -4135,8 +4137,10 @@ def labourworkincreatelist(request,l_w_o_id):
 
     labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
+    labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance)
 
-    return render(request,'production/labour_work_in_list.html',{'labour_workout_child_instance':labour_workout_child_instance})
+    return render(request,'production/labour_work_in_list.html',{'labour_workout_child_instance':labour_workout_child_instance,
+                                                                 'labour_workin_instances':labour_workin_instances})
 
 
 
@@ -4153,20 +4157,58 @@ def labourworkincreate(request, l_w_o_id):
         'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
         'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
         'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
+        'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs
     }
 
     master_form = labour_workin_master_form(initial=initial_data)
 
+    product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
+
+    formset_initial_data = []
+
+
+    for instances in product_to_item_l_w_in:
+
+        initial_data_dict = { 
+
+            'product_sku': instances.product_sku,
+            'product_color': instances.product_color,
+            'L_work_out_pcs': instances.processed_pcs,
+            'pending_to_return_pcs': instances.labour_w_in_pending,
+            'return_pcs' : '0'}
+        formset_initial_data.append(initial_data_dict)
+
+
+    labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, form=labour_work_in_product_to_item_form, extra=len(formset_initial_data))
+
+    product_to_item_formset = labour_work_in_product_to_item_formset(initial=formset_initial_data)
+
 
     if request.method == 'POST':
         master_form = labour_workin_master_form(request.POST)
+        try:
+            if master_form.is_valid():
+                form = master_form.save(commit = False)
+                form.labour_voucher_number = labour_workout_child_instance
+                labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + form.total_return_pcs
+                labour_workout_child_instance.save()
+                form.save()
 
-        if master_form.is_valid():
-            form = master_form.save(commit=False)
-            form.labour_voucher_number = labour_workout_child_instance
-            form.save()
+                return(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
 
-    return render(request,'production/labourworkincreate.html',{'master_form':master_form})
+            else:
+                print(master_form.errors)
+                return render(request,'production/labourworkincreate.html',{'master_form':master_form})
+                
+        except ValidationError as ve:
+            messages.error(request,f'Validation error {ve}')
+
+        except Exception as e:
+            messages.error(request,f'Other exceptions {e}')
+
+        
+
+    return render(request,'production/labourworkincreate.html',{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
 
 
 

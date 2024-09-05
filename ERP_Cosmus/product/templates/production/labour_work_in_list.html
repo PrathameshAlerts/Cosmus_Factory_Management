@@ -8,4 +8,11 @@
 <a href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a>
 
 
+
+{% for instance in labour_workin_instances %}
+
+{{instance.voucher_number}}
+
+{% endfor %}
+
 {% endblock %}

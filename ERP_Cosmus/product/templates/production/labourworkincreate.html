@@ -90,12 +90,12 @@
 
 
         {% if not master_form.instance.id %}
-        <input type="number" class="item-select" name="" value="{{master_form.total_p_o_qty.initial}}" required id="id_total_p_o_qty">
+        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.total_p_o_qty.initial}}" id="id_total_p_o_qty">
 
 
         {% else %}
 
-        <input type="number" class="item-select" name="" value="{{master_form.instance.total_p_o_qty}}" required id="id_total_p_o_qty">
+        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.instance.total_p_o_qty}}" id="id_total_p_o_qty">
 
         {% endif %}
     </div>
@@ -114,10 +114,19 @@
     </div>
 
    
-    <!-- <div class="d-flex mb-3">
-        <label for="id_total_pending_pcs" class="item-form">Total pending pcs:</label>
-    <input type="number" class="item-select" name="total_pending_pcs" required id="id_total_pending_pcs">
-    </div> -->
+    <div class="d-flex mb-3">
+        <label for="id_pending_pcs" class="item-form">Pending Pcs:</label>
+
+        {% if not master_form.instance.id %}
+        <input type="text" class="item-select" name="pending_pcs" value="{{ master_form.pending_pcs.initial }}" required id="id_pending_pcs">
+
+        {% else %}
+        <input type="text" class="item-select" name="pending_pcs" value="{{ master_form.instance.pending_pcs }}" required id="id_pending_pcs">
+
+        {% endif %}
+
+    </div>
+
     <div class="d-flex mb-3">
         <label for="id_total_return_pcs" class="item-form">Total return pcs:</label>
         <input type="number" class="item-select" name="total_return_pcs" required id="id_total_return_pcs">
@@ -148,5 +157,14 @@
     </div>
     <input type="submit" value="Submit" class="create-btn">
 </div>
+
+<div>
+    {% for form in labour_work_in_product_to_item_formset %}
+    {{form.as_p}}
+    {% endfor %}
+
+</div>
+
+
 </form>
 {% endblock %}
