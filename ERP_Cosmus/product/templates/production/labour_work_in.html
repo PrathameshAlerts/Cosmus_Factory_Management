@@ -1,0 +1,168 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+
+
+{{master_form}}
+<h3 class="mt-3 mb-4">Labour Work In Create</h3>
+<form method="POST" id="labourWorkInForm">
+    {% csrf_token %}
+<div class="row mb-3">
+    <div class="col-lg-4">
+        <div class="d-flex mb-3">
+            <label for="id_voucher_number" class="item-form">GRN No:</label>
+            <input type="number" class="item-select" name="voucher_number" required id="id_voucher_number" value="{{labour_work_in.voucher_number}}">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_GRN_Date" class="item-form">GRN Date:</label>
+            <input type="date" class="item-select" name="GRN_Date" required id="id_GRN_Date" value="">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_name" class="item-form">Labour Name:</label>
+            <select class="item-select" name="labour_name" required id="id_labour_name">
+                <option value="" selected>---------</option>
+             
+                <option value="">xyz</option>
+             
+              
+              </select>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <table class="table table-bordered table-hover table-striped" id="tableLabourWorkinId" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Challan No</th>
+                    <th>P.O No</th>
+                    <th>PO Total QTY</th>
+                    <th>Ref No </th>
+                    <th>Model Name</th>
+                    <th>Issued QTY</th>
+                    <th>Rec QTY</th>
+                    <th>Balance QTY</th>
+                </tr>
+            </thead>
+            <tbody class="mainTableList">
+                <td class="challanNo">223</td>
+                <td>323</td>
+                <td>323</td>
+                <td>33</td>
+                <td>3</td>
+                <td>32</td>
+                <td>23</td>
+                <td>23</td>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<div class="row mb-3" style="display: none;" id="labourWorkIn">
+    <div class="col-lg-4">
+        <div class="d-flex mb-3">
+            <label for="id_labour_voucher_number" class="item-form">Challan No:</label>
+            <select class="item-select challanPoNo" name="labour_voucher_number" required id="id_labour_voucher_number">
+            <option value="" selected>---------</option>
+            </select>
+        </div>
+        <div class="d-flex mb-3">
+            <div class="d-flex">
+                <label for="id_p_o_number" class="item-form">P.O No:</label>
+                <input class="item-select challanPoNo" name="p_o_number" required id="id_p_o_number" value="">
+            </div>
+            <div class="d-flex ms-4">
+                <label for="id_total_pcs" class="item-form">Total PO QTY:</label>
+                <input type="number" class="item-select" name="total_pcs" required id="id_total_pcs" value="">
+            </div>
+            
+        </div>
+        <div class="d-flex mb-3">
+            <div class="d-flex">
+                <label for="" class="item-form">Ref No:</label>
+                <input class="item-select" name="" required id="" value="">
+            </div>
+            <div class="d-flex ms-4">
+                <label for="id_model_name" class="item-form">Model Name:</label>
+                <input type="number" class="item-select" name="model_name" required id="id_model_name" value="">
+            </div>
+        
+        </div>
+        <div class="d-flex mb-3">
+            <div class="d-flex">
+                <label for="id_total_return_pcs" class="item-form">Total Issued QTY to Vendor:</label>
+                <input type="number" class="item-select" name="total_return_pcs" required id="id_total_return_pcs" value="">
+            </div>
+            <div class="d-flex ms-4">
+                <label for="id_total_return_pcs" class="item-form">Previous Rec:</label>
+                <input type="number" class="item-select" name="total_return_pcs" required id="id_total_return_pcs" value="">
+            </div>
+            <div class="d-flex ms-4">
+                 <label for="id_total_pending_pcs" class="item-form">Balance QTY:</label>
+                <input type="number" class="item-select" name="total_pending_pcs" required id="id_total_pending_pcs" value="">
+               
+            </div>
+            
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_charges" class="item-form">GR QTY:</label>
+            <input type="number" class="item-select" name="labour_charges" step="0.01" required id="id_labour_charges" value="">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_charges" class="item-form">Labour charges:</label>
+            <input type="number" class="item-select" name="labour_charges" step="0.01" required id="id_labour_charges" value="">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_other_charges" class="item-form">Other charges:</label>
+            <input type="number" class="item-select" name="other_charges" step="0.01" required id="id_other_charges">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_amount" class="item-form">Total Amount:</label>
+            <input type="number" class="item-select" name="amount" step="0.01" required id="id_amount">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_description" class="item-form">Naration:</label>
+            <input type="text" class="item-select" name="description" maxlength="100" required id="id_description">
+        </div>
+
+    </div>
+</div>
+
+    <input type="submit" value="Submit" class="newProductCreateBtn">
+</form>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const targetDate = document.getElementById('id_GRN_Date');
+        const dates = new Date().toISOString().split('T')[0];
+        const currentDate = new Date();
+        const years = currentDate.getFullYear()
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const formattedDate = `${years}-${month}-${day}`;
+        targetDate.setAttribute('min', formattedDate);
+        targetDate.value = formattedDate;
+
+
+        document.getElementById('id_labour_name').addEventListener('change',function(){
+          var labourTables = document.getElementById('tableLabourWorkinId');
+          labourTables.style.display = 'block'; 
+          console.log(labourTables); 
+         
+          document.querySelector('.challanNo').addEventListener('click',function(){
+            var labourCreateRow = document.getElementById('labourWorkIn');
+            console.log(labourCreateRow);
+            labourCreateRow.style.display = 'block';
+            var tables = $(this).closest('table');
+            console.log(tables);
+            tables.css("display" ,"none");
+        })
+
+        })
+
+        
+    })
+   
+    
+</script>
+{% endblock %}
