@@ -1,18 +1,20 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-<span>Ref ID - {{purchase_order_instance.product_reference_number.Product_Refrence_ID}}</span>
 
-<span>Model Name - {{purchase_order_instance.product_reference_number.Model_Name}}</span>
-
-<div>
-    {% for img in purchase_order_instance.product_reference_number.productdetails.all %}
-    {{ img.PProduct_image.url }}
-    {% endfor %}
-</div>
 
 <div class="">
     <h5 class="fw-bold mt-2 text-danger">Purchase Order Wise</h5>
+    <div class="d-flex mb-3 mt-2">
+        <lable class="fw-bold ">Ref ID :</lable>
+        <span class="text-danger ms-2">{{purchase_order_instance.product_reference_number.Product_Refrence_ID}}</span>
+        <lable class="fw-bold ms-4">Model Name :</lable>
+        <span class="text-danger ms-2">{{purchase_order_instance.product_reference_number.Model_Name}}</span>
+        <lable class="fw-bold ms-5">Images:</lable>
+        {% for img in purchase_order_instance.product_reference_number.productdetails.all %}
+        <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
+        {% endfor %}
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="">
@@ -35,14 +37,10 @@
                         {% for instance in labour_workin_purchase_order_list %}
                         <tr>
                             <td>{{forloop.counter}}</td>
-                            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}
-                            </td>
-                            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}
-                            </td>
-                            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}
-                            </td>
+                            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+                            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
+                            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
                             <td>{{instance.challan_no}}</td>
-                            
                             <td>{{instance.labour_name.name}}</td>
                             <td>{{instance.total_process_pcs}}</td>
                             <th>0</th>
