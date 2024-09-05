@@ -4,149 +4,177 @@
 
 <form method="post" class="mt-2">
     {% csrf_token %}
-<div>
-    <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5>
-    <div class="d-flex mb-3">
-        <label for="id_voucher_number" class="item-form">GRN No:</label>
+    <div>
+        <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5>
+        <span id="labourWorkInError" class="error-messagescuttingCreate"></span>
+        <div class="d-flex mb-3">
+            <label for="id_voucher_number" class="item-form">GRN No:</label>
 
-        {% if not master_form.instance.id %}
+            {% if not master_form.instance.id %}
+            <input type="number" class="item-select" name="voucher_number" value="{{master_form.voucher_number.initial}}" required id="id_voucher_number">
+            {% else %}
+            <input type="number" class="item-select" name="voucher_number" value="{{master_form.instance.voucher_number}}" required id="id_voucher_number">
 
-        <input type="number" class="item-select" name="voucher_number" value="{{master_form.voucher_number.initial}}" required id="id_voucher_number">
-        {% else %}
-        <input type="number" class="item-select" name="voucher_number" value="{{master_form.instance.voucher_number}}" required id="id_voucher_number">
-
-        {% endif %}
-
-
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_labour_name" class="item-form">Labour Name:</label>
-
-        {% if not master_form.instance.id %}
-
-        <input type="text" class="item-select" name="labour_name" value="{{master_form.labour_name.initial}}" required id="id_labour_name">
-
-        {% else %}
-        <input type="text" class="item-select" name="labour_name" value="{{master_form.instance.labour_name}}" required id="id_labour_name">
-
-        {% endif %}
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_challan_no" class="item-form">Challan no:</label>
-        {% if not master_form.instance.id %}
-
-    <input type="text" class="item-select" name="challan_no" value="{{master_form.challan_no.initial}}" required id="id_challan_no">
-    {% else %}
-
-    <input type="text" class="item-select" name="challan_no" value="{{master_form.instance.challan_no}}" required id="id_challan_no">
-    {% endif %}
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_purchase_order_no" class="item-form">PO.No:</label>
-
-    
-        {% if not master_form.instance.id %}
-
-        <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.purchase_order_no.initial}}" required id="id_purchase_order_no">
-        {% else %}
+            {% endif %}
 
 
-        <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.instance.purchase_order_no}}" required id="id_purchase_order_no">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_name" class="item-form">Labour Name:</label>
 
-        {% endif %}
-    
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_refrence_number" class="item-form">Refrence Number:</label>
-        {% if not master_form.instance.id %}
+            {% if not master_form.instance.id %}
+            <input type="text" class="item-select" name="labour_name" value="{{master_form.labour_name.initial}}" required id="id_labour_name" readonly>
+            {% else %}
+            <input type="text" class="item-select" name="labour_name" value="{{master_form.instance.labour_name}}" required id="id_labour_name" readonly>
+
+            {% endif %}
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_challan_no" class="item-form">Challan no:</label>
+            {% if not master_form.instance.id %}
+            <input type="text" class="item-select" name="challan_no" value="{{master_form.challan_no.initial}}" required id="id_challan_no" readonly>
+            {% else %}
+            <input type="text" class="item-select" name="challan_no" value="{{master_form.instance.challan_no}}" required id="id_challan_no" readonly>
+            {% endif %}
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_purchase_order_no" class="item-form">PO.No:</label>
+            {% if not master_form.instance.id %}
+            <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.purchase_order_no.initial}}" required id="id_purchase_order_no" readonly>
+            {% else %}
+            <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.instance.purchase_order_no}}" required id="id_purchase_order_no" readonly>
+
+            {% endif %}
+
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_refrence_number" class="item-form">Refrence Number:</label>
+            {% if not master_form.instance.id %}
+            <input type="number" class="item-select" name="refrence_number" value="{{master_form.refrence_number.initial}}" required id="id_refrence_number" readonly>
+            {% else %}
+            <input type="number" class="item-select" name="refrence_number" value="{{master_form.instance.refrence_number}}" required id="id_refrence_number "readonly>
+            {% endif %}
+
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_model_name" class="item-form">Model Name:</label>
+            {% if not master_form.instance.id %}
+            <input type="text" class="item-select" name="model_name" value="{{master_form.model_name.initial}}" required readonly id="id_model_name">
+            {% else %}
+            <input type="text" class="item-select" name="model_name" value="{{master_form.instance.model_name}}" required id="id_model_name" readonly>
+            {% endif %}
+
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_total_p_o_qty" class="item-form">Total PO. Qty:</label>
+            {% if not master_form.instance.id %}
+            <input type="number" class="item-select" name="" value="{{master_form.total_p_o_qty.initial}}" required  id="id_total_p_o_qty" readonly>
+            {% else %}
+            <input type="number" class="item-select" name="" value="{{master_form.instance.total_p_o_qty}}" required id="id_total_p_o_qty" readonly>
+
+            {% endif %}
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_workout_qty" class="item-form">Total Issued Qty:</label>
+
+            {% if not master_form.instance.id %}
+            <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.labour_workout_qty.initial}}" required id="id_labour_workout_qty" readonly>
+            {% else %}
+            <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.instance.labour_workout_qty}}" required id="id_labour_workout_qty"readonly>
+
+            {% endif %}
+
+        </div>
 
 
-    <input type="number" class="item-select" name="refrence_number" value="{{master_form.refrence_number.initial}}" required id="id_refrence_number">
-    
-    {% else %}
-    <input type="number" class="item-select" name="refrence_number" value="{{master_form.instance.refrence_number}}" required id="id_refrence_number">
-
-    {% endif %}
-
-</div>
-    <div class="d-flex mb-3">
-        <label for="id_model_name" class="item-form">Model Name:</label>
-
-        {% if not master_form.instance.id %}
-
-    <input type="text" class="item-select" name="model_name" value="{{master_form.model_name.initial}}" required id="id_model_name">
-
-    {% else %}
-    <input type="text" class="item-select" name="model_name" value="{{master_form.instance.model_name}}" required id="id_model_name">
-    
-    {% endif %}
-
-    </div>
-    <div class="d-flex mb-3">
-
-
-        
-        <label for="id_total_p_o_qty" class="item-form">Total PO. Qty:</label>
-
-
-        {% if not master_form.instance.id %}
-        <input type="number" class="item-select" name="" value="{{master_form.total_p_o_qty.initial}}" required id="id_total_p_o_qty">
-
-
-        {% else %}
-
-        <input type="number" class="item-select" name="" value="{{master_form.instance.total_p_o_qty}}" required id="id_total_p_o_qty">
-
-        {% endif %}
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_labour_workout_qty" class="item-form">Total Issued Qty:</label>
-
-    {% if not master_form.instance.id %}
-
-    <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.labour_workout_qty.initial}}" required id="id_labour_workout_qty">
-
-    {% else %}
-    <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.instance.labour_workout_qty}}" required id="id_labour_workout_qty">
-
-    {% endif %}
-
-    </div>
-
-   
-    <!-- <div class="d-flex mb-3">
+        <!-- <div class="d-flex mb-3">
         <label for="id_total_pending_pcs" class="item-form">Total pending pcs:</label>
     <input type="number" class="item-select" name="total_pending_pcs" required id="id_total_pending_pcs">
     </div> -->
-    <div class="d-flex mb-3">
-        <label for="id_total_return_pcs" class="item-form">Total return pcs:</label>
-        <input type="number" class="item-select" name="total_return_pcs" required id="id_total_return_pcs">
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_labour_charges" class="item-form">Labour charges:</label>
+        <div class="d-flex mb-3">
+            <label for="id_total_return_pcs" class="item-form">Total return pcs:</label>
+            <input type="number" class="item-select" name="total_return_pcs" required id="id_total_return_pcs">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_charges" class="item-form">Labour charges:</label>
 
-        {% if not master_form.instance.id %}
+            {% if not master_form.instance.id %}
 
-        <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.labour_charges.initial}}" required id="id_labour_charges">
-        {% else %}
+            <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.labour_charges.initial}}" required id="id_labour_charges">
+            {% else %}
 
-        <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.instance.labour_charges}}" id="id_labour_charges">
-        
-        {% endif %}
+            <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.instance.labour_charges}}" id="id_labour_charges">
+
+            {% endif %}
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_other_charges" class="item-form">Other charges:</label>
+            <input type="number" class="item-select" name="other_charges" step="0.01" required id="id_other_charges">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_amount" class="item-form">Amount:</label>
+            <input type="number" class="item-select" name="amount" step="0.01"  id="id_amount" readonly>
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_description" class="item-form">Naration:</label>
+            <input type="text" class="item-select" name="description" maxlength="100" id="id_description">
+        </div>
+        <input type="submit" value="Submit" class="create-btn" id="id_submit">
     </div>
-    <div class="d-flex mb-3">
-        <label for="id_other_charges" class="item-form">Other charges:</label>
-        <input type="number" class="item-select" name="other_charges" step="0.01" required id="id_other_charges">
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_amount" class="item-form">Amount:</label>
-    <input type="number" class="item-select" name="amount" step="0.01" required id="id_amount">
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_description" class="item-form">Naration:</label>
-    <input type="text" class="item-select" name="description" maxlength="100" required id="id_description">
-    </div>
-    <input type="submit" value="Submit" class="create-btn">
-</div>
 </form>
+
+<script>
+    document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
+    function CalculateAmount(){
+        var labour_charges = document.getElementById('id_labour_charges').value;
+        var other_charges = document.getElementById('id_other_charges').value;
+        console.log(labour_charges)
+        console.log(other_charges)
+        var amounts = parseFloat(labour_charges) + parseFloat(other_charges);
+        document.getElementById('id_amount').value = amounts
+    }
+
+    document.getElementById('id_total_return_pcs').addEventListener('input', CalculateTotalPcs);
+    function CalculateTotalPcs(){
+        var totalPoQty = parseFloat(document.getElementById('id_labour_workout_qty').value);
+        var totalReturnPcs = parseFloat(document.getElementById('id_total_return_pcs').value);
+        if(totalPoQty < totalReturnPcs){
+            document.getElementById('id_total_return_pcs').value = 0;
+        }
+    }
+
+    $(document).ready(function(){
+        $('#id_voucher_number').on('focusout',function(){
+            var voucher_number = $(this).val();
+            var new_order = $("#id_purchase_order_number");
+            var errorElement = $('#labourWorkInError'); // The error message element
+            var submitButton = $('#id_submit');
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'voucher_number': voucher_number,
+                },
+                success: function (data) {
+                    if(data.validation_flag === true){
+                        new_order.css('border', '1px solid red');
+                        errorElement.text('*New order number already exists');
+                        errorElement.show();
+                        submitButton.attr('disabled', 'disabled');
+                    }else {
+                       
+                        new_order.css('border', '1px solid black');
+                        errorElement.text('');
+                        errorElement.hide();
+                        submitButton.removeAttr('disabled');
+                    }
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
+
+            })
+        })
+    })
+</script>
 {% endblock %}
