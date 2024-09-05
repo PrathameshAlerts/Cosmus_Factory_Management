@@ -4,7 +4,7 @@
 {% block body %}
 
 <!-- <span>Challan No - {{labour_workout_child_instance.challan_no}}</span> -->
-<h3 class="mb-3 mt-2">Labour Workout List</h3>
+<h3 class="mb-3 mt-2">Labour Workin List</h3>
 <div class="d-flex mb-3">
     <button class="item-btn" onclick="redirectlistCutting()"><a id="create" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
 
@@ -45,5 +45,12 @@
         </div>
     </div>
 </div>
+
+
+{% for instance in labour_workin_instances %}
+
+{{instance.voucher_number}}
+
+{% endfor %}
 
 {% endblock %}
