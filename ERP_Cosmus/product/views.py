@@ -4170,7 +4170,6 @@ def labourworkincreate(request, l_w_o_id):
     for instances in product_to_item_l_w_in:
 
         initial_data_dict = { 
-
             'product_sku': instances.product_sku,
             'product_color': instances.product_color,
             'L_work_out_pcs': instances.processed_pcs,
@@ -4179,7 +4178,7 @@ def labourworkincreate(request, l_w_o_id):
         formset_initial_data.append(initial_data_dict)
 
 
-    labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, form=labour_work_in_product_to_item_form, extra=len(formset_initial_data))
+    labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, form=labour_work_in_product_to_item_form, extra=len(formset_initial_data), can_delete=False)
 
     product_to_item_formset = labour_work_in_product_to_item_formset(initial=formset_initial_data)
 
