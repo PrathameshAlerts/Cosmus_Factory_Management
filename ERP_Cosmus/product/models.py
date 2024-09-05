@@ -779,10 +779,11 @@ class labour_workout_childs(models.Model):
     labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.PROTECT)
     challan_no = models.CharField(unique=True, null=False, blank=False)
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
-    total_process_pcs = models.IntegerField(null=True, blank=True)
-    total_balance_pcs = models.IntegerField(null=True, blank=True)
+    total_process_pcs = models.IntegerField(null = True, blank=True)
+    total_balance_pcs = models.IntegerField(null = True, blank=True)
     created_date = models.DateTimeField(auto_now = True)
     modified_date = models.DateTimeField(auto_now_add=True)
+    labour_workin_pcs = models.IntegerField(default = 0)
 
 
 class product_to_item_labour_child_workout(models.Model):
@@ -819,11 +820,11 @@ class labour_work_in_master(models.Model):
     labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
     voucher_number = models.IntegerField(unique=True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now = True)
-    description = models.CharField(max_length=100)
-    total_return_pcs = models.IntegerField()
+    description = models.CharField(max_length=100, null=True, blank=True)
+    total_return_pcs = models.IntegerField(null=False, blank=False)
     labour_charges = models.DecimalField(max_digits=10, decimal_places=2)
-    other_charges = models.DecimalField(max_digits=10, decimal_places=2)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    other_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,null=False, blank=False)
     modified_date = models.DateTimeField(auto_now_add=True)
 
 
