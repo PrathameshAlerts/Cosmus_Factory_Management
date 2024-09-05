@@ -817,9 +817,8 @@ class labour_workout_cutting_items(models.Model):
 
 class labour_work_in_master(models.Model):
     labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
-    voucher_number = models.IntegerField(unique=True, null=False, blank=False)
+    voucher_number = models.IntegerField(unique=True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now = True)
-    labour_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
     description = models.CharField(max_length=100)
     total_pcs = models.IntegerField()
     total_pending_pcs = models.IntegerField()

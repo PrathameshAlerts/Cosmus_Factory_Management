@@ -4131,13 +4131,31 @@ def cuttingroomqty(request):
 
 
 
-def labourworkincreate(request,l_w_o_id):
+def labourworkincreatelist(request,l_w_o_id):
+
+    labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
+
+
+    return render(request,'production/labour_work_in_list.html',{'labour_workout_child_instance':labour_workout_child_instance})
 
 
 
-    masterform = labour_workin_master_form()
+def labourworkincreate(request, l_w_o_id):
 
-    return render(request,'production/labour_work_in.html',{'masterform':masterform})
+    labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
+    master_form = labour_workin_master_form()
+
+
+    if request.method == 'POST':
+        master_form = labour_workin_master_form(request.POST)
+
+        if master_form.is_valid():
+            form = master_form.save(commit=False)
+            form.labour_voucher_number = labour_workout_child_instance
+            form.save()
+
+    return render(request,'production/labourworkincreate.html',{'master_form':master_form})
+
 
 
 def labourworkinlistall(request):
@@ -4169,7 +4187,6 @@ def labourworkinpurchaseorderlist(request,p_o_no):
     purchase_order_instance = purchase_order.objects.get(id=p_o_no)
 
     labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
-
 
 
     return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})

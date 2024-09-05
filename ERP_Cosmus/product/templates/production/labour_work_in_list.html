@@ -1,0 +1,11 @@
+
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<span>Challan No - {{labour_workout_child_instance.challan_no}}</span>
+
+<a href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a>
+
+
+{% endblock %}
