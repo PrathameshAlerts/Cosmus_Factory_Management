@@ -4130,6 +4130,50 @@ def cuttingroomqty(request):
     return render(request,'production/cuttingroomqty.html',{'cutting_room_items':cutting_room_items})
 
 
+
+def labourworkincreate(request,l_w_o_id):
+
+
+
+    masterform = labour_workin_master_form()
+
+    return render(request,'production/labour_work_in.html',{'masterform':masterform})
+
+
+def labourworkinlistall(request):
+
+# Subquery to check if a purchase_order has any related labour_workout_childs
+    labour_workout_childs_exists = labour_workout_childs.objects.filter(
+    labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id=OuterRef('pk')
+    ).values('pk')[:1]
+
+    # Main query to get all purchase orders that have related labour_workout_childs instances
+    purchase_orders_with_labour_workout_childs = purchase_order.objects.annotate(
+    has_labour_workout_childs=Exists(labour_workout_childs_exists)
+    ).filter(has_labour_workout_childs = True).annotate(total_lwo_pcs = Sum('cutting_pos__labourworkouts__labour_workout_childs__total_process_pcs'),
+    total_labour_workin_pcs =Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master'))
+
+
+
+    labour_workout_child_instances_all = labour_workout_childs.objects.all()
+
+    return render(request,'production/labour_workin_listall.html',
+                  {'labour_workout_child_instances_all':labour_workout_child_instances_all,
+                   'purchase_order_instances': purchase_orders_with_labour_workout_childs})
+
+
+
+def labourworkinpurchaseorderlist(request,p_o_no):
+
+
+    purchase_order_instance = purchase_order.objects.get(id=p_o_no)
+
+    labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
+
+
+
+    return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
+
 #_________________________production-end__________________________________________
 
 #_________________________factory-emp-start_______________________________________
@@ -4200,23 +4244,6 @@ def cuttingroomdelete(request,pk):
     return redirect('cutting_room-create')
 
 
-def labourworkincreate(request,l_w_o_id):
-
-
-
-    masterform = labour_workin_master_form()
-
-    return render(request,'production/labour_work_in.html',{'masterform':masterform})
-
-
-def labourworkinlistall(request):
-    labour_workout_child_instances_all = labour_workout_childs.objects.all()
-
-    purchase_order_instances = purchase_order.objects.all()
-
-    return render(request,'production/labour_workin_listall.html',
-                  {'labour_workout_child_instances_all':labour_workout_child_instances_all,
-                   'purchase_order_instances':purchase_order_instances})
 
 
 #_________________________factory-emp-end_______________________________________

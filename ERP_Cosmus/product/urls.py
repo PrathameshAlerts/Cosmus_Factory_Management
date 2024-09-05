@@ -205,6 +205,7 @@ urlpatterns = [
 
     #labour workin
     path('labourworkinlistall/',views.labourworkinlistall, name='labour-workin-list-all'),
+    path('labourworkinpurchaseorderlist/<int:p_o_no>',views.labourworkinpurchaseorderlist, name='labour-workin-pur-order-list'),
     path('labourworkincreate/<int:l_w_o_id>',views.labourworkincreate, name ='labour-workin-create'),
 
 
