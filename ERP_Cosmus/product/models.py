@@ -781,7 +781,7 @@ class labour_workout_childs(models.Model):
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
     total_process_pcs = models.IntegerField(null=True, blank=True)
     total_balance_pcs = models.IntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now = True)
     modified_date = models.DateTimeField(auto_now_add=True)
 
 
