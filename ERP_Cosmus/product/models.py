@@ -819,7 +819,7 @@ class labour_workout_cutting_items(models.Model):
 
 
 class labour_work_in_master(models.Model):
-    labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
+    labour_voucher_number = models.ForeignKey(labour_workout_childs ,on_delete=models.PROTECT)
     voucher_number = models.IntegerField(unique=True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now = True)
     description = models.CharField(max_length=100, null=True, blank=True)
