@@ -4152,6 +4152,7 @@ def labourworkincreate(request, l_w_o_id):
         'model_name': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
         'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
         'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
+        'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
     }
 
     master_form = labour_workin_master_form(initial=initial_data)

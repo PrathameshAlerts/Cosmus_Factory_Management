@@ -820,11 +820,11 @@ class labour_work_in_master(models.Model):
     labour_voucher_number = models.ForeignKey(labour_workout_childs,on_delete=models.PROTECT)
     voucher_number = models.IntegerField(unique=True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now = True)
-    description = models.CharField(max_length=100)
-    total_return_pcs = models.IntegerField()
+    description = models.CharField(max_length=100, null=True, blank=True)
+    total_return_pcs = models.IntegerField(null=False, blank=False)
     labour_charges = models.DecimalField(max_digits=10, decimal_places=2)
-    other_charges = models.DecimalField(max_digits=10, decimal_places=2)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    other_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,null=False, blank=False)
     modified_date = models.DateTimeField(auto_now_add=True)
 
 

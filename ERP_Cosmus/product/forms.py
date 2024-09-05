@@ -684,25 +684,6 @@ class labour_workout_cutting_items_form(forms.ModelForm):
 
 
 
-class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
-    class Meta:
-        model = factory_employee
-        fields = ['factory_emp_name','cutting_room_id']
-
-    def clean_factory_emp_name(self):
-        return self.clean_unique_field('factory_emp_name',factory_employee)
-
-
-class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
-    class Meta:
-        model = cutting_room
-        fields = ['cutting_room_name']
-
-    # this way we can use a custom mixin or the below commented code 
-    def clean_cutting_room_name(self):
-        return self.clean_unique_field('cutting_room_name',cutting_room)
-
-
 
 class labour_workin_master_form(forms.ModelForm):
 
@@ -720,6 +701,44 @@ class labour_workin_master_form(forms.ModelForm):
         model = labour_work_in_master
         fields = ['voucher_number', 'total_return_pcs', 'labour_charges', 'other_charges', 'amount', 
                    'description']
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        last_item = labour_work_in_master.objects.order_by('id').last()
+
+        if last_item:
+
+            self.fields['voucher_number'].initial = last_item.id + 1
+        else:
+            self.fields['voucher_number'].initial = 1
+
+
+
+
+class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
+    class Meta:
+        model = cutting_room
+        fields = ['cutting_room_name']
+
+    # this way we can use a custom mixin or the below commented code 
+    def clean_cutting_room_name(self):
+        return self.clean_unique_field('cutting_room_name',cutting_room)
+
+
+
+class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
+    class Meta:
+        model = factory_employee
+        fields = ['factory_emp_name','cutting_room_id']
+
+    def clean_factory_emp_name(self):
+        return self.clean_unique_field('factory_emp_name',factory_employee)
+    
+
+
+
 
 
 
