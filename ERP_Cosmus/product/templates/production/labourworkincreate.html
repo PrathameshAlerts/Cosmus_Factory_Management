@@ -2,8 +2,73 @@
 {% load static %}
 {% block body %}
 
-
-{{master_form.as_p}}
-
-
+<form method="post" class="mt-2">
+    {% csrf_token %}
+<div>
+    <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5>
+    <div class="d-flex mb-3">
+        <label for="id_voucher_number" class="item-form">Voucher number:</label>
+        <input type="number" class="item-select" name="voucher_number" required id="id_voucher_number">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_labour_name" class="item-form">Labour name:</label>
+        <input type="text" class="item-select" name="labour_name" value="" required id="id_labour_name">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_challan_no" class="item-form">Challan no:</label>
+    <input type="text" class="item-select" name="challan_no" value="" required id="id_challan_no">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_purchase_order_no" class="item-form">Purchase order no:</label>
+        <input type="text" class="item-select" name="purchase_order_no" value="" required id="id_purchase_order_no">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_refrence_number" class="item-form">Refrence number:</label>
+    <input type="number" class="item-select" name="refrence_number" value="" required id="id_refrence_number">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_model_name" class="item-form">Model name:</label>
+    <input type="text" class="item-select" name="model_name" value="" required id="id_model_name">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_total_p_o_qty" class="item-form">Total p o qty:</label>
+        <input type="number" class="item-select" name="" value="" required id="id_total_p_o_qty">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_labour_workout_qty" class="item-form">Labour workout qty:</label>
+    <input type="number" class="item-select" name="labour_workout_qty" value="" required id="id_labour_workout_qty">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_total_pcs" class="item-form">Total pcs:</label>
+    <input type="number" class="item-select" name="total_pcs" required id="id_total_pcs">
+    </div>
+   
+    <div class="d-flex mb-3">
+        <label for="id_total_pending_pcs" class="item-form">Total pending pcs:</label>
+    <input type="number" class="item-select" name="total_pending_pcs" required id="id_total_pending_pcs">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_total_return_pcs" class="item-form">Total return pcs:</label>
+        <input type="number" class="item-select" name="total_return_pcs" required id="id_total_return_pcs">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_labour_charges" class="item-form">Labour charges:</label>
+        <input type="number" class="item-select" name="labour_charges" step="0.01" required id="id_labour_charges">
+        
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_other_charges" class="item-form">Other charges:</label>
+        <input type="number" class="item-select" name="other_charges" step="0.01" required id="id_other_charges">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_amount" class="item-form">Amount:</label>
+    <input type="number" class="item-select" name="amount" step="0.01" required id="id_amount">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_description" class="item-form">Description:</label>
+    <input type="text" class="item-select" name="description" maxlength="100" required id="id_description">
+    </div>
+    <input type="submit" value="Submit" class="create-btn">
+</div>
+</form>
 {% endblock %}
