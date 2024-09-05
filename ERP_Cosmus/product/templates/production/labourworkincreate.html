@@ -3,9 +3,44 @@
 {% block body %}
 
 <span>Challan No - {{labour_workout_child_instance.challan_no}}</span>
-
-
-{{master_form.as_p}}
-
-
+<form method="post">
+    {% csrf_token %}
+<div>
+    <h5 class="fw-bold mt-2 text-danger">Labour Workin Create</h5>
+    <div class="d-flex mb-3">
+        <label for="id_voucher_number" class="item-form">Voucher number:</label>
+        <input type="number" class="item-select" name="voucher_number" required id="id_voucher_number">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_total_pcs" class="item-form">Total pcs:</label>
+    <input type="number" class="item-select" name="total_pcs" required id="id_total_pcs">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_total_pending_pcs" class="item-form">Total pending pcs:</label>
+    <input type="number" class="item-select" name="total_pending_pcs" required id="id_total_pending_pcs">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_total_return_pcs" class="item-form">Total return pcs:</label>
+        <input type="number" class="item-select" name="total_return_pcs" required id="id_total_return_pcs">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_labour_charges" class="item-form">Labour charges:</label>
+        <input type="number" class="item-select" name="labour_charges" step="0.01" required id="id_labour_charges">
+        
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_other_charges" class="item-form">Other charges:</label>
+        <input type="number" class="item-select" name="other_charges" step="0.01" required id="id_other_charges">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_amount" class="item-form">Amount:</label>
+    <input type="number" class="item-select" name="amount" step="0.01" required id="id_amount">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_description" class="item-form">Description:</label>
+    <input type="text" class="item-select" name="description" maxlength="100" required id="id_description">
+    </div>
+    <input type="submit" value="Submit">
+</div>
+</form>
 {% endblock %}
