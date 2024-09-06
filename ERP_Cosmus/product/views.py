@@ -3978,6 +3978,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                         if form.is_valid():
                             product_to_item_form = form.save(commit=False)
                             product_to_item_form.labour_workout = labour_workout_form_instance
+                            product_to_item_form.labour_w_in_pending = product_to_item_form.processed_pcs
                             product_to_item_form.save()
 
                             # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
