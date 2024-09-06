@@ -8,6 +8,13 @@
 <div class="d-flex mb-3">
     <button class="item-btn" onclick="redirectlistCutting()"><a id="create" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
 
+
+    <div>
+    <span>Challan No {{labour_workout_child_instance.challan_no}}</span>    
+    <span>Total Workout Pcs{{labour_workout_child_instance.labour_workin_pcs}}</span>
+    <span>Total Balance Pcs{{labour_workout_child_instance.labour_workin_pending_pcs}}</span>
+    </div>
+
   </div>
   <div class="row">
     <div class="col-lg-8">
@@ -16,7 +23,6 @@
                 <thead class="name_absolute sticky-top">
                     <tr>
                         <th>No</th>
-                        <th>Challan No</th>
                         <th>GRN No</th>
                         <th>labour name</th>
                         <th>Issues Pcs</th>
@@ -32,7 +38,6 @@
                   {% for record in labour_workin_instances %}
                     <tr>
                         <td>{{forloop.counter}}</td>
-                        <td>{{record.labour_voucher_number.challan_no}}</td>
                         <td>{{record.voucher_number}}</td>
                         <td>{{record.labour_voucher_number.labour_name.name}}</td>
                         <td>{{record.labour_voucher_number.total_process_pcs}}</td>

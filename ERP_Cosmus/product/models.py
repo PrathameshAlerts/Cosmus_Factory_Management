@@ -831,7 +831,7 @@ class labour_work_in_master(models.Model):
 
 
 class labour_work_in_product_to_item(models.Model):
-    labour_workin_instance = models.ForeignKey(labour_work_in_master, on_delete=models.PROTECT, related_name='l_w_in_products')
+    labour_workin_instance = models.ForeignKey(labour_work_in_master, on_delete=models.CASCADE, related_name='l_w_in_products')
     product_sku = models.CharField(max_length=100)
     product_color = models.CharField(max_length=100)
     L_work_out_pcs = models.IntegerField()

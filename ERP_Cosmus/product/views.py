@@ -4293,16 +4293,27 @@ def labourworkinpurchaseorderlist(request,p_o_no):
 def labourworkinsingledeleteajax(request):
     
     if request.method == 'POST':
-        labour_workin_id = request.POST.get('labour_workin_id')
+        labour_workin_id = request.POST.get('labour_workin_pk')
 
         if labour_workin_id:
             try:
                 with transaction.atomic():
                     labour_workin_instance = labour_work_in_master.objects.get(pk=labour_workin_id)
-                    print(labour_workin_id)
+                    print('labour_workin_id',labour_workin_id)
+                    
+                    labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs + labour_workin_instance.total_return_pcs
+                    labour_workin_instance.labour_voucher_number.save()
 
 
+                    for instances in labour_workin_instance.l_w_in_products.all():
+                        product_2_item_child_instances =  product_to_item_labour_child_workout.objects.get(labour_workout=labour_workin_instance.labour_voucher_number,product_sku=instances.product_sku,product_color=instances.product_color)
+                        product_2_item_child_instances.labour_w_in_pending = product_2_item_child_instances.labour_w_in_pending + instances.return_pcs
 
+                        product_2_item_child_instances.save()
+                    labour_workin_instance.delete()
+
+                    return redirect(reverse('labour-workin-list-create', args=[labour_workin_instance.labour_voucher_number.id]) )
+                    
 
             except ObjectDoesNotExist as ne:
                 messages.error(request, f'Error with labour workout: {ne}')
