@@ -4160,7 +4160,9 @@ def labourworkincreate(request, l_w_o_id, pk=None):
             'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
             'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
             'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
-            'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs
+            'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,
+            
+
         }
 
         master_form = labour_workin_master_form(initial=initial_data)
@@ -4177,7 +4179,8 @@ def labourworkincreate(request, l_w_o_id, pk=None):
                 'product_color': instances.product_color,
                 'L_work_out_pcs': instances.processed_pcs,
                 'pending_to_return_pcs': instances.labour_w_in_pending,
-                'return_pcs' : '0'}
+                'return_pcs' : '0',
+               }
             
             formset_initial_data.append(initial_data_dict)
 
@@ -4220,11 +4223,10 @@ def labourworkincreate(request, l_w_o_id, pk=None):
                         if form.is_valid():
                             product_to_item_form = form.save(commit= False)
                             product_to_item_form.labour_workin_instance = parent_form
-
+                            
 
                             l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
                             l_w_o_instance.labour_w_in_pending = l_w_o_instance.labour_w_in_pending - product_to_item_form.return_pcs
-
 
                             l_w_o_instance.save()
                             product_to_item_form.save()
@@ -4288,10 +4290,42 @@ def labourworkinpurchaseorderlist(request,p_o_no):
 
 
 
-def labourworkoutsingledeleteajax(request):
+def labourworkinsingledeleteajax(request):
     
     if request.method == 'POST':
-        pass
+        labour_workin_id = request.POST.get('labour_workin_id')
+
+        if labour_workin_id:
+            try:
+                with transaction.atomic():
+                    labour_workin_instance = labour_work_in_master.objects.get(pk=labour_workin_id)
+                    print(labour_workin_id)
+
+
+
+
+            except ObjectDoesNotExist as ne:
+                messages.error(request, f'Error with labour workout: {ne}')
+                logger.error(f'Instance not found - {ne}')
+                return JsonResponse({'status': f'Instance not found - {ne}'}, status=404)
+        
+
+            except IntegrityError as ie:
+                messages.error(request, 'Database integrity error occurred. Please try again.')
+                logger.error(f'Database integrity error - {ie}')
+                return JsonResponse({'status': 'Database integrity error occurred.'}, status=500)
+        
+
+            except Exception as e:
+                logger.error(f'An unexpected error occurred - {e}')
+                messages.error(request, f'Error with labour workout: {e}')
+                return JsonResponse({'status': f'An unexpected error occurred - {e}'}, status=500)
+        
+    else:
+        return JsonResponse({'status': 'Invalid request method.'}, status=405)
+            
+
+
 #_________________________production-end__________________________________________
 
 #_________________________factory-emp-start_______________________________________

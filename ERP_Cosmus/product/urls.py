@@ -209,6 +209,8 @@ urlpatterns = [
     path('labourworkincreatelist/<int:l_w_o_id>',views.labourworkincreatelist, name ='labour-workin-list-create'),
     path('labourworkincreate/<int:l_w_o_id>',views.labourworkincreate, name ='labour-workin-create'),
     path('labourworkincreateupdateview/<int:l_w_o_id>/<int:pk>',views.labourworkincreate, name ='labour-workin-view-update'),
+
+    path('labourworkinsingledelete/',views.labourworkinsingledeleteajax, name = 'labour-workin-single-delete'),
     
 
 
