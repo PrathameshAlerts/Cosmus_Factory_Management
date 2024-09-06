@@ -30,7 +30,7 @@
                             <th>Issued Qty</th>
                             <th>Recieved Qty</th>
                             <th>Balance Qty</th>
-                            <th>Edit</th>
+                            <th>Create</th>
                         </tr>
                     </thead>
                     <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
@@ -45,7 +45,7 @@
                             <td>{{instance.total_process_pcs}}</td>
                             <th>{{instance.labour_workin_pcs}}</th>
                             <th>{{instance.labour_workin_pending_pcs}}</th>
-                            <th>  <a href="{% url 'labour-workin-list-create' instance.id %}">View</a></th>
+                            <th>  <a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></th>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -53,12 +53,7 @@
             </div>
         </div>
     </div>
-
-
-{% for instance in  labour_workin_purchase_order_list %}
-
-
-{% endfor %}
+</div>
 
 
 {% endblock %}
