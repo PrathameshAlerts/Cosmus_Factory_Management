@@ -4166,6 +4166,9 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
             for record in selected_vendor_name:
                 vendor_name_dict[record.id] = record.name
 
+            confirmed_vendor_id = request.GET.get('itemValue')
+
+            print(confirmed_vendor_id)
 
             return JsonResponse({'vendor_name_dict':vendor_name_dict})
 
