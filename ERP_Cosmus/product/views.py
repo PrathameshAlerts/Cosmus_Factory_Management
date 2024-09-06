@@ -3978,6 +3978,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                         if form.is_valid():
                             product_to_item_form = form.save(commit=False)
                             product_to_item_form.labour_workout = labour_workout_form_instance
+                            product_to_item_form.labour_w_in_pending = product_to_item_form.processed_pcs
                             product_to_item_form.save()
 
                             # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
@@ -4138,66 +4139,105 @@ def labourworkincreatelist(request,l_w_o_id):
     labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
     labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance)
-
+    
     return render(request,'production/labour_work_in_list.html',{'labour_workout_child_instance':labour_workout_child_instance,
                                                                  'labour_workin_instances':labour_workin_instances})
 
 
 
-def labourworkincreate(request, l_w_o_id):
-
-    labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
-
-    initial_data = {
-        'labour_name': labour_workout_child_instance.labour_name.name,
-        'challan_no' : labour_workout_child_instance.challan_no ,
-        'purchase_order_no' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
-        'refrence_number' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
-        'model_name': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
-        'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
-        'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
-        'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
-        'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs
-    }
-
-    master_form = labour_workin_master_form(initial=initial_data)
-
-    product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
-
-    formset_initial_data = []
+def labourworkincreate(request, l_w_o_id, pk=None):
 
 
-    for instances in product_to_item_l_w_in:
+    if pk is None:
+        labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
-        initial_data_dict = { 
-            'product_sku': instances.product_sku,
-            'product_color': instances.product_color,
-            'L_work_out_pcs': instances.processed_pcs,
-            'pending_to_return_pcs': instances.labour_w_in_pending,
-            'return_pcs' : '0'}
-        formset_initial_data.append(initial_data_dict)
+        initial_data = {
+            'labour_name': labour_workout_child_instance.labour_name.name,
+            'challan_no' : labour_workout_child_instance.challan_no ,
+            'purchase_order_no' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+            'refrence_number' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
+            'model_name': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
+            'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
+            'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
+            'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
+            'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs
+        }
+
+        master_form = labour_workin_master_form(initial=initial_data)
+
+        product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
+
+        formset_initial_data = []
 
 
-    labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, form=labour_work_in_product_to_item_form, extra=len(formset_initial_data), can_delete=False)
+        for instances in product_to_item_l_w_in:
 
-    product_to_item_formset = labour_work_in_product_to_item_formset(initial=formset_initial_data)
+            initial_data_dict = { 
+                'product_sku': instances.product_sku,
+                'product_color': instances.product_color,
+                'L_work_out_pcs': instances.processed_pcs,
+                'pending_to_return_pcs': instances.labour_w_in_pending,
+                'return_pcs' : '0'}
+            
+            formset_initial_data.append(initial_data_dict)
 
 
+        labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
+            form=labour_work_in_product_to_item_form, extra=len(formset_initial_data), can_delete=False)
+
+        product_to_item_formset = labour_work_in_product_to_item_formset(initial=formset_initial_data)
+    elif pk:
+        
+        labour_workin_master_instance = labour_work_in_master.objects.get(pk=pk)
+    
+        master_form = labour_workin_master_form(instance = labour_workin_master_instance)
+
+        labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
+            form = labour_work_in_product_to_item_form,extra=0, can_delete=False)
+        
+        product_to_item_formset = labour_work_in_product_to_item_formset(instance = labour_workin_master_instance)
+    
+        
     if request.method == 'POST':
+
         master_form = labour_workin_master_form(request.POST)
+        product_to_item_formset = labour_work_in_product_to_item_formset(request.POST)
         try:
-            if master_form.is_valid():
-                form = master_form.save(commit = False)
-                form.labour_voucher_number = labour_workout_child_instance
-                labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + form.total_return_pcs
-                labour_workout_child_instance.save()
-                form.save()
+            with transaction.atomic():
+                if master_form.is_valid() and product_to_item_formset.is_valid():
+                    parent_form = master_form.save(commit = False)
+                    parent_form.labour_voucher_number = labour_workout_child_instance
 
-                return(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
 
-            else:
-                print(master_form.errors)
-                return render(request,'production/labourworkincreate.html',{'master_form':master_form})
+                    labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
+                    parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.labour_voucher_number.labour_workin_pending_pcs - parent_form.total_return_pcs
+
+                    labour_workout_child_instance.save()
+                    parent_form.save()
+
+
+                    for form in product_to_item_formset:
+                        if form.is_valid():
+                            product_to_item_form = form.save(commit= False)
+                            product_to_item_form.labour_workin_instance = parent_form
+
+
+                            l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
+                            l_w_o_instance.labour_w_in_pending = l_w_o_instance.labour_w_in_pending - product_to_item_form.return_pcs
+
+
+                            l_w_o_instance.save()
+                            product_to_item_form.save()
+                    
+                    return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
+
+                else:
+                    logger.error(product_to_item_formset.non_form_errors())
+                    print(product_to_item_formset.errors)
+                    print(master_form.errors)
+                    print(product_to_item_formset.non_form_errors())
+                    
+                return render(request,'production/labourworkincreate.html',{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
                 
         except ValidationError as ve:
             messages.error(request,f'Validation error {ve}')
@@ -4244,6 +4284,14 @@ def labourworkinpurchaseorderlist(request,p_o_no):
 
     return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
 
+
+
+
+
+def labourworkoutsingledeleteajax(request):
+    
+    if request.method == 'POST':
+        pass
 #_________________________production-end__________________________________________
 
 #_________________________factory-emp-start_______________________________________

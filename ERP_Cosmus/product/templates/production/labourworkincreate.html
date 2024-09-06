@@ -69,36 +69,41 @@
             <div class="d-flex mb-3">
                 <label for="id_model_name" class="item-form">Model Name:</label>
 
-                {% if not master_form.instance.id %}
-                <input type="text" class="item-select" name="model_name" value="{{master_form.model_name.initial}}" required id="id_model_name" readonly>
-                {% else %}
-                <input type="text" class="item-select" name="model_name" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}" required id="id_model_name" readonly>
-                {% endif %}
+        {% if not master_form.instance.id %}
 
-            </div>
-            
-            <div class="d-flex mb-3">
+    <input type="text" class="item-select" name="model_name" value="{{master_form.model_name.initial}}" required id="id_model_name">
 
-                <label for="id_total_p_o_qty" class="item-form">Total PO. Qty:</label>
+    {% else %}
+    <input type="text" class="item-select" name="model_name" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}" required id="id_model_name">
+    
+    {% endif %}
 
-                {% if not master_form.instance.id %}
-                <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.total_p_o_qty.initial}}" id="id_total_p_o_qty" readonly>
+    </div>
+    <div class="d-flex mb-3">
 
-                {% else %}
-                <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}" id="id_total_p_o_qty" readonly>
-                {% endif %}
-            </div>
-            <div class="d-flex mb-3">
-                <label for="id_amount" class="item-form">Amount:</label>
-                <input type="number" class="item-select" name="amount" step="0.01" required id="id_amount" readonly>
-            </div>
-           
-            <div class="d-flex mb-3">
-                <label for="id_description" class="item-form">Naration:</label>
-                <input type="text" class="item-select" name="description" maxlength="100" required id="id_description">
-            </div>
-            
+
         
+        <label for="id_total_p_o_qty" class="item-form">Total PO. Qty:</label>
+
+
+        {% if not master_form.instance.id %}
+        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.total_p_o_qty.initial}}" id="id_total_p_o_qty">
+
+
+        {% else %}
+
+        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}" id="id_total_p_o_qty">
+
+            {% endif %}
+        </div>
+    <div class="d-flex mb-3">
+        <label for="id_amount" class="item-form">Amount:</label>
+    <input type="number" class="item-select" name="amount" step="0.01" value="{{master_form.instance.amount}}" required id="id_amount">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="id_description" class="item-form">Naration:</label>
+    <input type="text" class="item-select" name="description" maxlength="100" value="{{master_form.instance.description | default_if_none:''}}" required id="id_description">
+    </div>
         </div>
         <div class="col-lg-5 mt-4">
             <table class="table table-striped table-hover table-bordered tables">
@@ -112,16 +117,35 @@
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
+                    {{labour_work_in_product_to_item_formset.management_form}}
                     {% for form in labour_work_in_product_to_item_formset %}
                     {{form.id}}
+
+
+                    {% if not form.instance.id %}
                     <tr>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
-                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs"value="{{form.initial.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs" readonly></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs" readonly></td>
+                        <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.initial.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.initial.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
+                    
                     </tr>
+                    {% elif form.instance.id %}
+
+                    <tr>
+                        <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.instance.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"></td>
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
+                    
+                        <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
+                    </tr>
+                    {% endif %}
+
+
                     {% endfor %}
                 </tbody>
             </table>
@@ -161,8 +185,7 @@
 
                 {% if not master_form.instance.id %}
 
-                <input type="number" class="item-select" name="labour_charges" step="0.01"
-                    value="{{master_form.labour_charges.initial}}" required id="id_labour_charges" >
+                <input type="number" class="item-select" name="labour_charges" step="0.01"value="{{master_form.labour_charges.initial}}" required id="id_labour_charges" >
                 {% else %}
 
                 <input type="number" class="item-select" name="labour_charges" step="0.01"
@@ -208,9 +231,10 @@
             var balanceQty = balance - returnValue;
             input.closest('tr').querySelector('input[name$="-pending_to_return_pcs"]').value = balanceQty;
 
-            totals += returnValue;
+            totals = totals + returnValue;
         })
-        document.getElementById('id_total_return_pcs').value = totals;
+      
+       document.getElementById('id_total_return_pcs').value =totals;
     }
    
     document.querySelectorAll('[name$="-return_pcs"]').forEach(function(element){
