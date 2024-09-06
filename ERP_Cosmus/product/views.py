@@ -4152,10 +4152,20 @@ def labourworkincreatelist(request,l_w_o_id):
 
 def labourworkincreate(request, l_w_o_id=None, pk=None):
 
-
     template_name = 'production/labourworkincreate.html'
 
     if l_w_o_id is None:
+
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            vendor_name_value = request.GET.get('nameValue')
+
+            print(vendor_name_value)
+
+
+            # return JsonResponse({})
+
+    
+
         template_name = 'production/labourworkincreateraw.html'
 
         master_form = labour_workin_master_form()
