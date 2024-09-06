@@ -4152,7 +4152,10 @@ def labourworkincreatelist(request,l_w_o_id):
 
 def labourworkincreate(request, l_w_o_id=None, pk=None):
 
-    if l_w_o_id == None:
+
+    template_name = 'production/labourworkincreate.html'
+
+    if l_w_o_id is None:
         template_name = 'production/labourworkincreateraw.html'
 
         master_form = labour_workin_master_form()
@@ -4161,12 +4164,10 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
             form = labour_work_in_product_to_item_form,extra=0, can_delete=False)
         
         product_to_item_formset = labour_work_in_product_to_item_formset()
-        
-    else:
-        template_name = 'production/labourworkincreate.html'
 
 
-    if l_w_o_id is not None and pk is None:
+
+    elif l_w_o_id is not None and pk is None:
         labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
         initial_data = {
@@ -4189,7 +4190,6 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
 
         formset_initial_data = []
 
-
         for instances in product_to_item_l_w_in:
 
             initial_data_dict = { 
@@ -4207,6 +4207,9 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
             form=labour_work_in_product_to_item_form, extra=len(formset_initial_data), can_delete=False)
 
         product_to_item_formset = labour_work_in_product_to_item_formset(initial=formset_initial_data)
+
+
+
     elif l_w_o_id is not None and pk is not None:
         
         labour_workin_master_instance = labour_work_in_master.objects.get(pk=pk)
@@ -4214,7 +4217,7 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
         master_form = labour_workin_master_form(instance = labour_workin_master_instance)
 
         labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
-            form = labour_work_in_product_to_item_form,extra=0, can_delete=False)
+            form = labour_work_in_product_to_item_form, extra=0, can_delete=False)
         
         product_to_item_formset = labour_work_in_product_to_item_formset(instance = labour_workin_master_instance)
     
