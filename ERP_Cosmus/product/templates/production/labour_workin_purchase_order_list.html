@@ -43,8 +43,8 @@
                             <td>{{instance.challan_no}}</td>
                             <td>{{instance.labour_name.name}}</td>
                             <td>{{instance.total_process_pcs}}</td>
-                            <th>0</th>
-                            <th>0</th>
+                            <th>{{instance.labour_workin_pcs}}</th>
+                            <th>{{instance.labour_workin_pending_pcs}}</th>
                             <th>  <a href="{% url 'labour-workin-list-create' instance.id %}">View</a></th>
                         </tr>
                         {% endfor %}

@@ -56,7 +56,7 @@
                                 <td>{{instance.product_reference_number.Model_Name}}</td>
                                 <td>{{instance.total_lwo_pcs}}</td>
                                 <th>{{instance.total_labour_workin_pcs}}</th>
-                                <th>0</th>
+                                <th>{{instance.total_labour_workin_pending}}</th>
                                 <th><a href="{% url 'labour-workin-pur-order-list' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></th>
                             </tr>
                             {% endfor %}
@@ -103,8 +103,8 @@
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Name}}</td>
                             <td>{{instance.labour_name.name}}</td>
                             <td>{{instance.total_process_pcs}}</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td>{{instance.labour_workin_pcs}}</td>
+                            <td>{{instance.labour_workin_pending_pcs}}</td>
                             <td><a href=""><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         </tr>
                         {% endfor %}

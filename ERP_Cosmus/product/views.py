@@ -4264,7 +4264,8 @@ def labourworkinlistall(request):
     purchase_orders_with_labour_workout_childs = purchase_order.objects.annotate(
     has_labour_workout_childs=Exists(labour_workout_childs_exists)
     ).filter(has_labour_workout_childs = True).annotate(total_lwo_pcs = Sum('cutting_pos__labourworkouts__labour_workout_childs__total_process_pcs'),
-    total_labour_workin_pcs =Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master'))
+    total_labour_workin_pcs = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_workin_pcs'),
+    total_labour_workin_pending = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_workin_pending_pcs'))
 
 
 
@@ -4284,7 +4285,7 @@ def labourworkinpurchaseorderlist(request,p_o_no):
     labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
 
 
-    return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
+    return render(request, 'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
 
 
 
@@ -4302,6 +4303,7 @@ def labourworkinsingledeleteajax(request):
                     print('labour_workin_id',labour_workin_id)
                     
                     labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs + labour_workin_instance.total_return_pcs
+                    labour_workin_instance.labour_voucher_number.labour_workin_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pcs - labour_workin_instance.total_return_pcs
                     labour_workin_instance.labour_voucher_number.save()
 
 
