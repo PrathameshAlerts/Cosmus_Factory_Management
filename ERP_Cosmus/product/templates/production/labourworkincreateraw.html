@@ -250,7 +250,7 @@ $(document).ready(function () {
                 'nameValue': nameValue
             },
             success: function (response) {
-              const searchData = response.searched_item_name_dict
+              const searchData = response.vendor_name_dict;
               function escapeRegExp(string) {
                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                }
@@ -288,8 +288,11 @@ $(document).ready(function () {
        
        $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
        $(this).addClass('selected').siblings().removeClass('selected');
-        
+      var buttonClick = $(this).closest('form').find('#tableLabourWorkinId'); 
+      console.log(buttonClick);
+      buttonClick.css('display', 'block');
        const itemValue = $(this).attr('data-key');
+       console.log(itemValue);
        $.ajax({
             url: '/labourworkinrawcreate/',
             method: 'GET',
