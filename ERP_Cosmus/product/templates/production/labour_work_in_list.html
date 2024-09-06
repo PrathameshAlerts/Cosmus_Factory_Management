@@ -89,7 +89,7 @@
           type: 'POST',
           url: "{% url 'labour-workin-single-delete' %}",
           data: {
-            'labour_workin_child_pk': labour_workin_pk,
+            'labour_workin_pk': labour_workin_pk,
             'csrfmiddlewaretoken': '{{ csrf_token }}',
           },
           success: function(response){
