@@ -250,7 +250,7 @@ $(document).ready(function () {
                 'nameValue': nameValue
             },
             success: function (response) {
-              const searchData = response
+              const searchData = response.vendor_name_dict;
               function escapeRegExp(string) {
                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                }
@@ -292,6 +292,7 @@ $(document).ready(function () {
       console.log(buttonClick);
       buttonClick.css('display', 'block');
        const itemValue = $(this).attr('data-key');
+       console.log(itemValue);
        $.ajax({
             url: '/labourworkinrawcreate/',
             method: 'GET',
