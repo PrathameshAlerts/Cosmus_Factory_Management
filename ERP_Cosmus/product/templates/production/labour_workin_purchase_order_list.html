@@ -43,9 +43,9 @@
                             <td>{{instance.challan_no}}</td>
                             <td>{{instance.labour_name.name}}</td>
                             <td>{{instance.total_process_pcs}}</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>  <a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
+                            <th>{{instance.labour_workin_pcs}}</th>
+                            <th>{{instance.labour_workin_pending_pcs}}</th>
+                            <th>  <a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></th>
                         </tr>
                         {% endfor %}
                     </tbody>

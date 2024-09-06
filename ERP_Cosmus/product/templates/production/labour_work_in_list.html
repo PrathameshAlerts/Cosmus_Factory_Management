@@ -3,19 +3,20 @@
 {% load static %}
 {% block body %}
 
-<!-- <span>Challan No - {{labour_workout_child_instance.challan_no}}</span> -->
 <h3 class="mb-3 mt-2">Labour Workin List</h3>
 <div class="d-flex mb-3">
     <button class="item-btn" onclick="redirectlistCutting()"><a id="create" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
-
-
-    <div>
-    <span>Challan No {{labour_workout_child_instance.challan_no}}</span>    
-    <span>Total Workout Pcs{{labour_workout_child_instance.labour_workin_pcs}}</span>
-    <span>Total Balance Pcs{{labour_workout_child_instance.labour_workin_pending_pcs}}</span>
-    </div>
-
   </div>
+  <div class="mb-3">
+    <lable class="fw-bold">Challan No :</lable>
+    <span class="text-danger ms-2">{{labour_workout_child_instance.challan_no}}</span> 
+    <lable class="fw-bold ms-3">Total Labour Workout Pcs  :</lable>
+    <span class="text-danger ms-2">{{labour_workout_child_instance.total_process_pcs}}</span>  
+    <lable class="fw-bold ms-3">Total Returned Pcs :</lable> 
+    <span class="text-danger ms-2">{{labour_workout_child_instance.labour_workin_pcs}}</span>
+    <lable class="fw-bold ms-3">Total Balance Pcs :</lable>
+    <span class="text-danger ms-2">{{labour_workout_child_instance.labour_workin_pending_pcs}}</span>
+    </div>
   <div class="row">
     <div class="col-lg-8">
         <div class="table-responsives">
