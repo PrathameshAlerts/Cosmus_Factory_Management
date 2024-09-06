@@ -448,7 +448,7 @@ class Ledger(models.Model):
     mobile_no = models.BigIntegerField()
     landline_no = models.BigIntegerField()
     bank_details =  models.TextField(blank = True)
-    Debit_Credit =  models.CharField( choices = DEBIT_CREDIT ,max_length = 255, blank = True)
+    Debit_Credit =  models.CharField(choices = DEBIT_CREDIT ,max_length = 255, blank = True)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
 

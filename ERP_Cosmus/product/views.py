@@ -4159,10 +4159,15 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             vendor_name_value = request.GET.get('nameValue')
 
-            print(vendor_name_value)
+            selected_vendor_name = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)',name__icontains=vendor_name_value)
+            
+            vendor_name_dict = {}
+
+            for record in selected_vendor_name:
+                vendor_name_dict[record.id] = record.name
 
 
-            # return JsonResponse({})
+            return JsonResponse({'vendor_name_dict':vendor_name_dict})
 
     
 
