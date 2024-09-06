@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="">
-                    <table class="table table-striped table-hover table-bordered mt-3">
+                    <table class="table table-striped table-hover table-bordered">
                         <thead class="name_absolute sticky-top">
                             <tr>
                                 <th>No</th>
@@ -42,7 +42,7 @@
                                 <th>Total LWO QTY</th>
                                 <th>Total LWI QTY</th>
                                 <th>Balance Qty</th>
-                                <th>View</th>
+                                <th>Create</th>
                             </tr>
                         </thead>
                         <tbody class="mainTableList" style="max-height: 350px; overflow-y: auto;">
@@ -55,8 +55,8 @@
                                 <td>{{instance.number_of_pieces}}</td>
                                 <td>{{instance.product_reference_number.Model_Name}}</td>
                                 <td>{{instance.total_lwo_pcs}}</td>
-                                <th>{{instance.total_labour_workin_pcs}}</th>
-                                <th>0</th>
+                                <td>{{instance.total_labour_workin_pcs}}</td>
+                                <td>0</td>
                                 <th><a href="{% url 'labour-workin-pur-order-list' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></th>
                             </tr>
                             {% endfor %}
@@ -74,7 +74,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="">
-                <table class="table table-striped table-hover table-bordered mt-3">
+                <table class="table table-striped table-hover table-bordered ">
                     <thead class="name_absolute sticky-top">
                         <tr>
                             <th>No</th>

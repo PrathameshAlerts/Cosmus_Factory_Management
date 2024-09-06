@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="post" class="mt-2">
+<form method="post" class="mt-2" id="labourWorkInForm">
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-5">
@@ -24,10 +24,10 @@
 
                 {% if not master_form.instance.id %}
 
-                <input type="text" class="item-select" name="labour_name" value="{{master_form.labour_name.initial}}" required id="id_labour_name" readonly>
+                <input type="text" class="item-select" name="labour_name" value="{{master_form.labour_name.initial}}" required id="id_labour_name" readonly style="outline-color: blue;">
 
                 {% else %}
-                <input type="text" class="item-select" name="labour_name" value="{{master_form.instance.labour_voucher_number.labour_name.name}}" required id="id_labour_name" readonly>
+                <input type="text" class="item-select" name="labour_name" value="{{master_form.instance.labour_voucher_number.labour_name.name}}" required id="id_labour_name" readonly style="outline-color: blue;">
 
                 {% endif %}
             </div>
@@ -36,10 +36,10 @@
                 <label for="id_challan_no" class="item-form">Challan no:</label>
                 {% if not master_form.instance.id %}
 
-                <input type="text" class="item-select" name="challan_no" value="{{master_form.challan_no.initial}}"required id="id_challan_no" readonly>
+                <input type="text" class="item-select" name="challan_no" value="{{master_form.challan_no.initial}}"required id="id_challan_no" readonly style="outline-color: blue;">
                 {% else %}
 
-                <input type="text" class="item-select" name="challan_no" value="{{master_form.instance.labour_voucher_number.challan_no}}" required id="id_challan_no" readonly>
+                <input type="text" class="item-select" name="challan_no" value="{{master_form.instance.labour_voucher_number.challan_no}}" required id="id_challan_no" readonly style="outline-color: blue;">
                 {% endif %}
             </div>
             <div class="d-flex mb-3">
@@ -47,9 +47,9 @@
 
                 {% if not master_form.instance.id %}
 
-                <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.purchase_order_no.initial}}" required id="id_purchase_order_no" readonly>
+                <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.purchase_order_no.initial}}" required id="id_purchase_order_no" readonly style="outline-color: blue;">
                 {% else %}
-                <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}" required id="id_purchase_order_no" readonly>
+                <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}" required id="id_purchase_order_no" readonly style="outline-color: blue;">
 
                 {% endif %}
             </div>
@@ -58,10 +58,10 @@
                 {% if not master_form.instance.id %}
 
 
-                <input type="number" class="item-select" name="refrence_number" value="{{master_form.refrence_number.initial}}" required id="id_refrence_number" readonly>
+                <input type="number" class="item-select" name="refrence_number" value="{{master_form.refrence_number.initial}}" required id="id_refrence_number" readonly style="outline-color: blue;">
 
                 {% else %}
-                <input type="number" class="item-select" name="refrence_number" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}" required id="id_refrence_number" readonly>
+                <input type="number" class="item-select" name="refrence_number" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}" required id="id_refrence_number" readonly style="outline-color: blue;">
 
                 {% endif %}
 
@@ -71,10 +71,10 @@
 
         {% if not master_form.instance.id %}
 
-    <input type="text" class="item-select" name="model_name" value="{{master_form.model_name.initial}}" required id="id_model_name">
+    <input type="text" class="item-select" name="model_name" value="{{master_form.model_name.initial}}" required id="id_model_name" readonly style="outline-color: blue;">
 
     {% else %}
-    <input type="text" class="item-select" name="model_name" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}" required id="id_model_name">
+    <input type="text" class="item-select" name="model_name" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}" required id="id_model_name" style="outline-color: blue;">
     
     {% endif %}
 
@@ -87,19 +87,28 @@
 
 
         {% if not master_form.instance.id %}
-        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.total_p_o_qty.initial}}" id="id_total_p_o_qty">
+        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.total_p_o_qty.initial}}" id="id_total_p_o_qty" readOnly style="outline-color: blue;">
 
 
         {% else %}
 
-        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}" id="id_total_p_o_qty">
+        <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}" id="id_total_p_o_qty" style="outline-color: blue;"readOnly>
 
             {% endif %}
         </div>
-    <div class="d-flex mb-3">
-        <label for="id_amount" class="item-form">Amount:</label>
-    <input type="number" class="item-select" name="amount" step="0.01" value="{{master_form.instance.amount}}" required id="id_amount">
-    </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_workout_qty" class="item-form">Total Issued Qty:</label>
+
+            {% if not master_form.instance.id %}
+
+            <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.labour_workout_qty.initial}}" required id="id_labour_workout_qty" readonly style="outline-color: blue;">
+
+            {% else %}
+            <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.instance.labour_voucher_number.total_process_pcs}}" required  id="id_labour_workout_qty" readonly style="outline-color: blue;">
+
+            {% endif %}
+
+        </div>
     <div class="d-flex mb-3">
         <label for="id_description" class="item-form">Naration:</label>
     <input type="text" class="item-select" name="description" maxlength="100" value="{{master_form.instance.description | default_if_none:''}}" required id="id_description">
@@ -149,36 +158,22 @@
                     {% endfor %}
                 </tbody>
             </table>
-        
-            <div class="d-flex mb-3">
-                <label for="id_labour_workout_qty" class="item-form">Total Issued Qty:</label>
-
-                {% if not master_form.instance.id %}
-
-                <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.labour_workout_qty.initial}}" required id="id_labour_workout_qty" readonly>
-
-                {% else %}
-                <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.instance.labour_voucher_number.total_process_pcs}}" required  id="id_labour_workout_qty" readonly>
-
-                {% endif %}
-
-            </div>
             <div class="d-flex mb-3">
                 <label for="id_pending_pcs" class="item-form">Pending Pcs:</label>
 
                 {% if not master_form.instance.id %}
-                <input type="text" class="item-select" name="pending_pcs" value="{{ master_form.pending_pcs.initial }}"  required id="id_pending_pcs" readonly>
+                <input type="text" class="item-select" name="pending_pcs" value="{{ master_form.pending_pcs.initial }}"  required id="id_pending_pcs" readonly style="outline-color: blue;">
 
                 {% else %}
                 <input type="text" class="item-select" name="pending_pcs"
-                    value="{{ master_form.instance.labour_voucher_number.labour_workin_pending_pcs }}" required id="id_pending_pcs" readonly>
+                    value="{{ master_form.instance.labour_voucher_number.labour_workin_pending_pcs }}" required id="id_pending_pcs" readonly style="outline-color: blue;">
 
                 {% endif %}
 
             </div>
             <div class="d-flex mb-3">
                 <label for="id_total_return_pcs" class="item-form">Total Return Pcs:</label>
-                <input type="number" class="item-select" name="total_return_pcs" value="" required id="id_total_return_pcs" readonly>
+                <input type="number" class="item-select" name="total_return_pcs" value="" required id="id_total_return_pcs" readonly style="outline-color: blue;">
             </div>
             <div class="d-flex mb-3">
                 <label for="id_labour_charges" class="item-form">Labour charges:</label>
@@ -198,14 +193,48 @@
                 <label for="id_other_charges" class="item-form">Other Charges:</label>
                 <input type="number" class="item-select" name="other_charges" step="0.01" required id="id_other_charges">
             </div>
-           
+            <div class="d-flex mb-3">
+                <label for="id_amount" class="item-form">Amount:</label>
+            <input type="number" class="item-select" name="amount" step="0.01" value="{{master_form.instance.amount}}" required id="id_amount" readonly style="outline-color: blue;">
+            </div>
         </div>
     </div>
 
-    <input type="submit" value="Submit" class="create-btn">
+    <input type="submit" value="Submit" class="create-btn" id="id_submit">
 </form>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    formSubmit();
+  })
+
+  function formSubmit(){
+    var labourId = document.getElementById('id_l_w_in_products-0-id').value;
+    var submit = document.getElementById('id_submit');
+   
+    console.log(labourId);
+    if(labourId != ''){
+        var gRnNo = document.getElementById('id_voucher_number');
+        var labourchargers = document.getElementById('id_labour_charges');
+        var returnValue = document.querySelectorAll('[name$="-return_pcs"]');
+        returnValue.forEach(function(input){
+            input.readOnly = true;
+            input.style.outline = 'none';
+            input.style.border = 'none';
+            input.style.backgroundColor = 'transparent';
+        })
+        submit.style.display = 'none';
+        gRnNo.style.readonly = 'true';
+        labourchargers.style.readonly = 'true';
+
+    }else{
+        
+    // window.onload = function() {
+    //     gRnNo.focus();
+    // };
+    }
+  }
+  
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
     function CalculateAmount() {
         var labour_charges = document.getElementById('id_labour_charges').value;
