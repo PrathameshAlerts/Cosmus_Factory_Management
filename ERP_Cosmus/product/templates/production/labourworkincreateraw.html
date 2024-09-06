@@ -319,7 +319,7 @@ $(document).on('click', '.search-input',function(){
         selectValue.empty();
 })
 
-    $(document).on('keydown', '[name^="item-to-clone"]', function (e) {
+    $(document).on('keydown', '[name^="labour_name"]', function (e) {
         const $inputField = $(this);
         const $dropdownOptions = $inputField.next('.s-suggestion-container');
         const $options = $dropdownOptions.find('.itemName-div');
@@ -416,7 +416,8 @@ $(document).on('click', '.search-input',function(){
           const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#labour_search`);
           const nameValues = $inputField.text().trim();
           const itemValue = $inputField.attr('data-key');
-          
+          const dropdownBtn = $inputField.closest('form').find('#tableLabourWorkinId');
+          dropdownBtn.css('display', 'block');
           if ($inputField.length > 0) {
               
             $inputField.val(nameValues);
