@@ -4293,13 +4293,13 @@ def labourworkinpurchaseorderlist(request,p_o_no):
 def labourworkinsingledeleteajax(request):
     
     if request.method == 'POST':
-        labour_workin_id = request.POST.get('labour_workin_id')
+        labour_workin_id = request.POST.get('labour_workin_pk')
 
         if labour_workin_id:
             try:
                 with transaction.atomic():
                     labour_workin_instance = labour_work_in_master.objects.get(pk=labour_workin_id)
-                    print(labour_workin_id)
+                    print('labour_workin_id',labour_workin_id)
                     
                     labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs + labour_workin_instance.total_return_pcs
                     labour_workin_instance.labour_voucher_number.save()
@@ -4311,6 +4311,8 @@ def labourworkinsingledeleteajax(request):
 
                         product_2_item_child_instances.save()
                     labour_workin_instance.delete()
+
+                    return redirect(reverse('labour-workin-list-create', args=[labour_workin_instance.labour_voucher_number.id]) )
                     
 
             except ObjectDoesNotExist as ne:
