@@ -4,23 +4,24 @@
 
 <form method="post" class="mt-2">
     {% csrf_token %}
-<div>
-    <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5>
-    <div class="d-flex mb-3">
-        <label for="id_voucher_number" class="item-form">GRN No:</label>
+    <div class="row">
+        <div class="col-lg-5">
+            <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5>
+        <span id="labourWorkInError" class="error-messagescuttingCreate"></span>
+        <div class="d-flex mb-3">
+            <label for="id_voucher_number" class="item-form">GRN No:</label>
 
-        {% if not master_form.instance.id %}
+            {% if not master_form.instance.id %}
+            <input type="number" class="item-select" name="voucher_number" value="{{master_form.voucher_number.initial}}" required id="id_voucher_number">
+            {% else %}
+            <input type="number" class="item-select" name="voucher_number" value="{{master_form.instance.voucher_number}}" required id="id_voucher_number">
 
-        <input type="number" class="item-select" name="voucher_number" value="{{master_form.voucher_number.initial}}" required id="id_voucher_number">
-        {% else %}
-        <input type="number" class="item-select" name="voucher_number" value="{{master_form.instance.voucher_number}}" required id="id_voucher_number">
-
-        {% endif %}
+            {% endif %}
 
 
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_labour_name" class="item-form">Labour Name:</label>
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_name" class="item-form">Labour Name:</label>
 
         {% if not master_form.instance.id %}
 
@@ -97,10 +98,10 @@
 
         <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}" id="id_total_p_o_qty">
 
-        {% endif %}
-    </div>
-    <div class="d-flex mb-3">
-        <label for="id_labour_workout_qty" class="item-form">Total Issued Qty:</label>
+            {% endif %}
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_labour_workout_qty" class="item-form">Total Issued Qty:</label>
 
     {% if not master_form.instance.id %}
 
@@ -109,9 +110,9 @@
     {% else %}
     <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.instance.labour_voucher_number.total_process_pcs}}" required id="id_labour_workout_qty">
 
-    {% endif %}
+            {% endif %}
 
-    </div>
+        </div>
 
    
     <div class="d-flex mb-3">
@@ -134,10 +135,10 @@
     <div class="d-flex mb-3">
         <label for="id_labour_charges" class="item-form">Labour charges:</label>
 
-        {% if not master_form.instance.id %}
+            {% if not master_form.instance.id %}
 
-        <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.labour_charges.initial}}" required id="id_labour_charges">
-        {% else %}
+            <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.labour_charges.initial}}" required id="id_labour_charges">
+            {% else %}
 
         <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges}}" id="id_labour_charges">
         
@@ -155,16 +156,98 @@
         <label for="id_description" class="item-form">Naration:</label>
     <input type="text" class="item-select" name="description" maxlength="100" required id="id_description">
     </div>
-    <input type="submit" value="Submit" class="create-btn">
+        </div>
+        <div class="col-lg-5 mt-3">
+            <table class="table table-striped table-hover table-bordered tables">
+                <thead class="name_absolute sticky-top">
+                    <tr>
+                        <th>Product Sku</th>
+                        <th>Color</th>
+                        <th>Issue QTY</th>
+                        <th>Balance QTY</th>
+                        <th>Return QTY</th>
+                    </tr>
+                </thead>
+                <tbody class="mainTableList">
+                    {% for form in labour_work_in_product_to_item_formset %}
+                    {{form.id}}
+                    <tr>
+                        <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
+                        <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.initial.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs"></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"></td>
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.initial.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    
 </div>
 
-<div>
+<!-- <div>
     {% for form in labour_work_in_product_to_item_formset %}
     {{form.as_p}}
     {% endfor %}
 
-</div>
+</div> -->
 
-
+<input type="submit" value="Submit" class="create-btn">
 </form>
+
+<script>
+    document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
+    function CalculateAmount(){
+        var labour_charges = document.getElementById('id_labour_charges').value;
+        var other_charges = document.getElementById('id_other_charges').value;
+        console.log(labour_charges)
+        console.log(other_charges)
+        var amounts = parseFloat(labour_charges) + parseFloat(other_charges);
+        document.getElementById('id_amount').value = amounts
+    }
+
+    document.getElementById('id_total_return_pcs').addEventListener('input', CalculateTotalPcs);
+    function CalculateTotalPcs(){
+        var totalPoQty = parseFloat(document.getElementById('id_labour_workout_qty').value);
+        var totalReturnPcs = parseFloat(document.getElementById('id_total_return_pcs').value);
+        if(totalPoQty < totalReturnPcs){
+            document.getElementById('id_total_return_pcs').value = 0;
+        }
+    }
+
+    $(document).ready(function(){
+        $('#id_voucher_number').on('focusout',function(){
+            var voucher_number = $(this).val();
+            var new_order = $("#id_purchase_order_number");
+            var errorElement = $('#labourWorkInError'); // The error message element
+            var submitButton = $('#id_submit');
+            $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'voucher_number': voucher_number,
+                },
+                success: function (data) {
+                    if(data.validation_flag === true){
+                        new_order.css('border', '1px solid red');
+                        errorElement.text('*New order number already exists');
+                        errorElement.show();
+                        submitButton.attr('disabled', 'disabled');
+                    }else {
+                       
+                        new_order.css('border', '1px solid black');
+                        errorElement.text('');
+                        errorElement.hide();
+                        submitButton.removeAttr('disabled');
+                    }
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
+
+            })
+        })
+    })
+</script>
 {% endblock %}
