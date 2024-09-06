@@ -2444,6 +2444,11 @@ def UniqueValidCheckAjax(request):
         searched_value = request.GET.get('item_material_code').strip()
         model_name = Item_Creation
         col_name = 'Material_code'
+    
+    elif 'voucher_number' in searched_from:
+        searched_value = request.GET.get('voucher_number').strip()
+        model_name = labour_work_in_master
+        col_name = 'voucher_number'
 
     else:
         model_name = None
@@ -4145,10 +4150,23 @@ def labourworkincreatelist(request,l_w_o_id):
 
 
 
-def labourworkincreate(request, l_w_o_id, pk=None):
+def labourworkincreate(request, l_w_o_id=None, pk=None):
+
+    if l_w_o_id == None:
+        template_name = 'production/labourworkincreateraw.html'
+
+        master_form = labour_workin_master_form()
+
+        labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
+            form = labour_work_in_product_to_item_form,extra=0, can_delete=False)
+        
+        product_to_item_formset = labour_work_in_product_to_item_formset()
+        
+    else:
+        template_name = 'production/labourworkincreate.html'
 
 
-    if pk is None:
+    if l_w_o_id is not None and pk is None:
         labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
         initial_data = {
@@ -4189,7 +4207,7 @@ def labourworkincreate(request, l_w_o_id, pk=None):
             form=labour_work_in_product_to_item_form, extra=len(formset_initial_data), can_delete=False)
 
         product_to_item_formset = labour_work_in_product_to_item_formset(initial=formset_initial_data)
-    elif pk:
+    elif l_w_o_id is not None and pk is not None:
         
         labour_workin_master_instance = labour_work_in_master.objects.get(pk=pk)
     
@@ -4239,7 +4257,7 @@ def labourworkincreate(request, l_w_o_id, pk=None):
                     print(master_form.errors)
                     print(product_to_item_formset.non_form_errors())
                     
-                return render(request,'production/labourworkincreate.html',{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
+                return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
                 
         except ValidationError as ve:
             messages.error(request,f'Validation error {ve}')
@@ -4249,7 +4267,7 @@ def labourworkincreate(request, l_w_o_id, pk=None):
 
         
 
-    return render(request,'production/labourworkincreate.html',{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
+    return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
 
 
 
@@ -4974,13 +4992,6 @@ def group_required(*group_names):
         return False
 
     return user_passes_test(in_groups)
-
-
-
-
-
-
-
 
 
 
