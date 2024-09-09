@@ -283,7 +283,7 @@ function balanceStock(){
         var balanceStock = document.getElementById('id_raw_materials-' + i + '-balance_physical_stock');
 
             balanceStock = newPhysicalStock - totalConsumtionValue;
-            document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(2);
+            document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
             if(balanceStock > 0){
                 document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').style.color = 'green';
             }else{
