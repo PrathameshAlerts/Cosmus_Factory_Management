@@ -3321,8 +3321,6 @@ def purchaseorderrawmaterial(request,p_o_pk, prod_ref_no):
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
 
 
-
-
     
     if request.method == 'POST':
 
@@ -3440,38 +3438,66 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     # for create page initial data is denndered 
     if not pk:
 
+        product_refrence_no = prod_ref_no
+
+    
+        product_2_items_instances_unique = product_2_item_through_table.objects.filter(
+                            PProduct_pk__Product__Product_Refrence_ID = product_refrence_no,common_unique = False).order_by(
+                                'row_number')
+    
+        product_2_items_instances_common = product_2_item_through_table.objects.filter(
+                            PProduct_pk__Product__Product_Refrence_ID = product_refrence_no,common_unique = True).order_by(
+                                'row_number','id').distinct('row_number')
+
+
+        product_2_items_instances = product_2_items_instances_unique.union(product_2_items_instances_common)
+
         # initial data for purchase_order_cutting items
         initial_data = []
-        for purchase_items_raw in purchase_order_raw_instances:
 
-            godown_quantity_subquery = item_godown_quantity_through_table.objects.filter(godown_name= current_godown,
-                                                                                    Item_shade_name=OuterRef('pk')).values('quantity')[:1]
-            # Filter and annotate the item_color_shade queryset
-            material_color_shade_query = item_color_shade.objects.filter(items__item_name=purchase_items_raw.material_name).annotate(
-                    godown_qty=Coalesce(Subquery(godown_quantity_subquery, output_field=DecimalField()),  decimal.Decimal('0')))
-            
-            current_physical_stock = 0
-            for shade in material_color_shade_query:
-                current_physical_stock = current_physical_stock + shade.godown_qty
+        for purchase_items_raw in product_2_items_instances:
+            current_godown_qty = (item_godown_quantity_through_table.objects
+                .filter(Item_shade_name__items = purchase_items_raw.Item_pk,
+                godown_name=purchase_order_instance.temp_godown_select).first())  # Returns None if not found
 
+            rate_first = purchase_items_raw.Item_pk.shades.order_by('id').first() # get the rate of the first shade of the color
+
+
+            if purchase_items_raw.common_unique == True:
+                product_color_or_common_item = 'Common Item'
+                product_sku_or_common_item = 'Common Item'
+
+            else:
+                product_color_or_common_item = purchase_items_raw.PProduct_pk.PProduct_color
+                product_sku_or_common_item = purchase_items_raw.PProduct_pk.PProduct_SKU
+
+
+            if current_godown_qty is None:
+                current_godown_qty = 0  # Assign a default value of 0
+            else:
+                current_godown_qty = current_godown_qty.quantity
 
             initial_data_dict = {
-                'product_sku': purchase_items_raw.product_sku,
-                'product_color' : purchase_items_raw.product_color,
-                'material_name' : purchase_items_raw.material_name,
-                'material_color_shade': material_color_shade_query.order_by('-godown_qty'), # sorting shades based on quantity
-                'fabric_non_fab': material_color_shade_query.first().items.Fabric_nonfabric, #not in database table for computational purpose
-                'rate' : purchase_items_raw.rate,
-                'panha' : purchase_items_raw.panha,
-                'units' : purchase_items_raw.units,
-                'g_total' : purchase_items_raw.g_total,
-                'consumption' : purchase_items_raw.consumption,
+                'product_sku': product_sku_or_common_item,
+                'product_color' : product_color_or_common_item,
+                'material_name' : purchase_items_raw.Item_pk.item_name,
+                'material_color_shade': purchase_items_raw.Item_pk.shades.all, # sorting shades based on quantity
+                'fabric_non_fab': purchase_items_raw.Item_pk.Fabric_nonfabric, # not in database table for computational purpose
+                'rate' : rate_first.rate,
+                'panha' : purchase_items_raw.Item_pk.Panha,
+                'units' :  purchase_items_raw.Item_pk.Units,
+                'g_total' : purchase_items_raw.grand_total,
+                'consumption' : '0',
                 'total_comsumption' :'0',
-                'unit_value':purchase_items_raw.unit_value,
-                'physical_stock' : current_physical_stock,
-                'balance_physical_stock' : '0'}
+                'unit_value' : purchase_items_raw.Item_pk.unit_name_item.unit_name,
+                'physical_stock' : current_godown_qty ,
+                'balance_physical_stock': '0',
+                'row_number': purchase_items_raw.row_number}
             
             initial_data.append(initial_data_dict)
+
+        
+        initial_sorted_data = sorted(initial_data, key = itemgetter('row_number'), reverse=False)
 
         
         # production sheet for that cutting order of the purchase order (inline factory for below form)
@@ -3484,7 +3510,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
 
         # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)(for get request)
-        purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(initial=initial_data)
+        purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(initial=initial_sorted_data)
 
 
         # intial data for purchase_order_to_product formset
