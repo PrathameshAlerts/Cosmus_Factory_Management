@@ -185,7 +185,7 @@
                 var physicalStock = document.getElementById('id_raw_materials-' + i + '-physical_stock');
                 var newPhysicalStock = document.getElementById('id_physical_stock').value;
                 var materialName = document.getElementById('id_raw_materials-' + i + '-material_name').value;
-                console.log(newPhysicalStock);
+                
                 var panhaValue = parseFloat(panha);
                 var unitsValue = parseFloat(units);
                 var grandTotalValue = parseFloat(grandTotal);
@@ -204,8 +204,8 @@
             
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
                     var consumption = grandTotalValue / (panhaValue * unitsValue)
-                
-                    document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(2);
+                    console.log('consumption',consumption)
+                    document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
                 } else {
                     document.getElementById('id_raw_materials-' + i + '-consumption').value = '0.000';
                 }
@@ -253,7 +253,7 @@
                             const consumption = parseFloat(consumptionInput.value) || 0;
                             let totalConsumption = processQuantity * consumption;
                             
-                            totalConsumptionInput.value = totalConsumption.toFixed(2);
+                            totalConsumptionInput.value = totalConsumption.toFixed(3);
                             
                         }else if(totalProductColor === "Common Item"){
                                 
@@ -262,8 +262,9 @@
                                 const consumptions = parseFloat(consumptionInputCommon) || 0;
                                 const totalValue = parseFloat(proccessValue.value) || 0;
                                 let commonConsumption = totalValue * consumptions;
-        
-                                totalConsumptionInput.value = commonConsumption.toFixed(2);
+                                
+                                totalConsumptionInput.value = commonConsumption.toFixed(3);
+                                
                                     
                         }
                     }

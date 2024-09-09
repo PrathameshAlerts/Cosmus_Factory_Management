@@ -470,14 +470,14 @@ labourworkoutBalanceQty()
                    
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
                     let tConsumption = consumptionMainValue * processValue;
-                    totalConsumption.value = tConsumption.toFixed(2);
+                    totalConsumption.value = tConsumption.toFixed(3);
 
                 } else if (mainColor === "Common Item") {
                     const consumption =el.querySelector('[name$="-consumption"]');
                     const consumptionValue = parseFloat(consumption.value) || 0;
                     const totalValue = parseFloat(labourValue.value) || 0;
                     let tConsumption = consumptionValue * totalValue;
-                    totalConsumption.value = tConsumption.toFixed(2);
+                    totalConsumption.value = tConsumption.toFixed(3);
                 }
             }
         });

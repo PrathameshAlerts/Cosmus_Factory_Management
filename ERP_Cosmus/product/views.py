@@ -3586,6 +3586,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                                 form_instance = form.save(commit=False)
                                 form_instance.purchase_order_cutting = cutting_form_instance
                                 form_instance.total_comsumption_in_cutting = form_instance.total_comsumption
+                                form_instance.entry_from_cutting_room = True
                                 form_instance.save()
                             
 
@@ -3794,6 +3795,7 @@ def purchaseordercuttingmastercancelajax(request):
                             item_godown_instance.save()
                             cutting_items.cutting_room_status = 'cutting_room_cancelled'
                             cutting_items.total_comsumption_in_cutting = 0
+                            cutting_items.entry_from_cutting_room = True
                             cutting_items.save()
 
                         messages.success(request, 'Cutting Order cancelled successfully')
@@ -4021,6 +4023,7 @@ def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
                                     product_sku = formset_form.product_sku, material_color_shade = item_shade_instance)
                                 
                                 purchase_order_cutting_items.total_comsumption_in_cutting = purchase_order_cutting_items.total_comsumption_in_cutting - formset_form.total_comsumption
+                                purchase_order_cutting_items.entry_from_cutting_room = False
                                 purchase_order_cutting_items.save()
 
                             formset_form.save()
@@ -4089,7 +4092,7 @@ def labourworkoutsingledeleteajax(request):
                         purchase_order_cutting_item = purchase_order_for_raw_material_cutting_items.objects.get(purchase_order_cutting=labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id,material_color_shade=item_in_row)
 
                         purchase_order_cutting_item.total_comsumption_in_cutting = purchase_order_cutting_item.total_comsumption_in_cutting + labour_workout_child_items.total_comsumption
-                        
+                        purchase_order_cutting_item.entry_from_cutting_room = False
                         purchase_order_cutting_item.save()
 
                     elif item_in_row.items.Fabric_nonfabric == 'Non Fabric':
@@ -4286,7 +4289,6 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
         except Exception as e:
             messages.error(request,f'Other exceptions {e}')
 
-        
 
     return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
 
@@ -4644,7 +4646,7 @@ def godown_item_report(request,shade_id,g_id=None):
 
         labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
             material_color_shade = shade_name.item_shade_name,labour_workout_child_instance__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__temp_godown_select = g_id)
-
+        print(purchase_order_cutting_room_qty)
     else:
     
         # opening quantity report query
@@ -4675,7 +4677,7 @@ def godown_item_report(request,shade_id,g_id=None):
         labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
             material_color_shade = shade_name.item_shade_name)
     
-
+        
     for godown_qty in opening_godown_qty:
 
         report_data.append({
