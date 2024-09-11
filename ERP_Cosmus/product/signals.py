@@ -407,8 +407,6 @@ def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
 
 
 
-
-
 """
         or in forms
             def clean(self):

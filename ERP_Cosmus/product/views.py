@@ -3430,8 +3430,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
     # purchase_order_raw_material_instances
     purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_pk).order_by('id')
 
-
-    #purchase_order_to_product_instances
+    # purchase_order_to_product_instances
     purchase_order_to_product_instances = purchase_order_to_product.objects.filter(purchase_order_id = p_o_pk)
 
     # purchase_order_form
@@ -4229,7 +4228,6 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
             selected_vendor_name = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)',name__icontains=vendor_name_value)
             
             vendor_name_dict = {}
-
             for record in selected_vendor_name:
                 vendor_name_dict[record.id] = record.name
 
@@ -4238,8 +4236,6 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
             # print('confirmed_vendor_id',confirmed_vendor_id)
 
             return JsonResponse({'vendor_name_dict':vendor_name_dict})
-
-    
 
         template_name = 'production/labourworkincreateraw.html'
 
@@ -4282,6 +4278,7 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
                 'L_work_out_pcs': instances.processed_pcs,
                 'pending_to_return_pcs': instances.labour_w_in_pending,
                 'return_pcs' : '0',
+                'qty_to_compare':  instances.labour_w_in_pending,
                }
             
             formset_initial_data.append(initial_data_dict)
@@ -4300,16 +4297,6 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
 
         product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
 
-        formset_initial_data = []
-
-        for instances in product_to_item_l_w_in:
-
-            initial_data_dict = { 
-                'qty_to_compare': instances.labour_w_in_pending,
-               }
-            
-            formset_initial_data.append(initial_data_dict)
-
         labour_workin_master_instance = labour_work_in_master.objects.get(pk=pk)
     
         master_form = labour_workin_master_form(instance = labour_workin_master_instance)
@@ -4317,13 +4304,19 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
         labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
             form = labour_work_in_product_to_item_form, extra = 0, can_delete = False)
         
-        product_to_item_formset = labour_work_in_product_to_item_formset(instance = labour_workin_master_instance) #, initial = formset_initial_data 
+        product_to_item_formset = labour_work_in_product_to_item_formset(instance = labour_workin_master_instance) 
+        
+        for form, instance in zip(product_to_item_formset.forms, product_to_item_l_w_in):
+
+            if instance:
+                form.initial['qty_to_compare'] = instance.labour_w_in_pending
 
         
     if request.method == 'POST':
 
         master_form = labour_workin_master_form(request.POST)
         product_to_item_formset = labour_work_in_product_to_item_formset(request.POST)
+
         try:
             with transaction.atomic():
                 if master_form.is_valid() and product_to_item_formset.is_valid():
@@ -4339,11 +4332,11 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
 
 
                     for form in product_to_item_formset:
+
                         if form.is_valid():
                             product_to_item_form = form.save(commit= False)
                             product_to_item_form.labour_workin_instance = parent_form
                             
-
                             l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
                             l_w_o_instance.labour_w_in_pending = l_w_o_instance.labour_w_in_pending - product_to_item_form.return_pcs
 

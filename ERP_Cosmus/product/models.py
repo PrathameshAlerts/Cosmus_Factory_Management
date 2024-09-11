@@ -843,7 +843,6 @@ class labour_work_in_product_to_item(models.Model):
     pending_to_return_pcs = models.IntegerField()
 
 
-
 # reports
 class godown_item_report_for_cutting_room(models.Model):
     creation_date = models.DateTimeField(auto_now = True)
