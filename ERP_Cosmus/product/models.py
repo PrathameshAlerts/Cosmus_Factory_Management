@@ -376,7 +376,7 @@ class item_color_shade(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,blank=True,default=0)
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null=False, blank=False)
-    item_color_image = models.ImageField(upload_to ='rawmaterial/images')
+    item_color_image = models.ImageField(upload_to ='rawmaterial/images') 
     created_date = models.DateTimeField(auto_now = True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
 

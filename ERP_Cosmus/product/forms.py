@@ -729,12 +729,12 @@ class labour_workin_master_form(forms.ModelForm):
 
 class labour_work_in_product_to_item_form(forms.ModelForm):
 
+    # qty_to_compare = forms.IntegerField()
     
     class Meta:
         model = labour_work_in_product_to_item
         fields = ['product_sku','product_color','L_work_out_pcs','return_pcs',
                   'pending_to_return_pcs']
-
 
 
 

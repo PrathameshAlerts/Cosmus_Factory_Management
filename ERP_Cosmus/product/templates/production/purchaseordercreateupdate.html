@@ -99,7 +99,7 @@
                         <th>Product Sku</th>
                         <th>Color</th>
                         <th>Order Quantity</th>
-                        <th>Delete</th>
+                        
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
@@ -117,9 +117,7 @@
                         <td>
                             <input type="number" class="productorderqty-input oderedValues" step="0.01" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity">
                         </td>
-                        <td class="">
-                            <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 "><input type="checkbox" class="godown_delete px-2" style="display: none;" name="{{form.prefix}}-DELETE"id="id_{{form.prefix}}-DELETE" value=""></i></span>
-                        </td>
+                        
                         <input type="hidden" value="{{form.instance.purchase_order_id.raw_materials.exists}}" class="purchaseOderDelete">
                     </tr>
                     {% endfor %}
@@ -339,7 +337,6 @@
             }
             }
             
-
         } else {
             alert('The table must have at least one godown item');
         }
