@@ -1,22 +1,14 @@
 
-from datetime import datetime
-from pickle import TRUE
 from django.db import models
 from django.conf import settings
 from django.forms import ValidationError
 from multiselectfield import MultiSelectField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
-from django.utils.crypto import get_random_string
+
 
 
 
 DECIMAL_PLACE_CONSTANT = 3
-
-class CompanyMaster(models.Model):
-    company_name =models.CharField(max_length=100) 
-    Gst_number = models.CharField(max_length = 15,validators = [MinLengthValidator(15), MaxLengthValidator(15)])
-
-
 
 
 class MainCategory(models.Model):
@@ -621,6 +613,7 @@ class factory_employee(models.Model):
     factory_emp_name = models.CharField(max_length= 255, unique=True)
     cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
 
+
 class cutting_room(models.Model):
     cutting_room_name = models.CharField(max_length=100, unique=True)
 
@@ -700,7 +693,6 @@ class purchase_order_raw_material_cutting(models.Model):
     class Meta:
         ordering = ["auto_id"]
 
-    
 
 
 class purchase_order_to_product_cutting(models.Model): 

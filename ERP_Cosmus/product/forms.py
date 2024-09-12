@@ -764,31 +764,6 @@ class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
 
 
 
-from django.apps import apps
-# Import the user model directly
-UserModel = apps.get_model(settings.AUTH_USER_MODEL)
-
-
-class CreateUserForm(UserCreationForm):
-    class Meta:
-        model = UserModel
-
-        fields = ['username', 'email', 'password1', 'password2']
-
-
-class UserRoleForm(forms.ModelForm):
-    groups = forms.ModelMultipleChoiceField(
-        queryset=Group.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True
-    )
-
-    class Meta:
-        model = UserModel
-        fields = ['groups']
-
-
-
 
 
 

@@ -45,8 +45,8 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
-                   CreateUserForm, CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
-                     ProductCreateSkuFormsetUpdate, UserRoleForm, cutting_room_form,
+                    CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
+                     ProductCreateSkuFormsetUpdate, cutting_room_form,
                        factory_employee_form, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
@@ -88,14 +88,13 @@ def dashboard(request):
 
 #NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
 def edit_production_product(request,pk):
-    print(request.POST)
+    
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     
     #get all the product skus from reverse related model of the ref id 
     product_skus = pproduct.productdetails.all()
     
-
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
 
     #filter all product2cat instances 
@@ -166,7 +165,7 @@ def edit_production_product(request,pk):
                                     dimention_total = row[5].value
                                     part_pieces = row[6].value
                                     grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
-                                    print(part_name,part_dimention)
+                                    
                                     if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
@@ -210,7 +209,7 @@ def edit_production_product(request,pk):
                                     # get the p2i instance for the product with the item in row 
                                     p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
                                     
-                                    # filter out the  all the configs belonging to that p2I instance and then the config based on row_no which corelates
+                                    # filter out the all the configs belonging to that p2I instance and then the config based on row_no which corelates
                                     # with the rows in excel to know which config instance to crud
                                     p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
 
@@ -336,88 +335,6 @@ def product2subcategoryproductajax(request):
 
 
 
-
-# def product_color_sku(request,ref_id = None):
-#     color = Color.objects.all()
-
-#     try:
-#         if request.method == 'POST':
-#             product_ref_id = request.POST.get('Product_Refrence_ID')
-#             request_dict = request.POST
-#             count = 0
-
-#             for x in request_dict.keys():
-#                 if x[0:12] == 'PProduct_SKU':
-#                     count = count + 1
-
-#             with transaction.atomic():
-#                 all_sets_valid = False
-
-#                 try:
-#                     for i in range(1, count): 
-#                         # Build field names dynamically 
-#                         image_field_name = f'PProduct_image_{i}'
-#                         color_field_name = f'PProduct_color_{i}'
-#                         sku_field_name = f'PProduct_SKU_{i}'
-#                         Ean_field_name = f'Product_EANCode_{i}'
-
-
-#                         # Create a dictionary with the dynamic field names
-#                         data = {
-#                             'PProduct_color': request.POST.get(color_field_name),
-#                             'PProduct_SKU': request.POST.get(sku_field_name),
-#                             'Product_EANCode': request.POST.get(Ean_field_name),
-#                             'Product_Refrence_ID': product_ref_id
-#                         }
-#                         files = {
-#                             'PProduct_image': request.FILES.get(image_field_name)
-#                         }
-                
-#                         current_form = PProductCreateForm(data, files)
-
-#                         if current_form.is_valid():
-#                             pproduct = current_form.save(commit=False)
-#                             # Create a new Product instance or get an existing one based on Product_Refrence_ID
-#                             # product will be the object retrieved from the db and then created ,created will be a boolean field
-#                             product, created = Product.objects.get_or_create(Product_Refrence_ID=product_ref_id)
-#                             #product = Product.objects.create(Product_Refrence_ID=product_ref_id)
-                    
-#                             # Associate the PProduct instance with the Product
-#                             pproduct.Product = product
-
-#                             #The variable pproduct holds the unsaved instance of the PProduct_Creation model. 
-#                             #This instance is populated with the data from the form, and you can use it to perform 
-#                             #any additional logic or modifications before finally saving it to the database.
-#                             pproduct.save()
-#                             all_sets_valid = True
-
-#                         else:
-#                             all_sets_valid = False
-#                             #explicitly set transaction to rollback on errors
-#                             transaction.set_rollback(True)
-#                             break
-
-#                 except Exception as e:
-#                     print('Exception occured:', str(e))
-#                     messages.error(request, f'Exception occured - {e}')
-
-
-#             if all_sets_valid:
-#                 messages.success(request, f'Products for Refrence ID {product_ref_id} created')
-#                 # reverse is used to generate a url with both the arguments, which then redirect can use to redirect
-#                 return redirect(reverse('edit_production_product', args=[product_ref_id]))
-            
-#             else:
-
-#                 #Return a response with errors for invalid sets of fields
-#                 return render(request, 'product/product_color_sku.html', {'form':current_form,'color': color})
-#     except Exception as e:
-#         print('Exception occured', str(e))
-#         messages.error(request,'Add a product first for Reference ID')
-        
-    
-#     form = PProductCreateForm()
-#     return render(request, 'product/product_color_sku.html', {'form': form, 'color': color,'ref_id': ref_id})
 
 
 def product_color_sku(request,ref_id = None):
@@ -1573,9 +1490,9 @@ def ledgerdelete(request, pk):
     try:
         Ledger_pk = get_object_or_404(Ledger ,pk=pk)
         Ledger_pk.delete()
-        messages.success(request,f'ledger of {Ledger_pk.name} was deleted')
+        messages.success(request ,f'ledger of {Ledger_pk.name} was deleted')
     except Exception as e:
-        messages.error(request,f'Cannot delete {Ledger_pk.name} because it is referenced by other objects.')
+        messages.error(request ,f'Cannot delete {Ledger_pk.name} because it is referenced by other objects.')
     return redirect('ledger-list')
 
 
@@ -3380,7 +3297,7 @@ def purchaseorderrawmaterial(request,p_o_pk, prod_ref_no):
 
 
 
-    return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
+    return render(request,'production/purchaseorderrawmaterial.html',{'form':form, 'model_name':model_name,
                                                                       'purchase_order_raw_formset':purchase_order_raw_formset,
                                                                       'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
                                                                       'physical_stock_all_godown_json':physical_stock_all_godown_json})
@@ -3503,7 +3420,6 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             else:
                 product_color_or_common_item = purchase_items_raw.PProduct_pk.PProduct_color
                 product_sku_or_common_item = purchase_items_raw.PProduct_pk.PProduct_SKU
-
 
             current_godown_qty_total = 0
 
@@ -5025,90 +4941,6 @@ def raw_material_excel_upload(request):
 
 #__________________________reports-end____________________________________
 
-
-
-#_______________________authentication View start___________________________
-
-
-from django.apps import apps
-# Import the user model directly
-UserModel = apps.get_model(settings.AUTH_USER_MODEL)
-
-
-
-def superuser_required(view_func):
-    decorated_view_func = login_required(user_passes_test(lambda u: u.is_superuser)(view_func))
-    return decorated_view_func
-
-
-
-@superuser_required
-def create_user(request):
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            return redirect('user_list')  #Redirect to a list of users or another appropriate page
-    else:
-        form = CreateUserForm()
-    return render(request, 'misc/create_user.html', {'form': form})
-
-
-
-@superuser_required
-def edit_user_roles(request, user_id):
-    user = get_object_or_404(UserModel, id=user_id)
-    if request.method == 'POST':
-        form = UserRoleForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('user_list')  # Redirect to a list of users or another appropriate page
-    else:
-        form = UserRoleForm(instance = user)
-    return render(request, 'misc/edit_user_roles.html', {'form': form, 'user': user})
-
-
-
-@superuser_required
-def user_list(request):
-    users = UserModel.objects.all()
-    return render(request, 'misc/user_list.html', {'users': users})
-
-
-
-
-def group_required(*group_names):
-    def in_groups(user):
-        if user.is_authenticated:
-            if bool(user.groups.filter(name__in=group_names)) | user.is_superuser:
-                return True
-        return False
-
-    return user_passes_test(in_groups)
-
-
-
-
-
-
-def register(request):
-    form = CreateUserForm(request.POST) # this will be shown as a blank form to user before the post request 
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            print('Name:',form.cleaned_data['username']) #validated data stored in cleaned_data attribute
-            print('Name:',form.cleaned_data['password1'])
-            user = form.save()
-            group = Group.objects.get(name='Worker') #add in grp while register
-            user.groups.add(group) #add in grp while register
-            
-            return redirect('login')
-
-    context = {'form':form}
-    return render(request, 'product/register.html',context=context)
-
-
-#_______________________authentication View end___________________________
 
 
 

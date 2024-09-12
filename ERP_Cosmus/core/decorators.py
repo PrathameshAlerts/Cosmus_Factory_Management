@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
-
+# does not allow logged in users to login route
 def authenticated_user(view_func):
 
     def wrapper_function(request, *args, **kwargs):

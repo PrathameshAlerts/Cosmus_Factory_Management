@@ -17,7 +17,7 @@ class Company(models.Model):
     
 
 class Roles(models.Model):
-    user_type = models.CharField(max_length=100, default = 'base_user') 
+    user_type = models.CharField(max_length = 100, default='base_user') 
 
     
 class CustomUserManager(BaseUserManager):
@@ -36,7 +36,7 @@ class CustomUserManager(BaseUserManager):
         user_obj.is_superuser = is_superuser
         user_obj.save(using=self._db) # save user
 
-         # Add user to groups based on roles
+        # Add user to groups based on roles
         self.update_user_groups(user_obj)
 
         return user_obj
@@ -51,7 +51,7 @@ class CustomUserManager(BaseUserManager):
         user.groups.clear()
         # Add user to groups based on roles
         for role in user.role.all():
-            group, created = Group.objects.get_or_create(name=role.user_type)
+            group, created = Group.objects.get_or_create(name = role.user_type)
             user.groups.add(group)
         user.save()
 
@@ -95,16 +95,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     #     return self.is_active
 
 
+
+
+
+
 @receiver(m2m_changed, sender=CustomUser.role.through)
 def update_user_groups_on_role_change(sender, instance, action, **kwargs):
-    
+    """
+    Signal handler to update groups based on role changes.
+    Triggered when roles are added, removed, or cleared.
+    """
     if action in ["post_add", "post_remove", "post_clear"]:
-        instance.objects.update_user_groups(instance)
-
-
-
-
-
+        CustomUser.objects.update_user_groups(instance)  # Accessing manager from class, not instance
 
 
 
