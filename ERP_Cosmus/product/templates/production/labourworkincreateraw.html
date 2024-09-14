@@ -416,6 +416,7 @@ $(document).on('click', '.search-input',function(){
           const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#labour_search`);
           const nameValues = $inputField.text().trim();
           const itemValue = $inputField.attr('data-key');
+          console.log(itemValue);
           const dropdownBtn = $inputField.closest('form').find('#tableLabourWorkinId');
           dropdownBtn.css('display', 'block');
           if ($inputField.length > 0) {
@@ -423,7 +424,7 @@ $(document).on('click', '.search-input',function(){
             $inputField.val(nameValues);
            
             $.ajax({           // this ajax reuest is to send the data and show the all the option will filed once click on the suggestion on the screen
-            url: '/itemcreatecloneajax/',
+            url: '/labourworkinrawcreate/',
             method: 'GET',
             data: {
                 'itemValue': itemValue
