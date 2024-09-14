@@ -1,9 +1,21 @@
-<h1>Create New User</h1>
 
-<span>User Name :- {{user_name}} </span>
-<span>Company Name :- {{company_name}}</span>
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+
+<h1>Create New User</h1>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Create User</button>
 </form>
+
+
+{% endblock %}
+
+
+
+
+
+
