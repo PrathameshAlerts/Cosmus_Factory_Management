@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser
-from .forms import LoginForm, UserCreationForm, UserChangeForm
+from .forms import LoginForm, UserCreationForm, UserChangeForm, UserUpdateForm
 from .decorators import authenticated_user
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout ,update_session_auth_hash 
 
 @login_required
 def list_company_users(request):
@@ -31,7 +31,7 @@ def create_company_user(request):
     else:
         form = UserCreationForm()
 
-    return render(request, 'core/create_company_user.html', {'form': form ,'user_name':request.user.username,'company_name':request.user.company.name})
+    return render(request, 'core/create_company_user.html', {'form': form })
 
 
 @login_required
@@ -76,12 +76,13 @@ def login_user(request):
             username = request.POST['username']
             password = request.POST['password']
 
-            user = authenticate(request, username=username,password=password)
+            user = authenticate(request, username = username, password = password)
 
             if user is not None:
                 login(request, user)
                 messages.success(request,'Logged in successfully')
                 return redirect('dashboard-main')
+            
             else:
                 messages.error(request,'Username or Password is incorrect')
                 
@@ -90,11 +91,38 @@ def login_user(request):
 
 
 @login_required
+def password_change_view(request):
+    form = UserUpdateForm(user = request.user)
+    if request.method == "POST":
+
+        form = UserUpdateForm(user=request.user,data=request.POST)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Password changed successfully')
+            redirect('dashboard')
+            update_session_auth_hash(request, form.user) # to maintain the session of the logined user 
+
+    return render(request,'core/changepassword.html', {"form":form})
+
+@login_required
 def logout_user(request):
     logout(request)
     messages.success(request,'You have been logged out ')
     return redirect('login')
 
-
 def permission_denied_view(request):
     return render(request,'core/permission_denied_html.html')
+
+
+    """
+    In Django, the admin site uses specific URL patterns for each model:
+
+    Model list view (changelist): admin:app_label_modelname_changelist
+    Model detail view (change): admin:app_label_modelname_change
+    Add new model object view (add): admin:app_label_modelname_add
+
+
+
+    """
+

@@ -1,4 +1,12 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
 <h1>Manage Company Users</h1>
+
+<a href="{% url 'create_company_user' %}">Create User</a>
+
+
 <table>
     <thead>
         <tr>
@@ -28,3 +36,7 @@
         {% endfor %}
     </tbody>
 </table>
+
+
+
+{% endblock %}

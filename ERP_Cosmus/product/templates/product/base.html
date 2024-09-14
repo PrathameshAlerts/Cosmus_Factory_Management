@@ -216,13 +216,29 @@
          </ul>  
          </li> 
         
+         <div>
+          <span>{{request.user.username}}</span>
+          <span>{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>
+
+         </div>
+
+
         <li class="nav-item dropdown mx-3">
           <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img alt="user-profile" src="../../../static/images/logo.jpg" class="rounded-circle image-h">
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
               <div class="pro-head">
-                  <span>Jone Doe</span>
+                {% if request.user.is_superuser %}
+
+                <a href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a>
+
+                {% else %}
+
+                  <span><a href="{% url 'list_company_users' %}">User Management</a></span>
+
+                {% endif %}
+
               </div>
                 <li> 
                 <button type="button" class="dropdown-item text-danger fw-bold"><a href="{% url 'logout' %}" title="Logout" style="text-decoration: none; color: red;"> Logout</a></button>

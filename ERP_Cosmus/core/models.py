@@ -19,6 +19,9 @@ class Company(models.Model):
 class Roles(models.Model):
     user_type = models.CharField(max_length = 100, default='base_user') 
 
+    def __str__(self):
+        return self.user_type
+
     
 class CustomUserManager(BaseUserManager):
 
@@ -65,7 +68,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     timestamp =  models.DateTimeField(auto_now=True)
     role = models.ManyToManyField(Roles)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete = models.CASCADE, null=True, blank=True)
     
     objects = CustomUserManager()
 

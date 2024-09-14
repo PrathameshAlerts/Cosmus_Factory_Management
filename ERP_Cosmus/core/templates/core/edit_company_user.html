@@ -1,6 +1,12 @@
-<h1>Edit User: {{ user.username }}</h1>
+
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_p }} <a href="{% url 'password-change' %}">Change Password</a>
     <button type="submit">Save Changes</button>
 </form>
+
+{% endblock %}

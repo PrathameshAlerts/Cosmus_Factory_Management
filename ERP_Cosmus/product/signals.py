@@ -7,6 +7,8 @@ from .models import (Ledger, PProduct_Creation, Product, RawStockTrasferRecords,
                       opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting,
                         purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name,
                           shade_godown_items)
+
+
 import logging
 
 logger = logging.getLogger('product_signals')

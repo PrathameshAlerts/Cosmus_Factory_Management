@@ -306,7 +306,6 @@ class packaging(models.Model):
 
 
 
-
 class Item_Creation(models.Model):
     STATUS =  [
         ("Unused","Unused"),
@@ -590,7 +589,7 @@ class product_2_item_through_table(models.Model):
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
     grand_total = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    common_unique = models.BooleanField(default = False)  #True if its common and false if its special
+    common_unique = models.BooleanField(default = False)  # True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1)
     Remark = models.CharField(max_length=100, blank=True, null=True)
 
@@ -774,7 +773,7 @@ class product_to_item_labour_workout(models.Model):
 class labour_workout_childs(models.Model):
     labour_workout_master_instance = models.ForeignKey(labour_workout_master, on_delete=models.PROTECT)
     challan_no = models.CharField(unique=True, null=False, blank=False)
-    labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=True, blank=True)
+    labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=False, blank=False)
     total_process_pcs = models.IntegerField(null = True, blank=True)
     total_balance_pcs = models.IntegerField(null = True, blank=True)
     created_date = models.DateTimeField(auto_now = True)

@@ -1,12 +1,12 @@
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField ,PasswordChangeForm
 from .models import CustomUser, Roles
 
 from django.contrib.auth.forms import  AuthenticationForm
 
 class UserCreationForm(forms.ModelForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Password', widget = forms.PasswordInput)
+    password2 = forms.CharField(label='Confirm password', widget = forms.PasswordInput)
 
     class Meta:
         model = CustomUser
@@ -40,6 +40,11 @@ class UserChangeForm(forms.ModelForm):
     def clean_password(self):
         return self.initial["password"]
     
+class UserUpdateForm(PasswordChangeForm):
+    class Meta:
+        model = CustomUser
+        fields = ["old_password", "new_password1", "new_password2"]
+
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput())

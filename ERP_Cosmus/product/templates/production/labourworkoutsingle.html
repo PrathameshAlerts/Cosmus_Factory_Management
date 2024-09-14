@@ -30,7 +30,7 @@
                         </div>
                         <div class="d-flex ms-1 ">
                             <lable for="id_labour_name" class="">Labour:</lable>
-                            <select type="number" name="labour_name" id="id_labour_name" class="item-select ms-2 pb-2" >
+                            <select type="number" name="labour_name" id="id_labour_name" class="item-select ms-2 pb-2" required>
                             {% if labour_work_out_child_form.instance.id %}
                             <option value="{{labour_work_out_child_form.instance.labour_name.id}}">{{labour_work_out_child_form.instance.labour_name.name}}</option>
                             {% for ledger in ledger_labour_instances %}
