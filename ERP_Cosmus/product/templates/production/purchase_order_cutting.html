@@ -248,8 +248,8 @@
                                 <div class="checkBox-row">
                                     {% for shade in form.initial.material_color_shade %}
                                 <label for="id_{{form.prefix}}-material_color_shade-{{forloop.counter}}" class="px-2 py-2 onlyOneCheckBox">
-                                    <input type="checkbox" class="mx-1" name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade-{{forloop.counter}}" value="{{shade.id}}" {% if forloop.first or shade.id in form.initial.material_color_shade %} checked{% endif %} onClick="checkOnlyOne(this)">
-                                    {{shade.item_shade_name}}&nbsp;&nbsp;<span class="color_Shades" style="border: none;">{{shade.godown_qty}}</span>
+                                    <input type="checkbox" class="mx-1" name="{{form.prefix}}-material_color_shade" id="id_{{form.prefix}}-material_color_shade-{{forloop.counter}}" value="{{shade.shade_id}}" {% if forloop.first or shade.id in form.initial.material_color_shade %} checked{% endif %} onClick="checkOnlyOne(this)">
+                                    {{shade.shade_name}}&nbsp;&nbsp;<span class="color_Shades" style="border: none;">{{shade.godown_quantity}}</span>
                                 </label><br>
                                 {% endfor %}
                                 </div>
@@ -453,7 +453,7 @@ cuttingBalanceQty()
                             
                             const consumption = parseFloat(consumptionInput.value) || 0;
                             let totalConsumption = CuttingQty * consumption;
-                            totalConsumptionInput.value = totalConsumption.toFixed(2);
+                            totalConsumptionInput.value = totalConsumption.toFixed(3);
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
                                     colorShade.style.border = "3px solid red";
@@ -475,7 +475,7 @@ cuttingBalanceQty()
                                 // const cuttingTotal = document.getElementById('id_cuttingTotal');
                             const totalValue = parseFloat(cuttingTotal.value) || 0;
                             let commonConsumption = totalValue * commonConsumptionValue;
-                            totalConsumptionInput.value = commonConsumption.toFixed(2);
+                            totalConsumptionInput.value = commonConsumption.toFixed(3);
                         }
                     } else {
                             totalConsumptionInput.value = '0.00';
@@ -507,7 +507,7 @@ cuttingBalanceQty()
               if(!isNaN(panhaValue) && !isNaN(UnitValue) && !isNaN(GtotalValue)){
                 var Comsumption = GtotalValue / (panhaValue * UnitValue);
 
-                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(2);
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(3);
               }else{
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = "0.000";
               }
@@ -515,7 +515,7 @@ cuttingBalanceQty()
               if(!isNaN(TotalConsumtionValue) && !isNaN(physicalStockValue)){
         
                 var balanceStock = physicalStockValue - TotalConsumtionValue;
-                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(2);
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(3);
               }else{
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = "0.00";
               }

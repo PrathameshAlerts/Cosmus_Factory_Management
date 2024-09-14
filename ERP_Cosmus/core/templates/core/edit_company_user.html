@@ -1,0 +1,6 @@
+<h1>Edit User: {{ user.username }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+</form>

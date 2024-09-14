@@ -43,10 +43,10 @@ INSTALLED_APPS = [
 
     'core',
     'product',
-     #'inventory',
+    #'inventory',
     #'discount',
     #'logistics',
-    #'order',
+    #'order' ,
     #'returns',
     #'tax',
 

@@ -370,39 +370,38 @@ def handle_purchase_order_update(sender, instance, **kwargs):
 @receiver(post_save, sender = purchase_order_for_raw_material_cutting_items)
 def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
     
-
-    if instance.material_color_shade.items.Fabric_nonfabric == 'Fabric' and instance.total_comsumption != 0:
-
-        instance_material_color_shade = instance.material_color_shade.id
-        instance_particular = 'cutting_room'
-        instance_voucher_type = 'Purchase Voucher-Cutting'
-        instance_voucher_number = instance.purchase_order_cutting.raw_material_cutting_id
-        instance_godown_id = instance.purchase_order_cutting.purchase_order_id.temp_godown_select.id
-        instance_inward = False
-        instance_total_comsumption = instance.total_comsumption
-        instance_rate = instance.rate
-
-        if instance.cutting_room_status == 'cutting_room':
-
-            godown_item_report_for_cutting_room.objects.create(particular = instance_particular,
-                                                            voucher_type=instance_voucher_type
-                                                            ,voucher_number = instance_voucher_number,material_color_shade = instance_material_color_shade ,
-                                                            godown_id= instance_godown_id,
-                                                            inward = instance_inward ,total_comsumption = instance_total_comsumption,rate = instance_rate)
-            
+    if instance.entry_from_cutting_room == True:
         
-        elif instance.cutting_room_status == 'cutting_room_cancelled':
+        if instance.material_color_shade.items.Fabric_nonfabric == 'Fabric' and instance.total_comsumption != 0:
 
-            instance_voucher_type = 'Purchase Voucher - Cutting Cancelled'
-            instance_inward = True
+            instance_material_color_shade = instance.material_color_shade.id
+            instance_particular = 'cutting_room'
+            instance_voucher_type = 'Purchase Voucher-Cutting'
+            instance_voucher_number = instance.purchase_order_cutting.raw_material_cutting_id
+            instance_godown_id = instance.purchase_order_cutting.purchase_order_id.temp_godown_select.id
+            instance_inward = False
+            instance_total_comsumption = instance.total_comsumption
+            instance_rate = instance.rate
 
-            godown_item_report_for_cutting_room.objects.create(particular = instance_particular,
-                                                            voucher_type=instance_voucher_type
-                                                            ,voucher_number = instance_voucher_number,material_color_shade = instance_material_color_shade ,
-                                                            godown_id= instance_godown_id,
-                                                            inward = instance_inward ,total_comsumption = instance_total_comsumption,rate = instance_rate)
+            if instance.cutting_room_status == 'cutting_room':
 
+                godown_item_report_for_cutting_room.objects.create(particular = instance_particular,
+                                                                voucher_type=instance_voucher_type
+                                                                ,voucher_number = instance_voucher_number,material_color_shade = instance_material_color_shade ,
+                                                                godown_id= instance_godown_id,
+                                                                inward = instance_inward ,total_comsumption = instance_total_comsumption,rate = instance_rate)
+                
+            
+            elif instance.cutting_room_status == 'cutting_room_cancelled':
 
+                instance_voucher_type = 'Purchase Voucher - Cutting Cancelled'
+                instance_inward = True
+
+                godown_item_report_for_cutting_room.objects.create(particular = instance_particular,
+                                                                voucher_type=instance_voucher_type
+                                                                ,voucher_number = instance_voucher_number,material_color_shade = instance_material_color_shade ,
+                                                                godown_id= instance_godown_id,
+                                                                inward = instance_inward ,total_comsumption = instance_total_comsumption,rate = instance_rate)
 
 
 

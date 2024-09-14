@@ -729,16 +729,16 @@ class labour_workin_master_form(forms.ModelForm):
 
 class labour_work_in_product_to_item_form(forms.ModelForm):
 
+    qty_to_compare = forms.IntegerField()
     
     class Meta:
         model = labour_work_in_product_to_item
         fields = ['product_sku','product_color','L_work_out_pcs','return_pcs',
-                  'pending_to_return_pcs']
+                  'pending_to_return_pcs','qty_to_compare']
 
 
 
-
-class cutting_room_form(UniqueFieldMixin,forms.ModelForm):
+class cutting_room_form(UniqueFieldMixin, forms.ModelForm):
     class Meta:
         model = cutting_room
         fields = ['cutting_room_name']
@@ -761,31 +761,6 @@ class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
 
 
 
-
-
-
-from django.apps import apps
-# Import the user model directly
-UserModel = apps.get_model(settings.AUTH_USER_MODEL)
-
-
-class CreateUserForm(UserCreationForm):
-    class Meta:
-        model = UserModel
-
-        fields = ['username', 'email', 'password1', 'password2']
-
-
-class UserRoleForm(forms.ModelForm):
-    groups = forms.ModelMultipleChoiceField(
-        queryset=Group.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True
-    )
-
-    class Meta:
-        model = UserModel
-        fields = ['groups']
 
 
 

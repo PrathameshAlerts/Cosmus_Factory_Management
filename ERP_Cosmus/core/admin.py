@@ -1,39 +1,30 @@
+# admin.py
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .models import CustomUser, Company, Roles
+from .forms import UserCreationForm, UserChangeForm
 
-from .models import CustomUser
+class CustomUserAdmin(BaseUserAdmin):
+    form = UserChangeForm
+    add_form = UserCreationForm
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm
-from django.contrib.auth.admin import UserAdmin
-
-
-admin.site.site_header = 'Cosmus Management Pannel'
-
-class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
-
-    model = CustomUser
-
-    # for list page
-    list_display = ('username', 'is_staff', 'is_active')
-    list_filter = ('username','is_staff', 'is_active',)
-
-
-    # for detail page
+    list_display = ('username', 'email', 'first_name', 'last_name', 'company', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'company', 'role')
     fieldsets = (
-        (None, {'fields': ('username', 'password',)}),
-        ('Permissions', {'fields': ('is_staff' , 'is_active', )}),
-
-        ('Advanced options', {
-            'classes': ('collapse',),
-            'fields': ('groups', 'user_permissions',),
-        }),
+        (None, {'fields': ('username', 'email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'company', 'role')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
     )
     add_fieldsets = (
         (None, {
-            'classes': ('wide',),   # class for css 
-            'fields': ('email','username' ,'password1', 'password2', 'is_staff', 'is_active',)} # fields shown on create user page on admin panel
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'company', 'role', 'is_staff')}
         ),
     )
-    
+    search_fields = ('username', 'email')
+    ordering = ('username',)
+    filter_horizontal = ('groups', 'user_permissions')
+
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Company)
+admin.site.register(Roles)
