@@ -4141,17 +4141,42 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
 
             vendor_name_value = request.GET.get('nameValue')
 
-            selected_vendor_name = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)',name__icontains=vendor_name_value)
-            
-            vendor_name_dict = {}
-            for record in selected_vendor_name:
-                vendor_name_dict[record.id] = record.name
+            if vendor_name_value:
+                selected_vendor_name = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)',name__icontains=vendor_name_value)
 
-            # confirmed_vendor_id = request.GET.get('itemValue')
+    
 
-            # print('confirmed_vendor_id',confirmed_vendor_id)
+            vendor_name_dict = None
 
-            return JsonResponse({'vendor_name_dict':vendor_name_dict})
+            if vendor_name_value:
+                vendor_name_dict = {}
+                for record in selected_vendor_name:
+                    vendor_name_dict[record.id] = record.name
+
+            choosed_vendor_name = request.GET.get('itemValue')       
+
+            labour_workout_instance_dict = []
+
+            if choosed_vendor_name:
+                labour_workout_instances = labour_workout_childs.objects.filter(labour_name=choosed_vendor_name)
+                
+                for instance in labour_workout_instances:
+                    dict_to_append = {
+                        'Challan_No': instance.challan_no,
+                        'PO_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                        'PO_Total_QTY':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
+                        'Ref_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
+                        'Model_Name':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
+                        'Issued_QTY':'Issued QTY',
+                        'Rec_QTY':'Rec QTY',
+                        'Balance_QTY': 'Balance QTY'
+
+                    }
+                    labour_workout_instance_dict.append(dict_to_append)
+
+
+                print(labour_workout_instance_dict)
+            return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict})
 
         template_name = 'production/labourworkincreateraw.html'
 
@@ -4239,8 +4264,10 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
                     parent_form = master_form.save(commit = False)
                     parent_form.labour_voucher_number = labour_workout_child_instance
 
-
+                    # update the labour workin pcs in labour workout model with total return pcs
                     labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
+
+
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.labour_voucher_number.labour_workin_pending_pcs - parent_form.total_return_pcs
 
                     labour_workout_child_instance.save()

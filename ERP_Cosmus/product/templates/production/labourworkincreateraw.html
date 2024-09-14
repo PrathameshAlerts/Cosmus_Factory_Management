@@ -29,6 +29,7 @@
         </div>
     </div>
     <div>
+        <span> TESTTT{{labour_workout_instance_dict}}</span>
         <table class="table table-bordered table-hover table-striped" id="tableLabourWorkinId" style="display: none;">
             <thead>
                 <tr>
@@ -42,17 +43,22 @@
                     <th>Balance QTY</th>
                 </tr>
             </thead>
+            
             <tbody class="mainTableList">
-                <td class="challanNo">223</td>
-                <td>323</td>
-                <td>323</td>
-                <td>33</td>
-                <td>3</td>
-                <td>32</td>
-                <td>23</td>
-                <td>23</td>
-            </tbody>
-    
+                {% for instance in labour_workout_instance_dict %}
+        <tr>
+            <td class="challanNo">{{ instance.Challan_No }}</td>
+            <td>{{ instance.PO_No }}</td>
+            <td>{{ instance.PO_Total_QTY }}</td>
+            <td>{{ instance.Ref_No }}</td>
+            <td>{{ instance.Model_Name }}</td>
+            <td>32</td> <!-- Example static value for Issued QTY -->
+            <td>23</td> <!-- Example static value for Rec QTY -->
+            <td>23</td> <!-- Example static value for Balance QTY -->
+        </tr>
+        {% endfor %}
+    </tbody>
+
         </table>
     </div>
     <div class="row" id="labourWorkInFormAfterClick" style="display: none;">
@@ -133,7 +139,7 @@
     </div>
         </div>
         
-        <div class="col-lg-5 mt-4">
+        <div class="col-lg-5">
            
             <table class="table table-striped table-hover table-bordered tables">
                 <thead class="name_absolute sticky-top">
@@ -149,8 +155,6 @@
                     {{labour_work_in_product_to_item_formset.management_form}}
                     {% for form in labour_work_in_product_to_item_formset %}
                     {{form.id}}
-
-
                     {% if not form.instance.id %}
                     <tr>
                         <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
@@ -159,10 +163,8 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.initial.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
-                    
                     </tr>
                     {% elif form.instance.id %}
-
                     <tr>
                         <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku"></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
@@ -173,8 +175,6 @@
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
                     </tr>
                     {% endif %}
-
-
                     {% endfor %}
                 </tbody>
             </table>
@@ -218,7 +218,7 @@
     </div>
    
 
-    <input type="submit" value="Submit" class="create-btn" id="id_submit">
+    <input type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;">
 </form>
 <script>
 $(document).ready(function () {
@@ -300,8 +300,8 @@ $(document).ready(function () {
                 'itemValue': itemValue
             },
             success: function (response) {
-            
-            
+            var challan_instance = response.labour_workout_instance_dict
+            console.log('challan_instance',challan_instance)
             },
             error: function (xhr, errmsg, err) {
                 console.log('Error sending value to the backend');
@@ -416,6 +416,7 @@ $(document).on('click', '.search-input',function(){
           const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#labour_search`);
           const nameValues = $inputField.text().trim();
           const itemValue = $inputField.attr('data-key');
+          console.log(itemValue);
           const dropdownBtn = $inputField.closest('form').find('#tableLabourWorkinId');
           dropdownBtn.css('display', 'block');
           if ($inputField.length > 0) {
@@ -423,15 +424,15 @@ $(document).on('click', '.search-input',function(){
             $inputField.val(nameValues);
            
             $.ajax({           // this ajax reuest is to send the data and show the all the option will filed once click on the suggestion on the screen
-            url: '/itemcreatecloneajax/',
+            url: '/labourworkinrawcreate/',
             method: 'GET',
             data: {
                 'itemValue': itemValue
             },
             success: function (response) {
-              const item_data_response = response.response_data
               
-               
+              var challan_instance = response.labour_workout_instance_dict
+              console.log('challan_instance',challan_instance)
                  
             },
             error: function (xhr, errmsg, err) {
@@ -451,7 +452,7 @@ $(document).on('click', '.search-input',function(){
 
 
 <script>
-    // document.addEventListener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", function(){
     //     const targetDate = document.getElementById('id_GRN_Date');
     //     const dates = new Date().toISOString().split('T')[0];
     //     const currentDate = new Date();
@@ -468,19 +469,21 @@ $(document).on('click', '.search-input',function(){
     //       labourTables.style.display = 'block'; 
     //       console.log(labourTables); 
          
-    //       document.querySelector('.challanNo').addEventListener('click',function(){
-    //         var labourCreateRow = document.getElementById('labourWorkIn');
-    //         console.log(labourCreateRow);
-    //         labourCreateRow.style.display = 'block';
-    //         var tables = $(this).closest('table');
-    //         console.log(tables);
-    //         tables.css("display" ,"none");
-    //     })
+          document.querySelector('.challanNo').addEventListener('click',function(){
+            var labourCreateRow = document.getElementById('labourWorkInFormAfterClick');
+            console.log(labourCreateRow);
+            labourCreateRow.style.display = 'block';
+            var tables = $(this).closest('#tableLabourWorkinId');
+            console.log(tables);
+            tables.css("display" ,"none");
+            var submitBtn = document.getElementById('id_submit');
+            submitBtn.style.display = 'block';
+        })
 
     //     })
 
         
-    // })
+     })
    
     
 </script>
