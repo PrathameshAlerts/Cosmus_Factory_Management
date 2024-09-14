@@ -122,8 +122,8 @@
                         <th>Color</th>
                         <th>Issue QTY</th>
                         <th>Balance QTY</th>
-                        <th>Return QTY</th>
                         <th>Current Balance </th>
+                        <th>Return QTY</th>
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
@@ -138,8 +138,9 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.initial.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"></td>
+                        <td><input type="number"  class="productorderqty-input" name="{{form.prefix}}-qty_to_compare" value="{{form.initial.qty_to_compare}}" id="id_{{form.prefix}}-qty_to_compare"></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.initial.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
-                        <!-- <td><input type="number"  class="productorderqty-input" name="{{form.prefix}}-qty_to_compare" value="{{form.initial.qty_to_compare}}" id="id_{{form.prefix}}-qty_to_compare"></td> -->
+
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
                         
                         
@@ -151,9 +152,9 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.instance.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs"></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"></td>
-                        <!-- <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td> -->
+                
                         <td><input type="number"  class="productorderqty-input" name="{{form.prefix}}-qty_to_compare" value="{{form.initial.qty_to_compare}}" id="id_{{form.prefix}}-qty_to_compare"></td>
-
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
 
                     </tr>
