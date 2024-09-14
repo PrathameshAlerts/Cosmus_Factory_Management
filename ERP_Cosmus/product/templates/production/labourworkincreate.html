@@ -140,7 +140,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs" readonly></td>
                         <td><input type="number"  class="productorderrawqty-input" name="{{form.prefix}}-qty_to_compare" value="{{form.initial.qty_to_compare}}" id="id_{{form.prefix}}-qty_to_compare" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.initial.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
-                        <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>   
+                        <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.initial.return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>   
                     </tr>
                     {% elif form.instance.id %}
 
@@ -151,7 +151,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"readonly></td>
                         <td><input type="number"  class="productorderrawqty-input" name="{{form.prefix}}-qty_to_compare" value="{{form.initial.qty_to_compare}}" id="id_{{form.prefix}}-qty_to_compare"readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs" ></td>
-                        <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
+                        <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-Balance_pending_to_return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-Balance_pending_to_return_pcs" readonly>
 
                     </tr>
                     {% endif %}
@@ -206,31 +206,31 @@
 </form>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    formSubmit();
-  })
+//     document.addEventListener("DOMContentLoaded", function () {
+//     formSubmit();
+//   })
 
-  function formSubmit(){
-    var labourId = document.getElementById('id_l_w_in_products-0-id').value;
-    var submit = document.getElementById('id_submit');
+//   function formSubmit(){
+//     var labourId = document.getElementById('id_l_w_in_products-0-id').value;
+  
    
-    console.log(labourId);
-    if(labourId != ''){
-        var gRnNo = document.getElementById('id_voucher_number');
-        var labourchargers = document.getElementById('id_labour_charges');
-        var returnValue = document.querySelectorAll('[name$="-return_pcs"]');
-        //returnValue.forEach(function(input){
-            //input.readOnly = true;
-            //input.style.outline = 'none';
-            //input.style.border = 'none';
-            //input.style.backgroundColor = 'transparent';
-        //})
-        submit.style.display = 'none';
-        gRnNo.style.readonly = 'true';
-        labourchargers.style.readonly = 'true';
+//     console.log(labourId);
+//     if(labourId != ''){
+//         var gRnNo = document.getElementById('id_voucher_number');
+//         var labourchargers = document.getElementById('id_labour_charges');
+//         var returnValue = document.querySelectorAll('[name$="-return_pcs"]');
+//         returnValue.forEach(function(element){
+//           var returnPic = parseInt(element.value) || 0;
+//           var currentBalance = parseInt(element.closest('tr').querySelector('input[name$="-qty_to_compare"]').value) || 0;
+//           console.log('currentBalance',currentBalance);
+//           console.log('returnPic',returnPic);
+//           var newBalance = currentBalance + returnPic;
+//           console.log('newBalance',newBalance);
+//         })
+      
 
-    }
-  }
+//     }
+//   }
   
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
     function CalculateAmount() {
@@ -242,20 +242,33 @@
 
     function CalculateTotal() {
         var totals = 0;
+        // var labourId = document.getElementById('id_l_w_in_products-0-id').value;
+        // // if(labourId == ''){
+            
+        // // }else{
+
+        // // }
         var totalReturnPcs = document.querySelectorAll('[name$="-return_pcs"]');
         totalReturnPcs.forEach(function(input){
             var returnValue = parseInt(input.value) || 0;
-            var balance = parseInt(input.closest('tr').querySelector('input[name$="-pending_to_return_pcs"]').value) || 0;
+            var balance = parseInt(input.closest('tr').querySelector('input[name$="-Balance_pending_to_return_pcs"]').value) || 0;
             var BalanceActualValue = parseInt(input.closest('tr').querySelector('input[name$="-qty_to_compare"]').value) || 0;
-          
-             if(returnValue > balance){
-                returnValue = 0;
-                input.value = 0;
+
+            console.log('BalanceActualValue',BalanceActualValue);
+           console.log('balance',balance);
+            var balanceQty = balance + BalanceActualValue;
+            console.log('balanceQty',balanceQty);
+            if(balanceQty < returnValue){
+                returnValue = balance;
+                input.value = balance;
+            
                 input.closest('tr').querySelector('input[name$="-qty_to_compare"]').value = BalanceActualValue;
-             }
-           
-            var balanceQty = balance - returnValue;
-            input.closest('tr').querySelector('input[name$="-qty_to_compare"]').value = balanceQty;
+            }else{
+                var newBalanaceQty = balanceQty - returnValue;
+                console.log('newBalanaceQty',newBalanaceQty);
+                input.closest('tr').querySelector('input[name$="-qty_to_compare"]').value = newBalanaceQty;
+            }
+            
 
             totals = totals + returnValue;
         })
@@ -264,7 +277,10 @@
     }
    
     document.querySelectorAll('[name$="-return_pcs"]').forEach(function(element){
-        element.addEventListener('input', CalculateTotal);
+        element.addEventListener('input', function(){
+            CalculateTotal();
+        });
+
     })
     $(document).ready(function () {
         $('#id_voucher_number').on('focusout', function () {

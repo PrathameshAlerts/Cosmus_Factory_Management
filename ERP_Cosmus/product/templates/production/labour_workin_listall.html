@@ -56,9 +56,9 @@
                                 <td>{{instance.number_of_pieces}}</td>
                                 <td>{{instance.product_reference_number.Model_Name}}</td>
                                 <td>{{instance.total_lwo_pcs}}</td>
-                                <th>{{instance.total_labour_workin_pcs}}</th>
-                                <th>{{instance.total_labour_workin_pending}}</th>
-                                <th><a href="{% url 'labour-workin-pur-order-list' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></th>
+                                <td>{{instance.total_labour_workin_pcs}}</td>
+                                <td>{{instance.total_labour_workin_pending}}</td>
+                                <td><a href="{% url 'labour-workin-pur-order-list' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -89,7 +89,7 @@
                             <th>Issued Qty</th>
                             <th>Recieved Qty</th>
                             <th>Balance Qty</th>
-                            <th>View</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
@@ -106,7 +106,7 @@
                             <td>{{instance.total_process_pcs}}</td>
                             <td>{{instance.labour_workin_pcs}}</td>
                             <td>{{instance.labour_workin_pending_pcs}}</td>
-                            <td><a href=""><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+                            <td><a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
