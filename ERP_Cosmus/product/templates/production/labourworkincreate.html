@@ -218,18 +218,18 @@
         totalReturn.forEach(function(element){
             var returnValue = parseInt(element.value) || 0;
             var row = element.closest('tr'); 
-            var balance = parseInt(row.querySelector('input[name$="-Balance_pending_to_return_pcs"]').value) || 0;
+            var balance = parseInt(row.querySelector('input[name$="-cur_bal_plus_return_qty"]').value) || 0;
             var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
           
-            var newBalanceQtys = BalanceActualValue + balance;
-             if(returnValue > newBalanceQtys){
+           
+             if(returnValue > balance){
                 returnValue = 0;
                 element.value = 0;
                 row.querySelector('input[name$="-qty_to_compare"]').value = BalanceActualValue;
              }
 
-            var balanceQtyValue = newBalanceQtys - returnValue;
-            console.log('balanceQty',balanceQtyValue)
+            var balanceQtyValue = balance - returnValue;
+            
             row.querySelector('input[name$="-qty_to_compare"]').value = balanceQtyValue;
 
             total  += returnValue;
