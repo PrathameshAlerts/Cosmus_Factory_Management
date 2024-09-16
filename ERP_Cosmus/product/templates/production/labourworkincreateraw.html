@@ -290,7 +290,7 @@ $(document).ready(function () {
             success: function (response) {
             var challan_instance = response.labour_workout_instance_dict
           
-            var tables = $('#tableLabourWorkinId tbody.mainTableList ');
+            var tables = $('#tableLabourWorkinId tbody.mainTableList');
             tables.empty();
             $.each(challan_instance, function (key, value) {
         
