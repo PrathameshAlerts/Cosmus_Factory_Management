@@ -4174,9 +4174,48 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     }
                     labour_workout_instance_dict.append(dict_to_append)
 
+            labour_work_out_id = request.GET.get('labourWorkOutId')
+            
+            master_initial_data = None
 
-                print(labour_workout_instance_dict)
-            return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict})
+            formset_initial_data = None
+
+
+            if labour_work_out_id:
+
+                labour_work_out_instance = labour_workout_childs.objects.get(id= labour_work_out_id)
+
+                master_initial_data = {
+                    'labour_name': labour_work_out_instance.labour_name.name,
+                    'challan_no' : labour_work_out_instance.challan_no ,
+                    'purchase_order_no' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                    'refrence_number' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
+                    'model_name': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
+                    'total_p_o_qty' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
+                    'labour_workout_qty' : labour_work_out_instance.total_process_pcs,
+                    'labour_charges': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
+                    'pending_pcs' :  labour_work_out_instance.labour_workin_pending_pcs}
+
+                product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_work_out_instance)
+
+
+                formset_initial_data = []
+
+                for instances in product_to_item_l_w_in_instance:
+
+                    initial_data_dict = { 
+                        'product_sku': instances.product_sku,
+                        'product_color': instances.product_color,
+                        'L_work_out_pcs': instances.processed_pcs,
+                        'pending_to_return_pcs': instances.labour_w_in_pending,
+                        'return_pcs' : '0',
+                        'qty_to_compare':  instances.labour_w_in_pending,
+                    }
+                    
+                    formset_initial_data.append(initial_data_dict)
+
+
+            return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data})
 
         template_name = 'production/labourworkincreateraw.html'
 
@@ -4201,8 +4240,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
             'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
             'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
             'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
-            'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,
-            
+            'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,  
         }
 
         master_form = labour_workin_master_form(initial=initial_data)
