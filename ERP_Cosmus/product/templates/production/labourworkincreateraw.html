@@ -17,6 +17,7 @@
                 {% endif %}
 
             </div>
+            
             <div class="d-flex mb-3">
                 <label for="id_labour_name" class="item-form">Labour Name:</label>
                 <div class="custom-dropdown-container">
@@ -185,7 +186,7 @@
                     <label for="id_amount" class="item-form">Amount:</label>
                 <input type="number" class = "item-select" name="amount" step="0.01" value="{{master_form.instance.amount |default_if_none:''}}" required id="id_amount">
                 </div>
-               
+                <input type="hidden" id="childId" name="labour_workout_child_instance_id" value="">
             </div>
         </div>
     </div>
@@ -476,7 +477,7 @@ $(document).on('click', '.search-input',function(){
             success: function (response) {
                 var masterData = response.master_initial_data;
                 var formsetData = response.formset_initial_data;
-                console.log(formsetData);
+                var childId = response.labour_workout_child_instance_id;
                 var tableWorkIn = $('#tableLabourWorkinId');
                 var challanRows = $('#labourWorkInFormAfterClick');
                 var submit = $('#id_submit');
@@ -495,7 +496,7 @@ $(document).on('click', '.search-input',function(){
                 challanRows.find('#id_labour_charges').val(masterData.labour_charges);
                 challanRows.find('#id_pending_pcs').val(masterData.pending_pcs);
                 challanRows.find('#id_labour_workout_qty').val(masterData.labour_workout_qty);
-
+                challanRows.find('#childId').val(childId);
                 // Populate the table with formset data
                 var tableRows = $('#labourworkInTables tbody');
                 tableRows.empty();
