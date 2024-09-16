@@ -175,7 +175,7 @@
             </div>
             <div class="d-flex mb-3">
                 <label for="id_total_return_pcs" class="item-form">Total Return Pcs:</label>
-                <input type="number" class="item-select" name="total_return_pcs" value="{{master_form.instance.total_return_pcs}}" required id="id_total_return_pcs" readonly>
+                <input type="number" class="item-select" name="total_return_pcs" value="{{master_form.instance.total_return_pcs |default_if_none:''}}" required id="id_total_return_pcs" readonly>
             </div>
             <div class="d-flex mb-3">
                 <label for="id_labour_charges" class="item-form">Labour charges:</label>
@@ -197,7 +197,7 @@
             </div>
             <div class="d-flex mb-3">
                 <label for="id_amount" class="item-form">Amount:</label>
-            <input type="number" class = "item-select" name="amount" step="0.01" value="{{master_form.instance.amount}}" required id="id_amount">
+            <input type="number" class = "item-select" name="amount" step="0.01" value="{{master_form.instance.amount |default_if_none:''}}" required id="id_amount">
             </div>
         </div>
     </div>
@@ -206,31 +206,47 @@
 </form>
 
 <script>
-//     document.addEventListener("DOMContentLoaded", function () {
-//     formSubmit();
-//   })
+    document.addEventListener("DOMContentLoaded", function () {
+    formSubmit();
+  })
 
-//   function formSubmit(){
-//     var labourId = document.getElementById('id_l_w_in_products-0-id').value;
-  
-   
-//     console.log(labourId);
-//     if(labourId != ''){
-//         var gRnNo = document.getElementById('id_voucher_number');
-//         var labourchargers = document.getElementById('id_labour_charges');
-//         var returnValue = document.querySelectorAll('[name$="-return_pcs"]');
-//         returnValue.forEach(function(element){
-//           var returnPic = parseInt(element.value) || 0;
-//           var currentBalance = parseInt(element.closest('tr').querySelector('input[name$="-qty_to_compare"]').value) || 0;
-//           console.log('currentBalance',currentBalance);
-//           console.log('returnPic',returnPic);
-//           var newBalance = currentBalance + returnPic;
-//           console.log('newBalance',newBalance);
-//         })
-      
+  function formSubmit() {
+    var labourId = document.getElementById('id_l_w_in_products-0-id').value;
+    var total = 0;
 
-//     }
-//   }
+    // Helper function to handle return and balance calculation
+    function calculateReturn(input, balanceName) {
+        var returnValue = parseInt(input.value) || 0;
+        var row = input.closest('tr');
+        var balance = parseInt(row.querySelector(`input[name$="${balanceName}"]`).value) || 0;
+        var balanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
+
+        var newBalanceQty = balance + balanceActualValue;
+        if (returnValue > newBalanceQty) {
+            returnValue = 0;
+            input.value = 0;
+            row.querySelector('input[name$="-qty_to_compare"]').value = balanceActualValue;
+        }
+
+        var balanceQtyValue = newBalanceQty - returnValue;
+        row.querySelector('input[name$="-qty_to_compare"]').value = balanceQtyValue;
+
+        return returnValue;
+    }
+
+    var totalReturnElements = document.querySelectorAll('[name$="-return_pcs"]');
+    
+    totalReturnElements.forEach(function (element) {
+        if (labourId !== '') {
+            total += calculateReturn(element, "-Balance_pending_to_return_pcs");
+        } else {
+            total += calculateReturn(element, "-pending_to_return_pcs");
+        }
+    });
+
+    document.getElementById('id_total_return_pcs').value = total;
+}
+
   
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
     function CalculateAmount() {
@@ -240,47 +256,14 @@
         document.getElementById('id_amount').value = amounts
     }
 
-    function CalculateTotal() {
-        var totals = 0;
-        // var labourId = document.getElementById('id_l_w_in_products-0-id').value;
-        // // if(labourId == ''){
-            
-        // // }else{
-
-        // // }
-        var totalReturnPcs = document.querySelectorAll('[name$="-return_pcs"]');
-        totalReturnPcs.forEach(function(input){
-            var returnValue = parseInt(input.value) || 0;
-            var balance = parseInt(input.closest('tr').querySelector('input[name$="-Balance_pending_to_return_pcs"]').value) || 0;
-            var BalanceActualValue = parseInt(input.closest('tr').querySelector('input[name$="-qty_to_compare"]').value) || 0;
-
-            console.log('BalanceActualValue',BalanceActualValue);
-           console.log('balance',balance);
-            var balanceQty = balance + BalanceActualValue;
-            console.log('balanceQty',balanceQty);
-            if(balanceQty < returnValue){
-                returnValue = balance;
-                input.value = balance;
-            
-                input.closest('tr').querySelector('input[name$="-qty_to_compare"]').value = BalanceActualValue;
-            }else{
-                var newBalanaceQty = balanceQty - returnValue;
-                console.log('newBalanaceQty',newBalanaceQty);
-                input.closest('tr').querySelector('input[name$="-qty_to_compare"]').value = newBalanaceQty;
-            }
-            
-
-            totals = totals + returnValue;
-        })
-      
-       document.getElementById('id_total_return_pcs').value =totals;
-    }
-   
+    
     document.querySelectorAll('[name$="-return_pcs"]').forEach(function(element){
         element.addEventListener('input', function(){
-            CalculateTotal();
-        });
-
+            formSubmit();
+      
+        }
+        
+        );
     })
     $(document).ready(function () {
         $('#id_voucher_number').on('focusout', function () {

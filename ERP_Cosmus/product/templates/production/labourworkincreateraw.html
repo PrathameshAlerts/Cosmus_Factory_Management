@@ -42,14 +42,7 @@
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
-                    <td class="challanNo">223</td>
-                    <td>323</td>
-                    <td>323</td>
-                    <td>33</td>
-                    <td>3</td>
-                    <td>32</td>
-                    <td>23</td>
-                    <td>23</td>
+                    
                 </tbody>
         
             </table>
@@ -478,6 +471,21 @@ $(document).on('click', '.search-input',function(){
           commomSugenstionHide.empty();
         }    
     })
+
+    $('#tableLabourWorkinId').on('click', 'tr', function () {
+        var newTable = $(this).closest('td').eq(0);
+        console.log('newTable',newTable);
+        $.ajax({
+            url:'',
+            method: 'GET',
+            data: {},
+            success: function (response) {
+
+            }, error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+            }
+        })
+    });
 })    
 </script>
 
