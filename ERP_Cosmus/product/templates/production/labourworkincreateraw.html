@@ -521,7 +521,7 @@ $(document).on('click', '.search-input',function(){
                     newRow.append($('<td>').html('<input type="number" class="productorderqty-input" name="l_w_in_products-' + index + '-return_pcs" value="' + rowData.return_pcs + '" id="id_l_w_in_products-' + index + '-return_pcs">'));
                     
                     // Hidden field for balance
-                    newRow.append($('<input type="hidden" class="productorderrawqty-input" name="l_w_in_products-' + index + '-Balance_pending_to_return_pcs" value="' + rowData.pending_to_return_pcs + '" id="id_l_w_in_products-' + index + '-Balance_pending_to_return_pcs" readonly>'));
+                    newRow.append($('<input type="hidden" class="productorderrawqty-input" name="l_w_in_products-' + index + '-cur_bal_plus_return_qty" value="' + rowData.cur_bal_plus_return_qty + '" id="id_l_w_in_products-' + index + '-cur_bal_plus_return_qty" readonly>'));
 
                     // Append the new row to the table body
                     tableRows.append(newRow);
