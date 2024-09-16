@@ -42,7 +42,7 @@
                     </tr>
                 </thead>
                 <tbody class="mainTableList">
-                    
+
                 </tbody>
         
             </table>
@@ -304,7 +304,8 @@ $(document).ready(function () {
                 $('<td>').text(value.Model_Name || 'N/A'),
                 $('<td>').text(value.Issued_QTY || 'N/A'),
                 $('<td>').text(value.Rec_QTY || 'N/A'),
-                $('<td>').text(value.Balance_QTY || 'N/A')  
+                $('<td>').text(value.Balance_QTY || 'N/A'),
+                $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || 'N/A')
                 );
                 tables.append(newRows);
             })
@@ -423,7 +424,7 @@ $(document).on('click', '.search-input',function(){
           const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#labour_search`);
           const nameValues = $inputField.text().trim();
           const itemValue = $inputField.attr('data-key');
-          console.log('itemValueKeydown',itemValue);
+     
           const dropdownBtn = $inputField.closest('form').find('#tableLabourWorkinId');
           dropdownBtn.css('display', 'block');
           if ($inputField.length > 0) {
@@ -452,7 +453,8 @@ $(document).on('click', '.search-input',function(){
                 $('<td>').text(value.Model_Name || 'N/A'),
                 $('<td>').text(value.Issued_QTY || 'N/A'),
                 $('<td>').text(value.Rec_QTY || 'N/A'),
-                $('<td>').text(value.Balance_QTY || 'N/A')  
+                $('<td>').text(value.Balance_QTY || 'N/A'),
+                $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || 'N/A')  
                 );
                 tables.append(newRows);
             })
@@ -473,12 +475,14 @@ $(document).on('click', '.search-input',function(){
     })
 
     $('#tableLabourWorkinId').on('click', 'tr', function () {
-        var newTable = $(this).closest('td').eq(0);
-        console.log('newTable',newTable);
+        var labourWorkOutId = $(this).find('#id_labour_workout_id').val();
+        console.log('newTable',labourWorkOutId);
         $.ajax({
-            url:'',
+            url:'/labourworkinrawcreate/',
             method: 'GET',
-            data: {},
+            data: {
+                'labourWorkOutId': labourWorkOutId,
+            },
             success: function (response) {
 
             }, error: function (xhr, errmsg, err) {
@@ -508,16 +512,16 @@ $(document).on('click', '.search-input',function(){
     //       labourTables.style.display = 'block'; 
     //       console.log(labourTables); 
          
-          document.querySelector('.challanNo').addEventListener('click',function(){
-            var labourCreateRow = document.getElementById('labourWorkInFormAfterClick');
-            console.log(labourCreateRow);
-            labourCreateRow.style.display = 'block';
-            var tables = $(this).closest('#tableLabourWorkinId');
-            console.log(tables);
-            tables.css("display" ,"none");
-            var submitBtn = document.getElementById('id_submit');
-            submitBtn.style.display = 'block';
-        })
+        //   document.querySelector('.challanNo').addEventListener('click',function(){
+        //     var labourCreateRow = document.getElementById('labourWorkInFormAfterClick');
+        //     console.log(labourCreateRow);
+        //     labourCreateRow.style.display = 'block';
+        //     var tables = $(this).closest('#tableLabourWorkinId');
+        //     console.log(tables);
+        //     tables.css("display" ,"none");
+        //     var submitBtn = document.getElementById('id_submit');
+        //     submitBtn.style.display = 'block';
+        // })
 
     //     })
 

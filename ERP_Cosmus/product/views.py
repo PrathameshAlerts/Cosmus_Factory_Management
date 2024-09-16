@@ -3190,7 +3190,6 @@ def purchaseorderrawmaterial(request,p_o_pk, prod_ref_no):
 
 
 
-
     # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
     if not purchase_order_instance.raw_materials.all():
         
@@ -3811,7 +3810,7 @@ def labourworkoutlistall(request):
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
-def labourworkoutsingle(request,labour_workout_child_pk=None,pk=None):
+def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
 
     try:
         ledger_labour_instances = Ledger.objects.filter(under_group__account_sub_group = 'Job charges(Exp of Mfg)')
@@ -4169,7 +4168,8 @@ def labourworkincreate(request, l_w_o_id=None, pk=None):
                         'Model_Name':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
                         'Issued_QTY':'Issued QTY',
                         'Rec_QTY':'Rec QTY',
-                        'Balance_QTY': 'Balance QTY'
+                        'Balance_QTY': 'Balance QTY',
+                        'labour_workout_id': instance.id
 
                     }
                     labour_workout_instance_dict.append(dict_to_append)

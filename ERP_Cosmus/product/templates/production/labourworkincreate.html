@@ -209,43 +209,57 @@
     document.addEventListener("DOMContentLoaded", function () {
     formSubmit();
   })
-
-  function formSubmit() {
+  function formSubmit(){
     var labourId = document.getElementById('id_l_w_in_products-0-id').value;
     var total = 0;
 
-    // Helper function to handle return and balance calculation
-    function calculateReturn(input, balanceName) {
-        var returnValue = parseInt(input.value) || 0;
-        var row = input.closest('tr');
-        var balance = parseInt(row.querySelector(`input[name$="${balanceName}"]`).value) || 0;
-        var balanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
+    if(labourId != ''){
+        var totalReturn = document.querySelectorAll('[name$="-return_pcs"]');
+        totalReturn.forEach(function(element){
+            var returnValue = parseInt(element.value) || 0;
+            var row = element.closest('tr'); 
+            var balance = parseInt(row.querySelector('input[name$="-Balance_pending_to_return_pcs"]').value) || 0;
+            var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
+          
+            var newBalanceQtys = BalanceActualValue + balance;
+             if(returnValue > newBalanceQtys){
+                returnValue = 0;
+                element.value = 0;
+                row.querySelector('input[name$="-qty_to_compare"]').value = BalanceActualValue;
+             }
 
-        var newBalanceQty = balance + balanceActualValue;
-        if (returnValue > newBalanceQty) {
-            returnValue = 0;
-            input.value = 0;
-            row.querySelector('input[name$="-qty_to_compare"]').value = balanceActualValue;
-        }
+            var balanceQtyValue = newBalanceQtys - returnValue;
+            console.log('balanceQty',balanceQtyValue)
+            row.querySelector('input[name$="-qty_to_compare"]').value = balanceQtyValue;
 
-        var balanceQtyValue = newBalanceQty - returnValue;
-        row.querySelector('input[name$="-qty_to_compare"]').value = balanceQtyValue;
-
-        return returnValue;
-    }
-
-    var totalReturnElements = document.querySelectorAll('[name$="-return_pcs"]');
+            total  += returnValue;
     
-    totalReturnElements.forEach(function (element) {
-        if (labourId !== '') {
-            total += calculateReturn(element, "-Balance_pending_to_return_pcs");
-        } else {
-            total += calculateReturn(element, "-pending_to_return_pcs");
-        }
-    });
+        })
 
+    }else{
+        var totalReturnPcs = document.querySelectorAll('[name$="-return_pcs"]');
+
+        totalReturnPcs.forEach(function(input){
+            var returnValue = parseInt(input.value) || 0;
+            var row = input.closest('tr'); 
+            var balance = parseInt(row.querySelector('input[name$="-pending_to_return_pcs"]').value) || 0;
+            var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
+          
+             if(returnValue > balance){
+                returnValue = 0;
+                input.value = 0;
+               row.querySelector('input[name$="-qty_to_compare"]').value = BalanceActualValue;
+             }
+           
+            var balanceQty = balance - returnValue;
+            row.querySelector('input[name$="-qty_to_compare"]').value = balanceQty;
+
+            total  += returnValue;
+    
+        })
+    }
     document.getElementById('id_total_return_pcs').value = total;
-}
+  }
 
   
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
