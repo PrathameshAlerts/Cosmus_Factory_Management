@@ -304,7 +304,8 @@ $(document).ready(function () {
                 $('<td>').text(value.Model_Name || 'N/A'),
                 $('<td>').text(value.Issued_QTY || 'N/A'),
                 $('<td>').text(value.Rec_QTY || 'N/A'),
-                $('<td>').text(value.Balance_QTY || 'N/A')  
+                $('<td>').text(value.Balance_QTY || 'N/A'),
+                $('<input type="hidden" >').value(value.labour_workout_id  || 'N/A')
                 );
                 tables.append(newRows);
             })

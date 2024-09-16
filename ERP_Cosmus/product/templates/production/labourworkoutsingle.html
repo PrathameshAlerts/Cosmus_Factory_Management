@@ -206,6 +206,12 @@
     </form>
 </div>
 <script>
+
+    window.onload = function() {
+        document.forms[0].reset();
+    };
+
+
     var popUpWindow = null;
 function openlabourPopup(button){
     openNewPopup(button, '{% url "ledger-popup-create" %}');
