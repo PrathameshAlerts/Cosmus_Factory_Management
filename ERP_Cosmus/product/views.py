@@ -4130,7 +4130,7 @@ def labourworkincreatelist(request,l_w_o_id):
 
 
 def labourworkincreate(request, l_w_o_id = None, pk = None):
-
+    print(request.POST)
     template_name = 'production/labourworkincreate.html'
 
     # l_w_o_id = create directly
