@@ -4142,6 +4142,9 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
         product_to_item_formset = None
 
+        labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
+            form = labour_work_in_product_to_item_form, extra = 0, can_delete = False)
+
 
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
 
@@ -4222,8 +4225,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                             'qty_to_compare':  instances.labour_w_in_pending,
                         }
                         formset_initial_data.append(initial_data_dict)
-
-
 
                 return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data})
 
