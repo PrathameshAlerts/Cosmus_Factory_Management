@@ -4136,95 +4136,105 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
     # l_w_o_id = create directly
     if l_w_o_id is None:
 
-        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-
-            vendor_name_value = request.GET.get('nameValue')
-
-            if vendor_name_value:
-                selected_vendor_name = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)',name__icontains=vendor_name_value)
-
-    
-
-            vendor_name_dict = None
-
-            if vendor_name_value:
-                vendor_name_dict = {}
-                for record in selected_vendor_name:
-                    vendor_name_dict[record.id] = record.name
-
-            choosed_vendor_name = request.GET.get('itemValue')       
-
-            labour_workout_instance_dict = []
-
-            if choosed_vendor_name:
-                labour_workout_instances = labour_workout_childs.objects.filter(labour_name=choosed_vendor_name)
-                
-                for instance in labour_workout_instances:
-                    dict_to_append = {
-                        'Challan_No': instance.challan_no,
-                        'PO_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
-                        'PO_Total_QTY':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
-                        'Ref_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
-                        'Model_Name':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
-                        'Issued_QTY':'Issued QTY',
-                        'Rec_QTY':'Rec QTY',
-                        'Balance_QTY': 'Balance QTY',
-                        'labour_workout_id': instance.id
-
-                    }
-                    labour_workout_instance_dict.append(dict_to_append)
-
-            labour_work_out_id = request.GET.get('labourWorkOutId')
-            
-            master_initial_data = None
-
-            formset_initial_data = None
-
-
-            if labour_work_out_id:
-
-                labour_work_out_instance = labour_workout_childs.objects.get(id= labour_work_out_id)
-
-                master_initial_data = {
-                    'labour_name': labour_work_out_instance.labour_name.name,
-                    'challan_no' : labour_work_out_instance.challan_no ,
-                    'purchase_order_no' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
-                    'refrence_number' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
-                    'model_name': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
-                    'total_p_o_qty' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
-                    'labour_workout_qty' : labour_work_out_instance.total_process_pcs,
-                    'labour_charges': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
-                    'pending_pcs' :  labour_work_out_instance.labour_workin_pending_pcs}
-
-                product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_work_out_instance)
-
-
-                formset_initial_data = []
-
-                for instances in product_to_item_l_w_in_instance:
-
-                    initial_data_dict = { 
-                        'product_sku': instances.product_sku,
-                        'product_color': instances.product_color,
-                        'L_work_out_pcs': instances.processed_pcs,
-                        'pending_to_return_pcs': instances.labour_w_in_pending,
-                        'return_pcs' : '0',
-                        'qty_to_compare':  instances.labour_w_in_pending,
-                    }
-                    
-                    formset_initial_data.append(initial_data_dict)
-
-
-            return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data})
-
         template_name = 'production/labourworkincreateraw.html'
 
-        master_form = labour_workin_master_form()
+        master_form=None
 
-        labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
-            form = labour_work_in_product_to_item_form,extra=0, can_delete=False)
+        product_to_item_formset = None
+
+
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+
+            try:
+
+                vendor_name_value = request.GET.get('nameValue')
+
+                vendor_name_dict = None
         
-        product_to_item_formset = labour_work_in_product_to_item_formset()
+
+                if vendor_name_value:
+                    selected_vendor_name = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)',name__icontains=vendor_name_value)
+                    vendor_name_dict = {}
+                    for record in selected_vendor_name:
+                        vendor_name_dict[record.id] = record.name
+
+                choosed_vendor_name = request.GET.get('itemValue')       
+
+
+                labour_workout_instance_dict = []
+
+                if choosed_vendor_name:
+
+                    labour_workout_instances = labour_workout_childs.objects.filter(labour_name=choosed_vendor_name)
+                    
+                    for instance in labour_workout_instances:
+                        dict_to_append = {
+                            'Challan_No': instance.challan_no,
+                            'PO_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                            'PO_Total_QTY':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
+                            'Ref_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
+                            'Model_Name':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
+                            'Issued_QTY':'Issued QTY',
+                            'Rec_QTY':'Rec QTY',
+                            'Balance_QTY': 'Balance QTY',
+                            'labour_workout_id': instance.id
+
+                        }
+
+                        labour_workout_instance_dict.append(dict_to_append)
+
+                
+
+                labour_work_out_id = request.GET.get('labourWorkOutId')
+                
+                master_initial_data = None
+
+                formset_initial_data = None
+
+                if labour_work_out_id:
+
+                    labour_work_out_instance = labour_workout_childs.objects.get(id= labour_work_out_id)
+
+                    master_initial_data = {
+                        'labour_name': labour_work_out_instance.labour_name.name,
+                        'challan_no' : labour_work_out_instance.challan_no ,
+                        'purchase_order_no' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                        'refrence_number' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
+                        'model_name': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
+                        'total_p_o_qty' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
+                        'labour_workout_qty' : labour_work_out_instance.total_process_pcs,
+                        'labour_charges': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
+                        'pending_pcs' :  labour_work_out_instance.labour_workin_pending_pcs}
+
+                    product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_work_out_instance)
+
+
+                    formset_initial_data = []
+
+                    for instances in product_to_item_l_w_in_instance:
+
+                        initial_data_dict = { 
+                            'product_sku': instances.product_sku,
+                            'product_color': instances.product_color,
+                            'L_work_out_pcs': instances.processed_pcs,
+                            'pending_to_return_pcs': instances.labour_w_in_pending,
+                            'return_pcs' : '0',
+                            'qty_to_compare':  instances.labour_w_in_pending,
+                        }
+                        formset_initial_data.append(initial_data_dict)
+
+
+
+                return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data})
+
+            except ValueError as ve:
+                    messages.error(request,f'Error Occured - {ve}')
+                    return JsonResponse({'status': f'Error with ajax request - {ve}'}, status=404)
+        
+            except exception as e:
+                messages.error(request,f'Exception Occured - {e}')
+                return JsonResponse({'status': f'Error with ajax request - {e}'}, status=404)
+
 
 
     # on create mode
@@ -4258,7 +4268,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                 'pending_to_return_pcs': instances.labour_w_in_pending,
                 'return_pcs' : '0',
                 'qty_to_compare':  instances.labour_w_in_pending,
-               }
+                'cur_bal_plus_return_qty': instances.labour_w_in_pending 
+                }
             
             formset_initial_data.append(initial_data_dict)
 
@@ -4289,7 +4300,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
             if instance:
                 form.initial['qty_to_compare'] = instance.labour_w_in_pending
-
+                form.initial['cur_bal_plus_return_qty'] =  instance.labour_w_in_pending  + form.instance.return_pcs
         
     if request.method == 'POST':
 
@@ -4304,7 +4315,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
                     # update the labour workin pcs in labour workout model with total return pcs
                     labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
-
 
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.labour_voucher_number.labour_workin_pending_pcs - parent_form.total_return_pcs
 
