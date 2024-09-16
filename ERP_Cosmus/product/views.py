@@ -4223,6 +4223,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                             'pending_to_return_pcs': instances.labour_w_in_pending,
                             'return_pcs' : '0',
                             'qty_to_compare':  instances.labour_w_in_pending,
+                            'cur_bal_plus_return_qty': instances.labour_w_in_pending 
                         }
                         formset_initial_data.append(initial_data_dict)
 
