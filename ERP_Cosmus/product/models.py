@@ -819,6 +819,7 @@ class labour_work_in_master(models.Model):
     created_date = models.DateTimeField(auto_now = True)
     description = models.CharField(max_length=100, null=True, blank=True)
     total_return_pcs = models.IntegerField(null=False, blank=False)
+    total_balance_pcs = models.IntegerField(null=False, blank=False)
     labour_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     other_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,null=False, blank=False)

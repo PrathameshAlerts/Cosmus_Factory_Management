@@ -43,7 +43,7 @@
                         <td>{{record.labour_voucher_number.labour_name.name}}</td>
                         <td>{{record.labour_voucher_number.total_process_pcs}}</td>
                         <td>{{record.total_return_pcs}}</td>
-                        <td>{{record.labour_voucher_number.labour_workin_pending_pcs}}</td>
+                        <td>{{record.total_balance_pcs}}</td>
                         <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
                         <input type="hidden" name="labour_workin_id" value="{{record.id}}" id="id_labour_workin_id">
