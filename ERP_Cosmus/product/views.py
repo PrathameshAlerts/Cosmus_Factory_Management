@@ -4139,7 +4139,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
         template_name = 'production/labourworkincreateraw.html'
 
-        master_form=None
+        master_form = labour_workin_master_form()
 
         product_to_item_formset = None
 
@@ -4208,7 +4208,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
                     product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
 
-                    print(master_initial_data)
+                    
                     formset_initial_data = []
 
                     for instances in product_to_item_l_w_in_instance:
