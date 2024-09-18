@@ -4174,9 +4174,9 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                             'PO_Total_QTY':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
                             'Ref_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
                             'Model_Name':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
-                            'Issued_QTY':'Issued QTY',
-                            'Rec_QTY':'Rec QTY',
-                            'Balance_QTY': 'Balance QTY',
+                            'Issued_QTY':instance.total_process_pcs,
+                            'Rec_QTY':instance.labour_workin_pcs,
+                            'Balance_QTY': instance.labour_workin_pending_pcs,
                             'labour_workout_id': instance.id}
 
                         labour_workout_instance_dict.append(dict_to_append)
