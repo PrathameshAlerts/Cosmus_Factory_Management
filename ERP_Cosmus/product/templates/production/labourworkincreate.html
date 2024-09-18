@@ -111,7 +111,7 @@
         </div>
     <div class="d-flex mb-3">
         <label for="id_description" class="item-form">Naration:</label>
-    <input type="text" class="item-select" name="description" maxlength="100" value="{{master_form.instance.description | default_if_none:''}}" required id="id_description">
+    <input type="text" class="item-select" name="description" maxlength="100" value="{{master_form.instance.description | default_if_none:''}}"  id="id_description">
     </div>
         </div>
         <div class="col-lg-6 mt-4">
@@ -208,6 +208,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     formSubmit();
+    CalculateAmount();
   })
   function formSubmit(){
     var labourId = document.getElementById('id_l_w_in_products-0-id').value;
