@@ -694,14 +694,13 @@ class labour_workin_master_form(forms.ModelForm):
     model_name = forms.CharField()
     total_p_o_qty = forms.IntegerField()
     labour_workout_qty = forms.IntegerField()
-    pending_pcs = forms.IntegerField()
+    
 
     class Meta:
 
         model = labour_work_in_master
         fields = ['voucher_number', 'total_return_pcs', 'labour_charges', 'other_charges', 'amount', 
-                   'description']
-
+                   'description','total_balance_pcs']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

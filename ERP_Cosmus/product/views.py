@@ -2730,51 +2730,52 @@ def product2item(request,product_refrence_id):
             #for common records
             if formset_common.is_valid():
                 try:
-                    for form in formset_common.deleted_forms:
-                        if form.instance.id: # check if there is instance before attempting to delete
-                            deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
+                    with transaction.atomic():
+                        for form in formset_common.deleted_forms:
+                            if form.instance.id: # check if there is instance before attempting to delete
+                                deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
 
-                            for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
-                                p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
-                                logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
-                                p2i_to_delete.delete()
-                            
-                    for form in formset_common: # duplicate item for the product in the form wont give validation error as the old product will be updated instead of creating a new one and raising error of unique values  
-                        if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
-
-                            if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-
-                                for product in Products_all:
-                                    #loop through all the products for each form and get the instance with
-                                    # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
-                                    item = form.cleaned_data['Item_pk']
-                                    
-                                    obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
-                                    
-                                    # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
-                                    if created:
-                                        initial_rows = 0
-
-                                    if not created:
-                                        initial_rows = obj.no_of_rows
-                                    
-                                    obj.no_of_rows = form.cleaned_data['no_of_rows']
-                                    obj.Remark = form.cleaned_data['Remark']
-                                    obj.row_number = form.cleaned_data['row_number']
-                                    logger.info(f"Product to item created/updated common -  {obj.id}")
-                                    obj.save()
+                                for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
+                                    p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
+                                    logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
+                                    p2i_to_delete.delete()
                                 
-                                    # create records in set_prod_item_part_name table with the saved obj as FK 
-                                    rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
-                                    if rows_to_create > 0:
-                                            for row in range(rows_to_create):
-                                                set_prod_item_part_name.objects.create(producttoitem = obj)
-                                                logger.info(f" set prod item part name created of - {obj.id}")
+                        for form in formset_common: # duplicate item for the product in the form wont give validation error as the old product will be updated instead of creating a new one and raising error of unique values  
+                            if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
 
-                                    formset_common_valid = True
+                                if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
 
-                            else:
-                                raise ValidationError('Please select existing Item Name or select from the dropdown')
+                                    for product in Products_all:
+                                        #loop through all the products for each form and get the instance with
+                                        # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
+                                        item = form.cleaned_data['Item_pk']
+                                        
+                                        obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
+                                        
+                                        # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
+                                        if created:
+                                            initial_rows = 0
+
+                                        if not created:
+                                            initial_rows = obj.no_of_rows
+                                        
+                                        obj.no_of_rows = form.cleaned_data['no_of_rows']
+                                        obj.Remark = form.cleaned_data['Remark']
+                                        obj.row_number = form.cleaned_data['row_number']
+                                        logger.info(f"Product to item created/updated common -  {obj.id}")
+                                        obj.save()
+                                    
+                                        # create records in set_prod_item_part_name table with the saved obj as FK 
+                                        rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
+                                        if rows_to_create > 0:
+                                                for row in range(rows_to_create):
+                                                    set_prod_item_part_name.objects.create(producttoitem = obj)
+                                                    logger.info(f" set prod item part name created of - {obj.id}")
+
+                                        formset_common_valid = True
+
+                                else:
+                                    raise ValidationError('Please select existing Item Name or select from the dropdown')
                                     
 
                 except Exception as e:
@@ -4145,16 +4146,14 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
         labour_work_in_product_to_item_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
             form = labour_work_in_product_to_item_form, extra = 0, can_delete = False)
 
-
+        labour_workout_child_instance = None
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-
+            
             try:
-
                 vendor_name_value = request.GET.get('nameValue')
 
                 vendor_name_dict = None
-        
-
+    
                 if vendor_name_value:
                     selected_vendor_name = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)',name__icontains=vendor_name_value)
                     vendor_name_dict = {}
@@ -4167,7 +4166,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                 labour_workout_instance_dict = []
 
                 if choosed_vendor_name:
-
                     labour_workout_instances = labour_workout_childs.objects.filter(labour_name=choosed_vendor_name)
                     
                     for instance in labour_workout_instances:
@@ -4177,16 +4175,12 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                             'PO_Total_QTY':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
                             'Ref_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
                             'Model_Name':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
-                            'Issued_QTY':'Issued QTY',
-                            'Rec_QTY':'Rec QTY',
-                            'Balance_QTY': 'Balance QTY',
-                            'labour_workout_id': instance.id
-
-                        }
+                            'Issued_QTY':instance.total_process_pcs,
+                            'Rec_QTY':instance.labour_workin_pcs,
+                            'Balance_QTY': instance.labour_workin_pending_pcs,
+                            'labour_workout_id': instance.id}
 
                         labour_workout_instance_dict.append(dict_to_append)
-
-                
 
                 labour_work_out_id = request.GET.get('labourWorkOutId')
                 
@@ -4194,24 +4188,27 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
                 formset_initial_data = None
 
-                if labour_work_out_id:
+                labour_workout_child_instance_id = None
 
-                    labour_work_out_instance = labour_workout_childs.objects.get(id= labour_work_out_id)
+                if labour_work_out_id:
+                    labour_workout_child_instance = labour_workout_childs.objects.get(id = labour_work_out_id)
+                    labour_workout_child_instance_id = labour_workout_child_instance.id
 
                     master_initial_data = {
-                        'labour_name': labour_work_out_instance.labour_name.name,
-                        'challan_no' : labour_work_out_instance.challan_no ,
-                        'purchase_order_no' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
-                        'refrence_number' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
-                        'model_name': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
-                        'total_p_o_qty' : labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
-                        'labour_workout_qty' : labour_work_out_instance.total_process_pcs,
-                        'labour_charges': labour_work_out_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
-                        'pending_pcs' :  labour_work_out_instance.labour_workin_pending_pcs}
+                        'labour_name': labour_workout_child_instance.labour_name.name,
+                        'challan_no' : labour_workout_child_instance.challan_no ,
+                        'purchase_order_no' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
+                        'refrence_number' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
+                        'model_name': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
+                        'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
+                        'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
+                        'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
+                        'total_balance_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs
+                        }
 
-                    product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_work_out_instance)
+                    product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
 
-
+                    print(master_initial_data)
                     formset_initial_data = []
 
                     for instances in product_to_item_l_w_in_instance:
@@ -4225,9 +4222,11 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                             'qty_to_compare':  instances.labour_w_in_pending,
                             'cur_bal_plus_return_qty': instances.labour_w_in_pending 
                         }
+
                         formset_initial_data.append(initial_data_dict)
 
-                return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data})
+                return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,
+                                     'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data,'labour_workout_child_instance_id':labour_workout_child_instance_id})
 
             except ValueError as ve:
                     messages.error(request,f'Error Occured - {ve}')
@@ -4252,7 +4251,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
             'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
             'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
             'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
-            'pending_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,  
+            'total_balance_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,  
         }
 
         master_form = labour_workin_master_form(initial=initial_data)
@@ -4302,9 +4301,16 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
             if instance:
                 form.initial['qty_to_compare'] = instance.labour_w_in_pending
-                form.initial['cur_bal_plus_return_qty'] =  instance.labour_w_in_pending  + form.instance.return_pcs
-        
+                form.initial['cur_bal_plus_return_qty'] = instance.labour_w_in_pending  + form.instance.return_pcs
+
+
+
     if request.method == 'POST':
+        
+        labour_workout_child = request.POST.get('labour_workout_child_instance_id')
+
+        if labour_workout_child:
+            labour_workout_child_instance = labour_workout_childs.objects.get(id = int(labour_workout_child))
 
         master_form = labour_workin_master_form(request.POST)
         product_to_item_formset = labour_work_in_product_to_item_formset(request.POST)
@@ -4322,7 +4328,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
                     labour_workout_child_instance.save()
                     parent_form.save()
-
 
                     for form in product_to_item_formset:
 
@@ -4596,10 +4601,10 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
     # fabric report and item report are on the same page only queries are changed
     if fab_id:
         page_id = 'item_page'
+
     else:
         page_id = 'fabric_page'
     
-
     if page_id == 'fabric_page':
         # in all the items in godown get their disticnt fabricgrp items (here we get only the items which are in distint fabric grp) 
         fabric_in_godown = items_in_godown.distinct('Item_shade_name__items__Fabric_Group')
@@ -4616,7 +4621,7 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
         for items in list_fab_grp:
             values = Fabric_Group_Model.objects.filter(id=
                     items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = 
-                    Round(Sum('items__shades__godown_shades__quantity'),2),
+                    Round(Sum('items__shades__godown_shades__quantity'), 2),
                     avg_rate=Round(Avg('items__shades__rate'),2)).first()
 
                     # in query filter fab grp by id then by godown id and annotate total qty of all the items of all fab grp in the godown and avg rate
@@ -4748,7 +4753,7 @@ def godown_item_report(request,shade_id,g_id=None):
             'particular': 'Opening Balance',
             'voucher_type': '',
             'vch_no': '',
-            'inward_quantity': f"{godown_qty.opening_quantity} Mtr",
+            'inward_quantity': f"{godown_qty.opening_quantity}",
             'inward_value': godown_qty.opening_rate * godown_qty.opening_quantity,
             'outward_quantity': '',
             'outward_value': '',
@@ -4764,7 +4769,7 @@ def godown_item_report(request,shade_id,g_id=None):
             'particular': 'Puchase Voucher',
             'voucher_type': purchase_voucher_item_qty.ledger_type,
             'vch_no': purchase_voucher_item_qty.purchase_number,
-            'inward_quantity': f"{purchase_voucher_item_qty.godown_qty_total} Mtr",
+            'inward_quantity': f"{purchase_voucher_item_qty.godown_qty_total}",
             'inward_value': purchase_voucher_item_qty.item_rate * purchase_voucher_item_qty.godown_qty_total,
             'outward_quantity': '',
             'outward_value': '',
@@ -4783,7 +4788,7 @@ def godown_item_report(request,shade_id,g_id=None):
             'vch_no': fabric_cutting_items.voucher_number,
             'inward_quantity': '',
             'inward_value': '',
-            'outward_quantity': f"{fabric_cutting_items.total_comsumption} Mtr",
+            'outward_quantity': f"{fabric_cutting_items.total_comsumption}",
             'outward_value': outward_value,
             'closing_quantity': 0,
             'closing_value': 0,
@@ -4797,7 +4802,7 @@ def godown_item_report(request,shade_id,g_id=None):
             'particular': 'Cutting Room Cancelled',
             'voucher_type': 'Cutting Room',
             'vch_no': fabric_cutting_cancelled_items.voucher_number,
-            'inward_quantity': f"{fabric_cutting_cancelled_items.total_comsumption} Mtr",
+            'inward_quantity': f"{fabric_cutting_cancelled_items.total_comsumption}",
             'inward_value': inward_value,
             'outward_quantity': '',
             'outward_value': '',
@@ -4818,7 +4823,7 @@ def godown_item_report(request,shade_id,g_id=None):
                 'vch_no': record.labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
                 'inward_quantity': '',
                 'inward_value': '',
-                'outward_quantity': f"{record.total_comsumption} Mtr",
+                'outward_quantity': f"{record.total_comsumption}",
                 'outward_value': outward_value,
                 'closing_quantity': 0,
                 'closing_value': 0,
