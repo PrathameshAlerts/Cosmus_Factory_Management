@@ -4361,9 +4361,12 @@ def goods_return_pending_list(request):
     labour_workin_instances = labour_work_in_master.objects.all()
     return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances})
 
-def goods_return_popup_ajax(request):
-    labour_work_in_id = request.GET.get('labourworkinid')
-    print( labour_work_in_id)
+def goods_return_popup(request,pk):
+
+    if pk:
+        pass
+
+    
     return render(request,'production/goods_return_popup.html',{})
 
 #_________________________production-end__________________________________________
