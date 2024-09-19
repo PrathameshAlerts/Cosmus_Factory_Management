@@ -4365,8 +4365,23 @@ def goods_return_popup(request,pk):
 
     if pk:
         labour_workin_instance = labour_work_in_master.objects.get(pk=pk)
-        formset = labour_work_in_product_to_item_approval_formset(instance=labour_workin_instance)
-    
+        formset = labour_work_in_product_to_item_approval_formset(request.POST or None, instance=labour_workin_instance)
+
+        if request.method == 'POST':
+            if formset.is_valid():
+                formset.save()
+                messages.success(request,'Product images sucessfully added.')
+                    
+
+                # JavaScript to close the popup window
+                close_window_script = """
+                <script>
+                window.opener.location.reload(true);  // Reload parent window if needed
+                window.close();  // Close current window
+                </script>
+                """
+                return HttpResponse(close_window_script)
+
     return render(request,'production/goods_return_popup.html',{'formset':formset})
 
 #_________________________production-end__________________________________________
