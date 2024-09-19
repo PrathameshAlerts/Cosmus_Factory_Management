@@ -399,7 +399,7 @@ def pproduct_list(request):
                                             Q(Model_Name__icontains=product_search)|
                                             Q(Product_Refrence_ID__icontains=product_search)|
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
-    print(queryset)
+    
     # Number of items per page
     paginator = Paginator(queryset, 3)  # Show 10 products per page
     
@@ -2306,97 +2306,6 @@ def purchasevoucherdelete(request,pk):
     return redirect('purchase-voucher-list')
                     
 
-def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
-
-    if searched_value:
-        validation_flag = False
-        try:
-            #Dynamic field lookup
-            lookup = {f"{col_name}__iexact": searched_value}
-            check_instance_valid = model_name.objects.get(**lookup)
-            
-            validation_flag = True
-
-        except model_name.DoesNotExist:
-            validation_flag = False
-            
-        except Exception as e:
-            return JsonResponse({f'Status':'Exception Occoured - {e}'}, status=404)
-        
-        return JsonResponse({'validation_flag':validation_flag})
-    else:
-        return JsonResponse({f'Status':'No data recieved - {e}'}, status=404)
-
-
-
-def UniqueValidCheckAjax(request):
-    searched_from = request.GET.keys()
-
-    if 'purchase_number' in searched_from:
-        searched_value = request.GET.get('purchase_number').strip()
-        model_name = item_purchase_voucher_master
-        col_name = 'purchase_number'
-
-    if 'new_order_number' in searched_from:
-        searched_value = request.GET.get('new_order_number').strip()
-        model_name = purchase_order
-        col_name = 'purchase_order_number'
-
-    elif 'cutting_order_number' in searched_from:
-        searched_value = request.GET.get('cutting_order_number').strip()
-        model_name = purchase_order_raw_material_cutting
-        col_name = 'raw_material_cutting_id'
-
-    elif 'labour_workout_challan_no' in searched_from:
-        searched_value = request.GET.get('labour_workout_challan_no').strip()
-        model_name = labour_workout_childs
-        col_name = 'challan_no'
-
-    elif 'item_name' in searched_from:
-        searched_value = request.GET.get('item_name').strip()
-        model_name = Item_Creation
-        col_name = 'item_name'
-
-    elif 'item_material_code' in searched_from:
-        searched_value = request.GET.get('item_material_code').strip()
-        model_name = Item_Creation
-        col_name = 'Material_code'
-    
-    elif 'voucher_number' in searched_from:
-        searched_value = request.GET.get('voucher_number').strip()
-        model_name = labour_work_in_master
-        col_name = 'voucher_number'
-
-    else:
-        model_name = None
-        searched_value = None
-        col_name = None
-
-
-    return CheckUniqueFieldDuplicate(model_name,searched_value,col_name)
-
-
-            
-        
-
-def session_data_test(request):
-    # if request.session['openingquantitytemp']:
-    #     openingquantitytemp = request.session['openingquantitytemp']
-    # else:
-    #     openingquantitytemp == None
-
-
-
-    # Get all data from the session
-    session_data = request.session
-    
-    # Now session_data contains all data stored in the session
-    # You can access individual items using dictionary-like syntax
-    for key, value in session_data.items():
-        print(f"Key: {key}, Value: {value}")
-
-    context = {}
-    return render(request,'misc/session_test.html',context=context)
 
 
 #__________________________purchase voucher end__________________________
@@ -4445,8 +4354,17 @@ def labourworkinsingledeleteajax(request):
         
     else:
         return JsonResponse({'status': 'Invalid request method.'}, status=405)
-            
 
+
+
+def goods_return_pending_list(request):
+    labour_workin_instances = labour_work_in_master.objects.all()
+    return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances})
+
+def goods_return_popup_ajax(request):
+    labour_work_in_id = request.GET.get('labourworkinid')
+    print( labour_work_in_id)
+    return render(request,'production/goods_return_popup.html',{})
 
 #_________________________production-end__________________________________________
 
@@ -4577,7 +4495,95 @@ def itemdynamicsearchajax(request):
 
 
 
+def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
 
+    if searched_value:
+        validation_flag = False
+        try:
+            #Dynamic field lookup
+            lookup = {f"{col_name}__iexact": searched_value}
+            check_instance_valid = model_name.objects.get(**lookup)
+            
+            validation_flag = True
+
+        except model_name.DoesNotExist:
+            validation_flag = False
+            
+        except Exception as e:
+            return JsonResponse({f'Status':'Exception Occoured - {e}'}, status=404)
+        
+        return JsonResponse({'validation_flag':validation_flag})
+    else:
+        return JsonResponse({f'Status':'No data recieved - {e}'}, status=404)
+
+
+
+def UniqueValidCheckAjax(request):
+    searched_from = request.GET.keys()
+
+    if 'purchase_number' in searched_from:
+        searched_value = request.GET.get('purchase_number').strip()
+        model_name = item_purchase_voucher_master
+        col_name = 'purchase_number'
+
+    if 'new_order_number' in searched_from:
+        searched_value = request.GET.get('new_order_number').strip()
+        model_name = purchase_order
+        col_name = 'purchase_order_number'
+
+    elif 'cutting_order_number' in searched_from:
+        searched_value = request.GET.get('cutting_order_number').strip()
+        model_name = purchase_order_raw_material_cutting
+        col_name = 'raw_material_cutting_id'
+
+    elif 'labour_workout_challan_no' in searched_from:
+        searched_value = request.GET.get('labour_workout_challan_no').strip()
+        model_name = labour_workout_childs
+        col_name = 'challan_no'
+
+    elif 'item_name' in searched_from:
+        searched_value = request.GET.get('item_name').strip()
+        model_name = Item_Creation
+        col_name = 'item_name'
+
+    elif 'item_material_code' in searched_from:
+        searched_value = request.GET.get('item_material_code').strip()
+        model_name = Item_Creation
+        col_name = 'Material_code'
+    
+    elif 'voucher_number' in searched_from:
+        searched_value = request.GET.get('voucher_number').strip()
+        model_name = labour_work_in_master
+        col_name = 'voucher_number'
+
+    else:
+        model_name = None
+        searched_value = None
+        col_name = None
+
+
+    return CheckUniqueFieldDuplicate(model_name,searched_value,col_name)
+
+
+            
+        
+
+def session_data_test(request):
+    # if request.session['openingquantitytemp']:
+    #     openingquantitytemp = request.session['openingquantitytemp']
+    # else:
+    #     openingquantitytemp == None
+
+    # Get all data from the session
+    session_data = request.session
+    
+    # Now session_data contains all data stored in the session
+    # You can access individual items using dictionary-like syntax
+    for key, value in session_data.items():
+        print(f"Key: {key}, Value: {value}")
+
+    context = {}
+    return render(request,'misc/session_test.html',context=context)
 
 #__________________________reports-start_________________________________
 

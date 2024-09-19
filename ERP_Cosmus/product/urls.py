@@ -213,6 +213,9 @@ urlpatterns = [
 
     path('labourworkinsingledelete/',views.labourworkinsingledeleteajax, name = 'labour-workin-single-delete'),
 
+    path('goodsreturnlist/',views.goods_return_pending_list, name = 'goods-return-list'),
+    path('goodsreturnpopupajax/',views.goods_return_popup_ajax, name = 'goods_return_popup_ajax'),
+
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
