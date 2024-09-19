@@ -40,9 +40,9 @@
 
 <script>
     var popupPage = null;
-function approvedGoodsReturn(){
+function approvedGoodsReturn(button){
     if (popupPage === null || popupPage.closed) {
-      newPopup(button, 'purchaseordercuttingpopup/')
+      newPopup(button, 'goodsreturnpopup/')
     } else {
       popupPage.focus();
     }
@@ -56,8 +56,6 @@ function approvedGoodsReturn(){
     var minWidth = 800; // minimum width
     var minHeight = 600;
 
-    //$('body').addClass('popup-open');
-    //$('body').append('<div class="popup-overlay"></div>');
 
     // this will generate http://127.0.0.1:8000/ 
     var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
