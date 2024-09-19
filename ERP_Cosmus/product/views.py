@@ -47,7 +47,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                     CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, cutting_room_form,
-                       factory_employee_form, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -4364,10 +4364,10 @@ def goods_return_pending_list(request):
 def goods_return_popup(request,pk):
 
     if pk:
-        pass
-
+        labour_workin_instance = labour_work_in_master.objects.get(pk=pk)
+        formset = labour_work_in_product_to_item_approval_formset(instance=labour_workin_instance)
     
-    return render(request,'production/goods_return_popup.html',{})
+    return render(request,'production/goods_return_popup.html',{'formset':formset})
 
 #_________________________production-end__________________________________________
 
