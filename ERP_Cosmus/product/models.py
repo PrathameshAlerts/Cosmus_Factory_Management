@@ -833,6 +833,7 @@ class labour_work_in_product_to_item(models.Model):
     L_work_out_pcs = models.IntegerField()
     return_pcs = models.IntegerField()
     pending_to_return_pcs = models.IntegerField()
+    approved_qty = models.IntegerField(default=0)
 
 
 # reports
