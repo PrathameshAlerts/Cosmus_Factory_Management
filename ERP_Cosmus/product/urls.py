@@ -212,8 +212,6 @@ urlpatterns = [
     path('labourworkinrawcreate/',views.labourworkincreate, name ='labour-workin-create-raw'),
 
     path('labourworkinsingledelete/',views.labourworkinsingledeleteajax, name = 'labour-workin-single-delete'),
-    
-
 
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),

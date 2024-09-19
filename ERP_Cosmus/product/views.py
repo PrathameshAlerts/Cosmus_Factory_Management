@@ -4129,9 +4129,9 @@ def labourworkincreatelist(request,l_w_o_id):
                                                                  'labour_workin_instances':labour_workin_instances})
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def labourworkincreate(request, l_w_o_id = None, pk = None):
-    print(request.POST)
+    
     template_name = 'production/labourworkincreate.html'
 
     # l_w_o_id = create directly

@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="POST" id="cuttingOrderForm">
+<form method="POST" id="cuttingOrderForm"  autocomplete="off">
     
     {% csrf_token %}
     <div class="row">
@@ -629,6 +629,12 @@ cuttingBalanceQty()
         cuttingOrder();
         cuttingBalanceQty();
         balanceQty();
+    });
+
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            document.forms[0].reset();
+        }
     });
 </script>
 {% endblock %}
