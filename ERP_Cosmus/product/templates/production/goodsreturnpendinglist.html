@@ -28,7 +28,7 @@
                 <td>{{record.labour_voucher_number.total_process_pcs}}</td>
                 <td>{{record.total_return_pcs}}</td>
                 <td>{{record.total_balance_pcs}}</td>
-                <td>approve</td>
+                <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
                 <input type="hidden" name = "labour_work_in" value="{{record.id}}">
             </tr>
             {% endfor %}
@@ -38,5 +38,30 @@
 
 </div>
 
+<script>
+    var popupPage = null;
+function approvedGoodsReturn(button){
+    if (popupPage === null || popupPage.closed) {
+      newPopup(button, 'goodsreturnpopup/')
+    } else {
+      popupPage.focus();
+    }
+}
 
+
+  function newPopup(button, path) {
+ 
+    var goodsId = $(button).closest('tr').find('input').val();
+   
+    var minWidth = 800; // minimum width
+    var minHeight = 600;
+
+
+    // this will generate http://127.0.0.1:8000/ 
+    var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+    popupPage = window.open(baseUrl + path + goodsId, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+
+   
+  }
+</script>
 {% endblock %}

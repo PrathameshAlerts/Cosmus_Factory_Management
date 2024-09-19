@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="post" class="mt-2" id="labourWorkInForm">
+<form method="post" class="mt-2" id="labourWorkInForm" autocomplete="off">
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-5">
@@ -143,23 +143,13 @@
                     </thead>
                     <tbody class="mainTableList">
                       
-                      
                      
                     </tbody>
                 </table>
                 
                 <div class="d-flex mb-3">
                     <label for="id_total_balance_pcs" class="item-form">Pending Pcs:</label>
-    
-                    {% if not master_form.instance.id %}
                     <input type="number" class="item-select" name="total_balance_pcs" value="{{ master_form.total_balance_pcs.initial | default_if_none:'' }}"  required id="id_total_balance_pcs" readonly style="outline-color: blue;">
-    
-                    {% else %}
-                    <input type="number" class="item-select" name="total_balance_pcs"
-                        value="{{ master_form.instance.total_balance_pcs }}" required id="id_total_balance_pcs" readonly style="outline-color: blue;">
-    
-                    {% endif %}
-    
                 </div>
                 <div class="d-flex mb-3">
                     <label for="id_total_return_pcs" class="item-form">Total Return Pcs:</label>
@@ -185,7 +175,7 @@
                 </div>
                 <div class="d-flex mb-3">
                     <label for="id_amount" class="item-form">Amount:</label>
-                <input type="number" class = "item-select" name="amount" step="0.01" value="{{master_form.instance.amount |default_if_none:''}}" required id="id_amount">
+                <input type="number" class = "item-select" name="amount" step="0.01" value="{{master_form.instance.amount |default_if_none:''}}" required id="id_amount" readonly>
                 </div>
                 <input type="hidden" id="childId" name="labour_workout_child_instance_id" value="">
             </div>
@@ -205,6 +195,15 @@
         document.getElementById('id_amount').value = amounts
     }
 
+    function totalValueCheck(){
+    var totalValue = parseInt(document.getElementById('id_total_return_pcs').value);
+    var submitFomValue = document.getElementById('id_submit');
+    if(totalValue === 0){
+        submitFomValue.disabled = true;
+    }else{
+        submitFomValue.disabled = false;
+    }
+  }
 $(document).ready(function () {
     let enterValue = false;
     let index = 0; //  index outside of the event listener
@@ -570,23 +569,12 @@ function CalculateTotalValue() {
 
     document.getElementById('id_total_return_pcs').value = total;
 }
+window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            document.forms[0].reset();
+        }
+    });
+
 </script>
 
-
-<script>
-    document.addEventListener("DOMContentLoaded", function(){
-    //     const targetDate = document.getElementById('id_GRN_Date');
-    //     const dates = new Date().toISOString().split('T')[0];
-    //     const currentDate = new Date();
-    //     const years = currentDate.getFullYear()
-    //     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    //     const day = String(currentDate.getDate()).padStart(2, '0');
-    //     const formattedDate = `${years}-${month}-${day}`;
-    //     targetDate.setAttribute('min', formattedDate);
-    //     targetDate.value = formattedDate;
-        
-     })
-   
-    
-</script>
 {% endblock %}
