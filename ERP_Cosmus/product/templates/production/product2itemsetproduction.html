@@ -3,7 +3,7 @@
 {% block body %}
 
 <h5 class="me-5">Product Refrence No : <span class="text-capitalize text-danger">{{product_refrence_no}}</span></h5>
-<form method="post" enctype="multipart/form-data" id="myProductForm">
+<form method="post" enctype="multipart/form-data" id="myProductForm" autocomplete="off">
     {% csrf_token %}
     <div class="d-flex">
         <h4 class="mb-3">Add Unique Product</h3>
@@ -1179,5 +1179,6 @@ document.querySelector('#myProductForm').addEventListener('submit', function() {
   
         submitFormRowNumber();
 });
+ 
 </script>
 {% endblock body %}

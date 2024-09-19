@@ -9,7 +9,7 @@
 {% endif %}
 <div class="row">
 <div class="col-lg-5">
-  <form method="POST" enctype="multipart/form-data">
+  <form method="POST" enctype="multipart/form-data" autocapitalize="off">
     {% csrf_token %}
     <input type="hidden" name="id" value="{{form.instance.id}}" id="id_items">
     <div class="d-flex mb-3">

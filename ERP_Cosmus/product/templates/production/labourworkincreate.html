@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="post" class="mt-2" id="labourWorkInForm">
+<form method="post" class="mt-2" id="labourWorkInForm" autocomplete="off">
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-5">
@@ -209,7 +209,19 @@
     document.addEventListener("DOMContentLoaded", function () {
     formSubmit();
     CalculateAmount();
+    totalValueCheck();
   })
+
+  function totalValueCheck(){
+    var totalValue = parseInt(document.getElementById('id_total_return_pcs').value);
+    var submitFomValue = document.getElementById('id_submit');
+    if(totalValue === 0){
+        submitFomValue.disabled = true;
+    }else{
+        submitFomValue.disabled = false;
+    }
+  }
+  
   function formSubmit(){
     var labourId = document.getElementById('id_l_w_in_products-0-id').value;
     var total = 0;
@@ -275,7 +287,7 @@
     document.querySelectorAll('[name$="-return_pcs"]').forEach(function(element){
         element.addEventListener('input', function(){
             formSubmit();
-      
+            totalValueCheck();  
         }
         
         );
@@ -313,5 +325,10 @@
             })
         })
     })
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            document.forms[0].reset();
+        }
+    });
 </script>
 {% endblock %}

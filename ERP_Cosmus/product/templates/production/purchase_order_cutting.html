@@ -339,6 +339,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function processValueCheck(){
+    var processValues = parseInt(document.getElementById('id_processed_qty').value);
+    var submitForm = document.getElementById('id_submit');
+    console.log(processValues);
+    if(processValues === 0){
+       
+        submitForm.disabled = true;
+        
+    }else{
+        submitForm.disabled = false;
+ 
+    }
+}
 function checkOnlyOne(checkbox) {
     var rowDiv = checkbox.closest('.checkBox-row');
     var checkboxes = rowDiv.querySelectorAll('input[type="checkbox"]');
@@ -622,6 +635,7 @@ cuttingBalanceQty()
                 submitForm();
                 balanceQty();
                 cuttingBalanceQty()
+                processValueCheck();
             });
         })
         submitForm();
@@ -629,6 +643,7 @@ cuttingBalanceQty()
         cuttingOrder();
         cuttingBalanceQty();
         balanceQty();
+        processValueCheck();
     });
 
     window.addEventListener("pageshow", function(event) {

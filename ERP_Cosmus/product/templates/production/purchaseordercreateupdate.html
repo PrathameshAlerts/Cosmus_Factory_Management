@@ -4,7 +4,7 @@
 {% block body %}
 
 <div class="mt-2" id="create_form">
-    <form action="" method="POST" style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
+    <form action="" method="POST" style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;" autocomplete="off">
         <h3 class="mb-3">New Order</h3>
 
         {% csrf_token %}
@@ -125,11 +125,7 @@
             </table>
          
             <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="Submit" id="id_submit_2">
-            <!-- {% if form.instance.id %}
-            {% if form.instance.process_status != '1' %}
-            <button type="button" class="add_btn rounded-2" id="id_next"><a class="text-decoration-none text-white" href="{% url 'purchase-order-rawmaterial' form.instance.id form.instance.product_reference_number.Product_Refrence_ID %}">Next</a></button>
-            {% endif %}
-            {% endif %} -->
+   
         </form>
     </div>
     <div class="col-lg-6 mt-3" id="images-conatiner" style="display: none;">
@@ -195,8 +191,6 @@
         dateInput.min = today;
        
        
-   
-       
         // this script is for other form submit buttons hide and show when first form submit 
         const id = document.getElementById('id_productRow').value ;
         const totalPoQty = document.getElementById('id_number_of_pieces').value;
@@ -217,15 +211,6 @@
             refrenceId.disabled = true;
             godownId.disabled = true;
             imageContainer.style.display = 'block';
-
-            // backbutton.addEventListener('click', function () {
-            //     main_form.style.display = 'none';
-            //     submitBtn.style.display = 'block';
-            //     orderNo.readOnly = false;;
-            //     productOderQty.readOnly = false;
-            //     refrenceId.disabled = false;
-            //     godownId.disabled = false;
-            // });
         }
 
         function IdsValueCalculate(){
@@ -313,38 +298,46 @@
         updateTotalQuantity({ target: null });
     });
 
-    //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
+    $(document).ready(function(){
+        //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
     $(document).on('click', '.delete-btn', function () {
 
-        const tableRows = $('#productTable tbody tr');
+const tableRows = $('#productTable tbody tr');
+
+if (tableRows.length > 1) {
+    const row = $(this).closest('tr');
+    const checkbox = row.find('.godown_delete[name^="p_o_to_products-"][name$="-DELETE"]');
+    const checkDeleteBox = row.find('.purchaseOderDelete').val();
+  
+    if(checkDeleteBox === "True"){
+        alert('Can not delete the purchase order');
+  
+        return false;
+    }else{
+        checkbox.prop('checked', true);
+          checkbox.val('true');
+
+    if (checkbox.val() == 'true') {
+        row.hide();
+        deleteRowCalculate();
+    }
+    }
     
-        if (tableRows.length > 1) {
-            const row = $(this).closest('tr');
-            const checkbox = row.find('.godown_delete[name^="p_o_to_products-"][name$="-DELETE"]');
-            const checkDeleteBox = row.find('.purchaseOderDelete').val();
-          
-            if(checkDeleteBox === "True"){
-                alert('Can not delete the purchase order');
-          
-                return false;
-            }else{
-                checkbox.prop('checked', true);
-                  checkbox.val('true');
+} else {
+    alert('The table must have at least one godown item');
+}
 
-            if (checkbox.val() == 'true') {
-                row.hide();
-                deleteRowCalculate();
-            }
-            }
-            
-        } else {
-            alert('The table must have at least one godown item');
+});
+$(document).on('focus','.oderedValues' , function (){
+    $(this).prop('readonly', false);
+}) ;
+    })
+    
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            document.forms[0].reset();
         }
-
     });
-    $(document).on('focus','.oderedValues' , function (){
-            $(this).prop('readonly', false);
-    }) 
 
 </script>
 
