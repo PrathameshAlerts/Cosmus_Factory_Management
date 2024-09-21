@@ -27,6 +27,12 @@
           {% endif %}
         </select>
       </div>
+      {% if request.user.is_superuser %}
+      <div>
+        <input type="hidden" name="company" id="id_companyValue" value="" >
+      </div>
+        {% endif %}
+      
       <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
     </form>
   </div>

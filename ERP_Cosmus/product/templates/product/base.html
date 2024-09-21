@@ -32,7 +32,7 @@
 
   <!-- Select2 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  
+ 
   <title id="headerTitle">Cosmus-ERP</title>
 </head>
 
@@ -216,8 +216,21 @@
          </ul>  
          </li> 
         
-         <div class="nav-item pt-4 mx-3">
-          <span class="text-danger fw-bold">{{request.user.username}}</span>
+         <div>
+          {% if request.user.is_superuser %}
+          <div>
+              <label for="id_company">Select Company</label>
+              <select name="company" id="id_company">
+                  <option value="" selected>---------</option>
+                  {% for company in companies %}
+                      <option value="{{ company.id }}">{{ company.name }}</option>
+                  {% endfor %}
+              </select>
+          </div>
+      {% endif %}
+         </div>
+         <div class="nav-item my-3 mx-3">
+          <span>{{request.user.username}}</span>
           <span>{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>
 
          </div>
@@ -504,7 +517,16 @@
 <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
 
 <script>
+document.addEventListener('DOMContentLoaded',function(){
 
+  document.getElementById('id_company').addEventListener('change',function(el){
+    console.log(el.target.value);
+    var company = el.target.value;
+    var valueInsertData = document.getElementById('id_companyValue');
+    console.log(valueInsertData);
+    valueInsertData.value = company;
+  })
+})
   // This function is used to hide the error message
   window.onload = function() {
     var errorMessage = document.getElementById('errorform');

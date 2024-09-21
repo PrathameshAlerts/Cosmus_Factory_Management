@@ -12,7 +12,7 @@ def list_company_users(request):
     if not request.user.is_staff:
         return redirect('permission_denied')
 
-    company_users = CustomUser.objects.filter(company=request.user.company)
+    company_users = CustomUser.objects.filter(company=request.user.company,is_superuser=False)
     return render(request, 'core/company_users_list.html', {'users': company_users})
 
 
@@ -25,7 +25,7 @@ def create_company_user(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.company = request.user.company  # set the user to the current admin's company
+            user.company = request.user.company  #set the user to the current admin's company
             user.save()
             return redirect('list_company_users')
     else:
@@ -39,10 +39,10 @@ def edit_company_user(request, user_id):
     if not request.user.is_staff:
         return redirect('permission_denied')
 
-    user = get_object_or_404(CustomUser, id=user_id, company=request.user.company)
+    user = get_object_or_404(CustomUser, id = user_id, company = request.user.company)
 
     if request.method == 'POST':
-        form = UserChangeForm(request.POST, instance=user)
+        form = UserChangeForm(request.POST, instance = user)
         if form.is_valid():
             form.save()
             return redirect('list_company_users')

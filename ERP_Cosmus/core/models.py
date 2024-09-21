@@ -5,8 +5,6 @@ from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 
 
-
-
 class Company(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -110,15 +108,6 @@ def update_user_groups_on_role_change(sender, instance, action, **kwargs):
     """
     if action in ["post_add", "post_remove", "post_clear"]:
         CustomUser.objects.update_user_groups(instance)  # Accessing manager from class, not instance
-
-
-
-
-
-
-
-
-
 
 
 
