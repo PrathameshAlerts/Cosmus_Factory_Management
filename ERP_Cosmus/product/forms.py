@@ -23,6 +23,7 @@ logger = logging.getLogger('product_forms')
 
 # notes in notes/customuserandcompany.txt
 class CompanyBaseForm(forms.ModelForm):
+
     """
     A base form that handles company assignment based on the user's role.
     """
@@ -39,6 +40,9 @@ class CompanyBaseForm(forms.ModelForm):
         if not self.user.is_superuser:
             instance.c_user = self.user 
             instance.company = self.user.company
+        # For super users, the company is assigined in form which is selected from dropdown
+        else:
+            instance.c_user = self.user
         
         # if commit if performed
         if commit:
@@ -292,13 +296,12 @@ class account_sub_grp_form(UniqueFieldMixin,forms.ModelForm):
         return self.clean_unique_field('account_sub_group',AccountSubGroup)
 
 
-class StockItemForm(CompanyUniqueFieldMixin,CompanyBaseForm):
+class StockItemForm(CompanyBaseForm):
     class Meta:
         model = StockItem
-        fields = ['acc_sub_grp','stock_item_name', 'company'] # Include company for superusers
+        fields = ['acc_sub_grp','stock_item_name','company'] # Include company for superusers
 
-    def clean_stock_item_name(self):
-        return self.clean_unique_field('stock_item_name',StockItem)
+
 
 
 class ledger_types_form(forms.ModelForm):

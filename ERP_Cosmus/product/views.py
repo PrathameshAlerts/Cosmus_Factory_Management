@@ -1332,7 +1332,7 @@ def account_sub_group_delete(request, pk):
 
 
 def stock_item_create_update(request,pk=None):
-
+    print(request.POST)
     if pk:
         instance = get_object_or_404(StockItem ,pk=pk)
         title = 'Stock Item Update'
@@ -1343,22 +1343,29 @@ def stock_item_create_update(request,pk=None):
     if request.user.is_superuser:
         stocks = StockItem.objects.all()
     else:
-        stocks = StockItem.objects.filter(c_user__company = request.user.company)
-
+        stocks = StockItem.objects.filter(company = request.user.company)
+   
     accsubgrps = AccountSubGroup.objects.all()
 
     form = StockItemForm(instance = instance, user = request.user)
+
     if request.method == 'POST':
+        
         form = StockItemForm(request.POST ,instance=instance, user=request.user)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
 
-            if pk:
-                messages.success(request, 'Stock item updated sucessfully')
-            else:
-                messages.success(request, 'Stock item created sucessfully')
+                if pk:
+                    messages.success(request, 'Stock item updated sucessfully')
+                else:
+                    messages.success(request, 'Stock item created sucessfully')
 
-            return redirect('stock-item-create')
+                return redirect('stock-item-create')
+            except ValidationError as ve:
+                messages.error(request, f'{ve}')
+            except exception as e:
+                messages.error(request,f'{e}')
 
         else:
             return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',

@@ -26,7 +26,7 @@ class CompanyBaseModel(models.Model):
     def save(self, *args, **kwargs):
         # Check if the user is not a superuser
         if self.c_user and not self.c_user.is_superuser:
-            # Automatically assign company if it's not already set and the user has a company
+            # Automatically assign company if it's not already set and the user has a company (failsafe option)
             if not self.company:
                 self.company = self.c_user.company
         
@@ -438,6 +438,15 @@ class StockItem(CompanyBaseModel):
 
     def account_sub_group(self):
         return self.acc_sub_grp.account_sub_group
+    
+    def save(self, *args, **kwargs):
+
+        # Exclude current instance from the validation check
+        existing_objects = StockItem.objects.exclude(id=self.id)
+        if existing_objects.filter(stock_item_name__iexact = self.stock_item_name, company = self.company):
+             raise ValidationError(f'{self.stock_item_name} already exists!')
+
+        return super().save(*args, **kwargs)
     
 
 class ledgerTypes(models.Model):

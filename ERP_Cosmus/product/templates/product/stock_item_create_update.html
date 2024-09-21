@@ -56,6 +56,9 @@
                 <th>No</th>
                 <th>Sub Group</th>
                 <th>Stock Item</th>
+                {% if request.user.is_superuser %}
+                <th>Location</th>
+                {% endif %}
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
@@ -66,6 +69,9 @@
                 <td>{{items.id}}</td>
                 <td>{{items.account_sub_group}}</td>
                 <td>{{items.stock_item_name}}</td>
+                {% if request.user.is_superuser %}
+                <td>{{items.company}}</td>
+                {% endif %}
                 <td><a href="{% url 'stock_item-update' items.id  %}"><i class="fa-solid fa-pen-to-square px-1"></a></td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ items.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
               </tr>
