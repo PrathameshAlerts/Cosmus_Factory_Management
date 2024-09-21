@@ -1573,6 +1573,10 @@ def godowncreate(request):
             try:
                 godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
                 godown_raw.c_user = request.user
+                godown_raw.company = request.user.company
+                if request.user.is_superuser:
+                    godown_raw.company = request.POST['company']
+
                 godown_raw.save()  #save the instance to db 
                 messages.success(request,'Raw material godown created.')
 
@@ -1593,6 +1597,11 @@ def godowncreate(request):
             try:
                 godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
                 godown_finished.c_user = request.user
+
+                godown_finished = request.user.company
+                if request.user.is_superuser:
+                    godown_finished.company = request.POST['company']
+
                 godown_finished.save() #save the instance to db 
                 messages.success(request,'Finished goods godown created.')
 

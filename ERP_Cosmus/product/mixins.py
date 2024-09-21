@@ -18,9 +18,9 @@ class UniqueFieldMixin:
 class CompanyUniqueFieldMixin:
     def clean_unique_field(self,field_name,model_class):
         data = self.cleaned_data.get(field_name)
-
-         # Exclude current instance from the validation check
-        existing_objects = model_class.objects.exclude(id=self.instance.id,c_user__company = self.user.company)
+        print(self)
+        # Exclude current instance from the validation check
+        existing_objects = model_class.objects.exclude(id=self.instance.id)
         
         if existing_objects.filter(**{f"{field_name}__iexact": data}).exists():
             raise ValidationError(f'{field_name.replace("_", " ").capitalize()} already exists!')

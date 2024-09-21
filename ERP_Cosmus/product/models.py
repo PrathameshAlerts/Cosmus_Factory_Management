@@ -493,9 +493,11 @@ class account_credit_debit_master_table(models.Model):
 
 
 
-class Godown_raw_material(models.Model):
-    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
+class Godown_raw_material(CompanyBaseModel):
     godown_name_raw = models.CharField(max_length = 225, unique= True)
+
+    class Meta:
+        unique_together = [['godown_name_raw','company']]
 
     def __str__(self) -> str:
         return self.godown_name_raw      
@@ -503,8 +505,13 @@ class Godown_raw_material(models.Model):
     def save(self, *args, **kwargs):
         existing_objects = Godown_raw_material.objects.exclude(id = self.id)
 
-        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw,c_user__company=self.c_user.company).exists():
-            raise ValidationError(f'{self.godown_name_raw} already exists!')
+        if self.user.is_superuser:
+            if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw,company=self.company).exists():
+                raise ValidationError(f'{self.godown_name_raw} already exists!')
+        else:
+            if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw,c_user__company=self.c_user.company).exists():
+                raise ValidationError(f'{self.godown_name_raw} already exists!')
+
 
         super().save(*args, **kwargs)
 
@@ -526,10 +533,13 @@ class item_shades_godown_report(models.Model):
 
 
 
-class Godown_finished_goods(models.Model):
-    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
+class Godown_finished_goods(CompanyBaseModel):
+    
     godown_name_finished = models.CharField(max_length = 225)
 
+
+    class Meta:
+        unique_together = [['godown_name_finished','company']]
 
     def save(self,*args, **kwargs):
         existing_objects = Godown_finished_goods.objects.exclude(id=self.id)
