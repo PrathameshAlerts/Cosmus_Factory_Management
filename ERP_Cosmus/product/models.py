@@ -5,13 +5,40 @@ from django.forms import ValidationError
 from multiselectfield import MultiSelectField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
+from core.models import Company
 
 
-
+CustomUserModel = settings.AUTH_USER_MODEL
 DECIMAL_PLACE_CONSTANT = 3
 
 
+
+class CompanyBaseModel(models.Model):
+    """
+    An abstract base model to be inherited by all models that need company-level isolation.
+    """
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, null=True, blank=True)
+    
+    class Meta:
+        abstract = True  # This will be used as an abstract base class
+
+    def save(self, *args, **kwargs):
+        # Check if the user is not a superuser
+        if self.c_user and not self.c_user.is_superuser:
+            # Automatically assign company if it's not already set and the user has a company
+            if not self.company:
+                self.company = self.c_user.company
+        
+        # Ensure company is assigned before saving, even for superusers
+        if not self.company:
+            raise ValidationError('Company must be specified.')
+
+        super().save(*args, **kwargs)
+
+
 class MainCategory(models.Model):
+    
     product_category_name = models.CharField(max_length = 250, unique = True)
 
     def __str__(self):
@@ -51,7 +78,7 @@ class Product2SubCategory(models.Model):
     
 
 class Color(models.Model):
-    color_name = models.CharField( max_length=255, unique= True, null = False, blank = False)
+    color_name = models.CharField(max_length=255, unique= True, null = False, blank = False)
     
     class Meta:
         ordering = ["color_name"]
@@ -236,6 +263,7 @@ class ProductImage(models.Model):
         ("Model Image", 'Model Image'),
         ("Catalogue Image","Catalogue Image"),
     ]
+
     
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productimages')
     Image = models.ImageField(upload_to ='product/images', blank=True)
@@ -253,7 +281,6 @@ class Product_A_plus_content(models.Model):
         ('1260 * 200','1260 * 200'),
         ('1080 * 720','1080 * 720'),
     ]
-
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productaplus')
     heading = models.CharField(max_length = 255)
     details = models.TextField()
@@ -319,7 +346,6 @@ class Item_Creation(models.Model):
         ("Non Fabric","Non Fabric"),
         ]
 
-    #need to add many to many field to vendor 
     item_name = models.CharField(unique = True, null=False, max_length = 255)
     Material_code = models.CharField(max_length = 255, unique=True, null=False, blank=False)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
@@ -383,7 +409,7 @@ class opening_shade_godown_quantity(models.Model):
     opening_purchase_voucher_godown_item = models.ForeignKey(item_color_shade, on_delete = models.CASCADE)
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
     opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    opening_rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    opening_rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
     created_date = models.DateTimeField(auto_now = True)
     modified_date_time = models.DateTimeField(auto_now_add = True)
 
@@ -401,11 +427,14 @@ class AccountSubGroup(models.Model):
         return self.acc_grp.account_group
 
 
-class StockItem(models.Model):
+class StockItem(CompanyBaseModel):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
-    stock_item_name = models.CharField(max_length= 150 ,unique= True)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    stock_item_name = models.CharField(max_length= 150)
+    created_date = models.DateTimeField(auto_now = True)
+    modified_date_time = models.DateTimeField(auto_now_add = True)
+
+    class Meta:
+        unique_together = [['stock_item_name','company']]
 
     def account_sub_group(self):
         return self.acc_sub_grp.account_sub_group
@@ -426,7 +455,7 @@ class Ledger(models.Model):
         ("Credit", 'Credit'),
         ('N/A','N/A'),
     ]
-
+    
     name = models.CharField(max_length = 100, blank = True, unique=True)
     short_name = models.CharField(max_length = 100, blank = True)
     vendor_code = models.CharField(max_length = 100, unique= True)
@@ -465,6 +494,7 @@ class account_credit_debit_master_table(models.Model):
 
 
 class Godown_raw_material(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     godown_name_raw = models.CharField(max_length = 225, unique= True)
 
     def __str__(self) -> str:
@@ -473,7 +503,7 @@ class Godown_raw_material(models.Model):
     def save(self, *args, **kwargs):
         existing_objects = Godown_raw_material.objects.exclude(id = self.id)
 
-        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists():
+        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw,c_user__company=self.c_user.company).exists():
             raise ValidationError(f'{self.godown_name_raw} already exists!')
 
         super().save(*args, **kwargs)
@@ -497,15 +527,18 @@ class item_shades_godown_report(models.Model):
 
 
 class Godown_finished_goods(models.Model):
-    godown_name_finished = models.CharField(max_length = 225, unique= True)
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
+    godown_name_finished = models.CharField(max_length = 225)
+
 
     def save(self,*args, **kwargs):
         existing_objects = Godown_finished_goods.objects.exclude(id=self.id)
 
-        if existing_objects.filter(godown_name_finished__iexact=self.godown_name_finished).exists():
+        if existing_objects.filter(godown_name_finished__iexact = self.godown_name_finished, c_user__company=self.c_user.company).exists():
             raise ValidationError(f'{self.godown_name_finished} already exists!')
 
         super().save(*args, **kwargs)
+
 
 class RawStockTransferMaster(models.Model):
     voucher_no = models.IntegerField(primary_key=True)

@@ -23,7 +23,6 @@ from django.contrib import messages
 from openpyxl.utils import get_column_letter 
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
-from django.core.management import call_command
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponse, HttpResponseServerError, JsonResponse
@@ -31,6 +30,8 @@ from django.views.decorators.cache import cache_control
 from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
 import pandas as pd
+
+
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
@@ -77,6 +78,8 @@ logger = logging.getLogger('product_views')
 
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
+
+
 
 
 #____________________________Production-Product-View-Start__________________________________
@@ -1337,12 +1340,16 @@ def stock_item_create_update(request,pk=None):
         instance = None
         title = 'Stock Item Update'
 
+    if request.user.is_superuser:
+        stocks = StockItem.objects.all()
+    else:
+        stocks = StockItem.objects.filter(c_user__company = request.user.company)
 
-    stocks = StockItem.objects.all()
     accsubgrps = AccountSubGroup.objects.all()
-    form = StockItemForm(instance=instance)
+
+    form = StockItemForm(instance = instance, user = request.user)
     if request.method == 'POST':
-        form = StockItemForm(request.POST,instance=instance)
+        form = StockItemForm(request.POST ,instance=instance, user=request.user)
         if form.is_valid():
             form.save()
 
@@ -1351,7 +1358,6 @@ def stock_item_create_update(request,pk=None):
             else:
                 messages.success(request, 'Stock item created sucessfully')
 
-            
             return redirect('stock-item-create')
 
         else:
@@ -1364,6 +1370,21 @@ def stock_item_create_update(request,pk=None):
                                                                     'accsubgrps':accsubgrps,
                                                                     'form':form,'stocks':stocks})
 
+
+
+"""
+When to Pass the User:
+Role-Based Access: If you want to limit the choices in dropdowns or fields based on the user's role (e.g., superusers can see all companies, while regular users can only see their own), passing the user helps implement this.
+
+Custom Logic: If you have logic in the form's __init__ method that depends on the user (like hiding fields or setting default values), you should pass the user.
+
+Validation: If you need to perform validation based on the user’s company or permissions, having the user available can be useful.
+
+When You Might Not Need to Pass the User:
+Simple Forms: If your form doesn’t change based on the user and all users should see the same options, you might not need to pass the user at all.
+
+Static Choices: If the form fields can be populated with static choices or querysets that do not depend on the user's identity, you can simply define those in the form without needing to know who the user is.
+"""
 
 
 
@@ -1551,6 +1572,7 @@ def godowncreate(request):
         if godown_type == 'Raw Material':
             try:
                 godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
+                godown_raw.c_user = request.user
                 godown_raw.save()  #save the instance to db 
                 messages.success(request,'Raw material godown created.')
 
@@ -1570,6 +1592,7 @@ def godowncreate(request):
         elif godown_type == 'Finished Goods':
             try:
                 godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
+                godown_finished.c_user = request.user
                 godown_finished.save() #save the instance to db 
                 messages.success(request,'Finished goods godown created.')
 
@@ -1602,6 +1625,7 @@ def godownupdate(request,str,pk):
         if request.method == 'POST':
             godown_name =  request.POST['godown_name']
             finished_godown_pk.godown_name_finished = godown_name
+            finished_godown_pk.c_user = request.user
             finished_godown_pk.save()
             messages.success(request,'Finished goods godown updated.')
             return redirect('godown-list')
@@ -1613,6 +1637,7 @@ def godownupdate(request,str,pk):
         if request.method == 'POST':
             godown_name =  request.POST['godown_name']
             raw_godown_pk.godown_name_raw = godown_name
+            raw_godown_pk.c_user = request.user
             raw_godown_pk.save()
             messages.success(request,'Raw material godown updated.')
             return redirect('godown-list')
@@ -1629,8 +1654,14 @@ def godownupdate(request,str,pk):
 
 
 def godownlist(request):
-    godowns_raw = Godown_raw_material.objects.all()
-    godowns_finished = Godown_finished_goods.objects.all()
+    if request.user.is_staff:
+        godowns_raw = Godown_raw_material.objects.all()
+        godowns_finished = Godown_finished_goods.objects.all()
+        
+    elif not request.user.is_staff:
+        godowns_raw = Godown_raw_material.objects.filter(c_user__company = request.user.company)
+        godowns_finished = Godown_finished_goods.objects.filter(c_user__company = request.user.company)
+
     return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 
                                                    'godowns_finished':godowns_finished})
 
@@ -1829,13 +1860,12 @@ def stockTrasferRawDelete(request,pk):
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)  # for deleting cache from the page on submission to avoid resubmission of form by clicking back
-def purchasevouchercreateupdate(request, pk=None):
+def purchasevouchercreateupdate(request, pk = None):
     
     item_name_searched = Item_Creation.objects.all()
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
-
-        #get the purchase invoice for updating the form 
+        # get the purchase invoice for updating the form 
         if pk:
             purchase_invoice_instance = get_object_or_404(item_purchase_voucher_master,pk=pk)
             item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
@@ -1854,7 +1884,7 @@ def purchasevouchercreateupdate(request, pk=None):
 
         master_form  = item_purchase_voucher_master_form(instance=purchase_invoice_instance)
         
-        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains='Sundry Creditors').first()
+        account_sub_grp = AccountSubGroup.objects.filter(account_sub_group__icontains = 'Sundry Creditors').first()
         
         if account_sub_grp is not None:
             
@@ -3633,7 +3663,6 @@ def purchaseordercuttingpopup(request,cutting_id):
             return HttpResponse(close_window_script)
         else:
             return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
-
             
     return render(request,'production/purchaseordercuttingpopup.html', {'formset':formset})
 
@@ -5055,81 +5084,3 @@ def raw_material_excel_upload(request):
 #_________________________________________ Cosmus ERP Code_______________________
 
 
-
-
-# def add_product(request):
-#     form = ProductForm()
-#     if request.method == 'POST':
-#         form = ProductForm(request.POST,request.FILES) 
-#         print(request.POST)
-#         print(request.FILES)
-#         if form.is_valid():
-#             # product = Product(
-#             #     # reference_image=request.FILES.get('reference_image'),
-#             #     Product_Name=form.cleaned_data['Product_Name'],
-#             #     Model_Name=form.cleaned_data['Model_Name'],
-#             #     Product_Status=form.cleaned_data['Product_Status'],
-#             #     Product_Channel = form.cleaned_data['Product_Channel'],
-#             #     Product_SKU = form.cleaned_data['Product_SKU'],
-#             #     Product_HSNCode =  form.cleaned_data['Product_HSNCode'],
-#             #     Product_WarrantyTime = form.cleaned_data['Product_WarrantyTime'],
-#             #     Product_MRP =  form.cleaned_data['Product_MRP'],
-#             #     Product_SalePrice_CustomerPrice =  form.cleaned_data['Product_SalePrice_CustomerPrice'],
-#             #     Product_BulkPrice = form.cleaned_data['Product_BulkPrice'],
-#             #     Product_Cost_price = form.cleaned_data['Product_Cost_price']
-#             #)
-#             # product.save()
-#             #or
-#             product = form.save(commit=False)
-#             product.images = ProductImage.objects.create(Image=request.FILES['Image'])
-#             form.save()
-#             return redirect('listproduct')
-
-#     else:
-#         return render(request, 'product/add_product.html', {'form':form})
-#     return render(request, 'product/add_product.html',{'form': form})
-
-
-
-# def edit_product(request, pk):
-#     product = Product.objects.get(id = pk)
-#     form = EditProductForm(instance=product)
-
-#     if request.method == "POST":
-#         form = EditProductForm(request.POST, instance=product) # request.POST has the data from the form and instance has the data from the database
-#         if form.is_valid():
-#             form.save() # saves the product changes in the database
-
-#             # handles images
-#             #request.POST has data sent by the form in key value pair 
-#             #where key corresponds to the name = field in the form and value is the actual data
-#             for i in range(1,11): # as we have 10 images to upload
-#                 image_type = request.POST.get(f'Image_type_{i}')
-#                 order_by =  request.POST.get(f'Order_by_{i}')
-#                 image_file = request.FILES.get(f'Image_{i}')  
-#                 #Product=product (product = Product.objects.get(id = pk)), Image_ID=i,: These are the conditions for
-#                 #finding an existing ProductImage instance. It looks for an instance where the 
-#                 #associated product is the given product and the Image_ID is equal to i. 
-#                 #defaults={'Image': image_file, 'Image_type': image_type, 'Order_by': order_by}: 
-#                 #If no matching instance is found, this dictionary specifies the default values 
-#                 #to use when creating a new instance. It sets the image file (Image), image type 
-#                 #(Image_type), and order (Order_by) with the values obtained from the form.
-                
-#                 if image_file:
-#                     #ProductImage.objects.get_or_create(: This is a manager method 
-#                     #(objects is the default manager for a Django model) that interacts with the database.
-#                     #Get or create an image 
-#                     product_image, created = ProductImage.objects.get_or_create(
-#                         Product = product, Image_ID = i,
-#                         defaults = {'Image':image_file, 'Image_type':image_type, 'Order_by': order_by}
-#                     )
-
-#                     if not created:
-#                         #update the existing product
-#                         product_image.Image = image_file
-#                         product_image.Image_type = image_type
-#                         product_image.Order_by = order_by
-#                         product_image.save()
-#             return redirect('listproduct')
-#     context = {'form': form, 'product': product}
-#     return render(request, 'product/edit_product.html', context)

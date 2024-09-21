@@ -216,6 +216,19 @@
          </ul>  
          </li> 
         
+         <div>
+          {% if request.user.is_superuser %}
+          <div>
+              <label for="id_company">Select Company</label>
+              <select name="company" id="id_company">
+                  <option value="" selected>---------</option>
+                  {% for company in companies %}
+                      <option value="{{ company.id }}">{{ company.name }}</option>
+                  {% endfor %}
+              </select>
+          </div>
+      {% endif %}
+         </div>
          <div class="nav-item my-3 mx-3">
           <span>{{request.user.username}}</span>
           <span>{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>

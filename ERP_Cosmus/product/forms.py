@@ -2,6 +2,8 @@ from dataclasses import fields
 from pyexpat import model
 from django import forms
 from django.shortcuts import get_object_or_404
+
+from core.models import Company
 from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
@@ -14,11 +16,36 @@ import logging
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
-from .mixins import UniqueFieldMixin
+from .mixins import CompanyUniqueFieldMixin, UniqueFieldMixin
 
 
 logger = logging.getLogger('product_forms')
 
+# notes in notes/customuserandcompany.txt
+class CompanyBaseForm(forms.ModelForm):
+    """
+    A base form that handles company assignment based on the user's role.
+    """
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')  # Pass the request user in the form
+        super().__init__(*args, **kwargs)
+
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        # For normal users, auto-assign the company based on the user
+        if not self.user.is_superuser:
+            instance.c_user = self.user 
+            instance.company = self.user.company
+        
+        # if commit if performed
+        if commit:
+            instance.save()
+
+        return instance
+    
 
 
 
@@ -26,6 +53,7 @@ class PProductCreateForm(forms.ModelForm):
     class Meta:
         model = PProduct_Creation
         fields = ['PProduct_image','PProduct_color','PProduct_SKU','Product_EANCode']
+
 
 
 
@@ -50,6 +78,7 @@ class PProductCreateFormset(BaseInlineFormSet):
 
                 skus.append(sku)
         
+
 
 ProductCreateSkuFormsetUpdate = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
@@ -87,9 +116,12 @@ class Product2ItemForm(forms.ModelForm):
 
         return new_value
 
+
 # when using modelformset need to add can_delete = True or delete wont be added in form
 Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=0, can_delete=True)
 Product2ItemFormsetExtraForm = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=1, can_delete=True)
+
+
 
 class Product2CommonItem(forms.ModelForm):
     class Meta:
@@ -109,6 +141,7 @@ class Product2CommonItem(forms.ModelForm):
                 raise forms.ValidationError(f'The number of rows cannot be less than the current value of {existing_value}.')
 
         return new_value
+
 
 
 Product2CommonItemFormSet = modelformset_factory(product_2_item_through_table, form = Product2CommonItem, extra=0, can_delete=True)
@@ -259,10 +292,10 @@ class account_sub_grp_form(UniqueFieldMixin,forms.ModelForm):
         return self.clean_unique_field('account_sub_group',AccountSubGroup)
 
 
-class StockItemForm(UniqueFieldMixin,forms.ModelForm):
+class StockItemForm(CompanyUniqueFieldMixin,CompanyBaseForm):
     class Meta:
         model = StockItem
-        fields = ['acc_sub_grp','stock_item_name']
+        fields = ['acc_sub_grp','stock_item_name', 'company'] # Include company for superusers
 
     def clean_stock_item_name(self):
         return self.clean_unique_field('stock_item_name',StockItem)
