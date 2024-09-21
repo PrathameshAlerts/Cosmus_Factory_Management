@@ -1,44 +1,67 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-
+<div class="mb-3 pt-2">
+    <h3 class="mb-3">Goods Return List</h3>
+</div>
 
 <div>
-
-    <table class="table table-striped table-hover table-bordered">
-        <thead class="name_absolute sticky-top">
-            <tr>
-                <th>No</th>
-                <th>GRN No</th>
-                <th>labour name</th>
-                <th>Issues Pcs</th>
-                <th>Return Pcs</th>
-                <th>Balance Pcs</th>
-                <th>approve</th>
-            </tr>
-        </thead>
-          
-        <tbody class="mainTableList text-nowrap" style="max-height: 450px; overflow-y: auto;">
-            
-            {% for record in labour_workin_instances %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{record.voucher_number}}</td>
-                <td>{{record.labour_voucher_number.labour_name.name}}</td>
-                <td>{{record.labour_voucher_number.total_process_pcs}}</td>
-                <td>{{record.total_return_pcs}}</td>
-                <td>{{record.total_balance_pcs}}</td>
-                <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
-                <input type="hidden" name = "labour_work_in" value="{{record.id}}">
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col-lg-7">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="name_absolute sticky-top">
+                <tr>
+                    <th>No</th>
+                    <th>GRN No</th>
+                    <th>labour name</th>
+                    <th>Issues Pcs</th>
+                    <th>Return Pcs</th>
+                    <th>Balance Pcs</th>
+                    <th>approve</th>
+                </tr>
+            </thead>
+              
+            <tbody class="mainTableList text-nowrap" style="max-height: 450px; overflow-y: auto;">
+                
+                {% for record in labour_workin_instances %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{record.voucher_number}}</td>
+                    <td>{{record.labour_voucher_number.labour_name.name}}</td>
+                    <td class="processedQty">{{record.labour_voucher_number.total_process_pcs}}</td>
+                    <td>{{record.total_return_pcs}}</td>
+                    <td>{{record.total_balance_pcs}}</td>
+                    <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
+                    <input type="hidden" name = "labour_work_in" value="{{record.id}}">
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+  
 
 
 </div>
 
 <script>
+    
+function approvedValues(){
+  var processValue = document.querySelectorAll('.processedQty'); 
+  processValue.forEach(function(el){
+    var processQty = parseFloat(el.textContent || 0);
+    var approvedValue = el.closest('tr').querySelector('.approvedQty');
+    var approvedQty = parseFloat(approvedValue.textContent || 0);
+
+
+    if(processQty === approvedQty){
+      var approvedButton = el.closest('tr').querySelector('.approved-btn');
+      approvedButton.style.color = 'green';
+      approvedButton.innerHTML = '<i class="fa-solid fa-circle-check ps-3 fs-5"></i>';
+
+    }
+  })
+}
     var popupPage = null;
 function approvedGoodsReturn(button){
     if (popupPage === null || popupPage.closed) {
@@ -52,7 +75,7 @@ function approvedGoodsReturn(button){
   function newPopup(button, path) {
  
     var goodsId = $(button).closest('tr').find('input').val();
-   
+
     var minWidth = 800; // minimum width
     var minHeight = 600;
 
