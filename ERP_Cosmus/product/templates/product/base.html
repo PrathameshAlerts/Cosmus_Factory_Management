@@ -216,8 +216,8 @@
          </ul>  
          </li> 
         
-         <div class="nav-item my-3 mx-3">
-          <span>{{request.user.username}}</span>
+         <div class="nav-item pt-4 mx-3">
+          <span class="text-danger fw-bold">{{request.user.username}}</span>
           <span>{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>
 
          </div>
@@ -231,7 +231,7 @@
               <div class="pro-head">
                 {% if request.user.is_superuser %}
 
-                <a href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a>
+                <a style="text-decoration: none; color: rgb(3, 65, 251);" href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a>
 
                 {% else %}
 

@@ -97,6 +97,7 @@
                             </td>
                             
                             <td>
+                                <span id="purchaseCreateError" class="error-messagesorderCreate"></span>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
                                     <input type="text" name="{{forms.prefix}}-Item_pks" id="id_{{forms.prefix}}-Item_pks" class="product2Select commom_item search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.item_name}}{% endif %}" data-key="">
@@ -116,7 +117,7 @@
                 <input type="number" class="product_row" name="commonNoRow" id="id_commonNoRow" value="1">
                 <button type="button" class="add_btn mb-3" id="addNewRow">Add</button>
         </div>
-        <input type="submit" class="create-btn">
+        <input type="submit" class="create-btn" id="id_submitForms">
     </form>
 
 
@@ -230,15 +231,16 @@
 
             suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function () {
                 const dataKey = $(this).attr('data-key');
-
                 const nameData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(dataKey)
-
+            
                 $(this).closest('.custom-dropdown-container').find('.input_text').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
-
+               
+               
                 if(dataKey){
                     suggestionsContainerUniqueId.css('display', 'none');
                 }
+                
                 
             })
         })
@@ -374,6 +376,8 @@
             if (nameValue === '') {
                 suggestionsContainerCommon.css('display', 'none');
                 $(this).attr('data-key', '');
+                var errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
+                errorForm.hide()
                 return;
             }
             if (!enterPressed) {
@@ -424,24 +428,61 @@
             }
 
             suggestionsContainerCommon.on('click', '.itemName-div-suggestion', function () {
-                const dataKey = $(this).attr('data-key');
-                const nameData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(dataKey);
-
+                const dataKey = $(this).attr('data-key');  // New row's data-key (item to be added)
+                const errorShow = $(this).closest('tr').find('.error-messagesorderCreate');  // Error display element
+                const submitButton = $(this).closest('form').find('#id_submitForms');
+                const commonItemInput = $(this).closest('tr').find('[name$="Item_pks"]');
+                console.log('commonItemInput:', commonItemInput);
+                
                 $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
+               
+                console.log('New DataKey:', dataKey);
+                
+                // Find existing Item_pk values in the form
+                const forms = $(this).closest('form').find('[name$="Item_pk"]');
+                let isDuplicate = false;  // Flag to track duplicates
+                console.log('Forms:', forms);
+                forms.each(function () {
+                    const dataValue = $(this).val();  // Existing Item_pk values
+                    console.log('DataValue:', dataValue);
+                    if (dataKey === dataValue) {  // Compare new dataKey with existing Item_pk
+                        console.log('Duplicate item found:', dataValue);
+                        errorShow.text('Item already added');  // Show error if duplicate found
+                        errorShow.show();
+                        submitButton.attr('disabled', 'disabled');  // Disable submit button
+                        commonItemInput.css('border', '1px solid red');
+                        isDuplicate = true;
+                        return false;  // Exit the loop if a match is found
+                    }else{
+                       
+                        errorShow.text('');
+                        errorShow.hide();
+                        submitButton.removeAttr('disabled');
+                        commonItemInput.css('border', '1px solid #ced4da');
+                    }
+                });
 
-                if(dataKey){
+                if (!isDuplicate) {
+                    // Proceed with adding the new item if no duplicate is found
+                   
+                   
+                    // Hide error and enable submit button if no duplicate
+                    errorShow.text('');
+                    errorShow.hide();
+                    submitButton.removeAttr('disabled');
+                    commonItemInput.css('border', '1px solid #ced4da');
+                }
+
+                // Hide suggestions dropdown
+                if (dataKey) {
+                    $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(dataKey);
                     suggestionsContainerCommon.css('display', 'none');
                 }
-                
+            });
 
-            })
         })
-        // $(document).on('click', '.commom_item', function () {
-        //     const selectValue = $(this).next('.s-suggestion-container');
-        //     selectValue.css('display', 'none');
-        //     selectValue.empty();
-        // })
+  
 
         $(document).on('keydown', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function (e) {
             const $inputField = $(this);
@@ -546,8 +587,11 @@
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const nameValues = $inputField.text().trim();
-                const nameKeyValue = $inputField.attr('data-key');
-
+                const dataKey = $inputField.attr('data-key');
+                const errorShow = $(this).closest('tr').find('.error-messagesorderCreate');
+     
+                const submitButton = $(this).closest('form').find('#id_submitForms');
+                console.log('dataKey',dataKey)
                 if ($inputField.length > 0) {
                     $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val();
                     $inputField.val(nameValues);
@@ -555,6 +599,29 @@
                     indexbool = false;
                     commomSugenstionHide.css('display', 'none'); // Hide the dropdown
                 }
+                const formsValid = $inputField.closest('form').find('[name$="Item_pk"]');
+                let isDuplicate = false; // Initialize the flag to track duplicate
+                formsValid.each(function(){
+           console.log('formsValid',formsValid)
+                   var dataValue= $(this).val();
+                   console.log('dataValue',dataValue)
+                   if(dataKey == dataValue){
+                    console.log(dataValue)
+                    isDuplicate = true;
+                    errorShow.text('Already Item Added');
+                    errorShow.show();
+                    submitButton.attr('disabled', 'disabled');
+                    return false;
+                   }
+                   
+                   if(!isDuplicate){
+                    const nameKeyValue = $inputField.attr('data-key');
+                    errorShow.text('');
+                    errorShow.hide();
+                    submitButton.removeAttr('disabled');
+
+                   }
+                })
                 enterPressed = true; // Set the flag to true when Enter is pressed
             }
         })
@@ -819,7 +886,7 @@
                     document.getElementById('id_productNoRow').value = '1';
                     deleteRow();
                    
-                    updateAddButtonVisibility();
+                    // updateAddButtonVisibility();
                
                 } else {
                     console.error("No visible rows found to clone.");

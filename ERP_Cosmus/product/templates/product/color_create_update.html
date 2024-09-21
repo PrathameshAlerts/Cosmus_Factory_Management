@@ -36,21 +36,14 @@
             <thead class="name_absolute sticky-top text-nowrap">
               <tr>
                 <th>No</th>
-                <th>Name
-                  <!-- <div class="nav-item dropdown color-list-icons">
-                        <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
-                        <ul class="dropdown-menu">
-                          <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
-                        </ul>
-                      </div> -->
-                </th>
+                <th>Name</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody class="mainTableList " style="max-height: 450px; overflow-y: auto;">
               </tr>
-              {% for color in colors%}
+              {% for color in colors %}
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{color.color_name}}</td>
