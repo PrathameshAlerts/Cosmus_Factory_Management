@@ -38,7 +38,7 @@ class CompanyBaseModel(models.Model):
 
 
 class MainCategory(models.Model):
-    
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     product_category_name = models.CharField(max_length = 250, unique = True)
 
     def __str__(self):
@@ -46,6 +46,7 @@ class MainCategory(models.Model):
 
 
 class SubCategory(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     product_sub_category_name = models.CharField(max_length = 250)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.PROTECT, related_name = 'subcategories')
 
@@ -57,6 +58,7 @@ class SubCategory(models.Model):
 
 
 class Product2SubCategory(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     Product_id = models.ForeignKey('Product', on_delete=models.PROTECT, related_name='product_cats')
     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='subcategories')
 
@@ -184,7 +186,7 @@ class Product(models.Model):
         ("Ten","Ten"),
         ]
 
-
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, null=True, blank=True)
     Product_Name = models.CharField(max_length=255, blank = True, null = True, unique=True)
     Model_Name = models.CharField(unique=True,max_length=255, blank = True ,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
@@ -239,6 +241,7 @@ class Product(models.Model):
 
 
 class PProduct_Creation(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT,null=True, blank=True)
     Product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name='productdetails')  
     PProduct_image = models.ImageField(upload_to = 'pproduct/images',  blank=True)
     PProduct_color = models.ForeignKey(Color, on_delete=models.PROTECT, related_name='production_primary_color')
@@ -264,7 +267,7 @@ class ProductImage(models.Model):
         ("Catalogue Image","Catalogue Image"),
     ]
 
-    
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productimages')
     Image = models.ImageField(upload_to ='product/images', blank=True)
     Image_type = models.CharField(max_length = 100, choices = IMAGE_TYPE, blank=True)
@@ -281,6 +284,7 @@ class Product_A_plus_content(models.Model):
         ('1260 * 200','1260 * 200'),
         ('1080 * 720','1080 * 720'),
     ]
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productaplus')
     heading = models.CharField(max_length = 255)
     details = models.TextField()
@@ -292,6 +296,7 @@ class Product_A_plus_content(models.Model):
 
 
 class ProductVideoUrls(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productvideourls')
     product_video_url =  models.URLField(max_length = 255, blank = True)
     Image_Uploaded_at = models.DateTimeField(auto_now=True)
@@ -652,6 +657,7 @@ class product_2_item_through_table(models.Model):
     
 
 class set_prod_item_part_name(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     producttoitem = models.ForeignKey(product_2_item_through_table, on_delete=models.CASCADE, related_name='product_item_configs')
     part_name = models.CharField(max_length = 100,blank = True, null= True)
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
