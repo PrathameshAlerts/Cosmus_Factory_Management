@@ -59,45 +59,98 @@ class PProductCreateForm(forms.ModelForm):
         fields = ['PProduct_image','PProduct_color','PProduct_SKU','Product_EANCode']
 
 
+    def __init__(self, *args, **kwargs):
+            self.user = kwargs.pop('user', None)  # Extract the user from kwargs
+            super(PProductCreateForm, self).__init__(*args, **kwargs)
 
+    def save(self, commit=True):
+        instance = super(PProductCreateForm, self).save(commit=False)
+
+        # Assign the user if necessary
+        if self.user:
+            instance.c_user = self.user  # Assuming the model has a 'user' field
+
+        if commit:
+            instance.save()
+
+        return instance
 
 
 class PProductCreateFormset(BaseInlineFormSet):
 
-    def clean(self):
-        super().clean()
+    def __init__(self, *args, **kwargs):
+        self.c_user = kwargs.pop('c_user', None)  # Pop the c_user from kwargs
+        super().__init__(*args, **kwargs)
 
-        skus = []
-        for form in self.forms:
-            if not form.cleaned_data.get('DELETE', False):
-                sku = form.cleaned_data.get('PProduct_SKU')
-
-                # check if sku are not repeated in the same formset
-                if sku in skus:
-                    raise ValidationError('Duplicate SKU in the formset.')
-                
-                # checks if sku is not present in the database
-                if PProduct_Creation.objects.filter(PProduct_SKU=sku).exists():
-                    raise ValidationError('Product SKU already exists in the database')
-
-                skus.append(sku)
+    def get_form_kwargs(self, index):
+        """
+        Override this method to pass `c_user` (user) to each form.
+        """
+        kwargs = super().get_form_kwargs(index)
+        kwargs['user'] = self.c_user  # Pass c_user (user) to the form
+        return kwargs
         
 
 
 ProductCreateSkuFormsetUpdate = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
-                                                # formset=PProductCreateFormset,
+                                                formset=PProductCreateFormset,
                                                 extra=0, can_delete=False)
 
 
 ProductCreateSkuFormsetCreate = inlineformset_factory(Product, PProduct_Creation,
                                                 form=PProductCreateForm,
-                                                # formset=PProductCreateFormset,
+                                                formset=PProductCreateFormset,
                                                 extra=1, can_delete=False)
 
 
-ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, fields = ['Image','Image_type','Order_by'], extra =1)
-ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, fields = ['product_video_url'],extra=1)
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage  # Assuming a model called ProductImage
+        fields = ['Image','Image_type','Order_by']  # Example fields
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # Extract the user from kwargs
+        super(ProductImageForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(ProductImageForm, self).save(commit=False)
+
+        # Assign the user if necessary
+        if self.user:
+            instance.c_user = self.user  # Assuming the model has a 'user' field
+
+        if commit:
+            instance.save()
+
+        return instance
+    
+
+
+class ProductVideoForm(forms.ModelForm):
+    class Meta:
+        model = ProductVideoUrls  # Assuming a model called ProductVideoUrls
+        fields = ['product_video_url']  # Example fields
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # Extract the user from kwargs
+        super(ProductVideoForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(ProductVideoForm, self).save(commit=False)
+
+        # Assign the user if necessary
+        if self.user:
+            instance.c_user = self.user  # Assuming the model has a 'user' field
+
+        if commit:
+            instance.save()
+
+        return instance
+
+
+ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, form=ProductImageForm, extra =1)
+ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, form = ProductVideoForm, extra=1)
 
 
 

@@ -160,7 +160,6 @@ def edit_production_product(request,pk):
                             item_name = row[1].value
                             product_sku = row[2].value
                             
-
                             if id is not None:
                                 if product_sku is not None and item_name is not None:
                                     part_name = row[3].value
@@ -177,12 +176,15 @@ def edit_production_product(request,pk):
                                         p2i_config_instance.part_dimentions = part_dimention
                                         p2i_config_instance.dimention_total = dimention_total
                                         p2i_config_instance.part_pieces = part_pieces
+                                        p2i_config_instance.c_user = request.user
+                                        p2i_config_instance.producttoitem = request.user
                                         p2i_config_instance.save()   # save model
                                         p2i_config_instance.producttoitem.save()  # save the parent model
 
                                     else:
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
                                         p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
+                                        p2i_config_instance.producttoitem =  request.user
                                         p2i_config_instance.delete()
                                         p2i_config_instance.producttoitem.save()
 
@@ -222,7 +224,8 @@ def edit_production_product(request,pk):
                                         p2i_instances_configs.part_pieces = part_pieces
                                         p2i_instances_configs.dimention_total = dimention_total
                                         p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
-
+                                        p2i_instances_configs.c_user = request.user
+                                        p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.save()
                                         p2i_instances_configs.producttoitem.save() # save the parent model
                                         row_no = row_no + 1  # increase the row after save
@@ -231,6 +234,7 @@ def edit_production_product(request,pk):
                                         row_no = row_no + 1 # increase the row after save
                                         p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
                                         p2i_instances_configs.delete()
+                                        p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.producttoitem.save()
 
                                 else:
@@ -250,15 +254,28 @@ def edit_production_product(request,pk):
         form = PProductAddForm(request.POST, request.FILES, instance = pproduct) 
         formset = CustomPProductaddFormSet(request.POST, request.FILES , instance=pproduct)
         
-        
+        formset.forms = [form for form in formset.forms if form.has_changed()]
         if form.is_valid() and formset.is_valid():
             try:
                 with transaction.atomic():
-                    form.save(commit=False)
-                    formset.save()
-            
+                    form_instance = form.save(commit=False)
+                    form_instance.c_user = request.user
+                    
+
+                    for form in formset.deleted_forms:
+                        if form.instance.pk:
+                            form.instance.delete()
+                            
+                    
+                    for form in formset:
+                        if form.is_valid():
+                            if not form.cleaned_data.get('DELETE'):
+                                formset_instances = form.save(commit=False)
+                                formset_instances.c_user = request.user
+                                formset_instances.save()
+
                     #p_id has the id of the product
-                    p_id = form.instance
+                    p_id = form_instance.instance
         
                     #get the ids of subcats selected from the frontend 
                     sub_category_ids = request.POST.getlist('Product_Sub_catagory')
@@ -275,14 +292,15 @@ def edit_production_product(request,pk):
                     for obj in objects_to_delete:
                         obj.delete()
 
-
                     #loop through the sub cats sent from the front end and get or create new subcats for the product
                     for sub_cat_id in sub_category_ids:
                         sub_cat = SubCategory.objects.get(id = sub_cat_id)
                         p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
+                        p2c.c_user = request.user
+                        p2c.save()
 
                     # form.Number_of_items = Number_of_items
-                    form.save()
+                    form_instance.save()
                     logger.info(f"product-saved product")
                     logger.info(f"product-formset-saved product")
                     return redirect('pproductlist')
@@ -348,12 +366,12 @@ def product_color_sku(request,ref_id = None):
         instance = Product.objects.get(Product_Refrence_ID=ref_id) 
         # Retrieve and order related ProductDetails
         ordered_product_details = instance.productdetails.all().order_by('created_date')
-        print(ordered_product_details)
-        formset = ProductCreateSkuFormsetUpdate(request.POST or None, request.FILES or None, instance=instance)
-        print(formset)
+        
+        formset = ProductCreateSkuFormsetUpdate(request.POST or None, request.FILES or None, instance=instance, c_user=request.user)
+        
     else:
         instance = None
-        formset = ProductCreateSkuFormsetCreate(request.POST or None, request.FILES or None, instance=instance)
+        formset = ProductCreateSkuFormsetCreate(request.POST or None, request.FILES or None, instance=instance, c_user=request.user)
 
     
 
@@ -370,6 +388,8 @@ def product_color_sku(request,ref_id = None):
                         if form.is_valid():
                             form_instance = form.save(commit=False)  # save the form with commit = false
                             obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id) # create a parent instance with the entered refrence id or get the instance if already created 
+                            obj.c_user = request.user
+                            obj.save()
                             form_instance.Product = obj   #assign the parent instance to childs FK field 
                             form_instance.save() # save the form
 
@@ -450,7 +470,7 @@ def add_product_images(request, pk):
     formset = ProductImagesFormSet(instance=product)  # pass the instance to the formset
     
     if request.method == 'POST':
-        formset = ProductImagesFormSet(request.POST, request.FILES, instance=product)
+        formset = ProductImagesFormSet(request.POST, request.FILES, instance=product, user=request.user)
         if formset.is_valid():
             formset.save()
             messages.success(request,'Product images sucessfully added.')
@@ -472,11 +492,12 @@ def add_product_images(request, pk):
 
 
 def add_product_video_url(request,pk):
-    print(request.POST)
+    
     product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
     formset = ProductVideoFormSet(instance= product)  # pass the instance to the formset
+
     if request.method == 'POST':
-        formset = ProductVideoFormSet(request.POST, instance=product)
+        formset = ProductVideoFormSet(request.POST, instance=product, user=request.user)
         
         if formset.is_valid():
             formset.save()
@@ -504,7 +525,6 @@ def definemaincategoryproduct(request,pk=None):
 
     if main_cat_product_search != '':
         queryset = MainCategory.objects.filter(product_category_name__icontains = main_cat_product_search)
-
 
 
     if pk:
@@ -1839,11 +1859,9 @@ def stockTrasferRaw(request, pk=None):
                 if form.instance.pk:
                     form.instance.delete()
 
-
             for form in formset:
                 if form.is_valid():
                     if not form.cleaned_data.get('DELETE'):  # to check if form is not marked for deleting, not checked forms that are marked for deleting will be saved again 
-                        
                         transfer_instance = form.save(commit=False)
                         transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
                         transfer_instance.save()
