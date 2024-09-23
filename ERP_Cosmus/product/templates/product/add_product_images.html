@@ -110,11 +110,11 @@
     updateDeleteButtons();
   });
 
-  window.addEventListener('beforeunload', function () {
-    if (!formSubmitted) {
-      const data = { message: 'close' };
-      window.opener.postMessage(data, '*');
-    }
-  });
+  // window.addEventListener('beforeunload', function () {
+  //   if (!formSubmitted) {
+  //     const data = { message: 'close' };
+  //     window.opener.postMessage(data, '*');
+  //   }
+  // });
 </script>
 {% endblock body %}
