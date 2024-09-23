@@ -389,6 +389,8 @@ $(document).ready(function(){
                 },
                 success: function (data) {
                   console.log(data);
+                  var itemId = $('#id_items').val();
+                  if(itemId == "None"){
                     if(data.validation_flag === true){
                        //alert("Purchase number already exists");
                        itemcreateName.css('border', '1px solid red');
@@ -405,6 +407,8 @@ $(document).ready(function(){
                     errorElement.hide();
                     submitButton.removeAttr('disabled');
                     }
+                  }
+                    
                    
                 },
                 error: function (error) {   
@@ -420,7 +424,10 @@ $(document).ready(function(){
             var material_code = $("#id_Material_code");
             var errorElement = $('#materialError'); // The error message element
             var submitButton = $('#id_save');
-             validFlagCheck(item_material_code,material_code,errorElement,submitButton);
+            var itemId = $('#id_items').val();
+            if(itemId == "None"){
+              validFlagCheck( item_material_code,material_code,errorElement,submitButton);
+            }
             
         })
         
@@ -430,7 +437,11 @@ $(document).ready(function(){
             var material_code = $("#id_Material_code");
             var errorElement = $('#materialError'); // The error message element
             var submitButton = $('#id_save');
-            validFlagCheck( item_material_code,material_code,errorElement,submitButton);
+            var itemId = $('#id_items').val();
+            if(itemId == "None"){
+              validFlagCheck( item_material_code,material_code,errorElement,submitButton);
+            }
+           
             
         })
         function validFlagCheck( item_material_code,material_code,errorElement,submitButton){

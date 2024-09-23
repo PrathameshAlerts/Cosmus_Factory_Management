@@ -370,6 +370,7 @@
       
       
         $(document).on('input', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function () {
+        
             purchaseData = $(this).attr('name').split('-')[1]; // Extract the numeric value from the input name
             const nameValue = $(this).val().trim();
             const suggestionsContainerCommon = $(`#id_item_input_Name_${purchaseData}`);
@@ -428,24 +429,28 @@
             }
 
             suggestionsContainerCommon.on('click', '.itemName-div-suggestion', function () {
+                const currentRow = $(this).closest('tr');  
                 const dataKey = $(this).attr('data-key');  // New row's data-key (item to be added)
-                const errorShow = $(this).closest('tr').find('.error-messagesorderCreate');  // Error display element
+                const errorShow =currentRow.find('.error-messagesorderCreate');  // Error display element
                 const submitButton = $(this).closest('form').find('#id_submitForms');
-                const commonItemInput = $(this).closest('tr').find('[name$="Item_pks"]');
-                console.log('commonItemInput:', commonItemInput);
+                const commonItemInput = currentRow.find('[name$="Item_pks"]');
+                //console.log('commonItemInput:', commonItemInput);
+                var suggestionData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden');
                 
+                //console.log('suggestionData:', suggestionData);
                 $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
                
                 console.log('New DataKey:', dataKey);
                 
                 // Find existing Item_pk values in the form
-                const forms = $(this).closest('form').find('[name$="Item_pk"]');
+                const forms = $(this).closest('form').find('[name$="Item_pk"]').not(currentRow.find('[name$="Item_pk"]'));
                 let isDuplicate = false;  // Flag to track duplicates
                 console.log('Forms:', forms);
                 forms.each(function () {
                     const dataValue = $(this).val();  // Existing Item_pk values
                     console.log('DataValue:', dataValue);
+                 
                     if (dataKey === dataValue) {  // Compare new dataKey with existing Item_pk
                         console.log('Duplicate item found:', dataValue);
                         errorShow.text('Item already added');  // Show error if duplicate found
@@ -453,30 +458,24 @@
                         submitButton.attr('disabled', 'disabled');  // Disable submit button
                         commonItemInput.css('border', '1px solid red');
                         isDuplicate = true;
-                        return false;  // Exit the loop if a match is found
-                    }else{
+                        suggestionData.val('');
                        
-                        errorShow.text('');
-                        errorShow.hide();
-                        submitButton.removeAttr('disabled');
-                        commonItemInput.css('border', '1px solid #ced4da');
+                        return false;  // Exit the loop if a match is found
                     }
                 });
 
                 if (!isDuplicate) {
-                    // Proceed with adding the new item if no duplicate is found
-                   
-                   
-                    // Hide error and enable submit button if no duplicate
                     errorShow.text('');
                     errorShow.hide();
                     submitButton.removeAttr('disabled');
                     commonItemInput.css('border', '1px solid #ced4da');
+                    suggestionData.val(dataKey);
+             
                 }
 
                 // Hide suggestions dropdown
                 if (dataKey) {
-                    $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val(dataKey);
+                    
                     suggestionsContainerCommon.css('display', 'none');
                 }
             });
@@ -485,12 +484,12 @@
   
 
         $(document).on('keydown', '[name^="product2itemcommonformset-"][name$="Item_pks"]', function (e) {
-            const $inputField = $(this);
-            const $dropdownOptions = $inputField.next('.s-suggestion-container');
+            const $inputFields = $(this);
+            const $dropdownOptions = $inputFields.next('.s-suggestion-container');
             const $options = $dropdownOptions.find('.itemName-div');
             const optionsCount = $options.length - 1;
-            const nameData = $inputField.val().trim();
-            const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#id_item_input_Name_${purchaseData}`);
+            const nameData = $inputFields.val().trim();
+            const commomSugenstionHide = $inputFields.closest('.custom-dropdown-container').find(`#id_item_input_Name_${purchaseData}`);
             if (nameData === '') {
                 index = 0;
                 indexbool = false;
@@ -498,9 +497,9 @@
             }
 
             // Calculate available space and set max height
-            const inputOffset = $inputField.offset();
+            const inputOffset = $inputFields.offset();
             const windowHeight = $(window).height();
-            const inputHeight = $inputField.outerHeight();
+            const inputHeight = $inputFields.outerHeight();
             const inputBottomOffset = inputOffset.top + inputHeight;
             const availableSpaceBelow = windowHeight - inputBottomOffset;
             const maxHeight = Math.max(availableSpaceBelow, 234);
@@ -520,9 +519,9 @@
                     const nameDataKey = selectedItem.text();
                     const nameKey = selectedItem.data('key');
 
-                    $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
-                    $inputField.attr('data-key', nameKey);
-                    $inputField.text(nameDataKey);
+                    $inputFields.closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
+                    $inputFields.attr('data-key', nameKey);
+                    $inputFields.text(nameDataKey);
 
                     $options.removeClass('bg-highlight');
                     selectedItem.addClass("bg-highlight");
@@ -562,9 +561,9 @@
                     const nameDataKey = selectedItem.text();
                     const nameKey = selectedItem.data('key');
 
-                    $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
-                    $inputField.attr('data-key', nameKey);
-                    $inputField.text(nameDataKey);
+                    $inputFields.closest('.custom-dropdown-container').find('.commom_item_hidden').val(nameKey);
+                    $inputFields.attr('data-key', nameKey);
+                    $inputFields.text(nameDataKey);
 
                     $options.removeClass('bg-highlight');
                     selectedItem.addClass("bg-highlight");
@@ -586,40 +585,43 @@
             }
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const nameValues = $inputField.text().trim();
-                const dataKey = $inputField.attr('data-key');
-                const errorShow = $(this).closest('tr').find('.error-messagesorderCreate');
-     
+                const currentRows = $(this).closest('tr'); 
+                // console.log('currentRows',currentRows)
+                const nameValues = $inputFields.text().trim();
+                const dataKey = $inputFields.attr('data-key');
+                const errorShow = currentRows.find('.error-messagesorderCreate');
+                const commonItemInputs = currentRows.find('[name$="Item_pks"]');
+                const suggesionEnter =$inputFields.closest('.custom-dropdown-container').find('.commom_item_hidden');
                 const submitButton = $(this).closest('form').find('#id_submitForms');
-                console.log('dataKey',dataKey)
-                if ($inputField.length > 0) {
-                    $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val();
-                    $inputField.val(nameValues);
+                //console.log('dataKey',dataKey)
+                if ($inputFields.length > 0) {
+                    $inputFields.closest('.custom-dropdown-container').find('.commom_item_hidden').val(dataKey);
+                    $inputFields.val(nameValues);
                     index = 0;
                     indexbool = false;
                     commomSugenstionHide.css('display', 'none'); // Hide the dropdown
                 }
-                const formsValid = $inputField.closest('form').find('[name$="Item_pk"]');
+                const formsValid = $inputFields.closest('form').find('[name$="Item_pk"]').not(currentRows.find('[name$="Item_pk"]'));
+                
                 let isDuplicate = false; // Initialize the flag to track duplicate
                 formsValid.each(function(){
-           console.log('formsValid',formsValid)
+           
                    var dataValue= $(this).val();
-                   console.log('dataValue',dataValue)
-                   if(dataKey == dataValue){
-                    console.log(dataValue)
-                    isDuplicate = true;
+                   console.log('Duplicate item found:', dataValue);
+                   if(dataKey === dataValue){
                     errorShow.text('Already Item Added');
                     errorShow.show();
                     submitButton.attr('disabled', 'disabled');
+                    suggesionEnter.val('')
+                    isDuplicate = true;
                     return false;
                    }
                    
                    if(!isDuplicate){
-                    const nameKeyValue = $inputField.attr('data-key');
                     errorShow.text('');
                     errorShow.hide();
                     submitButton.removeAttr('disabled');
-
+                    suggesionEnter.val(dataKey);
                    }
                 })
                 enterPressed = true; // Set the flag to true when Enter is pressed
