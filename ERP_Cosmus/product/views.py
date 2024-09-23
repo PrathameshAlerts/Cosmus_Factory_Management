@@ -1332,7 +1332,7 @@ def account_sub_group_delete(request, pk):
 
 
 def stock_item_create_update(request,pk=None):
-
+    print(request.POST)
     if pk:
         instance = get_object_or_404(StockItem ,pk=pk)
         title = 'Stock Item Update'
@@ -1343,22 +1343,29 @@ def stock_item_create_update(request,pk=None):
     if request.user.is_superuser:
         stocks = StockItem.objects.all()
     else:
-        stocks = StockItem.objects.filter(c_user__company = request.user.company)
-
+        stocks = StockItem.objects.filter(company = request.user.company)
+   
     accsubgrps = AccountSubGroup.objects.all()
 
     form = StockItemForm(instance = instance, user = request.user)
+
     if request.method == 'POST':
+        
         form = StockItemForm(request.POST ,instance=instance, user=request.user)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
 
-            if pk:
-                messages.success(request, 'Stock item updated sucessfully')
-            else:
-                messages.success(request, 'Stock item created sucessfully')
+                if pk:
+                    messages.success(request, 'Stock item updated sucessfully')
+                else:
+                    messages.success(request, 'Stock item created sucessfully')
 
-            return redirect('stock-item-create')
+                return redirect('stock-item-create')
+            except ValidationError as ve:
+                messages.error(request, f'{ve}')
+            except exception as e:
+                messages.error(request,f'{e}')
 
         else:
             return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
@@ -1573,6 +1580,10 @@ def godowncreate(request):
             try:
                 godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
                 godown_raw.c_user = request.user
+                godown_raw.company = request.user.company
+                if request.user.is_superuser:
+                    godown_raw.company = request.POST['company']
+
                 godown_raw.save()  #save the instance to db 
                 messages.success(request,'Raw material godown created.')
 
@@ -1593,6 +1604,11 @@ def godowncreate(request):
             try:
                 godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
                 godown_finished.c_user = request.user
+
+                godown_finished = request.user.company
+                if request.user.is_superuser:
+                    godown_finished.company = request.POST['company']
+
                 godown_finished.save() #save the instance to db 
                 messages.success(request,'Finished goods godown created.')
 
