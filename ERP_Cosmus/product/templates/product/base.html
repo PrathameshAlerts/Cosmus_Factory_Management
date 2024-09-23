@@ -129,7 +129,7 @@
           <h3 class="text-white" style="display: none; " id="GodownTitle">Godown List</h3>
         </li>
       </ul>
-      <ul class="navbar-nav mb-2 me-auto mb-lg-0" style="margin-left: 200px;" >
+      <ul class="navbar-nav mb-2 me-auto mb-lg-0" style="margin-left: 120px;" >
         <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
@@ -218,9 +218,9 @@
         
          <div>
           {% if request.user.is_superuser %}
-          <div>
-              <label for="id_company">Select Company</label>
-              <select name="company" id="id_company">
+          <div class="nav-item my-4">
+              <label for="id_company">Company</label>
+              <select name="company" id="id_company"  onchange="saveSelectedCompany()">
                   <option value="" selected>---------</option>
                   {% for company in companies %}
                       <option value="{{ company.id }}">{{ company.name }}</option>
@@ -515,18 +515,34 @@
 
 <!-- Custom JS -->
 <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
-
 <script>
-document.addEventListener('DOMContentLoaded',function(){
+  function saveSelectedCompany() {
+        const companySelect = document.getElementById('id_company');
+        const selectedCompany = companySelect.value;
+   
+        localStorage.setItem('selectedCompany', selectedCompany);  // Store in localStorage
+    }
 
-  document.getElementById('id_company').addEventListener('change',function(el){
-    console.log(el.target.value);
-    var company = el.target.value;
-    var valueInsertData = document.getElementById('id_companyValue');
-    console.log(valueInsertData);
-    valueInsertData.value = company;
-  })
-})
+    // Function to restore the selected company on page load
+    function restoreSelectedCompany() {
+        const companySelect = document.getElementById('id_company');
+        const savedCompany = localStorage.getItem('selectedCompany');  // Retrieve from localStorage
+        const stockCompany = document.getElementById('id_companyValue');
+      
+        if (savedCompany) {
+            companySelect.value = savedCompany;
+            stockCompany.value = savedCompany;
+            console.log(stockCompany.value);
+        }
+    }
+
+    // Call the restore function when the page loads
+    document.addEventListener('DOMContentLoaded', restoreSelectedCompany);
+
+</script>
+<script>
+// Function to save the selected company in localStorage
+
   // This function is used to hide the error message
   window.onload = function() {
     var errorMessage = document.getElementById('errorform');
