@@ -177,14 +177,14 @@ def edit_production_product(request,pk):
                                         p2i_config_instance.dimention_total = dimention_total
                                         p2i_config_instance.part_pieces = part_pieces
                                         p2i_config_instance.c_user = request.user
-                                        p2i_config_instance.producttoitem = request.user
+                                        p2i_config_instance.producttoitem.c_user = request.user
                                         p2i_config_instance.save()   # save model
                                         p2i_config_instance.producttoitem.save()  # save the parent model
 
                                     else:
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
                                         p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
-                                        p2i_config_instance.producttoitem =  request.user
+                                        p2i_config_instance.producttoitem.c_user =  request.user
                                         p2i_config_instance.delete()
                                         p2i_config_instance.producttoitem.save()
 
@@ -233,8 +233,8 @@ def edit_production_product(request,pk):
                                     else:
                                         row_no = row_no + 1 # increase the row after save
                                         p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
-                                        p2i_instances_configs.delete()
                                         p2i_instances_configs.producttoitem.c_user = request.user
+                                        p2i_instances_configs.delete()
                                         p2i_instances_configs.producttoitem.save()
 
                                 else:
@@ -275,7 +275,8 @@ def edit_production_product(request,pk):
                                 formset_instances.save()
 
                     #p_id has the id of the product
-                    p_id = form_instance.instance
+                    p_id_pk = form_instance.pk
+                    p_id = Product.objects.get(pk=p_id_pk)
         
                     #get the ids of subcats selected from the frontend 
                     sub_category_ids = request.POST.getlist('Product_Sub_catagory')
@@ -2749,7 +2750,7 @@ def product2item(request,product_refrence_id):
                                         rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
                                         if rows_to_create > 0:
                                                 for row in range(rows_to_create):
-                                                    set_prod_item_part_name.objects.create(producttoitem = obj)
+                                                    set_prod_item_part_name.objects.create(producttoitem = obj,c_user = request.user)
                                                     logger.info(f" set prod item part name created of - {obj.id}")
 
                                         formset_common_valid = True
