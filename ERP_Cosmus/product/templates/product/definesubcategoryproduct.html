@@ -45,11 +45,20 @@
         <thead class="name_absolute sticky-top text-nowrap">
           <tr>
             <th>No</th>
-            <th>Main Category</th>
-            <th colspan="3">Category</th>
+            <th >Main Category</th>
+            <th colspan="3">Category Details
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Sub Category <span style="margin-left: 103px;">Edit</span> <span class="float-end">Delete</span></th>
+                
+              </tr>
+            </th>
+          
           </tr>
         </thead>
         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+
           {% for main_cat in main_categories %}
           <tr>
             <td>{{forloop.counter}}</td>
@@ -57,11 +66,7 @@
             
             <td>
               <table class="table table-bordered table-striped table-hover">
-               <tr>
-                <th>Sub Category</th>
-                <th>Edit</th>
-                <th>Delete</th>
-               </tr>
+               
                {% for sub_cat in main_cat.subcategories.all %}
                 <tr>
                   <td>{{sub_cat.product_sub_category_name}}</td>

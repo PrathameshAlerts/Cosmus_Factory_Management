@@ -109,16 +109,16 @@
         }
 
         // Set the calculated closing values to the current row
-        if (closeQtyElement) closeQtyElement.textContent = previousClosingQty.toFixed(2);
-        if (closeValueElement) closeValueElement.textContent = previousClosingValue.toFixed(2);
+        if (closeQtyElement) closeQtyElement.textContent = previousClosingQty.toFixed(3);
+        if (closeValueElement) closeValueElement.textContent = previousClosingValue.toFixed(3);
     });
 
     // Update the total quantity and value on the page
     var totalQtyElement = document.getElementById('TotalQty');
     var totalValueElement = document.getElementById('TotalValue');
 
-    if (totalQtyElement) totalQtyElement.textContent = previousClosingQty.toFixed(2);
-    if (totalValueElement) totalValueElement.textContent = previousClosingValue.toFixed(2);
+    if (totalQtyElement) totalQtyElement.textContent = previousClosingQty.toFixed(3);
+    if (totalValueElement) totalValueElement.textContent = previousClosingValue.toFixed(3);
 }
 
 

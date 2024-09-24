@@ -51,7 +51,7 @@
                             </select>
                         </td>
                         <td>
-                            <span id="uniqueError" class="error-messagesorderCreate"></span>
+                            <span id="uniqueError_{{forloop.counter0}}" class="error-messagesorderCreate" ></span>
                             <div class="custom-dropdown-container">
                                 <input type="hidden" name="{{form.prefix}}-Item_pk" id="id_{{form.prefix}}-Item_pk" class="product2Select input_hidden-value" value="{% if form.instance.id %}{{ form.instance.Item_pk.id }}{% endif %}">
                                 <input type="text" name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks" class="product2Select input_text search-input" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
@@ -98,7 +98,7 @@
                             </td>
                             
                             <td>
-                                <span id="purchaseCreateError" class="error-messagesorderCreate"></span>
+                                <span id="commonCreateError_{{forloop.counter0}}" class="error-messagesorderCreate"></span>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
                                     <input type="text" name="{{forms.prefix}}-Item_pks" id="id_{{forms.prefix}}-Item_pks" class="product2Select commom_item search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.item_name}}{% endif %}" data-key="">
@@ -760,6 +760,8 @@
             const currentRow = el.closest('tr');
             const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
             const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+            
+         
             const formsInsertValue = parseInt(mainForms.value);
             const formValue = inputValue.split('-')[1];
         
@@ -768,7 +770,9 @@
             const formDataValue = parseInt(formsInsertValue);
            
             const newRow = currentRow.cloneNode(true);
-
+            const submitbutton = document.getElementById('id_submitForms');
+            submitbutton.setAttribute('disabled', false);
+           
             newRow.querySelectorAll("input, select").forEach(function (e) {
                 e.value = "";
             });
@@ -792,10 +796,15 @@
             inputValueElement.name = `itemName_${formDataValue}`;
             inputValueElement.value = '';
 
+            const hiddenError = newRow.querySelector('[id^="uniqueError_"]');
+            hiddenError.id = `id_uniqueError_${formDataValue}`;
+            hiddenError.style.display = 'none';
+
             const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
             hiddenValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pks`;
             hiddenValueName.name = `product2itemuniqueformset-${formDataValue}-Item_pks`;
             hiddenValueName.value = '';
+            hiddenValueName.style.border = '1px solid #ced4da';
 
             const selectValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
             selectValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pk`;
@@ -899,8 +908,16 @@
                 });
                 if (lastVisibleRow) {
                     const forms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
-                
+                    const submitbutton = document.getElementById('id_submitForms');
+                   
+                    
 
+                    console.log(submitbutton);
+                   
+        
+                    submitbutton.setAttribute('disabled', false);
+                   
+                 
                     for(let i = 0; i<addInputRow; i++){
                     const newFormCount = parseInt(forms.value);
                     const formValue = newFormCount + 1;
@@ -929,10 +946,15 @@
                     inputValueElement.name = `itemName_${newFormCount}`;
                     inputValueElement.value = '';
 
+                    const hiddenErrors = newTable.querySelector('[id^="uniqueError_"]');
+                    hiddenErrors.id = `uniqueError_${newFormCount}`;
+                    hiddenErrors.style.display = 'none';
+
                     const hiddenValueName = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
                     hiddenValueName.id = `id_product2itemuniqueformset-${newFormCount}-Item_pks`;
                     hiddenValueName.name = `product2itemuniqueformset-${newFormCount}-Item_pks`;
                     hiddenValueName.value = '';
+                    hiddenValueName.style.border = '1px solid #ced4da';
 
                     const selectValueName = newTable.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
                     selectValueName.id = `id_product2itemuniqueformset-${newFormCount}-Item_pk`;
@@ -1065,6 +1087,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const newRow = currentRow.cloneNode(true);
      
+                const submitbutton = document.getElementById('id_submitForms');
+                submitbutton.setAttribute('disabled', false);
                
                 newRow.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
@@ -1084,10 +1108,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     inputnameElement.name = `item_input_Name_${formDataValues}`;
                     inputnameElement.value = '';
 
+                    const hiddenErrors = newRow.querySelector('[id^="commonCreateError_"]');
+                    hiddenErrors.id = `commonCreateError_${formDataValues}`;
+                    hiddenErrors.style.display = 'none';
+
                     const hiddenElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pks"]');
                     hiddenElement.id = `id_product2itemcommonformset-${formDataValues}-Item_pks`;
                     hiddenElement.name = `product2itemcommonformset-${formDataValues}-Item_pks`;
                     hiddenElement.value = "";
+                    hiddenElement.style.border = '1px solid #ced4da';
 
                     const selectElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pk"]');
                     selectElement.id = `id_product2itemcommonformset-${formDataValues}-Item_pk`;
@@ -1207,10 +1236,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     inputnameElement.name = `item_input_Name_${newCount}`;
                     inputnameElement.value = '';
 
+                    const hiddenErrorsElement = lastRow.querySelector('[id^="commonCreateError_"]');
+                    hiddenErrorsElement.id = `commonCreateError_${newCount}`;
+                    hiddenErrorsElement.style.display = 'none';
+
                     const hiddenElement = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pks"]');
                     hiddenElement.id = `id_product2itemcommonformset-${newCount}-Item_pks`;
                     hiddenElement.name = `product2itemcommonformset-${newCount}-Item_pks`;
                     hiddenElement.value = "";
+                    hiddenElement.style.border = '1px solid #ced4da';
 
                     const selectElement = lastRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pk"]');
                     selectElement.id = `id_product2itemcommonformset-${newCount}-Item_pk`;
