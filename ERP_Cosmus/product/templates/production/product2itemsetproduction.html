@@ -180,11 +180,8 @@
 
             if (nameValue === '') {
                 suggestionsContainerUniqueId.css('display', 'none');
-                // const errorData = $(this).closest('tr').find('.error-messagesorderCreate');
-                // const uniqueData = $(this).closest('tr').find('input[name^="product2itemuniqueformset-"][name$="Item_pks"]');
-                // errorData.text('');
-                // errorData.hide();
-                // uniqueData.css('border', '1px solid #ced4da');
+                var errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
+                errorForm.hide();
                 $(this).attr('data-key', '');
                 return;
             }
@@ -236,51 +233,52 @@
             }
 
             suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function () {
-                //const currentRowValue = $(this).closest('tr');
+                const currentRowValue = $(this).closest('tr');
                 const dataKey = $(this).attr('data-key');
                 const nameData = $(this).closest('.custom-dropdown-container').find('.input_hidden-value').val(dataKey);
-                // const errorForms = currentRowValue.find('.error-messagesorderCreate');
-                // const uniuqueRow = currentRowValue.find('input[name^="product2itemuniqueformset-"][name$="Item_pks"]')
-                // const submitValue = $(this).closest('form').find('#id_submitForms');
-                // let isDuplicates = false;
-                // const prodcutData = currentRowValue.find('[name$="-PProduct_pk"]').val();
+                const errorForms = currentRowValue.find('.error-messagesorderCreate');
+                const uniuqueRow = currentRowValue.find('input[name^="product2itemuniqueformset-"][name$="Item_pks"]')
+                const submitValue = $(this).closest('form').find('#id_submitForms');
+              
+                const prodcutData = currentRowValue.find('[name$="-PProduct_pk"]').val();
            
                 $(this).closest('.custom-dropdown-container').find('.input_text').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
-                // const itemProduct = $(this).closest('form').find('[name$="-PProduct_pk"]').not(currentRowValue.find('[name$="-PProduct_pk"]'));
-                // itemProduct.each(function(){
-                //     const productValues = $(this).val();
-                //     if(productValues === prodcutData){
-                //         const formsSet = $(this).closest('form').find('[name$="Item_pk"]').not(currentRowValue.find('[name$="Item_pk"]'));
-                //             formsSet.each(function(){
-                //                 const dataNameValue = $(this).val();
+                const itemProduct = $(this).closest('form').find('[name$="-PProduct_pk"]').not(currentRowValue.find('[name$="-PProduct_pk"]'));
+                let isDuplicates = false;
+                itemProduct.each(function(){
+                    const productValues = $(this).val();
+                    if(productValues === prodcutData){
+                        const formsSet = $(this).closest('form').find('[name$="Item_pk"]').not(currentRowValue.find('[name$="Item_pk"]'));
+                            formsSet.each(function(){
+                                const dataNameValue = $(this).val();
                   
-                //                     if(dataNameValue === dataKey){
-                //                         errorForms.text('Item already exists');
-                //                         errorForms.show();
-                //                         submitValue.prop('disabled', true);
-                //                         uniuqueRow.css('border', '1px solid red');
-                //                         isDuplicates = true;
-                //                         nameData.val('');
-                //                         return false; 
-                //                     }else{
-                //                         submitValue.prop('disabled', false);
-                //                         uniuqueRow.css('border', '1px solid #ced4da');
-                //                         errorForms.text('');
-                //                         errorForms.hide();
-                //                         nameData.val(dataKey);
-                //                     }
-                //             })
+                                    if(dataNameValue === dataKey){
+                                        errorForms.text('Item already exists');
+                                        errorForms.show();
+                                        submitValue.prop('disabled', true);
+                                        uniuqueRow.css('border', '1px solid red');
+                                        isDuplicates = true;
+                                        nameData.val('');
+                                        return false; 
+                                    }else{
+                                        submitValue.prop('disabled', false);
+                                        uniuqueRow.css('border', '1px solid #ced4da');
+                                        errorForms.text('');
+                                        errorForms.hide();
+                                        nameData.val(dataKey);
+                                    }
+                            })
 
-                //     }
-                // })
-                // if(!isDuplicates){
-                //     submitValue.prop('disabled', false);
-                //     uniuqueRow.css('border', '1px solid #ced4da');
-                //     errorForms.text('');
-                //     errorForms.hide();
-                //     nameData.val(dataKey);
-                // }
+                    }
+                })
+                if(!isDuplicates){
+                    submitValue.prop('disabled', false);
+                    uniuqueRow.css('border', '1px solid #ced4da');
+                    errorForms.text('');
+                    errorForms.hide();
+                    nameData.val(dataKey);
+                }
                 if(dataKey){
                     suggestionsContainerUniqueId.css('display', 'none');
                 }
@@ -458,7 +456,7 @@
                 suggestionsContainerCommon.css('display', 'none');
                 $(this).attr('data-key', '');
                 var errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
-                errorForm.hide()
+                errorForm.hide();
                 return;
             }
             if (!enterPressed) {

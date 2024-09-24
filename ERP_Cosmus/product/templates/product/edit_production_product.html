@@ -611,17 +611,7 @@
       popupWindow.focus();
     }
   }
-  document.addEventListener('DOMContentLoaded', function () {
-    window.addEventListener('message', function (event) {
-       if (event.data.message === 'itemCreate') {
-        window.location.href = '/itemcreate/'
-       
-       }
-       
-   });
-  })
-
-
+  
   function openPopup(button, path) {
     var card = button.closest('.card');
     if (card) {
@@ -675,6 +665,15 @@
 // }
 
 // }
+document.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('message', function (event) {
+       if (event.data.message === 'itemCreate') {
+        window.location.href = '/itemcreate/'
+       
+       }
+       
+   });
+  })
 </script>
 
 <script>
