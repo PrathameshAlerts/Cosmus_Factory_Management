@@ -186,7 +186,7 @@ class Product(models.Model):
         ("Ten","Ten"),
         ]
 
-    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, null=True, blank=True)
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT,null=True, blank=True)
     Product_Name = models.CharField(max_length=255, blank = True, null = True, unique=True)
     Model_Name = models.CharField(unique=True,max_length=255, blank = True ,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
@@ -642,6 +642,7 @@ class item_godown_quantity_through_table(models.Model):
     
             
 class product_2_item_through_table(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
@@ -657,7 +658,7 @@ class product_2_item_through_table(models.Model):
     
 
 class set_prod_item_part_name(models.Model):
-    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
     producttoitem = models.ForeignKey(product_2_item_through_table, on_delete=models.CASCADE, related_name='product_item_configs')
     part_name = models.CharField(max_length = 100,blank = True, null= True)
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)

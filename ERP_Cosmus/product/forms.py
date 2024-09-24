@@ -52,7 +52,6 @@ class CompanyBaseForm(forms.ModelForm):
     
 
 
-
 class PProductCreateForm(forms.ModelForm):
     class Meta:
         model = PProduct_Creation
@@ -74,6 +73,7 @@ class PProductCreateForm(forms.ModelForm):
             instance.save()
 
         return instance
+
 
 
 class PProductCreateFormset(BaseInlineFormSet):
@@ -104,6 +104,9 @@ ProductCreateSkuFormsetCreate = inlineformset_factory(Product, PProduct_Creation
                                                 extra=1, can_delete=False)
 
 
+
+
+
 class ProductImageForm(forms.ModelForm):
     class Meta:
         model = ProductImage  # Assuming a model called ProductImage
@@ -125,6 +128,20 @@ class ProductImageForm(forms.ModelForm):
 
         return instance
     
+class ProductImageFormSet(BaseInlineFormSet):
+
+    def __init__(self, *args, **kwargs):
+        self.c_user = kwargs.pop('c_user', None)  # Pop the c_user from kwargs
+        super().__init__(*args, **kwargs)
+
+    def get_form_kwargs(self, index):
+        """
+        Override this method to pass `c_user` (user) to each form.
+        """
+        kwargs = super().get_form_kwargs(index)
+        kwargs['user'] = self.c_user  # Pass c_user (user) to the form
+        return kwargs
+
 
 
 class ProductVideoForm(forms.ModelForm):
@@ -149,8 +166,26 @@ class ProductVideoForm(forms.ModelForm):
         return instance
 
 
-ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage, form=ProductImageForm, extra =1)
-ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls, form = ProductVideoForm, extra=1)
+
+class ProductVideoFormSet(BaseInlineFormSet):
+
+    def __init__(self, *args, **kwargs):
+        self.c_user = kwargs.pop('c_user', None)  # Pop the c_user from kwargs
+        super().__init__(*args, **kwargs)
+
+    def get_form_kwargs(self, index):
+        """
+        Override this method to pass `c_user` (user) to each form.
+        """
+        kwargs = super().get_form_kwargs(index)
+        kwargs['user'] = self.c_user  # Pass c_user (user) to the form
+        return kwargs
+
+
+
+
+ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage,formset = ProductImageFormSet,form=ProductImageForm, extra =1)
+ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls,formset = ProductVideoFormSet, form = ProductVideoForm, extra=1)
 
 
 

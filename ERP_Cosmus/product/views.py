@@ -91,7 +91,7 @@ def dashboard(request):
 
 #NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
 def edit_production_product(request,pk):
-    
+    print(request.POST)
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     
@@ -305,7 +305,7 @@ def edit_production_product(request,pk):
                     logger.info(f"product-formset-saved product")
                     return redirect('pproductlist')
 
-            except exception as e:
+            except Exception as e:
                 logger.error(f"An exception occured in Product - {e} - Product-name - {pproduct}")
                 messages.error(request, f'An exception occured - {e}')
         
@@ -470,7 +470,7 @@ def add_product_images(request, pk):
     formset = ProductImagesFormSet(instance=product)  # pass the instance to the formset
     
     if request.method == 'POST':
-        formset = ProductImagesFormSet(request.POST, request.FILES, instance=product, user=request.user)
+        formset = ProductImagesFormSet(request.POST, request.FILES, instance=product, c_user=request.user)
         if formset.is_valid():
             formset.save()
             messages.success(request,'Product images sucessfully added.')
@@ -497,7 +497,7 @@ def add_product_video_url(request,pk):
     formset = ProductVideoFormSet(instance= product)  # pass the instance to the formset
 
     if request.method == 'POST':
-        formset = ProductVideoFormSet(request.POST, instance=product, user=request.user)
+        formset = ProductVideoFormSet(request.POST, instance=product, c_user=request.user)
         
         if formset.is_valid():
             formset.save()
@@ -541,7 +541,9 @@ def definemaincategoryproduct(request,pk=None):
     if request.method == 'POST':
         form = product_main_category_form(request.POST, instance= instance)
         if form.is_valid():
-            form.save()
+            form_instance  = form.save(commit=False)
+            form_instance.c_user = request.user
+            form_instance.save()
             if message == 'created':
                 messages.success(request,'Main Category created sucessfully')
             if message == 'updated':
@@ -585,7 +587,8 @@ def definesubcategoryproduct(request, pk=None):
         try:
             form = product_sub_category_form(request.POST,instance = instance)
             if form.is_valid():
-                form.save()
+                form_instance = form.save(commit=False)
+                form_instance.c_user = request.user
                 if message == 'created':
                     messages.success(request,'Sub-Category created sucessfully')
                 if message == 'updated':
@@ -615,7 +618,7 @@ def product2subcategory(request):
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
     
-    print(request.POST)
+    
     if request.method == 'POST':
 
         try:
@@ -661,6 +664,8 @@ def product2subcategory(request):
                 s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
 
                 p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=s_c_id)
+                p2c.c_user = request.user
+                p2c.save()
             messages.success(request,f'Product sucessfully added to {s_c_id.product_sub_category_name}')
         
         except IntegrityError:
@@ -2675,6 +2680,7 @@ def product2item(request,product_refrence_id):
                                     initial_rows = 0
 
                                 p2i_instance = form.save(commit = False)
+                                p2i_instance.c_user = request.user
                                 p2i_instance.common_unique = False 
                                 p2i_instance.save()
                                 logger.info(f"Product to item created/updated special - {p2i_instance.id}")
@@ -2684,7 +2690,7 @@ def product2item(request,product_refrence_id):
                                 if no_of_rows_to_create > 0:
                                     for row in range(no_of_rows_to_create):
                                         logger.info(f" set prod item part name created of p2i instance - {p2i_instance.id}")
-                                        set_prod_item_part_name.objects.create(producttoitem = p2i_instance)
+                                        set_prod_item_part_name.objects.create(producttoitem = p2i_instance, c_user = request.user)
 
                                 p2i_instance.save()
                                 formset_single_valid = True
@@ -2724,6 +2730,7 @@ def product2item(request,product_refrence_id):
                                         item = form.cleaned_data['Item_pk']
                                         
                                         obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
+                                        obj.c_user = request.user
                                         
                                         # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
                                         if created:
