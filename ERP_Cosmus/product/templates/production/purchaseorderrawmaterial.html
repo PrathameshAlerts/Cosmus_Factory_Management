@@ -288,6 +288,12 @@ function submitForm(){
     if(ids !== ""){
         var submitButton = document.getElementById('id_submit');
         submitButton.style.display = 'none';
+        var processQty = document.querySelectorAll('input[name$="-process_quantity"]');
+        processQty.forEach(function(ele){
+            ele.style.border = 'none';
+            ele.style.background = 'transparent';
+            ele.style.outline = 'none';
+        })
     }
 }
 submitForm();

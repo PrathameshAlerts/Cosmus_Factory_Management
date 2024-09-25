@@ -51,8 +51,8 @@
                     </div>
 
                     <div class="d-flex mb-2">
-                        <div class="d-flex">
-                            <label for="id_total_approved_pcs" class="">Total approved pcs:</label>
+                        <div class="d-flex ">
+                            <label for="id_total_approved_pcs" class="">Approved pcs:</label>
                             {% if labour_work_out_child_form.instance.id %}
                             <input name="total_approved_pcs"  value ="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_approved_pcs}}" required id="id_total_approved_pcs" class="purchase-input text-danger ms-2 me-3 pb-2" style="outline: none;" readonly>
                             {% elif not labour_work_out_child_form.instance.id %}
@@ -60,21 +60,25 @@
                             {% endif %}
                         </div>
                    
-                        <div class="d-flex"> 
-                            <lable for="id_total_process_pcs" class="">Total processed Pcs</lable> 
+                        <div class="d-flex ms-5"> 
+                            <lable for="id_total_process_pcs" class="">Proccess Pcs:</lable> 
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_process_pcs | default_if_none:0}}" name="total_process_pcs" id="id_total_process_pcs" readonly style="outline: none;">
                             
                         </div>
 
+                        
+                    </div>
+                    <div>
                         <div class="d-flex"> 
-                            <lable for="id_total_balance_pcs" class="">Total balance pcs</lable> 
+                        <lable for="id_total_balance_pcs" class="">Balance pcs:</lable> 
 
-                            {% if labour_work_out_child_form.instance.id %}
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_pending_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
-                            {% elif not labour_work_out_child_form.instance.id %}
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
-                            {% endif %}
-                        </div>
+                        {% if labour_work_out_child_form.instance.id %}
+                        <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_pending_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
+                        {% elif not labour_work_out_child_form.instance.id %}
+                        <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
+                        {% endif %}
+                    </div>
+
                     </div>
                 
                 </div>
@@ -164,7 +168,7 @@
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.instance.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
-                                <td><input type="text"  class="productinput" name="{{form.prefix}}-material_color_shade" value="{{form.instance.material_color_shade}}" maxlength="255" id="id_{{form.prefix}}-material_color_shade"></td>
+                                <td><input type="text"  class="productinput" name="{{form.prefix}}-material_color_shade" value="{{form.instance.material_color_shade}}" maxlength="255" id="id_{{form.prefix}}-material_color_shade"readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.instance.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.instance.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
                                 <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.instance.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
@@ -182,7 +186,7 @@
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                                 <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                                 <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
-                                <td><input type="text"  class="productinput" name="{{form.prefix}}-material_color_shade" value="{{form.initial.material_color_shade}}" maxlength="255" id="id_{{form.prefix}}-material_color_shade"></td>
+                                <td><input type="text"  class="productinput" name="{{form.prefix}}-material_color_shade" value="{{form.initial.material_color_shade}}" maxlength="255" id="id_{{form.prefix}}-material_color_shade" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.initial.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.initial.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
                                 <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.initial.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
@@ -298,7 +302,10 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
             var challanId = $("#id_challan_no");
             var errorElement = $('#challanError'); // The error message element
             var submitButton = $('#id_submit');
-            $.ajax({
+            var formId = $('#labourTable').find('#id_labour_workout_cutting_items_set-0-id').val();
+      
+            if(formId == ""){
+                $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
                 data: {
@@ -325,6 +332,8 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
                 }
 
             })
+            }
+            
         })
     })
 
@@ -337,12 +346,22 @@ function labourApprovedQty() {
         const submitButton = document.getElementById('id_submit');
         const challanNo = document.getElementById('id_challan_no');
         const labourname = document.getElementById('id_labour_name');
+        const totalApprove = document.getElementById('id_total_approved_pcs');
+        const totalProcessed = document.getElementById('id_total_process_pcs');
+        const totalBalance = document.getElementById('id_total_balance_pcs');
         let totals =0;
         let balanceQty = 0;
         let approveQty = 0;
         challanNo.readOnly = 'true';
         challanNo.style.backgroundColor = 'transparent';
         challanNo.style.border = 'none';
+        challanNo.style.outline = 'none';
+        totalApprove.style.backgroundColor = 'transparent';
+        totalApprove.style.border = 'none';
+        totalProcessed.style.backgroundColor = 'transparent';
+        totalProcessed.style.border = 'none';
+        totalBalance.style.backgroundColor = 'transparent';
+        totalBalance.style.border = 'none';
         submitButton.style.display = 'none';
         labourname.disabled = 'true';
         labourname.style.backgroundColor = 'transparent';
