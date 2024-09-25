@@ -1,6 +1,7 @@
 
 from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
+from django.forms import ValidationError
 from .models import (Ledger, PProduct_Creation, Product, RawStockTrasferRecords,
                       account_credit_debit_master_table, godown_item_report_for_cutting_room,  item_purchase_voucher_master, 
                       item_godown_quantity_through_table,Item_Creation,item_color_shade, labour_workout_master, 
@@ -368,7 +369,6 @@ def handle_purchase_order_update(sender, instance, **kwargs):
 
     
 # signal to save cutting_room_cancelled 
-
 @receiver(post_save, sender = purchase_order_for_raw_material_cutting_items)
 def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
     
@@ -404,6 +404,22 @@ def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
                                                                 ,voucher_number = instance_voucher_number,material_color_shade = instance_material_color_shade ,
                                                                 godown_id= instance_godown_id,
                                                                 inward = instance_inward ,total_comsumption = instance_total_comsumption,rate = instance_rate)
+
+
+
+
+# signal to delete p_2_i if po is generated
+@receiver(pre_delete, sender= product_2_item_through_table)
+def handle_product_to_item_delete(sender, instance, **kwargs):
+
+
+    item_name_instance = instance.Item_pk
+
+    p_o_c_instance = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade=item_name_instance)
+
+    if p_o_c_instance:
+        raise ValidationError(f'You cannot delete as Item is in Purchase Order cutting Stage Po number')
+
 
 
 

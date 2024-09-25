@@ -70,7 +70,7 @@
                             <lable for="id_total_balance_pcs" class="">Total balance pcs</lable> 
 
                             {% if labour_work_out_child_form.instance.id %}
-                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.labour_workout_master_instance.total_pending_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
+                            <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
                             {% elif not labour_work_out_child_form.instance.id %}
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.initial.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
                             {% endif %}
