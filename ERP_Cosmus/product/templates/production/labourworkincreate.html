@@ -143,7 +143,6 @@
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-cur_bal_plus_return_qty" value="{{form.initial.cur_bal_plus_return_qty}}" id="id_{{form.prefix}}-cur_bal_plus_return_qty" readonly>   
                     </tr>
                     {% elif form.instance.id %}
-
                     <tr>
                         <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>

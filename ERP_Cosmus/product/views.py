@@ -4466,7 +4466,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     # update the labour workin pcs in labour workout model with total return pcs
                     labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
 
-                    parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.labour_voucher_number.labour_workin_pending_pcs - parent_form.total_return_pcs
+                    parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
 
                     labour_workout_child_instance.save()
                     parent_form.save()
@@ -4477,7 +4477,10 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                             product_to_item_form = form.save(commit= False)
                             product_to_item_form.labour_workin_instance = parent_form
                             
-                            l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
+                            l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,
+                                                                                              product_sku=product_to_item_form.product_sku,
+                                                                                              product_color=product_to_item_form.product_color)
+                            
                             l_w_o_instance.labour_w_in_pending = l_w_o_instance.labour_w_in_pending - product_to_item_form.return_pcs
 
                             l_w_o_instance.save()
@@ -4490,6 +4493,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     print(product_to_item_formset.errors)
                     print(master_form.errors)
                     print(product_to_item_formset.non_form_errors())
+                    return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
                     
                 return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
                 
@@ -4553,7 +4557,6 @@ def labourworkinsingledeleteajax(request):
             try:
                 with transaction.atomic():
                     labour_workin_instance = labour_work_in_master.objects.get(pk=labour_workin_id)
-                    print('labour_workin_id',labour_workin_id)
                     
                     labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs + labour_workin_instance.total_return_pcs
                     labour_workin_instance.labour_voucher_number.labour_workin_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pcs - labour_workin_instance.total_return_pcs
@@ -4565,6 +4568,7 @@ def labourworkinsingledeleteajax(request):
                         product_2_item_child_instances.labour_w_in_pending = product_2_item_child_instances.labour_w_in_pending + instances.return_pcs
 
                         product_2_item_child_instances.save()
+
                     labour_workin_instance.delete()
 
                     return redirect(reverse('labour-workin-list-create', args=[labour_workin_instance.labour_voucher_number.id]) )
