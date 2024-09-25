@@ -197,7 +197,7 @@
             </div>
             <div class="d-flex mb-3">
                 <label for="id_amount" class="item-form">Amount:</label>
-            <input type="number" class = "item-select" name="amount" step="0.01" value="{{master_form.instance.amount |default_if_none:''}}" required id="id_amount" readonly>
+            <input type="number" class = "item-select" name="amount" step="0.01" value="{{master_form.instance.amount |default_if_none:''}}" required id="id_amount" readonly style="border: 1px solid blue; outline: none;">
             </div>
         </div>
     </div>
@@ -225,11 +225,11 @@
   function formSubmit(){
     var labourId = document.getElementById('id_l_w_in_products-0-id').value;
     var total = 0;
-
+    var balancepc= 0;
+ 
     if(labourId != ''){
         var totalReturn = document.querySelectorAll('[name$="-return_pcs"]');
         var refNo = document.getElementById('id_voucher_number');
-        console.log(refNo)
         refNo.readOnly = true;
         refNo.style.outline = 'none';
         totalReturn.forEach(function(element){
@@ -237,7 +237,7 @@
             var row = element.closest('tr'); 
             var balance = parseInt(row.querySelector('input[name$="-cur_bal_plus_return_qty"]').value) || 0;
             var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
-          
+            
            
              if(returnValue > balance){
                 returnValue = 0;
@@ -250,7 +250,7 @@
             row.querySelector('input[name$="-qty_to_compare"]').value = balanceQtyValue;
 
             total  += returnValue;
-    
+            balancepc += balanceQtyValue;
         })
 
     }else{
@@ -261,7 +261,8 @@
             var row = input.closest('tr'); 
             var balance = parseInt(row.querySelector('input[name$="-pending_to_return_pcs"]').value) || 0;
             var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
-          
+            var pendingValue =document.getElementById('id_total_balance_pcs').value
+            console.log("pendingValue",pendingValue)
              if(returnValue > balance){
                 returnValue = 0;
                 input.value = 0;
@@ -269,13 +270,17 @@
              }
            
             var balanceQty = balance - returnValue;
+            
             row.querySelector('input[name$="-qty_to_compare"]').value = balanceQty;
-
             total  += returnValue;
-    
+            balancepc += balanceQty;
+            
         })
     }
+    
     document.getElementById('id_total_return_pcs').value = total;
+    document.getElementById('id_total_balance_pcs').value = balancepc;
+
   }
 
   
