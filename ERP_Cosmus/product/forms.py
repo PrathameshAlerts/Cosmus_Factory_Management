@@ -207,6 +207,9 @@ class Product2ItemForm(forms.ModelForm):
                 raise forms.ValidationError(f'The number of rows cannot be less than the current value of {existing_value}.')
 
         return new_value
+    
+    
+
 
 
 # when using modelformset need to add can_delete = True or delete wont be added in form
@@ -233,6 +236,8 @@ class Product2CommonItem(forms.ModelForm):
                 raise forms.ValidationError(f'The number of rows cannot be less than the current value of {existing_value}.')
 
         return new_value
+    
+
 
 
 

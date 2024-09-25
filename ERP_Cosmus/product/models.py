@@ -80,6 +80,7 @@ class Product2SubCategory(models.Model):
     
 
 class Color(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     color_name = models.CharField(max_length=255, unique= True, null = False, blank = False)
     
     class Meta:
@@ -90,6 +91,7 @@ class Color(models.Model):
     
     
 class gst(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     gst_percentage = models.IntegerField(unique=True)
     class Meta:
         ordering = ["gst_percentage"]
@@ -306,6 +308,7 @@ class ProductVideoUrls(models.Model):
 
 
 class Fabric_Group_Model(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
     modified_date_time = models.DateTimeField(auto_now_add= True)
@@ -314,6 +317,7 @@ class Fabric_Group_Model(models.Model):
         ordering = ['fab_grp_name']
 
 class Unit_Name_Create(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     unit_name = models.CharField(max_length=100,unique = True, null = False, blank = False)
     unit_value = models.CharField(max_length=100,null = False, blank = False)
     created_date = models.DateTimeField(auto_now= True)
@@ -324,6 +328,7 @@ class Unit_Name_Create(models.Model):
 
 
 class FabricFinishes(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     fabric_finish =  models.CharField(max_length = 100, unique=True)
 
     class Meta:
@@ -331,6 +336,7 @@ class FabricFinishes(models.Model):
 
 
 class packaging(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     packing_material = models.CharField(max_length = 100, unique=True)
     
     class Meta:
@@ -643,13 +649,13 @@ class item_godown_quantity_through_table(models.Model):
             
 class product_2_item_through_table(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
-    PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
+    PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
     grand_total = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     common_unique = models.BooleanField(default = False)  # True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1)
-    Remark = models.CharField(max_length=100, blank=True, null=True)
+    Remark = models.CharField(max_length = 100, blank=True, null=True)
 
 
     class Meta:
@@ -891,7 +897,7 @@ class labour_work_in_product_to_item(models.Model):
     L_work_out_pcs = models.IntegerField()
     return_pcs = models.IntegerField()
     pending_to_return_pcs = models.IntegerField()
-    approved_qty = models.IntegerField(default=0)
+    approved_qty = models.IntegerField(default = 0)
 
 
 # reports
@@ -904,4 +910,4 @@ class godown_item_report_for_cutting_room(models.Model):
     godown_id = models.CharField(max_length=50)
     inward = models.BooleanField() # true for inward and false for outward
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
