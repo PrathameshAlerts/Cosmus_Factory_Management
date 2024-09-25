@@ -1222,7 +1222,7 @@ input[type=number] {
 .edit_btn{
     background: linear-gradient(45deg, #4998d1, #2fc2dc);
     color: white;
-    padding: 10px 15px;
+    padding: 10px 6px;
     font-size: 17px;
     border: none;
     border-radius: 10px;

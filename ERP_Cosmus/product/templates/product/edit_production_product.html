@@ -5,7 +5,7 @@
 
 <form method="POST" enctype="multipart/form-data" action="" id="newForm" autocomplete="off">
   {% csrf_token %}
-  <h2 class="mb-3 mt-4">Update Product</h2>
+  <h2 class="mb-3 mt-2">Update Product</h2>
   <div class="d-flex mb-3 productItem">
     <input type="hidden" class="product_items" name="Number_of_items" id="id_Number_of_items" value="{{form.instance.Number_of_items | default_if_none:'0'}}">
     <input type="hidden" name="updated_url" id="updated_url" value="">
@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <button type="button" class="edit_btn w-75 mb-3" id="product_details_btn">Product Details<span class="product_span"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-2" id="product_details_btn">Product Details<span class="product_span"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_details" style="display: none;">
     {{ formset.management_form }}
     {% for form in formset %}
@@ -97,7 +97,7 @@
     </div>
     {% endfor %}
   </div>
-  <button type="button" class="edit_btn w-75 mb-3" id="aditional_details_btn">Additional Details<span class="additnal-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-2" id="aditional_details_btn">Additional Details<span class="additnal-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="aditional_details" style="display: none;">
     <div class="row">
       <div class="col-lg-5">
@@ -213,7 +213,7 @@
     </div>
   </div>
 
-  <button type="button" class="edit_btn w-75 mb-3" id="product_category_btn">Product Category<span class="category-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-2" id="product_category_btn">Product Category<span class="category-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_category" style="display: none;">
     <div class="row">
       <div class="col-lg-6">
@@ -251,7 +251,7 @@
     </div>
   </div>
 
-  <button type="button" class="edit_btn w-75 mb-3" id="product_capacity_btn">Capacity<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-2" id="product_capacity_btn">Capacity<span class="capacity-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_capacity" style="display: none;">
     <div class="row">
       <div class="col-lg-5">
@@ -342,7 +342,7 @@
 
   </div>
 
-  <button type="button" class="edit_btn w-75 mb-3" id="product_description_btn">Description<span class="discription-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-2" id="product_description_btn">Description<span class="discription-padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_description" style="display: none;">
     <div class="row">
       <div class="col-lg-5">
@@ -412,7 +412,7 @@
     </div>
   </div>
 
-  <button type="button" class="edit_btn w-75 mb-3" id="product_pricing_btn">Pricing<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-2" id="product_pricing_btn">Pricing<span class="span_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="product_pricing" style="display: none;">
     <div class="row">
       <div class="col-lg-5">
@@ -459,7 +459,7 @@
     </div>
   </div>
 
-  <button type="button" class="edit_btn w-75 mb-3" id="set_production_btn">Set Production<span class="production_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+  <button type="button" class="edit_btn w-75 mb-2" id="set_production_btn">Set Production<span class="production_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
   <div id="set_production" style="display: none;">
     <div class="row">
       <div class="col-lg-3">

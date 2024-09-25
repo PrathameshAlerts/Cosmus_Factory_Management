@@ -101,6 +101,7 @@ $(document).ready(function(){
           success: function(response){
             console.log(response);
             $('#exampleModal').modal('hide');
+            window.location.reload();
             
           },
           error: function(xhr, status, error){
