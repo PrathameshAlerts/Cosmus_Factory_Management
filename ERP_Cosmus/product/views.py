@@ -2768,28 +2768,24 @@ def product2item(request,product_refrence_id):
             
             #for unique records
             if formset_single.is_valid():
+                
                 try:
                     # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
                     for form in formset_single.deleted_forms:
-                        print('test1')
                         if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
                             item_instance = form.instance.Item_pk
                             
-                            p_o_c_instance_single = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items__item_name = item_instance)
-                            print('test2')
+                            p_o_c_instance_single = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = item_instance)
+                            
                             if not p_o_c_instance_single.exists():
-                                print('test3')
                                 logger.info(f"Deleted product to item instace of {form.instance.pk}")
-                                print('test4')
                                 form.instance.delete()
-                                print('test5')
                             else:
-                                
                                 raise ValidationError('You cannot delete as Item is in Purchase Order cutting Stage Po number')
+
                     
                     for form in formset_single:
                         if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
-                            
                             if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
                                 
                                 if form.instance.pk:  # This line checks if the form instance has a primary key (pk), which means it corresponds to an existing record in the database.
@@ -2816,11 +2812,7 @@ def product2item(request,product_refrence_id):
 
                             else:
                                 raise ValidationError('Please select existing Item Name or select from the dropdown')
-
-                except ValidationError as ve:
-                    logger.error(f'validation error - saving unique records - {ve}')
-                    messages.error(request, f'validation error - Error saving unique records - {ve}')  
-
+                                
                 except Exception as e:
                     logger.error(f'Error saving unique records - {e}')
                     messages.error(request, f'Error saving unique records - {e}')  
@@ -2835,28 +2827,23 @@ def product2item(request,product_refrence_id):
                     for form in formset_common.deleted_forms:
                         if form.instance.id: # check if there is instance before attempting to delete
                             deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
-
-                            # item_name_delete = item_color_shade.objects.get(items = deleted_item)
                             
-                            # p_o_c_instance_common = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade = item_name_delete)
-                            # print('p_o_c_instance_common',p_o_c_instance_common)
-                            if not False:
+                            p_o_c_instance_common = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = deleted_item)
+
+                            if not p_o_c_instance_common.exists():
                                 for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
-                                    
                                     p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
-                                    
-                                    logger.info(f"Deleted product to item instace of {product} - {deleted_item}")
+                                    logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
                                     p2i_to_delete.delete()
                             else:
                                 raise ValidationError('You cannot delete as Item is in Purchase Order cutting Stage Po number')
-
 
                             
                     for form in formset_common: # duplicate item for the product in the form wont give validation error as the old product will be updated instead of creating a new one and raising error of unique values  
                         if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
 
                             if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
-                                
+
                                 for product in Products_all:
                                     #loop through all the products for each form and get the instance with
                                     # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 

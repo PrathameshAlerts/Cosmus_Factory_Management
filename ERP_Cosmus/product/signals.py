@@ -408,17 +408,7 @@ def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
 
 
 
-# signal to delete p_2_i if po is generated
-@receiver(pre_delete, sender= product_2_item_through_table)
-def handle_product_to_item_delete(sender, instance, **kwargs):
 
-
-    item_name_instance = instance.Item_pk
-
-    p_o_c_instance = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade=item_name_instance)
-
-    if p_o_c_instance:
-        raise ValidationError(f'You cannot delete as Item is in Purchase Order cutting Stage Po number')
 
 
 

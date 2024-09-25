@@ -546,10 +546,11 @@ cuttingBalanceQty()
             
             const rowMaterial = document.getElementById('id_raw_material_cutting_id');
             const cuttingMaster = document.getElementById('id_factory_employee_id');
-            const actualQty = document.getElementById('id_processQty').value;
-            const processed_qty = document.getElementById('id_processed_qty').value;
-            const  balanceViewQty = parseFloat(actualQty) -parseFloat(processed_qty);
-
+            const actualQty = parseFloat(document.getElementById('id_processQty').value);
+            const processed_qty = document.getElementById('id_processed_qty');
+            const newProcessValue = parseFloat(processed_qty.value);
+            const  balanceViewQty = actualQty - newProcessValue;
+            const balanceData = document.getElementById('id_balanceView_qty');
 
             rowMaterial.readOnly = true;
             cuttingMaster.disabled = true;
@@ -558,7 +559,12 @@ cuttingBalanceQty()
             rowMaterial.style.backgroundColor = "transparent";
             cuttingMaster.style.disabled = "true";
             rowMaterial.style.outline = "none";
-          
+            balanceData.style.backgroundColor = "transparent";
+            balanceData.style.border = "none";
+            balanceData.style.outline = "none";
+            processed_qty.style.border = "none";
+            processed_qty.style.outline = "none";
+            processed_qty.style.backgroundColor = "transparent";
 
             //document.getElementById('id_balanceView_qty').value = balanceViewQty;
 
