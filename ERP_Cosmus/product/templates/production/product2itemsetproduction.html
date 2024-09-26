@@ -467,7 +467,11 @@
             if (nameValue === '') {
                 suggestionsContainerCommon.css('display', 'none');
                 $(this).attr('data-key', '');
-                var errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
+                const errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
+                const commonItem = $(this).closest('form').find('[name$="Item_pks"]');
+                const submitValueButton = $('#id_submitForms');
+                commonItem.css('border', '1px solid #ced4da');
+                submitValueButton.prop('disabled', false);
                 errorForm.hide();
                 return;
             }
@@ -577,6 +581,7 @@
                 const errorShow = $inputField.find('.error-messagesorderCreate');
                 const commonItemInputs = $inputField.find('[name$="Item_pks"]');
                 const submitButton = $('#id_submitForms');
+                console.log(submitButton)
                 errorShow.hide();
                 commonItemInputs.css('border', '1px solid #ced4da');
                 submitButton.attr('disabled',false)
@@ -679,9 +684,9 @@
                 const nameValues = $inputField.text().trim();
                 const dataKey = $inputField.attr('data-key');
                
-                const errorShow = currentRows.find('.error-messagesorderCreate');
-                const commonItemInputs = currentRows.find('[name$="Item_pks"]');
-                const submitButton = $(this).closest('form').find('#id_submitForms');
+                const errorShowData = currentRows.find('.error-messagesorderCreate');
+                const commonItemInputsValue = currentRows.find('[name$="Item_pks"]');
+                const submitButtons = $(this).closest('form').find('#id_submitForms');
            
                 if ($inputField.length > 0) {
                     $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val();
@@ -698,19 +703,19 @@
                    var dataValue= $(this).val();
                    console.log('Duplicate item found:', dataValue);
                    if(dataKey === dataValue){
-                    errorShow.text('Already Item Added');
-                    errorShow.show();
-                    submitButton.attr('disabled', 'disabled');
-                 
+                    errorShowData.text('Already Item Added');
+                    errorShowData.show();
+                    submitButtons.prop('disabled', true);
+                    commonItemInputsValue.css('border', '1px solid red');
                     isDuplicate = true;
                     return false;
                    }
                    
                    if(!isDuplicate){
-                    errorShow.text('');
-                    errorShow.hide();
-                    submitButton.removeAttr('disabled');
-            
+                    errorShowData.text('');
+                    errorShowData.hide();
+                    submitButtons.prop('disabled', false);
+                    commonItemInputsValue.css('border', '1px solid #ced4da');
                    }
                 })
                 enterPressed = true; // Set the flag to true when Enter is pressed
