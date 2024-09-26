@@ -253,7 +253,7 @@
                 itemProduct.each(function(){
                     const productValues = $(this).val();
                     if(productValues === prodcutData){
-                        const formsSet = $(this).closest('form').find('[name$="Item_pk"]').not(currentRowValue.find('[name$="Item_pk"]'));
+                        const formsSet = $(this).closest('tr').find('[name$="Item_pk"]');
                             formsSet.each(function(){
                                 const dataNameValue = $(this).val();
                   
@@ -265,12 +265,6 @@
                                         isDuplicates = true;
                                         nameData.val('');
                                         return false; 
-                                    }else{
-                                        submitValue.prop('disabled', false);
-                                        uniuqueRow.css('border', '1px solid #ced4da');
-                                        errorForms.text('');
-                                        errorForms.hide();
-                                        nameData.val(dataKey);
                                     }
                             })
 
@@ -283,6 +277,21 @@
                     errorForms.hide();
                     nameData.val(dataKey);
                 }
+
+                const itemPks = $(this).closest('form').find('[name^="product2itemcommonformset-"][name$="-Item_pk"]');
+                itemPks.each(function(){
+                    const itempkData = $(this).val();
+                    if(itempkData === dataKey){
+                        errorForms.text('Item already exists');
+                        errorForms.show();
+                        submitValue.prop('disabled', true);
+                        uniuqueRow.css('border', '1px solid red');
+                        isDuplicates = true;
+                        nameData.val('');
+                        return false; 
+                    }
+
+                })
                 if(dataKey){
                     suggestionsContainerUniqueId.css('display', 'none');
                 }
@@ -377,7 +386,7 @@
                     const prevItem = selectedItem.prev();
                     const nameDataKey = selectedItem.text();
                     const nameKey = selectedItem.data('key');
-                    console.log("nameKey", nameKey)
+                
                     $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val(nameKey);
                     $inputField.attr('data-key', nameKey);
                     $inputField.text(nameDataKey);
@@ -411,7 +420,6 @@
                 const prodcutData = currentRowData.find('[name$="-PProduct_pk"]').val();
                 
                 
-               
                 if ($inputField.length > 0) {
                     $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val();
                     $inputField.val(nameValues);
@@ -420,29 +428,28 @@
                     suggestionHide.css('display', 'none')
                 }
 
-                const itemProduct = $inputField.closest('form').find('[name$="-PProduct_pk"]').not(currentRowData.find('[name$="-PProduct_pk"]'));
-                let isDuplicates = false;
-                    itemProduct.each(function(){
+                    const itemProduct = $inputField.closest('form').find('[name$="-PProduct_pk"]').not(currentRowData.find('[name$="-PProduct_pk"]'));
+                    let isDuplicates = false;
+                    itemProduct.each(function(element){
                         const productValues = $(this).val();
                         if(productValues === prodcutData){
-                            const formsSet = $(this).closest('form').find('[name$="Item_pk"]').not(currentRowData.find('[name$="Item_pk"]'));
-                                formsSet.each(function(){
-                                    const dataNameValue = $(this).val();
-                                
-                                        console.log('dataNameValue', dataNameValue);
-                                        if(dataNameValue === nameKeyValue){
-                                            errorForm.text('Item already exists');
-                                            errorForm.show();
-                                            submitValue.prop('disabled', true);
-                                            uniuqueRow.css('border', '1px solid red');
-                                            isDuplicates = true;
-                                            $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val('');
-                                            return false; 
-                                        }
-                                })
+                            const formsSet = $(this).closest('tr').find('[name$="Item_pk"]');
+                            formsSet.each(function(){
+                                const dataNameValue = $(this).val();
+                            
+                                if(dataNameValue === nameKeyValue){
+                                    errorForm.text('Item already exists');
+                                    errorForm.show();
+                                    submitValue.prop('disabled', true);
+                                    uniuqueRow.css('border', '1px solid red');
+                                    isDuplicates = true;
+                                    $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val('');
+                                    return false; 
+                                }
+                            })
 
                         }
-                })
+                    })
                 if(!isDuplicates){
                     submitValue.prop('disabled', false);
                     uniuqueRow.css('border', '1px solid #ced4da');
@@ -450,7 +457,22 @@
                     errorForm.hide();
                     nameData.val(nameKeyValue);
                 }
-              
+
+
+                const itemPk = $inputField.closest('form').find('[name^="product2itemcommonformset-"][name$="-Item_pk"]');
+                itemPk.each(function(){
+                    const itempkValue = $(this).val();
+                    if(itempkValue === nameKeyValue){
+                        errorForm.text('Item already exists');
+                        errorForm.show();
+                        submitValue.prop('disabled', true);
+                        uniuqueRow.css('border', '1px solid red');
+                        isDuplicates = true;
+                        $inputField.closest('.custom-dropdown-container').find('.input_hidden-value').val('');
+                        return false; 
+                    }
+
+                })
                 enterValue = true; // Set the flag to true when Enter is pressed
 
             }
@@ -582,7 +604,7 @@
                 const errorShow = $inputField.find('.error-messagesorderCreate');
                 const commonItemInputs = $inputField.find('[name$="Item_pks"]');
                 const submitButton = $('#id_submitForms');
-                console.log(submitButton)
+        
                 errorShow.hide();
                 commonItemInputs.css('border', '1px solid #ced4da');
                 submitButton.attr('disabled',false)
@@ -913,12 +935,7 @@
                 if (lastVisibleRow) {
                     const forms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
                     const submitbutton = document.getElementById('id_submitForms');
-                   
-                    
 
-                    console.log(submitbutton);
-                   
-        
                     submitbutton.setAttribute('disabled', false);
                    
                  
