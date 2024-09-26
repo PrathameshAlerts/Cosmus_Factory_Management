@@ -464,15 +464,16 @@
             purchaseData = $(this).attr('name').split('-')[1]; // Extract the numeric value from the input name
             const nameValue = $(this).val().trim();
             const suggestionsContainerCommon = $(`#id_item_input_Name_${purchaseData}`);
+            const errorData = $(this).closest('tr').find('.error-messagesorderCreate');
+            const commonItem = $(this).closest('form').find('[name$="Item_pks"]');
+            const submitValueButton = $('#id_submitForms');
             if (nameValue === '') {
                 suggestionsContainerCommon.css('display', 'none');
                 $(this).attr('data-key', '');
-                const errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
-                const commonItem = $(this).closest('form').find('[name$="Item_pks"]');
-                const submitValueButton = $('#id_submitForms');
+                
                 commonItem.css('border', '1px solid #ced4da');
                 submitValueButton.prop('disabled', false);
-                errorForm.hide();
+                errorData.hide();
                 return;
             }
             if (!enterPressed) {
