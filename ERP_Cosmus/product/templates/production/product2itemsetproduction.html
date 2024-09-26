@@ -571,14 +571,12 @@
             const optionsCount = $options.length - 1;
             const nameData = $inputField.val().trim();
             const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#id_item_input_Name_${purchaseData}`);
-            const errorShow = currentRows.find('.error-messagesorderCreate');
-            const commonItemInputs = currentRows.find('[name$="Item_pks"]');
-            const submitButton = $(this).closest('form').find('#id_submitForms');
+            
            
             if (nameData === '') {
-                const errorShow = currentRows.find('.error-messagesorderCreate');
-                const commonItemInputs = currentRows.find('[name$="Item_pks"]');
-                const submitButton = $(this).closest('form').find('#id_submitForms');
+                const errorShow = $inputField.find('.error-messagesorderCreate');
+                const commonItemInputs = $inputField.find('[name$="Item_pks"]');
+                const submitButton = $('#id_submitForms');
                 errorShow.hide();
                 commonItemInputs.css('border', '1px solid #ced4da');
                 submitButton.attr('disabled',false)
