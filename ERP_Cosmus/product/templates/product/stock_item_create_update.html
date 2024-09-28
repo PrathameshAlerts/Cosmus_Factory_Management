@@ -4,7 +4,7 @@
 
 <div class="row mt-4">
   <div class="col-lg-5">
-    <h2 class="mb-3">{{title}}</h2>
+    <!-- <h2 class="mb-3">{{title}}</h2> -->
     <form action="" method="POST" id="stockItemForm">
       {% csrf_token %}
       <div class="d-flex mb-3">
@@ -33,7 +33,7 @@
       </div>
         {% endif %}
       
-      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButtonStockItems" class="create-btn mt-4" name="save" value="Save" onclick="navbarChange('Create Stock Item')">
     </form>
   </div>
   <div class="col-lg-5 mt-4">
@@ -72,7 +72,7 @@
                 {% if request.user.is_superuser %}
                 <td>{{items.company}}</td>
                 {% endif %}
-                <td><a href="{% url 'stock_item-update' items.id  %}"><i class="fa-solid fa-pen-to-square px-1"></a></td>
+                <td><a href="{% url 'stock_item-update' items.id  %}" id="editStockItemClick" onclick="navbarChange('Edit Stock Item')"><i class="fa-solid fa-pen-to-square px-1"></a></td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ items.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
               </tr>
               {% endfor %}

@@ -7,7 +7,7 @@
 
     <form action="" method="POST" id="unitForm">
       {% csrf_token %}
-      <h2 class="mb-3">{{title}}</h2>
+      <!-- <h2 class="mb-3">{{title}}</h2> -->
       <div class="d-flex mb-3">
         <label for="id_unit_name" class=" item-form">Units Name:</label>
         <input type="text" class="item-select" value="{{ form.instance.unit_name }}" name="unit_name" maxlength="255"
@@ -17,7 +17,7 @@
         <label for="id_unit_value" class=" item-form">Units:</label>
           <input type="text" class="item-select" value="{{form.instance.unit_value}}" name="unit_value" maxlength="255" required id="id_unit_value">
       </div>
-      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButtonUnitCreate" class="create-btn mt-4" name="save" value="Save" onclick ="navbarChange('Create Unit')">
     </form>
   </div>
 
@@ -58,7 +58,7 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{unit.unit_name}}</td>
                 <td>{{unit.unit_value}}</td>
-                <td><a href="{% url 'unit_name-update' unit.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                <td><a href="{% url 'unit_name-update' unit.id %}" id="unitNameEditClick" onclick="navbarChange('Edit Unit')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ unit.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
               </tr>
               {% endfor %}
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   $(document).ready(function () {
     $('#unitForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
+      $('#submitButtonUnitCreate').attr('disabled', 'disabled');
     });
     $('.delete-btn').click(function () {
       const itemId = $(this).data('item-id');

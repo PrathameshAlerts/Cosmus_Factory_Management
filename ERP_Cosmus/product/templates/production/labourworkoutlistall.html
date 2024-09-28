@@ -2,19 +2,19 @@
 {% load static %}
 {% load custom_filters %}
 {% block body %}
-<div class="mt-2 mb-2" style="padding-left: 250px;">
-    <button class="bg-c-red border-0 py-1 px-2 rounded-4"><a class="text-decoration-none text-dark" href="{% url 'purchase-order-list' %}">New Order </a></button> ->
-    <button class="bg-c-yellow border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark " href="{% url 'purchase-order-raw-material-list' %}">Purchase Order</a></button> ->
-    <button  class="bg-c-blue border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark "  href="{% url 'purchase-order-cutting-list-all' %}">Cutting Order</a></button> ->
+<div class="mt-2 mb-4" style="padding-left: 250px;">
+    <button class="bg-c-red border-0 py-1 px-2 rounded-4"><a class="text-decoration-none text-dark" href="{% url 'purchase-order-list' %}" id="newOrderClick" onclick="navbarChange('New Order List')">New Order </a></button> ->
+    <button class="bg-c-yellow border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark " href="{% url 'purchase-order-raw-material-list' %}" id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order</a></button> ->
+    <button  class="bg-c-blue border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark "  href="{% url 'purchase-order-cutting-list-all' %}" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a></button> ->
     {% if request.path == '/labourworkoutall/' %}
     <span class=" fw-bold  py-1 px-2 ">Labour Workout</span> ->
     {% elif request.path != '/labourworkoutall/' %}
-    <button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}">Labour Workout</a></button>->
+    <button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}" id="labourWorkOutClick" onclick="navbarChange('Labour Work Out List')">Labour Workout</a></button>->
     {% endif %}
-    <button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}">Labour Workin</a></button>
+    <button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}" id="labourWorkInClick" onclick="navbarChange('Labour Work In List')">Labour Workin</a></button>
   
 </div>
-<h2 class="mb-3">Labour Workout List</h2>
+<!-- <h2 class="mb-3">Labour Workout List</h2> -->
 <div class="mt-2">
     <button type="button" class="edit_btn w-100 mb-3" id="LabourWorkOutPending_btn">Labour Workout - Pending<span class="labouroutPendingArrow"><i class="fas fa-angle-right arrowBtn"></i></span></button>
     <div id="LabourWorkOutpending" style="display: none;">

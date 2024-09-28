@@ -2,7 +2,7 @@
 {% load static %} 
 {% block body %} 
 <div>
-    <h2>Purchase invoice</h2>
+    <!-- <h2>Purchase invoice</h2> -->
     <form class="mt-4" action=""method="POST" autocomplete="off">
         
         {% csrf_token %}
@@ -194,7 +194,7 @@
         </div>
 
 
-      <input type="submit" class="ms-5 newProductCreateBtn" id="parentForm">
+      <input type="submit" class="ms-5 newProductCreateBtn" id="parentFormClick" onclick="navbarChange('Purchase List')">
     </form>
 </div>
 <!--This script use for party name add which use in ledger create popup-->
@@ -284,7 +284,7 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
            
             var purchase = $("#id_purchase_number");
             var errorElement = $('#purchaseError'); // The error message element
-            var submitForm = $('#parentForm');
+            var submitForm = $('#parentFormClick');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',

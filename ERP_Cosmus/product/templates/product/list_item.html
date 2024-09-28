@@ -12,8 +12,8 @@ the input field will be pre-filled with that value when the page is loaded. -->
 <div>
 
   <div class="row">
-    <div class="col-lg-12">
-      <h3 class="mb-3">Item List</h3>
+    <div class="col-lg-12 mt-3">
+      <!-- <h3 class="mb-3">Item List</h3> -->
       <div class="d-flex mb-2">
         <button type="button" class="item-btn my-1" onclick="redirectlistItem()">Add +</button>
         <form method="GET">
@@ -38,7 +38,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <img src="../static/images/file.png" style="width: 40px; height: 40px" alt="Upload File" />
             </label>
               <input type="file" name="excel_file" required style="display: none;"  id="file-input" />
-              <input type="submit" id="upload-btn" class="item-btn my-1 ms-2" value="Upload">
+              <input type="submit" id="upload-btn" class="item-btn my-1 ms-4" value="Upload">
           </div>         
         </form>
         </div>
@@ -73,7 +73,6 @@ the input field will be pre-filled with that value when the page is loaded. -->
                       </ul>
                     </div> -->
               </th>
-              <th>Fabric Group</th>
               <th>Item Color</th>
               <th>Shades</th>
               <th>Material Code
@@ -84,74 +83,56 @@ the input field will be pre-filled with that value when the page is loaded. -->
                       </ul>
                     </div>  -->
               </th>
-              <th>Packing</th>
               <th>Unit Name</th>
               <th>Units</th>
               <th>Panha</th>
-              <th>Fabric/Non Fabric</th>
-              <th>Fabric Finishes</th>
-              <th>GST</th>
-              <th>HSN Code</th>
-              <th>Status</th>
               <th>Edit</th>
               <th>Delete</th>
-              <th>View</th>
             </tr>
           </thead>
     
           <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
             {% for item in items %}
-            </tr>
-            <td>{{ forloop.counter}}</td>
-            <td class="text-nowrap">{{item.item_name}}</td>
-            <td class="text-nowrap">{{item.fab_grp}}</td>
-            <td class="text-nowrap">{{item.Color_Name}}
-    
-              <span class="colorCheck">{{item.total_quantity | default_if_none:0}}</span>
-            </td>
-            <!-- render reverse related fields -->
-            <td>
-              <table class="table  table-bordered">
-                <thead>
-                  <tr>
-                    <th class="px-2 ">Shade</th>
-                   <th colspan="2" class="px-2">Name<span class="text-nowrap float-end me-4 pe-3">Qty</span></th>
-                  </tr>
-                </thead>
-                <tbody class="mainTableList">
-                  {% for shade in item.shades.all %}
-                  <tr>
-                    <td>{{shade.item_shade_name}}</td>
-                    <td>
-                      <table class="tables table-bordered" style="border-bottom: 1px solid #888;" >
-                        {% for shade_q in shade.godown_shades.all %}
-                        <tr class="text-nowrap">
-                          <td class="px-2">{{shade_q.godown_name}}</td>
-                          <td class="px-2 shadeColor">{{shade_q.quantity}}</td>
-                        </tr>
-                        {% endfor %}
-                      </table>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </td>
-            <td>{{item.Material_code}}</td>
-            <td>{{item.Packaging_Material}}</td>
-            <td>{{item.Unit_Name}}</td>
-            <td>{{item.Units}}</td>
-            <td>{{item.Panha}}</td>
-            <td>{{item.Fabric_nonfabric}}</td>
-            <td>{{item.Fab_Finishes}}</td>
-            <td>{{item.Item_GST}}</td>
-            <td>{{item.HSN_Code}}</td>
-            <td>{{item.status}}</td>
-            <td><a href="{% url 'item-edit' item.id %}"><span><i class="fa-solid fa-pen-to-square"></i></span></a></td>
-            <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ item.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-            <td><a href="#"><i class="fa-solid fa-eye"></i></a></td>
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td class="text-nowrap">{{item.item_name}}</td>
+              <td class="text-nowrap">{{item.Color_Name}}<span class="colorCheck ps-1">{{item.total_quantity | default_if_none:0}}</span></td>
+              <td>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr class="text-nowrap">
+                      <th>Shade</th>
+                      <th colspan="2" class="px-2">Name<span class="text-nowrap float-end me-4 pe-3">Qty</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for shade in item.shades.all %}
+                    <tr>
+                      <td style="width: 32%;">{{shade.item_shade_name}}</td>
+                      <td>
+                        <table class="tables table-bordered" style="border-bottom: 1px solid #888;">
+                          {% for shade_q in shade.godown_shades.all %}
+                          <tr>
+                            <td class="px-2">{{shade_q.godown_name}}</td>
+                            <td class="px-2 shadeColor">{{shade_q.quantity}}</td>
+                          </tr>
+                          {% endfor %}
+                        </table>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </td>
+              <td style="width: 5%;">{{item.Material_code}}</td>
+              <td style="width: 5%;">{{item.Unit_Name}}</td>
+              <td>{{item.Units}}</td>
+              <td>{{item.Panha}}</td>
+              <td><a href="{% url 'item-edit' item.id %}"><span><i class="fa-solid fa-pen-to-square"></i></span></a></td>
+              <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ item.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>
             {% endfor %}
+
           </tbody>
         </table>
       </div>

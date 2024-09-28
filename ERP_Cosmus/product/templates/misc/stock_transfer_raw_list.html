@@ -4,10 +4,10 @@
 {% block body %}
 <div>
   <div class="row">
-    <div class="col-lg-12">
-      <h2 class="mb-4">Stock Transfer List<span>(Raw material)</span></h2>
+    <div class="col-lg-12 mt-4">
+      <!-- <h2 class="mb-4">Stock Transfer List<span>(Raw material)</span></h2> -->
       <div class="d-flex mb-3">
-        <button class="item-btn " onclick="redirectStockList()">Add +</button>
+        <button class="item-btn" id="addCreateStockClick" onclick="redirectStockList(); navbarChange('Create Stock Transfer')">Add +</button>
         <div class="container-flex">
           <input class="" type="search" placeholder="Search" aria-label="Search"><a class="px-2 py-2" href="#"><i
               class="fa-solid fa-magnifying-glass"></i></a>
@@ -37,7 +37,7 @@
           <td>{{record.destination_godown}}</td>
           <td>{{record.created_date}}</td>
           <td>{{record.updated_date}}</td>
-          <td><a href="{% url 'stock-transfer-raw-update' record.pk %}"><span class="ps-3"><i class="fa-solid fa-pen-to-square"></i></span></a></td>
+          <td><a href="{% url 'stock-transfer-raw-update' record.pk %}" id="editStockTransferClick" onclick="navbarChange('Edit Stock Transfer')"><span class="ps-3"><i class="fa-solid fa-pen-to-square"></i></span></a></td>
           <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ record.pk }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
         </tr>
         {% endfor %}

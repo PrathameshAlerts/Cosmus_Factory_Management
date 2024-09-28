@@ -4,8 +4,8 @@
 {% block body %}
 <div>
   <div class="row">
-    <div class="col-lg-12">
-      <h3 class="mb-3">product List</h3>
+    <div class="col-lg-12 mt-3">
+      <!-- <h3 class="mb-3">product List</h3> -->
       <div class="d-flex mb-3">
         <button class="item-btn" onclick="redirectProductList()">Add +</button>
         <form method="GET">
@@ -23,27 +23,7 @@
       <thead class="name_absolute sticky-top bg-white">
         <tr>
           <th>No</th>
-          <th class="text-nowrap">Product Name
-            <!-- <div class="nav-item dropdown name_icons">
-                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                    <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                    <li><hr class="dropdown-divider"/></li>
-                    <li class="nav-item dropend">
-                      <button class="nav-link dropdown px-4 fs-6" data-bs-toggle=" dropdown" aria-expanded="false">Filter
-                        <i class="fa-solid fa-angle-right text-decoration-none"></i>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
-                        <li><input  type="text"class="dropdown-item input_text" placeholder="Exact match.."/></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div> -->
-          </th>
           <th>Model Name</th>
-          <th>Catagory</th>
           <th>Refrence ID</th>
           <th>Color
             <!-- <div class="nav-item dropdown packing_icons">
@@ -59,33 +39,16 @@
           <th>Sale Price</th>
           <th>MRP</th>
           <th>Bulk Price</th>
-          <th>Cost Price</th>
-          <th>GST</th>
-          <th>HSN Code</th>
-          <th>Warranty</th>
           <th>Status</th>
           <th>Edit</th>
           <th>Delete</th>
-          <th>View</th>
         </tr>
       </thead>
       <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
         {% for product in products %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td>{{ product.Product_Name | default_if_none:''}}</td>
           <td class="text-nowrap">{{ product.Model_Name | default_if_none:''}}</td>
-          <td class="text-nowrap">
-            {% if product.product_cats.all %}
-            {{ product.product_cats.all.0.SubCategory_id.product_main_category.product_category_name }}
-            {% endif %}
-
-            <ul>
-              {% for categories in product.product_cats.all %}
-              <li>{{categories.SubCategory_id.product_sub_category_name}}</li>
-              {% endfor %}
-            </ul>
-          </td>
           <td>{{ product.Product_Refrence_ID }}</td>
           <td>
             {% for pproduct in product.productdetails.all %}
@@ -97,19 +60,14 @@
             {{ pproduct.PProduct_SKU }}<br>
             {% endfor %}
           </td>
-          <td>{{ product.Product_Channel | default_if_none:''}}</td>
+          <td style="width: 8%;">{{ product.Product_Channel | default_if_none:''}}</td>
           <td>{{ product.Product_Brand | default_if_none:''}}</td>
           <td>{{ product.Product_SalePrice_CustomerPrice | default_if_none:''}}</td>
           <td>{{ product.Product_MRP | default_if_none:''}}</td>
           <td>{{ product.Product_BulkPrice | default_if_none:''}}</td>
-          <td>{{ product.Product_Cost_price | default_if_none:''}}</td>
-          <td>{{ product.P_GST | default_if_none:''}}</td>
-          <td>{{ product.Product_HSNCode | default_if_none:''}}</td>
-          <td>{{ product.Product_WarrantyTime | default_if_none:''}}</td>
-          <td>{{ product.Product_Status| default_if_none:'' }}</td>
+          <td style="width: 8%;">{{ product.Product_Status| default_if_none:'' }}</td>
           <td><a href="{% url 'edit_production_product' product.Product_Refrence_ID %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
           <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ product.Product_Refrence_ID }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-          <td><a class="mx-2" href=""><i class="fa-solid fa-eye px-2"></i></a></td>
         </tr>
         {% endfor %}
       </tbody>
