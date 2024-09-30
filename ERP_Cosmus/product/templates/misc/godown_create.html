@@ -6,7 +6,7 @@
 
   <form action="" method="POST">
     {% csrf_token %}
-    <h2 class="mb-3">Godown Create</h2>
+    <!-- <h2 class="mb-3">Godown Create</h2> -->
     <div class="d-flex mb-3">
       <label for="" class="form-label px-2">Name</label>
       <input type="text" class="item-select mx-3" value="{{godown_name_instance}}" name="godown_name" maxlength="50" required id="">
@@ -19,9 +19,9 @@
         <option class="item-select" value="Finished Goods">Finished Goods</option>
       </select>
     </div>
-    <button type="button" class="add_btn"><a class="text-decoration-none text-white" href="{% url 'godown-list' %}">Return</a></button>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    <input type="submit" class="create-btn" style="width: 190px;" name="save_and_add_another" value="Save and Add Another">
+    <!-- <button type="button" class="add_btn"><a class="text-decoration-none text-white" href="{% url 'godown-list' %}">Return</a></button> -->
+    <input type="submit" class="create-btn mt-4" name="save" value="Save" id="submitCreateButton" onclick="navbarChange('Godown List')">
+    <!-- <input type="submit" class="create-btn" style="width: 190px;" name="save_and_add_another" value="Save and Add Another"> -->
   </form>
 </div>
 

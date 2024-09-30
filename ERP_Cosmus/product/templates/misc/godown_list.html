@@ -7,7 +7,7 @@
   <div class="mb-3 mt-3">
     <!-- <h2 class="">Godown List</h2> -->
     <div class="d-flex mb-3">
-      <button class="item-btn" onclick="redirectAddGodown()">Add +</button>
+      <button class="item-btn" id="godownCreateClick" onclick="redirectAddGodown();navbarChange('Create Godown')">Add +</button>
       <div class="container-account">
         <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
         <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -34,7 +34,7 @@
             <tr>
               <td>{{ forloop.counter }}</td>
               <td><a href="{% url 'godown-stock-raw-material-report_fab_grp' godown.id %}" style="text-decoration: none; color: #000">{{godown.godown_name_raw}}</a></td>
-              <td><a href="{% url 'godown-update' 'raw' godown.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+              <td><a href="{% url 'godown-update' 'raw' godown.id %}" id="editGodownRaw" onclick="navbarChange('Edit Raw Godown')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ godown.id }}" data-type="{{ 'raw' }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>
             {% endfor %}
@@ -59,7 +59,7 @@
             <tr>
               <td>{{ forloop.counter }}</td>
               <td>{{ godown.godown_name_finished }}</td>
-              <td><a href="{% url 'godown-update' 'finished' godown.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+              <td><a href="{% url 'godown-update' 'finished' godown.id %}" id="editGodownfinished" onclick="navbarChange('Edit Finished Godown')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ godown.id }}" data-type="{{ 'finished' }}" data-bs-toggle="" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>
             {% endfor %}

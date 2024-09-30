@@ -512,7 +512,7 @@
 <!-- Custom JS -->
 <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
 <script>
-  function saveSelectedCompany() {
+    function saveSelectedCompany() {
         const companySelect = document.getElementById('id_company');
         const selectedCompany = companySelect.value;
    
@@ -533,16 +533,15 @@
         console.error('Element with id "stockCompany" not found.');
     }
     }
-
+    document.getElementById('id_company').addEventListener('change', saveSelectedCompany);
     // Call the restore function when the page loads
     document.addEventListener('DOMContentLoaded', restoreSelectedCompany);
+  </script>
+<script>
 
     function navbarChange(clickedItem) {
-
-        // Clear localStorage first to avoid conflicts
-        localStorage.clear();
-
-      const items = ['productClick', 'rowMaterialClick', 'godownClick', 'colorClick','colorEditClick','submitButtoncreateColorUpdate',
+      const items = ['productClick','addProductCreate','editProductClick','newFormSubmit', 'rowMaterialClick','addItemCreate','editItemClick','submitButtonItemCreate',
+       'godownClick','godownCreateClick','editGodownRaw','editGodownfinished','submitCreateButton', 'colorClick','colorEditClick','submitButtoncreateColorUpdate',
        'FabricGroupClick','fabricGroupEditClick','submitButtonFabricGroup','UnitClick', 'GSTClick','gstEditClick','submitButtonGstCreate', 
         'FabricFinishClick','FabricFinishesEditClick','submitButtonFabricFinishesUpdate', 'PackagingClick','editPackagingClick','submitButtonPackagingCreate',
         'CuttingRoomClick','editCuttingRoomClick','submitButtonCuttongRoom', 'FactoryWorkerClick','editFactoryEmpClick','submitButtonFactoryEmp', 
@@ -557,8 +556,18 @@
       
         const storageItems = {
        'Product List': 'productClick',
+       'Create Product': 'addProductCreate',
+       'Edit Product': 'editProductClick',
+       'Product List': 'newFormSubmit',
        'Item List': 'rowMaterialClick',
+       'Create Item': 'addItemCreate',
+       'Edit Item': 'editItemClick',
+       'Item List': 'submitButtonItemCreate',
         'Godown List': 'godownClick',
+        'Create Godown': 'godownCreateClick',
+        'Edit Raw Godown': 'editGodownRaw',
+        'Edit Finished Godown': 'editGodownfinished',
+        'Godown List': 'submitCreateButton',
         'Create Color': 'colorClick',
         'Edit Color': 'colorEditClick',
         'Create Color': 'submitButtoncreateColorUpdate',
@@ -625,8 +634,18 @@
   function changeHeader() {
     const headerMapping = {
         'productClick': 'Product List',
+        'addProductCreate': 'Create Product',
+        'editProductClick': 'Edit Product',
+        'newFormSubmit': 'Product List',
         'rowMaterialClick': 'Item List',
+        'addItemCreate': 'Create Item',
+        'editItemClick': 'Edit Item',
+        'submitButtonItemCreate': 'Item List',
         'godownClick': 'Godown List',
+        'godownCreateClick': 'Create Godown',
+        'editGodownRaw': 'Edit Raw Godown',
+        'editGodownfinished': 'Edit Finished Godown',
+        'submitCreateButton':'Godown List',
         'colorClick': 'Create Color',
         'colorEditClick': 'Edit Color',
         'submitButtoncreateColorUpdate': 'Create Color',

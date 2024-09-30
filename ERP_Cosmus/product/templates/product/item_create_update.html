@@ -2,13 +2,14 @@
 {% load static %}
 {% block body %}
 
-<h2 class="mt-3 mb-4">{{title}}</h2>
+<!-- <h2 class="mt-3 mb-4">{{title}}</h2> -->
 
-{% if form.instance.id %}
+
+<div class="row mt-4">
+<div class="col-lg-5">
+  {% if form.instance.id %}
 <button type="button" class="itemCreate_btn"><a class="text-decoration-none text-white" href="{% url 'item-create' %}">Create</a></button>
 {% endif %}
-<div class="row">
-<div class="col-lg-5">
   <form method="POST" enctype="multipart/form-data" autocapitalize="off">
     {% csrf_token %}
     <input type="hidden" name="id" value="{{form.instance.id}}" id="id_items">
@@ -276,7 +277,7 @@
       
     </div>
     {% endif %}
-    <input type="submit" class="newProductCreateBtn" name="save" value="Save" id="id_save">
+    <input type="submit" class="newProductCreateBtn" name="save" value="Save" id="submitButtonItemCreate" onclick="navbarChange('Item List')">
   </form>
 </div>
 
@@ -379,7 +380,7 @@ $(document).ready(function(){
            
             var itemcreateName = $("#id_item_name");
             var errorElement = $('#itemError'); // The error message element
-            var submitButton = $('#id_save');
+            var submitButton = $('#submitButtonItemCreate');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -423,7 +424,7 @@ $(document).ready(function(){
            
             var material_code = $("#id_Material_code");
             var errorElement = $('#materialError'); // The error message element
-            var submitButton = $('#id_save');
+            var submitButton = $('#submitButtonItemCreate');
             var itemId = $('#id_items').val();
             if(itemId == "None"){
               validFlagCheck( item_material_code,material_code,errorElement,submitButton);
@@ -436,7 +437,7 @@ $(document).ready(function(){
            
             var material_code = $("#id_Material_code");
             var errorElement = $('#materialError'); // The error message element
-            var submitButton = $('#id_save');
+            var submitButton = $('#submitButtonItemCreate');
             var itemId = $('#id_items').val();
             if(itemId == "None"){
               validFlagCheck( item_material_code,material_code,errorElement,submitButton);
