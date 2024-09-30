@@ -40,7 +40,7 @@
  
 <div class="side-bar">
     <div class="menu">
-      <div class="item"><a href="{% url 'dashboard-main' %}" onclick="changeHeaderTitle('Cosmus- Dashboard')"><img src="../../../static/images/analytics.png" alt="Monitor Icon" style="width: 33px; padding-right: 10px;">Dashboard</a></div>
+      <div class="item"><a href="{% url 'dashboard-main' %}" id="homeClick" onclick="changeHeaderTitle('Cosmus- Dashboard'); navbarChange('Dashboard')"><img src="../../../static/images/analytics.png" alt="Monitor Icon" style="width: 33px; padding-right: 10px;">Dashboard</a></div>
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Main Category')"><img src="../../../static/images/category.png" alt="menu Icon" style="width: 33px; padding-right: 10px;">Main Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
@@ -99,7 +99,6 @@
         <div class="sub-menu">
           <a href="{% url 'define-main-category-product' %}" class="sub-item" id="mainCatClick" onclick="navbarChange('Create Category')">Main Cat Create</a>
           <a href="{% url 'define-sub-category-product' %}" class="sub-item" id="subCatClick" onclick="navbarChange('Create Sub Category')">Sub Category</a>
-          <a href="{% url 'product-2-subcategory' %}" class="sub-item" id="product2CatClick" onclick="navbarChange('Product Category Assign')">Product 2 Category</a>
         </div>
       </div>
       
@@ -108,9 +107,9 @@
         <div class="sub-menu">
           <a href="{% url 'purchase-order-list' %}" class="sub-item" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a>
           <a href="{% url 'purchase-order-raw-material-list' %}" class="sub-item" id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order(Raw)</a>
-          <a href="{% url 'purchase-order-cutting-list-all' %}" class="sub-item" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Orders</a>
-          <a href="{% url 'labour-workout-all' %}" class="sub-item" id="labourWorkOutClick" onclick="navbarChange('Labour Work Out List')">Labour Work Out</a>
-          <a href="{% url 'labour-workin-list-all' %}" class="sub-item" id="labourWorkInClick" onclick="navbarChange('Labour Work In List')">Labour Work In</a>
+          <a href="{% url 'purchase-order-cutting-list-all' %}" class="sub-item" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a>
+          <a href="{% url 'labour-workout-all' %}" class="sub-item" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Work Out</a>
+          <a href="{% url 'labour-workin-list-all' %}" class="sub-item" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour Work In</a>
           <a href="" class="sub-item">Repair Pcs In</a>
         </div>
       </div>
@@ -124,11 +123,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent" >
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
-        <li class="nav-item my-2 ms-5" >
-          <h4 id="newHeading"></h4>
+        <li class="nav-item my-2 ms-3" >
+          <h3 id="newHeading"></h3>
         </li>
       </ul>
-      <ul class="navbar-nav mb-2 me-auto mb-lg-0" >
+      <ul class="navbar-nav mb-2 ms-auto mb-lg-0 me-1" >
         <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
@@ -167,7 +166,6 @@
                 <ul class="dropdown-menu dropdown dropdown-end">
                   <li><a class="dropdown-item" href="{% url 'define-main-category-product' %}" id="mainCatClick" onclick="navbarChange('Create Category')">Main Cat Create</a></li>
                   <li><a class="dropdown-item" href="{% url 'define-sub-category-product' %}" id="subCatClick" onclick="navbarChange('Create Sub Category')">Sub Cat Create</a></li>
-                  <li><a class="dropdown-item" href="{% url 'product-2-subcategory' %}" id="product2CatClick" onclick="navbarChange('Product Category Assign')">Product 2 Category</a></li>
                 </ul>
             </li>
           </ul>
@@ -208,9 +206,9 @@
           <ul class="dropdown-menu dropdown-menu-right">
            <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a></li>
            <li class="pro-head"><a href="{% url 'purchase-order-raw-material-list' %}"class="navText"  id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order(Raw)</a></li>
-           <li class="pro-head"><a href="{% url 'purchase-order-cutting-list-all' %}" class="navText" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Orders</a></li>
-           <li class="pro-head"><a href="{% url 'labour-workout-all' %}" class="navText" id="labourWorkOutClick" onclick="navbarChange('Labour Work Out List')">Labour Work Out</a></li>
-           <li class="pro-head"><a href="{% url 'labour-workin-list-all' %}" class="navText" id="labourWorkInClick" onclick="navbarChange('Labour Work In List')">Labour Work In</a></li>
+           <li class="pro-head"><a href="{% url 'purchase-order-cutting-list-all' %}" class="navText" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a></li>
+           <li class="pro-head"><a href="{% url 'labour-workout-all' %}" class="navText" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Work Out</a></li>
+           <li class="pro-head"><a href="{% url 'labour-workin-list-all' %}" class="navText" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour Work In</a></li>
            <li class="pro-head"><a href="" class="navText">Repair Pcs In</a></li>
       
          </ul>  
@@ -540,7 +538,7 @@
 <script>
 
     function navbarChange(clickedItem) {
-      const items = ['productClick','addProductCreate','editProductClick','newFormSubmit', 'rowMaterialClick','addItemCreate','editItemClick','submitButtonItemCreate',
+      const items = ['homeClick','productClick','addProductCreate','editProductClick','newFormSubmit', 'rowMaterialClick','addItemCreate','editItemClick','submitButtonItemCreate',
        'godownClick','godownCreateClick','editGodownRaw','editGodownfinished','submitCreateButton', 'colorClick','colorEditClick','submitButtoncreateColorUpdate',
        'FabricGroupClick','fabricGroupEditClick','submitButtonFabricGroup','UnitClick', 'GSTClick','gstEditClick','submitButtonGstCreate', 
         'FabricFinishClick','FabricFinishesEditClick','submitButtonFabricFinishesUpdate', 'PackagingClick','editPackagingClick','submitButtonPackagingCreate',
@@ -548,13 +546,17 @@
         'GroupsClick','editGroupsClick','submitButtonAccSubGroups', 'LedgersClick','submitButtonLedgerCreate','addLedgerClick',
         'stockClick','editStockItemClick','submitButtonStockItems','legerTypeClick','editLedgerTypeClick','submitButtonLedgerType',
         'PurchaseInvoiceClick','addCreateInvoiceClick','editPurchaseVoucherClick','parentFormClick','stockTransferClick','addCreateStockClick','editStockTransferClick',
-        'materialReportClick','creditDebitClick','mainCatClick','subCatClick', 'product2CatClick',
-        'newOrderClick','purchaseOrderClick','cuttingOrderClick','labourWorkOutClick','labourWorkInClick','repairPcsInClick'];
+        'materialReportClick','creditDebitClick','mainCatClick','editButtonClick','submitButtonMainCategory','subCatClick','editButtonSubCategory','submitButtonSubCategory', 
+        'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
+        'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
+        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit'];
+        
         items.forEach(item=> localStorage.removeItem(item));
       
       
       
         const storageItems = {
+       'Dashboard': 'homeClick',
        'Product List': 'productClick',
        'Create Product': 'addProductCreate',
        'Edit Product': 'editProductClick',
@@ -615,14 +617,33 @@
         'Raw Material Report': 'materialReportClick',
         'Credit/Debit Report': 'creditDebitClick',
         'Create Category':'mainCatClick',
+        'Edit Category':'editButtonClick',
+        'Create Category':'submitButtonMainCategory',
         'Create Sub Category':'subCatClick',
-        'Product Category Assign':'product2CatClick',
+        'Edit Sub Category':'editButtonSubCategory',
+        'Create Sub Category':'submitButtonSubCategory',
         'New Order List':'newOrderClick',
+        'New Order':'addNewOrderClick',
+        'Edit Order':'editButtonNewOrderClick',
+        'Purchase Order List':'id_submit_2',
         'Purchase Order List':'purchaseOrderClick',
+        'Purchase Order Material':'purchaseOrderRawMaterialClick',
+        'Purchase Order View':'purchaseOrderRawMaterialView',
+        'Purchase Order List':'id_submitPurchaseOrder',
         'Cutting Order List':'cuttingOrderClick',
-        'Labour Work Out List':'labourWorkOutClick',
-        'Labour Work In List':'labourWorkInClick',
-        
+        'Create Cutting Order':'purchaseOrderCuttingOrder',
+        'Cutting Order View': 'PurchaseOrderCuttingView',
+        'Cutting Order List':'id_submitPurchaseOrderCutting',
+        'Labour WorkOut List':'labourWorkOutClick',
+        'Labour WorkOut Create':'createLabourWorkOut',
+        'Labour WorkOut View':'viewLabourWorkOut',
+        'Labour WorkOut List':'id_submitLabourWorkOut',
+        'Labour WorkIn List':'labourWorkInClick',
+        'Labour WorkIn Create':'addLabourWorkIn',
+        'Labour WorkIn Edit':'editButtonLabourWorkin',
+        'Labour WorkIn List':'id_submitLabourWorkIn',
+        'Labour Workin Create':'directcreateLabourWorkin',
+        'Labour Workin List': 'id_submit',
 
     };
       if(storageItems[clickedItem]) {
@@ -633,6 +654,7 @@
 
   function changeHeader() {
     const headerMapping = {
+        'homeClick': 'Dashboard',
         'productClick': 'Product List',
         'addProductCreate': 'Create Product',
         'editProductClick': 'Edit Product',
@@ -693,14 +715,33 @@
         'materialReportClick': 'Raw Material Report',
         'creditDebitClick': 'Credit/Debit Report',
         'mainCatClick': 'Create Category',
+        'editButtonClick': 'Edit Category',
+        'submitButtonMainCategory':'Create Category',
         'subCatClick': 'Create Sub Category',
-        'product2CatClick': 'Product Category Assign',
+        'editButtonSubCategory': 'Edit Sub Category',
+        'submitButtonSubCategory':'Create Sub Category',
         'newOrderClick': 'New Order List',
+        'addNewOrderClick': 'New Order',
+        'editButtonNewOrderClick': 'Edit Order',
+        'id_submit_2': 'Purchase Order List',
         'purchaseOrderClick': 'Purchase Order List',
+        'purchaseOrderRawMaterialClick': 'Purchase Order Material',
+        'purchaseOrderRawMaterialView': 'Purchase Order View',
+        'id_submitPurchaseOrder': 'Purchase Order List',
         'cuttingOrderClick': 'Cutting Order List',
-        'labourWorkOutClick': 'Labour Work Out List',
-        'labourWorkInClick': 'Labour Work In List',
-        
+        'purchaseOrderCuttingOrder': 'Create Cutting Order',
+        'PurchaseOrderCuttingView':'Cutting Order View',
+        'id_submitPurchaseOrderCutting':'Cutting Order List',
+        'labourWorkOutClick': 'Labour WorkOut List',
+        'createLabourWorkOut': 'Labour WorkOut Create',
+        'viewLabourWorkOut': 'Labour WorkOut View',
+        'id_submitLabourWorkOut': 'Labour WorkOut List',
+        'labourWorkInClick': 'Labour WorkIn List',
+        'addLabourWorkIn': 'Labour WorkIn Create',
+        'editButtonLabourWorkin': 'Labour WorkIn Edit',
+        'id_submitLabourWorkIn': 'Labour WorkIn List',
+        'directcreateLabourWorkin':'Labour Workin Create',
+        'id_submit':'Labour Workin List',
       
     };
 

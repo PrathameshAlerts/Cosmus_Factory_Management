@@ -12,7 +12,7 @@
         <label for="id_product_category_name" class="form-label px-2">Main Category Name:</label>
         <input type="text" class="item-select" value="{{form.instance.product_category_name}}" name="product_category_name" maxlength="255" required id="id_product_category_name">
       </div>
-      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
+      <input type="submit" id="submitButtonMainCategory" class="create-btn mt-4" name="save" value="Save" onclick="navbarChange('Create Category')">
     </form>
   </div>
 
@@ -44,7 +44,7 @@
           <tr>
             <td>{{forloop.counter}}</td>
             <td>{{cat}}</td>
-            <td><a href="{% url 'define-main-category-update-product' cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+            <td><a href="{% url 'define-main-category-update-product' cat.id %}" id="editButtonClick" onclick="navbarChange('Edit Category')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
             <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ cat.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
           </tr>
           {% endfor %}
@@ -80,7 +80,7 @@
 
     $('#categoryForm').on('submit', function (event) {
 
-      $('#submitButton').prop('disabled', true);
+      $('#submitButtonMainCategory').prop('disabled', true);
     });
     $('.delete-btn').click(function () {
       const itemId = $(this).data('item-id');

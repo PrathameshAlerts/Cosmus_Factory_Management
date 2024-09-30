@@ -7,8 +7,8 @@
         {% csrf_token %}
        
         <div class="row">
-            <div class="col-lg-6 mt-3">
-                <h4 class="">Labour Workout</h4>
+            <div class="col-lg-6 mt-4">
+                <!-- <h4 class="">Labour Workout</h4> -->
                 <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
                     <span id="challanError" class="error-messagescuttingCreate"></span>
                     <div class="d-flex mb-2">
@@ -205,7 +205,7 @@
             </div>
         </div>
     
-        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
+        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitLabourWorkOut" onclick="navbarChange('Labour WorkOut List')">
     </form>
 </div>
 <script>
@@ -300,7 +300,7 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
             var challanNo = $(this).val();
             var challanId = $("#id_challan_no");
             var errorElement = $('#challanError'); // The error message element
-            var submitButton = $('#id_submit');
+            var submitButton = $('#id_submitLabourWorkOut');
             var formId = $('#labourTable').find('#id_labour_workout_cutting_items_set-0-id').val();
       
             if(formId == ""){
@@ -342,7 +342,7 @@ function labourApprovedQty() {
     const ids = document.getElementById('id_labour_workout_cutting_items_set-0-id').value;
 
     if(ids !== ""){
-        const submitButton = document.getElementById('id_submit');
+        const submitButton = document.getElementById('id_submitLabourWorkOut');
         const challanNo = document.getElementById('id_challan_no');
         const labourname = document.getElementById('id_labour_name');
         const totalApprove = document.getElementById('id_total_approved_pcs');

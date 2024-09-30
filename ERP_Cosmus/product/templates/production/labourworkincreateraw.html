@@ -6,7 +6,7 @@
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-5">
-            <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5>
+            <!-- <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5> -->
             <span id="labourWorkInError" class="error-messagescuttingCreate"></span>
             <div class="d-flex mb-3">
                 <label for="id_voucher_number" class="item-form">GRN No:</label>
@@ -184,7 +184,7 @@
    
    
 
-    <input type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;">
+    <input type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;" onclick="navbarChange('Labour WorkIn List')">
 </form>
 <script>
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);

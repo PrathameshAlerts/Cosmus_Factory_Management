@@ -9,9 +9,9 @@
     {% if request.path == '/labourworkoutall/' %}
     <span class=" fw-bold  py-1 px-2 ">Labour Workout</span> ->
     {% elif request.path != '/labourworkoutall/' %}
-    <button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}" id="labourWorkOutClick" onclick="navbarChange('Labour Work Out List')">Labour Workout</a></button>->
+    <button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Workout</a></button>->
     {% endif %}
-    <button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}" id="labourWorkInClick" onclick="navbarChange('Labour Work In List')">Labour Workin</a></button>
+    <button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour Workin</a></button>
   
 </div>
 <!-- <h2 class="mb-3">Labour Workout List</h2> -->

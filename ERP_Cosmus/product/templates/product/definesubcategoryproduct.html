@@ -32,7 +32,7 @@
           <label for="id_product_sub_category_name" class="item-form">Sub Category:</label>
           <input type="text" class="product2Select" value="{{form.instance.product_sub_category_name}}" name="product_sub_category_name" maxlength="255" required id="id_product_sub_category_name">
         </div>
-        <input type="submit" id="submitButton" class="product2create-btn" name="save" value="Save">
+        <input type="submit" id="submitButtonSubCategory" class="product2create-btn" name="save" value="Save" onclick="navbarChange('Create Sub Category')">
       </div>
     </form>
   </div>
@@ -70,7 +70,7 @@
                {% for sub_cat in main_cat.subcategories.all %}
                 <tr>
                   <td>{{sub_cat.product_sub_category_name}}</td>
-                  <td><a class="ps-2" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                  <td><a class="ps-2" href="{% url 'define-sub-category-update-product' sub_cat.id %}" id="editButtonSubCategory" onclick="navbarChange('Edit Sub Category')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
                   <td><a class="ps-2" href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
                 </tr>
                 {% endfor %}
@@ -93,7 +93,7 @@
   $(Document).ready(function(){
    
     $('#subCategoryForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
+      $('#submitButtonSubCategory').attr('disabled', 'disabled');
     });
   })
 </script>

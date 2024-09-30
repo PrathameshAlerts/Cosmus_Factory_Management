@@ -6,7 +6,7 @@
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-5">
-            <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5>
+            <!-- <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5> -->
             <span id="labourWorkInError" class="error-messagescuttingCreate"></span>
             <div class="d-flex mb-3">
                 <label for="id_voucher_number" class="item-form">GRN No:</label>
@@ -202,7 +202,7 @@
         </div>
     </div>
 
-    <input type="submit" value="Submit" class="create-btn" id="id_submit">
+    <input type="submit" value="Submit" class="create-btn" id="id_submitLabourWorkIn" onclick="navbarChange('Labour WorkIn List')">
 </form>
 
 <script>
@@ -214,7 +214,7 @@
 
   function totalValueCheck(){
     var totalValue = parseInt(document.getElementById('id_total_return_pcs').value);
-    var submitFomValue = document.getElementById('id_submit');
+    var submitFomValue = document.getElementById('id_submitLabourWorkIn');
     if(totalValue === 0){
         submitFomValue.disabled = true;
     }else{
@@ -307,7 +307,7 @@
             var voucher_number = $(this).val();
             var new_order = $("#id_purchase_order_number");
             var errorElement = $('#labourWorkInError'); // The error message element
-            var submitButton = $('#id_submit');
+            var submitButton = $('#id_submitLabourWorkIn');
             var formId = $('#id_l_w_in_products-0-id').val()
         
             if(formId == ''){
