@@ -216,6 +216,7 @@
         
          <div>
           {% if request.user.is_superuser %}
+          {% if request.path == '/' %}
           <div class="nav-item my-4">
               <label for="id_company" class="text-dark fw-bold">Company:</label>
               <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect">
@@ -225,6 +226,18 @@
                   {% endfor %}
               </select>
           </div>
+          {% elif request.path != '/' %}
+
+          <div class="nav-item my-4">
+            <label for="id_company" class="text-dark fw-bold">Company:</label>
+            <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect" disabled>
+                <option value="" selected>---------</option>
+                {% for company in companies %}
+                    <option style="width: auto;" value = "{{ company.id }}">{{ company.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
       {% endif %}
          </div>
        

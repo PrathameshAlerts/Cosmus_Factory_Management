@@ -345,7 +345,7 @@ class packaging(models.Model):
 
 
 class Item_Creation(models.Model):
-    
+
     STATUS =  [
         ("Unused","Unused"),
         ("Used","Used"),
@@ -891,6 +891,7 @@ class labour_work_in_master(models.Model):
     other_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,null=False, blank=False)
     modified_date = models.DateTimeField(auto_now_add=True)
+
 
 
 class labour_work_in_product_to_item(models.Model):
