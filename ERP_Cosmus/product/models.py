@@ -345,6 +345,7 @@ class packaging(models.Model):
 
 
 class Item_Creation(models.Model):
+    
     STATUS =  [
         ("Unused","Unused"),
         ("Used","Used"),
@@ -357,6 +358,7 @@ class Item_Creation(models.Model):
         ("Non Fabric","Non Fabric"),
         ]
 
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
     item_name = models.CharField(unique = True, null=False, max_length = 255)
     Material_code = models.CharField(max_length = 255, unique=True, null=False, blank=False)
     Item_Color = models.ForeignKey(Color, on_delete=models.PROTECT, null=False, related_name='ItemColor')
@@ -400,6 +402,7 @@ class Item_Creation(models.Model):
     
 
 class item_color_shade(models.Model):
+    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
     items = models.ForeignKey(Item_Creation, on_delete = models.CASCADE, related_name = 'shades')
     rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,blank=True,default=0)
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
@@ -669,7 +672,7 @@ class set_prod_item_part_name(models.Model):
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
     dimention_total = models.DecimalField(default=0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank=True, null= True)
     part_pieces = models.IntegerField(blank=True, null= True)
-
+    body_combi = models.CharField(max_length=10, blank=True, null= True)
 
 
 class factory_employee(models.Model):

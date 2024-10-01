@@ -2,7 +2,6 @@ import datetime
 import decimal
 from io import BytesIO
 from operator import itemgetter
-from sys import exception
 from django.conf import settings
 from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
@@ -13,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q, Sum, ProtectedError, Avg, Count,F,Exists, OuterRef
-
 from django.db.models.functions import Round
 from django.db import DatabaseError, IntegrityError, transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -91,7 +89,7 @@ def dashboard(request):
 #NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
 @login_required(login_url='login')
 def edit_production_product(request,pk):
-    print(request.POST)
+   
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     
@@ -261,7 +259,6 @@ def edit_production_product(request,pk):
                     form_instance = form.save(commit=False)
                     form_instance.c_user = request.user
                     
-
                     for form in formset.deleted_forms:
                         if form.instance.pk:
                             form.instance.delete()
@@ -595,17 +592,22 @@ def definesubcategoryproduct(request, pk=None):
     
     form = product_sub_category_form(instance = instance)
     if request.method == 'POST':
+        print(request.POST)
         try:
             form = product_sub_category_form(request.POST,instance = instance)
             if form.is_valid():
                 form_instance = form.save(commit=False)
                 form_instance.c_user = request.user
+                form_instance.save()
                 if message == 'created':
                     messages.success(request,'Sub-Category created sucessfully')
                 if message == 'updated':
                     messages.success(request,'Sub-Category updated sucessfully')
             
                 return redirect('define-sub-category-product')
+            else:
+                print(form.errors)
+                messages.error(request,f'An Exception occoured - {form.errors}')
         
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
@@ -737,11 +739,11 @@ def item_create(request):
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES)
         if form.is_valid():
-            form_instance = form.save()
-
+            form_instance = form.save(commit=False)
+            form_instance.c_user = request.user
+            form_instance.save()
             if request.path == '/itemcreatepopup/':
                 return HttpResponse('item created', status = 200) 
-
             else:
                 logger.info("Item Successfully Created")
                 messages.success(request,'Item has been created')
@@ -874,9 +876,7 @@ def item_edit(request,pk):
     queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('opening_shade_godown_quantity__opening_quantity'),
                                                                      total_value=Sum(F('opening_shade_godown_quantity__opening_quantity') * F('opening_shade_godown_quantity__opening_rate'), 
                                                                                 output_field=DecimalField(max_digits=10, decimal_places=2)))
-    for x in queryset:
-        print(x.total_quantity)
-        print(x.total_value)
+
     formset = ShadeFormSet(instance= item_pk, queryset=queryset)
 
     # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
@@ -887,7 +887,10 @@ def item_edit(request,pk):
         formset.forms = [form for form in formset if form.has_changed()] # check for changed forms in shadeformset
         try:
             if form.is_valid() and formset.is_valid():
-                form.save()  # save the item form
+                form_instance = form.save(commit=False)  # save the item form
+                form_instance.c_user = request.user
+                form_instance.save()
+
 
                 for form in formset.deleted_forms: # delete forms marked for deleting in shade formset
                     if form.instance.pk:
@@ -895,14 +898,16 @@ def item_edit(request,pk):
 
                 for form in formset: #shade form
                     if form.is_valid():
-
                         if form.instance.pk: # if form has already created save it 
-                            form.save()
+                            form_instance = form.save(commit=False)
+                            form_instance.c_user = request.user
+                            form_instance.save()
 
                         else:  # if form is not already created then save the form and create forms of opening godown from request.POST and save them with the form instance
                             # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
                             if not form.cleaned_data.get('DELETE'):
                                 shade_form_instance = form.save(commit=False) # save the form with commit = False
+                                shade_form_instance.c_user = request.user
                                 shade_form_instance.save() # save the form
 
                                 form_prefix_number = form.prefix[-1] # gives the prefix number of the current iteration of the form
@@ -934,6 +939,7 @@ def item_edit(request,pk):
                                         if form.is_valid():
                                             form_instance = form.save(commit = False)
                                             form_instance.opening_purchase_voucher_godown_item = shade_form_instance
+                            
                                             form_instance.save()
                                     
                 messages.success(request,'Item updated successfully')
@@ -945,7 +951,7 @@ def item_edit(request,pk):
             logger.error(f"Cannot delete item_color_shade due to protected foreign keys: {e}")
             print(f"Cannot delete item_color_shade due to protected foreign keys: {e}")
 
-        except exception as e:
+        except Exception as e:
              logger.error(f'An exception occured in item edit - {e}')
              return render(request,'product/item_create_update.html',{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
@@ -1056,7 +1062,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                     logging.error(f'Error in item opening godown formset{formset.error})')
                     return JsonResponse({"errors": formset.errors}, status=400)
                 
-    except exception as e:
+    except Exception as e:
         logger.error(f"An error occurred: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)     
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key,'shade_instance':shade_instance})
@@ -1300,7 +1306,7 @@ def unit_name_create_update(request,pk=None):
     if request.method == 'POST':
         form = UnitName(request.POST, instance=instance)
         if form.is_valid():
-            form_instance = form.save()
+            form_instance = form.save(commit=False)
             form_instance.c_user = request.user
             form_instance.save()
 
@@ -1435,7 +1441,7 @@ def stock_item_create_update(request,pk=None):
                 return redirect('stock-item-create')
             except ValidationError as ve:
                 messages.error(request, f'{ve}')
-            except exception as e:
+            except Exception as e:
                 messages.error(request,f'{e}')
 
         else:
@@ -2766,7 +2772,7 @@ def product2item(request,product_refrence_id):
             formset_single_valid = False
             formset_common_valid = False
             
-            #for unique records
+            # for unique records
             if formset_single.is_valid():
                 
                 try:
@@ -2967,7 +2973,7 @@ def export_Product2Item_excel(request,product_ref_id):
         sheet2 = wb.worksheets[1]
 
 
-        column_widths = [10, 40, 20, 30, 20, 15, 10, 10]  # Adjust these values as needed
+        column_widths = [10, 40, 20, 30, 20, 15, 10,10,10]  # Adjust these values as needed
 
         #fix the column width  of sheet1
         for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -2983,7 +2989,7 @@ def export_Product2Item_excel(request,product_ref_id):
 
 
         #for product_special_configs
-        headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','grand_total']
+        headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','body/combi','grand_total']
         sheet1.append(headers)
 
         row_count_to_unlock_total = 1
@@ -2999,7 +3005,8 @@ def export_Product2Item_excel(request,product_ref_id):
                 product_configs.part_name,
                 product_configs.part_dimentions,
                 product_configs.dimention_total,
-                product_configs.part_pieces
+                product_configs.part_pieces,
+                product_configs.body_combi
             ])
             
             row_count_to_unlock = 1
@@ -3011,17 +3018,17 @@ def export_Product2Item_excel(request,product_ref_id):
             row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
 
             # Insert a blank row and grand total from parent model in sheet after every product data has inserted
-            sheet1.append(['','','','','','','', grand_total_parent])
+            sheet1.append(['','','','','','','','', grand_total_parent])
         
             rows_to_insert_s1.clear()
 
         # unlock the rows ment for editing 
-        for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=7):
+        for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=8):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
         # for product_common_configs
-        headers =  ['id','item name','part name', 'part dimention','dimention total','part pieces', 'g total']
+        headers =  ['id','item name','part name', 'part dimention','dimention total','part pieces','body/combi','g total']
         sheet2.append(headers)
 
         row_count_to_unlock_total_common = 1
@@ -3036,7 +3043,8 @@ def export_Product2Item_excel(request,product_ref_id):
                 product_configs.part_name,
                 product_configs.part_dimentions,
                 product_configs.dimention_total,
-                product_configs.part_pieces
+                product_configs.part_pieces,
+                product_configs.body_combi
             ])
 
             row_count_to_unlock = 1
@@ -3047,12 +3055,12 @@ def export_Product2Item_excel(request,product_ref_id):
             row_count_to_unlock_total_common =  row_count_to_unlock_total_common + row_count_to_unlock
 
             # Insert a blank row and grant total from parent in sheet after every product data has inserted
-            sheet2.append(['','','','','','', grand_total_parent])
+            sheet2.append(['','','','','','','',grand_total_parent])
 
             rows_to_insert_s2.clear()
 
         # unlock the rows ment for editing 
-        for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=7):
+        for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=8):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
@@ -3242,7 +3250,7 @@ def purchaseorderdelete(request,pk):
         logger.info(f"Purchase Order with order no - {instance.purchase_order_number} was deleted")
         messages.success(request,f'Purchase order with order no - {instance.purchase_order_number} was deleted')
         
-    except exception as e:
+    except Exception as e:
         messages.error(request,f'Cannot delete {instance.purchase_order_number} - {e}.')
         logger.error(f"Cannot delete {instance.purchase_order_number} - {e}.")
     return redirect('purchase-order-list')
@@ -3378,7 +3386,7 @@ def purchaseorderrawmaterial(request,p_o_pk, prod_ref_no):
                 except ValueError as ve:
                     messages.error(request,f'Error Occured - {ve}')
 
-                except exception as e:
+                except Exception as e:
                     messages.error(request,f'Exception Occured - {e}')
                 
                 return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
@@ -3398,7 +3406,7 @@ def purchaseorderrawmaterial(request,p_o_pk, prod_ref_no):
         except ValidationError as ve:
                 messages.error(request,f' Please enter correct Procurement color wise QTY {ve}')
         
-        except exception as e:
+        except Exception as e:
             messages.error(request,f' An exception occoured {e}')
 
 
@@ -4374,7 +4382,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     messages.error(request,f'Error Occured - {ve}')
                     return JsonResponse({'status': f'Error with ajax request - {ve}'}, status=404)
         
-            except exception as e:
+            except Exception as e:
                 messages.error(request,f'Exception Occured - {e}')
                 return JsonResponse({'status': f'Error with ajax request - {e}'}, status=404)
 
@@ -4466,7 +4474,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     # update the labour workin pcs in labour workout model with total return pcs
                     labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
 
-                    parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.labour_voucher_number.labour_workin_pending_pcs - parent_form.total_return_pcs
+                    parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
 
                     labour_workout_child_instance.save()
                     parent_form.save()
@@ -4477,7 +4485,10 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                             product_to_item_form = form.save(commit= False)
                             product_to_item_form.labour_workin_instance = parent_form
                             
-                            l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
+                            l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,
+                                                                                              product_sku=product_to_item_form.product_sku,
+                                                                                              product_color=product_to_item_form.product_color)
+                            
                             l_w_o_instance.labour_w_in_pending = l_w_o_instance.labour_w_in_pending - product_to_item_form.return_pcs
 
                             l_w_o_instance.save()
@@ -4490,6 +4501,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     print(product_to_item_formset.errors)
                     print(master_form.errors)
                     print(product_to_item_formset.non_form_errors())
+                    return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
                     
                 return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
                 
@@ -4553,7 +4565,6 @@ def labourworkinsingledeleteajax(request):
             try:
                 with transaction.atomic():
                     labour_workin_instance = labour_work_in_master.objects.get(pk=labour_workin_id)
-                    print('labour_workin_id',labour_workin_id)
                     
                     labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pending_pcs + labour_workin_instance.total_return_pcs
                     labour_workin_instance.labour_voucher_number.labour_workin_pcs = labour_workin_instance.labour_voucher_number.labour_workin_pcs - labour_workin_instance.total_return_pcs
@@ -4565,6 +4576,7 @@ def labourworkinsingledeleteajax(request):
                         product_2_item_child_instances.labour_w_in_pending = product_2_item_child_instances.labour_w_in_pending + instances.return_pcs
 
                         product_2_item_child_instances.save()
+
                     labour_workin_instance.delete()
 
                     return redirect(reverse('labour-workin-list-create', args=[labour_workin_instance.labour_voucher_number.id]) )

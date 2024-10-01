@@ -183,9 +183,9 @@ class ProductVideoFormSet(BaseInlineFormSet):
 
 
 
-
-ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage,formset = ProductImageFormSet,form=ProductImageForm, extra =1)
-ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls,formset = ProductVideoFormSet, form = ProductVideoForm, extra=1)
+#FIXME
+ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage,formset = ProductImageFormSet,form=ProductImageForm, extra = 1)
+ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls,formset = ProductVideoFormSet, form = ProductVideoForm, extra = 1)
 
 
 
@@ -305,7 +305,7 @@ class ColorForm(UniqueFieldMixin,forms.ModelForm):
         fields = ['color_name']
 
     def clean_color_name(self):
-        return self.clean_unique_field('color_name',Color)
+        return self.clean_unique_field('color_name', Color)
     
     """
         OR
