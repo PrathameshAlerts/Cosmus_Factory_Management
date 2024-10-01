@@ -259,7 +259,6 @@ def edit_production_product(request,pk):
                     form_instance = form.save(commit=False)
                     form_instance.c_user = request.user
                     
-
                     for form in formset.deleted_forms:
                         if form.instance.pk:
                             form.instance.delete()
@@ -1063,7 +1062,7 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                     logging.error(f'Error in item opening godown formset{formset.error})')
                     return JsonResponse({"errors": formset.errors}, status=400)
                 
-    except exception as e:
+    except Exception as e:
         logger.error(f"An error occurred: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)     
     return render(request,'product/opening_godown_qty.html',{'formset':formset,'godowns':godowns ,"parent_row_id":parent_row_id, 'primary_key':primary_key,'shade_instance':shade_instance})
@@ -1442,7 +1441,7 @@ def stock_item_create_update(request,pk=None):
                 return redirect('stock-item-create')
             except ValidationError as ve:
                 messages.error(request, f'{ve}')
-            except exception as e:
+            except Exception as e:
                 messages.error(request,f'{e}')
 
         else:
