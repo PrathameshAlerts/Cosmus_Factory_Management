@@ -127,7 +127,7 @@
           <h3 id="newHeading"></h3>
         </li>
       </ul>
-      <ul class="navbar-nav mb-2 ms-auto mb-lg-0 me-1" >
+      <ul class="navbar-nav mb-2 ms-auto mb-lg-0 " >
         <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
@@ -238,7 +238,7 @@
              
                 {% if request.user.is_superuser %}
 
-                <span<a style="text-decoration: none; color: rgb(12, 15, 24);" href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a></span>
+                <span class="text-danger fw-bold"><a style="text-decoration: none; color: rgb(12, 15, 24);" href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a></span>
 
                 {% else %}
 
@@ -540,7 +540,7 @@
     function navbarChange(clickedItem) {
       const items = ['homeClick','productClick','addProductCreate','editProductClick','newFormSubmit', 'rowMaterialClick','addItemCreate','editItemClick','submitButtonItemCreate',
        'godownClick','godownCreateClick','editGodownRaw','editGodownfinished','submitCreateButton', 'colorClick','colorEditClick','submitButtoncreateColorUpdate',
-       'FabricGroupClick','fabricGroupEditClick','submitButtonFabricGroup','UnitClick', 'GSTClick','gstEditClick','submitButtonGstCreate', 
+       'FabricGroupClick','fabricGroupEditClick','submitButtonFabricGroup','UnitClick','unitNameEditClick','submitButtonUnitUpdate', 'GSTClick','gstEditClick','submitButtonGstCreate', 
         'FabricFinishClick','FabricFinishesEditClick','submitButtonFabricFinishesUpdate', 'PackagingClick','editPackagingClick','submitButtonPackagingCreate',
         'CuttingRoomClick','editCuttingRoomClick','submitButtonCuttongRoom', 'FactoryWorkerClick','editFactoryEmpClick','submitButtonFactoryEmp', 
         'GroupsClick','editGroupsClick','submitButtonAccSubGroups', 'LedgersClick','submitButtonLedgerCreate','addLedgerClick',
@@ -548,8 +548,8 @@
         'PurchaseInvoiceClick','addCreateInvoiceClick','editPurchaseVoucherClick','parentFormClick','stockTransferClick','addCreateStockClick','editStockTransferClick',
         'materialReportClick','creditDebitClick','mainCatClick','editButtonClick','submitButtonMainCategory','subCatClick','editButtonSubCategory','submitButtonSubCategory', 
         'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
-        'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
-        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick'];
+        'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','cuttingCapList','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
+        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick','PendingFinishedGoods_btn',];
         
         items.forEach(item=> localStorage.removeItem(item));
       
@@ -577,7 +577,7 @@
         'Edit Fabric Group': 'fabricGroupEditClick',
         'Create Fabric Group': 'submitButtonFabricGroup',
         'Create Unit': 'UnitClick',
-        'Edit Unit': 'UnitEditClick',
+        'Edit Unit': 'unitNameEditClick',
         'Create Unit': 'submitButtonUnitUpdate',
         'Create GST': 'GSTClick',
         'Edit GST': 'gstEditClick',
@@ -634,6 +634,7 @@
         'Create Cutting Order':'purchaseOrderCuttingOrder',
         'Cutting Order View': 'PurchaseOrderCuttingView',
         'Cutting Order List':'id_submitPurchaseOrderCutting',
+        'Cutting Appr Pending List':'cuttingCapList',
         'Labour WorkOut List':'labourWorkOutClick',
         'Labour WorkOut Create':'createLabourWorkOut',
         'Labour WorkOut View':'viewLabourWorkOut',
@@ -644,7 +645,8 @@
         'Labour WorkIn List':'id_submitLabourWorkIn',
         'Labour Workin Create':'directcreateLabourWorkin',
         'Labour Workin List': 'id_submit',
-        'Purchase Order Wise': 'labourWorkInCreateClick'
+        'Purchase Order Wise': 'labourWorkInCreateClick',
+        'Goods Return List':'PendingFinishedGoods_btn'
 
     };
       if(storageItems[clickedItem]) {
@@ -733,6 +735,7 @@
         'purchaseOrderCuttingOrder': 'Create Cutting Order',
         'PurchaseOrderCuttingView':'Cutting Order View',
         'id_submitPurchaseOrderCutting':'Cutting Order List',
+        'cuttingCapList': 'Cutting Appr Pending List',
         'labourWorkOutClick': 'Labour WorkOut List',
         'createLabourWorkOut': 'Labour WorkOut Create',
         'viewLabourWorkOut': 'Labour WorkOut View',
@@ -744,7 +747,7 @@
         'directcreateLabourWorkin':'Labour Workin Create',
         'id_submit':'Labour Workin List',
         'labourWorkInCreateClick':'Purchase Order Wise',
-      
+        'PendingFinishedGoods_btn':'Goods Return List'
     };
 
     const newHeading = document.getElementById('newHeading');

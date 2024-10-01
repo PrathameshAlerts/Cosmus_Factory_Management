@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 <div class="mb-3 pt-2">
-    <h3 class="mb-3">Goods Return List</h3>
+    <!-- <h3 class="mb-3">Goods Return List</h3> -->
 </div>
 
 <div>
@@ -31,7 +31,7 @@
                     <td class="processedQty">{{record.labour_voucher_number.total_process_pcs}}</td>
                     <td>{{record.total_return_pcs}}</td>
                     <td>{{record.total_balance_pcs}}</td>
-                    <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
+                    <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a id="PurchaseOrderCuttingGoodsView" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
                     <input type="hidden" name = "labour_work_in" value="{{record.id}}">
                 </tr>
                 {% endfor %}
