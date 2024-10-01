@@ -19,7 +19,6 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': 'django_logs.log',
             'formatter': 'verbose',
-            
         },
 
         'product_file': {                      # can keep diffrent file handlers for diffrent loggers
@@ -29,7 +28,6 @@ LOGGING = {
             'formatter': 'verbose',
             
         },
-
 
         'console': {
             'level': 'DEBUG',

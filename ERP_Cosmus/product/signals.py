@@ -28,6 +28,7 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
         # Create a new item_color_shade object related to the newly created instance
         primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
                                                             item_name_rank= 1,
+                                                            c_user = instance.c_user,
                                                             item_shade_name = color_name,
                                                             item_color_image = instance.item_shade_image)
         # Save the newly created item_color_shade object
