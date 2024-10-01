@@ -763,8 +763,7 @@
 
     for (const key in headerMapping) {
       const value = localStorage.getItem(key);
-      console.log(value);
-      console.log(headerMapping[key]);
+    
         if (localStorage.getItem(key) === headerMapping[key]) {
             newHeading.textContent = headerMapping[key];
             break; // Exit loop once a match is found
