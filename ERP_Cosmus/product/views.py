@@ -1306,7 +1306,7 @@ def unit_name_create_update(request,pk=None):
     if request.method == 'POST':
         form = UnitName(request.POST, instance=instance)
         if form.is_valid():
-            form_instance = form.save()
+            form_instance = form.save(commit=False)
             form_instance.c_user = request.user
             form_instance.save()
 
