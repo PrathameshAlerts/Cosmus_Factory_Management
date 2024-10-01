@@ -3083,6 +3083,7 @@ def export_Product2Item_excel(request,product_ref_id):
         logger.error(f"items for product Does not exists for refrence id {product_ref_id}")
         return redirect(reverse('edit_production_product', args=[product_ref_id]))
     
+    
     except Exception as e:
         messages.error(request, f'An error occurred while exporting data {e}')
         logger.error(f"An exception occoured while exporting data - {e} for ref id {product_ref_id}")
@@ -3244,6 +3245,7 @@ def purchaseorderlist(request):
 
 @login_required(login_url='login')
 def purchaseorderdelete(request,pk):
+
     try:
         instance = get_object_or_404(purchase_order, pk = pk)
         instance.delete()
@@ -3255,6 +3257,36 @@ def purchaseorderdelete(request,pk):
         logger.error(f"Cannot delete {instance.purchase_order_number} - {e}.")
     return redirect('purchase-order-list')
      
+
+
+def excel_download_production(request,module_name,pk):
+
+    wb = Workbook()
+
+    ##delete the default workbook
+    default_sheet = wb['Sheet']
+    wb.remove(default_sheet)    
+
+    wb.create_sheet('production_sheet')
+
+
+    sheet1 = wb.worksheets[0]
+
+    file_name = None
+
+    if module_name == 'purchase_order_raw':
+        file_name = 'purchase_order_raw'
+
+    fileoutput = BytesIO()
+    wb.save(fileoutput)
+        
+    # Prepare the HTTP response with the Excel file content
+    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    file_name_with_pk = f'product_reference_id_{file_name}'
+    response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
+
+    return response
+
 
 
 @login_required(login_url='login')
@@ -4520,7 +4552,7 @@ def labourworkinlistall(request):
 
 # Subquery to check if a purchase_order has any related labour_workout_childs
     labour_workout_childs_exists = labour_workout_childs.objects.filter(
-    labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id=OuterRef('pk')
+    labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id = OuterRef('pk')
     ).values('pk')[:1]
 
     # Main query to get all purchase orders that have related labour_workout_childs instances
