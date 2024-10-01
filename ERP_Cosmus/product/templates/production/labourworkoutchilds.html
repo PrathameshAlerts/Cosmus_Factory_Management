@@ -5,9 +5,9 @@
 
 
 
-<h3 class="mb-3 mt-2">Labour Workout List</h3>
-<div class="d-flex mb-3">
-    <button class="item-btn" onclick="redirectlistCutting()"><a id="create" class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
+<!-- <h3 class="mb-3 mt-2">Labour Workout List</h3> -->
+<div class="d-flex mb-3 mt-3">
+    <button class="item-btn"><a id="createLabourWorkOut" onclick="navbarChange('Labour WorkOut Create')" class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
     <!-- <div class="container-cat">
         <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
         <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -73,7 +73,7 @@
                         <td>{{record.labour_name.name}}</td>
                         <td>{{record.total_process_pcs}}</td>
                         <td>{{record.total_balance_pcs}}</td>
-                        <td><a href="{% url 'labour-workout-single-view' record.id %}"><i class="fa-solid fa-eye px-1"></i></a></td>
+                        <td><a href="{% url 'labour-workout-single-view' record.id %}" id="viewLabourWorkOut" onclick="navbarChange('Labour WorkOut View')"><i class="fa-solid fa-eye px-1"></i></a></td>
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
                         <input type="hidden" id="id_primary_key" name="primary_key" value="{{record.id}}" class="primary_key">
                     </tr>
@@ -108,7 +108,7 @@ function createButton() {
     console.log(totalBalance);
     if (totalBalance === 0) {
         var createButton = document.querySelector('.item-btn');
-        var createLink = document.getElementById('create');
+        var createLink = document.getElementById('createLabourWorkOut');
 
         // Disable the button
         createButton.disabled = true;

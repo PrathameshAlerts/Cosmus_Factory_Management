@@ -8,7 +8,7 @@
        
         <div class="row">
             <div class="col-lg-7 mt-3">
-                <h4 class="">Purchase Order raw material</h4>
+                <!-- <h4 class="">Purchase Order raw material</h4> -->
                 <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
 
                 
@@ -158,7 +158,7 @@
             </div>
         </div>
 
-        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
+        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrder" onclick=" navbarChange('Purchase Order List')">
 
 
         <!-- {% if form.instance.id %}
@@ -286,7 +286,7 @@ function submitForm(){
     const ids = document.getElementById('id_raw_materials-0-id').value;
     console.log(ids);
     if(ids !== ""){
-        var submitButton = document.getElementById('id_submit');
+        var submitButton = document.getElementById('id_submitPurchaseOrder');
         submitButton.style.display = 'none';
         var processQty = document.querySelectorAll('input[name$="-process_quantity"]');
         processQty.forEach(function(ele){

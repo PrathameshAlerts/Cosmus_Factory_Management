@@ -3,10 +3,10 @@
 {% block body %}
 
 
-<form method="POST" enctype="multipart/form-data" action="" id="newForm" autocomplete="off">
+<form method="POST" enctype="multipart/form-data" action="" id="newForm" autocomplete="off"> 
   {% csrf_token %}
-  <h2 class="mb-3 mt-2">Update Product</h2>
-  <div class="d-flex mb-3 productItem">
+  <!-- <h2 class="mb-3 mt-2">Update Product</h2> -->
+  <div class="d-flex mb-3 mt-3 productItem">
     <input type="hidden" class="product_items" name="Number_of_items" id="id_Number_of_items" value="{{form.instance.Number_of_items | default_if_none:'0'}}">
     <input type="hidden" name="updated_url" id="updated_url" value="">
     <label for="id_Product_Refrence_ID" class="fs-5 fw-bold">Refrence ID :</label>
@@ -505,7 +505,7 @@
   </div>
 
   <div class="mb-5">
-    <input type="submit" id="newFormSubmit" class="newProductCreateBtn mx-5" value="submit">
+    <input type="submit" id="newFormSubmit" class="newProductCreateBtn mx-5" value="submit" onclick="navbarChange('Product List')">
   </div>
 </form>
 

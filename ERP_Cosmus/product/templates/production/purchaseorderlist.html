@@ -7,23 +7,23 @@
   {% if request.path == '/purchaseorderlist/' %}
 <span class=" fw-bold  py-1 px-2 ">New Order</span> ->
 {% elif request.path != '/purchaseorderlist/' %}
-<button class="bg-c-red border-0 py-1 px-2 rounded-4"><a class="text-decoration-none text-dark" href="{% url 'purchase-order-list' %}">New Order </a></button>  ->
+<button class="bg-c-red border-0 py-1 px-2 rounded-4"><a class="text-decoration-none text-dark" href="{% url 'purchase-order-list' %}" id="newOrderClick" onclick="navbarChange('New Order List')">New Order </a></button>  ->
 {% endif %}
 
-<button class="bg-c-yellow border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark " href="{% url 'purchase-order-raw-material-list' %}">Purchase Order</a></button> ->
-<button  class="bg-c-blue border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark "  href="{% url 'purchase-order-cutting-list-all' %}">Cutting Order</a></button> ->
-<button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}">Labour Workout</a></button> ->
-<button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}">Labour WorkIn</a></button>
+<button class="bg-c-yellow border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark " href="{% url 'purchase-order-raw-material-list' %}" id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order</a></button> ->
+<button  class="bg-c-blue border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark "  href="{% url 'purchase-order-cutting-list-all' %}" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a></button> ->
+<button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Workout</a></button> ->
+<button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour WorkIn</a></button>
 </div>
 
 
 
-<div>
+
     <div class="row">
-        <div class="col-lg-12">
-          <h2 class="mb-4">New Order List</h2>
+        <div class="col-lg-12 mt-4">
+          <!-- <h2 class="mb-4">New Order List</h2> -->
           <div class="d-flex mb-3">
-            <button class="product-btn" onclick="reversAddRowOrder()">Add Order +</button>
+            <button class="product-btn" id="addNewOrderClick" onclick="reversAddRowOrder(); navbarChange('New Order')">Add Order +</button>
             <div class="container-flex"> 
              <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
                <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -32,9 +32,9 @@
            </div>
           </div>  
         </div>   
-</div>
+
 <div class="table-responsives">
-    <table class="table table-striped table-hover  table-bordered mt-3" style="width: 100%;">
+    <table class="table table-striped table-hover  table-bordered mt-2" style="width: 100%;">
         <thead class="name_absolute sticky-top">
             <tr>
               <th>No</th>
@@ -62,7 +62,7 @@
                 <td>{{po.target_date}}</td>
                 <td>{{po.number_of_pieces}}</td>
                 <td>{{po.balance_number_of_pieces}}</td>
-                <td><a href="{% url 'purchase-order-update' po.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+                <td><a href="{% url 'purchase-order-update' po.id %}" id="editButtonNewOrderClick" onclick="navbarChange('Edit Order')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                 <td><button class="border-0 bg-transparent deletes-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></i></button></td> 
                   <input type="hidden" value="{{po.raw_materials.exists}}" class="purchaseOderDelete">
              

@@ -7,7 +7,7 @@
     {% csrf_token %}
     <div class="row">
         <div class="col-lg-6 mt-3">
-            <h4 class="">Cutting Order Production</h4>
+            <!-- <h4 class="">Cutting Order Production</h4> -->
           
             <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
                 <div class="d-flex mb-2">
@@ -274,7 +274,7 @@
         </div>
     </div>
 
-<input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submit">
+<input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrderCutting" onclick="navbarChange('Cutting Order List')">
 </form>
 
 
@@ -284,7 +284,7 @@ $(document).ready(function(){
             var cutting_number = $(this).val();
             var cutting_order = $("#id_raw_material_cutting_id");
             var errorElement = $('#cuttingError'); // The error message element
-            var submitButton = $('#id_submit');
+            var submitButton = $('#id_submitPurchaseOrderCutting');
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -314,7 +314,7 @@ $(document).ready(function(){
             })
 
             $('#cuttingOrderForm').on('submit',function(){
-                $('#id_submit').attr('disabled', 'disabled');
+                $('#id_submitPurchaseOrderCutting').attr('disabled', 'disabled');
             })
            
         })
@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function processValueCheck(){
     var processValues = parseInt(document.getElementById('id_processed_qty').value);
-    var submitForm = document.getElementById('id_submit');
+    var submitForm = document.getElementById('id_submitPurchaseOrderCutting');
     console.log(processValues);
     if(processValues === 0){
        
@@ -568,7 +568,7 @@ cuttingBalanceQty()
 
             //document.getElementById('id_balanceView_qty').value = balanceViewQty;
 
-            document.getElementById('id_submit').style.display = "none";
+            document.getElementById('id_submitPurchaseOrderCutting').style.display = "none";
 
             // Update the border and background color of the input elements
             document.querySelectorAll('input[name$="-cutting_quantity"]').forEach(newValue => {

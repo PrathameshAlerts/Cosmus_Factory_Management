@@ -3,9 +3,9 @@
 {% load static %}
 {% block body %}
 
-<h3 class="mb-3 mt-2">Labour Workin List</h3>
-<div class="d-flex mb-3">
-    <button class="item-btn" ><a id="create" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
+<!-- <h3 class="mb-3 mt-2">Labour Workin List</h3> -->
+<div class="d-flex mb-3 mt-3">
+    <button class="item-btn" ><a id="addLabourWorkIn" onclick="navbarChange('Labour WorkIn Create')" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
   </div>
   <div class="mb-3">
     <lable class="fw-bold">Challan No :</lable>
@@ -44,7 +44,7 @@
                         <td>{{record.labour_voucher_number.total_process_pcs}}</td>
                         <td>{{record.total_return_pcs}}</td>
                         <td>{{record.total_balance_pcs}}</td>
-                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id %}" id="editButtonLabourWorkin" onclick="navbarChange('Labour WorkIn Edit')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
                         <input type="hidden" name="labour_workin_id" value="{{record.id}}" id="id_labour_workin_id">
                     </tr>

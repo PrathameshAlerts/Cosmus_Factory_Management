@@ -3,23 +3,20 @@
 {% block body %}
 
 <div class="mt-2 mb-2" style="padding-left: 250px;">
-    <button class="bg-c-red border-0 py-1 px-2 rounded-4"><a class="text-decoration-none text-dark" href="{% url 'purchase-order-list' %}">New Order </a></button>  ->
+    <button class="bg-c-red border-0 py-1 px-2 rounded-4"><a class="text-decoration-none text-dark" href="{% url 'purchase-order-list' %}" id="newOrderClick" onclick="navbarChange('New Order List')">New Order </a></button>  ->
     {% if request.path == '/purchaseorderrawmateriallist/' %}
     <span class=" fw-bold  py-1 px-2 ">Purchase Order</span> ->
     {% elif request.path != '/purchaseorderrawmateriallist/' %}
-    <button class="bg-c-yellow border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark " href="{% url 'purchase-order-raw-material-list' %}">Purchase Order</a></button> ->
+    <button class="bg-c-yellow border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark " href="{% url 'purchase-order-raw-material-list' %}"  id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order</a></button> ->
     {% endif %} 
-    <button  class="bg-c-blue border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark "  href="{% url 'purchase-order-cutting-list-all' %}">Cutting Order</a></button> ->
-    <button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}">Labour Workout</a></button> ->
-    <button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}">Labour WorkIn</a></button>
+    <button  class="bg-c-blue border-0 py-1 px-3 rounded-4"><a class="text-decoration-none text-dark "  href="{% url 'purchase-order-cutting-list-all' %}" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a></button> ->
+    <button  class="bg-c-green border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workout-all' %}" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Workout</a></button> ->
+    <button  class="bg-c-purple border-0 py-1 px-3 rounded-4"><a  class="text-decoration-none text-dark " href="{% url 'labour-workin-list-all' %}" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour WorkIn</a></button>
      
 </div>
 
-<div class="mt-2">
-    <h3>Purchase Order Raw List</h3>
-
-
-
+<div class="mt-4">
+    <!-- <h3>Purchase Order Raw List</h3> -->
 <div class="">
     <button type="button" class="edit_btn w-100 mb-3" id="purchaseOrderPending_btn">Purchase Order - Pending<span class="purchaseorderpendingArrow"><i class="fas fa-angle-right arrowBtn"></i></span></button>
     <div id="purchaseOrderPending" style="display: none;">
@@ -53,7 +50,7 @@
                             <td>{{po.target_date}}</td>
                             <td>{{po.number_of_pieces}}</td>
                             <td>{{po.balance_number_of_pieces}}</td>
-                            <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
+                            <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}" id="purchaseOrderRawMaterialClick" onclick="navbarChange('Purchase Order Material')"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
                       
                             </tr>
                         {% endfor %}
@@ -101,7 +98,7 @@
                                 <td>{{po.target_date}}</td>
                                 <td>{{po.number_of_pieces}}</td>
                                 <td>{{po.balance_number_of_pieces}}</td>
-                                <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-eye px-2"></i></a></td>
+                                <td><a href="{% url 'purchase-order-rawmaterial' po.id po.product_reference_number.Product_Refrence_ID %}" id="purchaseOrderRawMaterialView" onclick="navbarChange('Purchase Order View')"><i class="fa-solid fa-eye px-2"></i></a></td>
                                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{po.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
                                     <input type="hidden" value="{{po.cutting_pos.exists}}" class="cutting_pos">
                                 </tr>

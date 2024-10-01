@@ -40,44 +40,44 @@
  
 <div class="side-bar">
     <div class="menu">
-      <div class="item"><a href="{% url 'dashboard-main' %}" onclick="changeHeaderTitle('Cosmus- Dashboard')"><img src="../../../static/images/analytics.png" alt="Monitor Icon" style="width: 33px; padding-right: 10px;">Dashboard</a></div>
+      <div class="item"><a href="{% url 'dashboard-main' %}" id="homeClick" onclick="changeHeaderTitle('Cosmus- Dashboard'); navbarChange('Dashboard')"><img src="../../../static/images/analytics.png" alt="Monitor Icon" style="width: 33px; padding-right: 10px;">Dashboard</a></div>
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Main Category')"><img src="../../../static/images/category.png" alt="menu Icon" style="width: 33px; padding-right: 10px;">Main Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'pproductlist' %}" class="sub-item">Product</a>
-          <a href="{% url 'item-list' %}" class="sub-item">Raw Material</a>
-          <a href="{% url 'godown-list' %}" class="sub-item">Godown</a>
-        </div>
+          <a href="{% url 'pproductlist' %}" class="sub-item" id="productClick" onclick="navbarChange('Product List')">Product</a>
+          <a href="{% url 'item-list' %}" class="sub-item" id="RowMaterialClick" onclick="navbarChange('Item List')">Raw Material</a>
+          <a href="{% url 'godown-list' %}" class="sub-item" id="GodownClick" onclick="navbarChange('Godown List')">Godown</a>
+      </div>
       </div>
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Sub Category')"><img src="../../../static/images/list.png" alt="list Icon" style="width: 33px; padding-right: 10px;">Sub Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'simplecolorlist' %}" class="sub-item">Colors</a>
-          <a href="{% url 'item-fabgroup-create-list' %}" class="sub-item">Fabric Groups</a>
-          <a href="{% url 'unit_name-create_list' %}" class="sub-item">Units(Metrics)</a> 
-          <a href="{% url 'gst-create-list' %}" class="sub-item">GST</a>
-          <a href="{% url 'fabric-finishes-create-list' %}" class="sub-item">Fabric Finishes</a>
-          <a href="{% url 'packaging-create-list' %}" class="sub-item">Packaging</a>
-          <a href="{% url 'cutting_room-create' %}" class="sub-item">Cutting Room</a>
-          <a href="{% url 'factory-emp-create' %}" class="sub-item">Factory Workers</a> 
+          <a href="{% url 'simplecolorlist' %}" class="sub-item" id="ColorClick" onclick="navbarChange('Create Color')">Color</a>
+          <a href="{% url 'item-fabgroup-create-list' %}" class="sub-item" id="FabricGroupClick" onclick="navbarChange('Create Fabric Group')">Fabric Group</a>
+          <a href="{% url 'unit_name-create_list' %}" class="sub-item" id="UnitClick" onclick="navbarChange('Create Unit')">Unit(Metrics)</a> 
+          <a href="{% url 'gst-create-list' %}" class="sub-item" id="GSTClick" onclick="navbarChange('Create GST')">GST</a>
+          <a href="{% url 'fabric-finishes-create-list' %}" class="sub-item" id="FabricFinishClick" onclick="navbarChange('Create Fabric Finishes')">Fabric Finishes</a>
+          <a href="{% url 'packaging-create-list' %}" class="sub-item" id="PackagingClick" onclick="navbarChange('Create Packaging')">Packaging</a>
+          <a href="{% url 'cutting_room-create' %}" class="sub-item" id="CuttingRoomClick" onclick="navbarChange('Create Cutting Room')">Cutting Room</a>
+          <a href="{% url 'factory-emp-create' %}" class="sub-item" id="FactoryWorkerClick" onclick="navbarChange('Create Worker')">Factory Worker</a> 
       
         </div>
       </div> 
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Accounts')"><img src="../../../static/images/document.png" alt="document" style="width: 33px; padding-right: 10px;">Accounts<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'account_sub_group-create' %}" class="sub-item">Groups</a>
-          <a href="{% url 'ledger-list' %}" class="sub-item">Ledgers</a>
-          <a href="{% url 'stock-item-create' %}" class="sub-item">Stock Items</a>
-          <a href="{% url 'ledger-Types-create' %}" class="sub-item">Ledger Types</a>
+          <a href="{% url 'account_sub_group-create' %}" id="GroupsClick" onclick="navbarChange('Create Group')" class="sub-item">Group</a>
+          <a href="{% url 'ledger-list' %}" class="sub-item" id="LedgersClick" onclick="navbarChange('Ledger List')">Ledger</a>
+          <a href="{% url 'stock-item-create' %}" class="sub-item" id="stockClick" onclick="navbarChange('Create Stock Item')">Stock Item</a>
+          <a href="{% url 'ledger-Types-create' %}" class="sub-item" id="legerTypeClick" onclick="navbarChange('Create Ledger Type')">Ledger Type</a>
         </div>
       </div>
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus-Vouchers')"><img src="../../../static/images/shop.png" alt="document" style="width: 33px; padding-right: 10px; ">Vouchers<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'purchase-voucher-list' %}" class="sub-item">Purchase Invoice</a>
+          <a href="{% url 'purchase-voucher-list' %}" class="sub-item"  id="PurchaseInvoiceClick" onclick="navbarChange('Purchase List')">Purchase Invoice</a>
           <a href="" class="sub-item">Sales Invoice</a>
-          <a href="{% url 'stock-transfer-raw-list' %}" class="sub-item">Stock Transfer</a>
+          <a href="{% url 'stock-transfer-raw-list' %}" class="sub-item"  id="stockTransferClick" onclick="navbarChange('Stock Transfer List')">Stock Transfer</a>
           <a href="" class="sub-item">Sales Return</a>
           <a href="" class="sub-item">Purchase Return</a>
           <a href="" class="sub-item">Payment</a>
@@ -88,8 +88,8 @@
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Reports')"><img src="../../../static/images/research.png" alt="document" style="width: 33px; padding-right: 10px;">Reports<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'all-raw-material-stock-report' %}" class="sub-item">Raw Material Report</a>
-          <a href="{% url 'credit-debit-report' %}" class="sub-item">Purchase Report</a>
+          <a href="{% url 'all-raw-material-stock-report' %}" class="sub-item" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material Report</a>
+          <a href="{% url 'credit-debit-report' %}" class="sub-item" id="creditDebitClick" onclick="navbarChange('Credit/Debit Report')">Purchase Report</a>
           <a href="" class="sub-item">Sales Report</a>
           <a href="" class="sub-item">Stock Transfer Report</a>
         </div>
@@ -97,19 +97,19 @@
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><img src="../../../static/images/industrial-park.png" alt="document" style="width: 33px; padding-right: 10px;">Product Definition<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'define-main-category-product' %}" class="sub-item">Main Cat Create</a>
-          <a href="{% url 'define-sub-category-product' %}" class="sub-item">Sub Category</a>
+          <a href="{% url 'define-main-category-product' %}" class="sub-item" id="mainCatClick" onclick="navbarChange('Create Category')">Main Cat Create</a>
+          <a href="{% url 'define-sub-category-product' %}" class="sub-item" id="subCatClick" onclick="navbarChange('Create Sub Category')">Sub Category</a>
         </div>
       </div>
       
       <div class="item">
         <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><img src="../../../static/images/industry.png" alt="industry icon" style="width: 33px; padding-right: 10px;">Production<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'purchase-order-list' %}" class="sub-item">New Order</a>
-          <a href="{% url 'purchase-order-raw-material-list' %}" class="sub-item">Purchase Order(Raw)</a>
-          <a href="{% url 'purchase-order-cutting-list-all' %}" class="sub-item">Cutting Orders</a>
-          <a href="{% url 'labour-workout-all' %}" class="sub-item">Labour Work Out</a>
-          <a href="{% url 'labour-workin-list-all' %}" class="sub-item">Labour Work In</a>
+          <a href="{% url 'purchase-order-list' %}" class="sub-item" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a>
+          <a href="{% url 'purchase-order-raw-material-list' %}" class="sub-item" id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order(Raw)</a>
+          <a href="{% url 'purchase-order-cutting-list-all' %}" class="sub-item" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a>
+          <a href="{% url 'labour-workout-all' %}" class="sub-item" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Work Out</a>
+          <a href="{% url 'labour-workin-list-all' %}" class="sub-item" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour Work In</a>
           <a href="" class="sub-item">Repair Pcs In</a>
         </div>
       </div>
@@ -123,52 +123,49 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent" >
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
-        <li class="nav-item my-3 ms-5">
-          <h3 class="text-white" style="display: none;  " id="productTitle">Product List</h3>
-          <h3 class="text-white" style="display: none;  " id="itemTitle">Item List</h3>
-          <h3 class="text-white" style="display: none; " id="GodownTitle">Godown List</h3>
+        <li class="nav-item my-2 ms-3" >
+          <h3 id="newHeading"></h3>
         </li>
       </ul>
-      <ul class="navbar-nav mb-2 me-auto mb-lg-0" style="margin-left: 120px;" >
+      <ul class="navbar-nav mb-2 ms-auto mb-lg-0 me-1" >
         <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
           </a>
           <ul class="dropdown-menu">
             <li class="nav-item dropend">
-              <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link  bg-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Main Category
               </a>
                 <ul class="dropdown-menu dropdown dropdown-end">
-                <li><a class="dropdown-item" href="{% url 'pproductlist' %}">Product</a></li>
-                <li><a class="dropdown-item" href="{% url 'item-list' %}">Raw Material</a></li>
-                <li><a class="dropdown-item" href="{% url 'godown-list' %}">Godown</a></li>
+                <li><a class="dropdown-item" href="{% url 'pproductlist' %}" id="productClick" onclick="navbarChange('Product List')">Product</a></li>
+                <li><a class="dropdown-item" href="{% url 'item-list' %}" id="RowMaterialClick" onclick="navbarChange('Item List')">Raw Material</a></li>
+                <li><a class="dropdown-item" href="{% url 'godown-list' %}" id="GodownClick" onclick="navbarChange('Godown List')">Godown</a></li>
               </ul>
            
             </li>
             <li class="nav-item dropend">
-              <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link  bg-white  " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Sub Category
               </a>
                 <ul class="dropdown-menu dropdown dropdown-end">
-                  <li><a class="dropdown-item" href="{% url 'simplecolorlist' %}">Colors</a></li>
-                  <li><a class="dropdown-item" href="{% url 'item-fabgroup-create-list' %}">Fabrics Groups</a></li>
-                  <li><a class="dropdown-item" href="{% url 'unit_name-create_list' %}">Units</a></li>
-                  <li><a class="dropdown-item" href="{% url 'gst-create-list' %}">GST</a></li>
-                  <li><a class="dropdown-item" href="{% url 'fabric-finishes-create-list' %}">Fabric Finishes</a></li>
-                  <li><a class="dropdown-item" href="{% url 'packaging-create-list' %}">Packaging List</a></li>
-                  <li><a class="dropdown-item" href="{% url 'cutting_room-create' %}">Cutting Room</a></li>
-                  <li><a class="dropdown-item" href="{% url 'factory-emp-create' %}">Factory Workers</a></li>
+                  <li><a class="dropdown-item" href="{% url 'simplecolorlist' %}" id="ColorClick" onclick="navbarChange('Create Color')">Color</a></li>
+                  <li><a class="dropdown-item" href="{% url 'item-fabgroup-create-list' %}" id="FabricGroupClick" onclick="navbarChange('Create Fabric Group')">Fabrics Group</a></li>
+                  <li><a class="dropdown-item" href="{% url 'unit_name-create_list' %}" id="UnitClick" onclick="navbarChange('Create Unit')">Unit</a></li>
+                  <li><a class="dropdown-item" href="{% url 'gst-create-list' %}" id="GSTClick" onclick="navbarChange('Create GST')">GST</a></li>
+                  <li><a class="dropdown-item" href="{% url 'fabric-finishes-create-list' %}" id="FabricFinishClick" onclick="navbarChange('Create Fabric Finishes')">Fabric Finishes</a></li>
+                  <li><a class="dropdown-item" href="{% url 'packaging-create-list' %}" id="PackagingClick" onclick="navbarChange('Create Packaging')">Packaging List</a></li>
+                  <li><a class="dropdown-item" href="{% url 'cutting_room-create' %}" id="CuttingRoomClick" onclick="navbarChange('Create Cutting Room')">Cutting Room</a></li>
+                  <li><a class="dropdown-item" href="{% url 'factory-emp-create' %}" id="FactoryWorkerClick" onclick="navbarChange('Create Worker')">Factory Worker</a></li>
                 </ul>
             </li>
             <li class="nav-item dropend">
-              <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link  bg-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Product Definition
               </a>
                 <ul class="dropdown-menu dropdown dropdown-end">
-                  <li><a class="dropdown-item" href="{% url 'define-main-category-product' %}">Main Cat Create</a></li>
-                  <li><a class="dropdown-item" href="{% url 'define-sub-category-product' %}">Sub Cat Create</a></li>
-                  <li><a class="dropdown-item" href="{% url 'product-2-subcategory' %}">Product 2 Category</a></li>
+                  <li><a class="dropdown-item" href="{% url 'define-main-category-product' %}" id="mainCatClick" onclick="navbarChange('Create Category')">Main Cat Create</a></li>
+                  <li><a class="dropdown-item" href="{% url 'define-sub-category-product' %}" id="subCatClick" onclick="navbarChange('Create Sub Category')">Sub Cat Create</a></li>
                 </ul>
             </li>
           </ul>
@@ -176,17 +173,18 @@
         <li class="nav-item my-3 mx-3  dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Accounts')">Accounts</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText">Groups</a></li> 
-           <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText">Ledger</a></li>
-           <li class="pro-head"><a href="{% url 'stock-item-create' %}" class="navText">Stock Item</a></li> 
+           <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText" id="GroupsClick" onclick="navbarChange('Create Group')" >Group</a></li> 
+           <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText" id="LedgersClick" onclick="navbarChange('Ledger List')">Ledger</a></li>
+           <li class="pro-head"><a href="{% url 'stock-item-create' %}" class="navText" id="stockClick" onclick="navbarChange('Create Stock Item')">Stock Item</a></li> 
+           <li class="pro-head"><a href="{% url 'ledger-Types-create' %}" class="navText" id="legerTypeClick" onclick="navbarChange('Create Ledger Type')">Ledger Type</a></li>
          </ul>  
          </li>
          <li class="nav-item my-3 mx-3  dropdown">
           <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"  onclick="showThePopUp('Vouchers')">Vouchers</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-          <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice</a></li> 
+          <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText" id="PurchaseInvoiceClick" onclick="navbarChange('Purchase List')">Purchase Invoice</a></li> 
           <li class="pro-head"><a href="" class="navText">Sales Invoice</a></li>  
-          <li class="pro-head"><a href="{% url 'stock-transfer-raw-list' %}" class="navText">Stock Transfer</a></li>   
+          <li class="pro-head"><a href="{% url 'stock-transfer-raw-list' %}" class="navText" id="stockTransferClick" onclick="navbarChange('Stock Transfer List')">Stock Transfer</a></li>   
           <li class="pro-head"><a href="" class="navText">Sales Return</a></li>   
           <li class="pro-head"><a href="" class="navText">Purchase Return</a></li>   
           <li class="pro-head"><a href="" class="navText">Payment</a></li>   
@@ -197,8 +195,8 @@
          <li class="nav-item my-3 mx-3 dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Reports')">Reports</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText">Raw Material Report</a></li>
-           <li class="pro-head"><a href="{% url 'credit-debit-report' %}" class="navText">Purchase Report</a></li> 
+           <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material Report</a></li>
+           <li class="pro-head"><a href="{% url 'credit-debit-report' %}" class="navText" id="creditDebitClick" onclick="navbarChange('Credit/Debit Report')">Purchase Report</a></li> 
            <li class="pro-head"><a href="" class="navText">Stock Transfer Report</a></li> 
            <li class="pro-head"><a href="" class="navText">Sales Report</a></li> 
          </ul>  
@@ -206,11 +204,11 @@
          <li class="nav-item my-3 mx-3  dropdown">
           <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Production</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText">New Order</a></li>
-           <li class="pro-head"><a href="{% url 'purchase-order-raw-material-list' %}"class="navText" >Purchase Order(Raw)</a></li>
-           <li class="pro-head"><a href="{% url 'purchase-order-cutting-list-all' %}" class="navText">Cutting Orders</a></li>
-           <li class="pro-head"><a href="{% url 'labour-workout-all' %}" class="navText">Labour Work Out</a></li>
-           <li class="pro-head"><a href="{% url 'labour-workin-list-all' %}" class="navText">Labour Work In</a></li>
+           <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a></li>
+           <li class="pro-head"><a href="{% url 'purchase-order-raw-material-list' %}"class="navText"  id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order(Raw)</a></li>
+           <li class="pro-head"><a href="{% url 'purchase-order-cutting-list-all' %}" class="navText" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a></li>
+           <li class="pro-head"><a href="{% url 'labour-workout-all' %}" class="navText" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Work Out</a></li>
+           <li class="pro-head"><a href="{% url 'labour-workin-list-all' %}" class="navText" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour Work In</a></li>
            <li class="pro-head"><a href="" class="navText">Repair Pcs In</a></li>
       
          </ul>  
@@ -219,32 +217,28 @@
          <div>
           {% if request.user.is_superuser %}
           <div class="nav-item my-4">
-              <label for="id_company">Company</label>
-              <select name="company" id="id_company"  onchange="saveSelectedCompany()">
+              <label for="id_company" class="text-dark fw-bold">Company:</label>
+              <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect">
                   <option value="" selected>---------</option>
                   {% for company in companies %}
-                      <option value = "{{ company.id }}">{{ company.name }}</option>
+                      <option style="width: auto;" value = "{{ company.id }}">{{ company.name }}</option>
                   {% endfor %}
               </select>
           </div>
       {% endif %}
          </div>
-         <div class="nav-item my-3 mx-3">
-          <span>{{request.user.username}}</span>
-          <span>{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>
-
-         </div>
-
-
-        <li class="nav-item dropdown mx-3">
+       
+        <li class="nav-item dropdown mx-3 mt-3">
           <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img alt="user-profile" src="../../../static/images/logo.jpg" class="rounded-circle image-h">
+            <span class="text-danger fw-bold">{{request.user.username}}</span>
+            <span class="text-danger fw-bold">{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
               <div class="pro-head">
+             
                 {% if request.user.is_superuser %}
 
-                <a style="text-decoration: none; color: rgb(3, 65, 251);" href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a>
+                <span<a style="text-decoration: none; color: rgb(12, 15, 24);" href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a></span>
 
                 {% else %}
 
@@ -516,7 +510,7 @@
 <!-- Custom JS -->
 <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
 <script>
-  function saveSelectedCompany() {
+    function saveSelectedCompany() {
         const companySelect = document.getElementById('id_company');
         const selectedCompany = companySelect.value;
    
@@ -531,13 +525,247 @@
       
         if (savedCompany) {
             companySelect.value = savedCompany;
-            stockCompany.value = savedCompany;
+            stockCompany.value = savedCompany || '';
             console.log(stockCompany.value);
+        }else {
+        console.error('Element with id "stockCompany" not found.');
+    }
+    }
+    document.getElementById('id_company').addEventListener('change', saveSelectedCompany);
+    // Call the restore function when the page loads
+    document.addEventListener('DOMContentLoaded', restoreSelectedCompany);
+  </script>
+<script>
+
+    function navbarChange(clickedItem) {
+      const items = ['homeClick','productClick','addProductCreate','editProductClick','newFormSubmit', 'rowMaterialClick','addItemCreate','editItemClick','submitButtonItemCreate',
+       'godownClick','godownCreateClick','editGodownRaw','editGodownfinished','submitCreateButton', 'colorClick','colorEditClick','submitButtoncreateColorUpdate',
+       'FabricGroupClick','fabricGroupEditClick','submitButtonFabricGroup','UnitClick', 'GSTClick','gstEditClick','submitButtonGstCreate', 
+        'FabricFinishClick','FabricFinishesEditClick','submitButtonFabricFinishesUpdate', 'PackagingClick','editPackagingClick','submitButtonPackagingCreate',
+        'CuttingRoomClick','editCuttingRoomClick','submitButtonCuttongRoom', 'FactoryWorkerClick','editFactoryEmpClick','submitButtonFactoryEmp', 
+        'GroupsClick','editGroupsClick','submitButtonAccSubGroups', 'LedgersClick','submitButtonLedgerCreate','addLedgerClick',
+        'stockClick','editStockItemClick','submitButtonStockItems','legerTypeClick','editLedgerTypeClick','submitButtonLedgerType',
+        'PurchaseInvoiceClick','addCreateInvoiceClick','editPurchaseVoucherClick','parentFormClick','stockTransferClick','addCreateStockClick','editStockTransferClick',
+        'materialReportClick','creditDebitClick','mainCatClick','editButtonClick','submitButtonMainCategory','subCatClick','editButtonSubCategory','submitButtonSubCategory', 
+        'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
+        'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
+        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick'];
+        
+        items.forEach(item=> localStorage.removeItem(item));
+      
+      
+      
+        const storageItems = {
+       'Dashboard': 'homeClick',
+       'Product List': 'productClick',
+       'Create Product': 'addProductCreate',
+       'Edit Product': 'editProductClick',
+       'Product List': 'newFormSubmit',
+       'Item List': 'rowMaterialClick',
+       'Create Item': 'addItemCreate',
+       'Edit Item': 'editItemClick',
+       'Item List': 'submitButtonItemCreate',
+        'Godown List': 'godownClick',
+        'Create Godown': 'godownCreateClick',
+        'Edit Raw Godown': 'editGodownRaw',
+        'Edit Finished Godown': 'editGodownfinished',
+        'Godown List': 'submitCreateButton',
+        'Create Color': 'colorClick',
+        'Edit Color': 'colorEditClick',
+        'Create Color': 'submitButtoncreateColorUpdate',
+        'Create Fabric Group': 'FabricGroupClick',
+        'Edit Fabric Group': 'fabricGroupEditClick',
+        'Create Fabric Group': 'submitButtonFabricGroup',
+        'Create Unit': 'UnitClick',
+        'Edit Unit': 'UnitEditClick',
+        'Create Unit': 'submitButtonUnitUpdate',
+        'Create GST': 'GSTClick',
+        'Edit GST': 'gstEditClick',
+        'Create GST': 'submitButtonGstCreate',
+        'Create Fabric Finishes': 'FabricFinishClick',
+        'Edit Fabric Finishes': 'FabricFinishesEditClick',
+        'Create Fabric Finishes': 'submitButtonFabricFinishesUpdate',
+        'Create Packaging': 'PackagingClick',
+        'Edit Packaging': 'editPackagingClick',
+        'Create Packaging': 'submitButtonPackagingCreate',
+        'Create Cutting Room': 'CuttingRoomClick',
+        'Edit Cutting Room': 'editCuttingRoomClick',
+        'Create Cutting Room': 'submitButtonCuttongRoom',
+        'Create Worker': 'FactoryWorkerClick',
+        'Edit Worker': 'editFactoryEmpClick',
+        'Create Worker': 'submitButtonFactoryEmp',
+        'Create Group': 'GroupsClick',
+        'Edit Group': 'editGroupsClick',
+        'Create Group': 'submitButtonAccSubGroups',
+        'Ledger List': 'LedgersClick',
+        'Create Ledger': 'addLedgerClick',
+        'Ledger List':'submitButtonLedgerCreate',
+        'Create Stock Item': 'stockClick',
+        'Edit Stock Item': 'editStockItemClick',
+        'Create Stock Item': 'submitButtonStockItems',
+        'Create Ledger Type': 'legerTypeClick',
+        'Edit Ledger Type': 'editLedgerTypeClick',
+        'Create Ledger Type': 'submitButtonLedgerType',
+        'Purchase List': 'PurchaseInvoiceClick',
+        'Create Purchase Invoice': 'addCreateInvoiceClick',
+        'Edit Purchase Invoice': 'editPurchaseVoucherClick',
+        'Purchase List':'parentFormClick',
+        'Stock Transfer List': 'stockTransferClick',
+        'Create Stock Transfer': 'addCreateStockClick',
+        'Edit Stock Transfer': 'editStockTransferClick',
+        'Stock Transfer List':'submitButtonStockTransfer',
+        'Raw Material Report': 'materialReportClick',
+        'Credit/Debit Report': 'creditDebitClick',
+        'Create Category':'mainCatClick',
+        'Edit Category':'editButtonClick',
+        'Create Category':'submitButtonMainCategory',
+        'Create Sub Category':'subCatClick',
+        'Edit Sub Category':'editButtonSubCategory',
+        'Create Sub Category':'submitButtonSubCategory',
+        'New Order List':'newOrderClick',
+        'New Order':'addNewOrderClick',
+        'Edit Order':'editButtonNewOrderClick',
+        'Purchase Order List':'id_submit_2',
+        'Purchase Order List':'purchaseOrderClick',
+        'Purchase Order Material':'purchaseOrderRawMaterialClick',
+        'Purchase Order View':'purchaseOrderRawMaterialView',
+        'Purchase Order List':'id_submitPurchaseOrder',
+        'Cutting Order List':'cuttingOrderClick',
+        'Create Cutting Order':'purchaseOrderCuttingOrder',
+        'Cutting Order View': 'PurchaseOrderCuttingView',
+        'Cutting Order List':'id_submitPurchaseOrderCutting',
+        'Labour WorkOut List':'labourWorkOutClick',
+        'Labour WorkOut Create':'createLabourWorkOut',
+        'Labour WorkOut View':'viewLabourWorkOut',
+        'Labour WorkOut List':'id_submitLabourWorkOut',
+        'Labour WorkIn List':'labourWorkInClick',
+        'Labour WorkIn Create':'addLabourWorkIn',
+        'Labour WorkIn Edit':'editButtonLabourWorkin',
+        'Labour WorkIn List':'id_submitLabourWorkIn',
+        'Labour Workin Create':'directcreateLabourWorkin',
+        'Labour Workin List': 'id_submit',
+        'Purchase Order Wise': 'labourWorkInCreateClick'
+
+    };
+      if(storageItems[clickedItem]) {
+        
+        localStorage.setItem(storageItems[clickedItem], clickedItem);
+      }
+  }
+
+  function changeHeader() {
+    const headerMapping = {
+        'homeClick': 'Dashboard',
+        'productClick': 'Product List',
+        'addProductCreate': 'Create Product',
+        'editProductClick': 'Edit Product',
+        'newFormSubmit': 'Product List',
+        'rowMaterialClick': 'Item List',
+        'addItemCreate': 'Create Item',
+        'editItemClick': 'Edit Item',
+        'submitButtonItemCreate': 'Item List',
+        'godownClick': 'Godown List',
+        'godownCreateClick': 'Create Godown',
+        'editGodownRaw': 'Edit Raw Godown',
+        'editGodownfinished': 'Edit Finished Godown',
+        'submitCreateButton':'Godown List',
+        'colorClick': 'Create Color',
+        'colorEditClick': 'Edit Color',
+        'submitButtoncreateColorUpdate': 'Create Color',
+        'FabricGroupClick': 'Create Fabric Group',
+        'fabricGroupEditClick': 'Edit Fabric Group',
+        'submitButtonFabricGroup': 'Create Fabric Group',
+        'UnitClick': 'Create Unit',
+        'UnitEditClick': 'Edit Unit',
+        'submitButtonUnitUpdate': 'Create Unit',
+        'GSTClick': 'Create GST',
+        'gstEditClick' :'Edit GST',
+        'submitButtonGstCreate': 'Create GST',
+        'FabricFinishClick': 'Create Fabric Finishes',
+        'FabricFinishesEditClick': 'Edit Fabric Finishes',
+        'submitButtonFabricFinishesUpdate': 'Create Fabric Finishes',
+        'PackagingClick': 'Create Packaging',
+        'editPackagingClick': 'Edit Packaging',
+        'submitButtonPackagingCreate': 'Create Packaging',
+        'CuttingRoomClick': 'Create Cutting Room',
+        'editCuttingRoomClick': 'Edit Cutting Room',
+        'submitButtonCuttongRoom': 'Create Cutting Room',
+        'FactoryWorkerClick': 'Create Worker',
+        'editFactoryEmpClick': 'Edit Worker',
+        'submitButtonFactoryEmp': 'Create Worker',
+        'GroupsClick': 'Create Group',
+        'editGroupsClick': 'Edit Group',
+        'submitButtonAccSubGroups': 'Create Group',
+        'LedgersClick': 'Ledger List',
+        'addLedgerClick':'Create Ledger',
+        'submitButtonLedgerCreate':'Ledger List',
+        'stockClick': 'Create Stock Item',
+        'editStockItemClick': 'Edit Stock Item',
+        'submitButtonStockItems': 'Create Stock Item',
+        'legerTypeClick': 'Create Ledger Type',
+        'editLedgerTypeClick': 'Edit Ledger Type',
+        'submitButtonLedgerType': 'Create Ledger Type',
+        'PurchaseInvoiceClick': 'Purchase List',
+        'addCreateInvoiceClick': 'Create Purchase Invoice',
+        'editPurchaseVoucherClick': 'Edit Purchase Invoice',
+        'parentFormClick': 'Purchase List',
+        'stockTransferClick': 'Stock Transfer List',
+        'addCreateStockClick': 'Create Stock Transfer',
+        'editStockTransferClick': 'Edit Stock Transfer',
+        'submitButtonStockTransfer': 'Stock Transfer List',
+        'materialReportClick': 'Raw Material Report',
+        'creditDebitClick': 'Credit/Debit Report',
+        'mainCatClick': 'Create Category',
+        'editButtonClick': 'Edit Category',
+        'submitButtonMainCategory':'Create Category',
+        'subCatClick': 'Create Sub Category',
+        'editButtonSubCategory': 'Edit Sub Category',
+        'submitButtonSubCategory':'Create Sub Category',
+        'newOrderClick': 'New Order List',
+        'addNewOrderClick': 'New Order',
+        'editButtonNewOrderClick': 'Edit Order',
+        'id_submit_2': 'Purchase Order List',
+        'purchaseOrderClick': 'Purchase Order List',
+        'purchaseOrderRawMaterialClick': 'Purchase Order Material',
+        'purchaseOrderRawMaterialView': 'Purchase Order View',
+        'id_submitPurchaseOrder': 'Purchase Order List',
+        'cuttingOrderClick': 'Cutting Order List',
+        'purchaseOrderCuttingOrder': 'Create Cutting Order',
+        'PurchaseOrderCuttingView':'Cutting Order View',
+        'id_submitPurchaseOrderCutting':'Cutting Order List',
+        'labourWorkOutClick': 'Labour WorkOut List',
+        'createLabourWorkOut': 'Labour WorkOut Create',
+        'viewLabourWorkOut': 'Labour WorkOut View',
+        'id_submitLabourWorkOut': 'Labour WorkOut List',
+        'labourWorkInClick': 'Labour WorkIn List',
+        'addLabourWorkIn': 'Labour WorkIn Create',
+        'editButtonLabourWorkin': 'Labour WorkIn Edit',
+        'id_submitLabourWorkIn': 'Labour WorkIn List',
+        'directcreateLabourWorkin':'Labour Workin Create',
+        'id_submit':'Labour Workin List',
+        'labourWorkInCreateClick':'Purchase Order Wise',
+      
+    };
+
+    const newHeading = document.getElementById('newHeading');
+    newHeading.textContent = '';
+
+    for (const key in headerMapping) {
+      const value = localStorage.getItem(key);
+      console.log(value);
+      console.log(headerMapping[key]);
+        if (localStorage.getItem(key) === headerMapping[key]) {
+            newHeading.textContent = headerMapping[key];
+            break; // Exit loop once a match is found
         }
     }
 
-    // Call the restore function when the page loads
-    document.addEventListener('DOMContentLoaded', restoreSelectedCompany);
+    newHeading.style.color = 'white';
+    newHeading.style.fontWeight = '500';
+}
+
+
+document.addEventListener('DOMContentLoaded', changeHeader);
 
 </script>
 <script>

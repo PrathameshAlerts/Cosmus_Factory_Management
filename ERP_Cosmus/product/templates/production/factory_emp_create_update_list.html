@@ -6,7 +6,7 @@
   <div class="col-lg-5">
       <form  action="" method="POST" id="factoryEmpForm">
         {% csrf_token %}  
-        <h2 class="mb-4">Worker- {{title}}</h2>
+        <!-- <h2 class="mb-4">Worker- {{title}}</h2> -->
        <div class="d-flex mb-3">
         <label for="id_factory_emp_name" class="item-form">Worker Name:</label>
         <input type="text" class="item-select search-input" value="{{ form.instance.factory_emp_name }}" name="factory_emp_name" maxlength="255" required id="id_factory_emp_name">
@@ -28,7 +28,7 @@
         </select>
        </div>
   
-    <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" id="submitButtonFactoryEmp" class="create-btn mt-4" name="save" value="Save" onclick ="navbarChange('Create Worker')">
     
   </form>
 
@@ -58,7 +58,7 @@
               <td>{{ forloop.counter }}</td>
               <td>{{emp.factory_emp_name}}</td>
               <td>{{emp.cutting_room_id.cutting_room_name}}</td>
-              <td><a href="{% url 'factory-emp-update' emp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+              <td><a href="{% url 'factory-emp-update' emp.id %}" id="editFactoryEmpClick" onclick="navbarChange('Edit Worker')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{emp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>
             {% endfor %}
@@ -98,7 +98,7 @@
 
   $(document).ready(function () {
     $('#factoryEmpForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
+      $('#submitButtonFactoryEmp').attr('disabled', 'disabled');
     });
     $('.delete-btn').click(function () {
       var itemId = $(this).data('item-id');

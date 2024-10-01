@@ -3,8 +3,8 @@
 
 {% block body %}
 <div>
-  <h2>Godown Update</h2>
-  <form class="mt-5" action="" method="POST">
+  <!-- <h2>Godown Update</h2> -->
+  <form class="mt-4" action="" method="POST">
     {% csrf_token %}
     <div class="d-flex mb-3">
       <label for="" class="form-label px-2">Name</label>
@@ -14,9 +14,9 @@
     <div class="d-flex mb-3">
       <span class="form-label px-2">Godown type: <b>{{ godown_type}}</b></span>
     </div>
-    <input type="submit" class="create-btn mt-4" name="save" value="Save">
-    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
-    <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'godown-list'%}">Return</a></button>
+    <input type="submit" class="create-btn mt-4" name="save" value="Save" id="submitCreateButton" onclick="navbarChange('Godown List')">
+    <!-- <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another"> -->
+    <!-- <button type="button" class="create-btn"><a class="text-decoration-none text-white" href="{% url 'godown-list'%}">Return</a></button> -->
   </form>
 </div>
 

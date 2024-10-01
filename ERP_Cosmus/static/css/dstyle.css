@@ -1244,7 +1244,13 @@ input[type=number] {
     width: 25px;
     height: 25px;
 }
-
+.companySelect{
+    width: 120px;
+    border: 1px solid #cecdcd;
+    border-radius: 5px;
+    padding-left: 5px;
+   
+}
 .success {
     background-color: #d4edda;
     border-color: #c3e6cb;

@@ -7,13 +7,13 @@
         <div class="col-lg-5">
             <form action="" method="POST" id="gstForm">
                 {% csrf_token %}
-                <h2 class="mb-4">GST-{{title}}</h2>
+                <!-- <h2 class="mb-4">GST-{{title}}</h2> -->
                 <div class="d-flex ">
                     <label for="id_gst_percentage" class="item-form">Gst percentage :</label>
                     <input type="number" name="gst_percentage" class="purchase-input" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}" step="0.01">    
                 </div>
             
-                <input type="submit" id="submitButton" class="create-btn " name="save" value="Save">
+                <input type="submit" id="submitButtonGstCreate" class="create-btn " name="save" value="Save" onclick ="navbarChange('Create GST')">
             
             </form>
 
@@ -47,7 +47,7 @@
                         <tr>
                             <td>{{forloop.counter}}</td>
                             <td>{{gst.gst_percentage}}</td>  
-                            <td> <a href=" {% url 'gst-update' gst.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+                            <td> <a href=" {% url 'gst-update' gst.id %}" id="gstEditClick" onclick="navbarChange('Edit GST')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                             <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{gst.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
                         </tr>
                         {% endfor %}
@@ -85,7 +85,7 @@
    
     $(document).ready(function(){
         $('#gstForm').on('submit', function () {
-      $('#submitButton').attr('disabled', 'disabled');
+      $('#submitButtonGstCreate').attr('disabled', 'disabled');
     });
         $('.delete-btn').click(function(){
             var itemId = $(this).data('item-id');

@@ -2,8 +2,8 @@
 {% load static %} 
 {% block body %}
 
-<h2 class="mb-3 mt-4">Create Product</h2>
-  <button type="button" class="add_btn" onclick="openNewColor()">Add Color +</button>
+<!-- <h2 class="mb-3 mt-4">Create Product</h2> -->
+  <button type="button" class="add_btn mt-4" onclick="openNewColor()">Add Color +</button>
 <form method="POST" enctype="multipart/form-data" id="productCreateForm">
   {% csrf_token %}
   <span id="materialError" class="error-messages"></span>
