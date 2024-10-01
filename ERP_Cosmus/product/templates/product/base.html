@@ -127,8 +127,8 @@
           <h3 id="newHeading"></h3>
         </li>
       </ul>
-      <ul class="navbar-nav mb-2 ms-auto mb-lg-0 me-1" >
-        <li class="nav-item my-3 mx-3 dropdown">
+      <ul class="navbar-nav mb-2 me-auto mb-lg-0 " >
+        <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
           </a>
@@ -170,100 +170,95 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item my-3 mx-3  dropdown">
+        <li class="nav-item my-3 mx-2  dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Accounts')">Accounts</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText" id="GroupsClick" onclick="navbarChange('Create Group')" >Group</a></li> 
-           <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText" id="LedgersClick" onclick="navbarChange('Ledger List')">Ledger</a></li>
-           <li class="pro-head"><a href="{% url 'stock-item-create' %}" class="navText" id="stockClick" onclick="navbarChange('Create Stock Item')">Stock Item</a></li> 
-           <li class="pro-head"><a href="{% url 'ledger-Types-create' %}" class="navText" id="legerTypeClick" onclick="navbarChange('Create Ledger Type')">Ledger Type</a></li>
-         </ul>  
-         </li>
-         <li class="nav-item my-3 mx-3  dropdown">
+            <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText" id="GroupsClick" onclick="navbarChange('Create Group')" >Group</a></li> 
+            <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText" id="LedgersClick" onclick="navbarChange('Ledger List')">Ledger</a></li>
+            <li class="pro-head"><a href="{% url 'stock-item-create' %}" class="navText" id="stockClick" onclick="navbarChange('Create Stock Item')">Stock Item</a></li> 
+            <li class="pro-head"><a href="{% url 'ledger-Types-create' %}" class="navText" id="legerTypeClick" onclick="navbarChange('Create Ledger Type')">Ledger Type</a></li>
+          </ul>  
+        </li>
+        <li class="nav-item my-3 mx-2  dropdown">
           <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"  onclick="showThePopUp('Vouchers')">Vouchers</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-          <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText" id="PurchaseInvoiceClick" onclick="navbarChange('Purchase List')">Purchase Invoice</a></li> 
-          <li class="pro-head"><a href="" class="navText">Sales Invoice</a></li>  
-          <li class="pro-head"><a href="{% url 'stock-transfer-raw-list' %}" class="navText" id="stockTransferClick" onclick="navbarChange('Stock Transfer List')">Stock Transfer</a></li>   
-          <li class="pro-head"><a href="" class="navText">Sales Return</a></li>   
-          <li class="pro-head"><a href="" class="navText">Purchase Return</a></li>   
-          <li class="pro-head"><a href="" class="navText">Payment</a></li>   
-          <li class="pro-head"><a href="" class="navText">Reciept</a></li>   
-          <li class="pro-head"><a href="" class="navText">Journal Entry</a></li>   
-         </ul>  
-         </li>
-         <li class="nav-item my-3 mx-3 dropdown">
+            <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText" id="PurchaseInvoiceClick" onclick="navbarChange('Purchase List')">Purchase Invoice</a></li> 
+            <li class="pro-head"><a href="" class="navText">Sales Invoice</a></li>  
+            <li class="pro-head"><a href="{% url 'stock-transfer-raw-list' %}" class="navText" id="stockTransferClick" onclick="navbarChange('Stock Transfer List')">Stock Transfer</a></li>   
+            <li class="pro-head"><a href="" class="navText">Sales Return</a></li>   
+            <li class="pro-head"><a href="" class="navText">Purchase Return</a></li>   
+            <li class="pro-head"><a href="" class="navText">Payment</a></li>   
+            <li class="pro-head"><a href="" class="navText">Reciept</a></li>   
+            <li class="pro-head"><a href="" class="navText">Journal Entry</a></li>   
+          </ul>  
+        </li>
+        <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Reports')">Reports</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material Report</a></li>
-           <li class="pro-head"><a href="{% url 'credit-debit-report' %}" class="navText" id="creditDebitClick" onclick="navbarChange('Credit/Debit Report')">Purchase Report</a></li> 
-           <li class="pro-head"><a href="" class="navText">Stock Transfer Report</a></li> 
-           <li class="pro-head"><a href="" class="navText">Sales Report</a></li> 
-         </ul>  
-         </li>
-         <li class="nav-item my-3 mx-3  dropdown">
+            <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material Report</a></li>
+            <li class="pro-head"><a href="{% url 'credit-debit-report' %}" class="navText" id="creditDebitClick" onclick="navbarChange('Credit/Debit Report')">Purchase Report</a></li> 
+            <li class="pro-head"><a href="" class="navText">Stock Transfer Report</a></li> 
+            <li class="pro-head"><a href="" class="navText">Sales Report</a></li> 
+          </ul>  
+        </li>
+        <li class="nav-item my-3 mx-2  dropdown">
           <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Production</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-           <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a></li>
-           <li class="pro-head"><a href="{% url 'purchase-order-raw-material-list' %}"class="navText"  id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order(Raw)</a></li>
-           <li class="pro-head"><a href="{% url 'purchase-order-cutting-list-all' %}" class="navText" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a></li>
-           <li class="pro-head"><a href="{% url 'labour-workout-all' %}" class="navText" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Work Out</a></li>
-           <li class="pro-head"><a href="{% url 'labour-workin-list-all' %}" class="navText" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour Work In</a></li>
-           <li class="pro-head"><a href="" class="navText">Repair Pcs In</a></li>
-      
+            <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a></li>
+            <li class="pro-head"><a href="{% url 'purchase-order-raw-material-list' %}"class="navText"  id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order(Raw)</a></li>
+            <li class="pro-head"><a href="{% url 'purchase-order-cutting-list-all' %}" class="navText" id="cuttingOrderClick" onclick="navbarChange('Cutting Order List')">Cutting Order</a></li>
+            <li class="pro-head"><a href="{% url 'labour-workout-all' %}" class="navText" id="labourWorkOutClick" onclick="navbarChange('Labour WorkOut List')">Labour Work Out</a></li>
+            <li class="pro-head"><a href="{% url 'labour-workin-list-all' %}" class="navText" id="labourWorkInClick" onclick="navbarChange('Labour WorkIn List')">Labour Work In</a></li>
+            <li class="pro-head"><a href="" class="navText">Repair Pcs In</a></li>
          </ul>  
-         </li> 
-        
-         <div>
-          {% if request.user.is_superuser %}
-          {% if request.path == '/' %}
-          <div class="nav-item my-4">
-              <label for="id_company" class="text-dark fw-bold">Company:</label>
-              <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect">
+        </li> 
+        <li class="nav-item me-5">
+          <div>
+            {% if request.user.is_superuser %}
+              {% if request.path == '/' %}
+              <div class="nav-item my-4">
+                <label for="id_company" class="text-dark fw-bold">Company:</label>
+                <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect">
                   <option value="" selected>---------</option>
-                  {% for company in companies %}
+                    {% for company in companies %}
                       <option style="width: auto;" value = "{{ company.id }}">{{ company.name }}</option>
-                  {% endfor %}
-              </select>
+                    {% endfor %}
+                </select>
+              </div>
+              {% elif request.path != '/' %}
+                <div class="nav-item my-4">
+                  <label for="id_company" class="text-dark fw-bold">Company:</label>
+                  <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect" disabled>
+                    <option value="" selected>---------</option>
+                      {% for company in companies %}
+                        <option style="width: auto;" value = "{{ company.id }}">{{ company.name }}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+              {% endif %}
+            {% endif %}
           </div>
-          {% elif request.path != '/' %}
-
-          <div class="nav-item my-4">
-            <label for="id_company" class="text-dark fw-bold">Company:</label>
-            <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect" disabled>
-                <option value="" selected>---------</option>
-                {% for company in companies %}
-                    <option style="width: auto;" value = "{{ company.id }}">{{ company.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        {% endif %}
-      {% endif %}
-         </div>
-       
-        <li class="nav-item dropdown mx-3 mt-3">
+        </li>
+        <li class="nav-item dropdown ms-5 mt-3">
           <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="text-danger fw-bold">{{request.user.username}}</span>
-            <span class="text-danger fw-bold">{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>
+            <i class="fa-solid fa-user text-white fs-5 "></i></i><span class="text-danger fw-bold ms-2 text-uppercase">{{request.user.username}}</span>
           </a>
           
           <ul class="dropdown-menu dropdown-menu-right">
-              <div class="pro-head">
-             
-                {% if request.user.is_superuser %}
-
-                <span<a style="text-decoration: none; color: rgb(12, 15, 24);" href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a></span>
-
-                {% else %}
-
-                  <span><a href="{% url 'list_company_users' %}">User Management</a></span>
-
-                {% endif %}
-
-              </div>
-                <li> 
-                <button type="button" class="dropdown-item text-danger fw-bold"><a href="{% url 'logout' %}" title="Logout" style="text-decoration: none; color: red;"> Logout</a></button>
-                </li>
+            <li class="pro-head">
+              <label class="text-dark fw-bold ms-2">Company:</label>
+              <span class="text-danger fw-bold text-uppercase ms-1">{{request.user.company.name | default_if_none:'SUPERUSER'}}</span>
+             </li>
+            <li class="pro-head">
+              {% if request.user.is_superuser %}
+              <span class="text-danger"><a style="text-decoration: none; color: #111;" href="{% url 'admin:core_customuser_changelist' %}">Super User Management</a></span>
+              {% else %}
+                <span class="text-primary ms-2"><a style="text-decoration: none; color: #111;" href="{% url 'list_company_users' %}">User Management</a></span>
+              {% endif %}
+            </li>
+            <li> 
+              <button type="button" class="dropdown-item text-danger fw-bold"><i class="fa-solid fa-right-from-bracket"></i><a href="{% url 'logout' %}" title="Logout" style="text-decoration: none; color: red;"> Logout</a></button>
+            </li>
               
           </ul>
         </li>
@@ -554,16 +549,16 @@
     function navbarChange(clickedItem) {
       const items = ['homeClick','productClick','addProductCreate','editProductClick','newFormSubmit', 'rowMaterialClick','addItemCreate','editItemClick','submitButtonItemCreate',
        'godownClick','godownCreateClick','editGodownRaw','editGodownfinished','submitCreateButton', 'colorClick','colorEditClick','submitButtoncreateColorUpdate',
-       'FabricGroupClick','fabricGroupEditClick','submitButtonFabricGroup','UnitClick', 'GSTClick','gstEditClick','submitButtonGstCreate', 
+       'FabricGroupClick','fabricGroupEditClick','submitButtonFabricGroup','UnitClick','editUnitNameClick','submitButtonUnitUpdate', 'GSTClick','gstEditClick','submitButtonGstCreate', 
         'FabricFinishClick','FabricFinishesEditClick','submitButtonFabricFinishesUpdate', 'PackagingClick','editPackagingClick','submitButtonPackagingCreate',
         'CuttingRoomClick','editCuttingRoomClick','submitButtonCuttongRoom', 'FactoryWorkerClick','editFactoryEmpClick','submitButtonFactoryEmp', 
         'GroupsClick','editGroupsClick','submitButtonAccSubGroups', 'LedgersClick','submitButtonLedgerCreate','addLedgerClick',
         'stockClick','editStockItemClick','submitButtonStockItems','legerTypeClick','editLedgerTypeClick','submitButtonLedgerType',
-        'PurchaseInvoiceClick','addCreateInvoiceClick','editPurchaseVoucherClick','parentFormClick','stockTransferClick','addCreateStockClick','editStockTransferClick',
+        'PurchaseInvoiceClick','addCreateInvoiceClick','editPurchaseVoucherClick','parentFormClick','stockTransferClick','addCreateStockClick','editStockTransferClick','submitButtonStockTransfer',
         'materialReportClick','creditDebitClick','mainCatClick','editButtonClick','submitButtonMainCategory','subCatClick','editButtonSubCategory','submitButtonSubCategory', 
         'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
-        'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
-        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick'];
+        'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','cuttingCapList','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
+        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick','PendingFinishedGoods_btn',];
         
         items.forEach(item=> localStorage.removeItem(item));
       
@@ -591,7 +586,7 @@
         'Edit Fabric Group': 'fabricGroupEditClick',
         'Create Fabric Group': 'submitButtonFabricGroup',
         'Create Unit': 'UnitClick',
-        'Edit Unit': 'UnitEditClick',
+        'Edit Unit': 'editUnitNameClick',
         'Create Unit': 'submitButtonUnitUpdate',
         'Create GST': 'GSTClick',
         'Edit GST': 'gstEditClick',
@@ -648,6 +643,7 @@
         'Create Cutting Order':'purchaseOrderCuttingOrder',
         'Cutting Order View': 'PurchaseOrderCuttingView',
         'Cutting Order List':'id_submitPurchaseOrderCutting',
+        'Cutting Appr Pending List':'cuttingCapList',
         'Labour WorkOut List':'labourWorkOutClick',
         'Labour WorkOut Create':'createLabourWorkOut',
         'Labour WorkOut View':'viewLabourWorkOut',
@@ -658,7 +654,8 @@
         'Labour WorkIn List':'id_submitLabourWorkIn',
         'Labour Workin Create':'directcreateLabourWorkin',
         'Labour Workin List': 'id_submit',
-        'Purchase Order Wise': 'labourWorkInCreateClick'
+        'Purchase Order Wise': 'labourWorkInCreateClick',
+        'Goods Return List':'PendingFinishedGoods_btn'
 
     };
       if(storageItems[clickedItem]) {
@@ -690,7 +687,7 @@
         'fabricGroupEditClick': 'Edit Fabric Group',
         'submitButtonFabricGroup': 'Create Fabric Group',
         'UnitClick': 'Create Unit',
-        'UnitEditClick': 'Edit Unit',
+        'editUnitNameClick': 'Edit Unit',
         'submitButtonUnitUpdate': 'Create Unit',
         'GSTClick': 'Create GST',
         'gstEditClick' :'Edit GST',
@@ -747,6 +744,7 @@
         'purchaseOrderCuttingOrder': 'Create Cutting Order',
         'PurchaseOrderCuttingView':'Cutting Order View',
         'id_submitPurchaseOrderCutting':'Cutting Order List',
+        'cuttingCapList': 'Cutting Appr Pending List',
         'labourWorkOutClick': 'Labour WorkOut List',
         'createLabourWorkOut': 'Labour WorkOut Create',
         'viewLabourWorkOut': 'Labour WorkOut View',
@@ -758,7 +756,7 @@
         'directcreateLabourWorkin':'Labour Workin Create',
         'id_submit':'Labour Workin List',
         'labourWorkInCreateClick':'Purchase Order Wise',
-      
+        'PendingFinishedGoods_btn':'Goods Return List'
     };
 
     const newHeading = document.getElementById('newHeading');

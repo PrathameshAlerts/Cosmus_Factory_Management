@@ -19,7 +19,7 @@
     <div class="d-flex my-3">
         <span><a href="{% url 'cutting-room-qty' %}">cutting room qty</a></span>
         <!-- <h3>Purchase Order Cutting List</h3> -->
-        <button  class=" border-0 py-1 px-3 rounded-2" style="margin-left: 920px; background-color: rgba(167, 25, 25, 0.7);"><a  class="text-decoration-none text-white " href="{% url 'pending-approv-all' %}">CAP List</a></button>     
+        <button  class=" border-0 py-1 px-3 rounded-2" style="margin-left: 920px; background-color: rgba(167, 25, 25, 0.7);"><a id="cuttingCapList" onclick="navbarChange('Cutting Appr Pending List')" class="text-decoration-none text-white " href="{% url 'pending-approv-all' %}">CAP List</a></button>     
     </div>
      <div class="">
         <button type="button" class="edit_btn w-100 mb-3" id="purchaseOrderCuttingPending_btn">Purchase Order Cutting - Pending<span class="purchaseOrderCuttingpendingArrow"><i class="fas fa-angle-right arrowBtn"></i></span></button>
