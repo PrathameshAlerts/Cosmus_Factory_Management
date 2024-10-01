@@ -190,7 +190,6 @@
         // this script is for other form submit buttons hide and show when first form submit 
         const id = document.getElementById('id_productRow').value ;
         const totalPoQty = document.getElementById('id_number_of_pieces').value;
-        console.log(totalPoQty);
     
         if (id != "None" && totalPoQty > 0) {
             const main_form = document.getElementById('productForm-conatiner');
@@ -214,7 +213,8 @@
             
             if(mainForms != "None"){
                var form = document.getElementById('id_p_o_to_products-TOTAL_FORMS').value;
-              
+               
+               
                 for(var i=0;i<form;i++){
                     var quantity = document.getElementById('id_p_o_to_products-'+ i+'-order_quantity').value;
                     quantity.readOnly = false;
@@ -222,6 +222,18 @@
             }
         }
         IdsValueCalculate()
+
+        function submitButtonCheck(){
+            var deleteForm = document.querySelector('.purchaseOderDelete').value;
+         
+            var submitButton = document.getElementById('id_submit_2');
+            if(deleteForm == "True"){
+                 submitButton.style.display = 'none';
+            }else{
+                submitButton.style.display = 'block';
+            }
+        }
+        submitButtonCheck()
     });
 </script>
 <script>
