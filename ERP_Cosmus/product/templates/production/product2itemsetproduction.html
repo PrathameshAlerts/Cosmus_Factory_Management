@@ -149,8 +149,7 @@
 
   // Open new page with specified dimensions
   newPopupWindow = window.open(path, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-    // Ensure only one event listener is attached
-   
+    // Ensure only one event listener is attache
 }
 
  // Handle the case when the window is closed without form submission
@@ -236,8 +235,12 @@
             } else {
                 suggestionsContainerUniqueId.empty();
             }
+            let isClicked = false;
+            suggestionsContainerUniqueId.one('click', '.itemName-div-suggestion', function () {
+                if (isClicked) return;
 
-            suggestionsContainerUniqueId.on('click', '.itemName-div-suggestion', function () {
+            isClicked = true; //
+
                 const currentRow = $(this).closest('tr');
                 const dataKey = $(this).attr('data-key');
                 const dropdownContainer = $(this).closest('.custom-dropdown-container');
@@ -269,40 +272,45 @@
                 dropdownContainer.find('.input_text').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
 
-                // Check if the selected item is a duplicate in other rows
                 otherProductRows.each(function () {
-                    if ($(this).val() === selectedProductValue) {
-                        const relatedForms = $(this).closest('tr').find('[name$="Item_pk"]');
-                        
-                        relatedForms.each(function () {
-                            const uncheckedRows = $(this).closest('form').find('tr input[type="checkbox"]').filter(':not(:checked)');
-
-                            uncheckedRows.each(function () {
-                                const itemPkValue = $(this).closest('tr').find('input[name$="Item_pk"]').val();
-                                if (itemPkValue === dataKey) {
-                                    showError('Item already exists');
-                                    isDuplicate = true;
-                                    return false;  // Break out of the inner loop
+                    const otherProductValue = $(this).val();
+                    const uncheckedRows = $(this).closest('tr').find('input[type="checkbox"]').filter(':not(:checked)');
+                    uncheckedRows.each(function () {
+               
+                        if (otherProductValue === selectedProductValue) {
+                            const relatedForms = $(this).closest('tr').find('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+                            relatedForms.each(function () {
+                                if ($(this).val() === dataKey) {
+                                        showError('Item already exists');
+                                        isDuplicate = true;
+                                        return false;  // Break out of the inner loop
                                 }
-                            });
-
+                            })
                             if (isDuplicate) return false;  // Break out of the loop
-                        });
                     }
 
-                    if (isDuplicate) return false;  // Break out of the outer loop
+                        if (isDuplicate) return false;  // Break out of the outer loop
                 });
 
+                if (isDuplicate) return false;  // Break out of the outer loop
+                
+            })
+                
                 // If no duplicates were found, check in the common formset
                 if (!isDuplicate) {
                     const commonItemPks = $(this).closest('form').find('[name^="product2itemcommonformset-"][name$="-Item_pk"]');
-                    
                     commonItemPks.each(function () {
-                        if ($(this).val() === dataKey) {
-                            showError('Item already exists');
-                            isDuplicate = true;
-                            return false;  // Break out of the loop
-                        }
+                        const commonPkValues = $(this).val();
+                        const commonCheckboxes =$(this).closest('tr').find('input[type="checkbox"]').filter(':not(:checked)');
+                        commonCheckboxes.each(function () {
+        
+                            if (commonPkValues === dataKey) {
+                                showError('Item already exists');
+                                isDuplicate = true;
+                                return false;  // Break out of the loop
+                            }  
+                        })
+                   
                     });
                 }
 
@@ -450,15 +458,15 @@
                 const otherProducts = $inputField.closest('form').find('[name$="-PProduct_pk"]').not(currentRowData.find('[name$="-PProduct_pk"]'));
                 otherProducts.each(function () {
                     const productValue = $(this).val();
-                    if (productValue === productData) {  // Check if product already exists in the form
-                        const formsSet = $(this).closest('tr').find('[name$="Item_pk"]');
-                        formsSet.each(function () {
-                            const uncheckedRows = $(this).closest('form').find('tr').find('input[type="checkbox"]').filter(':not(:checked)');
+                    const uncheckedRows = $(this).closest('form').find('tr').find('input[type="checkbox"]').filter(':not(:checked)');
                             
-                            uncheckedRows.each(function () {
-                                const currentItemPk = $(this).closest('tr').find('input[name$="Item_pk"]').val();
-                                
-                                if (currentItemPk === nameKeyValue) {  // Check if the item is a duplicate
+                    uncheckedRows.each(function () {
+                    if (productValue === productData) {  // Check if product already exists in the form
+                       
+                            
+                                const currentItemPk = $(this).closest('tr').find('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+                                currentItemPk.each(function () {
+                                    if ($(this).val() === nameKeyValue) {  // Check if the item is a duplicate
                                     // Show error and highlight the input field
                                     errorForm.text('Item already exists').show();
                                     submitButton.prop('disabled', true);
@@ -467,11 +475,14 @@
                                     isDuplicate = true;
                                     return false;  // Break the loop
                                 }
-                            });
+                                })
+                                
+                        
 
                             if (isDuplicate) return false;  // Exit formsSet loop if duplicate found
-                        });
+                     
                     }
+                    })
                 });
 
                 // Check common items for duplicates
@@ -479,14 +490,19 @@
                     const commonItems = $inputField.closest('form').find('[name^="product2itemcommonformset-"][name$="-Item_pk"]');
                     commonItems.each(function () {
                         const commonItemPk = $(this).val();
-                        if (commonItemPk === nameKeyValue) {  // Check if the item is a duplicate in common set
-                            errorForm.text('Item already exists').show();
-                            submitButton.prop('disabled', true);
-                            uniqueRow.css('border', '1px solid red');
-                            nameData.val('');  // Clear hidden field
-                            isDuplicate = true;
-                            return false;  // Exit the loop
-                        }
+                        const commonCheckBoxValues = $(this).closest('tr').find('input[type="checkbox"]').filter(':not(:checked)');
+                        commonCheckBoxValues.each(function () {
+                            
+                            if (commonItemPk === nameKeyValue) {  // Check if the item is a duplicate in common set
+                                errorForm.text('Item already exists').show();
+                                submitButton.prop('disabled', true);
+                                uniqueRow.css('border', '1px solid red');
+                                nameData.val('');  // Clear hidden field
+                                isDuplicate = true;
+                                return false;  // Exit the loop
+                            }
+                        })
+                        
                     });
                 }
 

@@ -30,6 +30,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
 .pcoded-navbar .scroll-div.navbar-content {
     height: 100%;
 }
@@ -437,7 +438,7 @@ input[type=number] {
 .side-bar .menu .item a:hover{
     background: #888;
     color: #f1f1f1;
-    transition: 0.2s ease;
+    transition: width 0.3s ease;
 
 }
    
@@ -2022,6 +2023,7 @@ input[type=number] {
         .side-bar.active{
             left: 0;
             overflow: auto;
+        
         }
         
         .side-bar .menu{

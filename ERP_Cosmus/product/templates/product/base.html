@@ -541,8 +541,9 @@
 
 <!-- Custom JS -->
 <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
 <script>
-    function saveSelectedCompany() {
+  function saveSelectedCompany() {
         const companySelect = document.getElementById('id_company');
         const selectedCompany = companySelect.value;
    
@@ -557,17 +558,16 @@
       
         if (savedCompany) {
             companySelect.value = savedCompany;
-            stockCompany.value = savedCompany || '';
+            stockCompany.value = savedCompany; // Ensure stockCompany is defined correctly
             console.log(stockCompany.value);
-        }else {
-        console.error('Element with id "stockCompany" not found.');
-    }
+        } else {
+            console.error('Element with id "id_companyValue" not found.'); // Correct the ID
+        }
+
     }
     document.getElementById('id_company').addEventListener('change', saveSelectedCompany);
     // Call the restore function when the page loads
     document.addEventListener('DOMContentLoaded', restoreSelectedCompany);
-  </script>
-<script>
 
     function navbarChange(clickedItem) {
       const items = ['homeClick','productClick','addProductCreate','editProductClick','newFormSubmit', 'rowMaterialClick','addItemCreate','editItemClick','submitButtonItemCreate',
@@ -803,15 +803,12 @@ document.addEventListener('DOMContentLoaded', changeHeader);
 
 </script>
 <script>
-
- 
-
-
   // This function is used to show the alert on the page
   function showAlertForDuration(duration) {
     // Get the alert element
     var alerts = document.querySelectorAll('.message-timer');
-    const errorList = document.querySelectorAll(".errorshow");
+    var errorList = document.querySelectorAll("#errorform");
+    console.log("error", errorList);
 
     if (alerts.length > 0) { // Check if there are any elements
     alerts.forEach(function(alert) {
@@ -830,10 +827,10 @@ document.addEventListener('DOMContentLoaded', changeHeader);
 
   if (errorList.length > 0) {
     errorList.forEach(function(alert) {
-      errorList.style.display = 'block';
+      alert.style.display = 'block';
 
       setTimeout(function(){
-        errorList.style.display = 'none';
+        alert.style.display = 'none';
       }, duration);
     })
   } else {
@@ -868,15 +865,6 @@ document.addEventListener('DOMContentLoaded', changeHeader);
       sideBar.style.display = 'block';
     }
   }
-
-  //This function is used to change the header title
-  // function changeHeaderTitle(newTitle) {
-  //   // Get the header element
-  //   var headerTitle = document.getElementById('headerTitle');
-
-  //   // Update the header title
-  //   headerTitle.textContent = newTitle;
-  // }
 </script>
 </body>
 </html>
