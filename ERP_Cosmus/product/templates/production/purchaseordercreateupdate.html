@@ -144,6 +144,7 @@
             var new_order = $("#id_purchase_order_number");
             var errorElement = $('#purchaseCreateError'); // The error message element
             var submitButton = $('#id_submit_1');
+            
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',

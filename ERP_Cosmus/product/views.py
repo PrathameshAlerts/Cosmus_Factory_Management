@@ -3269,13 +3269,90 @@ def excel_download_production(request,module_name,pk):
 
     wb.create_sheet('production_sheet')
 
-
-    sheet1 = wb.worksheets[0]
+    sheet = wb.worksheets[0]
 
     file_name = None
 
     if module_name == 'purchase_order_raw':
+
         file_name = 'purchase_order_raw'
+
+        column_widths = [22, 22, 5, 20, 15, 15, 10]  # Adjust these values as needed
+
+        #fix the column width  of sheet1
+        for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+            col_letter = get_column_letter(i)
+            sheet.column_dimensions[col_letter].width = column_width
+
+        purchase_order_instance = purchase_order.objects.get(pk=pk)
+        
+        sheet.cell(row=2, column=1).value = 'Purchase Order Number'
+        sheet.cell(row=2, column=2).value = purchase_order_instance.purchase_order_number
+
+        sheet.cell(row=3, column=1).value = 'Product Reference Number'
+        sheet.cell(row=3, column=2).value = purchase_order_instance.product_reference_number.Model_Name
+
+        sheet.cell(row=4, column=1).value = 'Party Name'
+        sheet.cell(row=4, column=2).value = purchase_order_instance.ledger_party_name.name
+
+
+        sheet.cell(row=5, column=1).value = 'Total PO Qty'
+        sheet.cell(row=5, column=2).value = purchase_order_instance.number_of_pieces
+
+        sheet.cell(row=5, column=1).value = 'Target Date'
+        sheet.cell(row=5, column=2).value = purchase_order_instance.target_date
+
+        sheet.cell(row=5, column=1).value = 'Godown date'
+        sheet.cell(row=5, column=2).value = purchase_order_instance.temp_godown_select.godown_name_raw
+
+        sheet.cell(row=2, column=4).value = 'Product SKU'
+        sheet.cell(row=2, column=5).value = 'Color'
+        sheet.cell(row=2, column=6).value = 'Order Quantity'
+        sheet.cell(row=2, column=7).value = 'Procurement Color Wise Qty'
+
+        # Set the starting position
+        start_row = 3  
+        start_column = 4  
+
+        for index, instance in enumerate(purchase_order_instance.p_o_to_products.all(), start=start_row):
+            sheet.cell(row=index, column=start_column).value = instance.product_id.PProduct_SKU
+            sheet.cell(row=index, column=start_column + 1).value = instance.product_id.PProduct_color.color_name
+            sheet.cell(row=index, column=start_column + 2).value = instance.order_quantity
+            sheet.cell(row=index, column=start_column + 3).value = instance.process_quantity
+
+        length_queryset = len(purchase_order_instance.p_o_to_products.all())
+
+
+        # Set the starting position
+        start_row_items = length_queryset + 7
+        start_column_items = 1 
+
+        header_row = length_queryset + 6
+        # Headers to be inserted
+        headers = ["Product SKU", "Product Color", "Material Name", "Rate","Panha","Unit Name","Units","G-Total","Consumption","Total Consumption","Physical Stock","Balance Stock"]
+
+        # Insert headers into the desired row
+        for col_num, header in enumerate(headers, start=1):
+            sheet.cell(row=header_row, column=col_num).value = header
+
+
+        for index, instance in enumerate(purchase_order_instance.raw_materials.all(), start=start_row_items):
+            sheet.cell(row=index, column=start_column_items).value = instance.product_sku
+            sheet.cell(row=index, column=start_column_items + 1).value = instance.product_color
+            sheet.cell(row=index, column=start_column_items + 2).value = instance.material_name
+            sheet.cell(row=index, column=start_column_items + 3).value = instance.rate
+            sheet.cell(row=index, column=start_column_items + 4).value = instance.panha
+            sheet.cell(row=index, column=start_column_items + 5).value = instance.units
+            sheet.cell(row=index, column=start_column_items + 6).value = instance.unit_value
+            sheet.cell(row=index, column=start_column_items + 7).value = instance.g_total
+            sheet.cell(row=index, column=start_column_items + 8).value = instance.consumption
+            sheet.cell(row=index, column=start_column_items + 9).value = instance.total_comsumption
+            sheet.cell(row=index, column=start_column_items + 10).value = instance.physical_stock
+            sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
+            
+    elif module_name == 'purchase_order_cutting':
+        pass
+        
 
     fileoutput = BytesIO()
     wb.save(fileoutput)
@@ -3291,8 +3368,8 @@ def excel_download_production(request,module_name,pk):
 
 @login_required(login_url='login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
-def purchaseorderrawmaterial(request,p_o_pk, prod_ref_no):
-
+def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
+    
     purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
@@ -3314,7 +3391,6 @@ def purchaseorderrawmaterial(request,p_o_pk, prod_ref_no):
     
 
     model_name = purchase_order_instance.product_reference_number.Model_Name
-
 
     physical_stock_all_godowns = {}
 
@@ -4800,7 +4876,7 @@ def itemdynamicsearchajax(request):
 
 @login_required(login_url='login')
 def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
-
+    
     if searched_value:
         validation_flag = False
         try:
@@ -4824,7 +4900,7 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
 @login_required(login_url='login')
 def UniqueValidCheckAjax(request):
     searched_from = request.GET.keys()
-
+    
     if 'purchase_number' in searched_from:
         searched_value = request.GET.get('purchase_number').strip()
         model_name = item_purchase_voucher_master
