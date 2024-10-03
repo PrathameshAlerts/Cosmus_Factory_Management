@@ -656,7 +656,7 @@ class product_2_item_through_table(models.Model):
     row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
     grand_total = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     common_unique = models.BooleanField(default = False)  # True if its common and false if its special
-    no_of_rows = models.IntegerField(default = 1)
+    no_of_rows = models.IntegerField(default = 1, validators=[MinValueValidator(1)])
     Remark = models.CharField(max_length = 100, blank=True, null=True)
 
 
@@ -671,7 +671,7 @@ class set_prod_item_part_name(models.Model):
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
     dimention_total = models.DecimalField(default=0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank=True, null= True)
     part_pieces = models.IntegerField(blank=True, null= True)
-    body_combi = models.CharField(max_length=10, blank=True, null= True)
+    body_combi = models.CharField(max_length=10, blank=True, null = True)
 
 
 class factory_employee(models.Model):
@@ -711,7 +711,6 @@ class purchase_order_to_product(models.Model):
     created_date = models.DateTimeField(auto_now=True)
     modified_date = models.DateTimeField(auto_now_add=True)
     
-
 
 class purchase_order_for_raw_material(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order,related_name='raw_materials', on_delete=models.CASCADE)
@@ -779,7 +778,6 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     STATUS = [
         ('cutting_room', 'cutting_room'),
         ('cutting_room_cancelled','cutting_room_cancelled'),
-        
     ]
     purchase_order_cutting = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)

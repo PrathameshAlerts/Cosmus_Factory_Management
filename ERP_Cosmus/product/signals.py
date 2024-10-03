@@ -24,7 +24,7 @@ def save_primary_item_color_shade(sender, instance, created, **kwargs): #instanc
         #getting the color name attribte instead of object
         color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of 
         
-        logger.info(f"Item Shade of color- {color_name} -created")
+        logger.info(f"Item Shade of color- {color_name}-created")
         # Create a new item_color_shade object related to the newly created instance
         primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
                                                             item_name_rank= 1,
