@@ -18,7 +18,7 @@ class CompanyBaseModel(models.Model):
     An abstract base model to be inherited by all models that need company-level isolation.
     """
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, null=True, blank=True)
-    company = models.ForeignKey(Company, on_delete=models.PROTECT, null=True, blank=True)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, null = True, blank=True)
     
     class Meta:
         abstract = True  # This will be used as an abstract base class
@@ -534,7 +534,6 @@ class Godown_raw_material(CompanyBaseModel):
         else:
             if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw,c_user__company=self.c_user.company).exists():
                 raise ValidationError(f'{self.godown_name_raw} already exists!')
-
 
         super().save(*args, **kwargs)
 
