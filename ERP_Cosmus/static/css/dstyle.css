@@ -1852,7 +1852,7 @@ input[type=number] {
     outline: none;
 }
 .tables-form{
-        max-height: 293px !important;
+        max-height: 340px !important;
         overflow-y: auto;
     
 }

@@ -6,47 +6,28 @@
 
 
 <!-- <h3 class="mb-3 mt-2">Labour Workout List</h3> -->
-<div class="d-flex mb-3 mt-3">
-    <button class="item-btn"><a id="createLabourWorkOut" onclick="navbarChange('Labour WorkOut Create')" class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
-    <!-- <div class="container-cat">
-        <input class="" type="search" placeholder="Search..." aria-label="Search" id="" name="" />
-        <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-      </div>
-      <button class="item-btn mx-2" onclick="">Clear Filter</button>
-    </div> -->
+
+  <div class="d-flex mb-3 mt-3">
+    <label class="fw-bold">Refrence No :</label><span class="text-danger mx-3"> {{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</span>
+    <lable class="fw-bold ">Model Name :</lable><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</span>
+    <label class="fw-bold">Party Name :</label><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</span>
   </div>
-  <div class="d-flex mb-3">
-    <label class="fw-bold ps-1">Refrence No :</label>
-    <span class="text-danger ps-2"> {{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</span>
-    <lable class="fw-bold ps-3">Model Name :</lable>
-    <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</span>
+  <div class="d-flex">
+    <label class="fw-bold">P.O No :</label><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</span>
+    <label class="fw-bold">P.O Total QTY :</label><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</span>
+    <label class="fw-bold">Processed QTY :</label><span class="text-danger mx-3">{{labour_work_out_master.total_approved_pcs}}</span>
+    <label class="fw-bold">Balance Qty for Cutting:</label><span class="text-danger mx-3 total_balance">{{labour_work_out_master.total_pending_pcs}}</span>
     <div class="ms-3">
-    <label class="fw-bold ps-3">Images :</label>
+      <label class="fw-bold ps-3">Images :</label>
         {% for img in labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.productdetails.all %}
-    <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
-    {% endfor %}
+        <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:3px; margin: 2px;">
+        {% endfor %}
     </div>
-    
-    
+   
   </div>
-  <div class="d-flex mb-3">
-    <label class="fw-bold">Party Name :</label>
-   <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</span>
-    <label class="fw-bold ps-3">P.O No :</label>
-   <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</span>
-   <label class="fw-bold ps-3">P.O Total QTY :</label>
-   <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</span>
-   <!-- <label class="fw-bold ps-3">Cutting Quantity :</label>
-   <span class="text-danger ps-2">{{labour_work_out_master.purchase_order_cutting_master.processed_qty}}</span> -->
-   <label class="fw-bold ps-3">Processed QTY :</label>
-   <span class="text-danger ps-2">{{labour_work_out_master.total_approved_pcs}}</span>
-   <label class="fw-bold ps-3">Balance Qty for Cutting:</label>
-   <span class="text-danger ps-2 total_balance">{{labour_work_out_master.total_pending_pcs}}</span>
+  <div class="mb-3">
+    <button class="item-btn"><a id="createLabourWorkOut" onclick="navbarChange('Labour WorkOut Create')" class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
   </div>
-
- 
-  
-
 <div class="row">
     <div class="col-lg-8">
         <div class="table-responsives">
