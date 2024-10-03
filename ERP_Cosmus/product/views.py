@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 import logging
 import urllib.parse
 from django.contrib import messages
-from openpyxl.utils import get_column_letter 
+from openpyxl.utils import get_column_letter  # type: ignore
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -157,13 +157,14 @@ def edit_production_product(request,pk):
                             id = row[0].value
                             item_name = row[1].value
                             product_sku = row[2].value
-                            
+                           
                             if id is not None:
                                 if product_sku is not None and item_name is not None:
                                     part_name = row[3].value
                                     part_dimention = row[4].value
                                     dimention_total = row[5].value
                                     part_pieces = row[6].value
+                                    body_combi = row[7].value
                                     grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
                                     
                                     if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
@@ -174,6 +175,7 @@ def edit_production_product(request,pk):
                                         p2i_config_instance.part_dimentions = part_dimention
                                         p2i_config_instance.dimention_total = dimention_total
                                         p2i_config_instance.part_pieces = part_pieces
+                                        p2i_config_instance.body_combi = body_combi
                                         p2i_config_instance.c_user = request.user
                                         p2i_config_instance.producttoitem.c_user = request.user
                                         p2i_config_instance.save()   # save model
@@ -192,7 +194,7 @@ def edit_production_product(request,pk):
                         # ws2        
                         for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
                             product_sku = product_c.PProduct_SKU
-                            
+                           
                             row_no = 0  # row_no to co relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
                             grand_total = 0
                             
@@ -204,6 +206,7 @@ def edit_production_product(request,pk):
                                 part_dimention = row[3].value
                                 dimention_total = row[4].value
                                 part_pieces = row[5].value
+                                body_combi = row[6].value
                                 
                                 if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
 
@@ -220,8 +223,10 @@ def edit_production_product(request,pk):
                                         p2i_instances_configs.part_name = part_name
                                         p2i_instances_configs.part_dimentions = part_dimention
                                         p2i_instances_configs.part_pieces = part_pieces
+                                        p2i_instances_configs.body_combi = body_combi
                                         p2i_instances_configs.dimention_total = dimention_total
                                         p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
+                                        
                                         p2i_instances_configs.c_user = request.user
                                         p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.save()
@@ -633,7 +638,6 @@ def product2subcategory(request):
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
     
-    
     if request.method == 'POST':
 
         try:
@@ -751,7 +755,7 @@ def item_create(request):
     
         else:
             logger.error(f"item form not valid{form.errors}")
-            messages.error(f"item form not valid{form.errors}")
+            messages.error(request, f"item form not valid{form.errors}")
            
             return render(request,template_name, {'gsts':gsts,
                                                                       'fab_grp':fab_grp,
@@ -3093,10 +3097,12 @@ def export_Product2Item_excel(request,product_ref_id):
 # view configs of single products
 @login_required(login_url='login')
 def viewproduct2items_configs(request, product_sku):
+
     try:
         product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
         product2item_instances_first = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku).first()
-        
+
+
         context = {
             'product2item_instances': product2item_instances,
             'product2item_instances_first': product2item_instances_first
@@ -3116,9 +3122,6 @@ def viewproduct2items_configs(request, product_sku):
         # Handle any other unexpected errors
         return HttpResponseServerError(f'An unexpected error occurred: {e}')
     
-
-
-
 
 @login_required(login_url='login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
@@ -3352,6 +3355,7 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 10).value = instance.physical_stock
                 sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
                 
+
         elif module_name == 'purchase_order_cutting':
             file_name = 'purchase_order_cutting'
 
@@ -3519,7 +3523,6 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 11).value = instance.physical_stock
                 sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
 
-
         fileoutput = BytesIO()
         wb.save(fileoutput)
             
@@ -3534,7 +3537,7 @@ def excel_download_production(request,module_name,pk):
 
 
 
-@login_required(login_url='login')
+@login_required(login_url = 'login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
     
@@ -3618,7 +3621,6 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
         initial_sorted_data = sorted(initial_data, key = itemgetter('row_number'), reverse=False)
 
         
-
         purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_sorted_data) if initial_data else 0, can_delete=False)
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_sorted_data, instance=purchase_order_instance)
@@ -3635,7 +3637,6 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
 
 
-    
     if request.method == 'POST':
 
         purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST)
