@@ -1184,13 +1184,7 @@ input[type=number] {
     padding-top: 30px;
 }
 
-#errorform{
-    color: #ec4444;
-    padding: 3px;
-    font-size: 15px;
-    border-radius: 10px;
-    list-style-type: none;
-}
+
 .arrowBtn{
     
     transition: transform 0.2s ease;
@@ -1275,19 +1269,16 @@ input[type=number] {
 .errorShow {
     position: absolute;
     align-items: center;
-    display: fixed;
-    justify-content: center;
     display: flex;
-    width: 45%;
+    width: 44%;
     margin-left: 660px;
     color: #f4f4f4;
-    list-style-type: none;
     border-radius: 10px;
     padding: 5px;
     top: 30px;
-    background-color: rgba(216, 67, 67, 0.5);
-    z-index: 9999;
-    overflow: auto;
+    background-color:rgb(234 132 132);;
+    z-index: 9999; 
+
 }
 
 .errorShow::after {
@@ -1296,11 +1287,17 @@ input[type=number] {
     bottom: 0;
     left: 0;
     height: 4px;
-    background-color: #ff0217;
+    background-color: red;
+    color: #f4f4f4;
     width: 0;
-    animation: progress 5000ms linear forwards;
+    animation: progress 3000ms linear forwards;
 }
 
+.error-logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
 @keyframes progress {
     0% {
         width: 0%;

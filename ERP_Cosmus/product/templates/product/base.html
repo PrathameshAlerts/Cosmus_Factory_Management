@@ -40,9 +40,9 @@
  
 <div class="side-bar">
     <div class="menu">
-      <div class="item"><a href="{% url 'dashboard-main' %}" id="homeClick" onclick="changeHeaderTitle('Cosmus- Dashboard'); navbarChange('Dashboard')"><img src="../../../static/images/analytics.png" alt="Monitor Icon" style="width: 33px; padding-right: 10px;">Dashboard</a></div>
+      <div class="item"><a href="{% url 'dashboard-main' %}" id="homeClick" onclick="navbarChange('Dashboard')"><img src="../../../static/images/analytics.png" alt="Monitor Icon" style="width: 33px; padding-right: 10px;">Dashboard</a></div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Main Category')"><img src="../../../static/images/category.png" alt="menu Icon" style="width: 33px; padding-right: 10px;">Main Category<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn" ><img src="../../../static/images/category.png" alt="menu Icon" style="width: 33px; padding-right: 10px;">Main Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'pproductlist' %}" class="sub-item" id="productClick" onclick="navbarChange('Product List')">Product</a>
           <a href="{% url 'item-list' %}" class="sub-item" id="RowMaterialClick" onclick="navbarChange('Item List')">Raw Material</a>
@@ -50,7 +50,7 @@
       </div>
       </div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Sub Category')"><img src="../../../static/images/list.png" alt="list Icon" style="width: 33px; padding-right: 10px;">Sub Category<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><img src="../../../static/images/list.png" alt="list Icon" style="width: 33px; padding-right: 10px;">Sub Category<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'simplecolorlist' %}" class="sub-item" id="ColorClick" onclick="navbarChange('Create Color')">Color</a>
           <a href="{% url 'item-fabgroup-create-list' %}" class="sub-item" id="FabricGroupClick" onclick="navbarChange('Create Fabric Group')">Fabric Group</a>
@@ -64,7 +64,7 @@
         </div>
       </div> 
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Accounts')"><img src="../../../static/images/document.png" alt="document" style="width: 33px; padding-right: 10px;">Accounts<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><img src="../../../static/images/document.png" alt="document" style="width: 33px; padding-right: 10px;">Accounts<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'account_sub_group-create' %}" id="GroupsClick" onclick="navbarChange('Create Group')" class="sub-item">Group</a>
           <a href="{% url 'ledger-list' %}" class="sub-item" id="LedgersClick" onclick="navbarChange('Ledger List')">Ledger</a>
@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus-Vouchers')"><img src="../../../static/images/shop.png" alt="document" style="width: 33px; padding-right: 10px; ">Vouchers<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><img src="../../../static/images/shop.png" alt="document" style="width: 33px; padding-right: 10px; ">Vouchers<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'purchase-voucher-list' %}" class="sub-item"  id="PurchaseInvoiceClick" onclick="navbarChange('Purchase List')">Purchase Invoice</a>
           <a href="" class="sub-item">Sales Invoice</a>
@@ -86,7 +86,7 @@
         </div>
       </div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Cosmus- Reports')"><img src="../../../static/images/research.png" alt="document" style="width: 33px; padding-right: 10px;">Reports<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><img src="../../../static/images/research.png" alt="document" style="width: 33px; padding-right: 10px;">Reports<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'all-raw-material-stock-report' %}" class="sub-item" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material Report</a>
           <a href="{% url 'credit-debit-report' %}" class="sub-item" id="creditDebitClick" onclick="navbarChange('Credit/Debit Report')">Purchase Report</a>
@@ -95,7 +95,7 @@
         </div>
       </div>
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><img src="../../../static/images/industrial-park.png" alt="document" style="width: 33px; padding-right: 10px;">Product Definition<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><img src="../../../static/images/industrial-park.png" alt="document" style="width: 33px; padding-right: 10px;">Product Definition<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'define-main-category-product' %}" class="sub-item" id="mainCatClick" onclick="navbarChange('Create Category')">Main Cat Create</a>
           <a href="{% url 'define-sub-category-product' %}" class="sub-item" id="subCatClick" onclick="navbarChange('Create Sub Category')">Sub Category</a>
@@ -103,7 +103,7 @@
       </div>
       
       <div class="item">
-        <a class="sub-btn" onclick="changeHeaderTitle('Product - Definition')"><img src="../../../static/images/industry.png" alt="industry icon" style="width: 33px; padding-right: 10px;">Production<i class="fas fa-angle-right dropdown"></i></a>
+        <a class="sub-btn"><img src="../../../static/images/industry.png" alt="industry icon" style="width: 33px; padding-right: 10px;">Production<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'purchase-order-list' %}" class="sub-item" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a>
           <a href="{% url 'purchase-order-raw-material-list' %}" class="sub-item" id="purchaseOrderClick" onclick="navbarChange('Purchase Order List')">Purchase Order(Raw)</a>
@@ -276,52 +276,61 @@
 
       <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check-circle-fill" viewBox="0 0 16 16">
-          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          <path
+            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
         </symbol>
         <symbol id="info-fill" viewBox="0 0 16 16">
-          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+          <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
         </symbol>
         <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
-          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          <path
+            d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
         </symbol>
       </svg>
-
+      
       <div>
         {% if form.errors %}
-        <div>
-            <ul id="errorform">
-                 {% for field_errors in form.errors.values %}
-                    {% for error in field_errors %}
-                        <li class="errorShow">{{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
-        </div>
+        <ul id="errorform">
+          {% for field_errors in form.errors.values %}
+          {% for error in field_errors %}
+          <li class="errorShow" role="alert">
+            <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+            &nbsp;{{ error }}
+          </li>
+          {% endfor %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+      
+      </div>
+      <div>
+        {% if formset.non_form_errors %}
+        <ul id="errorform" role="alert">
+          {% for error in formset.non_form_errors %}
+          <li class="errorShow"><img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+            &nbsp;{{ error }}</li>
+          {% endfor %}
+        </ul>
         {% endif %}
       </div>
-
-      {% if formset.non_form_errors %}
-      <ul id="errorform">
-        {% for error in formset.non_form_errors %}
-          <li class="errorShow">{{ error }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
+     
 
       <div>
         {% for form in master_form %}
         {% if form.errors %}
         <ul class="errorlist" id="errorform">
           {% for field, error_list in form.errors.items %}
-            {% for error in error_list %}
-              <li class="errorShow">
-                {% if field == "__all__" %}
-                  {{ error }}
-                {% else %}
-                  {{ field|title }}: {{ error }}
-                {% endif %}
-              </li>
-            {% endfor %}
+          {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+            <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+            &nbsp;{{ error }}
+            {% else %}
+            {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+          {% endfor %}
           {% endfor %}
         </ul>
         {% endif %}
@@ -333,35 +342,58 @@
         {% if form.errors %}
         <ul class="errorlist" id="errorform">
           {% for field, error_list in form.errors.items %}
-            {% for error in error_list %}
-              <li class="errorShow">
-                {% if field == "__all__" %}
-                  {{ error }}
-                {% else %}
-                  {{ field|title }}: {{ error }}
-                {% endif %}
-              </li>
-            {% endfor %}
+          {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+            <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+            &nbsp; {{ error }}
+            {% else %}
+            {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+          {% endfor %}
           {% endfor %}
         </ul>
         {% endif %}
         {% endfor %}
       </div>
-
+      
       <div>
         {% for form in formset %}
         {% if form.errors %}
         <ul class="errorlist" id="errorform">
           {% for field, error_list in form.errors.items %}
-            {% for error in error_list %}
-              <li class="errorShow">
-                {% if field == "__all__" %}
-                  {{ error }}
-                {% else %}
-                  {{ field|title }}: {{ error }}
-                {% endif %}
-              </li>
-            {% endfor %}
+          {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+            <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+            &nbsp;{{ error }}
+            {% else %}
+            {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+          {% endfor %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endfor %}
+      </div>
+      
+      <div>
+        {% for form in godown_form %}
+        {% if form.errors %}
+        <ul class="errorlist" id="errorform">
+          {% for field, error_list in form.errors.items %}
+          {% for error in error_list %}
+          <li class="errorShow">
+            {% if field == "__all__" %}
+            <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+            &nbsp;{{ error }}
+            {% else %}
+            {{ field|title }}: {{ error }}
+            {% endif %}
+          </li>
+          {% endfor %}
           {% endfor %}
         </ul>
         {% endif %}
@@ -369,34 +401,14 @@
       </div>
 
       <div>
-        {% for form in godown_form %}
-        {% if form.errors %}
-        <ul class="errorlist" id="errorform">
-          {% for field, error_list in form.errors.items %}
-            {% for error in error_list %}
-              <li class="errorShow">
-                {% if field == "__all__" %}
-                  {{ error }}
-                {% else %}
-                  {{ field|title }}: {{ error }}
-                {% endif %}
-              </li>
-            {% endfor %}
+        {% if formset.non_form_errors %}
+        <ul id="errorform">
+          {% for error in formset.non_form_errors %}
+            <li class="errorShow">{{ error }}</li>
           {% endfor %}
         </ul>
         {% endif %}
-        {% endfor %}
       </div>
-
-
-      {% if formset.non_form_errors %}
-      <ul id="errorform">
-        {% for error in formset.non_form_errors %}
-          <li class="errorShow">{{ error }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-
       <div>
         {% for form in master_form %}
         {% if form.errors %}
@@ -405,7 +417,8 @@
             {% for error in error_list %}
               <li class="errorShow">
                 {% if field == "__all__" %}
-                  {{ error }}
+                <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+                &nbsp;{{ error }}
                 {% else %}
                   {{ field|title }}: {{ error }}
                 {% endif %}
@@ -417,14 +430,17 @@
         {% endfor %}
       </div>
 
-
-      {% if purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors %}
-      <ul id="errorform">
-        {% for error in purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors %}
-          <li class="errorShow">{{ error }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
+      <div>
+        {% if purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors %}
+        <ul id="errorform">
+          {% for error in purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors %}
+            <li class="errorShow"><img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+              &nbsp;{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      
 
       <div>
         {% for form in purchase_order_for_raw_material_cutting_items_formset_form %}
@@ -434,7 +450,8 @@
             {% for error in error_list %}
               <li class="errorShow">
                 {% if field == "__all__" %}
-                  {{ error }}
+                <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+                &nbsp;{{ error }}
                 {% else %}
                   {{ field|title }}: {{ error }}
                 {% endif %}
@@ -446,14 +463,17 @@
         {% endfor %}
       </div>
 
-
-      {% if purchase_order_to_product_formset_form.non_form_errors %}
+      <div>
+        {% if purchase_order_to_product_formset_form.non_form_errors %}
       <ul id="errorform">
         {% for error in purchase_order_to_product_formset_form.non_form_errors %}
-          <li class="errorShow">{{ error }}</li>
+          <li class="errorShow"><img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+            &nbsp;{{ error }}</li>
         {% endfor %}
       </ul>
       {% endif %}
+      </div>
+      
 
       <div>
         {% for form in purchase_order_to_product_formset_form %}
@@ -461,9 +481,10 @@
         <ul class="errorlist" id="errorform">
           {% for field, error_list in form.errors.items %}
             {% for error in error_list %}
-              <li class="errorShow">
+              <li class="errorShow" role="alert">
                 {% if field == "__all__" %}
-                  {{ error }}
+                <img src="../../../static/images/warning.png" alt="Error Icon" class="error-logo">
+                &nbsp;{{ error }}
                 {% else %}
                   {{ field|title }}: {{ error }}
                 {% endif %}
@@ -480,26 +501,28 @@
 
 
 
-
-      {% for message in messages %}
-      {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-      <div class="success message-timer message-timer" role="alert">
-        <svg class="bi flex-shrink-0 ms-2 alertImg" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+      <div>
+        {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div class="success message-timer message-timer" role="alert">
+          <svg class="bi flex-shrink-0 ms-2 alertImg" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            &nbsp;{{message}}
+        </div>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+        <div class="info info-messages message-timer" role="alert">
+          <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> 
           &nbsp;{{message}}
+        </div> 
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div class="error error-message-timers message-timer" role="alert">
+          <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            &nbsp;{{message}}
+        </div>
+        {% endif %}
+        {% endfor %}
+  
       </div>
-      {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-      <div class="info info-messages message-timer" role="alert">
-        <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> 
-        &nbsp;{{message}}
-      </div> 
-      {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-      <div class="error error-message-timers message-timer" role="alert">
-        <svg class="bi flex-shrink-0 me-2 alertImg" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-          &nbsp;{{message}}
-      </div>
-      {% endif %}
-      {% endfor %}
-
+      
       {% block body %}
       
       {% endblock body %}
@@ -780,22 +803,15 @@ document.addEventListener('DOMContentLoaded', changeHeader);
 
 </script>
 <script>
-// Function to save the selected company in localStorage
 
-  // This function is used to hide the error message
-  window.onload = function() {
-    var errorMessage = document.getElementById('errorform');
-    if (errorMessage) {
-        setTimeout(function() {
-            errorMessage.style.display = 'none';
-        },3000); // Hide the error message after 5 seconds (5000 milliseconds)
-    }
-  };
+ 
+
 
   // This function is used to show the alert on the page
   function showAlertForDuration(duration) {
     // Get the alert element
     var alerts = document.querySelectorAll('.message-timer');
+    const errorList = document.querySelectorAll(".errorshow");
 
     if (alerts.length > 0) { // Check if there are any elements
     alerts.forEach(function(alert) {
@@ -811,6 +827,18 @@ document.addEventListener('DOMContentLoaded', changeHeader);
   } else {
     console.warn("No elements with the class 'message-timer' found."); // Log a warning message if no elements exist
   }
+
+  if (errorList.length > 0) {
+    errorList.forEach(function(alert) {
+      errorList.style.display = 'block';
+
+      setTimeout(function(){
+        errorList.style.display = 'none';
+      }, duration);
+    })
+  } else {
+    console.warn("No elements with the class 'errorshow' found.");
+    }
   }
 
 
@@ -824,39 +852,9 @@ document.addEventListener('DOMContentLoaded', changeHeader);
       }
     }
 
-    function createNewNavBar(){
-      var side_bar = document.querySelector('.side-bar');
-      var nav_bar = side_bar.querySelectorAll('.sub-item');
-      nav_bar.forEach(function(nav){
-        var headerTitle = document.getElementById('productTitle');
-        var itemTitle = document.getElementById('itemTitle');
-        var GodownTitle = document.getElementById('GodownTitle');
     
-       nav.addEventListener('',function(){
-         if(nav.textContent == 'Product'){
-         
-           headerTitle.style.display = 'block';
-           itemTitle.style.display = 'none';
-           GodownTitle.style.display = 'none';
-         }
-          if(nav.textContent == 'Raw Material'){
-      
-          itemTitle.style.display = 'block';
-          headerTitle.style.display = 'none';
-          GodownTitle.style.display = 'none';
-         }
-          if(nav.textContent == 'Godown'){
-          headerTitle.style.display = 'none';
-          itemTitle.style.display = 'none';
-          GodownTitle.style.display = 'block';
-         }
-        })
-       
-      })
-    }
     document.addEventListener('DOMContentLoaded', function() {
       simulateError(); // Check for error and show alert if necessary
-      createNewNavBar();
     });
 
   //This function is used to toggle the sidebar
@@ -872,13 +870,13 @@ document.addEventListener('DOMContentLoaded', changeHeader);
   }
 
   //This function is used to change the header title
-  function changeHeaderTitle(newTitle) {
-    // Get the header element
-    var headerTitle = document.getElementById('headerTitle');
+  // function changeHeaderTitle(newTitle) {
+  //   // Get the header element
+  //   var headerTitle = document.getElementById('headerTitle');
 
-    // Update the header title
-    headerTitle.textContent = newTitle;
-  }
+  //   // Update the header title
+  //   headerTitle.textContent = newTitle;
+  // }
 </script>
 </body>
 </html>
