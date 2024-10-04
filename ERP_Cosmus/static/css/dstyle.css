@@ -29,6 +29,7 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .pcoded-navbar .scroll-div.navbar-content {
@@ -423,6 +424,9 @@ input[type=number] {
 .side-bar .menu .item{
     position: relative;
     cursor: pointer;
+    border: 1px solid #f1f1f1;
+   
+
 }
    
 .side-bar .menu .item a{
@@ -433,6 +437,9 @@ input[type=number] {
     padding: 2px 17px;
     line-height: 52px;
     background-color: #fff;
+    border: 1px solid #f1f1f1;
+    border-radius: 15px;
+    border-color: #f1f1f1 ;
 }
    
 .side-bar .menu .item a:hover{
@@ -454,7 +461,7 @@ input[type=number] {
 }
    
 .side-bar .menu .item .sub-menu{
-    background: #262627;
+    /* background: #262627; */
     display: none;
 }
 .side-bar .menu .item .sub-menu.open{
@@ -462,7 +469,7 @@ input[type=number] {
 }
    
 .side-bar .menu .item .sub-menu a{
-    padding-left: 37px;
+    padding-left: 34px;
 }
    
 .rotate{
