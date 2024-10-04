@@ -88,9 +88,24 @@
 
 <script>
 
+function deleteButtonCheck(){
+  var deleteButton = document.querySelectorAll('.delete-btn');
+  deleteButton.forEach(function(button){
+    var id_labour_work_in_created = button.closest('tr').querySelector('#id_labour_work_in_created').value;
+    if(id_labour_work_in_created === 'True'){
+   
+      button.style.display = 'none';
+    }else{
+
+      button.style.display = 'block';
+    }
+  })
+ 
+}
+deleteButtonCheck();
 function createButton() {
     var totalBalance = parseFloat(document.querySelector('.total_balance').textContent);
-    console.log(totalBalance);
+
     if (totalBalance === 0) {
         var createButton = document.querySelector('.item-btn');
         var createLink = document.getElementById('createLabourWorkOut');
@@ -107,7 +122,7 @@ function createButton() {
 }
 
   createButton();
-    document.body.appendChild(document.getElementById('exampleModal'));
+  document.body.appendChild(document.getElementById('exampleModal'));
     
 $(document).ready(function(){
   $('.delete-btn').click(function(){
