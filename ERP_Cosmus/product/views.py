@@ -4546,7 +4546,7 @@ def labourworkincreatelist(request,l_w_o_id):
 
     labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
-    labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance)
+    labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).annotate(approved_Qty_total=Sum('l_w_in_products__approved_qty'))
     
     return render(request,'production/labour_work_in_list.html',{'labour_workout_child_instance':labour_workout_child_instance,
                                                                  'labour_workin_instances':labour_workin_instances})
@@ -4709,7 +4709,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
     # on update mode 
     elif l_w_o_id is not None and pk is not None:
-        
+    
         labour_workout_child_instance = labour_workout_childs.objects.get(id = l_w_o_id)
 
         product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
@@ -4733,13 +4733,11 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
     if request.method == 'POST':
         
-        labour_workout_child = request.POST.get('labour_workout_child_instance_id')
-        print(labour_workout_child)
-        if labour_workout_child:
-            labour_workout_child_instance = labour_workout_childs.objects.get(id = int(labour_workout_child))
 
-        master_form = labour_workin_master_form(request.POST)
-        product_to_item_formset = labour_work_in_product_to_item_formset(request.POST)
+        print('labour_workout_child_instance',labour_workout_child_instance)
+
+        master_form = labour_workin_master_form(request.POST, instance = labour_workin_master_instance)
+        product_to_item_formset = labour_work_in_product_to_item_formset(request.POST,instance = labour_workin_master_instance)
 
         try:
             with transaction.atomic():
@@ -4773,10 +4771,10 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
 
                 else:
-                    logger.error(product_to_item_formset.non_form_errors())
-                    print(product_to_item_formset.errors)
-                    print(master_form.errors)
-                    print(product_to_item_formset.non_form_errors())
+                    # logger.error(product_to_item_formset.non_form_errors())
+                    # print(product_to_item_formset.errors)
+                    # print(master_form.errors)
+                    # print(product_to_item_formset.non_form_errors())
                     return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
                     
                 return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
