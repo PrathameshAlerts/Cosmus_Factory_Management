@@ -4709,7 +4709,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
     # on update mode 
     elif l_w_o_id is not None and pk is not None:
-        
+    
         labour_workout_child_instance = labour_workout_childs.objects.get(id = l_w_o_id)
 
         product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
@@ -4733,13 +4733,11 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
     if request.method == 'POST':
         
-        labour_workout_child = request.POST.get('labour_workout_child_instance_id')
-        print(labour_workout_child)
-        if labour_workout_child:
-            labour_workout_child_instance = labour_workout_childs.objects.get(id = int(labour_workout_child))
 
-        master_form = labour_workin_master_form(request.POST)
-        product_to_item_formset = labour_work_in_product_to_item_formset(request.POST)
+        print('labour_workout_child_instance',labour_workout_child_instance)
+
+        master_form = labour_workin_master_form(request.POST, instance = labour_workin_master_instance)
+        product_to_item_formset = labour_work_in_product_to_item_formset(request.POST,instance = labour_workin_master_instance)
 
         try:
             with transaction.atomic():
