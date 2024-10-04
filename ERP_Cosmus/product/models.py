@@ -779,6 +779,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
         ('cutting_room', 'cutting_room'),
         ('cutting_room_cancelled','cutting_room_cancelled'),
     ]
+
     purchase_order_cutting = models.ForeignKey(purchase_order_raw_material_cutting, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 100, null=False, blank=False)
@@ -797,7 +798,6 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
-
 
 
 class labour_workout_master(models.Model):
