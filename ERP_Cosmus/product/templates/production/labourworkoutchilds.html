@@ -94,10 +94,11 @@ function deleteButtonCheck(){
     var id_labour_work_in_created = button.closest('tr').querySelector('#id_labour_work_in_created').value;
     if(id_labour_work_in_created === 'True'){
    
-      button.style.display = 'none';
+      button.disabled = true;
+      button.style.cursor = 'not-allowed';
     }else{
-
-      button.style.display = 'block';
+      button.disabled = false;
+      button.style.cursor = 'pointer';
     }
   })
  
