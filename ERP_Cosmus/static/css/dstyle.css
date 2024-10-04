@@ -29,6 +29,7 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .pcoded-navbar .scroll-div.navbar-content {
@@ -437,7 +438,7 @@ input[type=number] {
     line-height: 52px;
     background-color: #fff;
     border: 1px solid #f1f1f1;
-    border-radius: 10px;
+    border-radius: 15px;
     border-color: #f1f1f1 ;
 }
    
