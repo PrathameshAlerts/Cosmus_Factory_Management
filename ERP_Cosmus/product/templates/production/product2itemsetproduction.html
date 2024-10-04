@@ -235,12 +235,8 @@
             } else {
                 suggestionsContainerUniqueId.empty();
             }
-            let isClicked = false;
+         
             suggestionsContainerUniqueId.one('click', '.itemName-div-suggestion', function () {
-                if (isClicked) return;
-
-            isClicked = true; //
-
                 const currentRow = $(this).closest('tr');
                 const dataKey = $(this).attr('data-key');
                 const dropdownContainer = $(this).closest('.custom-dropdown-container');
