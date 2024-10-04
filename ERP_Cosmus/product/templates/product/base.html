@@ -557,13 +557,13 @@
         const stockCompany = document.getElementById('id_companyValue');
       
         if (savedCompany) {
-            companySelect.value = savedCompany;
-            stockCompany.value = savedCompany; // Ensure stockCompany is defined correctly
-            console.log(stockCompany.value);
+        companySelect.value = savedCompany;
+        if (stockCompany) {
+            stockCompany.value = savedCompany; // Update stockCompany if it exists
         } else {
-            console.error('Element with id "id_companyValue" not found.'); // Correct the ID
+            console.error('Element with id "id_companyValue" not found.');
         }
-
+      }
     }
     document.getElementById('id_company').addEventListener('change', saveSelectedCompany);
     // Call the restore function when the page loads
@@ -802,7 +802,7 @@
 }
 
 
-document.addEventListener('DOMContentLoaded', changeHeader);
+document.addEventListener('DOMContentLoaded', changeHeader ,restoreSelectedCompany);
 
 </script>
 <script>

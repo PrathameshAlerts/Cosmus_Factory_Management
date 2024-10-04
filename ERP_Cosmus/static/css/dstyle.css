@@ -424,7 +424,7 @@ input[type=number] {
     position: relative;
     cursor: pointer;
     border: 1px solid #f1f1f1;
-    border-radius: 5px;
+   
 
 }
    
@@ -437,7 +437,8 @@ input[type=number] {
     line-height: 52px;
     background-color: #fff;
     border: 1px solid #f1f1f1;
-
+    border-radius: 10px;
+    border-color: #f1f1f1 ;
 }
    
 .side-bar .menu .item a:hover{
@@ -459,7 +460,7 @@ input[type=number] {
 }
    
 .side-bar .menu .item .sub-menu{
-    background: #262627;
+    /* background: #262627; */
     display: none;
 }
 .side-bar .menu .item .sub-menu.open{
