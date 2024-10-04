@@ -59,7 +59,9 @@
                         <td><a href="{% url 'excel-download-production' 'labour_workout' record.id %}">Link</a></td>
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
                         <input type="hidden" id="id_primary_key" name="primary_key" value="{{record.id}}" class="primary_key">
-                    </tr>
+                        <input type="hidden" id="id_labour_work_in_created" name="labour_work_in_created" value="{{record.labour_work_in_master_set.exists}}" >
+
+                      </tr>
                     {% endfor %}
                 </tbody>
             </table>

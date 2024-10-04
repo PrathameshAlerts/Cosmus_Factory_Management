@@ -4065,7 +4065,7 @@ def pendingapprovall(request):
 
 
 @login_required(login_url='login')
-def purchaseordercuttingpopup(request,cutting_id):
+def purchaseordercuttingpopup(request, cutting_id):
 
     if cutting_id:
         cutting_order_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id = cutting_id)
@@ -4075,7 +4075,6 @@ def purchaseordercuttingpopup(request,cutting_id):
     formset = purchase_order_cutting_approval_formset(request.POST or None, instance=cutting_order_instance)
 
     if request.method == 'POST':
-        
         if formset.is_valid():
 
             if any(form.has_changed() for form in formset): # if all the forms are not changed below code will not get executed
@@ -4735,7 +4734,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
     if request.method == 'POST':
         
         labour_workout_child = request.POST.get('labour_workout_child_instance_id')
-
+        print(labour_workout_child)
         if labour_workout_child:
             labour_workout_child_instance = labour_workout_childs.objects.get(id = int(labour_workout_child))
 

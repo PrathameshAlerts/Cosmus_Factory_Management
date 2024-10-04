@@ -167,7 +167,7 @@ class ProductVideoForm(forms.ModelForm):
 
 
 
-class ProductVideoFormSet(BaseInlineFormSet):
+class ProductVideoFormSet1(BaseInlineFormSet):
 
     def __init__(self, *args, **kwargs):
         self.c_user = kwargs.pop('c_user', None)  # Pop the c_user from kwargs
@@ -185,7 +185,7 @@ class ProductVideoFormSet(BaseInlineFormSet):
 
 #FIXME
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage,formset = ProductImageFormSet,form=ProductImageForm, extra = 1)
-ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls,formset = ProductVideoFormSet, form = ProductVideoForm, extra = 1)
+ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls,formset = ProductVideoFormSet1, form = ProductVideoForm, extra = 1)
 
 
 
