@@ -29,7 +29,8 @@ class CompanyBaseModel(models.Model):
             # Automatically assign company if it's not already set and the user has a company (failsafe option)
             if not self.company:
                 self.company = self.c_user.company
-        
+
+        # company for superusers is set from frontend dropdown menu directly and password to form variables
         # Ensure company is assigned before saving, even for superusers
         if not self.company:
             raise ValidationError('Company must be specified.')
@@ -516,11 +517,11 @@ class account_credit_debit_master_table(models.Model):
 
 
 
-class Godown_raw_material(CompanyBaseModel):
+class Godown_raw_material(models.Model): # CompanyBaseModel
     godown_name_raw = models.CharField(max_length = 225, unique= True)
 
     class Meta:
-        unique_together = [['godown_name_raw','company']]
+        unique_together = [['godown_name_raw']] # ,'company'
 
     def __str__(self) -> str:
         return self.godown_name_raw      
@@ -528,12 +529,12 @@ class Godown_raw_material(CompanyBaseModel):
     def save(self, *args, **kwargs):
         existing_objects = Godown_raw_material.objects.exclude(id = self.id)
 
-        if self.user.is_superuser:
-            if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw,company=self.company).exists():
-                raise ValidationError(f'{self.godown_name_raw} already exists!')
-        else:
-            if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw,c_user__company=self.c_user.company).exists():
-                raise ValidationError(f'{self.godown_name_raw} already exists!')
+        # if self.user.is_superuser:
+        #     if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): # ,company=self.company
+        #         raise ValidationError(f'{self.godown_name_raw} already exists!')
+        # else:
+        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): # c_user__company=self.c_user.company
+            raise ValidationError(f'{self.godown_name_raw} already exists!')
 
         super().save(*args, **kwargs)
 
@@ -555,18 +556,18 @@ class item_shades_godown_report(models.Model):
 
 
 
-class Godown_finished_goods(CompanyBaseModel):
+class Godown_finished_goods(models.Model):
     
     godown_name_finished = models.CharField(max_length = 225)
 
 
     class Meta:
-        unique_together = [['godown_name_finished','company']]
+        unique_together = [['godown_name_finished']]  # ,'company'
 
     def save(self,*args, **kwargs):
         existing_objects = Godown_finished_goods.objects.exclude(id=self.id)
 
-        if existing_objects.filter(godown_name_finished__iexact = self.godown_name_finished, c_user__company=self.c_user.company).exists():
+        if existing_objects.filter(godown_name_finished__iexact = self.godown_name_finished).exists(): # c_user__company=self.c_user.company
             raise ValidationError(f'{self.godown_name_finished} already exists!')
 
         super().save(*args, **kwargs)
@@ -674,12 +675,12 @@ class set_prod_item_part_name(models.Model):
     body_combi = models.CharField(max_length=10, blank=True, null = True)
 
 
-class factory_employee(models.Model):
+class factory_employee(CompanyBaseModel):
     factory_emp_name = models.CharField(max_length= 255, unique=True)
     cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
 
 
-class cutting_room(models.Model):
+class cutting_room(CompanyBaseModel):
     cutting_room_name = models.CharField(max_length=100, unique=True)
 
 
