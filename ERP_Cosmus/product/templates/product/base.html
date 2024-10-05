@@ -584,7 +584,7 @@
         'materialReportClick','creditDebitClick','mainCatClick','editButtonClick','submitButtonMainCategory','subCatClick','editButtonSubCategory','submitButtonSubCategory', 
         'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
         'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','cuttingCapList','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
-        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick','PendingFinishedGoods_Click','PurchaseOrderCuttingGoodsView',];
+        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick','PendingFinishedGoods_Click','PurchaseOrderCuttingGoodsView','PurchaseOrderLabourWorkInView'];
         
         items.forEach(item=> localStorage.removeItem(item));
       
@@ -683,7 +683,7 @@
         'Purchase Order Wise': 'labourWorkInCreateClick',
         'Goods Return List':'PendingFinishedGoods_Click',
         'Goods Return List':'PurchaseOrderCuttingGoodsView',
-
+        'Purchase Order Wise':'PurchaseOrderLabourWorkInView'
     };
       if(storageItems[clickedItem]) {
         
@@ -785,6 +785,7 @@
         'labourWorkInCreateClick':'Purchase Order Wise',
         'PendingFinishedGoods_Click':'Goods Return List',
         'PurchaseOrderCuttingGoodsView':'Goods Return List',
+        'PurchaseOrderLabourWorkInView':'Purchase Order Wise'
     };
 
     const newHeading = document.getElementById('newHeading');

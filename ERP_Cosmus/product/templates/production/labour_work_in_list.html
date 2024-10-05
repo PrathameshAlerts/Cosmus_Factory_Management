@@ -30,6 +30,9 @@
                         <th>Issues Pcs</th>
                         <th>Return Pcs</th>
                         <th>Balance Pcs</th>
+                        <th>Pending approval</th>
+                        <th>Approved Pcs</th>
+                        <th>Approve</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -39,18 +42,20 @@
                     
                   {% for record in labour_workin_instances %}
                     <tr>
+                      <input type="hidden" name="labour_workin_id" value="{{record.id}}" id="id_labour_workin_id">
                         <td>{{forloop.counter}}</td>
                         <td>{{record.voucher_number}}</td>
                         <td>{{record.labour_voucher_number.labour_name.name}}</td>
                         <td>{{record.labour_voucher_number.total_process_pcs}}</td>
-                        <td>{{record.total_return_pcs}}</td>
+                        <td class="returnQty">{{record.total_return_pcs}}</td>
                         <td>{{record.total_balance_pcs}}</td>
-                       
-                       
+                        <td>{{record.pending_for_approval_pcs}}</td>
+                        <td class="processedQty">{{record.total_approved_pcs}}</td>
+                        <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturnSingle(this)"><a id="PurchaseOrderLabourWorkInView" onclick="navbarChange('Purchase Order Wise')" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
+                        {% if record.approved_Qty_total == 0 %}
                         <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id %}" id="editButtonLabourWorkin" onclick="navbarChange('Labour WorkIn Edit')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
-                        <input type="hidden" name="labour_workin_id" value="{{record.id}}" id="id_labour_workin_id">
-
+                        {% endif %}
                         
                     </tr>
                     {% endfor %}
@@ -119,4 +124,50 @@ $(document).ready(function(){
   });
 });
 </script>
+<script>
+    
+  function approvedValues(){
+    var processValue = document.querySelectorAll('.processedQty'); 
+    processValue.forEach(function(el){
+      var processQty = parseFloat(el.textContent || 0);
+      var approvedValue = el.closest('tr').querySelector('.returnQty');
+      var approvedQty = parseFloat(approvedValue.textContent || 0);
+  
+  
+      if(processQty === approvedQty){
+        var approvedButton = el.closest('tr').querySelector('.approved-btn');
+        approvedButton.style.color = 'green';
+        approvedButton.innerHTML = '<i class="fa-solid fa-circle-check ps-3 fs-5"></i>';
+  
+      }
+    })
+  }
+  approvedValues();
+  
+  var popupPage = null;
+  function approvedGoodsReturnSingle(button){
+      if (popupPage === null || popupPage.closed) {
+        newPopups(button, 'goodsreturnpopup/')
+      } else {
+        popupPage.focus();
+      }
+  }
+  
+  
+    function newPopups(button, path) {
+   
+      var goodsId = $(button).closest('tr').find('#id_labour_workin_id').val();
+      console.log(goodsId)
+  
+      var minWidth = 800; // minimum width
+      var minHeight = 600;
+  
+  
+      // this will generate http://127.0.0.1:8000/ 
+      var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
+      popupPage = window.open(baseUrl + path + goodsId, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
+  
+     
+    }
+  </script>
 {% endblock %}
