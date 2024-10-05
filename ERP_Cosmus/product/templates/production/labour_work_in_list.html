@@ -30,6 +30,9 @@
                         <th>Issues Pcs</th>
                         <th>Return Pcs</th>
                         <th>Balance Pcs</th>
+                        <th>Pending approval</th>
+                        <th>Approved Pcs</th>
+                        <th>Approve</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -45,7 +48,9 @@
                         <td>{{record.labour_voucher_number.total_process_pcs}}</td>
                         <td>{{record.total_return_pcs}}</td>
                         <td>{{record.total_balance_pcs}}</td>
-                       
+                        <td>{{record.pending_for_approval_pcs}}</td>
+                        <td>{{record.total_approved_pcs}}</td>
+                        <td><a href="{% url 'goods_return_popup' record.id %}">Approve</a></td>
                         {% if record.approved_Qty_total == 0 %}
                         <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id %}" id="editButtonLabourWorkin" onclick="navbarChange('Labour WorkIn Edit')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
