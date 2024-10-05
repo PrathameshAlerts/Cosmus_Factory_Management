@@ -584,7 +584,8 @@
         'materialReportClick','creditDebitClick','mainCatClick','editButtonClick','submitButtonMainCategory','subCatClick','editButtonSubCategory','submitButtonSubCategory', 
         'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
         'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','cuttingCapList','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
-        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick','PendingFinishedGoods_Click','PurchaseOrderCuttingGoodsView',];
+        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','editButtonLabourWorkinView','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick',
+        'PendingFinishedGoods_Click','PurchaseOrderCuttingGoodsView','PurchaseOrderLabourWorkInView'];
         
         items.forEach(item=> localStorage.removeItem(item));
       
@@ -677,13 +678,14 @@
         'Labour WorkIn List':'labourWorkInClick',
         'Labour WorkIn Create':'addLabourWorkIn',
         'Labour WorkIn Edit':'editButtonLabourWorkin',
+        'Labour WorkIn View':'editButtonLabourWorkinView',
         'Labour WorkIn List':'id_submitLabourWorkIn',
         'Labour Workin Create':'directcreateLabourWorkin',
         'Labour Workin List': 'id_submit',
         'Purchase Order Wise': 'labourWorkInCreateClick',
         'Goods Return List':'PendingFinishedGoods_Click',
         'Goods Return List':'PurchaseOrderCuttingGoodsView',
-
+        'Purchase Order Wise':'PurchaseOrderLabourWorkInView'
     };
       if(storageItems[clickedItem]) {
         
@@ -779,12 +781,14 @@
         'labourWorkInClick': 'Labour WorkIn List',
         'addLabourWorkIn': 'Labour WorkIn Create',
         'editButtonLabourWorkin': 'Labour WorkIn Edit',
+        'editButtonLabourWorkinView': 'Labour WorkIn View',
         'id_submitLabourWorkIn': 'Labour WorkIn List',
         'directcreateLabourWorkin':'Labour Workin Create',
         'id_submit':'Labour Workin List',
         'labourWorkInCreateClick':'Purchase Order Wise',
         'PendingFinishedGoods_Click':'Goods Return List',
         'PurchaseOrderCuttingGoodsView':'Goods Return List',
+        'PurchaseOrderLabourWorkInView':'Purchase Order Wise'
     };
 
     const newHeading = document.getElementById('newHeading');

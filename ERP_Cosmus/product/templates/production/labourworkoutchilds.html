@@ -133,7 +133,6 @@ $(document).ready(function(){
     var name = row.find('td').eq(1).text();
     var cuttingData = row.find('.primary_key').val();
 
-    //var approvedValue = row.find('.approvedQty').text();
     var CuttingId = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
 
     $('#modal-body-text').html('Are you sure you want to delete this cutting ' + CuttingId + '?');
