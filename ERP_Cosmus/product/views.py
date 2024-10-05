@@ -4558,11 +4558,11 @@ def labourworkincreatelist(request,l_w_o_id):
 
 @login_required(login_url='login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def labourworkincreate(request, l_w_o_id = None, pk = None):
+def labourworkincreate(request, l_w_o_id = None, pk = None, approved=None):
     
     template_name = 'production/labourworkincreate.html'
     on_create = False
-
+    approval_check = approved
     # l_w_o_id = create directly
     if l_w_o_id is None:
 
@@ -4796,7 +4796,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
             messages.error(request,f'Other exceptions {e}')
 
 
-    return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
+    return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset,'approval_check':approval_check})
 
 
 @login_required(login_url='login')
