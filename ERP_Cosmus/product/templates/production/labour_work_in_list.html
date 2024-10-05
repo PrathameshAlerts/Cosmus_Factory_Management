@@ -49,16 +49,16 @@
                         <td>{{record.labour_voucher_number.total_process_pcs}}</td>
                         <td class="returnQty">{{record.total_return_pcs}}</td>
                         <td>{{record.total_balance_pcs}}</td>
-                        <td>{{record.pending_for_approval_pcs}}</td>
+                        <td class="pendingValue">{{record.pending_for_approval_pcs}}</td>
                         <td class="processedQty">{{record.total_approved_pcs}}</td>
                         <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturnSingle(this)"><a id="PurchaseOrderLabourWorkInView" onclick="navbarChange('Purchase Order Wise')" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
                         <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id True %}" id="editButtonLabourWorkinView" onclick="navbarChange('Labour WorkIn View')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
 
                         {% if record.approved_Qty_total == 0 %}
                         <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id False %}" id="editButtonLabourWorkin" onclick="navbarChange('Labour WorkIn Edit')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-                        <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
-                        {% endif %}
                         
+                        {% endif %}
+                        <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -102,7 +102,8 @@ $(document).ready(function(){
     // Attach a one-time click event to the confirm delete button
     $('#confirmDeleteButton').off('click').on('click', function(){
       var labour_workin_pk = deleteBtn.data('item-id');
-    
+      var pendingValue = deleteBtn.closest('tr').find('.pendingValue').text();
+      if(pendingValue !== '0'){
         $.ajax({
           type: 'POST',
           url: "{% url 'labour-workin-single-delete' %}",
@@ -121,6 +122,16 @@ $(document).ready(function(){
             $('#modal-body-text').html('An error occurred. Please try again.');
           }
         });
+      }else{
+        // Cannot delete approved cutting, update modal text
+        $('#modal-body-text').html('Cannot delete this approved labourWorkin ' + CuttingId + '.');
+        $('.modal-footer').hide();
+        $('.btn-close').on('click', function(){
+          $('.modal-footer').show();
+          $('.btn-close').off('click');
+        });
+      }
+        
     });
     
   });
@@ -130,7 +141,6 @@ function totalBalanceCheck(){
   var totalBalance = document.querySelector('.totalBalancePcs').textContent;
   var createButton = document.querySelector('.item-btn');
   var createLink = document.getElementById('addLabourWorkIn');
-  console.log(createLink)
   if (totalBalance === '0'){
     createButton.disabled = true;
     createButton.style.cursor = 'not-allowed';
