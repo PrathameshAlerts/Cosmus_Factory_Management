@@ -30,6 +30,7 @@
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"></td>
                       
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.approved_pcs_diffrence}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
+                        <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-currentApproved_pcs" value="" id="id_{{form.prefix}}-currentApproved_pcs">
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -69,36 +70,42 @@
     }
 });
 
-    function quantityCheck() {
-        var approved = document.querySelectorAll('[name$= "-approved_pcs"]');
+function quantityCheck() {
+    var approved = document.querySelectorAll('[name$= "-approved_pcs"]');
 
-        approved.forEach(element => {
-            var approvedValues = parseInt(element.value) || 0;
-         
-            var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-cutting_quantity"]').value);
-            var approvedDiffrenceValues = parseInt(element.closest('tr').querySelector('[name$= "-approved_pcs_diffrence"]').value);
-
+    approved.forEach(element => {
+        var approvedValues = parseInt(element.value);
+        var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-cutting_quantity"]').value);
+        var currentApproveValues = parseInt(element.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value);
+        
+       
             if (cuttingApprovedValue < approvedValues) {
                 element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
-    
-
+            
             if (!isNaN(approvedValues) && !isNaN(cuttingApprovedValue)) {
-
-             var balanceApprovedValue = cuttingApprovedValue - approvedValues;
-                if(balanceApprovedValue < 0){
+                var balanceApprovedValue = cuttingApprovedValue - approvedValues;
+                if (balanceApprovedValue < 0) {
                     element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = cuttingApprovedValue;
-                }else{
+                } else {
                     element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValue;
                 }
-               
-
             }
-        })
-    }
+        
+        
+    });
+}
+
 
     function submitForm(){
         var balanceApprove = document.querySelectorAll('[name$= "-balance_pcs"]');
+        var currentApproved = document.querySelectorAll('[name$= "-approved_pcs"]');
+        currentApproved.forEach(values =>{
+            var current = parseInt(values.value);
+            console.log('current',current)
+            values.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value = current;
+
+        })
         var totalQty = 0;
         balanceApprove.forEach(ele =>{
             var balance = parseInt(ele.value);
@@ -118,6 +125,38 @@
             }
     }
 
+    function approveValueCheck(){
+        var approveCheck = document.querySelectorAll('[name$= "-approved_pcs"]');
+        var submitButton = document.getElementById('cuttingOrderApproved');
+        var hasInvalidValue = false; 
+
+        approveCheck.forEach(function(data){
+            var approveValue = parseInt(data.value);
+            var closerstTr = data.closest('tr');
+            var currentCheckValue = closerstTr.querySelector('[name$= "-currentApproved_pcs"]').value;
+            
+         if (approveValue != 0) {
+            // Check if approvedValues is less than currentCheckValue
+            if (approveValue < currentCheckValue) {
+                closerstTr.querySelector('[name$= "-approved_pcs"]').value = currentCheckValue; // Reset to currentApprovedValue
+                data.style.borderColor = 'red';
+                hasInvalidValue = true; 
+             
+            }else{
+
+                data.style.borderColor = 'gray';
+            }
+        } 
+        });
+        
+        if (hasInvalidValue) {
+        submitButton.style.display = 'none';
+        } else {
+            // If all values are valid, show the submit button
+            submitButton.style.display = 'block';
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
@@ -127,6 +166,9 @@
             element.addEventListener('input', () => {
                 quantityCheck();
             });
+            element.addEventListener('focusout',()=>{
+                approveValueCheck();
+            })
         })
 
     })

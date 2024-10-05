@@ -29,7 +29,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.instance.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_qty" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-approved_qty"></td>
-                        <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.approved_pcs_diffrence}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
+                        <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -54,7 +54,7 @@
         checkboxes.forEach(element => {
             var balanceQty = element.closest('tr').querySelector('[name$="-return_pcs"]');
             var cuttingQty = element.closest('tr').querySelector('[name$="-L_work_out_pcs"]');
-            var balanceValue = parseInt(balanceQty.value) || 0;
+            var balanceValue = parseInt(balanceQty.value);
             var cuttingValue = parseInt(cuttingQty.value) || 0;
             console.log(balanceValue);
             if (checkAll.checked) {
@@ -62,8 +62,8 @@
                 balanceQty.value = 0;
             } else {
                 element.value = 0;
-                
-                balanceQty.value = cuttingValue;
+                console.log(balanceQty)
+                balanceQty.value = balanceValue;
             }
         });
     }
@@ -118,6 +118,17 @@
             }
     }
 
+    function approveValueCheck(){
+        var approved = document.querySelectorAll('[name$= "-approved_qty"]');
+        approved.forEach(element => {
+            var approvedValues = parseInt(element.value) || 0;
+            var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-return_pcs"]').value);
+            if (cuttingApprovedValue < approvedValues) {
+                element.closest('tr').querySelector('[name$= "-approved_qty"]').value = 0;
+            }
+        })
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
@@ -125,8 +136,11 @@
         let approve = document.querySelectorAll('input[name$="-approved_qty"]');
         approve.forEach(function (element) {
             element.addEventListener('input', () => {
-                //quantityCheck();
+                quantityCheck();
             });
+            element.addEventListener('focusout',()=>{
+                approveValueCheck();
+            })
         })
 
     })
