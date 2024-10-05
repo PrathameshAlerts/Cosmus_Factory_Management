@@ -4,6 +4,7 @@
 
 <form method="post" class="mt-2" id="labourWorkInForm" autocomplete="off">
     {% csrf_token %}
+    <input type="text" value = {{approval_check}} name="approval" id="id_approval">
     <div class="row">
         <div class="col-lg-5">
             <!-- <h5 class="fw-bold mt-2 text-danger mb-3">Labour Workin Create</h5> -->
