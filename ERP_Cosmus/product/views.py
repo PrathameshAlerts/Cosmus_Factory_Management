@@ -37,7 +37,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
-                                 packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
+                                 packaging, product_2_item_through_table, product_godown_quantity_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
                                    set_prod_item_part_name, shade_godown_items,
@@ -4558,11 +4558,13 @@ def labourworkincreatelist(request,l_w_o_id):
 
 @login_required(login_url='login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def labourworkincreate(request, l_w_o_id = None, pk = None, approved=None):
+def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
     
     template_name = 'production/labourworkincreate.html'
     on_create = False
+
     approval_check = approved
+    
     # l_w_o_id = create directly
     if l_w_o_id is None:
 
@@ -4897,13 +4899,29 @@ def goods_return_pending_list(request):
 @login_required(login_url='login')
 def goods_return_popup(request,pk):
 
+
     if pk:
+        finished_goods_godowns = Godown_finished_goods.objects.all()
         labour_workin_instance = labour_work_in_master.objects.get(pk=pk)
         formset = labour_work_in_product_to_item_approval_formset(request.POST or None, instance=labour_workin_instance)
 
         if request.method == 'POST':
+            godown_name_post = request.POST.get('godown_name_post')
+            formset.forms = [form for form in formset if form.has_changed()]
             if formset.is_valid():
-                formset.save()
+                for form in formset:
+                    form_instance = form.save(commit=False)
+                    obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_nam = godown_name_post,product_color_name__PProduct_SKU=form_instance.product_sku)
+
+                    if created:
+                        quantity_to_add = 0
+                    else:
+                        quantity_to_add = obj.quantity
+
+                    obj.quantity = quantity_to_add + form.approved_qty
+                    form_instance.save()
+
+                
                 messages.success(request,'Product images sucessfully added.')
                     
 
@@ -4916,7 +4934,7 @@ def goods_return_popup(request,pk):
                 """
                 return HttpResponse(close_window_script)
 
-    return render(request,'production/goods_return_popup.html',{'formset':formset})
+    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns})
 
 #_________________________production-end__________________________________________
 
