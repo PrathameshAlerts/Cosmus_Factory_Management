@@ -184,9 +184,7 @@
                 <input type="number" class="item-select" name="labour_charges" step="0.01"value="{{master_form.labour_charges.initial}}" required id="id_labour_charges" >
                 {% else %}
 
-                <input type="number" class="item-select" name="labour_charges" step="0.01"
-                    value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges}}"
-                    id="id_labour_charges">
+                <input type="number" class="item-select" name="labour_charges" step="0.01" value="{{master_form.instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges}}" id="id_labour_charges" readonly style="border: 1px solid blue; outline: none;">
 
                 {% endif %}
             </div>

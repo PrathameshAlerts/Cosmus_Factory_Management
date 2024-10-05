@@ -55,7 +55,7 @@
         var checkboxes = document.querySelectorAll('[name$="-approved_qty"]');
         
         checkboxes.forEach(elements => {
-            var balanceQty = elements.closest('tr').querySelector('[name$="-return_pcs"]');
+            var balanceQty = elements.closest('tr').querySelector('[name$="-pending_for_approval"]');
             var cuttingQty = elements.closest('tr').querySelector('[name$="-L_work_out_pcs"]');
             var balanceValue = parseInt(balanceQty.value) || 0;
             var cuttingValue = parseInt(cuttingQty.value) || 0;
@@ -94,9 +94,9 @@
 
              var balanceApprovedValue = cuttingApprovedValue - approvedValues;
                 if(balanceApprovedValue < 0){
-                    rows.querySelector('[name$= "-return_pcs"]').value = cuttingApprovedValue;
+                    rows.querySelector('[name$= "-pending_for_approval"]').value = cuttingApprovedValue;
                 }else{
-                    rows.querySelector('[name$= "-return_pcs"]').value = balanceApprovedValue;
+                    rows.querySelector('[name$= "-pending_for_approval"]').value = balanceApprovedValue;
                 }
                
 
@@ -105,7 +105,7 @@
     }
 
     function submitForm(){
-    var balanceApprove = document.querySelectorAll('[name$= "-return_pcs"]');
+    var balanceApprove = document.querySelectorAll('[name$= "-pending_for_approval"]');
     var totalQty = 0;
     var currentApproved = document.querySelectorAll('[name$= "-approved_qty"]');
     currentApproved.forEach(values =>{
