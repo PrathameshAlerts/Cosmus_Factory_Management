@@ -52,13 +52,20 @@
                         <td class="pendingValue">{{record.pending_for_approval_pcs}}</td>
                         <td class="processedQty">{{record.total_approved_pcs}}</td>
                         <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturnSingle(this)"><a id="PurchaseOrderLabourWorkInView" onclick="navbarChange('Purchase Order Wise')" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
-                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id True %}" id="editButtonLabourWorkinView" onclick="navbarChange('Labour WorkIn View')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
 
+                        
                         {% if record.approved_Qty_total == 0 %}
                         <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id False %}" id="editButtonLabourWorkin" onclick="navbarChange('Labour WorkIn Edit')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         
+                        {% elif record.approved_Qty_total != 0 %}
+                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id True %}" id="editButtonLabourWorkinView" onclick="navbarChange('Labour WorkIn View')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+
                         {% endif %}
+                        
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
+                        <!-- <input type="hidden" name="labour_workin_id" value = "{{record.id}}" id="id_labour_workin_id"> -->
+                        
+                      
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -144,12 +151,12 @@ function totalBalanceCheck(){
   if (totalBalance === '0'){
     createButton.disabled = true;
     createButton.style.cursor = 'not-allowed';
-    createLink.disabled = true;
+    createLink.style.pointerEvents = 'none';
     createLink.style.cursor = 'not-allowed';
   }else{
     createButton.disabled = false;
     createButton.style.cursor = 'pointer';
-    createLink.disabled = true;
+    createLink.style.pointerEvents = 'auto';
     createLink.style.cursor = 'pointer';
   }
 }
