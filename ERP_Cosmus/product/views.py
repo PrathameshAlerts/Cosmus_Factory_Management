@@ -4754,8 +4754,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
 
-                    if on_create:
-                        product_to_item_formset.pending_for_approval = product_to_item_formset.return_pcs
+            
 
                     labour_workout_child_instance.save()
                     parent_form.save()
@@ -4765,6 +4764,10 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                         if form.is_valid():
                             product_to_item_form = form.save(commit= False)
                             product_to_item_form.labour_workin_instance = parent_form
+
+
+                            if on_create:
+                                product_to_item_form.pending_for_approval = product_to_item_form.return_pcs
                             
                             l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,
                                                                                               product_sku=product_to_item_form.product_sku,
@@ -4885,7 +4888,7 @@ def labourworkinsingledeleteajax(request):
 @login_required(login_url='login')
 def goods_return_pending_list(request):
 
-    labour_workin_instances = labour_work_in_master.objects.all()
+    labour_workin_instances = labour_work_in_master.objects.all().annotate(total_approved_pcs = Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval'))
     return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances})
 
 

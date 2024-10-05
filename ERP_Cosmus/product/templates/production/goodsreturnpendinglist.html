@@ -17,6 +17,8 @@
                     <th>Issues Pcs</th>
                     <th>Return Pcs</th>
                     <th>Balance Pcs</th>
+                    <th>Total Approval Pending</th>
+                    <th>Total Approval completed</th>
                     <th>approve</th>
                 </tr>
             </thead>
@@ -31,6 +33,8 @@
                     <td class="processedQty">{{record.labour_voucher_number.total_process_pcs}}</td>
                     <td class="returnQty">{{record.total_return_pcs}}</td>
                     <td>{{record.total_balance_pcs}}</td>
+                    <td>{{record.pending_for_approval_pcs}}</td>
+                    <td>{{record.total_approved_pcs}}</td>
                     <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a id="PurchaseOrderCuttingGoodsView" onclick="navbarChange('Goods Return list')" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
                     <input type="hidden" name = "labour_work_in" value="{{record.id}}">
                 </tr>
