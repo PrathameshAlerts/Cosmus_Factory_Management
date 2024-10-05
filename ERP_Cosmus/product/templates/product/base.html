@@ -584,7 +584,7 @@
         'materialReportClick','creditDebitClick','mainCatClick','editButtonClick','submitButtonMainCategory','subCatClick','editButtonSubCategory','submitButtonSubCategory', 
         'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
         'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','cuttingCapList','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
-        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick','PendingFinishedGoods_Click',];
+        'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick','PendingFinishedGoods_Click','PurchaseOrderCuttingGoodsView',];
         
         items.forEach(item=> localStorage.removeItem(item));
       
@@ -681,7 +681,8 @@
         'Labour Workin Create':'directcreateLabourWorkin',
         'Labour Workin List': 'id_submit',
         'Purchase Order Wise': 'labourWorkInCreateClick',
-        'Goods Return List':'PendingFinishedGoods_Click'
+        'Goods Return List':'PendingFinishedGoods_Click',
+        'Goods Return List':'PurchaseOrderCuttingGoodsView',
 
     };
       if(storageItems[clickedItem]) {
@@ -782,7 +783,8 @@
         'directcreateLabourWorkin':'Labour Workin Create',
         'id_submit':'Labour Workin List',
         'labourWorkInCreateClick':'Purchase Order Wise',
-        'PendingFinishedGoods_Click':'Goods Return List'
+        'PendingFinishedGoods_Click':'Goods Return List',
+        'PurchaseOrderCuttingGoodsView':'Goods Return List',
     };
 
     const newHeading = document.getElementById('newHeading');
