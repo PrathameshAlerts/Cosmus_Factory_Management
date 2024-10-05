@@ -573,12 +573,31 @@ class Godown_finished_goods(models.Model):
         super().save(*args, **kwargs)
 
 
+
+
+class product_godown_quantity_through_table(models.Model):
+    godown_name = models.ForeignKey(Godown_finished_goods, on_delete = models.PROTECT, related_name= 'finished_godown_names')
+    product_color_name = models.ForeignKey(PProduct_Creation, related_name = 'godown_colors', on_delete = models.PROTECT)
+    quantity = models.BigIntegerField()
+    created_date = models.DateTimeField(auto_now = True)
+    updated_date = models.DateTimeField(auto_now_add = True)
+
+
+    class Meta:
+        unique_together = [['godown_name','product_color_name']]
+
+    def __str__(self):
+        return f'{self.godown_name}-{self.product_color_name} - {self.quantity}'
+
+
+
 class RawStockTransferMaster(models.Model):
     voucher_no = models.IntegerField(primary_key=True)
     source_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE , related_name='source_godowns')
     destination_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE, related_name='destination_godowns')
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
+
 
 
 class RawStockTrasferRecords(models.Model):
@@ -885,6 +904,7 @@ class labour_work_in_master(models.Model):
     description = models.CharField(max_length=100, null=True, blank=True)
     total_return_pcs = models.IntegerField(null=False, blank=False)
     total_balance_pcs = models.IntegerField(null=False, blank=False)
+    total_approved_qty = models.IntegerField(default = 0)
     labour_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     other_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,null=False, blank=False)
@@ -899,6 +919,7 @@ class labour_work_in_product_to_item(models.Model):
     L_work_out_pcs = models.IntegerField()
     return_pcs = models.IntegerField()
     pending_to_return_pcs = models.IntegerField()
+    pending_for_approval =  models.IntegerField()
     approved_qty = models.IntegerField(default = 0)
 
 

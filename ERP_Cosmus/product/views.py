@@ -4561,12 +4561,14 @@ def labourworkincreatelist(request,l_w_o_id):
 def labourworkincreate(request, l_w_o_id = None, pk = None):
     
     template_name = 'production/labourworkincreate.html'
+    on_create = False
 
     # l_w_o_id = create directly
     if l_w_o_id is None:
 
         template_name = 'production/labourworkincreateraw.html'
         labour_workin_master_instance = None
+        on_create = True
         master_form = labour_workin_master_form()
 
         product_to_item_formset = None
@@ -4668,6 +4670,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
     # on create mode
     elif l_w_o_id is not None and pk is None:
+
+        on_create = True
         labour_workin_master_instance = None
         labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
@@ -4698,7 +4702,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                 'pending_to_return_pcs': instances.labour_w_in_pending,
                 'return_pcs' : '0',
                 'qty_to_compare':  instances.labour_w_in_pending,
-                'cur_bal_plus_return_qty': instances.labour_w_in_pending 
+                'cur_bal_plus_return_qty': instances.labour_w_in_pending
                 }
             
             formset_initial_data.append(initial_data_dict)
@@ -4749,6 +4753,9 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
 
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
+
+                    if on_create:
+                        product_to_item_formset.pending_for_approval = product_to_item_formset.return_pcs
 
                     labour_workout_child_instance.save()
                     parent_form.save()

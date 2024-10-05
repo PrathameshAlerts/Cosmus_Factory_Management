@@ -864,7 +864,7 @@ class labour_work_in_product_to_item_approval_form(forms.ModelForm):
     class Meta:
         model = labour_work_in_product_to_item
         fields = ['product_sku','product_color','L_work_out_pcs','return_pcs',
-                  'approved_qty']
+                  'approved_qty','pending_for_approval']
         
 
 labour_work_in_product_to_item_approval_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
