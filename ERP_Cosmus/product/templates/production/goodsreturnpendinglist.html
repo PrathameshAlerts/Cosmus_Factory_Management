@@ -29,9 +29,9 @@
                     <td>{{record.voucher_number}}</td>
                     <td>{{record.labour_voucher_number.labour_name.name}}</td>
                     <td class="processedQty">{{record.labour_voucher_number.total_process_pcs}}</td>
-                    <td>{{record.total_return_pcs}}</td>
+                    <td class="returnQty">{{record.total_return_pcs}}</td>
                     <td>{{record.total_balance_pcs}}</td>
-                    <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a id="PurchaseOrderCuttingGoodsView" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
+                    <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a id="PurchaseOrderCuttingGoodsView" onclick="navbarChange('Goods Return list')" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
                     <input type="hidden" name = "labour_work_in" value="{{record.id}}">
                 </tr>
                 {% endfor %}
@@ -50,7 +50,7 @@ function approvedValues(){
   var processValue = document.querySelectorAll('.processedQty'); 
   processValue.forEach(function(el){
     var processQty = parseFloat(el.textContent || 0);
-    var approvedValue = el.closest('tr').querySelector('.approvedQty');
+    var approvedValue = el.closest('tr').querySelector('.returnQty');
     var approvedQty = parseFloat(approvedValue.textContent || 0);
 
 

@@ -30,6 +30,7 @@
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_qty" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-approved_qty"></td>
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
+                        <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-currentApproved_goods" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-currentApproved_goods">
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -42,7 +43,7 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+   document.addEventListener("DOMContentLoaded", function() {
     var checkAll = document.getElementById('id_checkAll');
     
     // Event listener for the "Check All" checkbox
@@ -51,35 +52,39 @@
     function checkboxCheckAll() {
         var checkboxes = document.querySelectorAll('[name$="-approved_qty"]');
         
-        checkboxes.forEach(element => {
-            var balanceQty = element.closest('tr').querySelector('[name$="-return_pcs"]');
-            var cuttingQty = element.closest('tr').querySelector('[name$="-L_work_out_pcs"]');
-            var balanceValue = parseInt(balanceQty.value);
+        checkboxes.forEach(elements => {
+            var balanceQty = elements.closest('tr').querySelector('[name$="-return_pcs"]');
+            var cuttingQty = elements.closest('tr').querySelector('[name$="-L_work_out_pcs"]');
+            var balanceValue = parseInt(balanceQty.value) || 0;
             var cuttingValue = parseInt(cuttingQty.value) || 0;
-            console.log(balanceValue);
+            
             if (checkAll.checked) {
-                element.value = balanceValue;
-                balanceQty.value = 0;
+                balanceQty.setAttribute('data-original-balance', balanceValue);
+                elements.value = balanceValue;
+                balanceQty.value = 0;  // Reset balance to 0
             } else {
-                element.value = 0;
-                console.log(balanceQty)
-                balanceQty.value = balanceValue;
+                var originalBalanceValue = balanceQty.getAttribute('data-original-balance') || balanceValue;
+                elements.value = 0;  // Reset approved_qty to 0
+                balanceQty.value = originalBalanceValue;  // Restore balance value
             }
         });
     }
 });
+
 
     function quantityCheck() {
         var approved = document.querySelectorAll('[name$= "-approved_qty"]');
 
         approved.forEach(element => {
             var approvedValues = parseInt(element.value) || 0;
-         
-            var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-return_pcs"]').value);
-            var approvedDiffrenceValues = parseInt(element.closest('tr').querySelector('[name$= "-approved_pcs_diffrence"]').value);
-
+            var rows = element.closest('tr');
+            var cuttingApprovedValue = parseInt(rows.querySelector('[name$= "-return_pcs"]').value);
+            var approvedDiffrenceValues = parseInt(rows.querySelector('[name$= "-approved_pcs_diffrence"]').value);
+            console.log('approvedValues',approvedValues);
+            console.log('approvedDiffrenceValues',approvedDiffrenceValues);
+            console.log('cuttingApprovedValue',cuttingApprovedValue);
             if (cuttingApprovedValue < approvedValues) {
-                element.closest('tr').querySelector('[name$= "-approved_qty"]').value = 0;
+                rows.querySelector('[name$= "-approved_qty"]').value = 0;
             }
     
 
@@ -87,9 +92,9 @@
 
              var balanceApprovedValue = cuttingApprovedValue - approvedValues;
                 if(balanceApprovedValue < 0){
-                    element.closest('tr').querySelector('[name$= "-return_pcs"]').value = cuttingApprovedValue;
+                    rows.querySelector('[name$= "-return_pcs"]').value = cuttingApprovedValue;
                 }else{
-                    element.closest('tr').querySelector('[name$= "-return_pcs"]').value = balanceApprovedValue;
+                    rows.querySelector('[name$= "-return_pcs"]').value = balanceApprovedValue;
                 }
                
 
@@ -98,36 +103,58 @@
     }
 
     function submitForm(){
-        var balanceApprove = document.querySelectorAll('[name$= "-return_pcs"]');
-        var totalQty = 0;
-        balanceApprove.forEach(ele =>{
-            var balance = parseInt(ele.value);
-           totalQty = totalQty + balance;
-        
-            return totalQty
-        })
-      
-        if(totalQty === 0){
-                var submitBtn = document.querySelector('.create-btn');
-               var approveBtn = document.querySelectorAll('[name$= "-approved_qty"]');
-               approveBtn.forEach(element =>{
-                   element.setAttribute('readonly', true);
-               })
-                
-                submitBtn.style.display = 'none';
-            }
-    }
+    var balanceApprove = document.querySelectorAll('[name$= "-return_pcs"]');
+    var totalQty = 0;
+    var currentApproved = document.querySelectorAll('[name$= "-approved_qty"]');
+    currentApproved.forEach(values =>{
+        var current = parseInt(values.value);
+        values.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value = current;
+    });
+    
+    balanceApprove.forEach(ele =>{
+        var balance = parseInt(ele.value);
+        totalQty = totalQty + balance;
+    });
 
-    function approveValueCheck(){
-        var approved = document.querySelectorAll('[name$= "-approved_qty"]');
-        approved.forEach(element => {
-            var approvedValues = parseInt(element.value) || 0;
-            var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-return_pcs"]').value);
-            if (cuttingApprovedValue < approvedValues) {
-                element.closest('tr').querySelector('[name$= "-approved_qty"]').value = 0;
-            }
-        })
+    if(totalQty === 0){
+        var submitBtn = document.querySelector('.create-btn');
+        var approveBtn = document.querySelectorAll('[name$= "-approved_qty"]');
+        approveBtn.forEach(element =>{
+            element.setAttribute('readonly', true);
+        });
+        submitBtn.style.display = 'none';
     }
+}
+
+
+//     function approveValueCheck(){
+//     var approved = document.querySelectorAll('[name$= "-approved_qty"]');
+//     var submitButton = document.getElementById('cuttingOrderApproved');
+//     var hasInvalidValue = false; 
+
+//     approved.forEach(el => {
+//         var approvedValues = parseInt(el.value) || 0;
+//         var currentApprovedValue = parseInt(el.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value);
+//         console.log(approvedValues, currentApprovedValue)
+
+//         if(approvedValues != 0){
+//             if (currentApprovedValue < approvedValues) {
+//                 el.closest('tr').querySelector('[name$= "-approved_qty"]').value = currentApprovedValue; // Reset to currentApprovedValue
+//                 el.style.borderColor = 'red';
+//                 hasInvalidValue = true; 
+//             } else{
+//                 el.style.borderColor = 'gray';
+//             } 
+//         }
+//     });
+
+//     if(hasInvalidValue){
+//         submitButton.style.display = 'none';
+//     }else{
+//         submitButton.style.display = 'block';
+//     }
+// }
+
 
     document.addEventListener('DOMContentLoaded', function () {
     
@@ -138,9 +165,9 @@
             element.addEventListener('input', () => {
                 quantityCheck();
             });
-            element.addEventListener('focusout',()=>{
-                approveValueCheck();
-            })
+            // element.addEventListener('focusout',()=>{
+            //     approveValueCheck();
+            // })
         })
 
     })

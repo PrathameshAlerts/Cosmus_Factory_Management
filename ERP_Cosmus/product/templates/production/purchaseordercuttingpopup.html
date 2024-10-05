@@ -102,7 +102,6 @@ function quantityCheck() {
         var currentApproved = document.querySelectorAll('[name$= "-approved_pcs"]');
         currentApproved.forEach(values =>{
             var current = parseInt(values.value);
-            console.log('current',current)
             values.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value = current;
 
         })
@@ -148,7 +147,7 @@ function quantityCheck() {
             }
         } 
         });
-        
+
         if (hasInvalidValue) {
         submitButton.style.display = 'none';
         } else {
