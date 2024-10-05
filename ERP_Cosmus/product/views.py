@@ -1667,16 +1667,17 @@ def ledgerTypes_delete(request,pk):
 @login_required(login_url='login')
 def godowncreate(request):
     if request.method == 'POST':
+        print(request.POST)
         godown_name =  request.POST['godown_name']
         godown_type = request.POST['Godown_types']
 
         if godown_type == 'Raw Material':
             try:
                 godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
-                godown_raw.c_user = request.user
-                godown_raw.company = request.user.company
-                if request.user.is_superuser:
-                    godown_raw.company = request.POST['company']
+                # godown_raw.c_user = request.user
+                # godown_raw.company = request.user.company
+                # if request.user.is_superuser:
+                #     godown_raw.company = request.POST['company']
 
                 godown_raw.save()  #save the instance to db 
                 messages.success(request,'Raw material godown created.')
@@ -1697,11 +1698,11 @@ def godowncreate(request):
         elif godown_type == 'Finished Goods':
             try:
                 godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
-                godown_finished.c_user = request.user
+                # godown_finished.c_user = request.user
 
-                godown_finished = request.user.company
-                if request.user.is_superuser:
-                    godown_finished.company = request.POST['company']
+                # godown_finished = request.user.company
+                # if request.user.is_superuser:
+                #     godown_finished.company = request.POST['company']
 
                 godown_finished.save() #save the instance to db 
                 messages.success(request,'Finished goods godown created.')
@@ -1737,7 +1738,7 @@ def godownupdate(request,str,pk):
         if request.method == 'POST':
             godown_name =  request.POST['godown_name']
             finished_godown_pk.godown_name_finished = godown_name
-            finished_godown_pk.c_user = request.user
+            # finished_godown_pk.c_user = request.user
             finished_godown_pk.save()
             messages.success(request,'Finished goods godown updated.')
             return redirect('godown-list')
@@ -1749,7 +1750,7 @@ def godownupdate(request,str,pk):
         if request.method == 'POST':
             godown_name =  request.POST['godown_name']
             raw_godown_pk.godown_name_raw = godown_name
-            raw_godown_pk.c_user = request.user
+            # raw_godown_pk.c_user = request.user
             raw_godown_pk.save()
             messages.success(request,'Raw material godown updated.')
             return redirect('godown-list')
@@ -1768,13 +1769,16 @@ def godownupdate(request,str,pk):
 
 @login_required(login_url='login')
 def godownlist(request):
-    if request.user.is_staff:
-        godowns_raw = Godown_raw_material.objects.all()
-        godowns_finished = Godown_finished_goods.objects.all()
+
+    godowns_raw = Godown_raw_material.objects.all()
+    godowns_finished = Godown_finished_goods.objects.all()
+    # if request.user.is_staff:
+    #     godowns_raw = Godown_raw_material.objects.all()
+    #     godowns_finished = Godown_finished_goods.objects.all()
         
-    elif not request.user.is_staff:
-        godowns_raw = Godown_raw_material.objects.filter(c_user__company = request.user.company)
-        godowns_finished = Godown_finished_goods.objects.filter(c_user__company = request.user.company)
+    # elif not request.user.is_staff:
+    #     godowns_raw = Godown_raw_material.objects.filter(c_user__company = request.user.company)
+    #     godowns_finished = Godown_finished_goods.objects.filter(c_user__company = request.user.company)
 
     return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 
                                                    'godowns_finished':godowns_finished})
@@ -4076,7 +4080,7 @@ def purchaseordercuttingpopup(request, cutting_id):
 
     if request.method == 'POST':
         if formset.is_valid():
-
+            
             if any(form.has_changed() for form in formset): # if all the forms are not changed below code will not get executed
                 formset_instance = formset.save(commit=False)
 
@@ -4094,7 +4098,7 @@ def purchaseordercuttingpopup(request, cutting_id):
                 for form in formset_instance:
                     p_o_to_cutting_instance = purchase_order_to_product_cutting.objects.get(id = form.id) # p_o_cutting_instance
                     old_total_approved_qty_diffrence  =  form.approved_pcs - p_o_to_cutting_instance.approved_pcs  # current qty - old qty to get the diffrence in qty
-                    form.approved_pcs_diffrence = old_total_approved_qty_diffrence  # assign the difrence qty to form variable
+                    form.approved_pcs_diffrence = old_total_approved_qty_diffrence  # assign the difference qty to form variable
                     old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence # add the diffrence qty to total qty of parent model
                     form.save() # save the instance model
                     
@@ -4545,9 +4549,7 @@ def cuttingroomqty(request):
 def labourworkincreatelist(request,l_w_o_id):
 
     labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
-
     labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).annotate(approved_Qty_total=Sum('l_w_in_products__approved_qty'))
-    
     return render(request,'production/labour_work_in_list.html',{'labour_workout_child_instance':labour_workout_child_instance,
                                                                  'labour_workin_instances':labour_workin_instances})
 
@@ -4564,7 +4566,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
     if l_w_o_id is None:
 
         template_name = 'production/labourworkincreateraw.html'
-
+        labour_workin_master_instance = None
         master_form = labour_workin_master_form()
 
         product_to_item_formset = None
@@ -4666,6 +4668,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
     # on create mode
     elif l_w_o_id is not None and pk is None:
+        labour_workin_master_instance = None
         labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
         initial_data = {
@@ -4733,9 +4736,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
 
     if request.method == 'POST':
         
-
-        print('labour_workout_child_instance',labour_workout_child_instance)
-
         master_form = labour_workin_master_form(request.POST, instance = labour_workin_master_instance)
         product_to_item_formset = labour_work_in_product_to_item_formset(request.POST,instance = labour_workin_master_instance)
 
@@ -4777,7 +4777,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None):
                     # print(product_to_item_formset.non_form_errors())
                     return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
                     
-                return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
+                #return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
                 
         except ValidationError as ve:
             messages.error(request,f'Validation error {ve}')
@@ -4915,9 +4915,16 @@ def goods_return_popup(request,pk):
 @login_required(login_url='login')
 def factory_employee_create_update_list(request ,pk=None):
     
-    factory_employees = factory_employee.objects.all()
-    cutting_rooms =  cutting_room.objects.all()
-    
+
+    if request.user.is_superuser:
+        factory_employees = factory_employee.objects.all()
+        cutting_rooms =  cutting_room.objects.all()
+    else:
+        factory_employees = factory_employee.objects.filter(company= request.user.company)
+        cutting_rooms =  cutting_room.objects.filter(company= request.user.company)
+
+
+
     if pk:
         title = 'Update'
         instance = get_object_or_404(factory_employee,pk=pk)
@@ -4926,7 +4933,7 @@ def factory_employee_create_update_list(request ,pk=None):
         title = 'Create'
         instance = None
     
-    form = factory_employee_form(request.POST or None, instance = instance)
+    form = factory_employee_form(request.POST or None, instance = instance, user = request.user)
 
     if request.method == 'POST':
         if form.is_valid():
@@ -4962,9 +4969,14 @@ def cutting_room_create_update_list(request, pk=None):
     else:
         instance = None
 
-    form = cutting_room_form(request.POST or None, instance = instance)
+    form = cutting_room_form(request.POST or None, instance = instance, user=request.user)
 
-    cutting_rooms = cutting_room.objects.all()
+    if request.user.is_superuser:
+        cutting_rooms = cutting_room.objects.all()
+    else:
+        cutting_rooms = cutting_room.objects.filter(company = request.user.company)
+
+
 
     if request.method == 'POST':
         if form.is_valid():
@@ -5267,7 +5279,8 @@ def godown_item_report(request,shade_id,g_id=None):
 
         labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
             material_color_shade = shade_name.item_shade_name,labour_workout_child_instance__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__temp_godown_select = g_id)
-        print(purchase_order_cutting_room_qty)
+        
+
     else:
     
         # opening quantity report query

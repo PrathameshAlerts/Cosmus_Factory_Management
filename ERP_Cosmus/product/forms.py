@@ -4,18 +4,12 @@ from django import forms
 from django.shortcuts import get_object_or_404
 
 from core.models import Company
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Godown_finished_goods, Godown_raw_material, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
-from django.forms.widgets import PasswordInput, TextInput , DateInput
 from django.forms import modelformset_factory, BaseInlineFormSet 
 from django.db import transaction
 import logging
-from django.contrib.auth.models import Group
-from django.contrib.auth.forms import UserCreationForm
-from django.conf import settings
 from .mixins import CompanyUniqueFieldMixin, UniqueFieldMixin
 
 
@@ -40,11 +34,12 @@ class CompanyBaseForm(forms.ModelForm):
         if not self.user.is_superuser:
             instance.c_user = self.user 
             instance.company = self.user.company
-        # For super users, the company is assigined in form which is selected from dropdown
+
+        # For superusers, the company is assigined in form which is selected from dropdown
         else:
             instance.c_user = self.user
         
-        # if commit if performed
+        # if commit is performed
         if commit:
             instance.save()
 
@@ -875,24 +870,24 @@ class labour_work_in_product_to_item_approval_form(forms.ModelForm):
 labour_work_in_product_to_item_approval_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
             form = labour_work_in_product_to_item_approval_form, extra = 0, can_delete = False)
 
-class cutting_room_form(UniqueFieldMixin, forms.ModelForm):
+class cutting_room_form(CompanyBaseForm):  #UniqueFieldMixin,
     class Meta:
         model = cutting_room
-        fields = ['cutting_room_name']
+        fields = ['cutting_room_name','company'] # company only for superusers
 
     # this way we can use a custom mixin or the below commented code 
-    def clean_cutting_room_name(self):
-        return self.clean_unique_field('cutting_room_name',cutting_room)
+    # def clean_cutting_room_name(self):
+    #     return self.clean_unique_field('cutting_room_name',cutting_room)
 
 
 
-class factory_employee_form(UniqueFieldMixin,forms.ModelForm):
+class factory_employee_form(CompanyBaseForm):  #UniqueFieldMixin,
     class Meta:
         model = factory_employee
-        fields = ['factory_emp_name','cutting_room_id']
+        fields = ['factory_emp_name','cutting_room_id', 'company'] #company only for superusers
 
-    def clean_factory_emp_name(self):
-        return self.clean_unique_field('factory_emp_name',factory_employee)
+    # def clean_factory_emp_name(self):
+    #     return self.clean_unique_field('factory_emp_name',factory_employee)
     
 
 
