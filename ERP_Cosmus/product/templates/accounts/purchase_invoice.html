@@ -89,8 +89,8 @@
                     <td><span class="rowNo" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="">{{forloop.counter}}</span></td>
                     <td>
                         <div class="custom-dropdown-container">
-                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="item-select search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                            <div name="select_item_name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="product2Selectpurchase search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                            <div name="select_item_name_{{forloop.counter0}}" class="product2Selectpurchase item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                               
                            
                              </div>
@@ -99,7 +99,7 @@
                         
                     </td>
                     <td>
-                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 5px;" readonly>
+                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly>
                         
                     </td>
                     <td>
@@ -541,24 +541,24 @@ function randomValue (){
                         suggestionsContainer.empty();
 
                         $.each(filteredOptions, function(index, [key, value]) {
-                  let highlightedText = value;
-                  let colorStyle = '';
-                  if (searchQuery) {
-                    highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
-                    const valueCalculate = value.split("|")[1].trim(); 
+                            let highlightedText = value;
+                            let colorStyle = '';
+                            if (searchQuery) {
+                                highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                                const valueCalculate = value.split("|")[1].trim(); 
 
-                    // Initialize the color based on valueCalculate
-                    
-                    if (parseFloat(valueCalculate) > 0) {
-                        colorStyle = 'color: green;';
-                    } else {
-                        colorStyle = 'color: red;';
-                    }
-                    suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
-                } 
-                  
+                                // Initialize the color based on valueCalculate
+                                
+                                if (parseFloat(valueCalculate) > 0) {
+                                    colorStyle = 'color: green; float: right;';
+                                } else {
+                                    colorStyle = 'color: red;  float: right;';
+                                }
+                                suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+                            } 
+                            
                 
-                });
+                        });
                         
                     
                     },
