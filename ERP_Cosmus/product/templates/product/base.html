@@ -88,8 +88,8 @@
       <div class="item">
         <a class="sub-btn"><img src="../../../static/images/research.png" alt="document" style="width: 33px; padding-right: 10px;">Reports<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'all-raw-material-stock-report' %}" class="sub-item" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material Report</a>
-          <a href="{% url 'all-finished-goods-stock-report' %}" class="sub-item">Finished Goods</a>
+          <a href="{% url 'all-raw-material-stock-report' %}" class="sub-item" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material</a>
+          <a href="{% url 'all-finished-goods-stock-report' %}" class="sub-item" id="FinishedGoodsReportClick" onclick="navbarChange('Finished Goods Report')">Finished Goods</a>
           <a href="{% url 'credit-debit-report' %}" class="sub-item" id="creditDebitClick" onclick="navbarChange('Credit/Debit Report')">Purchase Report</a>
           <a href="" class="sub-item">Sales Report</a>
           <a href="" class="sub-item">Stock Transfer Report</a>
@@ -196,10 +196,12 @@
         <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Reports')">Reports</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-            <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material Report</a></li>
+            <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText" id="materialReportClick" onclick="navbarChange('Raw Material Report')">Raw Material</a></li>
+            <li class="pro-head"><a href="{% url 'all-finished-goods-stock-report' %}" class="navText" id="FinishedGoodsReportClick" onclick="navbarChange('Finished Goods Report')">Finished Goods</a></li>
             <li class="pro-head"><a href="{% url 'credit-debit-report' %}" class="navText" id="creditDebitClick" onclick="navbarChange('Credit/Debit Report')">Purchase Report</a></li> 
             <li class="pro-head"><a href="" class="navText">Stock Transfer Report</a></li> 
-            <li class="pro-head"><a href="" class="navText">Sales Report</a></li> 
+            <li class="pro-head"><a href="" class="navText">Sales Report</a></li>
+            <a href="" class="sub-item"></a> 
           </ul>  
         </li>
         <li class="nav-item my-3 mx-2  dropdown">
@@ -586,7 +588,7 @@
         'newOrderClick','addNewOrderClick','editButtonNewOrderClick','id_submit_2','purchaseOrderClick','purchaseOrderRawMaterialClick','purchaseOrderRawMaterialView','id_submitPurchaseOrder',
         'cuttingOrderClick','purchaseOrderCuttingOrder','PurchaseOrderCuttingView','id_submitPurchaseOrderCutting','cuttingCapList','labourWorkOutClick','createLabourWorkOut','viewLabourWorkOut','id_submitLabourWorkOut',
         'labourWorkInClick','addLabourWorkIn','editButtonLabourWorkin','editButtonLabourWorkinView','id_submitLabourWorkIn','directcreateLabourWorkin','id_submit','labourWorkInCreateClick',
-        'PendingFinishedGoods_Click','PurchaseOrderCuttingGoodsView','PurchaseOrderLabourWorkInView'];
+        'PendingFinishedGoods_Click','PurchaseOrderCuttingGoodsView','PurchaseOrderLabourWorkInView','FinishedGoodsReportClick','cuttingRoomList'];
         
         items.forEach(item=> localStorage.removeItem(item));
       
@@ -686,7 +688,9 @@
         'Purchase Order Wise': 'labourWorkInCreateClick',
         'Goods Return List':'PendingFinishedGoods_Click',
         'Goods Return List':'PurchaseOrderCuttingGoodsView',
-        'Purchase Order Wise':'PurchaseOrderLabourWorkInView'
+        'Purchase Order Wise':'PurchaseOrderLabourWorkInView',
+        'Finished Goods Report':'FinishedGoodsReportClick',
+        'Cutting Room Qty':'cuttingRoomList',
     };
       if(storageItems[clickedItem]) {
         
@@ -789,7 +793,9 @@
         'labourWorkInCreateClick':'Purchase Order Wise',
         'PendingFinishedGoods_Click':'Goods Return List',
         'PurchaseOrderCuttingGoodsView':'Goods Return List',
-        'PurchaseOrderLabourWorkInView':'Purchase Order Wise'
+        'PurchaseOrderLabourWorkInView':'Purchase Order Wise',
+        'FinishedGoodsReportClick':'Finished Goods Report',
+        'cuttingRoomList': 'Cutting Room Qty',
     };
 
     const newHeading = document.getElementById('newHeading');

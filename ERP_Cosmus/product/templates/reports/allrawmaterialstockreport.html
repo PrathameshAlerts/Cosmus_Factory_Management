@@ -18,7 +18,7 @@
             <tr class="text-nowrap">
                 <td>{{forloop.counter}}</td>   
                 <td>{{report.items.item_name}}</td>
-                <td><button style="background-color: #89CFF0;" class=" rounded text-white outline-none p-1 border-0"><a class="text-black text-decoration-none" href="{% url 'godown-item-report-all-godowns' report.id %}">{{report.item_shade_name}}</a></td></button> 
+                <td><button style="background-color: #89CFF0;" class=" rounded text-white outline-none p-1 border-0"><a class="text-black text-decoration-none" href="{% url 'godown-item-report-all-godowns' report.id %}">{{report.item_shade_name}}</a></button></td>
                 <td class="toatlQty">{{report.total_qty | default_if_none:0}}</td>
                 {% if report.godown_shades.all %}
                 <td>
