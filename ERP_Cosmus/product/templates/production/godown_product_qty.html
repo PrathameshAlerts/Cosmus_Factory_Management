@@ -1,0 +1,15 @@
+
+{% for record in product_quantity %}
+
+{{record.Product_Brand}}
+{% for p in  record.productdetails.all %}
+{{p.PProduct_SKU}}
+{% endfor %}
+
+{{ record.product_cats.first.SubCategory_id.product_main_category.product_category_name }}
+
+<a href="{% url 'finished-goods-godown-product-ref-wise-report' record.Product_Refrence_ID %}">{{record.Product_Refrence_ID}}</a>
+{{record.Model_Name}}
+{{record.total_quantity_product}}
+
+{% endfor %}

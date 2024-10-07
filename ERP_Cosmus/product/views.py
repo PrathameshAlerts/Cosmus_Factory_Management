@@ -4913,7 +4913,8 @@ def goods_return_popup(request,pk):
                     form_instance = form.save(commit=False)
     
                     godown_instance =  Godown_finished_goods.objects.get(id=godown_name_post)
-                    obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance, product_color_name__PProduct_SKU = form_instance.product_sku)
+                    selected_product = PProduct_Creation.objects.get(PProduct_SKU = form_instance.product_sku)
+                    obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance, product_color_name = selected_product)
 
                     if created:
                         quantity_to_add = 0
@@ -4921,7 +4922,9 @@ def goods_return_popup(request,pk):
                     else:
                         quantity_to_add = obj.quantity
 
-                    obj.quantity = quantity_to_add + form.approved_qty
+
+                    obj.quantity = quantity_to_add + form_instance.approved_qty  # instead of form_instance.approved_qty use difference 
+                    obj.save()
                     form_instance.save()
 
                 
@@ -4938,6 +4941,21 @@ def goods_return_popup(request,pk):
                 return HttpResponse(close_window_script)
 
     return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns})
+
+
+
+def finished_goods_godown_wise_report(request, g_id):
+    
+    product_quantity = Product.objects.filter(productdetails__godown_colors__godown_name__id=g_id).annotate(total_quantity_product=Sum('productdetails__godown_colors__quantity'))
+    return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity})
+
+def finished_goods_godown_product_ref_wise_report(request, ref_no):
+    print(ref_no)
+
+
+
+
+
 
 #_________________________production-end__________________________________________
 

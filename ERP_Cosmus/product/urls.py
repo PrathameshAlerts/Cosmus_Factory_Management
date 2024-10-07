@@ -230,6 +230,10 @@ urlpatterns = [
     path('rawmaterialexceldownload/', views.raw_material_excel_download, name='raw-material-excel-download'),
     path('rawmaterialexcelupload/', views.raw_material_excel_upload, name='raw-material-excel-upload'),
 
+    path('godownproductreport/<int:g_id>', views.finished_goods_godown_wise_report, name = 'finished-goods-godown-wise-report'),
+    path('finishedgoodsgodownproductrefwisereport/<int:ref_no>', views.finished_goods_godown_product_ref_wise_report, name = 'finished-goods-godown-product-ref-wise-report'),
+
+
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),
