@@ -4911,10 +4911,13 @@ def goods_return_popup(request,pk):
             if formset.is_valid():
                 for form in formset:
                     form_instance = form.save(commit=False)
-                    obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_nam = godown_name_post,product_color_name__PProduct_SKU=form_instance.product_sku)
+    
+                    godown_instance =  Godown_finished_goods.objects.get(id=godown_name_post)
+                    obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance, product_color_name__PProduct_SKU = form_instance.product_sku)
 
                     if created:
                         quantity_to_add = 0
+
                     else:
                         quantity_to_add = obj.quantity
 

@@ -578,7 +578,7 @@ class Godown_finished_goods(models.Model):
 class product_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_finished_goods, on_delete = models.PROTECT, related_name= 'finished_godown_names')
     product_color_name = models.ForeignKey(PProduct_Creation, related_name = 'godown_colors', on_delete = models.PROTECT)
-    quantity = models.BigIntegerField()
+    quantity = models.BigIntegerField(default = 0)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
 
