@@ -1775,7 +1775,20 @@ input[type=number] {
     padding-left: 5px;
     height: 33px;
 }
-
+.product2SelectItems{
+    width: 372px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+}
+.product2Selectpurchase{
+    width: 320px;
+    border: 1px solid #cecdcd;
+    border-radius: 3px;
+    padding-left: 5px;
+    height: 33px;
+}
 .highlight {
      /* Example: Highlight with yellow background */
     color: red;

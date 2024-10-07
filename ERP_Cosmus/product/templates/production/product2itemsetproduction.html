@@ -54,8 +54,8 @@
                             <span id="uniqueError_{{forloop.counter0}}" class="error-messagesorderCreate" ></span>
                             <div class="custom-dropdown-container">
                                 <input type="hidden" name="{{form.prefix}}-Item_pk" id="id_{{form.prefix}}-Item_pk" class="product2Select input_hidden-value" value="{% if form.instance.id %}{{ form.instance.Item_pk.id }}{% endif %}">
-                                <input type="text" name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks" class="product2Select input_text search-input" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
-                                <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
+                                <input type="text" name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks" class="product2Selectpurchase input_text search-input" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
+                                <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="product2Selectpurchase item-name s-suggestion-container" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
                                 </div>
                             </div>
                         </td>
@@ -101,8 +101,8 @@
                                 <span id="commonCreateError_{{forloop.counter0}}" class="error-messagesorderCreate"></span>
                                 <div class="custom-dropdown-container">
                                     <input type="hidden" name="{{forms.prefix}}-Item_pk" id="id_{{forms.prefix}}-Item_pk" class="product2Select commom_item_hidden" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.id }}{% endif %}">
-                                    <input type="text" name="{{forms.prefix}}-Item_pks" id="id_{{forms.prefix}}-Item_pks" class="product2Select commom_item search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.item_name}}{% endif %}" data-key="">
-                                    <div name="item_input_Name_{{forloop.counter0}}" id="id_item_input_Name_{{forloop.counter0}}" class="item-select item-name s-suggestion-container" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
+                                    <input type="text" name="{{forms.prefix}}-Item_pks" id="id_{{forms.prefix}}-Item_pks" class="product2Selectpurchase commom_item search-input" placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.Item_pk.item_name}}{% endif %}" data-key="">
+                                    <div name="item_input_Name_{{forloop.counter0}}" id="id_item_input_Name_{{forloop.counter0}}" class="product2Selectpurchase item-name s-suggestion-container" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
                                     </div>
                                 </div>
                             </td>
@@ -214,13 +214,24 @@
 
                         suggestionsContainerUniqueId.empty();
 
-                        $.each(filteredOptions, function (index, [key, value]) {       // Display suggestions
+                        $.each(filteredOptions, function(index, [key, value]) {
                             let highlightedText = value;
+                            let colorStyle = '';
                             if (searchQuery) {
-                                highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
-                            }
+                                highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                                const valueCalculate = value.split("|")[1].trim(); 
 
-                            suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
+                                // Initialize the color based on valueCalculate
+                                
+                                if (parseFloat(valueCalculate) > 0) {
+                                    colorStyle = 'color: green; float: right;';
+                                } else {
+                                    colorStyle = 'color: red; float: right;';
+                                }
+                                suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+                            } 
+                            
+                            
                         });
                     },
                     error: function (xhr) {
@@ -560,12 +571,24 @@
 
                         suggestionsContainerCommon.empty();
 
-                        $.each(filteredOptions, function (index, [key, value]) {
-                            let highlightedTexts = value;
+                        $.each(filteredOptions, function(index, [key, value]) {
+                            let highlightedText = value;
+                            let colorStyle = '';
                             if (searchQuery) {
-                                highlightedTexts = value.replace(regex, '<span class="highlight">$1</span>');
-                            }
-                            suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${highlightedTexts}</div>`);
+                                highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                                const valueCalculate = value.split("|")[1].trim(); 
+
+                                // Initialize the color based on valueCalculate
+                                
+                                if (parseFloat(valueCalculate) > 0) {
+                                    colorStyle = 'color: green; float: right;';
+                                } else {
+                                    colorStyle = 'color: red; float: right;';
+                                }
+                                suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+                            } 
+                            
+                            
                         });
                     },
                     error: function (xhr) {

@@ -12,8 +12,8 @@
       {% if not form.instance.id %}
       <label for="id_item-to-clone" class="item-form text-primary fw-bold">Clone Item: </label>
       <div class="custom-dropdown-container">
-        <input type="text" class="product2Select" name="item-to-clone"  id="id_item-to-clone" maxlength="255" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}" data-key="" style="border: 2px solid #007df9;" >
-        <div class="item-select item-name s-suggestion-container" id="search-results" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
+        <input type="text" class="product2SelectItems" name="item-to-clone"  id="id_item-to-clone" maxlength="255" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}" data-key="" style="border: 2px solid #007df9;" >
+        <div class="product2SelectItems item-name s-suggestion-container" id="search-results" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
 
         </div>
       </div>
@@ -394,12 +394,22 @@ function TotalValueCalculation(){
        
                 suggestions.empty();
                 $.each(filteredOptions, function(index, [key, value]) {
-                let highlightedText = value;
-        
-                if (searchQuery) {
-                    highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                  let highlightedText = value;
+                  let colorStyle = '';
+                  if (searchQuery) {
+                    highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                    const valueCalculate = value.split("|")[1].trim(); 
+
+                    // Initialize the color based on valueCalculate
+                    
+                    if (parseFloat(valueCalculate) > 0) {
+                        colorStyle = 'color: green; float: right;';
+                    } else {
+                        colorStyle = 'color: red; float: right;';
+                    }
+                    suggestions.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
                 } 
-                  suggestions.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
+                  
                 
                 });
               
@@ -418,7 +428,7 @@ function TotalValueCalculation(){
     
         suggestions.on('click', '.itemName-div-suggestion', function() {
        
-       $(this).closest('.custom-dropdown-container').find('.product2Select').val($(this).text().trim());
+       $(this).closest('.custom-dropdown-container').find('.product2SelectItems').val($(this).text().trim());
        $(this).addClass('selected').siblings().removeClass('selected');
 
        const itemValue = $(this).attr('data-key');
@@ -453,7 +463,7 @@ function TotalValueCalculation(){
     })
     
     
-$(document).on('click', '.product2Select',function(){
+$(document).on('click', '.product2SelectItems',function(){
         var selectValue = $(this).next('.s-suggestion-container');
         selectValue.css('display', 'none');
         selectValue.empty();
@@ -523,7 +533,7 @@ $(document).on('click', '.product2Select',function(){
                   index = index - 1;
             }
             
-            if(index <= selectLength){
+            if(index <= optionsCount){
           
            const selectedItem = $options.eq(index);
            const prevItem = selectedItem.prev();

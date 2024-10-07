@@ -1,16 +1,65 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
 
-{% for record in product_quantity %}
 
-{{record.Product_Brand}}
+<div class="row">
+    <div class="col-lg-11 mt-3">
+        <div class="d-flex mb-3">
+            <h4>Finish Goods</h4>-<span class="text-danger fw-bold"></span>
+        </div>
+         
+        <table class="table table-striped table-hover table-bordered" id="goodsReports">
+            <thead class="name_absolute sticky-top">
+                <tr>
+                    <th>No</th>
+                    <th>Brand Name</th>
+                    <th>SKU ID</th>
+                    <th>Category</th>
+                    <th>Ref No</th>
+                    <th>Model Name</th>
+                    <th>Stock </th>
+                    <th>All Godown Stock</th>
+                    <th>UNfinished Stage</th>
+                </tr>
+            </thead>
+            <tbody class="mainTableList">
+                {% for record in product_quantity %}
+                <tr id="refrenceIds">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{record.Product_Brand}}</td>
+                    <td>
+                        {% for p in  record.productdetails.all %}
+                        <span>{{p.PProduct_SKU}}</span><br>
+                        {% endfor %}
+                    </td>
+                    <td>{{record.product_cats.first.SubCategory_id.product_main_category.product_category_name}}</td>
+                    <td class="refrenceId">{{record.Product_Refrence_ID}}</td>
+                    <td><span class="text-danger fw-bold">{{record.Model_Name}}</span></td>
+                    <td>{{record.total_quantity_product}}</td>
+                    <td>{{record.total_quantity_all_godown}}</td>
+                    <td>0000</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-{% for p in  record.productdetails.all %}
-{{p.PProduct_SKU}}
-{% endfor %}
+<script>
+    function referenceButtonClick(){
+        var goodsReports = document.querySelector('.mainTableList tr');
+       
+            goodsReports.style.cursor = 'pointer';
+            document.getElementById('goodsReports').addEventListener('click',function(event){
+                event.preventDefault();
+                var refrenceId = goodsReports.querySelector('.refrenceId').textContent;
+                var refId = parseInt(refrenceId);
+                console.log(typeof(refId));
+                window.location.href = "/finishedgoodsgodownproductrefwisereport/" + refId;
+            })
+    }
+    referenceButtonClick();
+</script>
 
-{{ record.product_cats.first.SubCategory_id.product_main_category.product_category_name }}
-
-<a href="{% url 'finished-goods-godown-product-ref-wise-report' record.Product_Refrence_ID %}">{{record.Product_Refrence_ID}}</a>
-{{record.Model_Name}}
-{{record.total_quantity_product}}
-
-{% endfor %}
+{% endblock %}

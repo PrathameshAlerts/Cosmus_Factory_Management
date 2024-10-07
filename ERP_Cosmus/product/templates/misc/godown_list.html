@@ -58,7 +58,7 @@
             {% for godown in godowns_finished %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td><a href="{% url 'finished-goods-godown-wise-report' godown.id %}">{{ godown.godown_name_finished }}</a></td>
+              <td><a href="{% url 'finished-goods-godown-wise-report' godown.id %}" style="text-decoration: none; color: #000">{{ godown.godown_name_finished }}</a></td>
               <td><a href="{% url 'godown-update' 'finished' godown.id %}" id="editGodownfinished" onclick="navbarChange('Edit Finished Godown')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ godown.id }}" data-type="{{ 'finished' }}" data-bs-toggle="" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>
