@@ -233,6 +233,8 @@ urlpatterns = [
     path('godownproductreport/<int:g_id>', views.finished_goods_godown_wise_report, name = 'finished-goods-godown-wise-report'),
     path('finishedgoodsgodownproductrefwisereport/<int:ref_no>', views.finished_goods_godown_product_ref_wise_report, name = 'finished-goods-godown-product-ref-wise-report'),
 
+    path('allfinishedgoodsstockreport/', views.allfinishedgoodsstockreport, name = 'all-finished-goods-stock-report'),
+
 
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),

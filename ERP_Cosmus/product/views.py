@@ -4908,28 +4908,52 @@ def goods_return_popup(request,pk):
         if request.method == 'POST':
             godown_name_post = request.POST.get('godown_name_post')
             formset.forms = [form for form in formset if form.has_changed()]
+
             if formset.is_valid():
-                for form in formset:
-                    form_instance = form.save(commit=False)
-    
-                    godown_instance =  Godown_finished_goods.objects.get(id=godown_name_post)
-                    selected_product = PProduct_Creation.objects.get(PProduct_SKU = form_instance.product_sku)
-                    obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance, product_color_name = selected_product)
+                with transaction.atomic():
+                    try:
+                        for form in formset:
+                            form_instance = form.save(commit=False)
+            
+                            godown_instance =  Godown_finished_goods.objects.get(id=godown_name_post)
+                            selected_product = PProduct_Creation.objects.get(PProduct_SKU = form_instance.product_sku)
+                            obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance, product_color_name = selected_product)
 
-                    if created:
-                        quantity_to_add = 0
+                            if created:
+                                quantity_to_add = 0
 
-                    else:
-                        quantity_to_add = obj.quantity
+                            else:
+                                quantity_to_add = obj.quantity
+                            
+                            if form_instance.pk:
+                                labour_workin_instance = labour_work_in_product_to_item.objects.get(pk = form_instance.pk)
+
+                                approved_qty_differ = form_instance.approved_qty - labour_workin_instance.approved_qty 
+                            else:
+                                approved_qty_differ = form_instance.approved_qty
+
+                            obj.quantity = quantity_to_add + approved_qty_differ  # instead of form_instance.approved_qty use difference 
+
+                            obj.save()
+                            form_instance.save()
+
+                        messages.success(request,'Products Successfully recieved')
+
+                    except Exception as e:
+                        messages.error(request,f'Error with Formset - {e}')
 
 
-                    obj.quantity = quantity_to_add + form_instance.approved_qty  # instead of form_instance.approved_qty use difference 
-                    obj.save()
-                    form_instance.save()
+                # JavaScript to close the popup window
+                close_window_script = """
+                <script>
+                window.opener.location.reload(true);  // Reload parent window if needed
+                window.close();  // Close current window
+                </script>
+                """
+                return HttpResponse(close_window_script)
 
-                
-                messages.success(request,'Product images sucessfully added.')
-                    
+            else:
+                messages.error(request,f'Error with Formset {formset.errors}')
 
                 # JavaScript to close the popup window
                 close_window_script = """
@@ -4950,10 +4974,9 @@ def finished_goods_godown_wise_report(request, g_id):
     return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity})
 
 def finished_goods_godown_product_ref_wise_report(request, ref_no):
-    print(ref_no)
+    purchase_instances = labour_workout_childs.objects.all()
 
-
-
+    return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances})
 
 
 
@@ -5473,6 +5496,14 @@ def allrawmaterialstockreport(request):
     return render(request,'reports/allrawmaterialstockreport.html',{'queryset':queryset})
 
 
+
+
+@login_required(login_url='login')
+def allfinishedgoodsstockreport(request):
+    product_queryset = PProduct_Creation.objects.all().annotate(total_qty = Sum(
+        'godown_colors__quantity')).order_by('Product__Model_Name')
+    print(product_queryset)
+    return render(request,'reports/allfinishedgoodsstockreport.html',{'product_queryset':product_queryset})
 
 
 @login_required(login_url='login')

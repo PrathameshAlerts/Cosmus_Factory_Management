@@ -2,6 +2,7 @@
 {% for record in product_quantity %}
 
 {{record.Product_Brand}}
+
 {% for p in  record.productdetails.all %}
 {{p.PProduct_SKU}}
 {% endfor %}

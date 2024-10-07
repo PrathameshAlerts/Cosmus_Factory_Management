@@ -1,0 +1,18 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+
+{% for query in product_queryset %}
+
+{{query.Product.Product_Name}}
+
+{{query.PProduct_color}}
+
+{{query.PProduct_SKU}}
+
+{{query.total_qty}}
+
+{% endfor %}
+
+{% endblock %}
