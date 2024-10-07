@@ -5122,7 +5122,6 @@ def itemdynamicsearchajax(request):
 
 
 
-@login_required(login_url='login')
 def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
     
     if searched_value:
@@ -5151,6 +5150,7 @@ def UniqueValidCheckAjax(request):
     
     if 'purchase_number' in searched_from:
         searched_value = request.GET.get('purchase_number').strip()
+        print(searched_value)
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
 
@@ -5190,7 +5190,11 @@ def UniqueValidCheckAjax(request):
         col_name = None
 
 
-    return CheckUniqueFieldDuplicate(model_name,searched_value,col_name)
+    # Ensure model_name, searched_value, and col_name are valid
+    if model_name and searched_value and col_name:
+        return CheckUniqueFieldDuplicate(model_name, searched_value, col_name)
+    else:
+        return JsonResponse({'Status': 'Invalid data received'}, status=400)
 
 
             
