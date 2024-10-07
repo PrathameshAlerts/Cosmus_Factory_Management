@@ -515,11 +515,12 @@ $(document).ready(function(){
                 'nameValue': nameValue
             },
             success: function (response) {
-              const searchData = response.searched_item_name_dict
+              const searchData = response.searched_item_name_dict;
               function escapeRegExp(string) {
                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                }
                const searchQuery = nameValue.toLowerCase();
+              
                const escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                const regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
 
@@ -527,12 +528,22 @@ $(document).ready(function(){
        
                 suggestions.empty();
                 $.each(filteredOptions, function(index, [key, value]) {
-                let highlightedText = value;
-        
-                if (searchQuery) {
-                    highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                  let highlightedText = value;
+                  let colorStyle = '';
+                  if (searchQuery) {
+                    highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                    const valueCalculate = value.split("|")[1].trim(); 
+
+                    // Initialize the color based on valueCalculate
+                    
+                    if (parseFloat(valueCalculate) > 0) {
+                        colorStyle = 'color: green;';
+                    } else {
+                        colorStyle = 'color: red;';
+                    }
+                    suggestions.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
                 } 
-                  suggestions.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
+                  
                 
                 });
               
@@ -656,7 +667,7 @@ $(document).on('click', '.product2Select',function(){
                   index = index - 1;
             }
             
-            if(index <= selectLength){
+            if(index <= optionsCount){
           
            const selectedItem = $options.eq(index);
            const prevItem = selectedItem.prev();

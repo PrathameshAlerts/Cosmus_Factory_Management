@@ -541,13 +541,24 @@ function randomValue (){
                         suggestionsContainer.empty();
 
                         $.each(filteredOptions, function(index, [key, value]) {
-                            var highlightedText = value;
-                            if (searchQuery) {
-                                highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
-                            }
-                        
-                            suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${highlightedText}</div>`);
-                        });
+                  let highlightedText = value;
+                  let colorStyle = '';
+                  if (searchQuery) {
+                    highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                    const valueCalculate = value.split("|")[1].trim(); 
+
+                    // Initialize the color based on valueCalculate
+                    
+                    if (parseFloat(valueCalculate) > 0) {
+                        colorStyle = 'color: green;';
+                    } else {
+                        colorStyle = 'color: red;';
+                    }
+                    suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+                } 
+                  
+                
+                });
                         
                     
                     },

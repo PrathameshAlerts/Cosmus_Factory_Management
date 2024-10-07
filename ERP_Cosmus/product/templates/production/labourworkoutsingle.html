@@ -128,8 +128,8 @@
                     <div class="d-flex pb-2">
                         <label for="id_OderQty" class="text-danger">Total:</label>
                         <input type="number" class="productorderqty-input text-danger" name="OrderQty" id="id_OderQty" value="{{form.instance.number_of_pieces}}" style="margin-left: 232px;" readonly>
-                        <input type="number" class="productorderqty-input text-danger " name="balanceQtys" id="id_balanceQtys" value="0" style="margin-left: 60px;" readonly>
-                        <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="0" style="margin-left: 47px;" readonly>
+                        <input type="number" class="productorderqty-input text-danger " name="balanceQtys" id="id_balanceQtys" value="" style="margin-left: 60px;" readonly>
+                        <input type="number" class="productorderqty-input text-danger " name="processQty" id="id_processQty" value="" style="margin-left: 47px;" readonly>
                     
                     </div>
                 </div>
@@ -210,9 +210,7 @@
 </div>
 <script>
 
-    window.onload = function() {
-        document.forms[0].reset();
-    };
+
 
 
     var popUpWindow = null;
@@ -337,21 +335,22 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
     })
 
    
-function labourApprovedQty() {
-
+    function labourApprovedQty() {
+    var totals = 0;
+    var balanceQty = 0;
+    var approveQty = 0;
     const ids = document.getElementById('id_labour_workout_cutting_items_set-0-id').value;
+    console.log('ids', ids);
 
-    if(ids !== ""){
+    if (ids !== "") {
         const submitButton = document.getElementById('id_submitLabourWorkOut');
         const challanNo = document.getElementById('id_challan_no');
         const labourname = document.getElementById('id_labour_name');
         const totalApprove = document.getElementById('id_total_approved_pcs');
         const totalProcessed = document.getElementById('id_total_process_pcs');
         const totalBalance = document.getElementById('id_total_balance_pcs');
-        let totals =0;
-        let balanceQty = 0;
-        let approveQty = 0;
-        challanNo.readOnly = 'true';
+
+        challanNo.readOnly = true;
         challanNo.style.backgroundColor = 'transparent';
         challanNo.style.border = 'none';
         challanNo.style.outline = 'none';
@@ -362,33 +361,35 @@ function labourApprovedQty() {
         totalBalance.style.backgroundColor = 'transparent';
         totalBalance.style.border = 'none';
         submitButton.style.display = 'none';
-        labourname.disabled = 'true';
+        labourname.disabled = true;
         labourname.style.backgroundColor = 'transparent';
+
         const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
-        processQty.forEach(function(element){
-            element.readOnly = 'true';
+        processQty.forEach(function (element) {
+            element.readOnly = true;
             element.style.backgroundColor = 'transparent';
             element.style.border = 'none';
             element.style.outline = 'none';
+
             const row = element.closest('tr');
-            const approvedQty = parseInt(element.value);
-            const aproveValue = row.querySelector('[name$="-pending_pcs"]').value;
-            const balanceValue = row.querySelector('[name$="-balance_pcs"]').value;
+            const approvedQty = parseInt(element.value) || 0;
+            const aproveValue = parseInt(row.querySelector('[name$="-pending_pcs"]').value) || 0;
+            const balanceValue = parseInt(row.querySelector('[name$="-balance_pcs"]').value) || 0;
 
-            const approvedViewValue = parseInt(aproveValue) || 0;
-            const balanceViewValue = parseInt(balanceValue) || 0;
-            balanceQty += balanceViewValue;
-            approveQty += approvedViewValue;
+            balanceQty += balanceValue;
+            approveQty += aproveValue;
             totals += approvedQty;
-           
             document.getElementById('id_processQty').value = totals;
-            document.getElementById('id_balanceQtys').value = balanceQty;
             document.getElementById('id_OderQty').value = approveQty;
-        })
-
-       
+            document.getElementById('id_balanceQtys').value = balanceQty;
+        });
+    }else{
+    window.onload = function() {
+        document.forms[0].reset();
+    };
     }
 }
+
 labourApprovedQty()
     
 function updateBalanceAndProcessQty() {
@@ -396,7 +397,7 @@ function updateBalanceAndProcessQty() {
     var totalBalance = 0;
     var totalProcess = 0;
     var forms = parseInt(document.getElementById('id_labour_workout_child_items-TOTAL_FORMS').value);
-    
+    console.log('Test')
     var prcocessMainValue = parseInt(document.getElementById('id_processQty').value) || 0;
     var balanceMainValue = document.getElementById('id_balanceQtys');
     var apprvedMainValue = document.getElementById('id_OderQty');
@@ -413,7 +414,7 @@ function updateBalanceAndProcessQty() {
         var balanceValue = parseInt(balanced.value) || 0;
         var processValue = parseInt(processed.value) || 0;
         var balanceViewValue = parseInt(balanceView.value) || 0;
-
+        
         // Adjust the process value if it exceeds the balance view value
         if (processValue > balanceViewValue) {
             totalProcess += balanceViewValue; // Add up the balanced quantity to total process
@@ -425,9 +426,10 @@ function updateBalanceAndProcessQty() {
         } else {
             totalProcess += processValue; // Accumulate process quantity if it's within the balance
           var  balance = balanceViewValue - processValue; // Update balance for the row
-     
+            
             balanced.value = balance;
             totalBalanceElement.value = balance;
+            console.log('balance', balance)
         }
 
         // Update approved quantity
@@ -436,13 +438,14 @@ function updateBalanceAndProcessQty() {
 
         // Accumulate total balance
         totalBalance += balance;
-        balanceMainValue.value =  totalBalance; // Update main balance
+        console.log('totalBalance', totalBalance);
+        balanceMainValue.value =  isNaN(totalBalance) ? 0 : totalBalance; // Update main balance
         totalBalanceElement.value = totalBalance; // Update total balance
 
         // Update total process quantity field
         totalProcessElement.value = totalProcess;
     }
-
+    console.log('totalProcess', totalProcess);
     // Update the main process value
     prcocessMainValue = totalProcess; // Ensure prcocessMainValue reflects the total processed quantity
     document.getElementById('id_processQty').value = prcocessMainValue;
@@ -517,11 +520,14 @@ labourworkoutBalanceQty()
 
 
 document.addEventListener('DOMContentLoaded', function() {
- 
+    labourApprovedQty()
+    // fabricQty();
+        //updateBalanceAndProcessQty();
+        // labourworkoutBalanceQty();
     const pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
     pendingQty.forEach(function(el){
       el.addEventListener('input',function(){
-        labourApprovedQty();
+    
         fabricQty();
         updateBalanceAndProcessQty();
         labourworkoutBalanceQty();

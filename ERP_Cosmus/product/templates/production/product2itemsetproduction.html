@@ -214,13 +214,24 @@
 
                         suggestionsContainerUniqueId.empty();
 
-                        $.each(filteredOptions, function (index, [key, value]) {       // Display suggestions
+                        $.each(filteredOptions, function(index, [key, value]) {
                             let highlightedText = value;
+                            let colorStyle = '';
                             if (searchQuery) {
-                                highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
-                            }
+                                highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                                const valueCalculate = value.split("|")[1].trim(); 
 
-                            suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
+                                // Initialize the color based on valueCalculate
+                                
+                                if (parseFloat(valueCalculate) > 0) {
+                                    colorStyle = 'color: green;';
+                                } else {
+                                    colorStyle = 'color: red;';
+                                }
+                                suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+                            } 
+                            
+                            
                         });
                     },
                     error: function (xhr) {
@@ -560,12 +571,24 @@
 
                         suggestionsContainerCommon.empty();
 
-                        $.each(filteredOptions, function (index, [key, value]) {
-                            let highlightedTexts = value;
+                        $.each(filteredOptions, function(index, [key, value]) {
+                            let highlightedText = value;
+                            let colorStyle = '';
                             if (searchQuery) {
-                                highlightedTexts = value.replace(regex, '<span class="highlight">$1</span>');
-                            }
-                            suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">${highlightedTexts}</div>`);
+                                highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                                const valueCalculate = value.split("|")[1].trim(); 
+
+                                // Initialize the color based on valueCalculate
+                                
+                                if (parseFloat(valueCalculate) > 0) {
+                                    colorStyle = 'color: green;';
+                                } else {
+                                    colorStyle = 'color: red;';
+                                }
+                                suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+                            } 
+                            
+                            
                         });
                     },
                     error: function (xhr) {
