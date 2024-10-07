@@ -2,17 +2,57 @@
 {% load static %}
 {% block body %}
 
+<div class="col-lg-10 mt-2">
+    <table class="table table-hover table-bordered table-striped">
+        <thead class="sticky-top name_absolute">
+            <tr>
+                <th>No</th> 
+                <th>Product Name</th> 
+                <th>Color</th>
+                <th>SKU ID</th>
+                <th>Total Qty</th> 
+            </tr>
+        </thead>
+        <tbody class="mainTableList">
+            {% for query in product_queryset %}
+            <tr class="text-nowrap">
+                <td>{{forloop.counter}}</td>   
+                <td>{{query.Product.Product_Name}}</td>
+                <td>{{query.PProduct_color}}</td>
+                <td>{{query.PProduct_SKU}}</td>
+                <td class="toatlQty">{{query.total_qty | default_if_none:0}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+</div>
 
-{% for query in product_queryset %}
+<script>
+    function totalValueCheck(){
+        var  totalqty = document.querySelectorAll('.toatlQty');
+        totalqty.forEach(element => {
+            var value = element.textContent;
+        
+            if(value > 0){
+                element.style.color = "green";
+            }else{
+                element.style.color = "red";
+            }
 
-{{query.Product.Product_Name}}
+        });
 
-{{query.PProduct_color}}
+        var gTotalqty = document.querySelectorAll('.gTotalQty');
+        gTotalqty.forEach(element => {
+            var value = element.textContent;
+            if(value > 0){
+                element.style.color = "green";
+            }else{
+                element.style.color = "red";
+            }
+        });
+    }
 
-{{query.PProduct_SKU}}
-
-{{query.total_qty}}
-
-{% endfor %}
-
+    totalValueCheck()
+</script>
 {% endblock %}
