@@ -240,7 +240,7 @@ def edit_production_product(request,pk):
                                         p2i_instances_configs.body_combi = body_combi
                                         p2i_instances_configs.dimention_total = dimention_total
                                         p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
-                                        p2i_config_instance.producttoitem.grand_total_combi = grand_total_combi   # assign grand_total_combi value to grand_total of parent model                     
+                                        p2i_instances_configs.producttoitem.grand_total_combi = grand_total_combi   # assign grand_total_combi value to grand_total of parent model                     
 
 
                                         p2i_instances_configs.c_user = request.user
@@ -2737,7 +2737,7 @@ def packaging_delete(request,pk):
 
 @login_required(login_url='login')
 def product2item(request,product_refrence_id):
-    print(request.POST)
+   
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -3000,7 +3000,7 @@ def export_Product2Item_excel(request,product_ref_id):
         sheet2 = wb.worksheets[1]
 
 
-        column_widths = [10, 40, 20, 30, 20, 15, 10,10,10]  # Adjust these values as needed
+        column_widths = [10, 40, 20, 30, 20, 15, 12 ,12, 12, 12]  # Adjust these values as needed
 
         #fix the column width  of sheet1
         for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -3016,7 +3016,7 @@ def export_Product2Item_excel(request,product_ref_id):
 
 
         #for product_special_configs
-        headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','body/combi','grand_total']
+        headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','body/combi','grand_total', 'combi_total']
         sheet1.append(headers)
 
         # body_combi_choices = set_prod_item_part_name.BODY_COMBI
@@ -3034,8 +3034,10 @@ def export_Product2Item_excel(request,product_ref_id):
         row_count_to_unlock_total = 1
         for product in products_in_i2p_special:
             grand_total_parent = product.grand_total
+            grand_total_combi_parent = product.grand_total_combi
 
             rows_to_insert_s1 = []
+
             for product_configs in product.product_item_configs.all():
                 rows_to_insert_s1.append([
                 product_configs.id,
@@ -3066,12 +3068,12 @@ def export_Product2Item_excel(request,product_ref_id):
             row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
 
             # Insert a blank row and grand total from parent model in sheet after every product data has inserted
-            sheet1.append(['','','','','','','','', grand_total_parent])
+            sheet1.append(['','','','','','','','', grand_total_parent , grand_total_combi_parent])
         
             rows_to_insert_s1.clear()
 
         # unlock the rows ment for editing 
-        for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=8):
+        for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=9):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
@@ -3082,6 +3084,7 @@ def export_Product2Item_excel(request,product_ref_id):
         row_count_to_unlock_total_common = 1
         for product in products_in_i2p_common:
             grand_total_parent = product.grand_total
+            grand_total_combi_parent = product.grand_total_combi
 
             rows_to_insert_s2 = []
             for product_configs in product.product_item_configs.all():
@@ -3103,12 +3106,12 @@ def export_Product2Item_excel(request,product_ref_id):
             row_count_to_unlock_total_common =  row_count_to_unlock_total_common + row_count_to_unlock
 
             # Insert a blank row and grant total from parent in sheet after every product data has inserted
-            sheet2.append(['','','','','','','',grand_total_parent])
+            sheet2.append(['','','','','','','',grand_total_parent, grand_total_combi_parent])
 
             rows_to_insert_s2.clear()
 
         # unlock the rows ment for editing 
-        for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=8):
+        for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=9):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
