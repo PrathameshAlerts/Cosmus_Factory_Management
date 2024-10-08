@@ -2968,7 +2968,7 @@ def product2item(request,product_refrence_id):
         })
 
 
-from openpyxl.worksheet.datavalidation import DataValidation
+# from openpyxl.worksheet.datavalidation import DataValidation
 @login_required(login_url='login')
 def export_Product2Item_excel(request,product_ref_id):
     
@@ -3013,8 +3013,6 @@ def export_Product2Item_excel(request,product_ref_id):
             col_letter = get_column_letter(i)
             sheet2.column_dimensions[col_letter].width = column_width
 
-
-
         #for product_special_configs
         headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','body/combi','grand_total', 'combi_total']
         sheet1.append(headers)
@@ -3050,7 +3048,6 @@ def export_Product2Item_excel(request,product_ref_id):
                 product_configs.body_combi
             ])
 
-            
             row_count_to_unlock = 1
 
             for row in rows_to_insert_s1:
@@ -3059,8 +3056,8 @@ def export_Product2Item_excel(request,product_ref_id):
                 # # Get the cell reference for the "Body/Combi" column (column H)
                 # cell_ref = f'H{sheet1.max_row}'
                 # sheet1.add_data_validation(dv)
-                # print(dv)
-                # dv.add(sheet1[cell_ref])  # Add dropdown to the "Body/Combi" column
+            
+                # dv.add(sheet1[cell_ref])  #Add dropdown to the "Body/Combi" column
 
 
                 row_count_to_unlock = row_count_to_unlock + 1
@@ -3073,12 +3070,12 @@ def export_Product2Item_excel(request,product_ref_id):
             rows_to_insert_s1.clear()
 
         # unlock the rows ment for editing 
-        for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=9):
+        for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=8):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
         # for product_common_configs
-        headers =  ['id','item name','part name', 'part dimention','dimention total','part pieces','body/combi','g total']
+        headers =  ['id','item name','part name', 'part dimention', 'dimention total','part pieces','body/combi','grand_total','combi_total']
         sheet2.append(headers)
 
         row_count_to_unlock_total_common = 1
@@ -3103,15 +3100,15 @@ def export_Product2Item_excel(request,product_ref_id):
             for row in rows_to_insert_s2:
                 sheet2.append(row)
                 row_count_to_unlock = row_count_to_unlock + 1
-            row_count_to_unlock_total_common =  row_count_to_unlock_total_common + row_count_to_unlock
+            row_count_to_unlock_total_common = row_count_to_unlock_total_common + row_count_to_unlock
 
             # Insert a blank row and grant total from parent in sheet after every product data has inserted
-            sheet2.append(['','','','','','','',grand_total_parent, grand_total_combi_parent])
+            sheet2.append(['','','','','','','', grand_total_parent, grand_total_combi_parent])
 
             rows_to_insert_s2.clear()
 
         # unlock the rows ment for editing 
-        for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=9):
+        for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=7):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
@@ -3656,12 +3653,14 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
                                 'panha':query.Item_pk.Panha,
                                 'units':query.Item_pk.Units,
                                 'g_total':query.grand_total,
+                                'g_total_combi':query.grand_total_combi,
                                 'consumption':'0',
                                 'total_comsumption':'0',
                                 'unit_value': query.Item_pk.unit_name_item.unit_name,
                                 'physical_stock':'0',
                                 'balance_physical_stock':'0',
-                                'row_number':query.row_number}
+                                'row_number':query.row_number,
+                                }
             
             initial_data.append(initial_data_dict)
 
@@ -5558,7 +5557,7 @@ def raw_material_excel_download(request):
 
     wb.create_sheet('raw_material_create')
     sheet1 = wb.worksheets[0]
-    headers =  ['Raw Material Name', 'Material Code','Color','Units','Packing','Unit Name','Units','Panha', 
+    headers =  ['Raw Material Name', 'Material Code','Color','Packing','Unit Name','Units','Panha', 
                 'Fabric or Non Fabric','Fabric Finishes','Fabric Group','GST','HSN Code','Status']
     
     sheet1.append(headers)
@@ -5589,10 +5588,9 @@ def raw_material_excel_upload(request):
                 if file_name == 'raw_material_create' and excel_file.name.endswith('.xlsx'):
                     # read the excel file
                     df = pd.read_excel(excel_file)
-                    print(df)
+                    
                     
                     required_columns = {
-
                         'Raw Material Name':'item_name',
                         'Material Code':'Material_code',
                         'Color':'Item_Color',
@@ -5626,8 +5624,6 @@ def raw_material_excel_upload(request):
                                 fabric_group = Fabric_Group_Model.objects.get(fab_grp_name=row['Fabric Group'])
                                 gst_instance = gst.objects.get(gst_percentage=row['GST'])
                                 
-
-
                                 material_name = Item_Creation.objects.filter(item_name=row['Raw Material Name']).first()
                                 material_code = Item_Creation.objects.filter(Material_code=row['Material Code']).first()
 
@@ -5657,6 +5653,7 @@ def raw_material_excel_upload(request):
                                 rows_with_error.append(row)
 
                             except Exception as e:
+                                rows_with_error.append(row)
                                 messages.error(request, f"Error processing row {index + 1}: {str(e)}")
                                 logger.error(f"Error processing row {index + 1}: {str(e)}")
                                 

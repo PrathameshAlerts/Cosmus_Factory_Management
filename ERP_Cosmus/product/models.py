@@ -748,6 +748,7 @@ class purchase_order_for_raw_material(models.Model):
     units = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     unit_value = models.CharField(max_length=100)
     g_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    g_total_combi = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     consumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
