@@ -178,7 +178,7 @@ class ProductVideoFormSet1(BaseInlineFormSet):
 
 
 
-#FIXME
+
 ProductImagesFormSet = inlineformset_factory(PProduct_Creation,ProductImage,formset = ProductImageFormSet,form=ProductImageForm, extra = 1)
 ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls,formset = ProductVideoFormSet1, form = ProductVideoForm, extra = 1)
 
@@ -187,7 +187,7 @@ ProductVideoFormSet = inlineformset_factory(PProduct_Creation,ProductVideoUrls,f
 class Product2ItemForm(forms.ModelForm):
     class Meta:
         model = product_2_item_through_table
-        fields= ['PProduct_pk','Item_pk','Remark','no_of_rows','row_number']
+        fields= ['PProduct_pk','Item_pk','Remark','no_of_rows','grand_total','row_number','grand_total_combi']
         
     # validate so that the entered value should not be less then the existing value
     def clean_no_of_rows(self):
@@ -216,7 +216,7 @@ Product2ItemFormsetExtraForm = modelformset_factory(product_2_item_through_table
 class Product2CommonItem(forms.ModelForm):
     class Meta:
         model = product_2_item_through_table
-        fields= ['Item_pk','Remark','no_of_rows','row_number']
+        fields= ['Item_pk','Remark','no_of_rows','row_number','grand_total','grand_total_combi']
     
     # validate so that the entered value should not be less then the existing value
     def clean_no_of_rows(self):

@@ -557,7 +557,6 @@ class item_shades_godown_report(models.Model):
 
 
 class Godown_finished_goods(models.Model):
-    
     godown_name_finished = models.CharField(max_length = 225)
 
 
@@ -675,7 +674,8 @@ class product_2_item_through_table(models.Model):
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
     grand_total = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    common_unique = models.BooleanField(default = False)  # True if its common and false if its special
+    grand_total_combi = models.DecimalField(default = 0,max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    common_unique = models.BooleanField(default = False)  #True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1, validators=[MinValueValidator(1)])
     Remark = models.CharField(max_length = 100, blank=True, null=True)
 
@@ -685,13 +685,19 @@ class product_2_item_through_table(models.Model):
         
     
 class set_prod_item_part_name(models.Model):
+
+    BODY_COMBI = [
+        ('body', 'body'),
+        ("combi", 'combi')
+    ]
+
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
     producttoitem = models.ForeignKey(product_2_item_through_table, on_delete=models.CASCADE, related_name='product_item_configs')
     part_name = models.CharField(max_length = 100,blank = True, null= True)
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
     dimention_total = models.DecimalField(default=0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank=True, null= True)
     part_pieces = models.IntegerField(blank=True, null= True)
-    body_combi = models.CharField(max_length=10, blank=True, null = True)
+    body_combi = models.CharField(max_length=10,choices = BODY_COMBI, blank=True, null = True)
 
 
 class factory_employee(CompanyBaseModel):

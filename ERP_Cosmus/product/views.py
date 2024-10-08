@@ -152,25 +152,33 @@ def edit_production_product(request,pk):
 
                         # ws1
                         grand_total = 0
-                        
+                        grand_total_combi = 0
+
                         for row in ws1.iter_rows(min_row=2,min_col=1):
                             id = row[0].value
                             item_name = row[1].value
                             product_sku = row[2].value
+                            body_combi = row[7].value
                            
                             if id is not None:
-                                if product_sku is not None and item_name is not None:
+                                if product_sku is not None and item_name is not None and body_combi is not None:
                                     part_name = row[3].value
                                     part_dimention = row[4].value
                                     dimention_total = row[5].value
                                     part_pieces = row[6].value
                                     body_combi = row[7].value
-                                    grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
+
+                                    if body_combi == 'body':
+                                        grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
+
+                                    elif body_combi == 'combi':
+                                        grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
                                     
                                     if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
                                         p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
+                                        p2i_config_instance.producttoitem.grand_total_combi = grand_total_combi   # assign grand_total_combi value to grand_total of parent model                 
                                         p2i_config_instance.part_name = part_name
                                         p2i_config_instance.part_dimentions = part_dimention
                                         p2i_config_instance.dimention_total = dimention_total
@@ -190,6 +198,7 @@ def edit_production_product(request,pk):
 
                             else:
                                 grand_total = 0
+                                grand_total_combi = 0
 
                         # ws2        
                         for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
@@ -197,7 +206,8 @@ def edit_production_product(request,pk):
                            
                             row_no = 0  # row_no to co relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
                             grand_total = 0
-                            
+                            grand_total_combi = 0
+
                             for row in ws2.iter_rows(min_row=2,min_col=1):  # for every loop through each row in the sheet
                                 
                                 id = row[0].value
@@ -208,10 +218,14 @@ def edit_production_product(request,pk):
                                 part_pieces = row[5].value
                                 body_combi = row[6].value
                                 
-                                if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
-
-                                    grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
+                                if id is not None and item_name is not None and body_combi is not None:  # check if that row has an id and item name to remove blank rows 
                                     
+                                    if body_combi == 'body':
+                                        grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
+                                    
+                                    elif body_combi == 'combi':
+                                        grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
+
                                     # get the p2i instance for the product with the item in row 
                                     p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
                                     
@@ -226,7 +240,9 @@ def edit_production_product(request,pk):
                                         p2i_instances_configs.body_combi = body_combi
                                         p2i_instances_configs.dimention_total = dimention_total
                                         p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
-                                        
+                                        p2i_config_instance.producttoitem.grand_total_combi = grand_total_combi   # assign grand_total_combi value to grand_total of parent model                     
+
+
                                         p2i_instances_configs.c_user = request.user
                                         p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.save()
@@ -243,6 +259,8 @@ def edit_production_product(request,pk):
                                 else:
                                     row_no = 0
                                     grand_total = 0
+                                    grand_total_combi = 0
+
 
                 else:
                     messages.error(request, 'File with invalid Product Refrence Id uploaded')
@@ -2594,7 +2612,6 @@ def fabric_finishes_create_update(request, pk = None):
     if fabric_finishes_search != '':
         queryset =  FabricFinishes.objects.filter(fabric_finish__icontains = fabric_finishes_search)
 
-
     if pk:
         fabric_finishes_instance = FabricFinishes.objects.get(pk=pk)
         title = 'Update'
@@ -2612,6 +2629,7 @@ def fabric_finishes_create_update(request, pk = None):
 
     if request.method == 'POST':
         form = FabricFinishes_form(request.POST,instance = fabric_finishes_instance)
+
         if form.is_valid():
             form_instance = form.save(commit=False)
             form_instance.c_user = request.user
@@ -2719,7 +2737,7 @@ def packaging_delete(request,pk):
 
 @login_required(login_url='login')
 def product2item(request,product_refrence_id):
-    
+    print(request.POST)
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -2816,6 +2834,7 @@ def product2item(request,product_refrence_id):
 
                                 no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
                                 p2i_instance.row_number = form.cleaned_data['row_number']
+
                                 if no_of_rows_to_create > 0:
                                     for row in range(no_of_rows_to_create):
                                         logger.info(f" set prod item part name created of p2i instance - {p2i_instance.id}")
@@ -2949,7 +2968,7 @@ def product2item(request,product_refrence_id):
         })
 
 
-
+from openpyxl.worksheet.datavalidation import DataValidation
 @login_required(login_url='login')
 def export_Product2Item_excel(request,product_ref_id):
     
@@ -3000,6 +3019,18 @@ def export_Product2Item_excel(request,product_ref_id):
         headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','body/combi','grand_total']
         sheet1.append(headers)
 
+        # body_combi_choices = set_prod_item_part_name.BODY_COMBI
+
+        # dropdown_values = [choice[1] for choice in body_combi_choices]  # Get the display value
+
+
+
+        # # Convert the dropdown values to a format that Excel can understand (comma-separated string)
+        # dropdown_formula = f'"{",".join(dropdown_values)}"'
+
+        # # Create a new DataValidation object for each row and apply the dropdown to column H
+        # dv = DataValidation(type="list", formula1=dropdown_formula, showDropDown=True)
+
         row_count_to_unlock_total = 1
         for product in products_in_i2p_special:
             grand_total_parent = product.grand_total
@@ -3016,11 +3047,20 @@ def export_Product2Item_excel(request,product_ref_id):
                 product_configs.part_pieces,
                 product_configs.body_combi
             ])
+
             
             row_count_to_unlock = 1
 
             for row in rows_to_insert_s1:
                 sheet1.append(row)
+
+                # # Get the cell reference for the "Body/Combi" column (column H)
+                # cell_ref = f'H{sheet1.max_row}'
+                # sheet1.add_data_validation(dv)
+                # print(dv)
+                # dv.add(sheet1[cell_ref])  # Add dropdown to the "Body/Combi" column
+
+
                 row_count_to_unlock = row_count_to_unlock + 1
 
             row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
@@ -4579,6 +4619,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
             form = labour_work_in_product_to_item_form, extra = 0, can_delete = False)
 
         labour_workout_child_instance = None
+
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             
             try:
@@ -4669,7 +4710,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                 return JsonResponse({'status': f'Error with ajax request - {e}'}, status=404)
 
 
-
     # on create mode
     elif l_w_o_id is not None and pk is None:
 
@@ -4738,8 +4778,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                 form.initial['qty_to_compare'] = instance.labour_w_in_pending
                 form.initial['cur_bal_plus_return_qty'] = instance.labour_w_in_pending  + form.instance.return_pcs
 
-
-
     if request.method == 'POST':
         
         master_form = labour_workin_master_form(request.POST, instance = labour_workin_master_instance)
@@ -4755,8 +4793,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                     labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
 
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
-
-            
 
                     labour_workout_child_instance.save()
                     parent_form.save()
@@ -4797,14 +4833,13 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
         except Exception as e:
             messages.error(request,f'Other exceptions {e}')
 
-
     return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset,'approval_check':approval_check})
 
 
 @login_required(login_url='login')
 def labourworkinlistall(request):
 
-# Subquery to check if a purchase_order has any related labour_workout_childs
+    # Subquery to check if a purchase_order has any related labour_workout_childs
     labour_workout_childs_exists = labour_workout_childs.objects.filter(
     labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id = OuterRef('pk')
     ).values('pk')[:1]
@@ -5122,7 +5157,6 @@ def itemdynamicsearchajax(request):
 
 
 
-@login_required(login_url='login')
 def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
     
     if searched_value:
@@ -5151,6 +5185,7 @@ def UniqueValidCheckAjax(request):
     
     if 'purchase_number' in searched_from:
         searched_value = request.GET.get('purchase_number').strip()
+        print(searched_value)
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
 
@@ -5190,7 +5225,11 @@ def UniqueValidCheckAjax(request):
         col_name = None
 
 
-    return CheckUniqueFieldDuplicate(model_name,searched_value,col_name)
+    # Ensure model_name, searched_value, and col_name are valid
+    if model_name and searched_value and col_name:
+        return CheckUniqueFieldDuplicate(model_name, searched_value, col_name)
+    else:
+        return JsonResponse({'Status': 'Invalid data received'}, status=400)
 
 
             
