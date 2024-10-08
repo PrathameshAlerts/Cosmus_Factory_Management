@@ -144,7 +144,7 @@
             var new_order = $("#id_purchase_order_number");
             var errorElement = $('#purchaseCreateError'); // The error message element
             var submitButton = $('#id_submit_1');
-            
+            console.log(newOrdernumber)
             $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
@@ -152,7 +152,7 @@
                     'new_order_number': newOrdernumber,
                 },
                 success: function (data) {
-                    console.log(data.validation_flag)
+                    console.log(data.validation_flag)  
                     if(data.validation_flag === true){
                         new_order.css('border', '1px solid red');
                         errorElement.text('*New order number already exists');
