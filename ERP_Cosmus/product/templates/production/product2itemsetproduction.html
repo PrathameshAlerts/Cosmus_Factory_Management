@@ -920,6 +920,11 @@
             grandElement.name = `product2itemuniqueformset-${formDataValue}-grand_total`;
             grandElement.value = '0';
 
+            const grandTotalCombi = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total_combi"]');
+            grandTotalCombi.id = `id_product2itemuniqueformset-${formDataValue}-grand_total_combi`;
+            grandTotalCombi.name = `product2itemuniqueformset-${formDataValue}-grand_total_combi`;
+            grandTotalCombi.value = '0';
+
             const inputRemark = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
             inputRemark.id = `id_product2itemuniqueformset-${formDataValue}-Remark`;
             inputRemark.name = `product2itemuniqueformset-${formDataValue}-Remark`;
@@ -1064,6 +1069,11 @@
                     grandElement.id = `id_product2itemuniqueformset-${newFormCount}-grand_total`;
                     grandElement.name = `product2itemuniqueformset-${newFormCount}-grand_total`;
                     grandElement.value = '0';
+
+                    const grandTotalcombiElement = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total_combi"]');
+                    grandTotalcombiElement.id = `id_product2itemuniqueformset-${newFormCount}-grand_total_combi`;
+                    grandTotalcombiElement.name = `product2itemuniqueformset-${newFormCount}-grand_total_combi`;
+                    grandTotalcombiElement.value = '0';
 
                     const inputRemark = newTable.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
                     inputRemark.id = `id_product2itemuniqueformset-${newFormCount}-Remark`;
@@ -1227,11 +1237,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     grandTotalElement.name = `product2itemcommonformset-${formDataValues}-grand_total`;
                     grandTotalElement.value = '0';
 
+                    const grandTotalCombiCommon = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total_combi"]');
+                    grandTotalCombiCommon.id = `id_product2itemcommonformset-${formDataValues}-grand_total_combi`;
+                    grandTotalCombiCommon.name = `product2itemcommonformset-${formDataValues}-grand_total_combi`;
+                    grandTotalCombiCommon.value = '0';
+
                     const inputElement = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
                     inputElement.id = `id_product2itemcommonformset-${formDataValues}-Remark`;
                     inputElement.name = `product2itemcommonformset-${formDataValues}-Remark`;
                     inputElement.value = '';
-
 
                     const deleteElement = newRow.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
                     deleteElement.id = `id_product2itemcommonformset-${formDataValues}-DELETE`;
@@ -1354,6 +1368,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     grandTotalElement.id = `id_product2itemcommonformset-${newCount}-grand_total`;
                     grandTotalElement.name = `product2itemcommonformset-${newCount}-grand_total`;
                     grandTotalElement.value = '0';
+
+                    const grandTotalCombiElementCommon = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total_combi"]');
+                    grandTotalCombiElementCommon.id = `id_product2itemcommonformset-${newCount}-grand_total_combi`;
+                    grandTotalCombiElementCommon.name = `product2itemcommonformset-${newCount}-grand_total_combi`;
+                    grandTotalCombiElementCommon.value = '0';
 
                     const inputElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
                     inputElement.id = `id_product2itemcommonformset-${newCount}-Remark`;

@@ -123,8 +123,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent" >
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
-        <li class="nav-item my-2 ms-3" >
+      <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" >
+        <li class="nav-item my-2 me-3" >
           <h3 id="newHeading"></h3>
         </li>
       </ul>
@@ -215,7 +215,7 @@
             <li class="pro-head"><a href="" class="navText">Repair Pcs In</a></li>
          </ul>  
         </li> 
-        <li class="nav-item me-5">
+        <li class="nav-item ms-5">
           <div>
             {% if request.user.is_superuser %}
               {% if request.path == '/' %}
