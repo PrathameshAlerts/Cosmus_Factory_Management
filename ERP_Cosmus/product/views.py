@@ -146,7 +146,7 @@ def edit_production_product(request,pk):
                 
                 if int(product_ref_id_file) == product_ref_id:
                     with transaction.atomic():
-                        wb = load_workbook(excel_file, data_only=True)
+                        wb = load_workbook(excel_file, data_only = True)
                         ws1 = wb['product_special_configs']
                         ws2 = wb['product_common_configs']
 
@@ -161,20 +161,22 @@ def edit_production_product(request,pk):
                             body_combi = row[7].value
                            
                             if id is not None:
-                                if product_sku is not None and item_name is not None and body_combi is not None:
+                                if product_sku is not None and item_name is not None:
                                     part_name = row[3].value
                                     part_dimention = row[4].value
                                     dimention_total = row[5].value
                                     part_pieces = row[6].value
                                     body_combi = row[7].value
-
-                                    if body_combi == 'body':
-                                        grand_total = grand_total + float(dimention_total)  # calucate grand_total by adding all dimention_totals
-
-                                    elif body_combi == 'combi':
-                                        grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
                                     
                                     if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
+
+                                        if body_combi == 'body':
+                                            grand_total = grand_total + float(dimention_total)  # calcuate grand_total by adding all dimention_totals
+
+                                        elif body_combi == 'combi':
+                                            grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
+
+
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
                                         p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
@@ -218,13 +220,8 @@ def edit_production_product(request,pk):
                                 part_pieces = row[5].value
                                 body_combi = row[6].value
                                 
-                                if id is not None and item_name is not None and body_combi is not None:  # check if that row has an id and item name to remove blank rows 
+                                if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
                                     
-                                    if body_combi == 'body':
-                                        grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
-                                    
-                                    elif body_combi == 'combi':
-                                        grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
 
                                     # get the p2i instance for the product with the item in row 
                                     p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
@@ -234,6 +231,13 @@ def edit_production_product(request,pk):
                                     p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
 
                                     if part_name is not None:  # check if part name it there if its not then delete that instance
+
+                                        if body_combi == 'body':
+                                            grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
+                                    
+                                        elif body_combi == 'combi':
+                                            grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
+
                                         p2i_instances_configs.part_name = part_name
                                         p2i_instances_configs.part_dimentions = part_dimention
                                         p2i_instances_configs.part_pieces = part_pieces
@@ -250,6 +254,7 @@ def edit_production_product(request,pk):
                                         row_no = row_no + 1  # increase the row after save
 
                                     else:
+                                        print('TEST')
                                         row_no = row_no + 1 # increase the row after save
                                         p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
                                         p2i_instances_configs.producttoitem.c_user = request.user
@@ -285,8 +290,7 @@ def edit_production_product(request,pk):
                     for form in formset.deleted_forms:
                         if form.instance.pk:
                             form.instance.delete()
-                            
-                    
+
                     for form in formset:
                         if form.is_valid():
                             if not form.cleaned_data.get('DELETE'):
@@ -2737,7 +2741,7 @@ def packaging_delete(request,pk):
 
 @login_required(login_url='login')
 def product2item(request,product_refrence_id):
-   
+    print(request.POST)
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -4801,7 +4805,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
 
                     labour_workout_child_instance.save()
-                    
+
                     parent_form.save()
 
                     for form in product_to_item_formset:

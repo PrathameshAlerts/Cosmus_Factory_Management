@@ -874,7 +874,7 @@ class labour_workout_childs(models.Model):
 
 
 class product_to_item_labour_child_workout(models.Model):
-    labour_workout = models.ForeignKey(labour_workout_childs,related_name='labour_workout_child_items' ,on_delete=models.CASCADE)
+    labour_workout = models.ForeignKey(labour_workout_childs, related_name='labour_workout_child_items', on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=100)
     product_color = models.CharField(max_length=100)
     processed_pcs = models.IntegerField()
