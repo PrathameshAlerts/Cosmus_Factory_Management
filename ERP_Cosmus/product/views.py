@@ -4650,14 +4650,15 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                             'Ref_No':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID,
                             'Model_Name':instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name,
                             'Issued_QTY':instance.total_process_pcs,
-                            'Rec_QTY':instance.labour_workin_pcs,
+                            'Rec_QTY': instance.labour_workin_pcs,
                             'Balance_QTY': instance.labour_workin_pending_pcs,
                             'labour_workout_id': instance.id}
 
                         labour_workout_instance_dict.append(dict_to_append)
 
-                labour_work_out_id = request.GET.get('labourWorkOutId')
                 
+                labour_work_out_id = request.GET.get('labourWorkOutId')
+               
                 master_initial_data = None
 
                 formset_initial_data = None
@@ -4698,9 +4699,10 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                         }
 
                         formset_initial_data.append(initial_data_dict)
-
+                
                 return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,
-                                     'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data,'labour_workout_child_instance_id':labour_workout_child_instance_id})
+                                     'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data,
+                                     'labour_workout_child_instance_id': labour_workout_child_instance_id})
 
             except ValueError as ve:
                     messages.error(request,f'Error Occured - {ve}')
@@ -4780,7 +4782,10 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                 form.initial['cur_bal_plus_return_qty'] = instance.labour_w_in_pending  + form.instance.return_pcs
 
     if request.method == 'POST':
-        
+        labour_workout_child_i = request.POST.get('labour_workout_child_instance_id')
+        if labour_workout_child_i:
+            labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_i)
+
         master_form = labour_workin_master_form(request.POST, instance = labour_workin_master_instance)
         product_to_item_formset = labour_work_in_product_to_item_formset(request.POST,instance = labour_workin_master_instance)
 
@@ -4796,6 +4801,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
 
                     labour_workout_child_instance.save()
+                    
                     parent_form.save()
 
                     for form in product_to_item_formset:
@@ -4815,7 +4821,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 
                                 labour_workin_product2item = labour_work_in_product_to_item.objects.get( pk = product_to_item_form.pk)
                                 qty_to_change = product_to_item_form.return_pcs - labour_workin_product2item.return_pcs
-                                
+
                             else:
                                 qty_to_change = product_to_item_form.return_pcs
 
