@@ -3677,7 +3677,6 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
 
         physical_stock_all_godown_json = None # send only on create on update it will be None as saved data will be rendered
 
-
         purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=0, can_delete=False)
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(instance=purchase_order_instance)
@@ -4603,7 +4602,7 @@ def labourworkincreatelist(request,l_w_o_id):
 def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
     
     template_name = 'production/labourworkincreate.html'
-    on_create = False
+    
 
     approval_check = approved
     
@@ -4612,7 +4611,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 
         template_name = 'production/labourworkincreateraw.html'
         labour_workin_master_instance = None
-        on_create = True
+        
         master_form = labour_workin_master_form()
 
         product_to_item_formset = None
@@ -4715,7 +4714,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
     # on create mode
     elif l_w_o_id is not None and pk is None:
 
-        on_create = True
         labour_workin_master_instance = None
         labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
@@ -4774,7 +4772,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
         
         product_to_item_formset = labour_work_in_product_to_item_formset(instance = labour_workin_master_instance) 
         
-        for form, instance in zip(product_to_item_formset.forms, product_to_item_l_w_in):
+        # The zip function iterates over multiple iterables (in this case, product_to_item_formset.forms and product_to_item_l_w_in) and returns tuples containing elements from both iterables at the same index. It stops when the shortest iterable is exhausted.
+        for form, instance in zip(product_to_item_formset.forms, product_to_item_l_w_in):  
 
             if instance:
                 form.initial['qty_to_compare'] = instance.labour_w_in_pending
@@ -4805,15 +4804,22 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                             product_to_item_form = form.save(commit= False)
                             product_to_item_form.labour_workin_instance = parent_form
 
-
-                            if on_create:
-                                product_to_item_form.pending_for_approval = product_to_item_form.return_pcs
+                            product_to_item_form.pending_for_approval = product_to_item_form.return_pcs
                             
                             l_w_o_instance = product_to_item_labour_child_workout.objects.get(labour_workout=labour_workout_child_instance,
                                                                                               product_sku=product_to_item_form.product_sku,
                                                                                               product_color=product_to_item_form.product_color)
                             
-                            l_w_o_instance.labour_w_in_pending = l_w_o_instance.labour_w_in_pending - product_to_item_form.return_pcs
+                            # for update purpose 
+                            if product_to_item_form.pk:
+
+                                labour_workin_product2item = labour_work_in_product_to_item.objects.get( pk = product_to_item_form.pk)
+                                qty_to_change = product_to_item_form.return_pcs - labour_workin_product2item.return_pcs
+                                
+                            else:
+                                qty_to_change = product_to_item_form.return_pcs
+
+                            l_w_o_instance.labour_w_in_pending = l_w_o_instance.labour_w_in_pending - qty_to_change
 
                             l_w_o_instance.save()
                             product_to_item_form.save()
