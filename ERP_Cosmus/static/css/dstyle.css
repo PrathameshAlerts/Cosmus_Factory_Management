@@ -1392,7 +1392,7 @@ input[type=number] {
 }
 .table-responsives {
     overflow-y: auto;
-    max-height: 475px; /* Adjust the height as needed */
+    max-height: 545px; /* Adjust the height as needed */
 }
 .table-res {
     overflow-y: auto;
