@@ -50,7 +50,9 @@
                     </div>
                     <div class="d-flex">
                             {% for img in form.instance.product_reference_number.productdetails.all %}
+                            {% if img.PProduct_image.url is not None %}
                            <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin-left: 2px;">
+                            {% endif %}
                             {% endfor %}
                       
                     </div> 

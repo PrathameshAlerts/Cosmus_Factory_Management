@@ -19,7 +19,9 @@
       <div class="ms-3"></div>
         <label class="fw-bold ps-3">Images :</label>
         {% for img in p_o_number.product_reference_number.productdetails.all %}
+        {% if img.PProduct_image.url is not None %}
         <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
+        {% endif %}
         {% endfor %}
      </div>
     <div class=" mb-3">

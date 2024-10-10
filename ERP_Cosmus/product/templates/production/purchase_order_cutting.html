@@ -462,18 +462,21 @@ cuttingBalanceQty()
                             const consumptionInput =row.querySelector('input[name$="-consumption"]');
                             const colorShade = row.querySelector('.checkBox-row');
                             const GtotalCombi = row.querySelector('input[name$="-g_total_combi"]');
-                            const cuttingProcess = document.getElementById('id_processed_qty').value;
+                            const cuttingProcess = document.getElementById('id_cuttingTotal').value;
                             const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
                             const gTotalValue = parseFloat(GtotalCombi.value) || 0;
                             const CuttingprocessQty = parseFloat(cuttingProcess) || 0;
                             const consumption = parseFloat(consumptionInput.value) || 0;
-                            console.log('cuttingProcess',cuttingProcess)
+                            
                             console.log('gTotalValue',gTotalValue)
-                            console.log('totals',totals)
-
-                            let grandTotal = gTotalValue * totals;
+                            console.log('CuttingprocessQty',CuttingprocessQty)
+                            console.log('consumption',consumption)
+                            console.log('CuttingQty',CuttingQty)
+                            let grandTotal = gTotalValue * CuttingprocessQty;
                             console.log('grandTotal',grandTotal)
                             let totalConsumption = CuttingQty * consumption + grandTotal;
+                            
+                            console.log('totalConsumption',totalConsumption)
                             totalConsumptionInput.value = totalConsumption.toFixed(3);
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
