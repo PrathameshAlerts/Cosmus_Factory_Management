@@ -227,9 +227,9 @@ def edit_production_product(request,pk):
                                     # filter out the all the configs belonging to that p2I instance and then the config based on row_no which corelates
                                     # with the rows in excel to know which config instance to crud
                                     
-                                    print(row_no)
+                                    
                                     p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
-                                    print(p2i_instances_configs)
+                                    
 
                                     if part_name is not None and body_combi is not None:  # check if part name it there if its not then delete that instance
 
@@ -256,11 +256,11 @@ def edit_production_product(request,pk):
 
                                     else:
                                         
-                                        row_no = row_no + 1 # increase the row after save
                                         p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
                                         p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.delete()
                                         p2i_instances_configs.producttoitem.save()
+                                        # row_no = row_no + 1 # dont increase the row after delete as instances in p2i_instances_configs are reduced by 1
 
                                 else:
                                     row_no = 0
@@ -3189,7 +3189,6 @@ def purchaseordercreateupdate(request,pk=None):
             instance = None
             model_name = None
             model_images = None
-            print('TEST1')
         
         formset = purchase_order_product_qty_formset(instance=instance)
         form = purchase_order_form(instance=instance)
