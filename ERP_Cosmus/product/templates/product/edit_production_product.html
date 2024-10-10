@@ -111,12 +111,12 @@
         </div>
         <div class=" d-flex my-3">
           <label for="" class="item-form">ShortName:</label>
-          <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}" name="Product_ShortName" required id="">
+          <input type="text" class="item-select" value="{{ form.instance.Product_ShortName | default_if_none:''}}" name="Product_ShortName" required id="id_Product_ShortName">
         </div>
 
         <div class=" d-flex mb-3">
           <label for="id_Product_Brand" class="item-form">Brand:</label>
-          <select name="Product_Brand" class="item-select" id="id_Product_Brand">
+          <select name="Product_Brand" class="item-select" id="id_Product_Brand" required>
             {% if form.instance.id %}
             <option value="{{form.instance.Product_Brand}}">{{form.instance.Product_Brand | default_if_none:''}}</option>
             {% elif not form.instance.id %}
@@ -132,11 +132,11 @@
         </div>
         <div class=" d-flex mb-3">
           <label for="id_Product_Status" class="item-form">Status:</label>
-          <select name="Product_Status" class="item-select" id="id_Product_Status">
+          <select name="Product_Status" class="item-select" id="id_Product_Status" required>
             {% if form.instance.id %}
-            <option value="{{form.instance.Product_Status}}" selected>{{form.instance.Product_Status | default_if_none:''}}</option>
+            <option value="{{form.instance.Product_Status}}">{{form.instance.Product_Status | default_if_none:''}}</option>
             {% elif not form.instance.id %}
-            <option value="" selected></option>
+            <option value=""></option>
             {% endif %}
             <option value="Preproduction">Preproduction</option>
             <option value="Active">Active</option>
@@ -219,7 +219,7 @@
       <div class="col-lg-6">
         <div class="d-flex my-3">
           <label for="" class="item-form">Main Category:</label>
-          <select type="text" class="item-select" name="Product_Main_catagory" value="" id="id_Product_MainCatagory">
+          <select type="text" class="item-select" name="Product_Main_catagory" id="id_Product_MainCatagory">
             {% if form.instance.id %}
             <option value="{{prod_main_cat_id}}">{{prod_main_cat_name}}</option>
             {% elif not form.instance.id %}
@@ -511,6 +511,38 @@
 
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('newFormSubmit').addEventListener('click',function(){
+    var forms = document.getElementById('newForm');
+    var modelName = forms.querySelector('#id_Model_Name').value;
+    var ProductName = forms.querySelector('#id_Product_Name').value;
+    var ProductShortName = forms.querySelector('#id_Product_ShortName').value;
+    var ProductGst = forms.querySelector('#id_GST').value;
+    var brandName = forms.querySelector('#id_Product_Brand').value;
+    var statusForm = forms.querySelector('#id_Product_Status').value;
+    var Gender = forms.querySelector('#id_Gender').value;
+    var HsnValue = forms.querySelector('#id_Product_HSNCode').value;
+    var MainCategorie = forms.querySelector('#id_Product_MainCatagory');
+    var productAdditonButton = forms.querySelector('#aditional_details_btn')
+    var productAdd= forms.querySelector('#aditional_details');
+    var productCategorty = forms.querySelector('#product_category_btn')
+    var productCatBTn = forms.querySelector('#product_category')
+    console.log('Gender',typeof(Gender))
+    console.log('brandName',brandName)
+    console.log('statusForm',statusForm)
+    console.log('HsnValue',HsnValue)
+    console.log('MainCategorie',MainCategorie)
+    if(modelName === '' || ProductName === '' || ProductShortName ==='' || ProductGst === '' || brandName === '' || statusForm === '' || Gender === '' || HsnValue === '' || MainCategorie === ''){
+      alert('Please fill all fields')
+  
+      productAdditonButton.style.display = 'block';
+      productAdd.style.display = 'block';
+      productCategorty.style.display = 'block';
+      productCatBTn.style.display = 'block';
+    }
+  })
+})
+
 //when file uploaded then show the file name in the form
   document.getElementById('file-input').addEventListener('change',function(){
     const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
@@ -621,26 +653,9 @@
         var minWidth = 800; // minimum width
         var minHeight = 600;
 
-        // $('body').addClass('popup-open');
-        // $('body').append('<div class="popup-overlay"></div>');
-
         // this will generate http://127.0.0.1:8000/ 
         var baseUrl = "{{ request.scheme }}://{{ request.get_host }}/";
         popupWindow = window.open(baseUrl + '/product' + path + productSku, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-
-    //     window.addEventListener('message', function (event) {
-       
-    //     if (event.data.message === 'close') {
-    //       $('body').removeClass('popup-open');
-    //       $('.popup-overlay').remove();
-    //       popupWindow.close();
-    //     }
-    // });
-
-    // // Listen for messages from the popup window
-    // window.addEventListener('click', function (event) {
-    //   handleOutside(event);
-    // });
 
       } else {
         console.error('Input with name containing "productdetails-" and ending with "-PProduct_SKU" not found within the card.');
@@ -650,21 +665,6 @@
     }
   }
 
-//   function handleOutside(event) {
-
-// var popUpRect = document.querySelector('body').getBoundingClientRect();
-// var clickX = event.clientX;
-// var clickY = event.clientY;
-
-// // Check if the click is outside the popup window
-// if (clickX > popUpRect.left || clickX <= popUpRect.right ||clickY > popUpRect.top || clickY <= popUpRect.bottom) {
-
-//   popupWindow.focus();
-  
-
-// }
-
-// }
 document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('message', function (event) {
        if (event.data.message === 'itemCreate') {
