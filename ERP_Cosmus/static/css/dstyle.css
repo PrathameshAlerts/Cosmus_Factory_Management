@@ -1396,7 +1396,7 @@ input[type=number] {
 }
 .table-res {
     overflow-y: auto;
-    max-height: 548px; /* Adjust the height as needed */
+    max-height: 519px; /* Adjust the height as needed */
 }
 
 .product2create-btn{

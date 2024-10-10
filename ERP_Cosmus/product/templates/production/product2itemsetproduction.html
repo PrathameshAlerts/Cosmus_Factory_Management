@@ -968,12 +968,14 @@
                 const row = this.closest('tr');
                 const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
                 const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
-
+                const submitBut= document.getElementById('id_submit');
+               
                 if (checkRow) {
                     checkRow.checked = true;
                     checkRow.value = 'true';
                     rowValue.required = false;
                     row.style.display = 'none';
+                    submitBut.disable = false
                 } else {
                     console.error("Checkbox for deletion not found in this row");
                 }
@@ -1121,12 +1123,13 @@
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
                     const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
-                 
+                    const submitBut= document.getElementById('id_submit');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
                         rowValue.required = false;
                         row.style.display = 'none';
+                        submitBut.disable = false;
 
                     } else {
                         console.error("Checkbox for deletion not found in this row");
@@ -1281,13 +1284,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
                     const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
-                   
+                    const submitBut= document.getElementById('id_submit');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
                         rowValues.required = false;
                         row.style.display = 'none';
-
+                        submitBut.disable = false;
                   
                     } else {
                         console.error("Checkbox for deletion not found in this row");
@@ -1421,13 +1424,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const row = this.closest('tr');
                     const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
                     const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
-                    console.log(checkRow)
+                    const submitBut= document.getElementById('id_submit');
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
                         rowValues.required = false;
                         row.style.display = 'none';
-
+                        submitBut.disable = false;
                   
                     } else {
                         console.error("Checkbox for deletion not found in this row");
