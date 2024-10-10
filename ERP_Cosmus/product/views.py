@@ -255,7 +255,7 @@ def edit_production_product(request,pk):
                                         row_no = row_no + 1  # increase the row after save
 
                                     else:
-                                        
+
                                         p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
                                         p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.delete()
@@ -454,7 +454,7 @@ def pproduct_list(request):
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
     
     # Number of items per page
-    paginator = Paginator(queryset, 3)  # Show 10 products per page
+    paginator = Paginator(queryset, 10)  # Show 10 products per page
     
     # Get the current page number from the request
     page_number = request.GET.get('page')
@@ -1127,6 +1127,7 @@ def item_delete(request, pk):
     #     messages.error(request, f'Cannot delete {item_pk.item_name} because it is referenced by other objects.')
     except Exception as e:
          messages.error(request, f'EXCEPTION-{e}')
+         logger.error( f'EXCEPTION-{e}')
          print(e)
     return redirect('item-list')
 
@@ -2994,7 +2995,7 @@ def export_Product2Item_excel(request,product_ref_id):
 
         wb = Workbook()
 
-        ##delete the default workbook
+        #delete the default workbook
         default_sheet = wb['Sheet']
         wb.remove(default_sheet)    
 
