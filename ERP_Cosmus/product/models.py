@@ -819,6 +819,7 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     g_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     consumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    g_total_combi = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     cutting_room_status = models.CharField(max_length=25, choices = STATUS, blank=True, null=True)
@@ -874,7 +875,7 @@ class labour_workout_childs(models.Model):
 
 
 class product_to_item_labour_child_workout(models.Model):
-    labour_workout = models.ForeignKey(labour_workout_childs,related_name='labour_workout_child_items' ,on_delete=models.CASCADE)
+    labour_workout = models.ForeignKey(labour_workout_childs, related_name='labour_workout_child_items', on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=100)
     product_color = models.CharField(max_length=100)
     processed_pcs = models.IntegerField()
@@ -896,6 +897,7 @@ class labour_workout_cutting_items(models.Model):
     units = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     unit_value = models.CharField(max_length=100)
     g_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    g_total_combi = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     consumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
