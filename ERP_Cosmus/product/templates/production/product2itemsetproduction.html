@@ -468,15 +468,20 @@
                 // Check for duplicate products in the form (excluding the current row)
                 const otherProducts = $inputField.closest('form').find('[name$="-PProduct_pk"]').not(currentRowData.find('[name$="-PProduct_pk"]'));
                 otherProducts.each(function () {
+                    const productCheck= $(this);
                     const productValue = $(this).val();
                     const uncheckedRows = $(this).closest('form').find('tr').find('input[type="checkbox"]').filter(':not(:checked)');
-                            
-                    uncheckedRows.each(function () {
-                    if (productValue === productData) {  // Check if product already exists in the form
-                       
-                            
-                                const currentItemPk = $(this).closest('tr').find('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
-                                currentItemPk.each(function () {
+                 
+                    uncheckedRows.each(function (el) {
+                    
+                    if (productData === productValue) {  // Check if product already exists in the form
+                        // console.log('productValue',productValue);
+                        // console.log('productData',productData);
+                        const currentItemPk = productCheck.closest('tr').find('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+                        console.log('currentItemPksss',currentItemPk);
+                           // currentItemPk.each(function () {
+                                // console.log('currentItemPk',$(this).val());
+                                // console.log('nameKeyValue',nameKeyValue);
                                     if ($(this).val() === nameKeyValue) {  // Check if the item is a duplicate
                                     // Show error and highlight the input field
                                     errorForm.text('Item already exists').show();
@@ -486,7 +491,7 @@
                                     isDuplicate = true;
                                     return false;  // Break the loop
                                 }
-                                })
+                            //})
                                 
                         
 
