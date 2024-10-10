@@ -168,7 +168,7 @@ def edit_production_product(request,pk):
                                     part_pieces = row[6].value
                                     body_combi = row[7].value
                                     
-                                    if part_name is not None and part_dimention is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
+                                    if part_name is not None and part_dimention is not None and body_combi is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
 
                                         if body_combi == 'body':
                                             grand_total = grand_total + float(dimention_total)  # calcuate grand_total by adding all dimention_totals
@@ -192,11 +192,12 @@ def edit_production_product(request,pk):
                                         p2i_config_instance.producttoitem.save()  # save the parent model
 
                                     else:
-                                        p2i_config_instance = set_prod_item_part_name.objects.get(id=id)  # get the id to delete
+                                        p2i_config_instance = set_prod_item_part_name.objects.get(id = id)  # get the id to delete
                                         p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
                                         p2i_config_instance.producttoitem.c_user =  request.user
                                         p2i_config_instance.delete()
                                         p2i_config_instance.producttoitem.save()
+
 
                             else:
                                 grand_total = 0
@@ -222,15 +223,17 @@ def edit_production_product(request,pk):
                                 
                                 if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
                                     
-
                                     # get the p2i instance for the product with the item in row 
                                     p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
                                     
                                     # filter out the all the configs belonging to that p2I instance and then the config based on row_no which corelates
                                     # with the rows in excel to know which config instance to crud
+                                    
+                                    print(row_no)
                                     p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
+                                    print(p2i_instances_configs)
 
-                                    if part_name is not None:  # check if part name it there if its not then delete that instance
+                                    if part_name is not None and body_combi is not None:  # check if part name it there if its not then delete that instance
 
                                         if body_combi == 'body':
                                             grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
@@ -254,7 +257,7 @@ def edit_production_product(request,pk):
                                         row_no = row_no + 1  # increase the row after save
 
                                     else:
-                                        print('TEST')
+                                        
                                         row_no = row_no + 1 # increase the row after save
                                         p2i_instances_configs.producttoitem.no_of_rows = p2i_instances_configs.producttoitem.no_of_rows - 1
                                         p2i_instances_configs.producttoitem.c_user = request.user
@@ -2741,7 +2744,7 @@ def packaging_delete(request,pk):
 
 @login_required(login_url='login')
 def product2item(request,product_refrence_id):
-    print(request.POST)
+    
     try:
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
@@ -3882,6 +3885,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'panha' : purchase_items_raw.Item_pk.Panha,
                 'units' :  purchase_items_raw.Item_pk.Units,
                 'g_total' : purchase_items_raw.grand_total,
+                'g_total_combi': purchase_items_raw.grand_total_combi,
                 'consumption' : '0',
                 'total_comsumption' :'0',
                 'unit_value' : purchase_items_raw.Item_pk.unit_name_item.unit_name,
@@ -4347,6 +4351,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                     'panha': instance.panha,
                     'units': instance.units,
                     'g_total': instance.g_total,
+                    'g_total_combi' : instance.g_total_combi,
                     'consumption' : instance.consumption,
                     'total_comsumption': 0,
                     'unit_value': instance.unit_value,
