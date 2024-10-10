@@ -131,8 +131,9 @@
     <div class="col-lg-6 mt-3" id="images-conatiner" style="display: none;">
         <div class="mb-2">
             {% for img in model_images.all %}
+            {% if img.PProduct_image.url is not None %}
             <img src="{{img.PProduct_image.url}}" alt="images" style="width: 70px; padding:2px ;">
-          
+            {% endif %}
             {% endfor %}
           </div>
     </div>
