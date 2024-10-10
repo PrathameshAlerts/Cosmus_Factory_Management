@@ -3,11 +3,9 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 from django.conf import settings
-from django.contrib.auth.models import User , Group
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
-from django.contrib.auth.models import auth 
-from django.contrib.auth import  update_session_auth_hash ,authenticate # help us to authenticate users
+
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -207,7 +205,7 @@ def edit_production_product(request,pk):
                         for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
                             product_sku = product_c.PProduct_SKU
                            
-                            row_no = 0  # row_no to co relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
+                            row_no = 0  # row_no to co-relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
                             grand_total = 0
                             grand_total_combi = 0
 
@@ -2774,10 +2772,10 @@ def product2item(request,product_refrence_id):
         
 
         if extraformspecial:
-            formset_single = Product2ItemFormsetExtraForm(queryset=product2item_instances , prefix='product2itemuniqueformset')
+            formset_single = Product2ItemFormsetExtraForm(queryset = product2item_instances, prefix='product2itemuniqueformset')
 
         else:
-            formset_single = Product2ItemFormset(queryset=product2item_instances , prefix='product2itemuniqueformset')
+            formset_single = Product2ItemFormset(queryset=product2item_instances , prefix = 'product2itemuniqueformset')
 
         # query for filtering all the common items in all the products in the refrence_id after that :
         #It orders by Item_pk first, so all records with the same Item_pk are grouped together.
@@ -2982,11 +2980,11 @@ def export_Product2Item_excel(request,product_ref_id):
     try:
         # for refrence ORM_query_dump
         products_in_i2p_special = product_2_item_through_table.objects.filter(
-            PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = False).order_by(
+            PProduct_pk__Product__Product_Refrence_ID=product_ref_id, common_unique = False).order_by(
             'row_number')
     
         products_in_i2p_common = product_2_item_through_table.objects.filter(
-            PProduct_pk__Product__Product_Refrence_ID=product_ref_id,common_unique = True).order_by(
+            PProduct_pk__Product__Product_Refrence_ID=product_ref_id, common_unique = True).order_by(
             'row_number', 'id').distinct('row_number')
 
         
@@ -3005,7 +3003,6 @@ def export_Product2Item_excel(request,product_ref_id):
 
         sheet1 = wb.worksheets[0]
         sheet2 = wb.worksheets[1]
-
 
         column_widths = [10, 40, 20, 30, 20, 15, 12 ,12, 12, 12]  # Adjust these values as needed
 
@@ -3027,8 +3024,6 @@ def export_Product2Item_excel(request,product_ref_id):
         # body_combi_choices = set_prod_item_part_name.BODY_COMBI
 
         # dropdown_values = [choice[1] for choice in body_combi_choices]  # Get the display value
-
-
 
         # # Convert the dropdown values to a format that Excel can understand (comma-separated string)
         # dropdown_formula = f'"{",".join(dropdown_values)}"'
@@ -3189,10 +3184,12 @@ def purchaseordercreateupdate(request,pk=None):
             instance = get_object_or_404(purchase_order,pk=pk)
             model_name = instance.product_reference_number.Model_Name
             model_images = instance.product_reference_number.productdetails
+
         else:
             instance = None
             model_name = None
             model_images = None
+            print('TEST1')
         
         formset = purchase_order_product_qty_formset(instance=instance)
         form = purchase_order_form(instance=instance)
@@ -3895,7 +3892,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
             
             initial_data.append(initial_data_dict)
 
-        
+        print(initial_data)
         initial_sorted_data = sorted(initial_data, key = itemgetter('row_number'), reverse=False)
 
         
