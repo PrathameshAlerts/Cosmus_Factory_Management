@@ -20,7 +20,9 @@
     <div class="ms-3">
       <label class="fw-bold ps-3">Images :</label>
         {% for img in labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.productdetails.all %}
+        {% if img.PProduct_image.url is not None %}
         <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:3px; margin: 2px;">
+        {% endif %}
         {% endfor %}
     </div>
    

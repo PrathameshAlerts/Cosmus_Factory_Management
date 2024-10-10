@@ -151,6 +151,7 @@
                                 <th>Unit Name</th>
                                 <th>Units</th>
                                 <th>G-Total</th>
+                                <th>G-Total-Combi</th>
                                 <th>Comsumption</th>
                                 <th>Total Comsumption</th>
                                 <th>Physical Stock</th>
@@ -173,6 +174,7 @@
                                 <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.instance.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.instance.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.instance.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                                <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.instance.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
                                 <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.instance.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.instance.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.instance.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
@@ -191,6 +193,7 @@
                                 <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.initial.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.initial.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.initial.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                                <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.initial.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
                                 <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.initial.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.initial.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.initial.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
@@ -498,12 +501,21 @@ labourworkoutBalanceQty()
         mainTables.forEach(function (el) {
             const mainColor = el.querySelector('[name$="-product_color"]').value;
             let totalConsumption = el.querySelector('[name$="-total_comsumption"]');
+
             if (totalConsumption) {
                 if (color === mainColor) {
                     const consumption = el.querySelector('[name$="-consumption"]');
-         
+                    const gTotal = el.querySelector('[name$="-g_total_combi"]');
+                    const processqty = parseFloat(document.getElementById('id_processQty').value) || 0;
+                    const gTotalCombi = parseFloat(gTotal.value) || 0;
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
-                    let tConsumption = consumptionMainValue * processValue;
+                    console.log('gTotalCombi',gTotalCombi)
+                    console.log('processValue',processqty)
+
+                    let gTotalCombiTotal = gTotalCombi * processqty;
+                    console.log('gTotalCombiTotal',gTotalCombiTotal.toFixed(3))
+                    let tConsumption = consumptionMainValue * processValue + gTotalCombiTotal;
+                    console.log('tConsumption',tConsumption)
                     totalConsumption.value = tConsumption.toFixed(3);
 
                 } else if (mainColor === "Common Item") {

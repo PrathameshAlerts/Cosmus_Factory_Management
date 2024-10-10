@@ -194,6 +194,7 @@
                             <th>Unit Name</th>
                             <th>Units</th>
                             <th>G-Total</th>
+                            <th>G-Total-Combi</th>
                             <th>consumption</th>
                             <th>Total consumption</th>
                             <th>Physical Stock</th>
@@ -218,6 +219,7 @@
                             <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.instance.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.instance.units}}" step="0.001" id="id_{{form.prefix}}-units" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.instance.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
+                            <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.instance.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.instance.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.instance.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
@@ -257,6 +259,7 @@
                             <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.initial.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.initial.units}}" step="0.001" id="id_{{form.prefix}}-units" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.initial.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
+                            <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.initial.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.initial.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
@@ -458,11 +461,22 @@ cuttingBalanceQty()
                         if(currentColor == productColor){
                             const consumptionInput =row.querySelector('input[name$="-consumption"]');
                             const colorShade = row.querySelector('.checkBox-row');
-                          
+                            const GtotalCombi = row.querySelector('input[name$="-g_total_combi"]');
+                            const cuttingProcess = document.getElementById('id_cuttingTotal').value;
                             const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
-                            
+                            const gTotalValue = parseFloat(GtotalCombi.value) || 0;
+                            const CuttingprocessQty = parseFloat(cuttingProcess) || 0;
                             const consumption = parseFloat(consumptionInput.value) || 0;
-                            let totalConsumption = CuttingQty * consumption;
+                            
+                            console.log('gTotalValue',gTotalValue)
+                            console.log('CuttingprocessQty',CuttingprocessQty)
+                            console.log('consumption',consumption)
+                            console.log('CuttingQty',CuttingQty)
+                            let grandTotal = gTotalValue * CuttingprocessQty;
+                            console.log('grandTotal',grandTotal)
+                            let totalConsumption = CuttingQty * consumption + grandTotal;
+                            
+                            console.log('totalConsumption',totalConsumption)
                             totalConsumptionInput.value = totalConsumption.toFixed(3);
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
