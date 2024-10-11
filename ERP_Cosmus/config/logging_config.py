@@ -26,7 +26,6 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': 'product_logs.log',
             'formatter': 'verbose',
-            
         },
 
         'console': {

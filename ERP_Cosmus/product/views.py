@@ -2,6 +2,7 @@ import datetime
 import decimal
 from io import BytesIO
 from operator import itemgetter
+import os
 from django.conf import settings
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
@@ -26,7 +27,8 @@ from django.views.decorators.cache import cache_control
 from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
 import pandas as pd
-
+from openpyxl.drawing.image import Image  # Used for inserting images
+from PIL import Image as PILImage
 
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
@@ -3407,7 +3409,7 @@ def excel_download_production(request,module_name,pk):
         elif module_name == 'purchase_order_cutting':
             file_name = 'purchase_order_cutting'
 
-            column_widths = [22, 22, 5, 20, 15, 15, 10]  # Adjust these values as needed
+            column_widths = [22, 22, 5, 20, 15, 15, 20]  # Adjust these values as needed
 
             #fix the column width  of sheet1
             for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -3416,6 +3418,7 @@ def excel_download_production(request,module_name,pk):
 
             purchase_order_cutting_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id=pk)
             
+
             sheet.cell(row=2, column=1).value = 'Purchase Order Number'
             sheet.cell(row=2, column=2).value = purchase_order_cutting_instance.purchase_order_id.purchase_order_number
 
@@ -3428,40 +3431,69 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=5, column=1).value = 'Party Name'
             sheet.cell(row=5, column=2).value = purchase_order_cutting_instance.purchase_order_id.ledger_party_name.name
 
-            sheet.cell(row=6, column=1).value = 'Total PO Qty'
-            sheet.cell(row=6, column=2).value = purchase_order_cutting_instance.purchase_order_id.number_of_pieces
+
+            sheet.cell(row=6, column=1).value = 'Processed Qty'
+            sheet.cell(row=6, column=2).value = purchase_order_cutting_instance.processed_qty
 
             sheet.cell(row=7, column=1).value = 'Target Date'
-            sheet.cell(row=7, column=2).value = purchase_order_cutting_instance.purchase_order_id.target_date
+            sheet.cell(row=7, column=2).value = purchase_order_cutting_instance.created_date.replace(tzinfo=None).strftime('%d %B %Y')
 
-            sheet.cell(row=8, column=1).value = 'Cutting Master'
-            sheet.cell(row=8, column=2).value = purchase_order_cutting_instance.factory_employee_id.factory_emp_name
-
-            sheet.cell(row=8, column=1).value = 'Processed Qty'
-            sheet.cell(row=8, column=2).value = purchase_order_cutting_instance.processed_qty
-
-            sheet.cell(row=9, column=1).value = 'Balance Qty'
-            sheet.cell(row=9, column=2).value = purchase_order_cutting_instance.balance_qty
+    
 
 
             sheet.cell(row=2, column=4).value = 'Product SKU'
             sheet.cell(row=2, column=5).value = 'Color'
-            sheet.cell(row=2, column=6).value = 'Order Quantity'
-            sheet.cell(row=2, column=7).value = 'Processed Qty'
-            sheet.cell(row=2, column=8).value = 'Balance Qty'
-            sheet.cell(row=2, column=9).value = 'Cutting Qty'
+            sheet.cell(row=2, column=6).value = 'Cutting Qty'
+            sheet.cell(row=2, column=7).value = 'Image'
             
             # Set the starting position
             start_row = 3  
             start_column = 4  
 
             for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all().order_by('id'), start=start_row):
+
+                product_creation_instance = PProduct_Creation.objects.get(PProduct_SKU = instance.product_sku)
+
+                product_img_instance = product_creation_instance.PProduct_image
+
+                if product_img_instance:
+
+                    product_img = product_img_instance.url
+                    relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
+                
+                else:
+                    relative_path = 'pproduct/images/Unknown_pic.png'
+
+                
+                # Get the full path for the image
+                full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
+                
+                
+                try:
+                    img = PILImage.open(full_image_path)
+                    img.verify()  # Ensure the image is valid
+
+                except Exception as e:
+                    print(f"Error opening image: {e}")
+                    exit()
+
+                # Insert the image into the Excel sheet
+                excel_img = Image(full_image_path)
+
+            
                 sheet.cell(row=index, column=start_column).value = instance.product_sku
                 sheet.cell(row=index, column=start_column + 1).value = instance.product_color
-                sheet.cell(row=index, column=start_column + 2).value = instance.order_quantity
-                sheet.cell(row=index, column=start_column + 3).value = instance.process_quantity 
-                sheet.cell(row=index, column=start_column + 4).value = instance.process_quantity - instance.cutting_quantity
-                sheet.cell(row=index, column=start_column + 5).value = instance.cutting_quantity
+                sheet.cell(row=index, column=start_column + 2).value = instance.cutting_quantity
+                sheet.row_dimensions[index].height = 40
+                # Set the desired size of the image in pixels (adjust width and height as needed)
+                excel_img.width = 55  # Example width in pixels
+                excel_img.height = 40  # Example height in pixels
+
+                # Set image position. Example: Insert image at cell D{index}
+                img_position = f'G{index}'
+
+                # Insert the image into the Excel sheet at the specified position
+                sheet.add_image(excel_img, img_position)
 
 
             length_queryset = len(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all())
@@ -3670,7 +3702,7 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
             
             initial_data.append(initial_data_dict)
 
-        initial_sorted_data = sorted(initial_data, key = itemgetter('row_number'), reverse=False)
+        initial_sorted_data = sorted(initial_data, key=itemgetter('row_number'), reverse=False)
 
         
         purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=len(initial_sorted_data) if initial_data else 0, can_delete=False)
