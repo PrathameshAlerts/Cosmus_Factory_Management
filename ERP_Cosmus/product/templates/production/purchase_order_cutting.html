@@ -499,11 +499,15 @@ cuttingBalanceQty()
                         }else if(currentColor === "Common Item"){
                         
                             const consumptionInput = row.querySelector('input[name$="-consumption"]');
+                            const consumtionCombi = row.querySelector('input[name$="-combi_consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
+                            const commonConsumptionCombiValue = parseFloat(consumtionCombi.value) || 0;
                                 // const cuttingTotal = document.getElementById('id_cuttingTotal');
                             const totalValue = parseFloat(cuttingTotal.value) || 0;
                             let commonConsumption = totalValue * commonConsumptionValue;
-                            totalConsumptionInput.value = commonConsumption.toFixed(3);
+                            let commonConsumptionCombi = totalValue * commonConsumptionCombiValue;
+                            let finalTotalConsumption = commonConsumption + commonConsumptionCombi;
+                            totalConsumptionInput.value = finalTotalConsumption.toFixed(3);
                         }
                     } else {
                             totalConsumptionInput.value = '0.00';
