@@ -616,7 +616,9 @@ class purchase_order_raw_product_sheet_form(forms.ModelForm):
     class Meta:
         model = purchase_order_for_raw_material
 
-        fields = ['product_sku','product_color','material_name','rate','panha','units','g_total','g_total_combi','consumption','unit_value','total_comsumption','physical_stock','balance_physical_stock']
+        fields = ['product_sku','product_color','material_name','rate','panha',
+                  'units','g_total','g_total_combi','consumption','unit_value',
+                  'total_comsumption','combi_consumption','physical_stock','balance_physical_stock']
 
 
 
@@ -677,7 +679,7 @@ class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
         model = purchase_order_for_raw_material_cutting_items
 
         fields = ['product_sku','product_color','material_name','rate','panha','units','g_total',
-                  'consumption','total_comsumption','physical_stock','balance_physical_stock','unit_value',
+                  'consumption','total_comsumption','combi_consumption','physical_stock','balance_physical_stock','unit_value',
                   'material_color_shade','purchase_order_pk','g_total_combi']
         
 
@@ -801,7 +803,7 @@ class labour_workout_cutting_items_form(forms.ModelForm):
     class Meta:
         model = labour_workout_cutting_items
         fields = ['product_sku','product_color','material_name','material_color_shade','rate'
-                  ,'panha','units','g_total','consumption','total_comsumption','physical_stock','unit_value','g_total_combi'
+                  ,'panha','units','g_total','consumption','total_comsumption','combi_consumption','physical_stock','unit_value','g_total_combi'
                   ,'balance_physical_stock' ,'fab_non_fab']
         
     
