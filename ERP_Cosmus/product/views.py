@@ -3349,7 +3349,6 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=4, column=1).value = 'Party Name'
             sheet.cell(row=4, column=2).value = purchase_order_instance.ledger_party_name.name
 
-
             sheet.cell(row=5, column=1).value = 'Total PO Qty'
             sheet.cell(row=5, column=2).value = purchase_order_instance.number_of_pieces
 
@@ -3382,7 +3381,7 @@ def excel_download_production(request,module_name,pk):
 
             header_row = length_queryset + 6
             # Headers to be inserted
-            headers = ["Product SKU", "Product Color", "Material Name", "Rate","Panha","Unit Name","Units","G-Total","Consumption","Total Consumption","Physical Stock","Balance Stock"]
+            headers = ["Product SKU", "Product Color", "Material Name", "Rate","Panha","Unit Name","Units","G-Total","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
@@ -3399,9 +3398,10 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 6).value = instance.unit_value
                 sheet.cell(row=index, column=start_column_items + 7).value = instance.g_total
                 sheet.cell(row=index, column=start_column_items + 8).value = instance.consumption
-                sheet.cell(row=index, column=start_column_items + 9).value = instance.total_comsumption
-                sheet.cell(row=index, column=start_column_items + 10).value = instance.physical_stock
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
+                sheet.cell(row=index, column=start_column_items + 9).value = instance.combi_consumption
+                sheet.cell(row=index, column=start_column_items + 10).value = instance.total_comsumption
+                sheet.cell(row=index, column=start_column_items + 11).value = instance.physical_stock
+                sheet.cell(row=index, column=start_column_items + 12).value = instance.balance_physical_stock
                 
 
         elif module_name == 'purchase_order_cutting':
@@ -3473,7 +3473,7 @@ def excel_download_production(request,module_name,pk):
             header_row = length_queryset + 10
 
             # Headers to be inserted
-            headers = ["Product SKU", "Product Color", "Material Name", 'Shade Color' "Rate","Panha","Unit Name","Units","G-Total","Consumption","Total Consumption","Physical Stock","Balance Stock"]
+            headers = ["Product SKU", "Product Color", "Material Name", 'Shade Color' "Rate","Panha","Unit Name","Units","G-Total","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
@@ -3490,9 +3490,10 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 7).value = instance.unit_value
                 sheet.cell(row=index, column=start_column_items + 8).value = instance.g_total
                 sheet.cell(row=index, column=start_column_items + 9).value = instance.consumption
-                sheet.cell(row=index, column=start_column_items + 10).value = instance.total_comsumption
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.physical_stock
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
+                sheet.cell(row=index, column=start_column_items + 10).value = instance.combi_consumption
+                sheet.cell(row=index, column=start_column_items + 11).value = instance.total_comsumption
+                sheet.cell(row=index, column=start_column_items + 12).value = instance.physical_stock
+                sheet.cell(row=index, column=start_column_items + 13).value = instance.balance_physical_stock
 
         elif module_name == 'labour_workout':
             file_name = 'labour_workout'
@@ -3549,7 +3550,7 @@ def excel_download_production(request,module_name,pk):
             header_row = length_queryset + 9
 
             # Headers to be inserted
-            headers = ["Product SKU", "Product Color", "Material Name", 'Shade Color' "Rate","Panha","Unit Name","Units","G-Total","Consumption","Total Consumption","Physical Stock","Balance Stock"]
+            headers = ["Product SKU", "Product Color", "Material Name", 'Shade Color' "Rate","Panha","Unit Name","Units","G-Total","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
@@ -3567,9 +3568,10 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 7).value = instance.unit_value
                 sheet.cell(row=index, column=start_column_items + 8).value = instance.g_total
                 sheet.cell(row=index, column=start_column_items + 9).value = instance.consumption
-                sheet.cell(row=index, column=start_column_items + 10).value = instance.total_comsumption
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.physical_stock
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
+                sheet.cell(row=index, column=start_column_items + 10).value = instance.combi_consumption
+                sheet.cell(row=index, column=start_column_items + 11).value = instance.total_comsumption
+                sheet.cell(row=index, column=start_column_items + 12).value = instance.physical_stock
+                sheet.cell(row=index, column=start_column_items + 13).value = instance.balance_physical_stock
 
         fileoutput = BytesIO()
         wb.save(fileoutput)
@@ -3588,7 +3590,7 @@ def excel_download_production(request,module_name,pk):
 @login_required(login_url = 'login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
-    
+    print(request.POST)
     purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
@@ -4352,8 +4354,8 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                     'g_total': instance.g_total,
                     'g_total_combi' : instance.g_total_combi,
                     'consumption' : instance.consumption,
+                    'combi_consumption' :instance.combi_consumption,
                     'total_comsumption': 0,
-                    'combi_consumption' :0,
                     'unit_value': instance.unit_value,
                     'physical_stock': total_current_balance,
                     'balance_physical_stock': total_current_balance,
