@@ -196,10 +196,12 @@
                 var physicalStock = document.getElementById('id_raw_materials-' + i + '-physical_stock');
                 var newPhysicalStock = document.getElementById('id_physical_stock').value;
                 var materialName = document.getElementById('id_raw_materials-' + i + '-material_name').value;
+                var gTotalCombi = document.getElementById('id_raw_materials-' + i + '-g_total_combi').value;
             
                 var panhaValue = parseFloat(panha);
                 var unitsValue = parseFloat(units);
                 var grandTotalValue = parseFloat(grandTotal);
+                var gTotalCombiValue = parseFloat(gTotalCombi);
             
                 if(newPhysicalStock != "None"){
                     var mainstock = JSON.parse(newPhysicalStock);
@@ -214,9 +216,10 @@
 
                 }
             
-                if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0) {
+                if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && grandTotalValue !== 0 && gTotalCombiValue !== 0 && !isNaN(gTotalCombiValue)) {
                     var consumption = grandTotalValue / (panhaValue * unitsValue)
-               
+                    var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
+                    console.log(consumption,consumtionCombi);
                     document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
                 } else {
                     document.getElementById('id_raw_materials-' + i + '-consumption').value = '0.000';
@@ -248,7 +251,7 @@
                         if (totalProductColor === productColor) {
                         // Calculate total consumption for matching colors
                             const consumptionInput = totalRow.querySelector('input[name$="-consumption"]');
-                            const gTotalCombi = totalRow.querySelector('input[name$="-g_total_combi"]');
+                            const gTotalCombi = totalRow.querySelector('input[name$="-consumptionCombi"]');
                             const processData = document.getElementById('id_processTotal');
                             const process = parseFloat(processData.value) || 0;;
                             const gTotalValue = parseFloat(gTotalCombi.value) || 0;
@@ -257,7 +260,9 @@
                             // console.log('gTotalValue',gTotalValue)
                             let mainConsumption = gTotalValue * process;
                             // console.log('mainConsumption',mainConsumption)
-                            let totalConsumption = processQuantity * consumption + mainConsumption;
+                            let ConsumptionTotal = processQuantity * consumption ;
+
+                            let totalConsumption = ConsumptionTotal + mainConsumption;
                             // console.log('totalConsumption',totalConsumption)
                             totalConsumptionInput.value = totalConsumption.toFixed(3);
                             

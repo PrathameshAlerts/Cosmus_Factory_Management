@@ -461,7 +461,7 @@ cuttingBalanceQty()
                         if(currentColor == productColor){
                             const consumptionInput =row.querySelector('input[name$="-consumption"]');
                             const colorShade = row.querySelector('.checkBox-row');
-                            const GtotalCombi = row.querySelector('input[name$="-g_total_combi"]');
+                            const GtotalCombi = row.querySelector('input[name$="-consumptionCombi"]');
                             const cuttingProcess = document.getElementById('id_cuttingTotal').value;
                             const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
                             const gTotalValue = parseFloat(GtotalCombi.value) || 0;
@@ -472,12 +472,13 @@ cuttingBalanceQty()
                             console.log('CuttingprocessQty',CuttingprocessQty)
                             console.log('consumption',consumption)
                             console.log('CuttingQty',CuttingQty)
-                            let grandTotal = gTotalValue * CuttingprocessQty;
+                            let grandTotalConsumption = gTotalValue * CuttingprocessQty;
                             console.log('grandTotal',grandTotal)
-                            let totalConsumption = CuttingQty * consumption + grandTotal;
+                            let totalConsumption = CuttingQty * consumption ;
                             
+                            let totalCombiValue = totalConsumption + grandTotalConsumption;
                             console.log('totalConsumption',totalConsumption)
-                            totalConsumptionInput.value = totalConsumption.toFixed(3);
+                            totalConsumptionInput.value = totalCombiValue.toFixed(3);
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
                                     colorShade.style.border = "3px solid red";
@@ -521,15 +522,18 @@ cuttingBalanceQty()
             var gTotal = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total').value;
             var TotalConsumtion = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-total_comsumption').value;
             var physicalStock = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-physical_stock').value;
+            var TotalCombi = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-g_total_combi').value;
             var panhaValue = parseFloat(panha) || 0;
             var UnitValue = parseFloat(units) || 0;
             var GtotalValue = parseFloat(gTotal) || 0;
             var TotalConsumtionValue = parseFloat(TotalConsumtion) || 0;
             var physicalStockValue = parseFloat(physicalStock) || 0;
+            var TotalCombiValue = parseFloat(TotalCombi) || 0;
 
 
-              if(!isNaN(panhaValue) && !isNaN(UnitValue) && !isNaN(GtotalValue)){
+              if(!isNaN(panhaValue) && !isNaN(UnitValue) && !isNaN(GtotalValue) && !isNaN(TotalCombiValue)){
                 var Comsumption = GtotalValue / (panhaValue * UnitValue);
+                var consumptionCombi = TotalCombiValue / (panhaValue * UnitValue);
 
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(3);
               }else{
