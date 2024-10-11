@@ -620,7 +620,7 @@ def definesubcategoryproduct(request, pk=None):
     
     form = product_sub_category_form(instance = instance)
     if request.method == 'POST':
-        print(request.POST)
+        
         try:
             form = product_sub_category_form(request.POST,instance = instance)
             if form.is_valid():
@@ -1437,7 +1437,7 @@ def account_sub_group_delete(request, pk):
 
 @login_required(login_url='login')
 def stock_item_create_update(request,pk=None):
-    print(request.POST)
+    
     if pk:
         instance = get_object_or_404(StockItem ,pk=pk)
         title = 'Stock Item Update'
@@ -1691,7 +1691,7 @@ def ledgerTypes_delete(request,pk):
 @login_required(login_url='login')
 def godowncreate(request):
     if request.method == 'POST':
-        print(request.POST)
+       
         godown_name =  request.POST['godown_name']
         godown_type = request.POST['Godown_types']
 
@@ -1956,7 +1956,7 @@ def stockTrasferRaw(request, pk=None):
 
 
     if request.method == 'POST':
-        print(request.POST)
+        
         formset.forms = [form for form in formset if form.has_changed()]
 
 
@@ -3590,7 +3590,7 @@ def excel_download_production(request,module_name,pk):
 @login_required(login_url = 'login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
 def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
-    print(request.POST)
+    
     purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
@@ -3666,8 +3666,7 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
                                 'unit_value': query.Item_pk.unit_name_item.unit_name,
                                 'physical_stock':'0',
                                 'balance_physical_stock':'0',
-                                'row_number':query.row_number,
-                                }
+                                'row_number':query.row_number }
             
             initial_data.append(initial_data_dict)
 
