@@ -152,9 +152,9 @@
                                 <th>Units</th>
                                 <th>G-Total</th>
                                 <th>G-Total-Combi</th>
-                                <th>Comsumption</th>
-                                <th>Comsumption Combi</th>
-                                <th>Total Comsumption</th>
+                                <th>Comsum</th>
+                                <th>Comsum Combi</th>
+                                <th>Total Comsum</th>
                                 <th>Physical Stock</th>
                                 <th>Balance Stock</th>
                             </tr>
@@ -512,14 +512,16 @@ labourworkoutBalanceQty()
                     const processqty = parseFloat(document.getElementById('id_processQty').value) || 0;
                     const gTotalCombi = parseFloat(gTotal.value) || 0;
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
-                    console.log('gTotalCombi',gTotalCombi)
-                    console.log('processValue',processqty)
+                    // console.log('gTotalCombi',gTotalCombi)
+                    // console.log('processValue',processqty)
 
                     let gTotalCombiTotal = gTotalCombi * processqty;
-                    console.log('gTotalCombiTotal',gTotalCombiTotal.toFixed(3))
-                    let tConsumption = consumptionMainValue * processValue + gTotalCombiTotal;
-                    console.log('tConsumption',tConsumption)
-                    totalConsumption.value = tConsumption.toFixed(3);
+                   
+                    let tConsumption = consumptionMainValue * processValue ;
+
+                    let tConsumptionTotal = tConsumption + gTotalCombiTotal;
+             
+                    totalConsumption.value = tConsumptionTotal.toFixed(3);
 
                 } else if (mainColor === "Common Item") {
                     const consumption =el.querySelector('[name$="-consumption"]');
