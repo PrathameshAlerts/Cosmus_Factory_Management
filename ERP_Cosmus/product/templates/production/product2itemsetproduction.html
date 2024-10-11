@@ -479,7 +479,7 @@
                         // console.log('productData',productData);
                         const currentItemPk = productCheck.closest('tr').find('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
                         console.log('currentItemPksss',currentItemPk);
-                           // currentItemPk.each(function () {
+                            currentItemPk.each(function () {
                                 // console.log('currentItemPk',$(this).val());
                                 // console.log('nameKeyValue',nameKeyValue);
                                     if ($(this).val() === nameKeyValue) {  // Check if the item is a duplicate
@@ -491,7 +491,7 @@
                                     isDuplicate = true;
                                     return false;  // Break the loop
                                 }
-                            //})
+                            })
                                 
                         
 
