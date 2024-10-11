@@ -96,7 +96,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
             <tr>
               <td>{{ forloop.counter }}</td>
               <td class="text-nowrap">{{item.item_name}}</td>
-              <td class="text-nowrap">{{item.Color_Name}}<span class="colorCheck ps-1">{{item.total_quantity | default_if_none:0}}</span></td>
+              <td class="text-nowrap">{{item.Color_Name}}<span class="colorCheck" style="float: right;">{{item.total_quantity | default_if_none:0}}</span></td>
               <td>
                 <table class="table table-bordered">
                   <thead>
