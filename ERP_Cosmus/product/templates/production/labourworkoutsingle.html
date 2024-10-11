@@ -525,10 +525,14 @@ labourworkoutBalanceQty()
 
                 } else if (mainColor === "Common Item") {
                     const consumption =el.querySelector('[name$="-consumption"]');
+                    const consumtionCmobi = el.querySelector('[name$="-combi_consumption"]');
                     const consumptionValue = parseFloat(consumption.value) || 0;
+                    const consumptionCmobiValue = parseFloat(consumtionCmobi.value) || 0;
                     const totalValue = parseFloat(labourValue.value) || 0;
                     let tConsumption = consumptionValue * totalValue;
-                    totalConsumption.value = tConsumption.toFixed(3);
+                    let tConsumptionTotal = consumptionCmobiValue * totalValue;
+                    let finalTconsumtioncommon = tConsumption + tConsumptionTotal;
+                    totalConsumption.value = finalTconsumtioncommon.toFixed(3);
                 }
             }
         });

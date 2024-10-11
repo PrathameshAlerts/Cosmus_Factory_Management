@@ -221,9 +221,9 @@
             
                 if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && !isNaN(gTotalCombiValue)) {
                     var consumption = grandTotalValue / (panhaValue * unitsValue);
-                    // console.log('consumption',consumption);
+                    console.log('consumption',consumption);
                     var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
-                    // console.log('consumtionCombi',consumtionCombi);
+                    console.log('consumtionCombi',consumtionCombi);
                     document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
                     document.getElementById('id_raw_materials-' + i + '-combi_consumption').value = consumtionCombi.toFixed(3);
                 } else {
@@ -245,10 +245,10 @@
                 const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
                 const processtotalQty = document.getElementById('id_processTotal');
               
-                total += processQuantity;
+                // total += processQuantity;
                
-                processtotalQty.value = total;
-                 document.getElementById('id_processTotal').value = total;
+                // processtotalQty.value = total;
+                //  document.getElementById('id_processTotal').value = total;
                 totalConsumptionRows.forEach(totalRow => {
                     const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
                     const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
@@ -262,8 +262,8 @@
                             const process = parseFloat(processData.value) || 0;;
                             const gTotalValue = parseFloat(gTotalCombi.value) || 0;
                             const consumption = parseFloat(consumptionInput.value) || 0;
-                            // console.log('process',process)
-                            // console.log('gTotalValue',gTotalValue)
+                             console.log('process',process)
+                             console.log('gTotalValue',gTotalValue)
                             // console.log('processQuantity',processQuantity)
                             // console.log('consumption',consumption)
                             let mainConsumption = gTotalValue * process;
@@ -277,12 +277,17 @@
                         }else if(totalProductColor === "Common Item"){
                                 
                                 const consumptionInputCommon = totalRow.querySelector('input[name$="-consumption"]').value;
+                                const consumtionCombi = totalRow.querySelector('input[name$="-combi_consumption"]').value;
                                 const proccessValue = document.getElementById('id_processTotal');
                                 const consumptions = parseFloat(consumptionInputCommon) || 0;
                                 const totalValue = parseFloat(proccessValue.value) || 0;
+                                const consumtionCombiValue = parseFloat(consumtionCombi) || 0;
                                 let commonConsumption = totalValue * consumptions;
-                                
-                                totalConsumptionInput.value = commonConsumption.toFixed(3);
+
+                                let commonConsumtionCombi = consumtionCombiValue * consumptions;
+
+                                let totalCommonConsumtion = commonConsumption + commonConsumtionCombi;
+                                totalConsumptionInput.value = totalCommonConsumtion.toFixed(3);
                                 
                                     
                         }
