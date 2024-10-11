@@ -196,6 +196,7 @@
                             <th>G-Total</th>
                             <th>G-Total-Combi</th>
                             <th>consumption</th>
+                            <th>consumption Combi</th>
                             <th>Total consumption</th>
                             <th>Physical Stock</th>
                             <th>Balance Stock</th>
@@ -221,6 +222,7 @@
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.instance.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
                             <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.instance.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.instance.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-combi_consumption" value="{{form.instance.combi_consumption}}" step="0.001" id="id_{{form.prefix}}-combi_consumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.instance.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.instance.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
@@ -261,6 +263,7 @@
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.initial.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
                             <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.initial.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.initial.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-combi_consumption" value="{{form.initial.combi_consumption}}" step="0.001" id="id_{{form.prefix}}-combi_consumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td> 
@@ -461,23 +464,23 @@ cuttingBalanceQty()
                         if(currentColor == productColor){
                             const consumptionInput =row.querySelector('input[name$="-consumption"]');
                             const colorShade = row.querySelector('.checkBox-row');
-                            const GtotalCombi = row.querySelector('input[name$="-consumptionCombi"]');
+                            const GtotalCombi = row.querySelector('input[name$="-combi_consumption"]');
                             const cuttingProcess = document.getElementById('id_cuttingTotal').value;
                             const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
                             const gTotalValue = parseFloat(GtotalCombi.value) || 0;
                             const CuttingprocessQty = parseFloat(cuttingProcess) || 0;
                             const consumption = parseFloat(consumptionInput.value) || 0;
                             
-                            console.log('gTotalValue',gTotalValue)
-                            console.log('CuttingprocessQty',CuttingprocessQty)
-                            console.log('consumption',consumption)
-                            console.log('CuttingQty',CuttingQty)
+                            // console.log('gTotalValue',gTotalValue)
+                            // console.log('CuttingprocessQty',CuttingprocessQty)
+                            // console.log('consumption',consumption)
+                            // console.log('CuttingQty',CuttingQty)
                             let grandTotalConsumption = gTotalValue * CuttingprocessQty;
-                            console.log('grandTotal',grandTotal)
+                            //console.log('grandTotal',grandTotalConsumption)
                             let totalConsumption = CuttingQty * consumption ;
                             
                             let totalCombiValue = totalConsumption + grandTotalConsumption;
-                            console.log('totalConsumption',totalConsumption)
+                            //console.log('totalConsumption',totalConsumption)
                             totalConsumptionInput.value = totalCombiValue.toFixed(3);
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
@@ -536,8 +539,10 @@ cuttingBalanceQty()
                 var consumptionCombi = TotalCombiValue / (panhaValue * UnitValue);
 
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = Comsumption.toFixed(3);
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-combi_consumption').value = consumptionCombi.toFixed(3);
               }else{
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-consumption').value = "0.000";
+                document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-combi_consumption').value = "0.000";
               }
        
               if(!isNaN(TotalConsumtionValue) && !isNaN(physicalStockValue)){
