@@ -91,7 +91,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
             </tr>
           </thead>
     
-          <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+          <tbody class="mainrawTable" style="max-height: 450px; overflow-y: auto;">
             {% for item in items %}
             <tr>
               <td>{{ forloop.counter }}</td>
@@ -100,9 +100,9 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td>
                 <table class="table table-bordered">
                   <thead>
-                    <tr class="text-nowrap">
+                    <tr>
                       <th>Shade</th>
-                      <th colspan="2" class="px-2">Name<span class="text-nowrap float-end me-4 pe-3">Qty</span></th>
+                      <th>Shade Details</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -111,10 +111,14 @@ the input field will be pre-filled with that value when the page is loaded. -->
                       <td style="width: 32%;">{{shade.item_shade_name}}</td>
                       <td>
                         <table class="tables table-bordered" style="border-bottom: 1px solid #888;">
+                          <tr>
+                            <th style="width: 76%;">Name</th>
+                            <th>Qty</th>
+                          </tr>
                           {% for shade_q in shade.godown_shades.all %}
                           <tr>
                             <td class="px-2">{{shade_q.godown_name}}</td>
-                            <td class="px-2 shadeColor">{{shade_q.quantity}}</td>
+                            <td class="px-2 shadeColor float-right">{{shade_q.quantity}}</td>
                           </tr>
                           {% endfor %}
                         </table>
