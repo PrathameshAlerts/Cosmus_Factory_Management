@@ -574,7 +574,7 @@ purchase_order_product_qty_formset = inlineformset_factory(purchase_order,
 class purchase_order_raw_to_product_form(purchase_order_to_product_form):
     class Meta(purchase_order_to_product_form.Meta):  # inherited from purchase_order_to_product_form meta class
         
-        fields = purchase_order_to_product_form.Meta.fields + ['process_quantity']   # inherited from purchase_order_to_product_form fields of meta class
+        fields = purchase_order_to_product_form.Meta.fields + ['process_quantity', 'order_processed_quantity']   # inherited from purchase_order_to_product_form fields of meta class
 
 
 
