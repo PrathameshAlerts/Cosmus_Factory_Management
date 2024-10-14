@@ -733,6 +733,7 @@ class purchase_order_to_product(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order,related_name = 'p_o_to_products',on_delete=models.CASCADE)
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
+    order_processed_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now=True)
     modified_date = models.DateTimeField(auto_now_add=True)
