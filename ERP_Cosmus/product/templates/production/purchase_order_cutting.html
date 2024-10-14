@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function processValueCheck(){
-    var processValues = parseInt(document.getElementById('id_processed_qty').value);
+    var processValues = parseFloat(document.getElementById('id_processed_qty').value);
     var submitForm = document.getElementById('id_submitPurchaseOrderCutting');
     console.log(processValues);
     if(processValues === 0){
@@ -421,8 +421,8 @@ function checkOnlyOne(checkbox) {
     var totalforms = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
 
     for (var i = 0; i < totalforms; i++) {
-        var physicalstock = parseInt(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').value);
-        var balance = parseInt(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').value);
+        var physicalstock = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').value);
+        var balance = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').value);
       
         if(physicalstock > 0){
             document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
@@ -439,7 +439,7 @@ function checkOnlyOne(checkbox) {
 }
 
 cuttingBalanceQty()   
-    function updateCuttingQuantity(){
+    function updateCuttingQuantity(finalTotal){
         let totals = 0;
         let balance = 0;
         const cuttingQtyElements = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
@@ -465,22 +465,22 @@ cuttingBalanceQty()
                             const consumptionInput =row.querySelector('input[name$="-consumption"]');
                             const colorShade = row.querySelector('.checkBox-row');
                             const GtotalCombi = row.querySelector('input[name$="-combi_consumption"]');
-                            const cuttingProcess = document.getElementById('id_cuttingTotal').value;
+                            const cuttingProcess = document.getElementById('id_processed_qty').value;
                             const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
                             const gTotalValue = parseFloat(GtotalCombi.value) || 0;
-                            const CuttingprocessQty = parseFloat(cuttingProcess) || 0;
+                            //const CuttingprocessQty = parseFloat(cuttingProcess) || 0;
                             const consumption = parseFloat(consumptionInput.value) || 0;
+                            const CuttingprocessQty = parseFloat(cuttingTotal.value) || 0;
                             
-                            // console.log('gTotalValue',gTotalValue)
+                            // console.log('finalTotal update:', finalTotal);
                             // console.log('CuttingprocessQty',CuttingprocessQty)
-                            // console.log('consumption',consumption)
-                            // console.log('CuttingQty',CuttingQty)
-                            let grandTotalConsumption = gTotalValue * CuttingprocessQty;
-                            console.log('grandTotalConsumption',grandTotalConsumption)
+                            // console.log('gTotalValue',gTotalValue)
+                            let grandTotalConsumption = gTotalValue * finalTotal;
+                            // console.log('grandTotalConsumption',grandTotalConsumption)
                             let totalConsumption = CuttingQty * consumption ;
-                            console.log('totalConsumption',totalConsumption)
+                            // console.log('totalConsumption',totalConsumption)
                             let totalCombiValue = totalConsumption + grandTotalConsumption;
-                            //console.log('totalConsumption',totalConsumption)
+                            // console.log('totalCombiValue',totalCombiValue)
                             totalConsumptionInput.value = totalCombiValue.toFixed(3);
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
@@ -502,7 +502,7 @@ cuttingBalanceQty()
                             const consumtionCombi = row.querySelector('input[name$="-combi_consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
                             const commonConsumptionCombiValue = parseFloat(consumtionCombi.value) || 0;
-                                // const cuttingTotal = document.getElementById('id_cuttingTotal');
+                            //  const cuttingTotal = document.getElementById('id_cuttingTotal');
                             const totalValue = parseFloat(cuttingTotal.value) || 0;
                             let commonConsumption = totalValue * commonConsumptionValue;
                             let commonConsumptionCombi = totalValue * commonConsumptionCombiValue;
@@ -520,6 +520,13 @@ cuttingBalanceQty()
     }
 
     function balanceQty (){
+        let finalTotal = 0;
+        const cuttingprocess = document.querySelectorAll('[name$="-cutting_quantity"]');
+      
+        cuttingprocess.forEach(element =>{
+            finalTotal += parseFloat(element.value);
+        })
+        document.getElementById('id_cuttingTotal').value = finalTotal;
         var newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
  
 
@@ -558,7 +565,8 @@ cuttingBalanceQty()
               }
            
         }
-        
+    
+        updateCuttingQuantity(finalTotal);
     }
 
     function submitForm(){
@@ -649,15 +657,15 @@ cuttingBalanceQty()
         const OderQty = document.getElementById('id_number_of_pieces');
         const orderQtyValue = parseFloat(OderQty.value);
         totalProcessQty.value = totalCuttingQtys;  
+            //console.log('totalCuttingQtys',totalCuttingQtys)
         }
     }
 
 
-    
-
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         qty.forEach(element => {
+            element.addEventListener('focus', balanceQty);
             element.addEventListener('input', () => {
                 cuttingOrder();
                 updateCuttingQuantity();
@@ -666,6 +674,7 @@ cuttingBalanceQty()
                 balanceQty();
                 cuttingBalanceQty()
                 processValueCheck();
+               
             });
         })
         submitForm();
@@ -674,6 +683,7 @@ cuttingBalanceQty()
         cuttingBalanceQty();
         balanceQty();
         processValueCheck();
+   
     });
 
     window.addEventListener("pageshow", function(event) {

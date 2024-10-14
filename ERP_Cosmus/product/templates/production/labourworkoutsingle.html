@@ -478,7 +478,7 @@ function labourworkoutBalanceQty(){
     }
 }
 labourworkoutBalanceQty()
-   function fabricQty() {
+   function fabricQty(totalValues) {
     let totalFabric = 0;
     const processQty = document.querySelectorAll('[name$="-processed_pcs"]');
 
@@ -514,8 +514,9 @@ labourworkoutBalanceQty()
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
                     // console.log('gTotalCombi',gTotalCombi)
                     // console.log('processValue',processqty)
+                    console.log('consumptionMainValue',totalValues)
 
-                    let gTotalCombiTotal = gTotalCombi * processqty;
+                    let gTotalCombiTotal = gTotalCombi * totalValues;
                    
                     let tConsumption = consumptionMainValue * processValue ;
 
@@ -529,8 +530,9 @@ labourworkoutBalanceQty()
                     const consumptionValue = parseFloat(consumption.value) || 0;
                     const consumptionCmobiValue = parseFloat(consumtionCmobi.value) || 0;
                     const totalValue = parseFloat(labourValue.value) || 0;
-                    let tConsumption = consumptionValue * totalValue;
-                    let tConsumptionTotal = consumptionCmobiValue * totalValue;
+                    console.log('totalValue',totalValue)
+                    let tConsumption = consumptionValue * totalValues;
+                    let tConsumptionTotal = consumptionCmobiValue * totalValues;
                     let finalTconsumtioncommon = tConsumption + tConsumptionTotal;
                     totalConsumption.value = finalTconsumtioncommon.toFixed(3);
                 }
@@ -539,9 +541,19 @@ labourworkoutBalanceQty()
     });
 }
 
+function labourWorkOutCheck(){
+    let totalValues = 0;
+    const labourWorkOut = document.querySelectorAll('[name$="-processed_pcs"]');
+    labourWorkOut.forEach(function(element){
+        totalValues += parseFloat(element.value) || 0; 
+    })
+    document.getElementById('id_processQty').value = totalValues;
+    fabricQty(totalValues)
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     labourApprovedQty()
+    labourWorkOutCheck()
     // fabricQty();
         //updateBalanceAndProcessQty();
         // labourworkoutBalanceQty();
@@ -552,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fabricQty();
         updateBalanceAndProcessQty();
         labourworkoutBalanceQty();
-        
+        labourWorkOutCheck()
       })
     })
    
