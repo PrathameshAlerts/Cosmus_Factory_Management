@@ -531,7 +531,7 @@ function randomValue (){
                             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                         }
                         searchedItemNameDict = response.searched_item_name_dict;
-
+                        console.log(searchedItemNameDict);
                         var searchQuery = nameValue.toLowerCase();
                         var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                         var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
@@ -585,11 +585,13 @@ function randomValue (){
         
             suggestionsContainer.on('click', '.itemName-div', function(e) {
                 var item_value = $(this).data('key');
+                var itemNamevaluesCheck = $(this).text().trim();
+             
                 var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
                 var itemShade = $('#input_item_shade_' + purchaseValue);
                 var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
             
-                $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
+                $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
                 $(this).addClass('selected').siblings().removeClass('selected');
 
                 if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
@@ -609,7 +611,15 @@ function randomValue (){
 
         if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
-         $(`input[name^="item_name_${purchaseValue}"]`).val(selectedValue);
+        console.log('selectedValue',selectedValue);
+           var namevalueCheck = selectedValue.match(/[a-zA-Z\s]+/g).join(' ');
+                var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
+          console.log('numberValue',numberValue)
+              
+
+               var valueKey = namevalueCheck + ' ' + numberValue ;
+            
+         $(`input[name^="item_name_${purchaseValue}"]`).val(valueKey);
 
         $.ajax({
             url: '/purchasevouchercreate/',

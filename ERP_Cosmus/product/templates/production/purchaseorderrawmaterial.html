@@ -83,7 +83,7 @@
                                 <input type="number" class="productorderrawqty-input" name="{{form.prefix}}-order_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_quantity" readonly>
                             </td>
                             <td>
-                                <input type="number" class="productorderqty-input" name="{{form.prefix}}-order_processed_quantity" value="{{form.instance.order_processed_quantity}}" id="id_{{form.prefix}}-order_processed_quantity" readonly>
+                                <input type="number" class="productorderqty-input" name="{{form.prefix}}-order_processed_quantity" value="{{form.instance.order_quantity|default_if_none:'0'}}" id="id_{{form.prefix}}-order_processed_quantity" readonly>
                             
                                 <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-process_quantity" value="{{form.instance.process_quantity}}" id="id_{{form.prefix}}-process_quantity" readonly>
                             </td>
@@ -186,7 +186,7 @@
     // Function to update the consumption value calculated for pahna, units and grand total to assigne the value to consumption field
     function updateTotal() {
             let total =0;
-            const processValues = document.querySelectorAll('input[name$="-process_quantity"]');
+            const processValues = document.querySelectorAll('input[name$="-order_processed_quantity"]');
             processValues.forEach(element =>{
                 total += parseFloat(element.value);
                 document.getElementById('id_processTotal').value = total;
@@ -237,7 +237,7 @@
         }
         function calculateTotalConsumption(){
             let total =0;
-            const processQty = document.querySelectorAll('input[name$="-process_quantity"]');
+            const processQty = document.querySelectorAll('input[name$="-order_processed_quantity"]');
            
 
             processQty.forEach(input =>{
@@ -329,7 +329,7 @@ function submitForm(){
     if(ids !== ""){
         var submitButton = document.getElementById('id_submitPurchaseOrder');
         submitButton.style.display = 'none';
-        var processQty = document.querySelectorAll('input[name$="-process_quantity"]');
+        var processQty = document.querySelectorAll('input[name$="-order_processed_quantity"]');
         processQty.forEach(function(ele){
             ele.style.border = 'none';
             ele.style.background = 'transparent';
@@ -340,7 +340,7 @@ function submitForm(){
 submitForm();
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"] , input[name$="-g_total_combi"]');
-        var processQuantityElements = document.querySelectorAll('input[name$="-process_quantity"]');
+        var processQuantityElements = document.querySelectorAll('input[name$="-order_processed_quantity"]');
             formElements.forEach(element => {
                 element.addEventListener('focus', updateTotal);
                 element.addEventListener('focus', calculateTotalConsumption);

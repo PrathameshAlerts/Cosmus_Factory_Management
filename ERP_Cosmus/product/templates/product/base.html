@@ -123,12 +123,12 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent" >
-      <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" >
-        <li class="nav-item my-2 me-3" >
+      <ul class="navbar-nav mb-2 mb-lg-0 me-auto" >
+        <li class="nav-item my-2 ms-3" >
           <h3 id="newHeading"></h3>
         </li>
       </ul>
-      <ul class="navbar-nav mb-2 me-auto mb-lg-0 " >
+      <ul class="navbar-nav mb-2 me-auto mb-lg-0 mx-2">
         <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             Category 
@@ -146,7 +146,7 @@
            
             </li>
             <li class="nav-item dropend">
-              <a class="nav-link  bg-white  " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link bg-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Sub Category
               </a>
                 <ul class="dropdown-menu dropdown dropdown-end">
@@ -161,7 +161,7 @@
                 </ul>
             </li>
             <li class="nav-item dropend">
-              <a class="nav-link  bg-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link bg-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Product Definition
               </a>
                 <ul class="dropdown-menu dropdown dropdown-end">
@@ -172,7 +172,7 @@
           </ul>
         </li>
         <li class="nav-item my-3 mx-2  dropdown">
-          <a class="nav-link text-white " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Accounts')">Accounts</a> 
+          <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="showThePopUp('Accounts')">Accounts</a> 
           <ul class="dropdown-menu dropdown-menu-right">
             <li class="pro-head"><a href="{% url 'account_sub_group-create' %}" class="navText" id="GroupsClick" onclick="navbarChange('Create Group')" >Group</a></li> 
             <li class="pro-head"><a href="{% url 'ledger-list' %}" class="navText" id="LedgersClick" onclick="navbarChange('Ledger List')">Ledger</a></li>
@@ -180,7 +180,7 @@
             <li class="pro-head"><a href="{% url 'ledger-Types-create' %}" class="navText" id="legerTypeClick" onclick="navbarChange('Create Ledger Type')">Ledger Type</a></li>
           </ul>  
         </li>
-        <li class="nav-item my-3 mx-2  dropdown">
+        <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"  onclick="showThePopUp('Vouchers')">Vouchers</a> 
           <ul class="dropdown-menu dropdown-menu-right">
             <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText" id="PurchaseInvoiceClick" onclick="navbarChange('Purchase List')">Purchase Invoice</a></li> 
@@ -204,7 +204,7 @@
             <a href="" class="sub-item"></a> 
           </ul>  
         </li>
-        <li class="nav-item my-3 mx-2  dropdown">
+        <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Production</a> 
           <ul class="dropdown-menu dropdown-menu-right">
             <li class="pro-head"><a href="{% url 'purchase-order-list' %}" class="navText" id="newOrderClick" onclick="navbarChange('New Order List')">New Order</a></li>
