@@ -680,7 +680,7 @@ class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
 
         fields = ['product_sku','product_color','material_name','rate','panha','units','g_total',
                   'consumption','total_comsumption','combi_consumption','physical_stock','balance_physical_stock','unit_value',
-                  'material_color_shade','purchase_order_pk','g_total_combi']
+                  'material_color_shade','purchase_order_pk','g_total_combi','Remark','pcs']
         
 
 

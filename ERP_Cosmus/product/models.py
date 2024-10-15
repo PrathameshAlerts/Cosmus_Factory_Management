@@ -832,7 +832,8 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
-
+    Remark = models.CharField(max_length = 50, null=False, blank=False)
+    pcs = models.IntegerField(default = 0)
 
 class labour_workout_master(models.Model):
     purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
