@@ -3549,7 +3549,6 @@ def excel_download_production(request,module_name,pk):
                 # Insert the image into the Excel sheet
                 excel_img = Image(full_image_path)
 
-            
                 sheet.cell(row=start_row, column=index).value = instance.product_sku
                 sheet.cell(row=start_row + 1, column=index).value = instance.product_color
                 sheet.cell(row=start_row + 2, column=index).value = instance.cutting_quantity
@@ -3565,6 +3564,12 @@ def excel_download_production(request,module_name,pk):
 
                 # Insert the image into the Excel sheet at the specified position
                 sheet.add_image(excel_img, img_position)
+
+
+            qs_length = len(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all())
+
+            sheet.cell(row=2, column = qs_length + 4).value = 'Total'
+            sheet.cell(row=4, column = qs_length + 4).value = purchase_order_cutting_instance.processed_qty
 
 
             # Set the starting position
