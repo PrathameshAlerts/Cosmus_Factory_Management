@@ -3439,7 +3439,7 @@ def excel_download_production(request,module_name,pk):
 
             header_row = length_queryset + 6
             # Headers to be inserted
-            headers = ["Body/Combi", "Product Color", "Pcs", "Material Name", "Rate", "Panha","Units","Consump","Combi Consump","Total Consump","Physical Stock","Bal Stock"]
+            headers = ["Body/Combi", "Product Color", "Pcs", "Material Name", "Rate", "Panha","Units", "Consump","Combi Consump","Total Consump","Physical Stock","Bal Stock"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
@@ -3447,7 +3447,7 @@ def excel_download_production(request,module_name,pk):
 
 
             for index, instance in enumerate(purchase_order_instance.raw_materials.all().order_by('id'), start=start_row_items):
-                sheet.cell(row=index, column=start_column_items).value = "Body/Combi"
+                sheet.cell(row=index, column=start_column_items).value = instance.Remark
                 sheet.cell(row=index, column=start_column_items + 1).value = instance.product_color
                 sheet.cell(row=index, column=start_column_items + 2).value = 'PCS'
                 sheet.cell(row=index, column=start_column_items + 3).value = instance.material_name
@@ -3754,7 +3754,8 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
                                 'physical_stock':'0',
                                 'balance_physical_stock':'0',
                                 'row_number':query.row_number,
-                                'Remark':query.Remark }
+                                'Remark':query.Remark, 
+                                'pcs': '0' }
             
             initial_data.append(initial_data_dict)
 

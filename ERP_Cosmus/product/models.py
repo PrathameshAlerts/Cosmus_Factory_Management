@@ -758,6 +758,7 @@ class purchase_order_for_raw_material(models.Model):
     created_date = models.DateTimeField(auto_now=True)
     modified_date = models.DateTimeField(auto_now_add=True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
+    pcs = models.IntegerField(default = 0)
 
 
 class purchase_order_raw_material_cutting(models.Model):
