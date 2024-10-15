@@ -728,6 +728,7 @@ class purchase_order(models.Model):
     temp_godown_select = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
     cutting_total_processed_qty = models.IntegerField(default=0)
     purchase_order_to_product_saved = models.BooleanField(default=False)
+    note = models.TextField(blank=True, null = True)
 
 class purchase_order_to_product(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, related_name = 'p_o_to_products',on_delete=models.CASCADE)

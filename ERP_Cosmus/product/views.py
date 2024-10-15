@@ -3449,7 +3449,7 @@ def excel_download_production(request,module_name,pk):
             for index, instance in enumerate(purchase_order_instance.raw_materials.all().order_by('id'), start=start_row_items):
                 sheet.cell(row=index, column=start_column_items).value = instance.Remark
                 sheet.cell(row=index, column=start_column_items + 1).value = instance.product_color
-                sheet.cell(row=index, column=start_column_items + 2).value = 'PCS'
+                sheet.cell(row=index, column=start_column_items + 2).value = instance.pcs
                 sheet.cell(row=index, column=start_column_items + 3).value = instance.material_name
                 sheet.cell(row=index, column=start_column_items + 4).value = instance.rate
                 sheet.cell(row=index, column=start_column_items + 5).value = instance.panha
@@ -3791,6 +3791,16 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
                         purchase_order_raw_formset.save()
                         purchase_order_raw_sheet_formset.save()
                         
+                        note_post = request.POST.get('note')
+
+                        if note_post:
+                            purchase_order_instance.note = note_post
+                        else:
+                            purchase_order_instance.note = None
+                            
+                        purchase_order_instance.save()
+
+
                         for form in purchase_order_raw_sheet_formset:
                             po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
                             if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
