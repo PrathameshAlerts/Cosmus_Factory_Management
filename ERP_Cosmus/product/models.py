@@ -700,7 +700,7 @@ class set_prod_item_part_name(models.Model):
     body_combi = models.CharField(max_length=10, choices = BODY_COMBI, blank=True, null = True)
 
 
-class factory_employee(CompanyBaseModel):
+class factory_employee(models.Model):
     factory_emp_name = models.CharField(max_length= 255, unique=True)
     cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
 

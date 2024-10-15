@@ -5137,9 +5137,9 @@ def factory_employee_create_update_list(request ,pk=None):
     if request.user.is_superuser:
         factory_employees = factory_employee.objects.all()
         cutting_rooms =  cutting_room.objects.all()
-    else:
-        factory_employees = factory_employee.objects.filter(company= request.user.company)
-        cutting_rooms =  cutting_room.objects.filter(company= request.user.company)
+    # else:
+        # factory_employees = factory_employee.objects.filter(company= request.user.company)
+        # cutting_rooms =  cutting_room.objects.filter(company= request.user.company)
 
 
 
@@ -5151,7 +5151,7 @@ def factory_employee_create_update_list(request ,pk=None):
         title = 'Create'
         instance = None
     
-    form = factory_employee_form(request.POST or None, instance = instance, user = request.user)
+    form = factory_employee_form(request.POST or None, instance = instance)
 
     if request.method == 'POST':
         if form.is_valid():
