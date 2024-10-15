@@ -3567,8 +3567,6 @@ def excel_download_production(request,module_name,pk):
                 sheet.add_image(excel_img, img_position)
 
 
-           
-            
             # Set the starting position
             start_row_items = 17
             start_column_items = 1 
@@ -3576,7 +3574,7 @@ def excel_download_production(request,module_name,pk):
             header_row = 16
 
             # Headers to be inserted
-            headers = [ "Body/Combi", "Product Color","Pcs","Material Name", 'Shade Color' "Rate","Panha","Units","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
+            headers = ["Body/Combi", "Product Color","Pcs","Material Name", 'Shade Color', "Rate","Panha","Units","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
@@ -3591,13 +3589,11 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 5).value = instance.rate
                 sheet.cell(row=index, column=start_column_items + 6).value = instance.panha
                 sheet.cell(row=index, column=start_column_items + 7).value = instance.units
-                sheet.cell(row=index, column=start_column_items + 8).value = instance.unit_value
-                sheet.cell(row=index, column=start_column_items + 9).value = instance.g_total
-                sheet.cell(row=index, column=start_column_items + 10).value = instance.consumption
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.combi_consumption
-                sheet.cell(row=index, column=start_column_items + 12).value = instance.total_comsumption
-                sheet.cell(row=index, column=start_column_items + 13).value = instance.physical_stock
-                sheet.cell(row=index, column=start_column_items + 14).value = instance.balance_physical_stock
+                sheet.cell(row=index, column=start_column_items + 8).value = instance.consumption
+                sheet.cell(row=index, column=start_column_items + 9).value = instance.combi_consumption
+                sheet.cell(row=index, column=start_column_items + 10).value = instance.total_comsumption
+                sheet.cell(row=index, column=start_column_items + 11).value = instance.physical_stock
+                sheet.cell(row=index, column=start_column_items + 12).value = instance.balance_physical_stock
 
         elif module_name == 'labour_workout':
             file_name = 'labour_workout'
