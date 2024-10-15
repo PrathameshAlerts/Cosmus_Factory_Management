@@ -883,10 +883,10 @@ class cutting_room_form(forms.ModelForm):  #UniqueFieldMixin,
 
 
 
-class factory_employee_form(CompanyBaseForm):  #UniqueFieldMixin,
+class factory_employee_form(forms.ModelForm):  #UniqueFieldMixin,
     class Meta:
         model = factory_employee
-        fields = ['factory_emp_name','cutting_room_id', 'company'] #company only for superusers
+        fields = ['factory_emp_name','cutting_room_id'] #company only for superusers
 
     # def clean_factory_emp_name(self):
     #     return self.clean_unique_field('factory_emp_name',factory_employee)

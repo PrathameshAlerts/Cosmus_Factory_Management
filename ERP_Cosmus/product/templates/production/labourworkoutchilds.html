@@ -1,12 +1,7 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-
-
-
-
-<!-- <h3 class="mb-3 mt-2">Labour Workout List</h3> -->
-
+<div id="labourWorkOutPage">
   <div class="d-flex mb-3 mt-3">
     <label class="fw-bold">Refrence No :</label><span class="text-danger mx-3"> {{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</span>
     <lable class="fw-bold ">Model Name :</lable><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</span>
@@ -70,6 +65,9 @@
         </div>
     </div>
 </div>
+</div>
+
+  
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -157,12 +155,7 @@ $(document).ready(function(){
           success: function(response){
             console.log(response);
             $('#exampleModal').modal('hide');
-            // Disable buttons and visually "disable" the row
-            // row.css('opacity', '0.5'); // Gray out the row
-            // row.find('a, button').prop('disabled', true); // Disable all links and buttons within the row
-
-            // // Optionally, remove the event listeners from the buttons
-            // row.find('a, button').off('click');
+            $('#labourWorkOutPage').window.location.reload();
           },
           error: function(xhr, status, error){
             console.error("Error occurred: " + error);
@@ -183,7 +176,11 @@ $(document).ready(function(){
     
   });
 });
-
+window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            document.forms[0].reset();
+        }
+    });
 </script>
 
 

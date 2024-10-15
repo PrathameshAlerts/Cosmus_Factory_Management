@@ -152,8 +152,8 @@
                                 <th>Units</th>
                                 <th>G-Total</th>
                                 <th>G-Total-Combi</th>
-                                <th>Comsum</th>
-                                <th>Comsum Combi</th>
+                                <th>Comsump</th>
+                                <th>Comsump Combi</th>
                                 <th>Total Comsum</th>
                                 <th>Physical Stock</th>
                                 <th>Balance Stock</th>
@@ -390,9 +390,9 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
             document.getElementById('id_balanceQtys').value = balanceQty;
         });
     }else{
-    window.onload = function() {
-        document.forms[0].reset();
-    };
+    // window.onload = function() {
+    //     document.forms[0].reset();
+    // };
     }
 }
 
@@ -435,7 +435,7 @@ function updateBalanceAndProcessQty() {
             
             balanced.value = balance;
             totalBalanceElement.value = balance;
-            console.log('balance', balance)
+            //console.log('balance', balance)
         }
 
         // Update approved quantity
@@ -444,14 +444,14 @@ function updateBalanceAndProcessQty() {
 
         // Accumulate total balance
         totalBalance += balance;
-        console.log('totalBalance', totalBalance);
+        //console.log('totalBalance', totalBalance);
         balanceMainValue.value =  isNaN(totalBalance) ? 0 : totalBalance; // Update main balance
         totalBalanceElement.value = totalBalance; // Update total balance
 
         // Update total process quantity field
         totalProcessElement.value = totalProcess;
     }
-    console.log('totalProcess', totalProcess);
+    //console.log('totalProcess', totalProcess);
     // Update the main process value
     prcocessMainValue = totalProcess; // Ensure prcocessMainValue reflects the total processed quantity
     document.getElementById('id_processQty').value = prcocessMainValue;
@@ -461,9 +461,11 @@ function labourworkoutBalanceQty(){
     var totalforms = document.getElementById('id_labour_workout_cutting_items_set-TOTAL_FORMS').value;
 
     for (var i = 0; i < totalforms; i++) {
-        var physicalstock = parseInt(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').value);
-        var balance = parseInt(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value);
-      
+        var physicalstock = parseFloat(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').value);
+        var balance = parseFloat(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value);
+        var totalConsumption = parseFloat(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-total_comsumption').value);
+        console.log(physicalstock, balance, totalConsumption)
+        var balanceValue = balance - totalConsumption;
         if(physicalstock > 0){
             document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
         }else{
@@ -471,8 +473,10 @@ function labourworkoutBalanceQty(){
         }
 
         if(balance > 0){
+            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value = balanceValue.toFixed(3);
             document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'green';
         }else{
+            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value = balanceValue.toFixed(3);
             document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'red';
         }
     }
@@ -509,17 +513,15 @@ labourworkoutBalanceQty()
                 if (color === mainColor) {
                     const consumption = el.querySelector('[name$="-consumption"]');
                     const gTotal = el.querySelector('[name$="-combi_consumption"]');
-                    const processqty = parseFloat(document.getElementById('id_processQty').value) || 0;
+                  
                     const gTotalCombi = parseFloat(gTotal.value) || 0;
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
-                    // console.log('gTotalCombi',gTotalCombi)
-                    // console.log('processValue',processqty)
-                    console.log('consumptionMainValue',totalValues)
+          
 
                     let gTotalCombiTotal = gTotalCombi * totalValues;
-                   
+                   //console.log('gTotalCombiTotal',gTotalCombiTotal)
                     let tConsumption = consumptionMainValue * processValue ;
-
+                    //console.log('tConsumption',tConsumption)
                     let tConsumptionTotal = tConsumption + gTotalCombiTotal;
              
                     totalConsumption.value = tConsumptionTotal.toFixed(3);
@@ -529,8 +531,7 @@ labourworkoutBalanceQty()
                     const consumtionCmobi = el.querySelector('[name$="-combi_consumption"]');
                     const consumptionValue = parseFloat(consumption.value) || 0;
                     const consumptionCmobiValue = parseFloat(consumtionCmobi.value) || 0;
-                    const totalValue = parseFloat(labourValue.value) || 0;
-                    console.log('totalValue',totalValue)
+                 
                     let tConsumption = consumptionValue * totalValues;
                     let tConsumptionTotal = consumptionCmobiValue * totalValues;
                     let finalTconsumtioncommon = tConsumption + tConsumptionTotal;
@@ -548,15 +549,17 @@ function labourWorkOutCheck(){
         totalValues += parseFloat(element.value) || 0; 
     })
     document.getElementById('id_processQty').value = totalValues;
-    fabricQty(totalValues)
+    const ids = document.getElementById('id_labour_workout_cutting_items_set-0-id').value;
+    if(ids == ""){
+        fabricQty(totalValues)
+    }
+   
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     labourApprovedQty()
     labourWorkOutCheck()
-    // fabricQty();
-        //updateBalanceAndProcessQty();
-        // labourworkoutBalanceQty();
+    
     const pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
     pendingQty.forEach(function(el){
       el.addEventListener('input',function(){

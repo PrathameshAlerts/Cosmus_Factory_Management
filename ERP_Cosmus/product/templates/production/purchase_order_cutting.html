@@ -195,8 +195,8 @@
                             <th>Units</th>
                             <th>G-Total</th>
                             <th>G-Total-Combi</th>
-                            <th>consum</th>
-                            <th>consum Combi</th>
+                            <th>Consump</th>
+                            <th>Consump Combi</th>
                             <th>Total consum</th>
                             <th>Physical Stock</th>
                             <th>Balance Stock</th>
@@ -423,7 +423,7 @@ function checkOnlyOne(checkbox) {
     for (var i = 0; i < totalforms; i++) {
         var physicalstock = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').value);
         var balance = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').value);
-      
+        
         if(physicalstock > 0){
             document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
         }else{
@@ -431,8 +431,10 @@ function checkOnlyOne(checkbox) {
         }
 
         if(balance > 0){
+           
             document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'green';
         }else{
+           
             document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'red';
         }
     }
@@ -472,9 +474,6 @@ cuttingBalanceQty()
                             const consumption = parseFloat(consumptionInput.value) || 0;
                             const CuttingprocessQty = parseFloat(cuttingTotal.value) || 0;
                             
-                            // console.log('finalTotal update:', finalTotal);
-                            // console.log('CuttingprocessQty',CuttingprocessQty)
-                            // console.log('gTotalValue',gTotalValue)
                             let grandTotalConsumption = gTotalValue * finalTotal;
                             // console.log('grandTotalConsumption',grandTotalConsumption)
                             let totalConsumption = CuttingQty * consumption ;
@@ -565,8 +564,11 @@ cuttingBalanceQty()
               }
            
         }
-    
-        updateCuttingQuantity(finalTotal);
+        const idsValue = document.getElementById('cutting_id').value ;
+        if(idsValue == ""){
+            updateCuttingQuantity(finalTotal);
+        }
+        
     }
 
     function submitForm(){
@@ -680,7 +682,6 @@ cuttingBalanceQty()
         submitForm();
         processValueQty();
         cuttingOrder();
-        cuttingBalanceQty();
         balanceQty();
         processValueCheck();
    
