@@ -112,7 +112,7 @@
                             <td><input type="number" class="product_row" name="{{forms.prefix}}-no_of_rows" required value="{{forms.instance.no_of_rows}}" maxlength="255"id="id_{{forms.prefix}}-no_of_rows"></td>
                             <td><input type="number" class="product_remark" name="{{forms.prefix}}-grand_total" value="{{forms.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{forms.prefix}}-grand_total" readonly></td>
                             <td><input type="number" class="product_remark" name="{{forms.prefix}}-grand_total_combi" value="{{forms.instance.grand_total_combi | default_if_none:''}}" maxlength="255" id="id_{{forms.prefix}}-grand_total_combi" readonly></td>
-                            <td><input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remarks}}" maxlength="255" id="id_{{forms.prefix}}-Remark"></td>
+                            <td><input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remark}}" maxlength="255" id="id_{{forms.prefix}}-Remark"></td>
                             <td><span class="deleteButton border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;" name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE"value=""></i></span></td>
                             <td><input type="button" class="add_btn add_btn_CommonForm mb-3" name="{{forms.prefix}}-add_btns" id="id_{{forms.prefix}}-add_btns" value="+" style="display: none;"></td>
                         </tr>

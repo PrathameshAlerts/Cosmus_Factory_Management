@@ -509,7 +509,7 @@ class purchase_order_form(forms.ModelForm):
         model = purchase_order
 
         fields = ['purchase_order_number','product_reference_number','ledger_party_name',
-                  'target_date','number_of_pieces','temp_godown_select','balance_number_of_pieces']
+                  'target_date','number_of_pieces','temp_godown_select','balance_number_of_pieces','note']
         
 
 
@@ -618,7 +618,7 @@ class purchase_order_raw_product_sheet_form(forms.ModelForm):
 
         fields = ['product_sku','product_color','material_name','rate','panha',
                   'units','g_total','g_total_combi','consumption','unit_value',
-                  'total_comsumption','combi_consumption','physical_stock','balance_physical_stock','Remark']
+                  'total_comsumption','combi_consumption','physical_stock','balance_physical_stock','Remark','pcs']
 
 
 
