@@ -242,7 +242,7 @@
                     document.getElementById('id_raw_materials-' + i + '-combi_consumption').value = '0.000';
                 }
             }
-            //calculateTotalConsumption();
+            calculateTotalConsumption();
         }
         function calculateTotalConsumption(){
             let total =0;
@@ -358,7 +358,7 @@ function submitForm(){
            
             balanceStock()
             submitForm();
-            //calculateTotalConsumption();
+            calculateTotalConsumption();
             updateTotal(); // Initialize the calculation on page load
     });
 
