@@ -173,9 +173,8 @@
 
         </div>
         <div class="d-flex mt-2">
-            <label for="id_{{form.prefix}}-note">Note:- </label>
-            <textarea name="{{form.prefix}}-note" id="id_{{form.prefix}}-note" cols="10 " rows="" class="form-control">{{form.instance.note | default_if_none:''}}</textarea>
-           
+            <label for="id_note">Note:- </label>
+            <textarea name="note" id="id_note" cols="10" rows="" class="form-control">{{form.instance.note | default_if_none:''}}</textarea>
         </div>
         <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrder" onclick=" navbarChange('Purchase Order List')">
 

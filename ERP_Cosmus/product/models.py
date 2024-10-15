@@ -773,7 +773,8 @@ class purchase_order_raw_material_cutting(models.Model):
     cutting_cancelled = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now=True)
     modified_date = models.DateTimeField(auto_now_add=True)
-
+    note = models.TextField(blank=True, null = True)
+    
     # to save an auto field which acts as an autoincrement field
     def save(self, *args, **kwargs):
         if self._state.adding:

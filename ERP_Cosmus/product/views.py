@@ -3459,7 +3459,10 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 9).value = instance.total_comsumption
                 sheet.cell(row=index, column=start_column_items + 10).value = instance.physical_stock
                 sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
-                
+
+            qs_length_list = len(purchase_order_instance.raw_materials.all())
+            sheet.cell(row=qs_length_list + 11 , column=2).value =  'Narration'       
+            sheet.cell(row=qs_length_list + 11 , column=3).value =  purchase_order_instance.note       
 
         elif module_name == 'purchase_order_cutting':
             file_name = 'purchase_order_cutting'
@@ -3571,7 +3574,6 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=2, column = qs_length + 4).value = 'Total'
             sheet.cell(row=4, column = qs_length + 4).value = purchase_order_cutting_instance.processed_qty
 
-
             # Set the starting position
             start_row_items = 17
             start_column_items = 1 
@@ -3584,8 +3586,9 @@ def excel_download_production(request,module_name,pk):
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
                 sheet.cell(row=header_row, column=col_num).value = header
-
-            for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_for_raw_material_cutting_items_set.filter(material_color_shade__items__Fabric_nonfabric='Fabric').order_by('id'), start=start_row_items):
+            
+            cutting_items_qs = purchase_order_cutting_instance.purchase_order_for_raw_material_cutting_items_set.filter(material_color_shade__items__Fabric_nonfabric='Fabric')
+            for index, instance in enumerate(cutting_items_qs.order_by('id'), start=start_row_items):
                 sheet.cell(row=index, column=start_column_items).value = instance.Remark
                 sheet.cell(row=index, column=start_column_items + 1).value = instance.product_color
                 sheet.cell(row=index, column=start_column_items + 2).value = instance.pcs
@@ -3599,6 +3602,12 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 10).value = instance.total_comsumption
                 sheet.cell(row=index, column=start_column_items + 11).value = instance.physical_stock
                 sheet.cell(row=index, column=start_column_items + 12).value = instance.balance_physical_stock
+
+
+            qs_length_list = len(cutting_items_qs)
+            sheet.cell(row=qs_length_list + 11 , column=2).value =  'Narration :'       
+            sheet.cell(row=qs_length_list + 11 , column=3).value =  purchase_order_cutting_instance.note
+
 
         elif module_name == 'labour_workout':
             file_name = 'labour_workout'
@@ -3796,7 +3805,7 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
 
 
     if request.method == 'POST':
-
+        print(request.POST)
         purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST)
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
