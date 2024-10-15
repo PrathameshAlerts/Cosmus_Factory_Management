@@ -677,7 +677,7 @@ class product_2_item_through_table(models.Model):
     grand_total_combi = models.DecimalField(default = 0,max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     common_unique = models.BooleanField(default = False)  #True if its common and false if its special
     no_of_rows = models.IntegerField(default = 1, validators=[MinValueValidator(1)])
-    Remark = models.CharField(max_length = 100, blank=True, null=True)
+    Remark = models.CharField(max_length = 50, blank = True, null=True)
 
 
     class Meta:
@@ -697,7 +697,7 @@ class set_prod_item_part_name(models.Model):
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
     dimention_total = models.DecimalField(default=0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank=True, null= True)
     part_pieces = models.IntegerField(blank=True, null= True)
-    body_combi = models.CharField(max_length=10,choices = BODY_COMBI, blank=True, null = True)
+    body_combi = models.CharField(max_length=10, choices = BODY_COMBI, blank=True, null = True)
 
 
 class factory_employee(CompanyBaseModel):
@@ -705,7 +705,7 @@ class factory_employee(CompanyBaseModel):
     cutting_room_id = models.ForeignKey('cutting_room',null=True, on_delete=models.PROTECT)
 
 
-class cutting_room(CompanyBaseModel):
+class cutting_room(models.Model):
     cutting_room_name = models.CharField(max_length=100, unique=True)
 
 
@@ -730,7 +730,7 @@ class purchase_order(models.Model):
     purchase_order_to_product_saved = models.BooleanField(default=False)
 
 class purchase_order_to_product(models.Model):
-    purchase_order_id = models.ForeignKey(purchase_order,related_name = 'p_o_to_products',on_delete=models.CASCADE)
+    purchase_order_id = models.ForeignKey(purchase_order, related_name = 'p_o_to_products',on_delete=models.CASCADE)
     product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     order_quantity = models.IntegerField(default=0)
     order_processed_quantity = models.IntegerField(default=0)
@@ -757,6 +757,7 @@ class purchase_order_for_raw_material(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     created_date = models.DateTimeField(auto_now=True)
     modified_date = models.DateTimeField(auto_now_add=True)
+    Remark = models.CharField(max_length = 50, null=False, blank=False)
 
 
 class purchase_order_raw_material_cutting(models.Model):
