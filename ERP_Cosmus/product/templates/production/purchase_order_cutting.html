@@ -260,13 +260,13 @@
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-panha" value="{{form.initial.panha}}" step="0.001" id="id_{{form.prefix}}-panha" readonly></td>
                             <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.initial.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-units" value="{{form.initial.units}}" step="0.001" id="id_{{form.prefix}}-units" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.initial.g_total}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
-                            <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.initial.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
-                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.initial.consumption}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-combi_consumption" value="{{form.initial.combi_consumption}}" step="0.001" id="id_{{form.prefix}}-combi_consumption" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td> 
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-g_total" value="{{form.initial.g_total | default_if_none:'0'}}" step="0.001" id="id_{{form.prefix}}-g_total" readonly></td>
+                            <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.initial.g_total_combi | default_if_none:'0'}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-consumption" value="{{form.initial.consumption | default_if_none:'0'}}" step="0.001" id="id_{{form.prefix}}-consumption" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-combi_consumption" value="{{form.initial.combi_consumption | default_if_none:'0'}}" step="0.001" id="id_{{form.prefix}}-combi_consumption" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption | default_if_none:'0'}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock | default_if_none:'0'}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock | default_if_none:'0'}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td> 
                         </tr>
 
                         {% endif %}
@@ -417,13 +417,13 @@ function checkOnlyOne(checkbox) {
         }
     }
     
-    function cuttingBalanceQty(){
+function cuttingBalanceQty(){
     var totalforms = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
 
     for (var i = 0; i < totalforms; i++) {
         var physicalstock = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').value);
         var balance = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').value);
-        
+
         if(physicalstock > 0){
             document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
         }else{
@@ -440,11 +440,11 @@ function checkOnlyOne(checkbox) {
     }
 }
 
-cuttingBalanceQty()   
+  
     function updateCuttingQuantity(finalTotal){
         let totals = 0;
         let balance = 0;
-        const cuttingQtyElements = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
+        const cuttingQtyElements = document.querySelectorAll('input[name$="-cutting_quantity"]');
         
         cuttingQtyElements.forEach(input =>{
             const CuttingQty = parseFloat(input.value) || 0;
@@ -467,19 +467,17 @@ cuttingBalanceQty()
                             const consumptionInput =row.querySelector('input[name$="-consumption"]');
                             const colorShade = row.querySelector('.checkBox-row');
                             const GtotalCombi = row.querySelector('input[name$="-combi_consumption"]');
-                            const cuttingProcess = document.getElementById('id_processed_qty').value;
                             const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
                             const gTotalValue = parseFloat(GtotalCombi.value) || 0;
-                            //const CuttingprocessQty = parseFloat(cuttingProcess) || 0;
+                         
                             const consumption = parseFloat(consumptionInput.value) || 0;
-                            const CuttingprocessQty = parseFloat(cuttingTotal.value) || 0;
-                            
+                          console.log('finalTotal',finalTotal)
                             let grandTotalConsumption = gTotalValue * finalTotal;
-                            // console.log('grandTotalConsumption',grandTotalConsumption)
+                     
                             let totalConsumption = CuttingQty * consumption ;
-                            // console.log('totalConsumption',totalConsumption)
+                         
                             let totalCombiValue = totalConsumption + grandTotalConsumption;
-                            // console.log('totalCombiValue',totalCombiValue)
+                           
                             totalConsumptionInput.value = totalCombiValue.toFixed(3);
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
@@ -501,10 +499,9 @@ cuttingBalanceQty()
                             const consumtionCombi = row.querySelector('input[name$="-combi_consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
                             const commonConsumptionCombiValue = parseFloat(consumtionCombi.value) || 0;
-                            //  const cuttingTotal = document.getElementById('id_cuttingTotal');
-                            const totalValue = parseFloat(cuttingTotal.value) || 0;
-                            let commonConsumption = totalValue * commonConsumptionValue;
-                            let commonConsumptionCombi = totalValue * commonConsumptionCombiValue;
+                            // const totalValue = parseFloat(cuttingTotal.value) || 0;
+                            let commonConsumption = finalTotal * commonConsumptionValue;
+                            let commonConsumptionCombi = finalTotal * commonConsumptionCombiValue;
                             let finalTotalConsumption = commonConsumption + commonConsumptionCombi;
                             totalConsumptionInput.value = finalTotalConsumption.toFixed(3);
                         }
@@ -515,17 +512,11 @@ cuttingBalanceQty()
             
             })
         })
-        
+       
     }
 
     function balanceQty (){
-        let finalTotal = 0;
-        const cuttingprocess = document.querySelectorAll('[name$="-cutting_quantity"]');
       
-        cuttingprocess.forEach(element =>{
-            finalTotal += parseFloat(element.value);
-        })
-        document.getElementById('id_cuttingTotal').value = finalTotal;
         var newForm = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-TOTAL_FORMS').value;
  
 
@@ -564,10 +555,7 @@ cuttingBalanceQty()
               }
            
         }
-        const idsValue = document.getElementById('cutting_id').value ;
-        if(idsValue == ""){
-            updateCuttingQuantity(finalTotal);
-        }
+       
         
     }
 
@@ -651,40 +639,45 @@ cuttingBalanceQty()
     }
 
    function processValueQty(){
-    let productId = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-0-id').value;
-        
+        let productId = document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-0-id').value;
+        let finalTotal = 0;
+        const cuttingprocess = document.querySelectorAll('[name$="-cutting_quantity"]');
+      
+        cuttingprocess.forEach(element =>{
+            finalTotal += parseFloat(element.value);
+        })
+        document.getElementById('id_cuttingTotal').value = finalTotal;
         if(productId == ''){
         const totalProcessQty = document.getElementById('id_processed_qty');
         const totalCuttingQtys = document.getElementById('id_cuttingTotal').value;
         const OderQty = document.getElementById('id_number_of_pieces');
         const orderQtyValue = parseFloat(OderQty.value);
         totalProcessQty.value = totalCuttingQtys;  
-            //console.log('totalCuttingQtys',totalCuttingQtys)
+        updateCuttingQuantity(finalTotal)
         }
+       
     }
 
 
     document.addEventListener('DOMContentLoaded', ()=>{
         let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
         qty.forEach(element => {
-            element.addEventListener('focus', balanceQty);
+            
             element.addEventListener('input', () => {
                 cuttingOrder();
                 updateCuttingQuantity();
                 processValueQty();
-                submitForm();
-                balanceQty();
                 cuttingBalanceQty()
-                processValueCheck();
-               
+                balanceQty();
             });
         })
         submitForm();
-        processValueQty();
-        cuttingOrder();
-        balanceQty();
+         processValueQty();
+         cuttingOrder();
+         balanceQty();
         processValueCheck();
-   
+        cuttingBalanceQty() 
+    
     });
 
     window.addEventListener("pageshow", function(event) {

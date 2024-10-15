@@ -390,9 +390,9 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
             document.getElementById('id_balanceQtys').value = balanceQty;
         });
     }else{
-    // window.onload = function() {
-    //     document.forms[0].reset();
-    // };
+    window.onload = function() {
+        document.forms[0].reset();
+    };
     }
 }
 
@@ -403,7 +403,6 @@ function updateBalanceAndProcessQty() {
     var totalBalance = 0;
     var totalProcess = 0;
     var forms = parseInt(document.getElementById('id_labour_workout_child_items-TOTAL_FORMS').value);
-    console.log('Test')
     var prcocessMainValue = parseInt(document.getElementById('id_processQty').value) || 0;
     var balanceMainValue = document.getElementById('id_balanceQtys');
     var apprvedMainValue = document.getElementById('id_OderQty');
@@ -463,9 +462,7 @@ function labourworkoutBalanceQty(){
     for (var i = 0; i < totalforms; i++) {
         var physicalstock = parseFloat(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').value);
         var balance = parseFloat(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value);
-        var totalConsumption = parseFloat(document.getElementById('id_labour_workout_cutting_items_set-' + i + '-total_comsumption').value);
-        console.log(physicalstock, balance, totalConsumption)
-        var balanceValue = balance - totalConsumption;
+    
         if(physicalstock > 0){
             document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
         }else{
@@ -473,10 +470,9 @@ function labourworkoutBalanceQty(){
         }
 
         if(balance > 0){
-            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value = balanceValue.toFixed(3);
             document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'green';
         }else{
-            document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value = balanceValue.toFixed(3);
+           
             document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'red';
         }
     }
@@ -519,9 +515,9 @@ labourworkoutBalanceQty()
           
 
                     let gTotalCombiTotal = gTotalCombi * totalValues;
-                   //console.log('gTotalCombiTotal',gTotalCombiTotal)
+
                     let tConsumption = consumptionMainValue * processValue ;
-                    //console.log('tConsumption',tConsumption)
+                 
                     let tConsumptionTotal = tConsumption + gTotalCombiTotal;
              
                     totalConsumption.value = tConsumptionTotal.toFixed(3);
@@ -540,6 +536,7 @@ labourworkoutBalanceQty()
             }
         });
     });
+    balanceQty();
 }
 
 function labourWorkOutCheck(){
@@ -555,15 +552,36 @@ function labourWorkOutCheck(){
     }
    
 }
+    function balanceQty(){
+        var totalforms = document.getElementById('id_labour_workout_cutting_items_set-TOTAL_FORMS').value;
 
+        for (var i = 0; i < totalforms; i++) {
+            var physicalstock = document.getElementById('id_labour_workout_cutting_items_set-' + i + '-physical_stock').value;
+           
+            var totalConsumption = document.getElementById('id_labour_workout_cutting_items_set-' + i + '-total_comsumption').value;
+            console.log('totalConsumption', totalConsumption)
+            // console.log('physicalstock', physicalstock)
+        
+
+            if(!isNaN(physicalstock) && !isNaN(totalConsumption)){
+                var balanceValue = physicalstock - totalConsumption;
+                // console.log('balanceValue',balanceValue)
+                document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value = balanceValue.toFixed(3);
+            }
+           
+         
+        
+        }
+    }
 document.addEventListener('DOMContentLoaded', function() {
     labourApprovedQty()
     labourWorkOutCheck()
-    
+    balanceQty()
     const pendingQty = document.querySelectorAll('[name$="-processed_pcs"]');
     pendingQty.forEach(function(el){
+        // el.addEventListener('focus', balanceQty);
       el.addEventListener('input',function(){
-    
+         balanceQty();
         fabricQty();
         updateBalanceAndProcessQty();
         labourworkoutBalanceQty();
