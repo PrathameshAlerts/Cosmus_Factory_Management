@@ -173,7 +173,9 @@
 
         </div>
         <div>
-            <span><input type="text" name="{{form.prefix}}-note" class="productorderrawqty-input" value="{{form.instance.note | default_if_none:''}}" step="0.01" id="id_{{form.prefix}}-note"></span>
+            <span>
+                <input type="text" name="{{form.prefix}}-note" class="productorderrawqty-input" value="{{form.instance.note | default_if_none:''}}" step="0.01" id="id_{{form.prefix}}-note">
+            </span>
         </div>
         <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrder" onclick=" navbarChange('Purchase Order List')">
 

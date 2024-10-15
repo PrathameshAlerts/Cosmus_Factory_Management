@@ -3333,7 +3333,7 @@ def excel_download_production(request,module_name,pk):
 
             file_name = 'purchase_order_raw'
 
-            column_widths = [16, 20, 13, 15, 15, 15, 15, 15]  # Adjust these values as needed
+            column_widths = [16, 20, 9, 30, 15, 15, 15, 15, 15]  # Adjust these values as needed
 
             #fix the column width  of sheet1
             for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -3360,14 +3360,14 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=6, column=1).value = 'Total PO Qty'
             sheet.cell(row=6, column=2).value = purchase_order_instance.number_of_pieces
 
-            sheet.cell(row=2, column=3).value = 'Product SKU'
-            sheet.cell(row=3, column=3).value = 'Color'
-            sheet.cell(row=4, column=3).value = 'Proc Qty'
-            sheet.cell(row=5, column=3).value = 'Image'
+            sheet.cell(row=2, column=4).value = 'Product SKU'
+            sheet.cell(row=3, column=4).value = 'Color'
+            sheet.cell(row=4, column=4).value = 'Proc Qty'
+            sheet.cell(row=5, column=4).value = 'Image'
 
             # Set the starting position
-            start_row = 2  
-            start_column = 4
+            start_row = 2 
+            start_column = 5
 
             for index, instance in enumerate(purchase_order_instance.p_o_to_products.all().order_by('id'), start = start_column): # start of index value = start=start_column
 
@@ -3428,16 +3428,16 @@ def excel_download_production(request,module_name,pk):
                     # Handle the case where the image does not exist
 
             length_queryset = len(purchase_order_instance.p_o_to_products.all())
-            col_number = 4 + length_queryset
+            col_number = 5 + length_queryset
 
             sheet.cell(row=2, column=col_number).value = 'Total'
             sheet.cell(row=4, column=col_number).value = purchase_order_instance.number_of_pieces
 
             # Set the starting position
-            start_row_items = length_queryset + 7
+            start_row_items = 10
             start_column_items = 1 
 
-            header_row = length_queryset + 6
+            header_row = 9
             # Headers to be inserted
             headers = ["Body/Combi", "Product Color", "Pcs", "Material Name", "Rate", "Panha","Units", "Consump","Combi Consump","Total Consump","Physical Stock","Bal Stock"]
 
@@ -3464,7 +3464,7 @@ def excel_download_production(request,module_name,pk):
         elif module_name == 'purchase_order_cutting':
             file_name = 'purchase_order_cutting'
 
-            column_widths = [22, 22, 5, 20, 15, 15, 20]  # Adjust these values as needed
+            column_widths = [16, 20, 9, 30, 15, 15, 15, 15, 15]  # Adjust these values as needed
 
             #fix the column width  of sheet1
             for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -3480,20 +3480,20 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=3, column=1).value = 'Cutting Number'
             sheet.cell(row=3, column=2).value = purchase_order_cutting_instance.raw_material_cutting_id
 
-            sheet.cell(row=4, column=1).value = 'Product Reference Number'
-            sheet.cell(row=4, column=2).value = purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name
+            sheet.cell(row=4, column=1).value = 'Date'
+            sheet.cell(row=4, column=2).value = purchase_order_cutting_instance.created_date.replace(tzinfo=None).strftime('%d %B %Y') # change python date object to excel object 
             
-            sheet.cell(row=5, column=1).value = 'Party Name'
-            sheet.cell(row=5, column=2).value = purchase_order_cutting_instance.purchase_order_id.ledger_party_name.name
+            sheet.cell(row=5, column=1).value = 'Cutter Name'
+            sheet.cell(row=5, column=2).value = purchase_order_cutting_instance.factory_employee_id.factory_emp_name
 
+            sheet.cell(row=6, column=1).value = 'Product Reference Number'
+            sheet.cell(row=6, column=2).value = purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID 
 
-            sheet.cell(row=6, column=1).value = 'Processed Qty'
-            sheet.cell(row=6, column=2).value = purchase_order_cutting_instance.processed_qty
-
-            sheet.cell(row=7, column=1).value = 'Target Date'
-            sheet.cell(row=7, column=2).value = purchase_order_cutting_instance.created_date.replace(tzinfo=None).strftime('%d %B %Y') # change python date object to excel object 
-
+            sheet.cell(row=7, column=1).value = 'Model Name'
+            sheet.cell(row=7, column=2).value = purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name
     
+            sheet.cell(row=8, column=1).value = 'Processed Qty'
+            sheet.cell(row=8, column=2).value = purchase_order_cutting_instance.processed_qty
 
 
             sheet.cell(row=2, column=4).value = 'Product SKU'
