@@ -618,7 +618,7 @@ class purchase_order_raw_product_sheet_form(forms.ModelForm):
 
         fields = ['product_sku','product_color','material_name','rate','panha',
                   'units','g_total','g_total_combi','consumption','unit_value',
-                  'total_comsumption','combi_consumption','physical_stock','balance_physical_stock']
+                  'total_comsumption','combi_consumption','physical_stock','balance_physical_stock','Remark']
 
 
 
@@ -872,10 +872,10 @@ class labour_work_in_product_to_item_approval_form(forms.ModelForm):
 labour_work_in_product_to_item_approval_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
             form = labour_work_in_product_to_item_approval_form, extra = 0, can_delete = False)
 
-class cutting_room_form(CompanyBaseForm):  #UniqueFieldMixin,
+class cutting_room_form(forms.ModelForm):  #UniqueFieldMixin,
     class Meta:
         model = cutting_room
-        fields = ['cutting_room_name','company'] # company only for superusers
+        fields = ['cutting_room_name'] # ,'company' company only for superusers
 
     # this way we can use a custom mixin or the below commented code 
     # def clean_cutting_room_name(self):

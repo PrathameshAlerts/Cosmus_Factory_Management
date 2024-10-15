@@ -2349,7 +2349,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
                         items.delete()
 
             formset = purchase_voucher_items_godown_formset(popup_godown_data, instance = voucher_item_instance ,prefix='shade_godown_items_set')
-            print(formset)
+            
             if formset.is_valid():
                 for form in formset.deleted_forms:
                     if form.instance.pk:
@@ -3333,7 +3333,7 @@ def excel_download_production(request,module_name,pk):
 
             file_name = 'purchase_order_raw'
 
-            column_widths = [20, 20, 20, 20, 20, 20, 20, 20]  # Adjust these values as needed
+            column_widths = [16, 20, 13, 15, 15, 15, 15, 15]  # Adjust these values as needed
 
             #fix the column width  of sheet1
             for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -3439,7 +3439,7 @@ def excel_download_production(request,module_name,pk):
 
             header_row = length_queryset + 6
             # Headers to be inserted
-            headers = ["Body/Combi", "P-Color", "Pcs","Material Name", "Rate", "Panha","Units","Consump","Combi Consump","Total Consump","Physical Stock","Bal Stock"]
+            headers = ["Body/Combi", "Product Color", "Pcs", "Material Name", "Rate", "Panha","Units","Consump","Combi Consump","Total Consump","Physical Stock","Bal Stock"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
@@ -3447,19 +3447,18 @@ def excel_download_production(request,module_name,pk):
 
 
             for index, instance in enumerate(purchase_order_instance.raw_materials.all().order_by('id'), start=start_row_items):
-                sheet.cell(row=index, column=start_column_items).value = instance.product_sku
+                sheet.cell(row=index, column=start_column_items).value = "Body/Combi"
                 sheet.cell(row=index, column=start_column_items + 1).value = instance.product_color
-                sheet.cell(row=index, column=start_column_items + 2).value = instance.material_name
-                sheet.cell(row=index, column=start_column_items + 3).value = instance.rate
-                sheet.cell(row=index, column=start_column_items + 4).value = instance.panha
-                sheet.cell(row=index, column=start_column_items + 5).value = instance.units
-                sheet.cell(row=index, column=start_column_items + 6).value = instance.unit_value
-                sheet.cell(row=index, column=start_column_items + 7).value = instance.g_total
-                sheet.cell(row=index, column=start_column_items + 8).value = instance.consumption
-                sheet.cell(row=index, column=start_column_items + 9).value = instance.combi_consumption
-                sheet.cell(row=index, column=start_column_items + 10).value = instance.total_comsumption
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.physical_stock
-                sheet.cell(row=index, column=start_column_items + 12).value = instance.balance_physical_stock
+                sheet.cell(row=index, column=start_column_items + 2).value = 'PCS'
+                sheet.cell(row=index, column=start_column_items + 3).value = instance.material_name
+                sheet.cell(row=index, column=start_column_items + 4).value = instance.rate
+                sheet.cell(row=index, column=start_column_items + 5).value = instance.panha
+                sheet.cell(row=index, column=start_column_items + 6).value = instance.units
+                sheet.cell(row=index, column=start_column_items + 7).value = instance.consumption
+                sheet.cell(row=index, column=start_column_items + 8).value = instance.combi_consumption
+                sheet.cell(row=index, column=start_column_items + 9).value = instance.total_comsumption
+                sheet.cell(row=index, column=start_column_items + 10).value = instance.physical_stock
+                sheet.cell(row=index, column=start_column_items + 11).value = instance.balance_physical_stock
                 
 
         elif module_name == 'purchase_order_cutting':
@@ -3754,7 +3753,8 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
                                 'unit_value': query.Item_pk.unit_name_item.unit_name,
                                 'physical_stock':'0',
                                 'balance_physical_stock':'0',
-                                'row_number':query.row_number }
+                                'row_number':query.row_number,
+                                'Remark':query.Remark }
             
             initial_data.append(initial_data_dict)
 
@@ -5180,19 +5180,19 @@ def factoryempdelete(request,pk=None):
 
 @login_required(login_url='login')
 def cutting_room_create_update_list(request, pk=None):
-
+    print(request.POST)
     if pk:
         instance = cutting_room.objects.get(id = pk)
 
     else:
         instance = None
 
-    form = cutting_room_form(request.POST or None, instance = instance, user=request.user)
+    form = cutting_room_form(request.POST or None, instance = instance) # , user=request.user
 
     if request.user.is_superuser:
         cutting_rooms = cutting_room.objects.all()
-    else:
-        cutting_rooms = cutting_room.objects.filter(company = request.user.company)
+    # else:
+    #     cutting_rooms = cutting_room.objects.filter(company = request.user.company)
 
 
     if request.method == 'POST':
