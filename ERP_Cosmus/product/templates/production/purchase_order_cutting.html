@@ -463,7 +463,7 @@ function cuttingBalanceQty(){
             totalConsumptionRows.forEach(row =>{
                 const currentColor = row.querySelector('input[name$="-product_color"]').value;
                 let totalConsumptionInput = row.querySelector('input[name$="-total_comsumption"]');
-                
+                const qtyValue = row.querySelector('input[name$="-pcs"]');
                 if(totalConsumptionInput){
                     const fabricGroup = row.querySelector('.fabric_group').value;
                     if (fabricGroup === "True") {
@@ -472,10 +472,11 @@ function cuttingBalanceQty(){
                             const colorShade = row.querySelector('.checkBox-row');
                             const GtotalCombi = row.querySelector('input[name$="-combi_consumption"]');
                             const colorshadeValue = colorShade.querySelectorAll('input[type="checkbox"]').length;
+                            
                             const gTotalValue = parseFloat(GtotalCombi.value) || 0;
-                         
+                          
                             const consumption = parseFloat(consumptionInput.value) || 0;
-                          console.log('finalTotal',finalTotal)
+                         
                             let grandTotalConsumption = gTotalValue * finalTotal;
                      
                             let totalConsumption = CuttingQty * consumption ;
@@ -483,6 +484,7 @@ function cuttingBalanceQty(){
                             let totalCombiValue = totalConsumption + grandTotalConsumption;
                            
                             totalConsumptionInput.value = totalCombiValue.toFixed(3);
+                            qtyValue.value = CuttingQty;
                             if(CuttingQty > 0){
                                 if(colorshadeValue > 1){
                                     colorShade.style.border = "3px solid red";
@@ -503,11 +505,12 @@ function cuttingBalanceQty(){
                             const consumtionCombi = row.querySelector('input[name$="-combi_consumption"]');
                             const commonConsumptionValue = parseFloat(consumptionInput.value) || 0;
                             const commonConsumptionCombiValue = parseFloat(consumtionCombi.value) || 0;
-                            // const totalValue = parseFloat(cuttingTotal.value) || 0;
+                       
                             let commonConsumption = finalTotal * commonConsumptionValue;
                             let commonConsumptionCombi = finalTotal * commonConsumptionCombiValue;
                             let finalTotalConsumption = commonConsumption + commonConsumptionCombi;
                             totalConsumptionInput.value = finalTotalConsumption.toFixed(3);
+                            qtyValue.value = finalTotal;
                         }
                     } else {
                             totalConsumptionInput.value = '0.00';
