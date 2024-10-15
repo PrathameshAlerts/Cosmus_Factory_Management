@@ -255,40 +255,47 @@
                 const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
                 const processtotalQty = document.getElementById('id_processTotal');
               
-                total += processQuantity;
+                // total += processQuantity;
                
-                processtotalQty.value = total;
-                 document.getElementById('id_processTotal').value = total;
+                // processtotalQty.value = total;
+                //  document.getElementById('id_processTotal').value = total;
                 totalConsumptionRows.forEach(totalRow => {
                     const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
                     const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
                     const qtyPcs = totalRow.querySelector('input[name$="-pcs"]');
+                   
                     if (totalConsumptionInput) {
                         if (totalProductColor === productColor) {
                         // Calculate total consumption for matching colors
                             const consumptionInput = totalRow.querySelector('input[name$="-consumption"]');
                             const gTotalCombi = totalRow.querySelector('input[name$="-combi_consumption"]');
                             const processData = document.getElementById('id_processTotal');
+                           
+                            console.log('qtyPcs',qtyPcs);
                             const process = parseFloat(processData.value) || 0;;
                             const gTotalValue = parseFloat(gTotalCombi.value) || 0;
                             const consumption = parseFloat(consumptionInput.value) || 0;
-                           
-                            let mainConsumption = gTotalValue * process;
-                     
-                            let ConsumptionTotal = processQuantity * consumption ;
-                
-                            let totalConsumption = ConsumptionTotal + mainConsumption;
-            
-                            totalConsumptionInput.value = totalConsumption.toFixed(3);
-                            if(processQuantity ){
-                                qtyPcs.value = processQuantity
-                            }
                           
+                            let mainConsumption = gTotalValue * process;
+                    
+                            let ConsumptionTotal = processQuantity * consumption ;
+                       
+                            let totalConsumption = ConsumptionTotal + mainConsumption;
+                       
+                            totalConsumptionInput.value = totalConsumption.toFixed(3);
+                            if(qtyPcs){
+                                    qtyPcs.value = processQuantity;
+                            }
+                             
+                      
+                          
+
                         }else if(totalProductColor === "Common Item"){
                                 
                                 const consumptionInputCommon = totalRow.querySelector('input[name$="-consumption"]').value;
                                 const consumtionCombi = totalRow.querySelector('input[name$="-combi_consumption"]').value;
                                 const proccessValue = document.getElementById('id_processTotal');
+                       
                                 const consumptions = parseFloat(consumptionInputCommon) || 0;
                                 const totalValue = parseFloat(proccessValue.value) || 0;
                                 const consumtionCombiValue = parseFloat(consumtionCombi) || 0;
@@ -297,9 +304,11 @@
                                 let commonConsumtionCombi = consumtionCombiValue * consumptions;
 
                                 let totalCommonConsumtion = commonConsumption + commonConsumtionCombi;
-                                qtyPcs.value = totalValue;
                                 totalConsumptionInput.value = totalCommonConsumtion.toFixed(3);
-                                
+                               
+                                if(qtyPcs){
+                                    qtyPcs.value = totalValue;
+                                }
                                     
                         }
                     }
@@ -308,6 +317,7 @@
               balanceStock();
         }
 
+        calculateTotalConsumption();
 function balanceStock(){
     var totals = document.getElementById('id_raw_materials-TOTAL_FORMS').value;
    
@@ -316,7 +326,7 @@ function balanceStock(){
         var newPhysicalStock = document.getElementById('id_raw_materials-' + i + '-physical_stock').value;
         var balanceStock = document.getElementById('id_raw_materials-' + i + '-balance_physical_stock');
 
-         balanceStock = newPhysicalStock - totalConsumtionValue;
+            balanceStock = newPhysicalStock - totalConsumtionValue;
             document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
             if(balanceStock > 0){
                 document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').style.color = 'green';
@@ -329,11 +339,11 @@ function balanceStock(){
                 document.getElementById('id_raw_materials-' + i + '-physical_stock').style.color = 'red'; 
             }
             
-    }  
-             
+    }               
 }
 function submitForm(){
     const ids = document.getElementById('id_raw_materials-0-id').value;
+    console.log(ids);
     if(ids !== ""){
         var submitButton = document.getElementById('id_submitPurchaseOrder');
         submitButton.style.display = 'none';
@@ -345,17 +355,15 @@ function submitForm(){
         })
     }
 }
-
+submitForm();
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"] , input[name$="-g_total_combi"]');
         var processQuantityElements = document.querySelectorAll('input[name$="-order_processed_quantity"]');
             formElements.forEach(element => {
                 element.addEventListener('focus', updateTotal);
                 element.addEventListener('focus', calculateTotalConsumption);
-                balanceStock();
             });
-           
-            balanceStock()
+
             submitForm();
             calculateTotalConsumption();
             updateTotal(); // Initialize the calculation on page load
@@ -368,5 +376,4 @@ function submitForm(){
     });
 </script>
 {% endblock %}
-
 
