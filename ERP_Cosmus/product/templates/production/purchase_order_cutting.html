@@ -226,6 +226,7 @@
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.instance.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.instance.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.instance.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                            
                         </tr>
 
                         {% elif not purchase_order_cutting_form.instance.raw_material_cutting_id %}
@@ -267,7 +268,10 @@
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_comsumption" value="{{form.initial.total_comsumption}}" step="0.001" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-physical_stock" value="{{form.initial.physical_stock}}" step="0.001" id="id_{{form.prefix}}-physical_stock" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-balance_physical_stock" value="{{form.initial.balance_physical_stock}}" step="0.001" id="id_{{form.prefix}}-balance_physical_stock" readonly></td> 
+                            <input type="hidden" name="{{form.prefix}}-Remark" class="productorder_input " value="{{form.initial.Remark}}" step="0.01" id="id_{{form.prefix}}-Remark" readonly>
+                            <input type="hidden" name="{{form.prefix}}-pcs" class="productorder_input " value="{{form.initial.pcs}}" step="0.01" id="id_{{form.prefix}}-pcs" readonly>
                         </tr>
+
 
                         {% endif %}
                         {% endfor %}

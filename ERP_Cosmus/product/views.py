@@ -2177,7 +2177,7 @@ def purchasevouchercreateupdate(request, pk = None):
                                             godown_instance.purchase_voucher_godown_item = items_instance #save form to permanant table with link to parent table pk
                                             godown_instance.save()
                                             saved_data_to_delete = saved_data_to_delete + 1
-                                            print('Data-saved')
+                                            
                                         else:
                                            
                                             purchase_voucher_temp_data.delete()
@@ -3464,7 +3464,7 @@ def excel_download_production(request,module_name,pk):
         elif module_name == 'purchase_order_cutting':
             file_name = 'purchase_order_cutting'
 
-            column_widths = [16, 20, 9, 30, 15, 15, 15, 15, 15]  # Adjust these values as needed
+            column_widths = [16, 20, 30, 15, 15, 15, 15, 15, 15]  # Adjust these values as needed
 
             #fix the column width  of sheet1
             for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -3495,17 +3495,31 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=8, column=1).value = 'Processed Qty'
             sheet.cell(row=8, column=2).value = purchase_order_cutting_instance.processed_qty
 
+            sheet.cell(row=10, column=1).value = 'Party Name'
+            sheet.cell(row=10, column=2).value = purchase_order_cutting_instance.purchase_order_id.ledger_party_name.name
 
-            sheet.cell(row=2, column=4).value = 'Product SKU'
-            sheet.cell(row=2, column=5).value = 'Color'
-            sheet.cell(row=2, column=6).value = 'Cutting Qty'
-            sheet.cell(row=2, column=7).value = 'Image'
+            sheet.cell(row=11, column=1).value = 'Total PO Qty'
+            sheet.cell(row=11, column=2).value = purchase_order_cutting_instance.purchase_order_id.number_of_pieces
+
+            sheet.cell(row=12, column=1).value = 'Balance Qty'
+            sheet.cell(row=12, column=2).value = purchase_order_cutting_instance.balance_qty
+
+            sheet.cell(row=13, column=1).value = 'Target Date'
+            sheet.cell(row=13, column=2).value = purchase_order_cutting_instance.purchase_order_id.target_date.strftime('%d %B %Y')
+
+
+
+
+            sheet.cell(row=2, column=3).value = 'Product SKU'
+            sheet.cell(row=3, column=3).value = 'Color'
+            sheet.cell(row=4, column=3).value = 'Cutting Qty'
+            sheet.cell(row=5, column=3).value = 'Image'
             
             # Set the starting position
-            start_row = 3  
+            start_row = 2  
             start_column = 4  
 
-            for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all().order_by('id'), start=start_row):
+            for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all().order_by('id'), start=start_column):
 
                 product_creation_instance = PProduct_Creation.objects.get(PProduct_SKU = instance.product_sku)
 
@@ -3536,51 +3550,54 @@ def excel_download_production(request,module_name,pk):
                 excel_img = Image(full_image_path)
 
             
-                sheet.cell(row=index, column=start_column).value = instance.product_sku
-                sheet.cell(row=index, column=start_column + 1).value = instance.product_color
-                sheet.cell(row=index, column=start_column + 2).value = instance.cutting_quantity
-                sheet.row_dimensions[index].height = 40
-                # Set the desired size of the image in pixels (adjust width and height as needed)
-                excel_img.width = 55  # Example width in pixels
-                excel_img.height = 40  # Example height in pixels
+                sheet.cell(row=start_row, column=index).value = instance.product_sku
+                sheet.cell(row=start_row + 1, column=index).value = instance.product_color
+                sheet.cell(row=start_row + 2, column=index).value = instance.cutting_quantity
 
-                # Set image position. Example: Insert image at cell D{index}
-                img_position = f'G{index}'
+                # sheet.row_dimensions[index].height = 40
+                # Set the desired size of the image in pixels (adjust width and height as needed)
+                excel_img.width = 60  # Example width in pixels
+                excel_img.height = 55  # Example height in pixels
+
+               # Set image position. Example: Insert image at cell D{index}
+                col_letter =  get_column_letter(index) # get the column letter from index
+                img_position = f'{col_letter}{start_row + 3}'
 
                 # Insert the image into the Excel sheet at the specified position
                 sheet.add_image(excel_img, img_position)
 
 
-            length_queryset = len(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all())
+           
             
             # Set the starting position
-            start_row_items = length_queryset + 11
+            start_row_items = 17
             start_column_items = 1 
 
-            header_row = length_queryset + 10
+            header_row = 16
 
             # Headers to be inserted
-            headers = ["Product SKU", "Product Color", "Material Name", 'Shade Color' "Rate","Panha","Unit Name","Units","G-Total","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
+            headers = [ "Body/Combi", "Product Color","Pcs","Material Name", 'Shade Color' "Rate","Panha","Units","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
                 sheet.cell(row=header_row, column=col_num).value = header
 
-            for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_for_raw_material_cutting_items_set.all().order_by('id'), start=start_row_items):
-                sheet.cell(row=index, column=start_column_items).value = instance.product_sku
+            for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_for_raw_material_cutting_items_set.filter(material_color_shade__items__Fabric_nonfabric='Fabric').order_by('id'), start=start_row_items):
+                sheet.cell(row=index, column=start_column_items).value = instance.Remark
                 sheet.cell(row=index, column=start_column_items + 1).value = instance.product_color
-                sheet.cell(row=index, column=start_column_items + 2).value = instance.material_name
-                sheet.cell(row=index, column=start_column_items + 3).value = instance.material_color_shade.item_shade_name
-                sheet.cell(row=index, column=start_column_items + 4).value = instance.rate
-                sheet.cell(row=index, column=start_column_items + 5).value = instance.panha
-                sheet.cell(row=index, column=start_column_items + 6).value = instance.units
-                sheet.cell(row=index, column=start_column_items + 7).value = instance.unit_value
-                sheet.cell(row=index, column=start_column_items + 8).value = instance.g_total
-                sheet.cell(row=index, column=start_column_items + 9).value = instance.consumption
-                sheet.cell(row=index, column=start_column_items + 10).value = instance.combi_consumption
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.total_comsumption
-                sheet.cell(row=index, column=start_column_items + 12).value = instance.physical_stock
-                sheet.cell(row=index, column=start_column_items + 13).value = instance.balance_physical_stock
+                sheet.cell(row=index, column=start_column_items + 2).value = instance.pcs
+                sheet.cell(row=index, column=start_column_items + 3).value = instance.material_name
+                sheet.cell(row=index, column=start_column_items + 4).value = instance.material_color_shade.item_shade_name
+                sheet.cell(row=index, column=start_column_items + 5).value = instance.rate
+                sheet.cell(row=index, column=start_column_items + 6).value = instance.panha
+                sheet.cell(row=index, column=start_column_items + 7).value = instance.units
+                sheet.cell(row=index, column=start_column_items + 8).value = instance.unit_value
+                sheet.cell(row=index, column=start_column_items + 9).value = instance.g_total
+                sheet.cell(row=index, column=start_column_items + 10).value = instance.consumption
+                sheet.cell(row=index, column=start_column_items + 11).value = instance.combi_consumption
+                sheet.cell(row=index, column=start_column_items + 12).value = instance.total_comsumption
+                sheet.cell(row=index, column=start_column_items + 13).value = instance.physical_stock
+                sheet.cell(row=index, column=start_column_items + 14).value = instance.balance_physical_stock
 
         elif module_name == 'labour_workout':
             file_name = 'labour_workout'
@@ -3990,7 +4007,9 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'unit_value' : purchase_items_raw.Item_pk.unit_name_item.unit_name,
                 'physical_stock' : current_godown_qty_total,
                 'balance_physical_stock': '0',
-                'row_number': purchase_items_raw.row_number}
+                'row_number': purchase_items_raw.row_number,
+                'Remark': purchase_items_raw.Remark,
+                'pcs': '0'}
             
             initial_data.append(initial_data_dict)
 
