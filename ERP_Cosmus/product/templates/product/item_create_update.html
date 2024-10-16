@@ -17,7 +17,7 @@
       {% if not form.instance.id %}
       <label for="id_item-to-clone" class="item-form text-primary fw-bold">Clone Item: </label>
       <div class="custom-dropdown-container">
-        <input type="text" class="product2SelectItems" name="item-to-clone"  id="id_item-to-clone" maxlength="255" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}" data-key="" style="border: 2px solid #007df9;">
+        <input type="text" class="product2SelectItems" name="item-to-clone"  id="id_item-to-clone" maxlength="255" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}" data-key="" style="border: 2px solid #007df9; color: #007df9;">
         <div class="product2SelectItems item-name s-suggestion-container" id="search-results" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
 
         </div>
@@ -561,8 +561,20 @@ $(document).ready(function(){
     }
     
         suggestions.on('click', '.itemName-div-suggestion', function() {
-       
-       $(this).closest('.custom-dropdown-container').find('.product2SelectItems').val($(this).text().trim());
+          
+           var nameDataValue = $(this).text().trim();
+          var parts = nameDataValue.match(/(.+?)(-?\d+(\.\d+)?)/);
+          console.log(parts)
+          if(parts){
+            var textParts = parts[1];
+            var numberParts = parts[2];
+
+            var newHtml = `${textParts}<span style="float: right;">${numberParts}</span>`
+            $(this).html(newHtml);
+         
+          }
+         
+       $(this).closest('.custom-dropdown-container').find('.product2SelectItems').val(nameDataValue);
        $(this).addClass('selected').siblings().removeClass('selected');
 
        const itemValue = $(this).attr('data-key');
