@@ -201,6 +201,8 @@
                                 <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.initial.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.initial.physical_stock}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
                                 <td><input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorder_input " value="{{form.initial.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                                <input type="hidden" name="{{form.prefix}}-Remark" class="productorder_input " value="{{form.initial.Remark}}" step="0.01" id="id_{{form.prefix}}-Remark" readonly>
+                                <input type="hidden" name="{{form.prefix}}-pcs" class="productorder_input " value="{{form.initial.pcs}}" step="0.01" id="id_{{form.prefix}}-pcs" readonly>
                             </tr>
                             {% endif %}
                             {% endfor %}
@@ -509,7 +511,7 @@ labourworkoutBalanceQty()
                 if (color === mainColor) {
                     const consumption = el.querySelector('[name$="-consumption"]');
                     const gTotal = el.querySelector('[name$="-combi_consumption"]');
-                  
+                    const pcs = el.querySelector('[name$="-pcs"]');
                     const gTotalCombi = parseFloat(gTotal.value) || 0;
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
           
@@ -521,7 +523,9 @@ labourworkoutBalanceQty()
                     let tConsumptionTotal = tConsumption + gTotalCombiTotal;
              
                     totalConsumption.value = tConsumptionTotal.toFixed(3);
-
+                    if(pcs){
+                        pcs.value = processValue;
+                    }
                 } else if (mainColor === "Common Item") {
                     const consumption =el.querySelector('[name$="-consumption"]');
                     const consumtionCmobi = el.querySelector('[name$="-combi_consumption"]');
@@ -532,6 +536,9 @@ labourworkoutBalanceQty()
                     let tConsumptionTotal = consumptionCmobiValue * totalValues;
                     let finalTconsumtioncommon = tConsumption + tConsumptionTotal;
                     totalConsumption.value = finalTconsumtioncommon.toFixed(3);
+                    if(pcs){
+                        pcs.value = totalValues;
+                    }
                 }
             }
         });
