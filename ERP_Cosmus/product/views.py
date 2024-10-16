@@ -4501,7 +4501,6 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
             # raw_material_cutting_items
             raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master).order_by('id')
 
-
             initial_data_dict = []
         
             for instance in raw_material_cutting_items_instances:
