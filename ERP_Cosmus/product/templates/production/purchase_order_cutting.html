@@ -280,7 +280,14 @@
             </div>
         </div>
     </div>
-
+    <div class="d-flex mt-2">
+        <label for="id_note">Note:- </label>
+        {% if not purchase_order_cutting_form.instance.raw_material_cutting_id %}
+        <textarea name="note" id="id_note" cols="10" rows="" class="form-control">{{purchase_order_cutting_form.instance.note | default_if_none:''}}</textarea>
+        {% elif purchase_order_cutting_form.instance.raw_material_cutting_id %}
+        <span> {{purchase_order_cutting_form.instance.note | default_if_none:''}}</span>
+        {% endif %}
+    </div>
 <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrderCutting" onclick="navbarChange('Cutting Order List')">
 </form>
 
