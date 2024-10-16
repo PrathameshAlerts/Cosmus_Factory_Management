@@ -638,7 +638,8 @@ raw_material_stock_trasfer_items_formset = inlineformset_factory(RawStockTransfe
 class purchase_order_raw_material_cutting_form(forms.ModelForm):
     class Meta:
         model = purchase_order_raw_material_cutting
-        fields = ['purchase_order_id','raw_material_cutting_id','factory_employee_id','processed_qty','balance_qty']
+        fields = ['purchase_order_id','raw_material_cutting_id','factory_employee_id',
+        'processed_qty','balance_qty','note']
 
         widgets = {
             'purchase_order_id': forms.TextInput(attrs={'readonly': 'readonly'})
@@ -804,7 +805,7 @@ class labour_workout_cutting_items_form(forms.ModelForm):
         model = labour_workout_cutting_items
         fields = ['product_sku','product_color','material_name','material_color_shade','rate'
                   ,'panha','units','g_total','consumption','total_comsumption','combi_consumption','physical_stock','unit_value','g_total_combi'
-                  ,'balance_physical_stock' ,'fab_non_fab']
+                  ,'balance_physical_stock' ,'fab_non_fab','Remark','pcs']
         
     
 

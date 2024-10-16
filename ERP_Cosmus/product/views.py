@@ -2859,8 +2859,8 @@ def product2item(request,product_refrence_id):
                     messages.error(request, f'Error saving unique records - {e}')  
             
             else:
-                logger.error(f'Error saving unique records - {e}')
-                messages.error(request, f'Error saving unique records - {e}') 
+                logger.error(f'Error saving unique records - {formset_single.errors}')
+                messages.error(request, f'Error saving unique records - {formset_single.errors}') 
                             
             #for common records
             if formset_common.is_valid():
@@ -2924,8 +2924,8 @@ def product2item(request,product_refrence_id):
                     messages.error(request, f'Error saving common records{e}.') 
 
             else:
-                logger.error(f'Error saving unique records - {e}')
-                messages.error(request, f'Error saving unique records - {e}')
+                logger.error(f'Error saving unique records - {formset_common.errors}')
+                messages.error(request, f'Error saving unique records - {formset_common.errors}')
         
 
             if formset_common_valid and formset_single_valid:
@@ -3315,21 +3315,19 @@ def purchaseorderdelete(request,pk):
 def excel_download_production(request,module_name,pk):
 
 
-    if module_name is not None and pk is not None:
-
-        wb = Workbook()
-
-        ##delete the default workbook
-        default_sheet = wb['Sheet']
-        wb.remove(default_sheet)    
-
-        wb.create_sheet('production_sheet')
-
-        sheet = wb.worksheets[0]
+    if module_name is not None and pk is not None:  
 
         file_name = None
 
         if module_name == 'purchase_order_raw':
+            wb = Workbook()
+
+            ##delete the default workbook
+            default_sheet = wb['Sheet']
+            wb.remove(default_sheet)  
+            wb.create_sheet('production_sheet')
+
+            sheet = wb.worksheets[0]
 
             file_name = 'purchase_order_raw'
 
@@ -3465,6 +3463,15 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=qs_length_list + 11 , column=3).value =  purchase_order_instance.note       
 
         elif module_name == 'purchase_order_cutting':
+            wb = Workbook()
+
+            ##delete the default workbook
+            default_sheet = wb['Sheet']
+            wb.remove(default_sheet)  
+            wb.create_sheet('production_sheet')
+
+            sheet = wb.worksheets[0]
+
             file_name = 'purchase_order_cutting'
 
             column_widths = [16, 20, 30, 15, 15, 15, 15, 15, 15]  # Adjust these values as needed
@@ -3509,9 +3516,6 @@ def excel_download_production(request,module_name,pk):
 
             sheet.cell(row=13, column=1).value = 'Target Date'
             sheet.cell(row=13, column=2).value = purchase_order_cutting_instance.purchase_order_id.target_date.strftime('%d %B %Y')
-
-
-
 
             sheet.cell(row=2, column=3).value = 'Product SKU'
             sheet.cell(row=3, column=3).value = 'Color'
@@ -3610,58 +3614,110 @@ def excel_download_production(request,module_name,pk):
 
 
         elif module_name == 'labour_workout':
+
+            wb = Workbook()
+
+            ##delete the default workbook
+            default_sheet = wb['Sheet']
+
+            wb.remove(default_sheet)  
+
+            wb.create_sheet('production_sheet_LW')
+            wb.create_sheet('Print_production_sheet_LW')
+
+            sheet = wb.worksheets[0]
+            sheet1 = wb.worksheets[1]
+
+            sheets = [sheet,sheet1]
+
             file_name = 'labour_workout'
 
-            column_widths = [22, 22, 5, 20, 15, 15, 10]  # Adjust these values as needed
+            for x in sheets:
 
-            #fix the column width  of sheet1
-            for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
-                col_letter = get_column_letter(i)
-                sheet.column_dimensions[col_letter].width = column_width
+                column_widths = [22, 20, 30, 15, 15, 15, 15, 15, 15]  # Adjust these values as needed
 
-            labour_workout_instance = labour_workout_childs.objects.get(id=pk)
+                #fix the column width  of sheet1
+                for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+                    col_letter = get_column_letter(i)
+                    x.column_dimensions[col_letter].width = column_width
 
+                labour_workout_instance = labour_workout_childs.objects.get(id=pk)
 
-            sheet.cell(row=2, column=1).value = 'Challan No'
-            sheet.cell(row=2, column=2).value = labour_workout_instance.challan_no
+                x.cell(row=2, column=1).value = f'Purchase Order Number : {labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}'
+                x.cell(row=3, column=1).value = f'Challan No : {labour_workout_instance.challan_no}, Date : {labour_workout_instance.created_date.replace(tzinfo=None).strftime("%d %B %Y")}'
 
-            sheet.cell(row=3, column=1).value = 'labour Name'
-            sheet.cell(row=3, column=2).value = labour_workout_instance.labour_name.name
-
-            sheet.cell(row=4, column=1).value = 'Approved Pcs'
-            sheet.cell(row=4, column=2).value = labour_workout_instance.labour_workout_master_instance.total_approved_pcs
+                x.cell(row=4, column=1).value = f'Vendor Name : {labour_workout_instance.labour_name.name}'
+                x.cell(row=5, column=1).value = f'Ref No : {labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}, Model Name : {labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}'
+                x.cell(row=6, column=1).value = f'Number of Pcs : {labour_workout_instance.total_process_pcs}'
             
-            sheet.cell(row=5, column=1).value = 'Process Pcs'
-            sheet.cell(row=5, column=2).value = labour_workout_instance.total_process_pcs
 
-            sheet.cell(row=6, column=1).value = 'Balance Pcs'
-            sheet.cell(row=6, column=2).value = labour_workout_instance.total_balance_pcs
-
-
-            sheet.cell(row=2, column=4).value = 'Product SKU'
-            sheet.cell(row=2, column=5).value = 'Color'
-            sheet.cell(row=2, column=6).value = 'Approved Qty'
-            sheet.cell(row=2, column=7).value = 'Balance Qty'
-            sheet.cell(row=2, column=8).value = 'Process Qty'
-            
-            # Set the starting position
-            start_row = 3  
-            start_column = 4
-
-            for index, instance in enumerate(labour_workout_instance.labour_workout_child_items.all().order_by('id'), start=start_row):
-                sheet.cell(row=index, column=start_column).value = instance.product_sku
-                sheet.cell(row=index, column=start_column + 1).value = instance.product_color
-                sheet.cell(row=index, column=start_column + 2).value = instance.pending_pcs
-                sheet.cell(row=index, column=start_column + 3).value = instance.balance_pcs
-                sheet.cell(row=index, column=start_column + 4).value = instance.processed_pcs
+                x.cell(row=2, column=3).value = 'Product SKU'
+                x.cell(row=3, column=3).value = 'Color'
+                x.cell(row=4, column=3).value = 'Process Qty'
+                x.cell(row=5, column=3).value = 'Images'
                 
-            length_queryset = len(labour_workout_instance.labour_workout_child_items.all())
-            
+                # Set the starting position
+                start_row = 2 
+                start_column = 4
+
+                labour_workout_p2i_items_qs = labour_workout_instance.labour_workout_child_items.all()
+
+                for index, instance in enumerate(labour_workout_p2i_items_qs.order_by('id'), start=start_column):
+                    x.cell(row=start_row, column=index).value = instance.product_sku
+                    x.cell(row=start_row + 1, column=index).value = instance.product_color
+                    x.cell(row=start_row + 2, column=index).value = instance.processed_pcs
+
+                    product_creation_instance = PProduct_Creation.objects.get(PProduct_SKU = instance.product_sku)
+
+                    product_img_instance = product_creation_instance.PProduct_image
+
+                    if product_img_instance:
+
+                        product_img = product_img_instance.url
+                        relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
+                    
+                    else:
+                        relative_path = 'pproduct/images/Unknown_pic.png'
+
+                    
+                    # Get the full path for the image
+                    full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
+                    
+                    try:
+                        img = PILImage.open(full_image_path)
+                        img.verify()  # Ensure the image is valid
+
+                    except Exception as e:
+                        print(f"Error opening image: {e}")
+                        exit()
+
+                    # Insert the image into the Excel sheet
+                    excel_img = Image(full_image_path)
+
+                    # sheet.row_dimensions[index].height = 40
+                    # Set the desired size of the image in pixels (adjust width and height as needed)
+                    excel_img.width = 60  # Example width in pixels
+                    excel_img.height = 55  # Example height in pixels
+
+                # Set image position. Example: Insert image at cell D{index}
+                    col_letter =  get_column_letter(index) # get the column letter from index
+                    img_position = f'{col_letter}{start_row + 3}'
+
+                    # Insert the image into the Excel sheet at the specified position
+                    x.add_image(excel_img, img_position)
+
+                qs_length = len(labour_workout_p2i_items_qs)
+
+                x.cell(row=2, column = qs_length + 4).value = 'Total'
+                x.cell(row=4, column = qs_length + 4).value = labour_workout_instance.total_process_pcs
+
+
+
             # Set the starting position
-            start_row_items = length_queryset + 10
+            start_row_items = 10
             start_column_items = 1 
 
-            header_row = length_queryset + 9
+            header_row = 9
 
             # Headers to be inserted
             headers = ["Product SKU", "Product Color", "Material Name", 'Shade Color' "Rate","Panha","Unit Name","Units","G-Total","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
@@ -3672,20 +3728,11 @@ def excel_download_production(request,module_name,pk):
 
 
             for index, instance in enumerate(labour_workout_instance.labour_workout_cutting_items_set.all().order_by('id'), start=start_row_items):
-                sheet.cell(row=index, column=start_column_items).value = instance.product_sku
-                sheet.cell(row=index, column=start_column_items + 1).value = instance.product_color
+                sheet.cell(row=index, column=start_column_items).value = instance.Remark
+                sheet.cell(row=index, column=start_column_items + 1).value = instance.pcs
                 sheet.cell(row=index, column=start_column_items + 2).value = instance.material_name
-                sheet.cell(row=index, column=start_column_items + 3).value = instance.material_color_shade
-                sheet.cell(row=index, column=start_column_items + 4).value = instance.rate
-                sheet.cell(row=index, column=start_column_items + 5).value = instance.panha
-                sheet.cell(row=index, column=start_column_items + 6).value = instance.units
-                sheet.cell(row=index, column=start_column_items + 7).value = instance.unit_value
-                sheet.cell(row=index, column=start_column_items + 8).value = instance.g_total
-                sheet.cell(row=index, column=start_column_items + 9).value = instance.consumption
-                sheet.cell(row=index, column=start_column_items + 10).value = instance.combi_consumption
-                sheet.cell(row=index, column=start_column_items + 11).value = instance.total_comsumption
-                sheet.cell(row=index, column=start_column_items + 12).value = instance.physical_stock
-                sheet.cell(row=index, column=start_column_items + 13).value = instance.balance_physical_stock
+                sheet.cell(row=index, column=start_column_items + 3).value = instance.total_comsumption
+
 
         fileoutput = BytesIO()
         wb.save(fileoutput)
@@ -3696,6 +3743,7 @@ def excel_download_production(request,module_name,pk):
         response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
 
         return response
+    
     else:
         return HttpResponse('INVALID ENTRY')
 
@@ -4487,6 +4535,8 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                     'physical_stock': total_current_balance,
                     'balance_physical_stock': total_current_balance,
                     'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
+                    'Remark': instance.Remark,
+                    'pcs' :instance.pcs
                     }
                 
                 initial_data_dict.append(data)

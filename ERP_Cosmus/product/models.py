@@ -774,7 +774,7 @@ class purchase_order_raw_material_cutting(models.Model):
     created_date = models.DateTimeField(auto_now=True)
     modified_date = models.DateTimeField(auto_now_add=True)
     note = models.TextField(blank=True, null = True)
-    
+
     # to save an auto field which acts as an autoincrement field
     def save(self, *args, **kwargs):
         if self._state.adding:
@@ -913,6 +913,9 @@ class labour_workout_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     created_date = models.DateTimeField(auto_now = True)
     updated_date = models.DateTimeField(auto_now_add = True)
+    Remark = models.CharField(max_length = 50, null=False, blank=False)
+    pcs = models.IntegerField(default = 0)
+
 
 
 class labour_work_in_master(models.Model):

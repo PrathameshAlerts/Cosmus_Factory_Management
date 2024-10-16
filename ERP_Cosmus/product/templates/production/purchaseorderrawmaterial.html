@@ -174,7 +174,11 @@
         </div>
         <div class="d-flex mt-2">
             <label for="id_note">Note:- </label>
+            {% if not form.instance.raw_materials.exists %}
             <textarea name="note" id="id_note" cols="10" rows="" class="form-control">{{form.instance.note | default_if_none:''}}</textarea>
+            {% elif form.instance.raw_materials.exists %}
+            <span> {{form.instance.note | default_if_none:''}}</span>
+            {% endif %}
         </div>
         <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrder" onclick=" navbarChange('Purchase Order List')">
 
