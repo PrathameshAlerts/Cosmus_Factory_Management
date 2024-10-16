@@ -506,12 +506,12 @@ labourworkoutBalanceQty()
         mainTables.forEach(function (el) {
             const mainColor = el.querySelector('[name$="-product_color"]').value;
             let totalConsumption = el.querySelector('[name$="-total_comsumption"]');
-
+            const pcs = el.querySelector('[name$="-pcs"]');
             if (totalConsumption) {
                 if (color === mainColor) {
                     const consumption = el.querySelector('[name$="-consumption"]');
                     const gTotal = el.querySelector('[name$="-combi_consumption"]');
-                    const pcs = el.querySelector('[name$="-pcs"]');
+                    
                     const gTotalCombi = parseFloat(gTotal.value) || 0;
                     const consumptionMainValue = parseFloat(consumption.value) || 0;
           
