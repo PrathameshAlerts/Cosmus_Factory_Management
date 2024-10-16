@@ -3715,12 +3715,12 @@ def excel_download_production(request,module_name,pk):
 
             # Set the starting position
             start_row_items = 10
-            start_column_items = 1 
+            start_column_items = 4 
 
             header_row = 9
 
             # Headers to be inserted
-            headers = ["Product SKU", "Product Color", "Material Name", 'Shade Color' "Rate","Panha","Unit Name","Units","G-Total","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
+            headers = ["Body/Combi", "Pcs", "Material Name", "Total Consumption"]
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=1):
@@ -4535,7 +4535,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                     'balance_physical_stock': total_current_balance,
                     'fab_non_fab': instance.material_color_shade.items.Fabric_nonfabric,
                     'Remark': instance.Remark,
-                    'pcs' :instance.pcs
+                    'pcs' : instance.pcs
                     }
                 
                 initial_data_dict.append(data)
