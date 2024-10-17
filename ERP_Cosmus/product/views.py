@@ -3042,7 +3042,7 @@ def export_Product2Item_excel(request,product_ref_id):
 
             rows_to_insert_s1 = []
 
-            for product_configs in product.product_item_configs.all():
+            for product_configs in product.product_item_configs.all().order_by('id'):
                 rows_to_insert_s1.append([
                 product_configs.id,
                 product_configs.producttoitem.Item_pk.item_name,
@@ -3092,7 +3092,7 @@ def export_Product2Item_excel(request,product_ref_id):
             grand_total_combi_parent = product.grand_total_combi
 
             rows_to_insert_s2 = []
-            for product_configs in product.product_item_configs.all():
+            for product_configs in product.product_item_configs.all().order_by('id'):
                 rows_to_insert_s2.append([
                 product_configs.id,
                 product_configs.producttoitem.Item_pk.item_name,
@@ -3718,8 +3718,6 @@ def excel_download_production(request,module_name,pk):
             qs_length_list = len(cutting_items_qs)
             sheet.cell(row=qs_length_list + start_row_items + 1, column=2).value =  'Narration :'       
             sheet.cell(row=qs_length_list + start_row_items + 1 , column=3).value =  purchase_order_cutting_instance.note
-
-
             
 
         elif module_name == 'labour_workout':
@@ -3872,9 +3870,6 @@ def excel_download_production(request,module_name,pk):
                 if not instance.Remark.lower() == 'body': 
                     row_number_excel = row_number_excel + len(instance.product_item_configs.all())
                 
-           
-                
-
 
         fileoutput = BytesIO()
         wb.save(fileoutput)
@@ -4726,6 +4721,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
 
     if request.method == 'POST':
         
+
         # child labour workout form
         labour_work_out_child_form = labour_workout_child_form(request.POST)
 
