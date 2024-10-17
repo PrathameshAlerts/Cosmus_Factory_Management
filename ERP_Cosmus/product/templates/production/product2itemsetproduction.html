@@ -180,12 +180,16 @@
             const suggestionsContainerUniqueId = $(`#id_itemName_${newValueKey}`);
             const selectValue = $(this).next('.s-suggestion-container');
             const selectedItem = $(this).find('.s-suggestion-container').find(`#itemName-div_${index}`);
-
+            const submitValue = $(this).closest('form').find('#id_submitForms');
+            const addButtonUnique = $(this).closest('form').find('#addForm');
+            const addRowButtonUnique = $(this).closest('form').find('.add_btn_row');
+            console.log('addButtonUnique',addButtonUnique)
+            console.log('addRowButtonUnique',addRowButtonUnique)
             if (nameValue === '') {
                 suggestionsContainerUniqueId.css('display', 'none');
                 const errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
                 const uniuqueRow = $(this).closest('tr').find('input[name^="product2itemuniqueformset-"][name$="Item_pks"]')
-                const submitValue = $(this).closest('form').find('#id_submitForms');
+                
                 submitValue.attr('disabled', false);
                 uniuqueRow.css('border', '1px solid #ced4da');
                 errorForm.hide();
@@ -195,6 +199,11 @@
             }
             if (!enterValue) {             // Show the dropdown only if Enter key was not pressed
                 suggestionsContainerUniqueId.css('display', 'block');
+                submitValue.attr('disabled', true);
+                addButtonUnique.attr('disabled', true);
+                addRowButtonUnique.attr('disabled', true);
+                addButtonUnique.css('cursor', 'not-allowed');
+                addRowButtonUnique.css('cursor', 'not-allowed');
             }
             enterValue = false;
 
@@ -259,10 +268,16 @@
                 const errorForm = currentRow.find('.error-messagesorderCreate');
                 const uniqueRow = currentRow.find('input[name^="product2itemuniqueformset-"][name$="Item_pks"]');
                 const submitButton = $(this).closest('form').find('#id_submitForms');
+                const addButtonUnique = $(this).closest('form').find('#addForm');
+                const addRowButtonUnique = $(this).closest('form').find('.add_btn_row');
                 const selectedProductValue = currentRow.find('[name$="-PProduct_pk"]').val();
                 const otherProductRows = $(this).closest('form').find('[name$="-PProduct_pk"]').not(currentRow.find('[name$="-PProduct_pk"]'));
                 let isDuplicate = false;
 
+                addButtonUnique.attr('disabled', false);
+                addRowButtonUnique.attr('disabled', false);
+                addButtonUnique.css('cursor', 'pointer');
+                addRowButtonUnique.css('cursor', 'pointer');
                 // Helper function to display error
                 function showError(message) {
                     errorForm.text(message).show();
@@ -348,6 +363,8 @@
             const errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
             const uniuqueRow = $(this).closest('tr').find('input[name^="product2itemuniqueformset-"][name$="Item_pks"]')
             const submitValue = $(this).closest('form').find('#id_submitForms');
+            const addButtonUnique = $(this).closest('form').find('#addForm');
+            const addRowButtonUnique = $(this).closest('form').find('.add_btn_row');
             if (nameData === '') {
                 suggestionHide.css('display', 'none');
                 suggestionHide.empty();
@@ -456,8 +473,12 @@
                 const submitButton = $inputField.closest('form').find('#id_submitForms');  // Submit button
                 const nameData = $inputField.closest('.custom-dropdown-container').find('.input_hidden-value');  // Hidden input for data storage
                 const productData = currentRowData.find('[name$="-PProduct_pk"]').val();  // Product ID value from the current row
+                
                 let isDuplicate = false;  // Flag to track if a duplicate item is found
-
+                addButtonUnique.prop('disabled', false);
+                addRowButtonUnique.prop('disabled', false);
+                addButtonUnique.css('cursor', 'pointer');
+                addRowButtonUnique.css('cursor', 'pointer');
                 // Check if input field has text, then set the values and hide suggestions
                 if (nameValues.length > 0) {
                     nameData.val('');  // Clear the hidden input field
@@ -546,6 +567,9 @@
             const errorData = $(this).closest('tr').find('.error-messagesorderCreate');
             const commonItem = $(this).closest('form').find('[name$="Item_pks"]');
             const submitValueButton = $('#id_submitForms');
+            const addButton = $(this).closest('form').find('#addNewRow');
+            const rowAddButton = $(this).closest('form').find('.add_btn_CommonForm');
+          
             if (nameValue === '') {
                 suggestionsContainerCommon.css('display', 'none');
                 $(this).attr('data-key', '');
@@ -558,6 +582,11 @@
             if (!enterPressed) {
                 // Show the dropdown only if Enter key was not pressed
                 suggestionsContainerCommon.css('display', 'block');
+                submitValueButton.prop('disabled', true);
+                addButton.prop('disabled', true);
+                addButton.css('cursor', 'not-allowed');
+                rowAddButton.prop('disabled', true);
+                rowAddButton.css('cursor', 'not-allowed');
             }
             enterPressed = false; // Reset the flag when key is released
 
@@ -621,21 +650,26 @@
                 const submitButton = $(this).closest('form').find('#id_submitForms');
                 const commonItemInput = currentRow.find('[name$="Item_pks"]');
                 const suggestionData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden');
+                // const addButtonCommon = $(this).closest('form').find('#addNewRow');
+                // const rowAddButtonCommon = $(this).closest('form').find('.add_btn_CommonForm');
                 let isDuplicate = false;
                 // Update the input with the selected value and mark the selection
                 $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
                 $(this).addClass('selected').siblings().removeClass('selected');
-
+                addButton.prop('disabled', false);
+                rowAddButton.prop('disabled', false);
+                addButton.css('cursor', 'pointer');
+                rowAddButton.css('cursor', 'pointer');
                 // Find existing Item_pk values in the form (excluding current row)
                 const forms = $(this).closest('form').find('[name$="Item_pk"]').not(currentRow.find('[name$="Item_pk"]'));
-                console.log('forms',forms);
+                //console.log('forms',forms);
                 forms.each(function () {
                     const uncheckedCheckboxes = $(this).closest('tr').find('input[type="checkbox"]').filter(':not(:checked)');
-                    console.log('uncheckedCheckboxes',uncheckedCheckboxes);
+                 
                     uncheckedCheckboxes.each(function () {
                         const dataValue = $(this).closest('tr').find('input[name$="Item_pk"]').val();
-                        console.log( dataValue);
-                        console.log(dataKey);
+                        // console.log( dataValue);
+                        // console.log(dataKey);
                         if (dataKey === dataValue) {  // If duplicate is found
                             // Show error and disable form submission
                             errorShow.text('Item already added').show();
@@ -788,7 +822,13 @@
                 const errorShowData = currentRows.find('.error-messagesorderCreate');
                 const commonItemInputsValue = currentRows.find('[name$="Item_pks"]');
                 const submitButtons = $(this).closest('form').find('#id_submitForms');
+                const addButtonCommon = $(this).closest('form').find('#addNewRow');
+                const rowAddButtonCommon = $(this).closest('form').find('.add_btn_CommonForm');
                 let isDuplicate = false; // Initialize the flag to track duplicate
+                addButtonCommon.prop('disabled', false);
+                rowAddButtonCommon.prop('disabled', false);
+               addButtonCommon.css('cursor', 'pointer');
+               rowAddButtonCommon.css('cursor', 'pointer');
                 if ($inputField.length > 0) {
                     $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val();
                     $inputField.val(nameValues);
