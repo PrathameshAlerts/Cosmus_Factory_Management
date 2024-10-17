@@ -880,6 +880,7 @@ class labour_workout_childs(models.Model):
     modified_date = models.DateTimeField(auto_now_add=True)
     labour_workin_pcs = models.IntegerField(default = 0)
     labour_workin_pending_pcs = models.IntegerField()
+    note = models.TextField(null=True, blank=True)
 
 
 class product_to_item_labour_child_workout(models.Model):
