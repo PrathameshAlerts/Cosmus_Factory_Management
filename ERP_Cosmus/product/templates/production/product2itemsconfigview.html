@@ -32,7 +32,7 @@
                                 {% for item_config in Items.product_item_configs.all %}
                         <tr>
                             <td></td>
-                            <td class="text-nowrap">{{item_config.part_name}}</td>
+                            <td class="text-nowrap">{{item_config.id}}{{item_config.part_name}}</td>
                             <td class="text-nowrap">{{item_config.part_dimentions}}</td>
                             <td> {{item_config.dimention_total}}</td>
                             <td>{{item_config.part_pieces}}</td>
