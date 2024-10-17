@@ -867,7 +867,68 @@
                 enterPressed = true; // Set the flag to true when Enter is pressed
             }
         })
-    })
+   
+   
+        $(document).on('change','[name$="-PProduct_pk"]',function(){
+            let isDuplicate = false;
+            const existingRow = $(this).closest('tr');
+            const itemexitRow = existingRow.find('[name$="-Item_pk"]');
+            const productExitRow = existingRow.find('[name$="-PProduct_pk"]');
+            // console.log(itemexitRow);
+            // console.log(productExitRow);
+            const productValue = $(this).closest('tr').find('[name$="-PProduct_pk"]').val();
+            const itemValue = existingRow.find('[name$="-Item_pk"]').val();
+            const errorShowData = existingRow.find('.error-messagesorderCreate');
+            const submitButtons = $(this).closest('form').find('#id_submitForms');
+            const addButtonUnique = $(this).closest('form').find('#addForm');
+            const addRowButtonUnique = $(this).closest('form').find('.add_btn_row');
+            const allProductValues = $(this).closest('form').find('[name$="-PProduct_pk"]').not(existingRow.find('[name$="-PProduct_pk"]'));
+            allProductValues.each(function(element){
+              const deletedValues = $(this).closest('tr').find('input[type="checkbox"]').filter(':not(:checked)');
+              
+              deletedValues.each(function(){
+                const value = $(this).closest('tr').find('[name$="-PProduct_pk"]').val()
+           
+                  if(productValue === value){
+                const itemexistingValue = $(this).closest('tr').find('[name$="-Item_pk"]').not(existingRow.find('[name$="-Item_pk"]'));
+       
+                itemexistingValue.each(function(){
+                    if(itemValue === $(this).val()){
+                    errorShowData.text('Already Product Item Added');
+                    errorShowData.show();
+                    itemexitRow.css('border', '1px solid red');
+                    productExitRow.css('border', '1px solid red');
+                    submitButtons.prop('disabled', true);
+                    addButtonUnique.prop('disabled', true);
+                    addRowButtonUnique.prop('disabled', true);
+                    addButtonUnique.css('cursor', 'not-allowed');
+                    addRowButtonUnique.css('cursor', 'not-allowed');
+                    submitButtons.css('cursor', 'not-allowed');
+                   
+                    isDuplicate = true;
+                    return false;
+                }
+                
+                })
+                if (isDuplicate) return false;
+            }
+              })
+            
+            })
+                if(!isDuplicate){
+                    errorShowData.text('');
+                    errorShowData.hide();
+                    submitButtons.prop('disabled', false);
+                    itemexitRow.css('border', '1px solid #ced4da');
+                    productExitRow.css('border', '1px solid #ced4da');
+                    addButtonUnique.prop('disabled', false);
+                    addRowButtonUnique.prop('disabled', false);
+                    addButtonUnique.css('cursor', 'pointer');
+                    addRowButtonUnique.css('cursor', 'pointer');
+                    submitButtons.css('cursor', 'pointer');
+                }
+        })
+    });
 
 
 </script>
