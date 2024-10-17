@@ -183,14 +183,15 @@
             const submitValue = $(this).closest('form').find('#id_submitForms');
             const addButtonUnique = $(this).closest('form').find('#addForm');
             const addRowButtonUnique = $(this).closest('form').find('.add_btn_row');
-            console.log('addButtonUnique',addButtonUnique)
-            console.log('addRowButtonUnique',addRowButtonUnique)
+            // console.log('addButtonUnique',addButtonUnique)
+            // console.log('addRowButtonUnique',addRowButtonUnique)
             if (nameValue === '') {
                 suggestionsContainerUniqueId.css('display', 'none');
                 const errorForm = $(this).closest('tr').find('.error-messagesorderCreate');
                 const uniuqueRow = $(this).closest('tr').find('input[name^="product2itemuniqueformset-"][name$="Item_pks"]')
                 
-                submitValue.attr('disabled', false);
+                submitValue.attr('disabled', true);
+                submitValue.css('cursor', 'not-allowed');
                 uniuqueRow.css('border', '1px solid #ced4da');
                 errorForm.hide();
                 $(this).attr('data-key', '');
@@ -278,6 +279,8 @@
                 addRowButtonUnique.attr('disabled', false);
                 addButtonUnique.css('cursor', 'pointer');
                 addRowButtonUnique.css('cursor', 'pointer');
+                submitValue.attr('disabled', false);
+                submitValue.css('cursor', 'pointer');
                 // Helper function to display error
                 function showError(message) {
                     errorForm.text(message).show();
@@ -574,7 +577,8 @@
                 suggestionsContainerCommon.css('display', 'none');
                 $(this).attr('data-key', '');
                 commonItem.css('border', '1px solid #ced4da');
-                submitValueButton.prop('disabled', false);
+                submitValueButton.prop('disabled', true);
+                submitValueButton.css('cursor', 'not-allowed');
                 errorData.hide();
                 $(this).closest('.custom-dropdown-container').find('.commom_item_hidden').val('');
                 return;
@@ -650,8 +654,7 @@
                 const submitButton = $(this).closest('form').find('#id_submitForms');
                 const commonItemInput = currentRow.find('[name$="Item_pks"]');
                 const suggestionData = $(this).closest('.custom-dropdown-container').find('.commom_item_hidden');
-                // const addButtonCommon = $(this).closest('form').find('#addNewRow');
-                // const rowAddButtonCommon = $(this).closest('form').find('.add_btn_CommonForm');
+           
                 let isDuplicate = false;
                 // Update the input with the selected value and mark the selection
                 $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
@@ -660,6 +663,8 @@
                 rowAddButton.prop('disabled', false);
                 addButton.css('cursor', 'pointer');
                 rowAddButton.css('cursor', 'pointer');
+                submitButton.prop('disabled', false);
+                submitButton.css('cursor', 'pointer');
                 // Find existing Item_pk values in the form (excluding current row)
                 const forms = $(this).closest('form').find('[name$="Item_pk"]').not(currentRow.find('[name$="Item_pk"]'));
                 //console.log('forms',forms);

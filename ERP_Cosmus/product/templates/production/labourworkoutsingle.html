@@ -212,7 +212,14 @@
                 </div>  
             </div>
         </div>
-    
+        <div class="d-flex mt-2">
+            <label for="id_note">Note:- </label>
+            {% if  %}
+            <textarea name="note" id="id_note" cols="10" rows="" class="form-control"></textarea>
+            {% elif  %}
+            <span></span>
+            {% endif %}
+        </div>
         <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitLabourWorkOut" onclick="navbarChange('Labour WorkOut List')">
     </form>
 </div>
