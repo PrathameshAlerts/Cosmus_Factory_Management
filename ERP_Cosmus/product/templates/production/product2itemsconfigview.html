@@ -27,17 +27,19 @@
                     </thead>
                     <tbody class="mainTableList">
                         {% for Items in product2item_instances %}
-                        <tr>
+                        
+                        <tr class="configValuesNot">
                             <td class="text-nowrap text-danger">{{Items.Item_pk.item_name}}
                                 {% for item_config in Items.product_item_configs.all %}
-                        <tr>
-                            <td></td>
-                            <td class="text-nowrap">{{item_config.id}}{{item_config.part_name}}</td>
-                            <td class="text-nowrap">{{item_config.part_dimentions}}</td>
-                            <td> {{item_config.dimention_total}}</td>
-                            <td>{{item_config.part_pieces}}</td>
-                            <td>{{item_config.body_combi}}</td>
-                        </tr>
+                            <tr class="configValues">
+                                <input type="hidden" value="{{item_config.id}}" class="item_config_id">
+                                <td></td>
+                                <td class="text-nowrap ">{{item_config.part_name}}</td>
+                                <td class="text-nowrap">{{item_config.part_dimentions}}</td>
+                                <td> {{item_config.dimention_total}}</td>
+                                <td>{{item_config.part_pieces}}</td>
+                                <td>{{item_config.body_combi}}</td>
+                            </tr>
                         {% endfor %}
                         </td>
                         <td></td>
@@ -58,6 +60,40 @@
     </div>
 </div>
 <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    // Get the main table body
+    let tableBody = document.querySelector(".mainTableList");
+
+    // Find all 'configValuesNot' rows (the main rows representing Items)
+    let mainRows = tableBody.querySelectorAll("tr.configValuesNot");
+
+    // Loop through each 'mainRow' and sort the config values within that group
+    mainRows.forEach(mainRow => {
+        // Collect all the sibling 'configValues' rows under this 'mainRow'
+        let configRows = [];
+        let currentRow = mainRow.nextElementSibling;
+
+        while (currentRow && currentRow.classList.contains('configValues')) {
+            configRows.push(currentRow);
+            currentRow = currentRow.nextElementSibling;
+        }
+
+        // Sort configRows by 'item_config_id' (ascending order)
+        configRows.sort((a, b) => {
+            let idA = parseInt(a.querySelector(".item_config_id").value, 10);
+            let idB = parseInt(b.querySelector(".item_config_id").value, 10);
+            return idA - idB;
+        });
+
+        // Insert the sorted config rows back into the DOM after the mainRow
+        configRows.forEach(row => {
+            tableBody.insertBefore(row, currentRow);
+        });
+    });
+});
+
+
+
     let formSubmitted = false;
     function printDiv(divId) {
         const content = document.getElementById(divId).innerHTML;
