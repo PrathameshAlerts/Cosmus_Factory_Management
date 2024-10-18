@@ -3,8 +3,6 @@
 {% load static %}
 {% block body %}
 
-<!-- <h3 class="mb-3 mt-2">Labour Workin List</h3> -->
-
   <div class="mb-3 mt-3">
     <lable class="fw-bold">Challan No :</lable>
     <span class="text-danger ms-2">{{labour_workout_child_instance.challan_no}}</span> 
@@ -16,7 +14,7 @@
     <span class="text-danger ms-2 totalBalancePcs">{{labour_workout_child_instance.labour_workin_pending_pcs}}</span>
     </div>
     <div class="d-flex mb-3">
-      <button class="item-btn" ><a id="addLabourWorkIn" onclick="navbarChange('Labour WorkIn Create')" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
+      <button class="item-btn" ><a class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
     </div>
   <div class="row">
     <div class="col-lg-8">
@@ -51,14 +49,14 @@
                         <td>{{record.total_balance_pcs}}</td>
                         <td class="pendingValue">{{record.pending_for_approval_pcs}}</td>
                         <td class="processedQty">{{record.total_approved_pcs}}</td>
-                        <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturnSingle(this)"><a id="PurchaseOrderLabourWorkInView" onclick="navbarChange('Purchase Order Wise')" class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
+                        <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturnSingle(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
 
                         
                         {% if record.approved_Qty_total == 0 %}
-                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id False %}" id="editButtonLabourWorkin" onclick="navbarChange('Labour WorkIn Edit')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id False %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                         
                         {% elif record.approved_Qty_total != 0 %}
-                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id True %}" id="editButtonLabourWorkinView" onclick="navbarChange('Labour WorkIn View')"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
+                        <td><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id True %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
 
                         {% endif %}
                         

@@ -5,8 +5,6 @@
 
 <div class="mt-3" id="create_form">
     <form action="" method="POST" style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;" autocomplete="off">
-        <!-- <h3 class="mb-3">New Order</h3> -->
-
         {% csrf_token %}
         <input type="hidden" name="productRowCreate" value="{{form.instance.id}}" id="id_productRow">
         <span id="purchaseCreateError" class="error-messagesorderCreate"></span>
@@ -124,7 +122,7 @@
                 </tbody>
             </table>
          
-            <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="Submit" id="id_submit_2" onclick="navbarChange('Purchase Order List')">
+            <input type="submit" class="create-btn mt-4 mx-3" name="submit-form-2" value="Submit" id="id_submit_2">
    
         </form>
     </div>

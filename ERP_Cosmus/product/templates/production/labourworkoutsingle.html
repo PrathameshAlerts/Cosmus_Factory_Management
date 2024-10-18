@@ -8,7 +8,6 @@
        
         <div class="row">
             <div class="col-lg-6 mt-4">
-                <!-- <h4 class="">Labour Workout</h4> -->
                 <div style="border: 3px solid rgb(165, 164, 164); padding: 10px; border-radius: 5px;">
                     <span id="challanError" class="error-messagescuttingCreate"></span>
                     <div class="d-flex mb-2">
@@ -221,7 +220,7 @@
             <span>{{labour_work_out_child_form.instance.note | default_if_none:''}}</span>
             {% endif %}
         </div>
-        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitLabourWorkOut" onclick="navbarChange('Labour WorkOut List')">
+        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitLabourWorkOut">
     </form>
 </div>
 <script>

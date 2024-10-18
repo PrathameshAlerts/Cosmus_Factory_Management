@@ -1,19 +1,16 @@
 {% extends 'product/base.html' %} 
 {% load static %} 
  {% block body %}
-
- 
     <div class="row mt-4">
         <div class="col-lg-5">
             <form action="" method="POST" id="gstForm">
                 {% csrf_token %}
-                <!-- <h2 class="mb-4">GST-{{title}}</h2> -->
                 <div class="d-flex ">
                     <label for="id_gst_percentage" class="item-form">Gst percentage :</label>
                     <input type="number" name="gst_percentage" class="purchase-input" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}" step="0.01">    
                 </div>
             
-                <input type="submit" id="submitButtonGstCreate" class="create-btn " name="save" value="Save" onclick ="navbarChange('Create GST')">
+                <input type="submit" id="submitButtonGstCreate" class="create-btn " name="save" value="Save">
             
             </form>
 

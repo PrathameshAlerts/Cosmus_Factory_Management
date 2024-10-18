@@ -29,7 +29,7 @@
                         <td>{{qty.material_name}}</td>
                         <td>{{qty.material_color_shade}}</td>
                         <td>{{qty.total_comsumption_in_cutting}}</td>
-                        <td><a  href="{% url 'purchase-order-cutting-update' qty.purchase_order_cutting.purchase_order_id.id qty.purchase_order_cutting.purchase_order_id.product_reference_number.Product_Refrence_ID qty.purchase_order_cutting.raw_material_cutting_id  %}" id="PurchaseOrderCuttingView" onclick="navbarChange('Cutting Order View')"><i class="fa-solid fa-eye px-1"></i></a></td>
+                        <td><a  href="{% url 'purchase-order-cutting-update' qty.purchase_order_cutting.purchase_order_id.id qty.purchase_order_cutting.purchase_order_id.product_reference_number.Product_Refrence_ID qty.purchase_order_cutting.raw_material_cutting_id  %}"><i class="fa-solid fa-eye px-1"></i></a></td>
                     </tr> 
                     {% endfor %}
                 </tbody>

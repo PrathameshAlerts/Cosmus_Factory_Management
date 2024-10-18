@@ -5,14 +5,12 @@
 <div class="row mt-2">
     <div class="col-lg-5">
         <form action="" method="POST" id="packagingForm">
-
             {% csrf_token %}
-            <!-- <h2 class="mb-4">Packaging- {{title}}</h2> -->
             <div class="d-flex my-4">
                 <label for="id_packing_material" class="item-form">Packaging :</label>
                 <input type="text" name="packing_material" class="item-select" required id="id_packing_material" value="{{form.instance.packing_material}}">
             </div>
-            <input type="submit" id="submitButtonPackagingCreate" class="create-btn mt-4" name="save" value="Save" onclick="navbarChange('Create Packaging')">
+            <input type="submit" id="submitButtonPackagingCreate" class="create-btn mt-4" name="save" value="Save">
         </form>
     </div>
     <div class="col-lg-5 mt-2">
@@ -45,7 +43,7 @@
                     <tr>
                         <td>{{forloop.counter}}</td>
                         <td>{{package.packing_material}}</td>
-                        <td><a href="{% url 'packaging-update' package.id %}" id="editPackagingClick" onClick="navbarChange('Edit Packaging')"><i class="fa-solid fa-pen-to-square px-1"></i></td>
+                        <td><a href="{% url 'packaging-update' package.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></td>
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ package.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
                     </tr>
                     {% endfor %}
