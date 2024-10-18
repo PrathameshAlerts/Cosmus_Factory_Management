@@ -1925,13 +1925,19 @@ input[type=number] {
     color: red;
     font-size: 0.9em;
     display: none; /* Hide by default */
-    margin-left: 53px; /* Optional, adjust as needed */
+    margin-left: 5px; /* Optional, adjust as needed */
 }
 .error-messagescuttingCreate {
     color: red;
     font-size: 0.9em;
     display: none; /* Hide by default */
     margin-left: 10px; /* Optional, adjust as needed */
+}
+.error-messages_product{
+    color: red;
+    font-size: 0.9em;
+    display: none; /* Hide by default */
+    margin-left: 5px; /* Optional, adjust as needed */
 }
 /*===product cart rating===*/
  @media screen and (max-width: 600px) {
