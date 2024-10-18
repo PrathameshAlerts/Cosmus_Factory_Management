@@ -14,7 +14,7 @@
         <label for="id_fab_grp_name" class=" item-form">Fabric Name:</label>
         <input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">
       </div>
-      <input type="submit" id="submitButtonFabricGroup" class="create-btn mt-4" name="save" value="Save" onclick ="navbarChange('Create Fabric Group')">
+      <input type="submit" id="submitButtonFabricGroup" class="create-btn mt-4" name="save" value="Save">
     </form>
   </div>
   <div class="col-lg-5 mt-4">
@@ -49,7 +49,7 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{group.fab_grp_name}}</td>
-                <td><a href="{% url 'item-fabgroup-update' group.id %}" id="fabricGroupEditClick" onclick="navbarChange('Edit Fabric Group')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                <td><a href="{% url 'item-fabgroup-update' group.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ group.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
               </tr>
               {% endfor %}

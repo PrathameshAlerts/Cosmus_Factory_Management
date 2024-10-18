@@ -6,12 +6,11 @@
   <div class="col-lg-5 mt-2">
     <form action="" method="POST" id="colorForm">
       {% csrf_token %}
-      <!-- <h2 class="mb-4">{{title}}</h2> -->
       <div class="d-flex">
         <label for="id_color_name" class="item-form create_color_lable">Color Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
       </div>
-      <input type="submit" id="submitButtoncreateColorUpdate" class="create-btn mt-4" name="save" value="save" onclick ="navbarChange('Create Color')">
+      <input type="submit" id="submitButtoncreateColorUpdate" class="create-btn mt-4" name="save" value="save">
     </form>
 
   </div>
@@ -47,7 +46,7 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{color.color_name}}</td>
-                <td><a href="{% url 'simplecolorlistupdate' color.id %}" id="colorEditClick" onclick="navbarChange('Edit Color')"><i class="fa-solid fa-pen-to-square ps-3"></i></a></td>
+                <td><a href="{% url 'simplecolorlistupdate' color.id %}"><i class="fa-solid fa-pen-to-square ps-3"></i></a></td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ color.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger ps-3"></button></td>
               </tr>
               {% endfor %}

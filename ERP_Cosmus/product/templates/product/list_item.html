@@ -15,7 +15,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
     <div class="col-lg-12 mt-3">
       <!-- <h3 class="mb-3">Item List</h3> -->
       <div class="d-flex mb-2">
-        <button type="button" class="item-btn my-1" id="addItemCreate" onclick="redirectlistItem();navbarChange('Create Item')">Add +</button>
+        <button type="button" class="item-btn my-1" onclick="redirectlistItem()">Add +</button>
         <form method="GET">
           <div class="container-flex">
             <input type="search" placeholder="Search" name="item_search" aria-label="Search" value="{{item_search | default_if_none:''}}">
@@ -132,7 +132,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
               <td style="width: 5%;">{{item.Unit_Name}}</td>
               <td>{{item.Units}}</td>
               <td>{{item.Panha}}</td>
-              <td><a href="{% url 'item-edit' item.id %}" id="editItemClick" onclick="navbarChange('Edit Item')"><span><i class="fa-solid fa-pen-to-square"></i></span></a></td>
+              <td><a href="{% url 'item-edit' item.id %}"><span><i class="fa-solid fa-pen-to-square"></i></span></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ item.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>
             {% endfor %}

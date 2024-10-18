@@ -6,7 +6,6 @@
 <div class="col-lg-5 ">
   <form action="" method="POST" id="accSubForm">
     {% csrf_token %}
-    <!-- <h2 class="mb-3">Account Group {{title}}</h2> -->
     <div class="d-flex mb-3">
       <label for="id_account_sub_group" class="item-form ">Sub Group :</label>
       <input type="text" class="acc-subInput mx-3" value="{{form.instance.account_sub_group}}" name="account_sub_group" maxlength="50" required id="id_account_sub_group">
@@ -21,7 +20,7 @@
       </select>
     </div>
 
-    <input type="submit" id="submitButtonAccSubGroups" class="create-btn" name="save" value="Save" onclick="navbarChange('Create Group')">
+    <input type="submit" id="submitButtonAccSubGroups" class="create-btn" name="save" value="Save">
 
 </form>
 </div>
@@ -69,7 +68,7 @@
             <td>{{grp.id}}</td>
             <td>{{grp.account_main_group}}</td>
             <td>{{grp.account_sub_group}}</td>
-            <td><a href="{% url 'account_sub_group-update' grp.id %}" id="editGroupsClick" onclick="navbarChange('Edit Group')"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+            <td><a href="{% url 'account_sub_group-update' grp.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
             <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ grp.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
 
           </tr>

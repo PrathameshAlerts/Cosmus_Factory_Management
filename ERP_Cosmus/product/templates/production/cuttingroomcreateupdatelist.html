@@ -5,12 +5,11 @@
     <div class="col-lg-5">
       <form action="" method="POST" id="cuttingRoomForm">
         {% csrf_token %}
-        <!-- <h2 class="mb-4">Cutting Room Create</h2> -->
         <div class="d-flex">
           <label for="id_cutting_room_name" class="item-form me-3">Cutting Room Name:</label>
           <input type="text" class="item-select search-input " value="{{ form.instance.cutting_room_name }}" name="cutting_room_name" maxlength="100" required id="id_cutting_room_name">
         </div>
-        <input type="submit" class="create-btn mt-4" name="save" value="Save" id="submitButtonCuttongRoom" onclick="navbarChange('Create Cutting Room')"> 
+        <input type="submit" class="create-btn mt-4" name="save" value="Save" id="submitButtonCuttongRoom"> 
       </form>
   
     </div>
@@ -49,7 +48,7 @@
                   <tr class="text-nowrap">
                     <td>{{ forloop.counter }}</td>
                     <td>{{room.cutting_room_name}}</td>
-                    <td><a href="{% url 'cutting_room-update' room.id %}" id="editCuttingRoomClick" onclick="navbarChange('Edit Cutting Room')"><i class="fa-solid fa-pen-to-square ps-3"></i></a></td>
+                    <td><a href="{% url 'cutting_room-update' room.id %}"><i class="fa-solid fa-pen-to-square ps-3"></i></a></td>
                     <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ room.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger ps-3"></button></td>
                   </tr>
                   {% endfor %}
