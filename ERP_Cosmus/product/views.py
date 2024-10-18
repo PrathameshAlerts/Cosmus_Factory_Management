@@ -3,6 +3,7 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 import os
+from re import L
 from django.conf import settings
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
@@ -17,7 +18,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 import logging
 import urllib.parse
 from django.contrib import messages
-from openpyxl.utils import get_column_letter  # type: ignore
+from openpyxl.utils import get_column_letter  
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Protection
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -27,7 +28,7 @@ from django.views.decorators.cache import cache_control
 from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
 import pandas as pd
-from openpyxl.drawing.image import Image  # Used for inserting images
+from openpyxl.drawing.image import Image  
 from PIL import Image as PILImage
 
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
@@ -78,7 +79,7 @@ def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
 
 
-#____________________________Production-Product-View-Start__________________________________
+
 
 @login_required(login_url='login')
 def dashboard(request):
@@ -86,39 +87,39 @@ def dashboard(request):
 
 
 
-#NOTE : in this form one product can be in only one main-category and multiple sub-categories - CURRENTLY USING THIS LOGIC
+
 @login_required(login_url='login')
 def edit_production_product(request,pk):
    
     gsts = gst.objects.all()
     pproduct = get_object_or_404(Product, Product_Refrence_ID=pk)
     
-    #get all the product skus from reverse related model of the ref id 
+    
     product_skus = pproduct.productdetails.all()
     
     products_sku_counts = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=pk).count()
 
-    #filter all product2cat instances 
+    
     prod2cat_instance = Product2SubCategory.objects.filter(Product_id= pproduct.id)
     prod_main_cat_name = ''
     prod_main_cat_id = ''
     prod_sub_cat_dict = {}
     prod_sub_cat_dict_all = {}
 
-    #product instances exists
+    
     if prod2cat_instance.exists():
         prodmaincat = prod2cat_instance.first()
-        #get the product maincat name and id 
+        
         prod_main_cat_name = prodmaincat.SubCategory_id.product_main_category.product_category_name
         prod_main_cat_id = prodmaincat.SubCategory_id.product_main_category.id
 
 
-        # create a dict of subcategories of the saved subcategory for the main category
+        
         for subcat in prod2cat_instance:
             prod_sub_cat_dict[subcat.SubCategory_id.id] = subcat.SubCategory_id.product_sub_category_name
 
 
-        # create a dict of all subcats of the products main category
+        
         sub_categories = SubCategory.objects.filter(product_main_category = prod_main_cat_id)
         for sub_cat_all in sub_categories:
             prod_sub_cat_dict_all[sub_cat_all.id] = sub_cat_all.product_sub_category_name
@@ -150,7 +151,7 @@ def edit_production_product(request,pk):
                         ws1 = wb['product_special_configs']
                         ws2 = wb['product_common_configs']
 
-                        # ws1
+                        
                         grand_total = 0
                         grand_total_combi = 0
 
@@ -168,19 +169,19 @@ def edit_production_product(request,pk):
                                     part_pieces = row[6].value
                                     body_combi = row[7].value
                                     
-                                    if part_name is not None and part_dimention is not None and body_combi is not None:   # to check if part name and part dimention is there not not then delete the row and minus the no_of rows in parent instance
+                                    if part_name is not None and part_dimention is not None and body_combi is not None:   
 
                                         if body_combi == 'body':
-                                            grand_total = grand_total + float(dimention_total)  # calcuate grand_total by adding all dimention_totals
+                                            grand_total = grand_total + float(dimention_total)  
 
                                         elif body_combi == 'combi':
-                                            grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
+                                            grand_total_combi = grand_total_combi + float(dimention_total)  
 
 
                                         p2i_config_instance = set_prod_item_part_name.objects.get(id=id)
 
-                                        p2i_config_instance.producttoitem.grand_total = grand_total   # assign grand_total value to grand_total of parent model                 
-                                        p2i_config_instance.producttoitem.grand_total_combi = grand_total_combi   # assign grand_total_combi value to grand_total of parent model                 
+                                        p2i_config_instance.producttoitem.grand_total = grand_total   
+                                        p2i_config_instance.producttoitem.grand_total_combi = grand_total_combi   
                                         p2i_config_instance.part_name = part_name
                                         p2i_config_instance.part_dimentions = part_dimention
                                         p2i_config_instance.dimention_total = dimention_total
@@ -188,12 +189,12 @@ def edit_production_product(request,pk):
                                         p2i_config_instance.body_combi = body_combi
                                         p2i_config_instance.c_user = request.user
                                         p2i_config_instance.producttoitem.c_user = request.user
-                                        p2i_config_instance.save()   # save model
-                                        p2i_config_instance.producttoitem.save()  # save the parent model
+                                        p2i_config_instance.save()   
+                                        p2i_config_instance.producttoitem.save()  
 
                                     else:
-                                        p2i_config_instance = set_prod_item_part_name.objects.get(id = id)  # get the id to delete
-                                        p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   # minus the no_of_rows in parent model 
+                                        p2i_config_instance = set_prod_item_part_name.objects.get(id = id)  
+                                        p2i_config_instance.producttoitem.no_of_rows = p2i_config_instance.producttoitem.no_of_rows - 1   
                                         p2i_config_instance.producttoitem.c_user =  request.user
                                         p2i_config_instance.delete()
                                         p2i_config_instance.producttoitem.save()
@@ -203,15 +204,15 @@ def edit_production_product(request,pk):
                                 grand_total = 0
                                 grand_total_combi = 0
 
-                        # ws2        
-                        for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): #loop through all the products in the sku 
+                        
+                        for product_c in PProduct_Creation.objects.filter(Product__Product_Refrence_ID = pk): 
                             product_sku = product_c.PProduct_SKU
                            
-                            row_no = 0  # row_no to co-relate the record in filtered queryset with the row in the excel to CRUD the data as there are multiple instances of configs belonging to the same itemname and product
+                            row_no = 0  
                             grand_total = 0
                             grand_total_combi = 0
 
-                            for row in ws2.iter_rows(min_row=2,min_col=1):  # for every loop through each row in the sheet
+                            for row in ws2.iter_rows(min_row=2,min_col=1):  
                                 
                                 id = row[0].value
                                 item_name = row[1].value
@@ -221,40 +222,40 @@ def edit_production_product(request,pk):
                                 part_pieces = row[5].value
                                 body_combi = row[6].value
                                 
-                                if id is not None and item_name is not None:  # check if that row has an id and item name to remove blank rows 
+                                if id is not None and item_name is not None:  
                                     
-                                    # get the p2i instance for the product with the item in row 
+                                    
                                     p2i_instances = product_2_item_through_table.objects.get(PProduct_pk = product_sku, Item_pk__item_name = item_name, common_unique = True)
                                     
-                                    # filter out the all the configs belonging to that p2I instance and then the config based on row_no which corelates
-                                    # with the rows in excel to know which config instance to crud
+                                    
+                                    
                                     
                                     
                                     p2i_instances_configs = set_prod_item_part_name.objects.filter(producttoitem=p2i_instances).order_by('id')[row_no]
                                     
 
-                                    if part_name is not None and body_combi is not None:  # check if part name it there if its not then delete that instance
+                                    if part_name is not None and body_combi is not None:  
 
                                         if body_combi == 'body':
-                                            grand_total = grand_total + float(dimention_total)   # grand total addition for all row 
+                                            grand_total = grand_total + float(dimention_total)   
                                     
                                         elif body_combi == 'combi':
-                                            grand_total_combi = grand_total_combi + float(dimention_total)  # calucate grand_total_combi by adding all dimention_totals
+                                            grand_total_combi = grand_total_combi + float(dimention_total)  
 
                                         p2i_instances_configs.part_name = part_name
                                         p2i_instances_configs.part_dimentions = part_dimention
                                         p2i_instances_configs.part_pieces = part_pieces
                                         p2i_instances_configs.body_combi = body_combi
                                         p2i_instances_configs.dimention_total = dimention_total
-                                        p2i_instances_configs.producttoitem.grand_total = grand_total # assign grand_total value to grand_total of parent model
-                                        p2i_instances_configs.producttoitem.grand_total_combi = grand_total_combi   # assign grand_total_combi value to grand_total of parent model                     
+                                        p2i_instances_configs.producttoitem.grand_total = grand_total 
+                                        p2i_instances_configs.producttoitem.grand_total_combi = grand_total_combi   
 
 
                                         p2i_instances_configs.c_user = request.user
                                         p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.save()
-                                        p2i_instances_configs.producttoitem.save() # save the parent model
-                                        row_no = row_no + 1  # increase the row after save
+                                        p2i_instances_configs.producttoitem.save() 
+                                        row_no = row_no + 1  
 
                                     else:
 
@@ -262,7 +263,7 @@ def edit_production_product(request,pk):
                                         p2i_instances_configs.producttoitem.c_user = request.user
                                         p2i_instances_configs.delete()
                                         p2i_instances_configs.producttoitem.save()
-                                        # row_no = row_no + 1 # dont increase the row after delete as instances in p2i_instances_configs are reduced by 1
+                                        
 
                                 else:
                                     row_no = 0
@@ -301,33 +302,33 @@ def edit_production_product(request,pk):
                                 formset_instances.c_user = request.user
                                 formset_instances.save()
 
-                    #p_id has the id of the product
+                    
                     p_id_pk = form_instance.pk
                     p_id = Product.objects.get(pk=p_id_pk)
         
-                    #get the ids of subcats selected from the frontend 
+                    
                     sub_category_ids = request.POST.getlist('Product_Sub_catagory')
             
-                    #filter only all the subcats from table sent from the frontend with respect to pid
+                    
                     sub_cat_front_listcomp = [Product2SubCategory.objects.filter(Product_id=p_id,SubCategory_id=sub_cat_id).first() for sub_cat_id in sub_category_ids]
             
-                    #filter all the subcats from table of the product
+                    
                     sub_cat_backend = [x for x in Product2SubCategory.objects.filter(Product_id=p_id)]
 
-                    #delete the subcats from DB if subcat in the db is not sent from the frontend
+                    
                     objects_to_delete = [obj for obj in sub_cat_backend if obj not in sub_cat_front_listcomp]
             
                     for obj in objects_to_delete:
                         obj.delete()
 
-                    #loop through the sub cats sent from the front end and get or create new subcats for the product
+                    
                     for sub_cat_id in sub_category_ids:
                         sub_cat = SubCategory.objects.get(id = sub_cat_id)
                         p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=sub_cat)
                         p2c.c_user = request.user
                         p2c.save()
 
-                    # form.Number_of_items = Number_of_items
+                    
                     form_instance.save()
                     logger.info(f"product-saved product")
                     logger.info(f"product-formset-saved product")
@@ -369,7 +370,7 @@ def edit_production_product(request,pk):
 
 
 
-#NOTE: this ajax function belongs to product-edit form
+
 @login_required(login_url='login')
 def product2subcategoryproductajax(request):
     selected_main_cat = request.GET.get('p_main_cat')
@@ -395,7 +396,7 @@ def product_color_sku(request,ref_id = None):
 
     if ref_id:
         instance = Product.objects.get(Product_Refrence_ID=ref_id) 
-        # Retrieve and order related ProductDetails
+        
         ordered_product_details = instance.productdetails.all().order_by('created_date')
         
         formset = ProductCreateSkuFormsetUpdate(request.POST or None, request.FILES or None, instance=instance, c_user=request.user)
@@ -409,7 +410,7 @@ def product_color_sku(request,ref_id = None):
     if request.method == 'POST':
         product_ref_id = request.POST.get('Product_Refrence_ID', None)
         
-        # only changed forms for validation are allowed
+        
         formset.forms = [form for form in formset if form.has_changed()]
 
         if product_ref_id:
@@ -417,12 +418,12 @@ def product_color_sku(request,ref_id = None):
                 try:
                     for form in formset:
                         if form.is_valid():
-                            form_instance = form.save(commit=False)  # save the form with commit = false
-                            obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id) # create a parent instance with the entered refrence id or get the instance if already created 
+                            form_instance = form.save(commit=False)  
+                            obj, created =  Product.objects.get_or_create(Product_Refrence_ID=product_ref_id) 
                             obj.c_user = request.user
                             obj.save()
-                            form_instance.Product = obj   #assign the parent instance to childs FK field 
-                            form_instance.save() # save the form
+                            form_instance.Product = obj   
+                            form_instance.save() 
 
                     return redirect(reverse('edit_production_product', args=[product_ref_id]))
                         
@@ -455,22 +456,22 @@ def pproduct_list(request):
                                             Q(Product_Refrence_ID__icontains=product_search)|
                                             Q(productdetails__PProduct_SKU__icontains=product_search)).distinct()
     
-    # Number of items per page
-    paginator = Paginator(queryset, 10)  # Show 10 products per page
     
-    # Get the current page number from the request
+    paginator = Paginator(queryset, 10)  
+    
+    
     page_number = request.GET.get('page')
     
     try:
         products = paginator.page(page_number)
     except PageNotAnInteger:
-        # If page is not an integer, deliver the first page
+        
         products = paginator.page(1)
     except EmptyPage:
-        # If the page is out of range (e.g. 9999), deliver the last page of results
+        
         products = paginator.page(paginator.num_pages)
 
-    # Custom pagination range logic
+    
     index = products.number - 1
     max_index = len(paginator.page_range)
     start_index = index - 2 if index >= 2 else 0
@@ -497,20 +498,20 @@ def pproduct_delete(request, pk):
     return redirect('pproductlist')
 
 
-# used formsets to add related objects on a diffrent page
+
 @login_required(login_url='login')
 def add_product_images(request, pk):
-    product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
-    formset = ProductImagesFormSet(instance=product)  # pass the instance to the formset
+    product = PProduct_Creation.objects.get(pk=pk)   
+    formset = ProductImagesFormSet(instance=product)  
     
     if request.method == 'POST':
         formset = ProductImagesFormSet(request.POST, request.FILES, instance=product, c_user=request.user)
         if formset.is_valid():
             formset.save()
             messages.success(request,'Product images sucessfully added.')
-            # return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+            
 
-            # JavaScript to close the popup window
+            
             close_window_script = """
             <script>
             window.opener.location.reload(true);  // Reload parent window if needed
@@ -528,8 +529,8 @@ def add_product_images(request, pk):
 @login_required(login_url='login')
 def add_product_video_url(request,pk):
     
-    product = PProduct_Creation.objects.get(pk=pk)   #get the instance of the product
-    formset = ProductVideoFormSet(instance= product)  # pass the instance to the formset
+    product = PProduct_Creation.objects.get(pk=pk)   
+    formset = ProductVideoFormSet(instance= product)  
 
     if request.method == 'POST':
         formset = ProductVideoFormSet(request.POST, instance=product, c_user=request.user)
@@ -537,7 +538,7 @@ def add_product_video_url(request,pk):
         if formset.is_valid():
             formset.save()
             messages.success(request,'Product url sucessfully added.')
-            # return redirect(reverse('edit_production_product', args=[product.Product.Product_Refrence_ID]))
+            
             close_window_script = """
             <script>
             window.opener.location.reload(true);  // Reload parent window if needed
@@ -656,7 +657,7 @@ def definesubcategoryproductdelete(request, pk):
     return redirect('define-sub-category-product')
 
 
-#NOTE: in this form one product can be in multiple main-category and multiple sub-categories - CURRENTLY NOT USING THIS LOGIC
+
 @login_required(login_url='login')
 def product2subcategory(request):
     products = Product.objects.all()
@@ -666,45 +667,45 @@ def product2subcategory(request):
     if request.method == 'POST':
 
         try:
-            #get the product id  from POST request
+            
             product_id_get = request.POST.get('product_name')
             
-            # Get the list of sub_category_name values 
+            
             sub_category_ids = request.POST.getlist('sub_category_name')
             
-            # get the product instance from the id of post request
+            
             p_id = get_object_or_404(Product, id = product_id_get)
 
-            # filter p2c table with the selected product instance 
+            
             existing_instances =  Product2SubCategory.objects.filter(Product_id=p_id)
 
             updated_instances_front = []
             
-            # loop in the sub_cat selected in the frontend 
+            
             for sub_cat_id in sub_category_ids:
-                #get the instance of of the id from subcat table
+                
                 s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
-                #filter the p2c table with the p_id instance and sub cat instance and append to the list 
+                
                 p_2_c_instance = Product2SubCategory.objects.filter(Product_id=p_id, SubCategory_id=s_c_id).first() 
                 updated_instances_front.append(p_2_c_instance)
 
             
-            # get the pk of all the instances from the POST request
+            
             updated_instance_pk = set(obj.pk for obj in updated_instances_front if obj is not None)
-            # loop through instance in the table if check if pk of  instance in table is not in updated instance
+            
             instances_to_delete = [obj for obj in existing_instances if obj.pk not in updated_instance_pk]
             
-            # delete the instances_to_delete which obj which are in DB but not sent from POST 
+            
             for obj in instances_to_delete:
                 obj.delete()
 
-            # the ids which were not sent from POST but are in DB are deleted  above.
+            
                 
-            # ex:[11,12,13,18] sent from POST, [11,12,13,14] in DB #14 is deleted and the 
-            # remaining are updated or created like: 18 is created as its extra in POST, 14 is deleted from DB and 11,12,13 are updated or created.  
+            
+            
             for sub_cat_id in sub_category_ids:
 
-                # now for saving sub_cat_id has the ids from POST to get saved or updated in DB 
+                
                 s_c_id =  get_object_or_404(SubCategory, id = sub_cat_id)
 
                 p2c, created = Product2SubCategory.objects.get_or_create(Product_id=p_id, SubCategory_id=s_c_id)
@@ -721,7 +722,7 @@ def product2subcategory(request):
     return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
 
 
-#NOTE: this ajax function belongs to product2category function
+
 @login_required(login_url='login')
 def product2subcategoryajax(request):
 
@@ -741,9 +742,9 @@ def product2subcategoryajax(request):
 
 
 
-#____________________________Product-View-End__________________________________
 
-#_____________________Item-Views-start_______________________
+
+
 
 @login_required(login_url='login')
 def item_create(request):
@@ -800,11 +801,11 @@ def item_create(request):
                                                                     'fab_finishes':fab_finishes,
                                                                  'form':form,'items_to_clone':items_to_clone})
 
-# in request.get data is sent to server via url and it can be accessed using the name variable 
-# which has ?namevaraible = data data from the querystring
 
-# in request.POST u can access data sent to server with name varaible which has data from the
-# name= as a key and value=  which has the value from the form
+
+
+
+
     
 
 @login_required(login_url='login')
@@ -833,14 +834,14 @@ def item_list(request):
     
     g_search = request.GET.get('item_search','')
 
-    #select related for loading forward FK relationships and prefetch related for reverse relationship  
-    #annotate to make a temp column in item_creation for the sum of all item and its related shades in all godowns 
+    
+    
     queryset = Item_Creation.objects.all().annotate(total_quantity=Sum('shades__godown_shades__quantity')).order_by('item_name').select_related('Item_Color','unit_name_item',
                                                     'Fabric_Group','Item_Creation_GST','Item_Fabric_Finishes',
                                                     'Item_Packing').prefetch_related('shades',
                                                     'shades__godown_shades')
 
-    # cannot use icontains on foreignkey fields even if it has data in the fields
+    
     if g_search != '':
         queryset = queryset.filter(Q(item_name__icontains=g_search)|
                                                 Q(Item_Color__color_name__icontains=g_search)|
@@ -901,52 +902,52 @@ def item_edit(request,pk):
 
     form = Itemform(instance=item_pk)
 
-    # setting filtered queryset with annototed column of total_quantity  and total_rate to the formset 
+    
     queryset = item_color_shade.objects.filter(items = pk).annotate(total_quantity=Sum('opening_shade_godown_quantity__opening_quantity'),
                                                                      total_value=Sum(F('opening_shade_godown_quantity__opening_quantity') * F('opening_shade_godown_quantity__opening_rate'), 
                                                                                 output_field=DecimalField(max_digits=10, decimal_places=2)))
 
     formset = ShadeFormSet(instance= item_pk, queryset=queryset)
 
-    # when in item_edit the item is edited u can also edit or add shades to it which also gets updated or added
-    # as item_edit instance is also provided while updating or adding with formsets to the shades module
+    
+    
     if request.method == 'POST':
         form = Itemform(request.POST, request.FILES , instance = item_pk)
         formset = ShadeFormSet(request.POST , request.FILES, instance = item_pk)
-        formset.forms = [form for form in formset if form.has_changed()] # check for changed forms in shadeformset
+        formset.forms = [form for form in formset if form.has_changed()] 
         try:
             if form.is_valid() and formset.is_valid():
-                form_instance = form.save(commit=False)  # save the item form
+                form_instance = form.save(commit=False)  
                 form_instance.c_user = request.user
                 form_instance.save()
 
 
-                for form in formset.deleted_forms: # delete forms marked for deleting in shade formset
+                for form in formset.deleted_forms: 
                     if form.instance.pk:
                         form.instance.delete()
 
-                for form in formset: #shade form
+                for form in formset: 
                     if form.is_valid():
-                        if form.instance.pk: # if form has already created save it 
+                        if form.instance.pk: 
                             form_instance = form.save(commit=False)
                             form_instance.c_user = request.user
                             form_instance.save()
 
-                        else:  # if form is not already created then save the form and create forms of opening godown from request.POST and save them with the form instance
-                            # to check if form dosen't have delete in it as it will get saved again if deleted from above code 
+                        else:  
+                            
                             if not form.cleaned_data.get('DELETE'):
-                                shade_form_instance = form.save(commit=False) # save the form with commit = False
+                                shade_form_instance = form.save(commit=False) 
                                 shade_form_instance.c_user = request.user
-                                shade_form_instance.save() # save the form
+                                shade_form_instance.save() 
 
-                                form_prefix_number = form.prefix[-1] # gives the prefix number of the current iteration of the form
-                                opening_godown_quantity = request.POST.get(f'shades-{form_prefix_number}-openingValue') # get the opening godown data of the form instance from POST request 
+                                form_prefix_number = form.prefix[-1] 
+                                opening_godown_quantity = request.POST.get(f'shades-{form_prefix_number}-openingValue') 
 
                                 if opening_godown_quantity != '':
                                     opening_godown_quantity_dict = json.loads(opening_godown_quantity)
                                     opening_godown_qty_data = opening_godown_quantity_dict.get('newData')
                                     
-                                    # create forms with data from post of opening godown form
+                                    
                                     item_godown_formset_data = {}
                                     for key , value in opening_godown_qty_data.items():
                                         form_set_id = key.split('_')[-1]
@@ -961,7 +962,7 @@ def item_edit(request,pk):
                                         item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_quantity'] = new_data_get.get('qtyData')
                                         item_godown_formset_data[f'opening_shade_godown_quantity_set-{form_set_id}-opening_rate'] = new_data_get.get('rateData')
                                     
-                                    #formset for saving opening godown data  from request.post
+                                    
                                     new_godown_opening_formsets = OpeningShadeFormSetupdate(item_godown_formset_data, prefix='opening_shade_godown_quantity_set')
 
                                     for form in new_godown_opening_formsets:
@@ -975,7 +976,7 @@ def item_edit(request,pk):
                 return redirect('item-list')
             
         except ProtectedError as e:
-            # Handle the specific ProtectedError exception
+            
             messages.error(request,f"Cannot delete item_color_shade due to protected foreign keys: {e}")
             logger.error(f"Cannot delete item_color_shade due to protected foreign keys: {e}")
             print(f"Cannot delete item_color_shade due to protected foreign keys: {e}")
@@ -1013,18 +1014,18 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
     formset = None
     shade_instance = None
     try:
-        # if shade form is already created
+        
         if parent_row_id is not None and primary_key is not None:
             shade_instance = get_object_or_404(item_color_shade,pk=primary_key)
             formset = OpeningShadeFormSetupdate(request.POST or None, instance = shade_instance, prefix = "opening_shade_godown_quantity_set")
             
-        # if shade form is not created and opening godown is also not created 
+        
         elif primary_key is None and parent_row_id is not None:
 
             decoded_data = False
             encoded_data = request.GET.get('data')
             
-            # if data in url get the data saved in url params 
+            
             if encoded_data:
                 decoded_data = json.loads(urllib.parse.unquote(encoded_data))
                 new_row_data = decoded_data.get('newData', {})
@@ -1038,22 +1039,22 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
                             "opening_rate": float(value['rateData'])})
 
                 
-                # create form with that data with initial data 
+                
                 total_forms = len(initial_data_backend)
-                opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)   # when using modelformset need to add can_delete = True or delete wont be added in the form
+                opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_godown_id','opening_quantity','opening_rate'], extra=total_forms, can_delete=True)   
                 formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),initial=initial_data_backend, prefix = "opening_shade_godown_quantity_set")
                 
             else:
-                # if no data in url create an empty form
+                
                 opening_shade_godown_quantitycreateformset = modelformset_factory(opening_shade_godown_quantity, fields = ['opening_rate','opening_quantity','opening_godown_id'], extra=1, can_delete=True)            
                 formset = opening_shade_godown_quantitycreateformset(queryset=opening_shade_godown_quantity.objects.none(),prefix = "opening_shade_godown_quantity_set")
         
         if request.method == 'POST':
-            # save the data only if shade instance is already created, if its not created then the data is sent to parent 
-            # in json format for rendering it again if required as initial data or saving it with the parent(item_edit) form submission with the shade instance
+            
+            
             if primary_key is not None:
 
-                for form in formset.deleted_forms: # delete forms marked for deleting in shade formset
+                for form in formset.deleted_forms: 
                     if form.instance.pk:
                         try:
                             form.instance.delete()
@@ -1061,28 +1062,28 @@ def openingquantityformsetpopup(request,parent_row_id=None,primary_key=None):
 
                             return JsonResponse({"error": str(e)}, status=400)
 
-                formset.forms = [form for form in formset if form.has_changed()] # has_changed() It will return True if any form in the formset has changed, otherwise, it returns False.
+                formset.forms = [form for form in formset if form.has_changed()] 
                 if formset.is_valid():
                     for form in formset:
                         if form.is_valid():
                             if not form.cleaned_data.get('DELETE'):
                                 try:
-                                    old_opening_instance = opening_shade_godown_quantity.objects.get(id= form.instance.id) # old quantity for signal purpose
+                                    old_opening_instance = opening_shade_godown_quantity.objects.get(id= form.instance.id) 
                                     
                                     form_instance = form.save(commit=False)
 
-                                    form_instance.old_opening_godown_id = old_opening_instance.opening_godown_id # old godown id to check if godown has changed or not for signal
-                                    form_instance.old_opening_g_quantity = old_opening_instance.opening_quantity # old quantity for signal purpose 
+                                    form_instance.old_opening_godown_id = old_opening_instance.opening_godown_id 
+                                    form_instance.old_opening_g_quantity = old_opening_instance.opening_quantity 
                                     form_instance.save()
 
                                 except opening_shade_godown_quantity.DoesNotExist:
                                     form_instance = form.save(commit=False)
-                                    # set the old opening quantity to 0 if instance is not there (which can be the case if shade is created but godown opening instances are not) old godown_id not reqired in new created instances
+                                    
                                     form_instance.old_opening_g_quantity = 0 
                                     form_instance.save()
                                 
                                 except Exception as e:
-                                    # Handle other exceptions
+                                    
                                     return JsonResponse({"error": str(e)}, status=400)
 
                     return HttpResponse('<script>window.close();</script>') 
@@ -1125,8 +1126,8 @@ def item_delete(request, pk):
         item_pk = get_object_or_404(Item_Creation,pk = pk)
         item_pk.delete()
         messages.success(request,f'Item {item_pk.item_name} was deleted')
-    # except IntegrityError as e:
-    #     messages.error(request, f'Cannot delete {item_pk.item_name} because it is referenced by other objects.')
+    
+    
     except Exception as e:
          messages.error(request, f'EXCEPTION-{e}')
          logger.error( f'EXCEPTION-{e}')
@@ -1136,9 +1137,9 @@ def item_delete(request, pk):
 
 
 
-#_____________________Item-Views-end_______________________
 
-#_____________________Color-start________________________
+
+
 
 
 @login_required(login_url='login')
@@ -1182,7 +1183,7 @@ def color_create_update(request, pk=None):
             form_instance.c_user = request.user
             form_instance.save()
 
-            # need to add a verification if getting request from simple form or from modal for save redirection 
+            
             if request.path == '/simple_colorcreate_update/' or request.path == f'/simple_colorcreate_update/{pk}':
                 if instance:
                     messages.success(request, 'Color updated successfully.')
@@ -1217,11 +1218,11 @@ def color_delete(request, pk):
 
 
 
-#_____________________Color-end________________________
 
 
 
-#_______________________fabric group start___________________________________
+
+
 
 
 @login_required(login_url='login')
@@ -1298,9 +1299,9 @@ def item_fabric_group_delete(request,pk):
 
 
 
-#_______________________fabric group end___________________________________
 
-#_______________________Unit Name Start____________________________________
+
+
 
 
 @login_required(login_url='login')
@@ -1385,13 +1386,13 @@ def unit_name_delete(request,pk):
     return redirect('unit_name-create_list')
 
 
-#________________________Unit Name End_______________________________________
 
 
 
 
 
-#_________________________Accounts start___________________________
+
+
 
 
 @login_required(login_url='login')
@@ -1530,7 +1531,7 @@ def ledgercreate(request):
         form = LedgerForm(request.POST)
         
         if form.is_valid():
-            ledger_instance = form.save(commit = False) #ledger_instance this has the instance of ledger form
+            ledger_instance = form.save(commit = False) 
             form.save()
             open_bal_value = form.cleaned_data['opening_balance']
             debit_credit_value = form.cleaned_data['Debit_Credit']
@@ -1568,22 +1569,22 @@ def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
     
     Ledger_pk = get_object_or_404(Ledger,pk = pk)
-    ledgers = Ledger_pk.transaction_entry.all() #get all credit_debit model transactions related instances to the ledger
+    ledgers = Ledger_pk.transaction_entry.all() 
 
-    Opening_ledger = ledgers.filter(voucher_type ='Ledger').first() # filter the first related instance for only ledger as voucher type
+    Opening_ledger = ledgers.filter(voucher_type ='Ledger').first() 
     form = LedgerForm(instance = Ledger_pk)
     opening_balance = 0
 
-    if form.instance.Debit_Credit == 'Debit':            # if form instance has Debit 
-        opening_bal = Opening_ledger.debit               # get the data from the debit side of transaction_entry
-        opening_balance = opening_balance + opening_bal  # and store it in opening_balance variable
+    if form.instance.Debit_Credit == 'Debit':            
+        opening_bal = Opening_ledger.debit               
+        opening_balance = opening_balance + opening_bal  
 
-    elif form.instance.Debit_Credit == 'Credit':         # if form instance has Credit
-        opening_bal = Opening_ledger.credit              # get the data from the credit side of transaction_entry
-        opening_balance = opening_balance + opening_bal  # and store it in opening_balance variable
+    elif form.instance.Debit_Credit == 'Credit':         
+        opening_bal = Opening_ledger.credit              
+        opening_balance = opening_balance + opening_bal  
 
-    elif form.instance.Debit_Credit == 'N/A': # if form instance has N/A 
-        opening_balance = opening_balance # opening_balance will be 0 
+    elif form.instance.Debit_Credit == 'N/A': 
+        opening_balance = opening_balance 
 
     else:
         messages.error(request,' Error with Credit Debit ')
@@ -1684,9 +1685,9 @@ def ledgerTypes_delete(request,pk):
 
 
 
-#_________________________Accounts end___________________________
 
-#________________________godown start______________________________
+
+
 
 
 
@@ -1699,13 +1700,13 @@ def godowncreate(request):
 
         if godown_type == 'Raw Material':
             try:
-                godown_raw = Godown_raw_material(godown_name_raw=godown_name) #instance of Godown_raw_material
-                # godown_raw.c_user = request.user
-                # godown_raw.company = request.user.company
-                # if request.user.is_superuser:
-                #     godown_raw.company = request.POST['company']
+                godown_raw = Godown_raw_material(godown_name_raw=godown_name) 
+                
+                
+                
+                
 
-                godown_raw.save()  #save the instance to db 
+                godown_raw.save()  
                 messages.success(request,'Raw material godown created.')
 
                 if 'save' in request.POST:
@@ -1723,14 +1724,14 @@ def godowncreate(request):
         
         elif godown_type == 'Finished Goods':
             try:
-                godown_finished = Godown_finished_goods(godown_name_finished=godown_name) #instance of Godown_finished_goods
-                # godown_finished.c_user = request.user
+                godown_finished = Godown_finished_goods(godown_name_finished=godown_name) 
+                
 
-                # godown_finished = request.user.company
-                # if request.user.is_superuser:
-                #     godown_finished.company = request.POST['company']
+                
+                
+                
 
-                godown_finished.save() #save the instance to db 
+                godown_finished.save() 
                 messages.success(request,'Finished goods godown created.')
 
                 if 'save' in request.POST:
@@ -1764,7 +1765,7 @@ def godownupdate(request,str,pk):
         if request.method == 'POST':
             godown_name =  request.POST['godown_name']
             finished_godown_pk.godown_name_finished = godown_name
-            # finished_godown_pk.c_user = request.user
+            
             finished_godown_pk.save()
             messages.success(request,'Finished goods godown updated.')
             return redirect('godown-list')
@@ -1776,7 +1777,7 @@ def godownupdate(request,str,pk):
         if request.method == 'POST':
             godown_name =  request.POST['godown_name']
             raw_godown_pk.godown_name_raw = godown_name
-            # raw_godown_pk.c_user = request.user
+            
             raw_godown_pk.save()
             messages.success(request,'Raw material godown updated.')
             return redirect('godown-list')
@@ -1798,13 +1799,13 @@ def godownlist(request):
 
     godowns_raw = Godown_raw_material.objects.all()
     godowns_finished = Godown_finished_goods.objects.all()
-    # if request.user.is_staff:
-    #     godowns_raw = Godown_raw_material.objects.all()
-    #     godowns_finished = Godown_finished_goods.objects.all()
+    
+    
+    
         
-    # elif not request.user.is_staff:
-    #     godowns_raw = Godown_raw_material.objects.filter(c_user__company = request.user.company)
-    #     godowns_finished = Godown_finished_goods.objects.filter(c_user__company = request.user.company)
+    
+    
+    
 
     return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 
                                                    'godowns_finished':godowns_finished})
@@ -1840,9 +1841,9 @@ def godowndelete(request,str,pk):
     
 
 
-#_________________________godown end______________________________
 
-#__________________________stock transfer start__________________________
+
+
 
 
 @login_required(login_url='login')
@@ -1852,10 +1853,10 @@ def stockTrasferRaw(request, pk=None):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         
         try:
-            # get te selected source godown
+            
             selected_source_godown_id = request.GET.get('selected_godown_id')
             
-            # destination godown options which exclude godown selcted in source godown
+            
             destination_godowns_queryset = Godown_raw_material.objects.exclude(pk = selected_source_godown_id)
             
             destination_godowns = {}
@@ -1865,7 +1866,7 @@ def stockTrasferRaw(request, pk=None):
             
             selected_source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name=selected_source_godown_id)
 
-            # items in the selected godown 
+            
             items_in_godown = {}
             for items in selected_source_godown_items:
                 item = items.Item_shade_name
@@ -1875,38 +1876,38 @@ def stockTrasferRaw(request, pk=None):
 
 
 
-            # shades of the selected item from the godown 
-            #get the selected item
+            
+            
             item_name_value = request.GET.get('item_value')
             
-            # get the shade of the selected item
+            
             item_shades_of_selected_item = item_color_shade.objects.filter(items=item_name_value)
 
-            #shades of selected item
+            
             item_shades = {}
 
-            # quantity of all shades of the selected item in all the godowns
+            
             items_shade_quantity_in_godown = {}
 
-            #loop through the itemshade of item   
+            
             for x in item_shades_of_selected_item:
-                # in the through table to with the selected shade of the selected item and selected godown
+                
                 shades_of_item_in_selected_godown = item_godown_quantity_through_table.objects.filter(godown_name = selected_source_godown_id, Item_shade_name = x.id)
         
-                # loop through the filtered queryset of shades in the godown and make 
-                # item_shade dict to send in front end 
+                
+                
                 for x in shades_of_item_in_selected_godown:
 
                     shade_name = x.Item_shade_name.item_shade_name
                     shade_id = x.Item_shade_name.id
                     item_shades[shade_id] = shade_name
 
-                    # quantity of shade in godown
+                    
                     item_id = x.Item_shade_name.id
                     items_shade_quantity_in_godown[item_id] = x.quantity
 
 
-            # item color and item_per 
+            
             item_color = None
             item_per = None
 
@@ -1914,14 +1915,14 @@ def stockTrasferRaw(request, pk=None):
             if item_name_value is not None:
                 item_name_value = int(item_name_value)
 
-                # get the item 
+                
                 items =  get_object_or_404(Item_Creation ,id = item_name_value)
             
                 item_color = items.Item_Color.color_name
                 item_per = items.unit_name_item.unit_name
 
 
-            # quantity of the selected shade in that godown 
+            
             shade_quantity = 0
             selected_shade = request.GET.get('selected_shade_id')
             
@@ -1966,16 +1967,16 @@ def stockTrasferRaw(request, pk=None):
             masterforminstance = masterstockform.save(commit=False)
             masterforminstance.save()
             
-            # check and delete forms marked for deleting 
+            
             for form in formset.deleted_forms:
                 if form.instance.pk:
                     form.instance.delete()
 
             for form in formset:
                 if form.is_valid():
-                    if not form.cleaned_data.get('DELETE'):  # to check if form is not marked for deleting, not checked forms that are marked for deleting will be saved again 
+                    if not form.cleaned_data.get('DELETE'):  
                         transfer_instance = form.save(commit=False)
-                        transfer_instance.master_instance = masterforminstance # loop through each form in formset to attach the instance of masterforminstance with each form in the formset
+                        transfer_instance.master_instance = masterforminstance 
                         transfer_instance.save()
 
             return redirect('stock-transfer-raw-list')
@@ -2002,21 +2003,21 @@ def stockTrasferRawDelete(request,pk):
     stocktrasferinstance.delete()
     return redirect('stock-transfer-raw-list')
 
-#__________________________stock transfer end__________________________
 
 
 
-#__________________________purchase voucher start__________________________
+
+
 
 
 @login_required(login_url='login')
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)  # for deleting cache from the page on submission to avoid resubmission of form by clicking back
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)  
 def purchasevouchercreateupdate(request, pk = None):
     
     item_name_searched = Item_Creation.objects.all()
     if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
 
-        # get the purchase invoice for updating the form 
+        
         if pk:
             purchase_invoice_instance = get_object_or_404(item_purchase_voucher_master,pk=pk)
             item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
@@ -2051,7 +2052,7 @@ def purchasevouchercreateupdate(request, pk = None):
             party_gst_no = party_gst_no + ledger_instance.Gst_no
 
         item_value = request.GET.get('item_value')
-        #item values
+        
         item_color_out = ''
         item_per_out = ''
         item_gst_out = 0
@@ -2071,7 +2072,7 @@ def purchasevouchercreateupdate(request, pk = None):
             item_gst_out = item_gst_out + item_gst
 
         
-        # filter out item shades
+        
         item_shades = item_color_shade.objects.filter(items = item_value)
 
         item_shades_dict = {}
@@ -2105,52 +2106,52 @@ def purchasevouchercreateupdate(request, pk = None):
     if request.method == 'POST':
         
         try:
-            with transaction.atomic(): #start a database transaction
-                #create a form instance for main form
+            with transaction.atomic(): 
+                
                 master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
 
-                #create a formset instance for form items in invoice
+                
                 items_formset = item_formsets_change
 
-                #create a formset instance for godowns in form items
+                
                 godown_items_formset = purchase_voucher_items_godown_formset(request.POST, prefix='shade_godown_items_set')
 
-                #filter out only the forms which are changed or added 
-                items_formset.forms = [form for form in items_formset.forms] # if form.has_changed()  
+                
+                items_formset.forms = [form for form in items_formset.forms] 
 
                 if master_form.is_valid() and items_formset.is_valid():
 
-                    # Save the master form
+                    
                     master_instance = master_form.save()
 
-                    # Check for items marked for deletion and delete them 
-                    # delete wont work after default as we are not saving items_formset instead we are saving  in the formsets individually
-                    # items_formset.deleted_forms has the forms marked for deletion
+                    
+                    
+                    
                     for form in items_formset.deleted_forms:
                         
                         if form.instance.pk:
-                            #boolen to check if the instance was directly deleted or via models.CASCADE later used in signals 
+                            
                             form.instance.deleted_directly = True
                             form.instance.delete()
 
                     all_purchase_temp_data = []
-                    # loop through each form in formset to attach the instance of master_instance with each form in the formset
+                    
                     for form in items_formset:
                         if form.is_valid():
 
-                            # form.cleaned_data and item_formset.cleaned_data have same data but formset.cleaned_data is in a form of list of form.cleaned data
+                            
                             if not form.cleaned_data.get('DELETE'):
                                 items_instance = form.save(commit=False)
                                 items_instance.item_purchase_master = master_instance
                                 items_instance.save()
                                 
-                                form_prefix_number = form.prefix[-1] #gives the prefix number of the current iteration of the form
+                                form_prefix_number = form.prefix[-1] 
                                 
-                                #get the pk of that item row and get the unique id if any present 
+                                
                                 unique_id_no = request.POST.get(f'item_unique_id_{form_prefix_number}')
                                 primary_key = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-id')
                                 
-                                #check if pk is not there in the formset which means form is newly created then its been saved in temp godown with unique id 
+                                
                                 if primary_key == '' or primary_key == None: 
                                     purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id_no)
                                     for data in purchase_voucher_temp_data:
@@ -2174,7 +2175,7 @@ def purchasevouchercreateupdate(request, pk = None):
                                     for godown_form in godown_items_formset:
                                         if godown_form.is_valid():
                                             godown_instance = godown_form.save(commit = False)
-                                            godown_instance.purchase_voucher_godown_item = items_instance #save form to permanant table with link to parent table pk
+                                            godown_instance.purchase_voucher_godown_item = items_instance 
                                             godown_instance.save()
                                             saved_data_to_delete = saved_data_to_delete + 1
                                             
@@ -2186,7 +2187,7 @@ def purchasevouchercreateupdate(request, pk = None):
                                         purchase_voucher_temp_data.delete()
 
 
-                                # first check if quantity is updated in invoice database 
+                                
                                 godown_item_quantity = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-jsonDataInputquantity')
                                
                                 if godown_item_quantity != '':
@@ -2202,22 +2203,22 @@ def purchasevouchercreateupdate(request, pk = None):
                                         Item_instance =  item_color_shade.objects.get(id = row_item)
 
                                         for key, value in new_row.items():
-                                            godown_id = int(value['gId'])    # new godown id
-                                            updated_quantity = value['jsonQty']   # new quantity
+                                            godown_id = int(value['gId'])    
+                                            updated_quantity = value['jsonQty']   
                                             
-                                            # Check for empty string specifically
-                                            godown_old_id = value.get('popup_old_id', None)   # old_godown_id 
+                                            
+                                            godown_old_id = value.get('popup_old_id', None)   
                                             if godown_old_id == '':
                                                 godown_old_id = None
 
                                             if godown_old_id != '' and godown_old_id is not None:
                                                 godown_old_id = int(godown_old_id)   
 
-                                            popup_row_id = value.get('popup_row_id', None)  # godown_row_id 
+                                            popup_row_id = value.get('popup_row_id', None)  
                                             if popup_row_id == '':
                                                 popup_row_id = None
                                         
-                                            #logic for new row added in godownpopup or godown is the same as old only quantity is updated
+                                            
                                             if godown_old_id == None or godown_old_id == godown_id:
                                                 
                                                 godown_instance = Godown_raw_material.objects.get(id = godown_id)
@@ -2236,7 +2237,7 @@ def purchasevouchercreateupdate(request, pk = None):
                                                 Item.item_rate = new_rate
                                                 Item.save()
                                             
-                                            # logic for saved item row and godowns(godowns with pk) and godown has changed and has old godown id 
+                                            
                                             if godown_old_id != None:
                                                 
                                                 godown_old_id = int(godown_old_id) 
@@ -2245,7 +2246,7 @@ def purchasevouchercreateupdate(request, pk = None):
                                                 godown_new_id = int(godown_id)
                                                 godown_instance_new = Godown_raw_material.objects.get(id = godown_new_id)
 
-                                                # logic if godown has changed in godown popup
+                                                
                                                 if godown_old_id != godown_new_id:
                                                     old_quantity_get = shade_godown_items.objects.get(pk = popup_row_id)
                                                     old_quantity = old_quantity_get.quantity
@@ -2257,18 +2258,18 @@ def purchasevouchercreateupdate(request, pk = None):
 
                                                     new_godown_through_row, created  = item_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance_new,Item_shade_name=Item_instance)
                                                     
-                                                    # if the row is present 
+                                                    
                                                     if new_godown_through_row:
                                                         new_quantity_c = new_godown_through_row.quantity
                                                     else:
-                                                        # else if row is not present 
+                                                        
                                                         new_quantity_c = 0
 
                                                     new_godown_through_row.quantity = new_quantity_c + updated_quantity
                                                     new_godown_through_row.save()
 
 
-                                #popupvoucherfunction post initilization
+                                
                                 popup_godowns_exists = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-popupData')
                                 old_item_shade = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-old_item_shade')
                                 
@@ -2284,12 +2285,12 @@ def purchasevouchercreateupdate(request, pk = None):
                                         primarykey = int(popup_godown_data.get('primary_id'))
                                         old_item_shade = int(old_item_shade)
                                         
-                                        #function to update popup data on main submit only 
+                                        
                                         purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade)
                                         
                     return redirect('purchase-voucher-list')
                 else:
-                    #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
+                    
                     if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
                         temp_data_exists_bool = request.session['temp_data_exists']
                         temp_uuids = request.session['temp_uuid']
@@ -2306,9 +2307,9 @@ def purchasevouchercreateupdate(request, pk = None):
             messages.error(request,f'An error occoured{e} godown temporary data deleted')
             
         finally:
-                # Delete temporary data if there a a flag which was set while creating temp data
-                # this will ensure the table will be be deleted by someone who created some temp data   
-                #deleting session data(unique keys and boolien) if any and deleting record of those unique keys on refresh
+                
+                
+                
                 if 'temp_data_exists' in request.session and 'temp_uuid' in request.session: 
                     temp_data_exists_bool = request.session['temp_data_exists']
                     temp_uuids = request.session['temp_uuid']
@@ -2331,7 +2332,7 @@ def purchasevouchercreateupdate(request, pk = None):
 
 
 
-#popup page for purchase voucher godown update
+
 @login_required(login_url='login')
 def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade):
         
@@ -2344,7 +2345,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
                     for items in all_godown_old_instances:
                         items.deleted_directly = True
 
-                        #send old shade to the signal for deleting qty from through table using temp attribute extra_data_old_shade
+                        
                         items.extra_data_old_shade = old_item_shade
                         items.delete()
 
@@ -2353,7 +2354,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
             if formset.is_valid():
                 for form in formset.deleted_forms:
                     if form.instance.pk:
-                        # boolen to check if the instance was directly deleted or via models.CASCADE later used in signals
+                        
                         form.instance.deleted_directly = True
                         form.instance.delete()
                 formset.save()
@@ -2362,7 +2363,7 @@ def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,o
 
                 
 
-#url for this func is generated by purchasevouchercreategodownpopupurl func 
+
 @login_required(login_url='login')
 def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=None,item_rate=None):
     
@@ -2372,12 +2373,12 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
         item_rate_value = None
     
    
-    #unique_id generation is on add button so created rows will not have unique id
-    # create dynamic formsets depends on create or update
     
-    #only for popup create and update temp table
+    
+    
+    
     if unique_id is not None:
-        #filter the instances by the unique_id which acts as temp primarykey for invoiceitems table
+        
         temp_instances = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id)
         
         if temp_instances:
@@ -2386,7 +2387,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
         else:
             formsets = shade_godown_items_temporary_table_formset(request.POST or None, queryset = temp_instances,prefix='shade_godown_items_set')
     
-    #only for poup get
+    
     elif primarykey is not None:
 
         godowns_for_selected_shade = shade_godown_items.objects.filter(purchase_voucher_godown_item__item_shade = shade_id,purchase_voucher_godown_item = primarykey)
@@ -2401,7 +2402,7 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
             prefix='shade_godown_items_set',
             queryset=godowns_for_selected_shade)
 
-    #create a formset instance with the selected unique id or PK 
+    
     formset = formsets
 
     try:
@@ -2427,8 +2428,8 @@ def purchasevoucherpopup(request,shade_id,prefix_id,unique_id=None,primarykey=No
                     if form.is_valid():
                         form.save()
                     
-            #if form is valid save the uniquekey in session for verification
-            # Create temporary data and set the flag in the session to be used in purchasevouchercreateupdate  
+            
+            
             request.session['temp_data_exists'] = True
             temp_uuid = request.session.get('temp_uuid', [])
             temp_uuid.append(unique_id)
@@ -2461,14 +2462,14 @@ def purchasevouchercreategodownpopupurl(request):
     item_instance = item_color_shade.objects.get(id=shade_id)
     fab_grp_instance = Fabric_Group_Model.objects.get(items__shades = shade_id)
 
-    #filter item_color_shade on the fabricgrp of the selected shade then order by date and get the latest instance and get the rate from that
+    
     query_set_order = item_color_shade.objects.filter(items__Fabric_Group=fab_grp_instance).order_by('-modified_date_time').first()
 
     item_rate = query_set_order.rate
 
 
 
-    #if pk is there in ajax then it generates url for update if unique id is there in rquest then it generates url with unique key
+    
     if primary_key is not None:
         popup_url = reverse('purchase-voucher-popup-update', args=[shade_id,prefix_id,primary_key])
         
@@ -2501,11 +2502,11 @@ def purchasevoucherdelete(request,pk):
 
 
 
-#__________________________purchase voucher end__________________________
 
 
 
-#__________________________salesvoucherstart__________________________
+
+
 
 @login_required(login_url='login')
 def salesvouchercreate(request):
@@ -2533,11 +2534,11 @@ def salesvoucherdelete(request,pk):
 
 
 
-#__________________________sales voucher end__________________________
 
 
 
-#__________________________Sub Category Start___________________________
+
+
 
 
 @login_required(login_url='login')
@@ -2589,7 +2590,7 @@ def gst_create_update(request, pk = None):
                 return redirect('gst-create-list')
 
             elif template_name == 'accounts/gst_popup.html':
-                # return json of all the gst record after submit so that it will be passed to parent and updated dynamically after popup submission
+                
                 gst_updated = gst.objects.all().values('id', 'gst_percentage')
                 
                 return JsonResponse({"gst_updated": list(gst_updated)})
@@ -2736,11 +2737,11 @@ def packaging_delete(request,pk):
 
 
 
-#__________________________Sub Category End_____________________________
 
 
 
-#_________________________production-start______________________________
+
+
 
 
 @login_required(login_url='login')
@@ -2754,21 +2755,21 @@ def product2item(request,product_refrence_id):
         if not Products_all.exists():
                 raise ValueError("No products found for the given reference ID.")
         
-        # add an extra row in special if there are no special items
+        
         extraformspecial = True
         for product in Products_all:
             if product.product_2_item_through_table_set.filter(common_unique = False):
                 extraformspecial = False
 
-        # add an extra row in common if there are no special items
+        
         extraformcommon = True
         for product in Products_all:
             if product.product_2_item_through_table_set.filter(common_unique = True):
                 extraformcommon = False
         
 
-        #query for filtering unique to product fields for formset_single
-        #filter all record of the products with the ref_id which is marked as unique fields
+        
+        
         product2item_instances = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_refrence_id,
               common_unique = False).select_related('PProduct_pk','Item_pk','PProduct_pk__PProduct_color').order_by('row_number')
@@ -2780,12 +2781,12 @@ def product2item(request,product_refrence_id):
         else:
             formset_single = Product2ItemFormset(queryset=product2item_instances , prefix = 'product2itemuniqueformset')
 
-        # query for filtering all the common items in all the products in the refrence_id after that :
-        #It orders by Item_pk first, so all records with the same Item_pk are grouped together.
-        #Within each group of Item_pk, it orders by id.
-        #distinct('Item_pk') will keep the first record of each group (based on the smallest id within that group).
         
-        # changed Item_pk to row_number in order by and distinct (revertback if necessary)
+        
+        
+        
+        
+        
         distinct_product2item_commmon_instances = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_refrence_id,common_unique = True).order_by(
                 'row_number','id').distinct('row_number').select_related('PProduct_pk','Item_pk')
@@ -2806,13 +2807,13 @@ def product2item(request,product_refrence_id):
             formset_single_valid = False
             formset_common_valid = False
             
-            # for unique records
+            
             if formset_single.is_valid():
                 
                 try:
-                    # when using form.save(commit=False) we need to explicitly delete forms marked in has_deleted 
+                    
                     for form in formset_single.deleted_forms:
-                        if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
+                        if form.instance.pk:  
                             item_instance = form.instance.Item_pk
                             
                             p_o_c_instance_single = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = item_instance)
@@ -2825,12 +2826,12 @@ def product2item(request,product_refrence_id):
 
                     
                     for form in formset_single:
-                        if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
-                            if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                        if not form.cleaned_data.get('DELETE'): 
+                            if form.cleaned_data.get('Item_pk'):  
                                 
-                                if form.instance.pk:  # This line checks if the form instance has a primary key (pk), which means it corresponds to an existing record in the database.
-                                    existing_instance = product_2_item_through_table.objects.get(pk=form.instance.pk)  # fetch the existing instance from DB 
-                                    initial_rows = existing_instance.no_of_rows # get the existing no of rows form DB
+                                if form.instance.pk:  
+                                    existing_instance = product_2_item_through_table.objects.get(pk=form.instance.pk)  
+                                    initial_rows = existing_instance.no_of_rows 
                                 else:
                                     initial_rows = 0
 
@@ -2840,7 +2841,7 @@ def product2item(request,product_refrence_id):
                                 p2i_instance.save()
                                 logger.info(f"Product to item created/updated special - {p2i_instance.id}")
 
-                                no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   # create the rows of the diffrence 
+                                no_of_rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows   
                                 p2i_instance.row_number = form.cleaned_data['row_number']
 
                                 if no_of_rows_to_create > 0:
@@ -2863,17 +2864,17 @@ def product2item(request,product_refrence_id):
                 logger.error(f'Error saving unique records - {formset_single.errors}')
                 messages.error(request, f'Error saving unique records - {formset_single.errors}') 
                             
-            #for common records
+            
             if formset_common.is_valid():
                 try:
                     for form in formset_common.deleted_forms:
-                        if form.instance.id: # check if there is instance before attempting to delete
-                            deleted_item = form.instance.Item_pk  # get the item_pk from marked deleted forms 
+                        if form.instance.id: 
+                            deleted_item = form.instance.Item_pk  
                             
                             p_o_c_instance_common = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = deleted_item)
 
                             if not p_o_c_instance_common.exists():
-                                for product in Products_all: # loop through products, filter the items with all prod from table and delete them 
+                                for product in Products_all: 
                                     p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
                                     logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
                                     p2i_to_delete.delete()
@@ -2881,20 +2882,20 @@ def product2item(request,product_refrence_id):
                                 raise ValidationError('You cannot delete as Item is in Purchase Order cutting Stage Po number')
 
                             
-                    for form in formset_common: # duplicate item for the product in the form wont give validation error as the old product will be updated instead of creating a new one and raising error of unique values  
-                        if not form.cleaned_data.get('DELETE'): # check if form not in deleted forms to avoid saving it again 
+                    for form in formset_common: 
+                        if not form.cleaned_data.get('DELETE'): 
 
-                            if form.cleaned_data.get('Item_pk'):  # Check if the form has 'Item_pk' filled
+                            if form.cleaned_data.get('Item_pk'):  
 
                                 for product in Products_all:
-                                    #loop through all the products for each form and get the instance with
-                                    # PProduct_pk and item_pk if exists and assign the form fields manually or create them if not created 
+                                    
+                                    
                                     item = form.cleaned_data['Item_pk']
                                     
                                     obj, created = product_2_item_through_table.objects.get_or_create(PProduct_pk=product, Item_pk=item, common_unique=True)
                                     obj.c_user = request.user
                                     
-                                    # get the initial no_of_rows if new created its compared with 0 or if uts updated then obj.no_of_rows from existing  row
+                                    
                                     if created:
                                         initial_rows = 0
 
@@ -2907,7 +2908,7 @@ def product2item(request,product_refrence_id):
                                     logger.info(f"Product to item created/updated common - {obj.id}")
                                     obj.save()
                                 
-                                    # create records in set_prod_item_part_name table with the saved obj as FK 
+                                    
                                     rows_to_create = form.cleaned_data['no_of_rows'] - initial_rows
                                     if rows_to_create > 0:
                                             for row in range(rows_to_create):
@@ -2977,12 +2978,12 @@ def product2item(request,product_refrence_id):
         })
 
 
-# from openpyxl.worksheet.datavalidation import DataValidation
+
 @login_required(login_url='login')
 def export_Product2Item_excel(request,product_ref_id):
     
     try:
-        # for refrence ORM_query_dump
+        
         products_in_i2p_special = product_2_item_through_table.objects.filter(
             PProduct_pk__Product__Product_Refrence_ID=product_ref_id, common_unique = False).order_by(
             'row_number')
@@ -2998,7 +2999,7 @@ def export_Product2Item_excel(request,product_ref_id):
 
         wb = Workbook()
 
-        #delete the default workbook
+        
         default_sheet = wb['Sheet']
         wb.remove(default_sheet)    
 
@@ -3008,32 +3009,22 @@ def export_Product2Item_excel(request,product_ref_id):
         sheet1 = wb.worksheets[0]
         sheet2 = wb.worksheets[1]
 
-        column_widths = [10, 40, 20, 30, 20, 15, 12 ,12, 12, 12]  # Adjust these values as needed
+        column_widths = [10, 40, 20, 30, 20, 15, 12 ,12, 12, 12]  
 
-        #fix the column width  of sheet1
-        for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+        
+        for i, column_width in enumerate(column_widths, start=1):  
             col_letter = get_column_letter(i)
             sheet1.column_dimensions[col_letter].width = column_width
 
 
-        #fix the column width  of sheet2
+        
         for i, column_width in enumerate(column_widths, start=1):
             col_letter = get_column_letter(i)
             sheet2.column_dimensions[col_letter].width = column_width
 
-        #for product_special_configs
+        
         headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','body/combi','grand_total', 'combi_total']
         sheet1.append(headers)
-
-        # body_combi_choices = set_prod_item_part_name.BODY_COMBI
-
-        # dropdown_values = [choice[1] for choice in body_combi_choices]  # Get the display value
-
-        # # Convert the dropdown values to a format that Excel can understand (comma-separated string)
-        # dropdown_formula = f'"{",".join(dropdown_values)}"'
-
-        # # Create a new DataValidation object for each row and apply the dropdown to column H
-        # dv = DataValidation(type="list", formula1=dropdown_formula, showDropDown=True)
 
         row_count_to_unlock_total = 1
         for product in products_in_i2p_special:
@@ -3058,31 +3049,27 @@ def export_Product2Item_excel(request,product_ref_id):
 
             for row in rows_to_insert_s1:
                 sheet1.append(row)
-    
-            
 
-                # # Get the cell reference for the "Body/Combi" column (column H)
-                # cell_ref = f'H{sheet1.max_row}'
-                # sheet1.add_data_validation(dv)
             
-                # dv.add(sheet1[cell_ref])  #Add dropdown to the "Body/Combi" column
-
+            
+            
+            
 
                 row_count_to_unlock = row_count_to_unlock + 1
 
             row_count_to_unlock_total =  row_count_to_unlock_total + row_count_to_unlock
 
-            # Insert a blank row and grand total from parent model in sheet after every product data has inserted
+            
             sheet1.append(['','','','','','','','', grand_total_parent , grand_total_combi_parent])
         
             rows_to_insert_s1.clear()
 
-        # unlock the rows ment for editing 
+        
         for row in sheet1.iter_rows(min_row=2, max_row=row_count_to_unlock_total, min_col=4, max_col=8):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
-        # for product_common_configs
+        
         headers =  ['id','item name','part name', 'part dimention', 'dimention total','part pieces','body/combi','grand_total','combi_total']
         sheet2.append(headers)
 
@@ -3110,24 +3097,24 @@ def export_Product2Item_excel(request,product_ref_id):
                 row_count_to_unlock = row_count_to_unlock + 1
             row_count_to_unlock_total_common = row_count_to_unlock_total_common + row_count_to_unlock
 
-            # Insert a blank row and grant total from parent in sheet after every product data has inserted
-            sheet2.append(['','','','','','','', grand_total_parent, grand_total_combi_parent])
+            
+            sheet2.append(['','','','','','','',grand_total_parent, grand_total_combi_parent])
 
             rows_to_insert_s2.clear()
 
-        # unlock the rows ment for editing 
+        
         for row in sheet2.iter_rows(min_row=2, max_row=row_count_to_unlock_total_common, min_col=3, max_col=7):
             for cell in row:
                 cell.protection = Protection(locked = False)
 
-        # Protect the entire worksheet
+        
         sheet1.protection.sheet = True
         sheet2.protection.sheet = True
 
         fileoutput = BytesIO()
         wb.save(fileoutput)
         
-        # Prepare the HTTP response with the Excel file content
+        
         response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         file_name_with_pk = f'product_reference_id_{product_ref_id}'
         response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
@@ -3146,7 +3133,7 @@ def export_Product2Item_excel(request,product_ref_id):
         return redirect(reverse('edit_production_product', args=[product_ref_id]))
 
 
-# view configs of single products
+
 @login_required(login_url='login')
 def viewproduct2items_configs(request, product_sku):
 
@@ -3167,16 +3154,16 @@ def viewproduct2items_configs(request, product_sku):
             'error_message': f'No items found for product SKU: {product_sku}'})
 
     except DatabaseError as e:
-        # Handle database errors
+        
         return HttpResponseServerError(f'A database error occurred: {e}')
 
     except Exception as e:
-        # Handle any other unexpected errors
+        
         return HttpResponseServerError(f'An unexpected error occurred: {e}')
     
 
 @login_required(login_url='login')
-@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) 
 def purchaseordercreateupdate(request,pk=None):
     
     try:
@@ -3185,7 +3172,7 @@ def purchaseordercreateupdate(request,pk=None):
 
         raw_material_godowns = Godown_raw_material.objects.all()
 
-        # on update instance is fetched by pk which is used for form and formset 
+        
         if pk:
             instance = get_object_or_404(purchase_order,pk=pk)
             model_name = instance.product_reference_number.Model_Name
@@ -3205,8 +3192,8 @@ def purchaseordercreateupdate(request,pk=None):
     
     if request.method == 'POST':
 
-        # both forms are submitted indivially depends on name of submitted button
-        # (on create only form-1 is visble to the user as formsets are created on submission of form-1 using signals)
+        
+        
         if 'submit-form-1' in request.POST:
             form = purchase_order_form(request.POST, instance=instance)
         
@@ -3216,7 +3203,7 @@ def purchaseordercreateupdate(request,pk=None):
                     form_instance.balance_number_of_pieces = form.instance.number_of_pieces
                     form_instance.save()
                     logger.info(f'Purchase invoice created-updated-{form.instance.id}')
-                    # on submission of form-1, form-2 is rendered with form-1 instance
+                    
                     return redirect(reverse('purchase-order-update', args=[form.instance.id]))
                 
                 except ValidationError as val_err:
@@ -3237,30 +3224,30 @@ def purchaseordercreateupdate(request,pk=None):
                 formset = purchase_order_product_qty_formset(request.POST, instance=instance)
                 
 
-                # for form in formset.deleted_forms:
-                #     if form.instance.pk:  # Ensure the form instance has a primary key before attempting deletion
-                #         logger.info(f"Deleted product to item instace of {form.instance.pk}")
-                #         form.instance.delete()
+                
+                
+                
+                
 
                 
                 if formset.is_valid():
                     try:
                         formset.save()
-                        # set the status to 2
+                        
                         for form in formset:
                             if not form.cleaned_data.get('DELETE'):
-                                p_o_instance = form.instance.purchase_order_id  # get FK instance from form instance
+                                p_o_instance = form.instance.purchase_order_id  
                                 p_o_instance.purchase_order_to_product_saved = True
                                 p_o_instance.save()
-                                if p_o_instance.process_status == '1':  # if process_status in parent form is 1
-                                    p_o_instance.process_status = '2'  # change the status to 2
-                                    p_o_instance.save()  # save the parent form instance
+                                if p_o_instance.process_status == '1':  
+                                    p_o_instance.process_status = '2'  
+                                    p_o_instance.save()  
                             
                             
                         messages.success(request, 'Purchase Order Quantities updated successfully.')
                         logger.info(f'Purchase Order Quantities updated-{form.instance.id}')
 
-                        #return redirect(reverse('purchase-order-rawmaterial', args=[instance.id, instance.product_reference_number.Product_Refrence_ID]))
+                        
                         return redirect('purchase-order-raw-material-list')
 
                     except DatabaseError as db_err:
@@ -3272,7 +3259,7 @@ def purchaseordercreateupdate(request,pk=None):
                         logger.error(f'Unexpected error during form save: {e}')
                         messages.error(request, 'An unexpected error occurred during form save.')
                 else:
-                    # Log formset errors
+                    
                     print(formset.errors)
                     logger.error(f'Purchase Order Quantities update error - {formset.errors} {formset.non_form_errors()}')
                     messages.error(request, f'There were errors in the form. Please correct them and try again.')
@@ -3325,7 +3312,7 @@ def excel_download_production(request,module_name,pk):
         if module_name == 'purchase_order_raw':
             wb = Workbook()
 
-            ##delete the default workbook
+            
             default_sheet = wb['Sheet']
             wb.remove(default_sheet)  
             wb.create_sheet('production_sheet')
@@ -3334,10 +3321,10 @@ def excel_download_production(request,module_name,pk):
 
             file_name = 'purchase_order_raw'
 
-            column_widths = [16, 20, 20, 30, 15, 15, 15, 15, 15]  # Adjust these values as needed
+            column_widths = [16, 20, 20, 30, 15, 15, 15, 15, 15]  
 
-            #fix the column width  of sheet1
-            for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+            
+            for i, column_width in enumerate(column_widths, start=1):  
                 col_letter = get_column_letter(i)
                 sheet.column_dimensions[col_letter].width = column_width
 
@@ -3366,13 +3353,13 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=2, column=6).value = 'Proc Qty'
             sheet.cell(row=2, column=7).value = 'Image'
 
-            # Set the starting position
+            
             start_row = 3
             start_column = 4
 
             product_2_item_qs = purchase_order_instance.p_o_to_products.all()
 
-            for index, instance in enumerate(product_2_item_qs.order_by('id'), start = start_row): # start of index value = start=start_column
+            for index, instance in enumerate(product_2_item_qs.order_by('id'), start = start_row): 
 
                 sheet.cell(row=index, column=start_column).value = instance.product_id.PProduct_SKU
                 sheet.cell(row=index, column=start_column + 1).value = instance.product_id.PProduct_color.color_name
@@ -3384,52 +3371,52 @@ def excel_download_production(request,module_name,pk):
 
                     product_img = product_img_instance.url
 
-                    relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
+                    relative_path = str(product_img).lstrip('/media/') 
                 
                 else:
 
                     relative_path = 'pproduct/images/Unknown_pic.png'
 
-                # Get the full path for the image
+                
                 full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
 
-                # To check if the full_image_path exists or not, you can use Python's os.path.exists()
-                #  or os.path.isfile() methods. Both will check if the file exists at the specified path, 
-                # but os.path.isfile() ensures that the path points to a file (and not a directory).
+                
+                
+                
             
-                # Check if the file exists
+                
                 if os.path.isfile(full_image_path):
 
                     try:
                         img = PILImage.open(full_image_path)
-                        img.verify()  # Ensure the image is valid
+                        img.verify()  
 
                     except Exception as e:
                         print(f"Error opening image: {e}")
                         exit()
 
-                    # Insert the image into the Excel sheet
+                    
                     excel_img = Image(full_image_path)
 
-                    # sheet.row_dimensions[index].height = 40 # set cell height
+                    
 
-                    # Set the desired size of the image in pixels (adjust width and height as needed)
-                    excel_img.width = 55  # set img width
-                    excel_img.height = 50  # set img height
+                    
+                    excel_img.width = 55  
+                    excel_img.height = 50  
 
-                    # Set image position. Example: Insert image at cell D{index}
-                    # row_letter =  get_column_letter(index) # get the column letter from index
+                    
+                    
 
                     img_position = f'G{index}'
 
-                    # Insert the image into the Excel sheet at the specified position
+                    
                     sheet.add_image(excel_img, img_position)
 
                 else:
 
                     sheet.cell(row=index, column=start_column + 3).value = None
                     print(f"Image file does not exist at path: {full_image_path}")
-                    # Handle the case where the image does not exist
+                    
 
             length_queryset = len(product_2_item_qs)
             print('length_queryset',length_queryset)
@@ -3439,7 +3426,7 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=row_num, column = 6).value = purchase_order_instance.number_of_pieces
 
             
-            # Set the starting position
+            
 
             if length_queryset <= 5:
 
@@ -3451,10 +3438,10 @@ def excel_download_production(request,module_name,pk):
             start_column_items = 1 
 
             header_row = start_row_items - 1
-            # Headers to be inserted
+            
             headers = ["Body/Combi", "Product Color", "Pcs", "Material Name", "Rate", "Panha","Units", "Consump","Combi Consump","Total Consump","Physical Stock","Bal Stock"]
 
-            # Insert headers into the desired row
+            
             for col_num, header in enumerate(headers, start=1):
                 sheet.cell(row=header_row, column=col_num).value = header
 
@@ -3481,7 +3468,7 @@ def excel_download_production(request,module_name,pk):
         elif module_name == 'purchase_order_cutting':
             wb = Workbook()
 
-            ##delete the default workbook
+            
             default_sheet = wb['Sheet']
             wb.remove(default_sheet)  
             wb.create_sheet('production_sheet_Cutting')
@@ -3492,17 +3479,17 @@ def excel_download_production(request,module_name,pk):
 
             file_name = 'purchase_order_cutting'
 
-            column_widths = [16, 20, 30, 15, 15, 15, 15, 15, 15]  # Adjust these values as needed
+            column_widths = [16, 20, 30, 15, 15, 15, 15, 15, 15]  
 
 
             column_widths_sheet_2 = [30, 25, 20, 20, 20, 20, 20, 20, 20]
 
-            #fix the column width  of sheet1
-            for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+            
+            for i, column_width in enumerate(column_widths, start=1):  
                 col_letter = get_column_letter(i)
                 sheet.column_dimensions[col_letter].width = column_width
 
-            for i, column_width in enumerate(column_widths_sheet_2, start=1):  # enumarate is used to get the index no with the value on that index
+            for i, column_width in enumerate(column_widths_sheet_2, start=1):  
                 col_letter = get_column_letter(i)
                 sheet1.column_dimensions[col_letter].width = column_width
 
@@ -3516,7 +3503,7 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=3, column=2).value = purchase_order_cutting_instance.raw_material_cutting_id
 
             sheet.cell(row=4, column=1).value = 'Date'
-            sheet.cell(row=4, column=2).value = purchase_order_cutting_instance.created_date.replace(tzinfo=None).strftime('%d %B %Y') # change python date object to excel object 
+            sheet.cell(row=4, column=2).value = purchase_order_cutting_instance.created_date.replace(tzinfo=None).strftime('%d %B %Y') 
             
             sheet.cell(row=5, column=1).value = 'Cutter Name'
             sheet.cell(row=5, column=2).value = purchase_order_cutting_instance.factory_employee_id.factory_emp_name
@@ -3547,7 +3534,7 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=2, column=6).value = 'Cutting Qty'
             sheet.cell(row=2, column=7).value = 'Image'
             
-            # Set the starting position
+            
             start_row = 3 
             start_column = 4  
 
@@ -3559,47 +3546,47 @@ def excel_download_production(request,module_name,pk):
 
                 if product_img_instance:
                     product_img = product_img_instance.url
-                    relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
+                    relative_path = str(product_img).lstrip('/media/') 
                 
                 else:
                     relative_path = 'pproduct/images/Unknown_pic.png'
 
-                # Get the full path for the image
+                
                 full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
 
 
-                # Check if the file exists
+                
                 if os.path.isfile(full_image_path):
                 
                     
                     try:
                         img = PILImage.open(full_image_path)
-                        img.verify()  # Ensure the image is valid
+                        img.verify()  
 
                     except Exception as e:
                         print(f"Error opening image: {e}")
                         exit()
 
-                    # Insert the image into the Excel sheet
+                    
                     excel_img = Image(full_image_path)
 
-                    # sheet.row_dimensions[index].height = 40
-                    # Set the desired size of the image in pixels (adjust width and height as needed)
-                    excel_img.width = 60  # Example width in pixels
-                    excel_img.height = 55  # Example height in pixels
+                    
+                    
+                    excel_img.width = 60  
+                    excel_img.height = 55  
 
-                    # Set image position. Example: Insert image at cell D{index}
-                    # col_letter =  get_column_letter(index) # get the column letter from index
+                    
+                    
                     img_position = f'G{index}'
 
-                    # Insert the image into the Excel sheet at the specified position
+                    
                     sheet.add_image(excel_img, img_position)
 
                 else:
 
                     sheet.cell(row=index, column=start_column + 3).value = None
                     print(f"Image file does not exist at path: {full_image_path}")
-                    # Handle the case where the image does not exist
+                    
 
                 sheet.cell(row=index, column=start_column).value = instance.product_sku
                 sheet.cell(row=index, column=start_column + 1).value = instance.product_color
@@ -3613,75 +3600,9 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=qs_length + 3, column = 6).value = purchase_order_cutting_instance.processed_qty
 
             
-            sheet1.cell(row=1, column=1).value = f'Product Reference Number - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID}'
-            sheet1.cell(row=2, column=1).value = f'Model Name - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name}'
-
-            sheet1.cell(row = 1, column=3).value = 'Product SKU'
-            sheet1.cell(row = 1, column=4).value = 'color'
-            sheet1.cell(row = 1, column=5).value = 'Image'
-
-
-             # Set the starting position
-            start_row = 2
-            start_column = 3
-
-            for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all().order_by('id'), start=start_row):
-
-                product_creation_instance = PProduct_Creation.objects.get(PProduct_SKU = instance.product_sku)
-
-                product_img_instance = product_creation_instance.PProduct_image
-
-                if product_img_instance:
-                    product_img = product_img_instance.url
-                    relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
-                
-                else:
-                    relative_path = 'pproduct/images/Unknown_pic.png'
-
-                # Get the full path for the image
-                full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
-
-
-                # Check if the file exists
-                if os.path.isfile(full_image_path):
-                
-                    
-                    try:
-                        img = PILImage.open(full_image_path)
-                        img.verify()  # Ensure the image is valid
-
-                    except Exception as e:
-                        print(f"Error opening image: {e}")
-                        exit()
-
-                    # Insert the image into the Excel sheet
-                    excel_img = Image(full_image_path)
-
-                    # sheet.row_dimensions[index].height = 40
-                    # Set the desired size of the image in pixels (adjust width and height as needed)
-                    excel_img.width = 60  # Example width in pixels
-                    excel_img.height = 55  # Example height in pixels
-
-                    # Set image position. Example: Insert image at cell D{index}
-                    # col_letter =  get_column_letter(index) # get the column letter from index
-                    img_position = f'E{index}'
-
-                    # Insert the image into the Excel sheet at the specified position
-                    sheet1.add_image(excel_img, img_position)
-
-                else:
-
-                    sheet1.cell(row=index, column=start_column + 2).value = None
-                    print(f"Image file does not exist at path: {full_image_path}")
-                    # Handle the case where the image does not exist
-
-                sheet1.cell(row=index, column=start_column).value = instance.product_sku
-                sheet1.cell(row=index, column=start_column + 1).value = instance.product_color
-                
-
             if  qs_length <= 12:
 
-                # Set the starting position
+                
                 start_row_items = 17
 
             else:
@@ -3691,10 +3612,10 @@ def excel_download_production(request,module_name,pk):
 
             header_row = start_row_items - 1
 
-            # Headers to be inserted
+            
             headers = ["Body/Combi", "Product Color","Pcs","Material Name", 'Shade Color', "Rate","Panha","Units","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
 
-            # Insert headers into the desired row
+            
             for col_num, header in enumerate(headers, start=1):
                 sheet.cell(row=header_row, column=col_num).value = header
             
@@ -3720,11 +3641,150 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=qs_length_list + start_row_items + 1 , column=3).value =  purchase_order_cutting_instance.note
             
 
+
+            
+
+            sheet1.cell(row=1, column=1).value = f'Ref No - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID}'
+            sheet1.cell(row=2, column=1).value = f'Model Name - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name}'
+
+            sheet1.cell(row = 1, column=2).value = 'Product SKU'
+            sheet1.cell(row = 1, column=3).value = 'color'
+            sheet1.cell(row = 1, column=4).value = 'Image'
+
+
+             
+            start_row = 2
+            start_column = 2
+
+            purchase_order_cutting_p_2_item_qs = purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all()
+
+            for index, instance in enumerate(purchase_order_cutting_p_2_item_qs.order_by('id'), start=start_row):
+
+                product_creation_instance = PProduct_Creation.objects.get(PProduct_SKU = instance.product_sku)
+
+                product_img_instance = product_creation_instance.PProduct_image
+
+                if product_img_instance:
+                    product_img = product_img_instance.url
+                    relative_path = str(product_img).lstrip('/media/') 
+                
+                else:
+                    relative_path = 'pproduct/images/Unknown_pic.png'
+
+                
+                full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
+
+
+                
+                if os.path.isfile(full_image_path):
+                
+                    
+                    try:
+                        img = PILImage.open(full_image_path)
+                        img.verify()  
+
+                    except Exception as e:
+                        print(f"Error opening image: {e}")
+                        exit()
+
+                    
+                    excel_img = Image(full_image_path)
+
+                    
+                    
+                    excel_img.width = 60  
+                    excel_img.height = 55  
+
+                    
+                    
+                    img_position = f'D{index}'
+
+                    
+                    sheet1.add_image(excel_img, img_position)
+
+                else:
+
+                    sheet1.cell(row=index, column=start_column + 2).value = None
+                    print(f"Image file does not exist at path: {full_image_path}")
+                    
+
+                sheet1.cell(row=index, column=start_column).value = instance.product_sku
+                sheet1.cell(row=index, column=start_column + 1).value = instance.product_color
+                
+                product_ref_no = purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID
+
+                items_qs = product_2_item_through_table.objects.filter(
+                    PProduct_pk__Product__Product_Refrence_ID = product_ref_no , Remark = 'BODY')
+
+
+                
+                for index, instance in enumerate(items_qs, start = 1):
+                    sheet1.cell(row=index , column=5).value = instance.Item_pk.item_name
+
+
+
+            
+            if len(purchase_order_cutting_p_2_item_qs) <= 3 and len(items_qs) <= 3:
+                start_row_items = 5
+            
+            else:
+                start_row_items = len(purchase_order_cutting_p_2_item_qs) + 6
+                
+            start_column_items = 4 
+
+            header_row = start_row_items - 1
+
+            
+            headers = ["Item Name", "Part Name", "Part Dimentions", 'Dimention Total','Part Pcs','Body/Combi','Grand Total','Grand Total Combi']
+
+            
+            for col_num, header in enumerate(headers, start = 1):
+                sheet1.cell(row = header_row, column = col_num).value = header
+
+
+            start_column_items = 1
+
+            product_with_combi = [] 
+
+            
+            for product in product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID = product_ref_no):
+
+                if product.product_item_configs.filter(body_combi ='combi').exists():
+                    product_with_combi.append(product)
+
+            
+        
+            for instance in product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('row_number'):
+                list_to_append = []
+                for record in instance.product_item_configs.all():
+                    list_1 = [
+                        record.producttoitem.Item_pk.item_name,
+                        record.part_name,
+                        record.part_dimentions,
+                        record.dimention_total,
+                        record.part_pieces,
+                        record.body_combi
+                        ]
+                    
+                    list_to_append.append(list_1)
+
+                for row in list_to_append:
+                    sheet1.append(row)
+
+                sheet1.append(['','','','','','',instance.grand_total, instance.grand_total_combi])
+                    
+
+
+                
+
+            
+
         elif module_name == 'labour_workout':
 
             wb = Workbook()
 
-            ##delete the default workbook
+            
             default_sheet = wb['Sheet']
 
             wb.remove(default_sheet)  
@@ -3737,10 +3797,10 @@ def excel_download_production(request,module_name,pk):
             file_name = 'labour_workout'
 
             
-            column_widths = [22, 20, 30, 15, 15, 15, 15, 15, 15]  # Adjust these values as needed
+            column_widths = [35, 20, 12, 10, 15, 30, 15, 15, 15]  
 
-            #fix the column width  of sheet1
-            for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
+            
+            for i, column_width in enumerate(column_widths, start=1):  
                 col_letter = get_column_letter(i)
                 sheet.column_dimensions[col_letter].width = column_width
 
@@ -3759,7 +3819,7 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=2, column=4).value = 'Process Qty'
             sheet.cell(row=2, column=5).value = 'Images'
             
-            # Set the starting position
+            
             start_row = 3 
             start_column = 2
 
@@ -3777,73 +3837,74 @@ def excel_download_production(request,module_name,pk):
                 if product_img_instance:
 
                     product_img = product_img_instance.url
-                    relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
+                    relative_path = str(product_img).lstrip('/media/') 
                 
                 else:
                     relative_path = 'pproduct/images/Unknown_pic.png'
 
                 
-                # Get the full path for the image
+                
                 full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
 
 
-                # Check if the file exists
+                
                 if os.path.isfile(full_image_path):
                     try:
                         img = PILImage.open(full_image_path)
-                        img.verify()  # Ensure the image is valid
+                        img.verify()  
 
                     except Exception as e:
                         print(f"Error opening image: {e}")
                         exit()
 
-                    # Insert the image into the Excel sheet
+                    
                     excel_img = Image(full_image_path)
 
             
 
-                    # sheet.row_dimensions[index].height = 40
-                    # Set the desired size of the image in pixels (adjust width and height as needed)
-                    excel_img.width = 60  # Example width in pixels
-                    excel_img.height = 55  # Example height in pixels
+                    
+                    
+                    excel_img.width = 60  
+                    excel_img.height = 55  
 
-                    # Set image position. Example: Insert image at cell D{index}
-                    col_letter =  get_column_letter(index) # get the column letter from index
+                    
+                    col_letter =  get_column_letter(index) 
                     img_position = f'E{index}'
 
-                    # Insert the image into the Excel sheet at the specified position
+                    
                     sheet.add_image(excel_img, img_position)
 
                 else:
                     sheet.cell(row=index, column=start_column + 3).value = None
                     print(f"Image file does not exist at path: {full_image_path}")
-                    # Handle the case where the image does not exist
+                    
 
             qs_length = len(labour_workout_p2i_items_qs)
 
             sheet.cell(row=qs_length + 3, column = 3).value = 'Total'
             sheet.cell(row=qs_length + 3, column = 4).value = labour_workout_instance.total_process_pcs
 
+            len_items = len(product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.
+                product_reference_number.Product_Refrence_ID, Remark='BODY'))
 
-            # Set the starting position
-            if qs_length <= 5:
+            
+            if qs_length <= 5 and len_items <= 5:
                 start_row_items = 11
-
+                            
             else:
                 start_row_items = qs_length + 6
                 
             start_column_items = 4 
 
-            start_column_items_part_1 = 1
-
             header_row = start_row_items - 1
 
-            # Headers to be inserted
+            
             headers = ["Body/Combi", "Pcs", "Material Name", "Total Consumption"]
 
-            # Insert headers into the desired row
+            
             for col_num, header in enumerate(headers, start=4):
-                sheet.cell(row=header_row, column = col_num).value = header
+                sheet.cell(row=header_row, column=col_num).value = header
 
 
             for index, instance in enumerate(labour_workout_instance.labour_workout_cutting_items_set.all().order_by('id'), start = start_row_items):
@@ -3852,30 +3913,53 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 2).value = instance.material_name
                 sheet.cell(row=index, column=start_column_items + 3).value = instance.total_comsumption
 
-            # Headers to be inserted
+            
             headers = ["Item Name", "Part Name", "Total Part Pcs"]
 
-            # Insert headers into the desired row
+            
             for col_num, header in enumerate(headers, start = 1):
                 sheet.cell(row = header_row, column = col_num).value = header
 
-            row_number_excel = 0
-            for index, instance in enumerate(
-                product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = 
-                    labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID
-                            ).order_by('row_number').distinct('row_number'),start = header_row + 1):
+            
+            for index, instance in enumerate(product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.
+                product_reference_number.Product_Refrence_ID, Remark='BODY'), start = 2):
                 
-                sheet.cell(row = index + row_number_excel, column = 1).value = instance.Item_pk.item_name
+                sheet.cell(row=index , column = 6).value = instance.Item_pk.item_name
 
-                if not instance.Remark.lower() == 'body': 
-                    row_number_excel = row_number_excel + len(instance.product_item_configs.all())
+
+            start_column_items = 1
+
+            product_with_combi = [] 
+
+            
+            for product in product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.
+                purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID):
+
+                if product.product_item_configs.filter(body_combi ='combi').exists():
+                    product_with_combi.append(product)
+
+            
+            for index, instance in enumerate(set_prod_item_part_name.objects.filter(producttoitem__PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('id'), start = start_row_items):
                 
+                sheet.cell(row=index, column = start_column_items).value = instance.producttoitem.Item_pk.item_name
+                sheet.cell(row=index, column = start_column_items + 1).value = instance.part_name
+
+                if instance.part_pieces is None or instance.part_pieces == 0:
+
+                    part_pcs = 0 
+                else:
+                    part_pcs =  instance.part_pieces
+
+                sheet.cell(row=index, column = start_column_items + 2).value = part_pcs * labour_workout_instance.total_process_pcs
+            
 
         fileoutput = BytesIO()
         wb.save(fileoutput)
             
-        # Prepare the HTTP response with the Excel file content
-        response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        
+        response = HttpResponse(fileoutput.getvalue(), content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         file_name_with_pk = f'product_reference_id_{file_name}'
         response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
 
@@ -3887,7 +3971,7 @@ def excel_download_production(request,module_name,pk):
 
 
 @login_required(login_url = 'login')
-@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) 
 def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
     
     purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
@@ -3904,9 +3988,9 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
                             PProduct_pk__Product__Product_Refrence_ID = product_refrence_no, common_unique = True).order_by(
                                 'row_number','id').distinct('row_number')
     
-    # combine 2 qs from same model  By default, union() removes duplicates, but you can keep them by using the all=True argument.
-    # or combined_qs = list(qs1) + list(qs2)
-    # or combined_qs = list(chain(qs1, qs2))
+    
+    
+    
     product_2_items_instances = product_2_items_instances_unique.union(product_2_items_instances_common)
     
 
@@ -3919,7 +4003,7 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
         item_name = item.Item_pk.item_name
         item_quantity = 0
         item_godowns = item_godown_quantity_through_table.objects.filter(Item_shade_name__items = item_id,
-                                        godown_name = purchase_order_instance.temp_godown_select) #later filter by godown also after checking user godown location
+                                        godown_name = purchase_order_instance.temp_godown_select) 
         
         if item_godowns:
             for query in item_godowns:
@@ -3933,16 +4017,16 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
 
 
 
-    # for create (to check child instances of p_o_id is not present)(in this case will render initial data)
+    
     if not purchase_order_instance.raw_materials.all():
         
-        physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) # convert python dict to json and send only on create on update it will be None
+        physical_stock_all_godown_json = json.dumps(physical_stock_all_godowns) 
 
         initial_data = []
         for query in product_2_items_instances:
-            rate_first = query.Item_pk.shades.order_by('id').first() # get the rate of the first shade of the color 
+            rate_first = query.Item_pk.shades.order_by('id').first() 
             
-            # for fortend use to mulitply total proccessed qty with consumption for common item
+            
             if query.common_unique == True:
                 product_color_or_common_item = 'Common Item'
                 product_sku_or_common_item = 'Common Item'
@@ -3979,10 +4063,10 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(initial=initial_sorted_data, instance=purchase_order_instance)
 
 
-    # for update(to check child instances of p_o_id is avaliable means form is on update)
+    
     elif purchase_order_instance.raw_materials.all():
 
-        physical_stock_all_godown_json = None # send only on create on update it will be None as saved data will be rendered
+        physical_stock_all_godown_json = None 
 
         purchase_order_raw_product_sheet_formset = inlineformset_factory(purchase_order, purchase_order_for_raw_material, form=purchase_order_raw_product_sheet_form, extra=0, can_delete=False)
 
@@ -4015,12 +4099,12 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
 
 
                         for form in purchase_order_raw_sheet_formset:
-                            po_form_instance = form.instance.purchase_order_id  # get FK instance from form instance
-                            if po_form_instance.process_status == '2':   # if process_status in parent form is 2 
-                                po_form_instance.process_status = '3'  # change the status to 3
-                                po_form_instance.save()  # save the parent form instance 
+                            po_form_instance = form.instance.purchase_order_id  
+                            if po_form_instance.process_status == '2':   
+                                po_form_instance.process_status = '3'  
+                                po_form_instance.save()  
 
-                        #return(redirect(reverse('purchase-order-cutting-list',args = [purchase_order_instance.id, purchase_order_instance.product_reference_number.Product_Refrence_ID])))
+                        
                         return redirect('purchase-order-raw-material-list')
                 
                 except ValueError as ve:
@@ -4038,11 +4122,11 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
             else:
                 print(purchase_order_raw_formset.errors,purchase_order_raw_sheet_formset.errors)
                 raise ValidationError("No products found for the given reference ID.")
-                # messages.error(request,f' Please enter correct Procurement color wise QTY {purchase_order_raw_sheet_formset.errors}-{purchase_order_raw_sheet_formset.errors}')
-                # return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
-                #                                                         'purchase_order_raw_formset':purchase_order_raw_formset,
-                #                                                         'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
-                #                                                         'physical_stock_all_godown_json':physical_stock_all_godown_json})
+                
+                
+                
+                
+                
         except ValidationError as ve:
                 messages.error(request,f' Please enter correct Procurement color wise QTY {ve}')
         
@@ -4060,8 +4144,8 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
 
 @login_required(login_url='login')
 def purchase_order_for_raw_material_list(request):
-    # to know if related multiple records are created or not - create temp column named raw_material_count and 
-    # count the records present in related model and then filter that column if more then 1 record is present
+    
+    
     purchase_orders_pending = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__lt=1, purchase_order_to_product_saved=True).order_by('created_date')
     purchase_orders_completed = purchase_order.objects.annotate(raw_material_count=Count('raw_materials')).filter(raw_material_count__gt=0).order_by('created_date')
 
@@ -4090,7 +4174,7 @@ def purchase_order_for_raw_material_delete(request,pk):
  
 
 @login_required(login_url='login')
-@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) 
 def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
     if pk:
@@ -4100,24 +4184,24 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
     labour_all = factory_employee.objects.all()
 
-    # purchase_order_instance
+    
     purchase_order_instance = get_object_or_404(purchase_order, pk=p_o_pk)
 
-    # purchase_order_raw_material_instances
+    
     purchase_order_raw_instances = purchase_order_for_raw_material.objects.filter(purchase_order_id=p_o_pk).order_by('id')
 
-    # purchase_order_to_product_instances
+    
     purchase_order_to_product_instances = purchase_order_to_product.objects.filter(purchase_order_id = p_o_pk)
 
-    # purchase_order_form
+    
     form = purchase_order_form(instance = purchase_order_instance)
 
     current_godown = form.instance.temp_godown_select
 
-    # cutting form for that purchase order (this form data is submitted only)(for create and view/update page)
+    
     purchase_order_cutting_form = purchase_order_raw_material_cutting_form(request.POST or None, instance=purchase_order_cutting_instance)
 
-    # for create page initial data is denndered 
+    
     if not pk:
 
         product_refrence_no = prod_ref_no
@@ -4134,35 +4218,35 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         product_2_items_instances = product_2_items_instances_unique.union(product_2_items_instances_common)
 
-        # initial data for purchase_order_cutting items
+        
         initial_data = []
 
         for purchase_items_raw in product_2_items_instances:
             
             current_godown_qty = item_color_shade.objects.filter(items=purchase_items_raw.Item_pk,godown_shades__godown_name=purchase_order_instance.temp_godown_select).annotate(total_godown_qty = Sum('godown_shades__quantity'))
 
-            rate_first = purchase_items_raw.Item_pk.shades.order_by('id').first() # get the rate of the first shade of the color
+            rate_first = purchase_items_raw.Item_pk.shades.order_by('id').first() 
 
-            shade_single_list = []  # Using a list to store shades
+            shade_single_list = []  
             
-            # Iterating through shades related to each purchase item
+            
             for qs in purchase_items_raw.Item_pk.shades.all():
                 try:
-                    # Fetching godown quantity for each shade
+                    
                     shade_godown_qty = item_godown_quantity_through_table.objects.get(
                     godown_name=purchase_order_instance.temp_godown_select,
                     Item_shade_name=qs.id)
 
-                    # Adding quantity info to the shade dictionary
+                    
                     shade_data = {
                     'shade_id': qs.id,
                     'shade_name': qs.item_shade_name,
-                    'godown_quantity': shade_godown_qty.quantity}  # Assuming .quantity field exists
+                    'godown_quantity': shade_godown_qty.quantity}  
                         
                     shade_single_list.append(shade_data)
 
                 except item_godown_quantity_through_table.DoesNotExist:
-                    # If no quantity found, append with default value with the shade and id (e.g., 0)
+                    
 
                     shade_data = {
                         'shade_id': qs.id,
@@ -4190,8 +4274,8 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 'product_sku': product_sku_or_common_item,
                 'product_color' : product_color_or_common_item,
                 'material_name' : purchase_items_raw.Item_pk.item_name,
-                'material_color_shade': shade_single_list, # sorting shades based on quantity
-                'fabric_non_fab': purchase_items_raw.Item_pk.Fabric_nonfabric, # not in database table for computational purpose
+                'material_color_shade': shade_single_list, 
+                'fabric_non_fab': purchase_items_raw.Item_pk.Fabric_nonfabric, 
                 'rate' : rate_first.rate,
                 'panha' : purchase_items_raw.Item_pk.Panha,
                 'units' :  purchase_items_raw.Item_pk.Units,
@@ -4213,7 +4297,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         initial_sorted_data = sorted(initial_data, key = itemgetter('row_number'), reverse=False)
 
         
-        # production sheet for that cutting order of the purchase order (inline factory for below form)
+        
         purchase_order_for_raw_material_cutting_items_formset = inlineformset_factory(purchase_order_raw_material_cutting, 
                                                                                       purchase_order_for_raw_material_cutting_items, 
                                                                                       form=purchase_order_for_raw_material_cutting_items_form,
@@ -4222,11 +4306,11 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                                                                                       can_delete=False)
 
 
-        # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)(for get request)
+        
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(initial=initial_sorted_data)
 
 
-        # intial data for purchase_order_to_product formset
+        
         initial_data_p_o_to_items = []
 
         for instances in purchase_order_to_product_instances:
@@ -4240,7 +4324,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
             initial_data_p_o_to_items.append(initial_data_dict)
 
-        # production sheet for that product_to purchase order of the purchase order (inline factory for below form)
+        
         purchase_order_to_product_formset = inlineformset_factory(purchase_order_raw_material_cutting, 
                                                                   purchase_order_to_product_cutting,
                                                                     form=purchase_order_to_product_cutting_form,
@@ -4249,7 +4333,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
         purchase_order_to_product_formset_form = purchase_order_to_product_formset(initial= initial_data_p_o_to_items)
 
-    # for view page 
+    
     elif pk:
 
         purchase_order_for_raw_material_cutting_items_formset = inlineformset_factory(purchase_order_raw_material_cutting,
@@ -4260,7 +4344,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(instance=purchase_order_cutting_instance)
 
 
-        # production sheet for that product_to purchase order of the purchase order (inline factory for below form)
+        
         purchase_order_to_product_formset = inlineformset_factory(purchase_order_raw_material_cutting, purchase_order_to_product_cutting, 
                                                                   form=purchase_order_to_product_cutting_form, extra=0, can_delete=False)
         
@@ -4268,27 +4352,27 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
         
     if request.method == 'POST':
         
-        # formset creation from  purchase_order_for_raw_material_cutting_items_formset (this form data is submitted only)(for post request)
+        
         purchase_order_for_raw_material_cutting_items_formset_form = purchase_order_for_raw_material_cutting_items_formset(request.POST)
 
-        # formset for purchase_order_to_products_cutting for POST request
+        
         purchase_order_to_product_formset_form = purchase_order_to_product_formset(request.POST)
 
         if purchase_order_cutting_form.is_valid() and purchase_order_to_product_formset_form.is_valid() and purchase_order_for_raw_material_cutting_items_formset_form.is_valid():
             try:
                 with transaction.atomic():
-                    # cutting form save
+                    
                     cutting_form_instance = purchase_order_cutting_form.save()
                     cutting_form_instance.purchase_order_id.cutting_total_processed_qty = cutting_form_instance.purchase_order_id.cutting_total_processed_qty + cutting_form_instance.processed_qty
                     cutting_form_instance.purchase_order_id.save()
                     
-                    # change the status in purchase order model 
+                    
                     if cutting_form_instance.purchase_order_id.process_status == '3':
                         cutting_form_instance.purchase_order_id.process_status = '4'
                         cutting_form_instance.purchase_order_id.save()
                     
 
-                    # purchase_order to product formset 
+                    
                     for form in purchase_order_to_product_formset_form:
 
                         if form.is_valid(): 
@@ -4297,7 +4381,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                                 p_o_to_order_form_instance.purchase_order_cutting_id = cutting_form_instance
                                 p_o_to_order_form_instance.save()
 
-                                # reduce the process quantity form purchase_order_to_products model
+                                
                                 product_sku = p_o_to_order_form_instance.product_sku
                                 processed_qty = p_o_to_order_form_instance.cutting_quantity
 
@@ -4318,7 +4402,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                                 messages.error(request, f'An error occurred while processing the product form: {e}')
 
 
-                    # purchase_order_cutting_items formset
+                    
                     for form in purchase_order_for_raw_material_cutting_items_formset_form:
                         if form.is_valid(): 
                             try:
@@ -4337,12 +4421,12 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                                 messages.error(request, f'An error occurred while processing the raw material form: {e}')
                         
                         
-                    # updating balance quantity of purchase order form 
+                    
                     processed_quantity = int(request.POST['processed_qty'])
-                    qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces  # get the quanitty from purchase_order
-                    qty_to_process_minus_processed_qty = qty_to_process - processed_quantity  # reduce the purchase_order_qty with the processed qty
-                    cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty  # assign the value
-                    cutting_form_instance.purchase_order_id.save() # save changes
+                    qty_to_process = cutting_form_instance.purchase_order_id.balance_number_of_pieces  
+                    qty_to_process_minus_processed_qty = qty_to_process - processed_quantity  
+                    cutting_form_instance.purchase_order_id.balance_number_of_pieces = qty_to_process_minus_processed_qty  
+                    cutting_form_instance.purchase_order_id.save() 
 
                     messages.success(request, f'Cutting Order Created SuccessFully')
                     return(redirect(reverse('purchase-order-cutting-list', args = [cutting_form_instance.purchase_order_id.id, cutting_form_instance.purchase_order_id.product_reference_number.Product_Refrence_ID])))
@@ -4363,12 +4447,12 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
                 messages.error(request, f'An unexpected error occurred: {e}')
 
         else:
-            # messages.error(request,f'Purchase Order Form Errors {purchase_order_cutting_form.errors}')
-            # messages.error(request,f'Purcahse Order To product Cutting Forms Errors {purchase_order_to_product_formset_form.errors}')
-            # messages.error(request,f'Raw Material Cutting Items Formset Errors {purchase_order_for_raw_material_cutting_items_formset_form.errors}')
+            
+            
+            
 
-            # messages.error(request,f'Purcahse Order To product Cutting Forms Errors {purchase_order_to_product_formset_form.non_form_errors()}')
-            # messages.error(request,f'Raw Material Cutting Items Formset Errors {purchase_order_for_raw_material_cutting_items_formset_form.non_form_errors()}')
+            
+            
 
 
             return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
@@ -4386,11 +4470,11 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 @login_required(login_url='login')
 def purchaseordercuttinglistall(request):
 
-    # Using a subquery to check existence
+    
     raw_materials_exists = purchase_order_for_raw_material.objects.filter(purchase_order_id=OuterRef('pk')
                                                 ).values('pk')[:1] 
 
-    # Main query
+    
     purchase_orders_cutting_pending = (
         purchase_order.objects.annotate(
             raw_materials_exist=Exists(raw_materials_exists),
@@ -4398,7 +4482,7 @@ def purchaseordercuttinglistall(request):
         )
         .filter(
             balance_number_of_pieces__gt=0,
-            raw_materials_exist=True  # Filtering based on existence of related raw_materials
+            raw_materials_exist=True  
         )
         .annotate(
             total_approved_balance=F('number_of_pieces') - F('total_approved_qty_sum')
@@ -4426,7 +4510,7 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 @login_required(login_url='login')
 def pendingapprovall(request):
-    pending_approval_query = purchase_order_raw_material_cutting.objects.exclude(processed_qty = F('approved_qty')).order_by('created_date') # comparing processed_qty with approved_qty from same instance using F function
+    pending_approval_query = purchase_order_raw_material_cutting.objects.exclude(processed_qty = F('approved_qty')).order_by('created_date') 
     return render(request,'production/cuttingapprovallistall.html',{'pending_approval_query': pending_approval_query})
 
 
@@ -4444,42 +4528,42 @@ def purchaseordercuttingpopup(request, cutting_id):
     if request.method == 'POST':
         if formset.is_valid():
             
-            if any(form.has_changed() for form in formset): # if all the forms are not changed below code will not get executed
+            if any(form.has_changed() for form in formset): 
                 formset_instance = formset.save(commit=False)
 
-                # get the cutting instance of approval instance
+                
                 raw_material_cutting_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id=cutting_id)
 
-                # old approved qty
+                
                 old_total_approved_qty_total = raw_material_cutting_instance.approved_qty
 
-                # create an instance in labour workout master of the cutting instance
+                
                 labour_workout_master_instance = labour_workout_master.objects.create(purchase_order_cutting_master=raw_material_cutting_instance)
 
                 total_approved_pcs = 0
 
                 for form in formset_instance:
-                    p_o_to_cutting_instance = purchase_order_to_product_cutting.objects.get(id = form.id) # p_o_cutting_instance
-                    old_total_approved_qty_diffrence  =  form.approved_pcs - p_o_to_cutting_instance.approved_pcs  # current qty - old qty to get the diffrence in qty
-                    form.approved_pcs_diffrence = old_total_approved_qty_diffrence  # assign the difference qty to form variable
-                    old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence # add the diffrence qty to total qty of parent model
-                    form.save() # save the instance model
+                    p_o_to_cutting_instance = purchase_order_to_product_cutting.objects.get(id = form.id) 
+                    old_total_approved_qty_diffrence  =  form.approved_pcs - p_o_to_cutting_instance.approved_pcs  
+                    form.approved_pcs_diffrence = old_total_approved_qty_diffrence  
+                    old_total_approved_qty_total = old_total_approved_qty_total + old_total_approved_qty_diffrence 
+                    form.save() 
                     
                     total_approved_pcs = total_approved_pcs + old_total_approved_qty_diffrence
 
-                    # create new instance of the data in product_to_item_labour_workout with the created labour_workout_master_instance as parent model
+                    
                     product_to_item_labour_workout.objects.create(labour_workout = labour_workout_master_instance,
                                                                 product_color=form.product_color,product_sku=form.product_sku,
                                                                 pending_pcs = old_total_approved_qty_diffrence, processed_pcs = old_total_approved_qty_diffrence)
 
-                raw_material_cutting_instance.approved_qty = old_total_approved_qty_total # save the total diffrence total qty to parent model
-                raw_material_cutting_instance.save() # save the parent model
+                raw_material_cutting_instance.approved_qty = old_total_approved_qty_total 
+                raw_material_cutting_instance.save() 
 
-                labour_workout_master_instance.total_approved_pcs = total_approved_pcs # setting the total of all approved qty as total approved qty in labour master instsance
-                labour_workout_master_instance.total_pending_pcs = total_approved_pcs # pending qty is total of all approved qty initially
-                labour_workout_master_instance.save() # save labour workout instance
+                labour_workout_master_instance.total_approved_pcs = total_approved_pcs 
+                labour_workout_master_instance.total_pending_pcs = total_approved_pcs 
+                labour_workout_master_instance.save() 
 
-            # JavaScript to close the popup window
+            
             close_window_script = """
             <script>
             window.opener.location.reload(true);  // Reload parent window if needed
@@ -4514,18 +4598,18 @@ def purchaseordercuttingmastercancelajax(request):
                     if cutting_instance.approved_qty == 0:
                         processed_qty_to_revert = cutting_instance.processed_qty
 
-                        # increase balance qty and decrease total qty from purchase order total balance  
+                        
                         cutting_instance.purchase_order_id.cutting_total_processed_qty = cutting_instance.purchase_order_id.cutting_total_processed_qty - processed_qty_to_revert
                         cutting_instance.purchase_order_id.balance_number_of_pieces = cutting_instance.purchase_order_id.balance_number_of_pieces + processed_qty_to_revert
                         cutting_instance.purchase_order_id.save()
                         
-                        # for adding quantity in purchase_order_to_product table 
+                        
                         for record in cutting_instance.purchase_order_to_product_cutting_set.all():
                             purchase_order_to_product_instance = purchase_order_to_product.objects.get(purchase_order_id=cutting_instance.purchase_order_id.id,product_id__PProduct_SKU=record.product_sku)
                             purchase_order_to_product_instance.process_quantity = purchase_order_to_product_instance.process_quantity + record.cutting_quantity 
                             purchase_order_to_product_instance.save()
 
-                        # for creation or updating quantity in godown  
+                        
                         for cutting_items in cutting_instance.purchase_order_for_raw_material_cutting_items_set.all():
 
                             item_godown_instance, created = item_godown_quantity_through_table.objects.get_or_create(Item_shade_name=cutting_items.material_color_shade,godown_name=cutting_items.purchase_order_cutting.purchase_order_id.temp_godown_select)
@@ -4581,7 +4665,7 @@ def labourworkoutlistall(request):
 
 
 @login_required(login_url='login')
-@cache_control(no_cache=True, must_revalidate=True, no_store=True) # for deleting cache from the page on submission to avoid resubmission of form by clicking back
+@cache_control(no_cache=True, must_revalidate=True, no_store=True) 
 def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
 
     try:
@@ -4589,7 +4673,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
 
         godown_id = None
 
-        # if pk which is parent id is not none means child instance is not created 
+        
         if pk is not None:
             
             labourworkoutinstance = get_object_or_404(labour_workout_master,id = pk)
@@ -4607,10 +4691,10 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
             child_master_intial_data = {'total_approved_pcs' : labourworkoutinstance.total_approved_pcs,
                                         'total_balance_pcs' : labourworkoutinstance.total_pending_pcs}
 
-            # labour workout child masterform 
+            
             labour_work_out_child_form = labour_workout_child_form(initial=child_master_intial_data)
             
-            # prodcut to item labour workout instances to set initial data 
+            
             product_to_item_instances = product_to_item_labour_workout.objects.filter(labour_workout = labourworkoutinstance)
         
             initial_items_data_dict = []
@@ -4619,24 +4703,24 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                 data_dict = {
                     'product_sku':instance.product_sku,
                     'product_color':instance.product_color,
-                    'pending_pcs': instance.processed_pcs, # approved qty
-                    'balance_pcs': instance.pending_pcs, # this qty will update on each successful form labour workout form submission 
+                    'pending_pcs': instance.processed_pcs, 
+                    'balance_pcs': instance.pending_pcs, 
                     'processed_pcs': 0
                     }
 
                 initial_items_data_dict.append(data_dict)
             
-            # product 2 item child formset
+            
             labour_workout_child_product_to_items_formset = inlineformset_factory(
                                     labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
                                                             'product_color','processed_pcs',
                                                             'pending_pcs','balance_pcs'], can_delete=False,extra=len(initial_items_data_dict))
             
-            # product 2 item child form
+            
             product_to_item_formset = labour_workout_child_product_to_items_formset(initial=initial_items_data_dict)
 
 
-            # raw_material_cutting_items
+            
             raw_material_cutting_items_instances = purchase_order_for_raw_material_cutting_items.objects.filter(purchase_order_cutting = labourworkoutinstance.purchase_order_cutting_master).order_by('id')
 
             initial_data_dict = []
@@ -4682,28 +4766,28 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                                                                             form = labour_workout_cutting_items_form,               
                                                                             extra=len(initial_data_dict))
             
-            # labour workout items formset
+            
             labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(initial = initial_data_dict) 
 
 
-        # if pk which is parent id is none means child instance is created and page is on view mode 
+        
         elif pk is None:
 
             labour_workout_child_instance = labour_workout_childs.objects.get(id = labour_workout_child_pk)
             
 
-            # labour workout child masterform 
+            
             labour_work_out_child_form = labour_workout_child_form(instance = labour_workout_child_instance)
 
             
 
-            # product 2 item child formset
+            
             labour_workout_child_product_to_items_formset = inlineformset_factory(
                                     labour_workout_childs,product_to_item_labour_child_workout,fields=['product_sku',
                                                             'product_color','processed_pcs',
                                                             'pending_pcs','balance_pcs'], can_delete=False,extra=0)
             
-            # product 2 item child form
+            
             product_to_item_formset = labour_workout_child_product_to_items_formset(instance = labour_workout_child_instance)
             
 
@@ -4711,7 +4795,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                                                                             form = labour_workout_cutting_items_form, 
                                                                             can_delete=False,
                                                                             extra=0)
-            # labour workout items formset
+            
             labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(instance = labour_workout_child_instance)
 
     except Exception as e:
@@ -4722,13 +4806,13 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
     if request.method == 'POST':
         
 
-        # child labour workout form
+        
         labour_work_out_child_form = labour_workout_child_form(request.POST)
 
-        # product2itemformset
+        
         product_to_item_formset = labour_workout_child_product_to_items_formset(request.POST)
 
-        # itemsformsetform
+        
         labour_workout_cutting_items_formset_form =  labour_workout_cutting_items_form_formset(request.POST) 
 
 
@@ -4752,7 +4836,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
                             product_to_item_form.labour_w_in_pending = product_to_item_form.processed_pcs
                             product_to_item_form.save()
 
-                            # deduct the process qty of product2item table after submission so that it will rerender the updated processed qty qty
+                            
                             single_p2i_instance = product_to_item_instances.get(product_sku=product_to_item_form.product_sku,product_color=product_to_item_form.product_color)
 
                             single_p2i_instance.pending_pcs = single_p2i_instance.pending_pcs - product_to_item_form.processed_pcs
@@ -4830,7 +4914,7 @@ def labour_workout_child_list(request, labour_master_pk):
 
 
 
-# change this qty pending_pcs
+
 @login_required(login_url='login')
 def labourworkoutsingledeleteajax(request):
     
@@ -4932,7 +5016,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 
     approval_check = approved
     
-    # l_w_o_id = create directly
+    
     if l_w_o_id is None:
 
         template_name = 'production/labourworkincreateraw.html'
@@ -5039,7 +5123,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                 return JsonResponse({'status': f'Error with ajax request - {e}'}, status=404)
 
 
-    # on create mode
+    
     elif l_w_o_id is not None and pk is None:
 
         labour_workin_master_instance = None
@@ -5084,7 +5168,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
         product_to_item_formset = labour_work_in_product_to_item_formset(initial=formset_initial_data)
 
 
-    # on update mode 
+    
     elif l_w_o_id is not None and pk is not None:
     
         labour_workout_child_instance = labour_workout_childs.objects.get(id = l_w_o_id)
@@ -5100,7 +5184,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
         
         product_to_item_formset = labour_work_in_product_to_item_formset(instance = labour_workin_master_instance) 
         
-        # The zip function iterates over multiple iterables (in this case, product_to_item_formset.forms and product_to_item_l_w_in) and returns tuples containing elements from both iterables at the same index. It stops when the shortest iterable is exhausted.
+        
         for form, instance in zip(product_to_item_formset.forms, product_to_item_l_w_in):  
 
             if instance:
@@ -5121,7 +5205,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                     parent_form = master_form.save(commit = False)
                     parent_form.labour_voucher_number = labour_workout_child_instance
 
-                    # update the labour workin pcs in labour workout model with total return pcs
+                    
                     labour_workout_child_instance.labour_workin_pcs = labour_workout_child_instance.labour_workin_pcs + parent_form.total_return_pcs
 
                     parent_form.labour_voucher_number.labour_workin_pending_pcs = parent_form.total_balance_pcs
@@ -5142,7 +5226,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                                                                                               product_sku=product_to_item_form.product_sku,
                                                                                               product_color=product_to_item_form.product_color)
                             
-                            # for update purpose 
+                            
                             if product_to_item_form.pk:
 
                                 labour_workin_product2item = labour_work_in_product_to_item.objects.get( pk = product_to_item_form.pk)
@@ -5159,13 +5243,13 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                     return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
 
                 else:
-                    # logger.error(product_to_item_formset.non_form_errors())
-                    # print(product_to_item_formset.errors)
-                    # print(master_form.errors)
-                    # print(product_to_item_formset.non_form_errors())
+                    
+                    
+                    
+                    
                     return redirect(reverse('labour-workin-list-create', args=[labour_workout_child_instance.id]) )
                     
-                #return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset})
+                
                 
         except ValidationError as ve:
             messages.error(request,f'Validation error {ve}')
@@ -5179,12 +5263,12 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 @login_required(login_url='login')
 def labourworkinlistall(request):
 
-    # Subquery to check if a purchase_order has any related labour_workout_childs
+    
     labour_workout_childs_exists = labour_workout_childs.objects.filter(
     labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id = OuterRef('pk')
     ).values('pk')[:1]
 
-    # Main query to get all purchase orders that have related labour_workout_childs instances
+    
     purchase_orders_with_labour_workout_childs = purchase_order.objects.annotate(
     has_labour_workout_childs=Exists(labour_workout_childs_exists)
     ).filter(has_labour_workout_childs = True).annotate(total_lwo_pcs = Sum('cutting_pos__labourworkouts__labour_workout_childs__total_process_pcs'),
@@ -5306,7 +5390,7 @@ def goods_return_popup(request,pk):
                             else:
                                 approved_qty_differ = form_instance.approved_qty
 
-                            obj.quantity = quantity_to_add + approved_qty_differ  # instead of form_instance.approved_qty use difference 
+                            obj.quantity = quantity_to_add + approved_qty_differ  
 
                             obj.save()
                             form_instance.save()
@@ -5317,7 +5401,7 @@ def goods_return_popup(request,pk):
                         messages.error(request,f'Error with Formset - {e}')
 
 
-                # JavaScript to close the popup window
+                
                 close_window_script = """
                 <script>
                 window.opener.location.reload(true);  // Reload parent window if needed
@@ -5329,7 +5413,7 @@ def goods_return_popup(request,pk):
             else:
                 messages.error(request,f'Error with Formset {formset.errors}')
 
-                # JavaScript to close the popup window
+                
                 close_window_script = """
                 <script>
                 window.opener.location.reload(true);  // Reload parent window if needed
@@ -5354,9 +5438,9 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
 
 
 
-#_________________________production-end__________________________________________
 
-#_________________________factory-emp-start_______________________________________
+
+
 
 @login_required(login_url='login')
 def factory_employee_create_update_list(request ,pk=None):
@@ -5365,9 +5449,9 @@ def factory_employee_create_update_list(request ,pk=None):
     if request.user.is_superuser:
         factory_employees = factory_employee.objects.all()
         cutting_rooms =  cutting_room.objects.all()
-    # else:
-        # factory_employees = factory_employee.objects.filter(company= request.user.company)
-        # cutting_rooms =  cutting_room.objects.filter(company= request.user.company)
+    
+        
+        
 
 
 
@@ -5415,12 +5499,12 @@ def cutting_room_create_update_list(request, pk=None):
     else:
         instance = None
 
-    form = cutting_room_form(request.POST or None, instance = instance) # , user=request.user
+    form = cutting_room_form(request.POST or None, instance = instance) 
 
     if request.user.is_superuser:
         cutting_rooms = cutting_room.objects.all()
-    # else:
-    #     cutting_rooms = cutting_room.objects.filter(company = request.user.company)
+    
+    
 
 
     if request.method == 'POST':
@@ -5439,16 +5523,16 @@ def cuttingroomdelete(request,pk):
     return redirect('cutting_room-create')
 
 
-#_________________________factory-emp-end_______________________________________
 
 
-#__________________________common-functions-start____________________________
+
+
 
 @login_required(login_url='login')
 def itemdynamicsearchajax(request):
     
     try:
-        # Retrieve the partial name typed by the user from the GET request
+        
         item_name_typed = request.GET.get('nameValue')
 
         if not item_name_typed:
@@ -5460,10 +5544,10 @@ def itemdynamicsearchajax(request):
         
 
         if item_name_searched:
-            # # Prepare a dictionary of searched items with IDs as keys and names as values
-            # searched_item_name_dict = {queryset.id : queryset.item_name for queryset in item_name_searched}
+            
+            
 
-            # or 
+            
 
             searched_item_name_dict = {}
             for queryset in item_name_searched:
@@ -5500,7 +5584,7 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
     if searched_value:
         validation_flag = False
         try:
-            #Dynamic field lookup
+            
             lookup = {f"{col_name}__iexact": searched_value}
             check_instance_valid = model_name.objects.get(**lookup)
             
@@ -5563,7 +5647,7 @@ def UniqueValidCheckAjax(request):
         col_name = None
 
 
-    # Ensure model_name, searched_value, and col_name are valid
+    
     if model_name and searched_value and col_name:
         return CheckUniqueFieldDuplicate(model_name, searched_value, col_name)
     else:
@@ -5573,23 +5657,23 @@ def UniqueValidCheckAjax(request):
             
 @login_required(login_url='login')
 def session_data_test(request):
-    # if request.session['openingquantitytemp']:
-    #     openingquantitytemp = request.session['openingquantitytemp']
-    # else:
-    #     openingquantitytemp == None
+    
+    
+    
+    
 
-    # Get all data from the session
+    
     session_data = request.session
     
-    # Now session_data contains all data stored in the session
-    # You can access individual items using dictionary-like syntax
+    
+    
     for key, value in session_data.items():
         print(f"Key: {key}, Value: {value}")
 
     context = {}
     return render(request,'misc/session_test.html',context=context)
 
-#__________________________reports-start_________________________________
+
 
 
 @login_required(login_url='login')
@@ -5603,14 +5687,14 @@ def creditdebitreport(request):
 @login_required(login_url='login')
 def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
     
-    # get all the items in the selected godown
+    
     items_in_godown = item_godown_quantity_through_table.objects.filter(godown_name=g_id)
     
     
     Fabric_grp_name = None
     querylist = None
 
-    # fabric report and item report are on the same page only queries are changed
+    
     if fab_id:
         page_id = 'item_page'
 
@@ -5618,55 +5702,55 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
         page_id = 'fabric_page'
     
     if page_id == 'fabric_page':
-        # in all the items in godown get their disticnt fabricgrp items (here we get only the items which are in distint fabric grp) 
+        
         fabric_in_godown = items_in_godown.distinct('Item_shade_name__items__Fabric_Group')
         
         list_fab_grp = []
 
-        # in dinstnt items of fab grp get their fab_grp and append in list  
+        
         for fab in fabric_in_godown:
             list_fab_grp.append(fab.Item_shade_name.items.Fabric_Group.id)
 
         queryset = []
 
-        # now query the fab grp model from the list of distint fab grp in that godown and append in a list 
+        
         for items in list_fab_grp:
             values = Fabric_Group_Model.objects.filter(id=
                     items).filter(items__shades__godown_shades__godown_name=g_id).annotate(total_qty = 
                     Round(Sum('items__shades__godown_shades__quantity'), 2),
                     avg_rate=Round(Avg('items__shades__rate'),2)).first()
 
-                    # in query filter fab grp by id then by godown id and annotate total qty of all the items of all fab grp in the godown and avg rate
+                    
 
             queryset.append(values)
 
     elif page_id == 'item_page':
 
-        # if it is item page (items in selected fab grp)
+        
 
         Fabric_grp_name = Fabric_Group_Model.objects.get(id=fab_id)
 
         items_in_fab_grp = Item_Creation.objects.filter(Fabric_Group=fab_id).filter(
             shades__godown_shades__godown_name__id=g_id).annotate(
                 total_qty =Round(Sum('shades__godown_shades__quantity')))
-                # in query filter item creation with the selctd fabgrp then filter by godown and annotate total_qty of all the items of the selcted fabgrp in the godown 
+                
 
         querylist = []
         
-        # append all the required data from the queryset in a list
-        for query in items_in_fab_grp: # item creation model
+        
+        for query in items_in_fab_grp: 
             item_dict = {}
             item_dict['item_name'] = query.item_name
             item_dict['total_qty'] = query.total_qty
 
             shades_list = []
-            for shade in query.shades.filter(godown_shades__godown_name__id=g_id): # item shades model (filter by g_id while looping)
+            for shade in query.shades.filter(godown_shades__godown_name__id=g_id): 
                 shade_dict = {}
                 shade_dict['rate'] = shade.rate
                 shades_list.append(shade_dict)
 
                 shade_godown_list = []
-                for godown_items in shade.godown_shades.filter(godown_name__id=g_id): # item to godown model (filter by g_id while looping)
+                for godown_items in shade.godown_shades.filter(godown_name__id=g_id): 
                     godown_shade_dict = {}
                     shade_dict['item_shade'] = godown_items.Item_shade_name.item_shade_name
                     shade_dict['item_shade_id'] = godown_items.Item_shade_name.id
@@ -5701,27 +5785,27 @@ def godown_item_report(request,shade_id,g_id=None):
         godown_name = Godown_raw_material.objects.get(id=g_id)
 
 
-        # opening quantity report query
+        
         opening_godown_qty = opening_shade_godown_quantity.objects.filter(
             opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godown_name)
         
 
 
-        # purchase voucher report query    
-        # comments in please check notes/ORM_query_dump.txt line no 34
+        
+        
         purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
             purchase_voucher_items__item_shade = shade_name , purchase_voucher_items__shade_godown_items__godown_id = godown_name).annotate(
                 godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
                     'purchase_voucher_items__rate')), filter=Q(purchase_voucher_items__shade_godown_items__godown_id = godown_name))
         
 
-        # P O cutting room qty query
+        
         purchase_order_cutting_room_qty = godown_item_report_for_cutting_room.objects.filter(
             material_color_shade = shade_id, inward = False, godown_id = g_id)
         
         
     
-        # P O cutting room qty query for cancelled cutting room
+        
         purchase_order_cutting_room_qty_cancelled =  godown_item_report_for_cutting_room.objects.filter(
             material_color_shade = shade_id, inward = True, godown_id = g_id)
         
@@ -5732,27 +5816,27 @@ def godown_item_report(request,shade_id,g_id=None):
 
     else:
     
-        # opening quantity report query
+        
         opening_godown_qty = opening_shade_godown_quantity.objects.filter(
             opening_purchase_voucher_godown_item=shade_name)
         
 
 
-        # purchase voucher report query    
-        # comments in please check notes/ORM_query_dump.txt line no 34
+        
+        
         purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
             purchase_voucher_items__item_shade = shade_name).annotate(
                 godown_qty_total=Sum('purchase_voucher_items__shade_godown_items__quantity'), item_rate=Round(Avg(
                     'purchase_voucher_items__rate')))
         
 
-        # P O cutting room qty query
+        
         purchase_order_cutting_room_qty = godown_item_report_for_cutting_room.objects.filter(
             material_color_shade = shade_id, inward = False)
         
         
     
-        # P O cutting room qty query for cancelled cutting room
+        
         purchase_order_cutting_room_qty_cancelled =  godown_item_report_for_cutting_room.objects.filter(
             material_color_shade = shade_id, inward = True)
         
@@ -5901,7 +5985,7 @@ def raw_material_excel_download(request):
     fileoutput = BytesIO()
     wb.save(fileoutput)
         
-    # Prepare the HTTP response with the Excel file content
+    
     response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     file_name = 'raw_material_create'
     response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
@@ -5922,7 +6006,7 @@ def raw_material_excel_upload(request):
 
             
                 if file_name == 'raw_material_create' and excel_file.name.endswith('.xlsx'):
-                    # read the excel file
+                    
                     df = pd.read_excel(excel_file)
                     
                     
@@ -5942,7 +6026,7 @@ def raw_material_excel_upload(request):
                         'Status':'status'
                     }
                     
-                    # Check if required columns are present
+                    
                     for col in required_columns.keys():
                         if col not in df.columns:
                             return HttpResponse(f"Missing required column: {col}")
@@ -5952,7 +6036,7 @@ def raw_material_excel_upload(request):
                     for index, row in df.iterrows():
                         with transaction.atomic():
                             try:
-                                # Fetch foreign key related instances
+                                
                                 color = Color.objects.get(color_name=row['Color'])
                                 packaging_m = packaging.objects.get(packing_material=row['Packing'])
                                 unit_name = Unit_Name_Create.objects.get(unit_name=row['Unit Name'])
@@ -5996,7 +6080,7 @@ def raw_material_excel_upload(request):
 
                     if rows_with_error:
 
-                        # Convert each DataFrame to a list of lists
+                        
                         list_of_lists = [df.values.tolist() for df in rows_with_error]
 
 
@@ -6019,7 +6103,7 @@ def raw_material_excel_upload(request):
                         fileoutput = BytesIO()
                         wb.save(fileoutput)
         
-                        # Prepare the HTTP response with the Excel file content
+                        
                         response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                         file_name = 'raw_material_create_with_errors'
                         response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
@@ -6049,7 +6133,7 @@ def raw_material_excel_upload(request):
 
 
 
-#__________________________reports-end____________________________________
+
 
 
 
