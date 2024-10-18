@@ -3,6 +3,7 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 import os
+from re import L
 from django.conf import settings
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 import json
@@ -3025,16 +3026,6 @@ def export_Product2Item_excel(request,product_ref_id):
         headers =  ['id','item name', 'product sku','part name', 'part dimention','dimention total','part pieces','body/combi','grand_total', 'combi_total']
         sheet1.append(headers)
 
-        # body_combi_choices = set_prod_item_part_name.BODY_COMBI
-
-        # dropdown_values = [choice[1] for choice in body_combi_choices]  # Get the display value
-
-        # # Convert the dropdown values to a format that Excel can understand (comma-separated string)
-        # dropdown_formula = f'"{",".join(dropdown_values)}"'
-
-        # # Create a new DataValidation object for each row and apply the dropdown to column H
-        # dv = DataValidation(type="list", formula1=dropdown_formula, showDropDown=True)
-
         row_count_to_unlock_total = 1
         for product in products_in_i2p_special:
             grand_total_parent = product.grand_total
@@ -3058,15 +3049,11 @@ def export_Product2Item_excel(request,product_ref_id):
 
             for row in rows_to_insert_s1:
                 sheet1.append(row)
-    
-            
 
-                # # Get the cell reference for the "Body/Combi" column (column H)
-                # cell_ref = f'H{sheet1.max_row}'
-                # sheet1.add_data_validation(dv)
-            
-                # dv.add(sheet1[cell_ref])  #Add dropdown to the "Body/Combi" column
-
+            # In openpyxl, when you call sheet1.append(row), the library automatically appends the
+            # new row to the next available empty row in the worksheet. It keeps track of where the last
+            # row is located and places the new data immediately after it. There’s no need to specify the 
+            # starting row explicitly, as openpyxl manages this behind the scenes.
 
                 row_count_to_unlock = row_count_to_unlock + 1
 
@@ -3111,7 +3098,7 @@ def export_Product2Item_excel(request,product_ref_id):
             row_count_to_unlock_total_common = row_count_to_unlock_total_common + row_count_to_unlock
 
             # Insert a blank row and grant total from parent in sheet after every product data has inserted
-            sheet2.append(['','','','','','','', grand_total_parent, grand_total_combi_parent])
+            sheet2.append(['','','','','','','',grand_total_parent, grand_total_combi_parent])
 
             rows_to_insert_s2.clear()
 
@@ -3613,72 +3600,6 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=qs_length + 3, column = 6).value = purchase_order_cutting_instance.processed_qty
 
             
-            sheet1.cell(row=1, column=1).value = f'Product Reference Number - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID}'
-            sheet1.cell(row=2, column=1).value = f'Model Name - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name}'
-
-            sheet1.cell(row = 1, column=3).value = 'Product SKU'
-            sheet1.cell(row = 1, column=4).value = 'color'
-            sheet1.cell(row = 1, column=5).value = 'Image'
-
-
-             # Set the starting position
-            start_row = 2
-            start_column = 3
-
-            for index, instance in enumerate(purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all().order_by('id'), start=start_row):
-
-                product_creation_instance = PProduct_Creation.objects.get(PProduct_SKU = instance.product_sku)
-
-                product_img_instance = product_creation_instance.PProduct_image
-
-                if product_img_instance:
-                    product_img = product_img_instance.url
-                    relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
-                
-                else:
-                    relative_path = 'pproduct/images/Unknown_pic.png'
-
-                # Get the full path for the image
-                full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
-
-
-                # Check if the file exists
-                if os.path.isfile(full_image_path):
-                
-                    
-                    try:
-                        img = PILImage.open(full_image_path)
-                        img.verify()  # Ensure the image is valid
-
-                    except Exception as e:
-                        print(f"Error opening image: {e}")
-                        exit()
-
-                    # Insert the image into the Excel sheet
-                    excel_img = Image(full_image_path)
-
-                    # sheet.row_dimensions[index].height = 40
-                    # Set the desired size of the image in pixels (adjust width and height as needed)
-                    excel_img.width = 60  # Example width in pixels
-                    excel_img.height = 55  # Example height in pixels
-
-                    # Set image position. Example: Insert image at cell D{index}
-                    # col_letter =  get_column_letter(index) # get the column letter from index
-                    img_position = f'E{index}'
-
-                    # Insert the image into the Excel sheet at the specified position
-                    sheet1.add_image(excel_img, img_position)
-
-                else:
-
-                    sheet1.cell(row=index, column=start_column + 2).value = None
-                    print(f"Image file does not exist at path: {full_image_path}")
-                    # Handle the case where the image does not exist
-
-                sheet1.cell(row=index, column=start_column).value = instance.product_sku
-                sheet1.cell(row=index, column=start_column + 1).value = instance.product_color
-                
-
             if  qs_length <= 12:
 
                 # Set the starting position
@@ -3720,6 +3641,145 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=qs_length_list + start_row_items + 1 , column=3).value =  purchase_order_cutting_instance.note
             
 
+
+            # sheet1
+
+            sheet1.cell(row=1, column=1).value = f'Ref No - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID}'
+            sheet1.cell(row=2, column=1).value = f'Model Name - {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name}'
+
+            sheet1.cell(row = 1, column=2).value = 'Product SKU'
+            sheet1.cell(row = 1, column=3).value = 'color'
+            sheet1.cell(row = 1, column=4).value = 'Image'
+
+
+             # Set the starting position
+            start_row = 2
+            start_column = 2
+
+            purchase_order_cutting_p_2_item_qs = purchase_order_cutting_instance.purchase_order_to_product_cutting_set.all()
+
+            for index, instance in enumerate(purchase_order_cutting_p_2_item_qs.order_by('id'), start=start_row):
+
+                product_creation_instance = PProduct_Creation.objects.get(PProduct_SKU = instance.product_sku)
+
+                product_img_instance = product_creation_instance.PProduct_image
+
+                if product_img_instance:
+                    product_img = product_img_instance.url
+                    relative_path = str(product_img).lstrip('/media/') # remove media as media is aready in settings.MEDIA_ROOT
+                
+                else:
+                    relative_path = 'pproduct/images/Unknown_pic.png'
+
+                # Get the full path for the image
+                full_image_path = os.path.join(settings.MEDIA_ROOT, str(relative_path))
+
+
+                # Check if the file exists
+                if os.path.isfile(full_image_path):
+                
+                    
+                    try:
+                        img = PILImage.open(full_image_path)
+                        img.verify()  # Ensure the image is valid
+
+                    except Exception as e:
+                        print(f"Error opening image: {e}")
+                        exit()
+
+                    # Insert the image into the Excel sheet
+                    excel_img = Image(full_image_path)
+
+                    # sheet.row_dimensions[index].height = 40
+                    # Set the desired size of the image in pixels (adjust width and height as needed)
+                    excel_img.width = 60  # Example width in pixels
+                    excel_img.height = 55  # Example height in pixels
+
+                    # Set image position. Example: Insert image at cell D{index}
+                    # col_letter =  get_column_letter(index) # get the column letter from index
+                    img_position = f'D{index}'
+
+                    # Insert the image into the Excel sheet at the specified position
+                    sheet1.add_image(excel_img, img_position)
+
+                else:
+
+                    sheet1.cell(row=index, column=start_column + 2).value = None
+                    print(f"Image file does not exist at path: {full_image_path}")
+                    # Handle the case where the image does not exist
+
+                sheet1.cell(row=index, column=start_column).value = instance.product_sku
+                sheet1.cell(row=index, column=start_column + 1).value = instance.product_color
+                
+                product_ref_no = purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID
+
+                items_qs = product_2_item_through_table.objects.filter(
+                    PProduct_pk__Product__Product_Refrence_ID = product_ref_no , Remark = 'BODY')
+
+
+                # list all items which has BODY
+                for index, instance in enumerate(items_qs, start = 1):
+                    sheet1.cell(row=index , column=5).value = instance.Item_pk.item_name
+
+
+
+            # Set the starting position
+            if len(purchase_order_cutting_p_2_item_qs) <= 3 and len(items_qs) <= 3:
+                start_row_items = 5
+            
+            else:
+                start_row_items = len(purchase_order_cutting_p_2_item_qs) + 6
+                
+            start_column_items = 4 
+
+            header_row = start_row_items - 1
+
+            # Headers to be inserted
+            headers = ["Item Name", "Part Name", "Part Dimentions", 'Dimention Total','Part Pcs','Body/Combi','Grand Total','Grand Total Combi']
+
+            # Insert headers into the desired row
+            for col_num, header in enumerate(headers, start = 1):
+                sheet1.cell(row = header_row, column = col_num).value = header
+
+
+            start_column_items = 1
+
+            product_with_combi = [] 
+
+            # filter out all the product 2 item instances which has combi in their set production instances 
+            for product in product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID = product_ref_no):
+
+                if product.product_item_configs.filter(body_combi ='combi').exists():
+                    product_with_combi.append(product)
+
+            
+        
+            for instance in product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('row_number'):
+                list_to_append = []
+                for record in instance.product_item_configs.all():
+                    list_1 = [
+                        record.producttoitem.Item_pk.item_name,
+                        record.part_name,
+                        record.part_dimentions,
+                        record.dimention_total,
+                        record.part_pieces,
+                        record.body_combi
+                        ]
+                    
+                    list_to_append.append(list_1)
+
+                for row in list_to_append:
+                    sheet1.append(row)
+
+                sheet1.append(['','','','','','',instance.grand_total, instance.grand_total_combi])
+                    
+
+
+                
+
+            
+
         elif module_name == 'labour_workout':
 
             wb = Workbook()
@@ -3737,7 +3797,7 @@ def excel_download_production(request,module_name,pk):
             file_name = 'labour_workout'
 
             
-            column_widths = [22, 20, 30, 15, 15, 15, 15, 15, 15]  # Adjust these values as needed
+            column_widths = [35, 20, 12, 10, 15, 30, 15, 15, 15]  # Adjust these values as needed
 
             #fix the column width  of sheet1
             for i, column_width in enumerate(column_widths, start=1):  # enumarate is used to get the index no with the value on that index
@@ -3824,17 +3884,18 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=qs_length + 3, column = 3).value = 'Total'
             sheet.cell(row=qs_length + 3, column = 4).value = labour_workout_instance.total_process_pcs
 
+            len_items = len(product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.
+                product_reference_number.Product_Refrence_ID, Remark='BODY'))
 
             # Set the starting position
-            if qs_length <= 5:
+            if qs_length <= 5 and len_items <= 5:
                 start_row_items = 11
-
+                            
             else:
                 start_row_items = qs_length + 6
                 
             start_column_items = 4 
-
-            start_column_items_part_1 = 1
 
             header_row = start_row_items - 1
 
@@ -3843,7 +3904,7 @@ def excel_download_production(request,module_name,pk):
 
             # Insert headers into the desired row
             for col_num, header in enumerate(headers, start=4):
-                sheet.cell(row=header_row, column = col_num).value = header
+                sheet.cell(row=header_row, column=col_num).value = header
 
 
             for index, instance in enumerate(labour_workout_instance.labour_workout_cutting_items_set.all().order_by('id'), start = start_row_items):
@@ -3859,23 +3920,46 @@ def excel_download_production(request,module_name,pk):
             for col_num, header in enumerate(headers, start = 1):
                 sheet.cell(row = header_row, column = col_num).value = header
 
-            row_number_excel = 0
-            for index, instance in enumerate(
-                product_2_item_through_table.objects.filter(PProduct_pk__Product__Product_Refrence_ID = 
-                    labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID
-                            ).order_by('row_number').distinct('row_number'),start = header_row + 1):
+            # list all items which has body
+            for index, instance in enumerate(product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.
+                product_reference_number.Product_Refrence_ID, Remark='BODY'), start = 2):
                 
-                sheet.cell(row = index + row_number_excel, column = 1).value = instance.Item_pk.item_name
+                sheet.cell(row=index , column = 6).value = instance.Item_pk.item_name
 
-                if not instance.Remark.lower() == 'body': 
-                    row_number_excel = row_number_excel + len(instance.product_item_configs.all())
+
+            start_column_items = 1
+
+            product_with_combi = [] 
+
+            # filter out all the product 2 item instances which has combi in their set production instances 
+            for product in product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.
+                purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID):
+
+                if product.product_item_configs.filter(body_combi ='combi').exists():
+                    product_with_combi.append(product)
+
+            # with the product_with_combi which has the p_2_i instance get the first instance and its sku and get all the set_prod_item_part_name instances belonging to that SKU 
+            for index, instance in enumerate(set_prod_item_part_name.objects.filter(producttoitem__PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('id'), start = start_row_items):
                 
+                sheet.cell(row=index, column = start_column_items).value = instance.producttoitem.Item_pk.item_name
+                sheet.cell(row=index, column = start_column_items + 1).value = instance.part_name
+
+                if instance.part_pieces is None or instance.part_pieces == 0:
+
+                    part_pcs = 0 
+                else:
+                    part_pcs =  instance.part_pieces
+
+                sheet.cell(row=index, column = start_column_items + 2).value = part_pcs * labour_workout_instance.total_process_pcs
+            
 
         fileoutput = BytesIO()
         wb.save(fileoutput)
             
         # Prepare the HTTP response with the Excel file content
-        response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = HttpResponse(fileoutput.getvalue(), content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         file_name_with_pk = f'product_reference_id_{file_name}'
         response['Content-Disposition'] = f'attachment; filename="{file_name_with_pk}.xlsx"'
 
