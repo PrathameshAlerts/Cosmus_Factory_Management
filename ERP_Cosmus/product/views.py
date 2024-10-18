@@ -2818,11 +2818,11 @@ def product2item(request,product_refrence_id):
                             
                             p_o_c_instance_single = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = item_instance)
                             
-                            if not p_o_c_instance_single.exists():
-                                logger.info(f"Deleted product to item instace of {form.instance.pk}")
-                                form.instance.delete()
-                            else:
-                                raise ValidationError('You cannot delete as Item is in Purchase Order cutting Stage Po number')
+                            
+                            
+                            form.instance.delete()
+                            
+                            
 
                     
                     for form in formset_single:
@@ -2873,13 +2873,13 @@ def product2item(request,product_refrence_id):
                             
                             p_o_c_instance_common = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = deleted_item)
 
-                            if not p_o_c_instance_common.exists():
-                                for product in Products_all: 
-                                    p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
-                                    logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
-                                    p2i_to_delete.delete()
-                            else:
-                                raise ValidationError('You cannot delete as Item is in Purchase Order cutting Stage Po number')
+                            
+                            for product in Products_all: 
+                                p2i_to_delete = product_2_item_through_table.objects.filter(PProduct_pk=product, Item_pk=deleted_item, common_unique=True)
+                                logger.info(f"Deleted product to item instace of {product}, - {deleted_item}")
+                                p2i_to_delete.delete()
+                            
+                            
 
                             
                     for form in formset_common: 
@@ -3138,7 +3138,7 @@ def export_Product2Item_excel(request,product_ref_id):
 def viewproduct2items_configs(request, product_sku):
 
     try:
-        product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku)
+        product2item_instances = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku).order_by('row_number')
         product2item_instances_first = product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU=product_sku).first()
 
 
@@ -3757,7 +3757,7 @@ def excel_download_production(request,module_name,pk):
         
             for instance in product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('row_number'):
                 list_to_append = []
-                for record in instance.product_item_configs.all():
+                for record in instance.product_item_configs.all().order_by('id'):
                     list_1 = [
                         record.producttoitem.Item_pk.item_name,
                         record.part_name,

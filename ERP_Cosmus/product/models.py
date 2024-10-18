@@ -696,7 +696,7 @@ class set_prod_item_part_name(models.Model):
     part_name = models.CharField(max_length = 100,blank = True, null= True)
     part_dimentions = models.CharField(max_length=100,blank=True, null= True)
     dimention_total = models.DecimalField(default=0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank=True, null= True)
-    part_pieces = models.IntegerField(blank=True, null= True)
+    part_pieces = models.IntegerField(blank=True, null = True)
     body_combi = models.CharField(max_length=10, choices = BODY_COMBI, blank=True, null = True)
 
 
@@ -732,7 +732,7 @@ class purchase_order(models.Model):
 
 class purchase_order_to_product(models.Model):
     purchase_order_id = models.ForeignKey(purchase_order, related_name = 'p_o_to_products',on_delete=models.CASCADE)
-    product_id = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
     order_quantity = models.IntegerField(default=0)
     order_processed_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
