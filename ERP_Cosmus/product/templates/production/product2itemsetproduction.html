@@ -40,6 +40,7 @@
                         </td>
             
                         <td>
+                            <span id="productError_{{forloop.counter0}}" class="error-messages_product" ></span>
                             <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
                                 id="id_{{form.prefix}}-PProduct_pk">
                                 <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">
@@ -872,13 +873,14 @@
         $(document).on('change','[name$="-PProduct_pk"]',function(){
             let isDuplicate = false;
             const existingRow = $(this).closest('tr');
-            const itemexitRow = existingRow.find('[name$="-Item_pk"]');
+            const itemexitRow = existingRow.find('[name$="-Item_pks"]');
             const productExitRow = existingRow.find('[name$="-PProduct_pk"]');
-            // console.log(itemexitRow);
+             console.log(itemexitRow);
             // console.log(productExitRow);
             const productValue = $(this).closest('tr').find('[name$="-PProduct_pk"]').val();
             const itemValue = existingRow.find('[name$="-Item_pk"]').val();
             const errorShowData = existingRow.find('.error-messagesorderCreate');
+            const errorProductForm = $(this).closest('tr').find('.error-messages_product');
             const submitButtons = $(this).closest('form').find('#id_submitForms');
             const addButtonUnique = $(this).closest('form').find('#addForm');
             const addRowButtonUnique = $(this).closest('form').find('.add_btn_row');
@@ -904,7 +906,8 @@
                     addButtonUnique.css('cursor', 'not-allowed');
                     addRowButtonUnique.css('cursor', 'not-allowed');
                     submitButtons.css('cursor', 'not-allowed');
-                   
+                    errorProductForm.text('Already Product with Item Added');
+                    errorProductForm.show();
                     isDuplicate = true;
                     return false;
                 }
@@ -918,6 +921,8 @@
                 if(!isDuplicate){
                     errorShowData.text('');
                     errorShowData.hide();
+                    errorProductForm.text('');
+                    errorProductForm.hide();
                     submitButtons.prop('disabled', false);
                     itemexitRow.css('border', '1px solid #ced4da');
                     productExitRow.css('border', '1px solid #ced4da');
@@ -996,6 +1001,10 @@
             rowNumber.name = `product2itemuniqueformset-${formDataValue}-row_number`;
             rowNumber.value = '';
 
+            const hiddenProductError = newRow.querySelector('[id^="productError_"]');
+            hiddenError.id = `productError_${formDataValue}`;
+            hiddenError.style.display = 'none';
+
             const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
             newSelectElement.id = `id_product2itemuniqueformset-${formDataValue}-PProduct_pk`;
             newSelectElement.name = `product2itemuniqueformset-${formDataValue}-PProduct_pk`;
@@ -1007,7 +1016,7 @@
             inputValueElement.value = '';
 
             const hiddenError = newRow.querySelector('[id^="uniqueError_"]');
-            hiddenError.id = `id_uniqueError_${formDataValue}`;
+            hiddenError.id = `uniqueError_${formDataValue}`;
             hiddenError.style.display = 'none';
 
             const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
@@ -1147,6 +1156,10 @@
                     numberRow.id = `id_product2itemuniqueformset-${newFormCount}-row_number`;
                     numberRow.name = `product2itemuniqueformset-${newFormCount}-row_number`;
                     numberRow.value = '';
+
+                    const ProductError = newTable.querySelector('[id^="productError_"]');
+                    ProductError.id = `productError_${newFormCount}`;
+                    ProductError.style.display = 'none';
 
                     const newSelectElement = newTable.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
                     newSelectElement.id = `id_product2itemuniqueformset-${newFormCount}-PProduct_pk`;
