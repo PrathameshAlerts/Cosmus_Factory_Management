@@ -976,6 +976,16 @@ input[type=number] {
     height:35px;
     background: linear-gradient(45deg, #55c2da, #59e0c5);
 }
+.color_btn{
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 13px;
+    margin-left: 10px;
+    height:35px;
+    background: linear-gradient(45deg,#ec826d, #ecaa79); 
+}
 .product_logo{
     width: 30px;
     height: 30px;
@@ -1227,7 +1237,7 @@ input[type=number] {
     padding-left: 528px;
 }
 .edit_btn{
-    background: linear-gradient(45deg, #4998d1, #2fc2dc);
+    background: linear-gradient(45deg, #52a7e3, #7ac6d3);
     color: white;
     padding: 10px 6px;
     font-size: 17px;
