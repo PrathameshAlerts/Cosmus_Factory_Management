@@ -3310,7 +3310,8 @@ def excel_download_production(request,module_name,pk):
     if module_name is not None and pk is not None:  
 
         file_name = None
-            
+        
+        
         thin_border = Border(
                 left=Side(style="thin"),
                 right=Side(style="thin"),
@@ -3543,7 +3544,7 @@ def excel_download_production(request,module_name,pk):
             
             default_sheet = wb['Sheet']
             wb.remove(default_sheet)  
-            wb.create_sheet('production_sheet_Cutting')
+            wb.create_sheet('Cutting_Order')
             wb.create_sheet('Cutting_size')
 
             sheet = wb.worksheets[0]
@@ -3924,7 +3925,7 @@ def excel_download_production(request,module_name,pk):
 
             wb.remove(default_sheet)  
 
-            wb.create_sheet('production_sheet_LW')
+            wb.create_sheet('Labour_workout')
             
             sheet = wb.worksheets[0]
 
@@ -4144,15 +4145,6 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=index, column=start_column_items + 3).value = instance.total_comsumption
 
 
-        
-        
-        
-        
-        
-        
-
-        
-        
 
         
         
