@@ -3324,7 +3324,7 @@ def excel_download_production(request,module_name,pk):
             
             default_sheet = wb['Sheet']
             wb.remove(default_sheet)  
-            wb.create_sheet('production_sheet')
+            wb.create_sheet('purchase_order_raw')
 
             sheet = wb.worksheets[0]
 
@@ -3339,80 +3339,73 @@ def excel_download_production(request,module_name,pk):
 
             purchase_order_instance = purchase_order.objects.get(pk=pk)
             
-            sheet.cell(row=2, column=1).value = 'PO No.'
-            sheet.cell(row=2, column=2).value = purchase_order_instance.purchase_order_number
+            sheet.cell(row=2, column=1).value = f'PO No:  {purchase_order_instance.purchase_order_number}'
             
             sheet.cell(row=2, column=1).font = Font(bold=True)
-            sheet.cell(row=2, column=2).font = Font(bold=True)
             
             sheet.cell(row=2, column=1).border = thin_border
             sheet.cell(row=2, column=2).border = thin_border
+            sheet.cell(row=2, column=3).border = thin_border
 
-            sheet.cell(row=3, column=1).value = 'Date'
-            sheet.cell(row=3, column=2).value = purchase_order_instance.created_date.replace(tzinfo=None).strftime('%d %B %Y')
+            sheet.cell(row=3, column=1).value = f'Date:  {purchase_order_instance.created_date.replace(tzinfo=None).strftime("%d %B %Y")}'
             
             sheet.cell(row=3, column=1).font = Font(bold=True)
-            sheet.cell(row=3, column=2).font = Font(bold=True)
 
             sheet.cell(row=3, column=1).border = thin_border
             sheet.cell(row=3, column=2).border = thin_border
+            sheet.cell(row=3, column=3).border = thin_border
 
-            
-            sheet.cell(row=4, column=1).value = 'Ref No'
-            sheet.cell(row=4, column=2).value = purchase_order_instance.product_reference_number.Product_Refrence_ID
+            sheet.cell(row=4, column=1).value = f'Ref No: { purchase_order_instance.product_reference_number.Product_Refrence_ID}'
             
             sheet.cell(row=4, column=1).font = Font(bold=True)
-            sheet.cell(row=4, column=2).font = Font(bold=True)
 
             sheet.cell(row=4, column=1).border = thin_border
             sheet.cell(row=4, column=2).border = thin_border
+            sheet.cell(row=4, column=3).border = thin_border
 
 
-            sheet.cell(row=5, column=1).value = 'Model Name'
-            sheet.cell(row=5, column=2).value =  purchase_order_instance.product_reference_number.Model_Name
+            sheet.cell(row=5, column=1).value = f'Model Name:  {purchase_order_instance.product_reference_number.Model_Name}'
             
             sheet.cell(row=5, column=1).font = Font(bold=True)
-            sheet.cell(row=5, column=2).font = Font(bold=True)
-
+           
             sheet.cell(row=5, column=1).border = thin_border
             sheet.cell(row=5, column=2).border = thin_border
+            sheet.cell(row=5, column=3).border = thin_border
 
 
-            sheet.cell(row=6, column=1).value = 'Party Name'
-            sheet.cell(row=6, column=2).value = purchase_order_instance.ledger_party_name.name
-
+            sheet.cell(row=6, column=1).value = f'Party Name:  {purchase_order_instance.ledger_party_name.name}'
+            
             sheet.cell(row=6, column=1).font = Font(bold=True)
-            sheet.cell(row=6, column=2).font = Font(bold=True)
 
             sheet.cell(row=6, column=1).border = thin_border
             sheet.cell(row=6, column=2).border = thin_border
+            sheet.cell(row=6, column=3).border = thin_border
 
 
-            sheet.cell(row=7, column=1).value = 'Total PO Qty'
-            sheet.cell(row=7, column=2).value = purchase_order_instance.number_of_pieces
-
+            sheet.cell(row=7, column=1).value = f'Total PO Qty: {purchase_order_instance.number_of_pieces}'
+           
             sheet.cell(row=7, column=1).font = Font(bold=True)
-            sheet.cell(row=7, column=2).font = Font(bold=True)
 
             sheet.cell(row=7, column=1).border = thin_border
             sheet.cell(row=7, column=2).border = thin_border
+            sheet.cell(row=7, column=3).border = thin_border
 
 
             sheet.cell(row=2, column=4).value = 'Product SKU'
             sheet.cell(row=2, column=5).value = 'Color'
             sheet.cell(row=2, column=7).value = 'Proc Qty'
-            sheet.cell(row=2, column=8).value = 'Image'
+            
 
             sheet.cell(row=2, column=4).font = Font(bold=True)
             sheet.cell(row=2, column=5).font = Font(bold=True)
             sheet.cell(row=2, column=7).font = Font(bold=True)
-            sheet.cell(row=2, column=8).font = Font(bold=True)
+            
 
             sheet.cell(row=2, column=4).border = thin_border
             sheet.cell(row=2, column=5).border = thin_border
             sheet.cell(row=2, column=6).border = thin_border
             sheet.cell(row=2, column=7).border = thin_border
-            sheet.cell(row=2, column=8).border = thin_border
+            
 
 
             
@@ -3441,7 +3434,6 @@ def excel_download_production(request,module_name,pk):
                     relative_path = str(product_img).lstrip('/media/') 
                 
                 else:
-
                     relative_path = 'pproduct/images/Unknown_pic.png'
 
                 
@@ -3499,15 +3491,15 @@ def excel_download_production(request,module_name,pk):
             
             if length_queryset <= 5:
 
-                start_row_items = 5 + 6
+                start_row_items = 3 + 6
             else:
-                start_row_items = length_queryset + 6
+                start_row_items = length_queryset + 4
 
             start_column_items = 1 
 
             header_row = start_row_items - 1
             
-            headers = ["Body/Combi", "Product Color", "Pcs", "Material Name", "Rate", "Panha","Units", "Consmp","Combi Consump","T-Consmp","Physical Stock","Bal Stock"]
+            headers = ["Body/Combi", "Product Color", "Pcs", "Material Name", "Rate", "Panha","Units", "Consmp","Combi-2-Consump","T-Consmp","Physical Stock","Bal Stock"]
 
             
             for col_num, header in enumerate(headers, start=1):
@@ -3516,7 +3508,7 @@ def excel_download_production(request,module_name,pk):
                 sheet.cell(row=header_row, column=col_num).alignment = Alignment(wrap_text=True)
 
             for index, instance in enumerate(purchase_order_instance.raw_materials.all().order_by('id'), start=start_row_items):
-                sheet.cell(row=index, column=start_column_items).value = instance.Remark
+                sheet.cell(row=index, column = start_column_items).value = instance.Remark
 
                 if instance.product_color != 'Common Item':
                     p_color = instance.product_color
@@ -3561,7 +3553,7 @@ def excel_download_production(request,module_name,pk):
 
             column_widths = [16, 20, 15, 15, 15, 15, 15, 15, 15]  
 
-            column_widths_sheet_2 = [30, 25, 20, 20, 20, 20, 20, 20, 20]
+            column_widths_sheet_2 = [30, 25, 20, 20, 20, 20, 12, 12, 12]
 
             
             for i, column_width in enumerate(column_widths, start=1):  
@@ -3575,48 +3567,37 @@ def excel_download_production(request,module_name,pk):
         
             purchase_order_cutting_instance = purchase_order_raw_material_cutting.objects.get(raw_material_cutting_id=pk)
             
-            sheet.cell(row=2, column=1).value = 'P O No.'
-            sheet.cell(row=2, column=2).value = purchase_order_cutting_instance.purchase_order_id.purchase_order_number
+            sheet.cell(row=2, column=1).value = f'P O No:  {purchase_order_cutting_instance.purchase_order_id.purchase_order_number}'
 
-            sheet.cell(row=3, column=1).value = 'Cutting No'
-            sheet.cell(row=3, column=2).value = purchase_order_cutting_instance.raw_material_cutting_id
+            sheet.cell(row=3, column=1).value = f'Cutting No:  {purchase_order_cutting_instance.raw_material_cutting_id}'
+            
+            sheet.cell(row=4, column=1).value = f'Date:  {purchase_order_cutting_instance.created_date.replace(tzinfo=None).strftime("%d %B %Y")}'  
+            
+            sheet.cell(row=5, column=1).value = f'Cutter Name:  {purchase_order_cutting_instance.factory_employee_id.factory_emp_name}'
+            
+            sheet.cell(row=6, column=1).value = f'Prod Ref No:  {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID}'
 
-            sheet.cell(row=4, column=1).value = 'Date'
-            sheet.cell(row=4, column=2).value = purchase_order_cutting_instance.created_date.replace(tzinfo=None).strftime('%d %B %Y') 
-
-            sheet.cell(row=5, column=1).value = 'Cutter Name'
-            sheet.cell(row=5, column=2).value = purchase_order_cutting_instance.factory_employee_id.factory_emp_name
-
-            sheet.cell(row=6, column=1).value = 'Prod Ref No'
-            sheet.cell(row=6, column=2).value = purchase_order_cutting_instance.purchase_order_id.product_reference_number.Product_Refrence_ID 
-
-            sheet.cell(row=7, column=1).value = 'Model Name'
-            sheet.cell(row=7, column=2).value = purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name
-    
-            sheet.cell(row=8, column=1).value = 'Processed Qty'
-            sheet.cell(row=8, column=2).value = purchase_order_cutting_instance.processed_qty
-
-            sheet.cell(row=10, column=1).value = 'Party Name'
-            sheet.cell(row=10, column=2).value = purchase_order_cutting_instance.purchase_order_id.ledger_party_name.name
-
-            sheet.cell(row=11, column=1).value = 'Total PO Qty'
-            sheet.cell(row=11, column=2).value = purchase_order_cutting_instance.purchase_order_id.number_of_pieces
-
-            sheet.cell(row=12, column=1).value = 'Bal Qty'
-            sheet.cell(row=12, column=2).value = purchase_order_cutting_instance.balance_qty
-
-            sheet.cell(row=13, column=1).value = 'Target Date'
-            sheet.cell(row=13, column=2).value = purchase_order_cutting_instance.purchase_order_id.target_date.strftime('%d %B %Y')
+            sheet.cell(row=7, column=1).value = f'Model Name:  {purchase_order_cutting_instance.purchase_order_id.product_reference_number.Model_Name}'
+        
+            sheet.cell(row=8, column=1).value = f'Processed Qty:  {purchase_order_cutting_instance.processed_qty}'
+            
+            sheet.cell(row=10, column=1).value = f'Party Name:  {purchase_order_cutting_instance.purchase_order_id.ledger_party_name.name}'
+           
+            sheet.cell(row=11, column=1).value = f'Total PO Qty:  {purchase_order_cutting_instance.purchase_order_id.number_of_pieces}'
+            
+            sheet.cell(row=12, column=1).value = f'Bal Qty:  {purchase_order_cutting_instance.balance_qty}'
+            
+            sheet.cell(row=13, column=1).value = f'Target Date:  {purchase_order_cutting_instance.purchase_order_id.target_date.strftime("%d %B %Y")}'
 
 
 
             for index in range(2,14):
             
                 sheet.cell(row=index, column=1).font = Font(bold=True)
-                sheet.cell(row=index, column=2).font = Font(bold=True)
-
+            
                 sheet.cell(row=index, column=1).border = thin_border
                 sheet.cell(row=index, column=2).border = thin_border
+                sheet.cell(row=index, column=3).border = thin_border
 
                 
             sheet.cell(row=2, column=4).value = 'Product SKU'
@@ -3631,9 +3612,7 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=2, column=6).font = Font(bold=True)
             sheet.cell(row=2, column=6).border = thin_border
 
-            sheet.cell(row=2, column=7).value = 'Image'
-            sheet.cell(row=2, column=7).font = Font(bold=True)  
-            sheet.cell(row=2, column=7).border = thin_border
+            
             
             
             start_row = 3 
@@ -3718,17 +3697,17 @@ def excel_download_production(request,module_name,pk):
             if  qs_length <= 12:
 
                 
-                start_row_items = 17
+                start_row_items = 15
 
             else:
-                start_row_items = qs_length + 6
+                start_row_items = qs_length + 4
 
             start_column_items = 1 
 
             header_row = start_row_items - 1
 
             
-            headers = ["Body/Combi", "Product Color","Pcs","Material Name", 'Shade Color', "Rate","Panha","Units","Consumption","Combi Consumption","Total Consumption","Physical Stock","Balance Stock"]
+            headers = ["Body/Combi", "Product Color","Pcs","Material Name", 'Shade Color', "Rate","Panha","Units","Consump","Combi-2-Consump","Total Consump","Physical Stock","Balance Stock"]
 
             
             for col_num, header in enumerate(headers, start=1):
@@ -3745,6 +3724,7 @@ def excel_download_production(request,module_name,pk):
 
                 if instance.product_color != 'Common Item':
                     p_color = instance.product_color
+
                 else:
                     p_color = ''
 
@@ -3777,6 +3757,7 @@ def excel_download_production(request,module_name,pk):
 
             sheet1.cell(row=1, column=1).font = Font(bold=True)
             sheet1.cell(row=1, column=1).border = thin_border
+
             sheet1.cell(row=2, column=1).font = Font(bold=True)
             sheet1.cell(row=2, column=1).border = thin_border
             
@@ -3788,7 +3769,6 @@ def excel_download_production(request,module_name,pk):
             sheet1.cell(row = 1, column=3).font = Font(bold=True)
             sheet1.cell(row = 1, column=3).border = thin_border
 
-            sheet1.cell(row = 1, column=4).value = 'Image'
             sheet1.cell(row = 1, column=4).font = Font(bold=True)
             sheet1.cell(row = 1, column=4).border = thin_border
 
@@ -3872,10 +3852,10 @@ def excel_download_production(request,module_name,pk):
 
             
             if len(purchase_order_cutting_p_2_item_qs) <= 3 and len(items_qs) <= 3:
-                start_row_items = 5
+                start_row_items = 3
             
             else:
-                start_row_items = len(purchase_order_cutting_p_2_item_qs) + 6
+                start_row_items = len(purchase_order_cutting_p_2_item_qs) + 4
                 
             start_column_items = 4 
 
@@ -3888,11 +3868,13 @@ def excel_download_production(request,module_name,pk):
             for col_num, header in enumerate(headers, start = 1):
                 sheet1.cell(row = header_row, column = col_num).value = header
                 sheet1.cell(row = header_row, column = col_num).font = Font(bold=True)
-                sheet.cell(row=header_row, column=col_num).alignment = Alignment(wrap_text=True)
+                sheet1.cell(row=header_row, column = col_num).alignment = Alignment(wrap_text = True)
 
             start_column_items = 1
 
             product_with_combi = [] 
+
+            combi_found = False
 
             
             for product in product_2_item_through_table.objects.filter(
@@ -3900,6 +3882,15 @@ def excel_download_production(request,module_name,pk):
 
                 if product.product_item_configs.filter(body_combi='combi').exists():
                     product_with_combi.append(product)
+                    combi_found = True
+            
+            
+            if not combi_found:
+
+                body_instance = product_2_item_through_table.objects.filter(
+                PProduct_pk__Product__Product_Refrence_ID = product_ref_no).first()
+
+                product_with_combi.append(body_instance)
                 
 
             for instance in product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('row_number'):
@@ -3964,26 +3955,26 @@ def excel_download_production(request,module_name,pk):
             sheet.cell(row=6, column=1).value = f'Number of Pcs : {labour_workout_instance.total_process_pcs}'
             sheet.cell(row=6, column=1).font = Font(bold=True)
 
-            sheet.cell(row=2, column=3).value = 'Product SKU'
-            sheet.cell(row=2, column=3).font = Font(bold=True)
-            sheet.cell(row=2, column=3).border = thin_border
+            for cell in range(2,7):
+                sheet.cell(row=cell, column=1).border = thin_border
+                sheet.cell(row=cell, column=2).border = thin_border
+                sheet.cell(row=cell, column=3).border = thin_border
 
-            sheet.cell(row=2, column=4).value = 'Color'
+            sheet.cell(row=2, column=4).value = 'Product SKU'
             sheet.cell(row=2, column=4).font = Font(bold=True)
             sheet.cell(row=2, column=4).border = thin_border
 
-            sheet.cell(row=2, column=5).value = 'Process Qty'
+            sheet.cell(row=2, column=5).value = 'Color'
             sheet.cell(row=2, column=5).font = Font(bold=True)
             sheet.cell(row=2, column=5).border = thin_border
 
-            sheet.cell(row=2, column=6).value = 'Images'
+            sheet.cell(row=2, column=6).value = 'Process Qty'
             sheet.cell(row=2, column=6).font = Font(bold=True)
             sheet.cell(row=2, column=6).border = thin_border
 
             
-            
             start_row = 3 
-            start_column = 3
+            start_column = 4
 
             labour_workout_p2i_items_qs = labour_workout_instance.labour_workout_child_items.all()
 
@@ -4072,30 +4063,15 @@ def excel_download_production(request,module_name,pk):
 
             
             if qs_length <= 5 and len_items + 7 <= 12:
-                start_row_items = 13
-                            
-            else:
-                start_row_items = qs_length + len_items + 6
-                
-            start_column_items = 4 
+                start_row_items = 12
 
+            else:
+
+                start_row_items = qs_length + len_items + 5
+                
             header_row = start_row_items - 1
 
             
-            headers = ["Body/Combi", "Pcs", "Material Name", "Total Consumption"]
-
-            
-            for col_num, header in enumerate(headers, start=4):
-                sheet.cell(row=header_row, column=col_num).value = header
-                sheet.cell(row=header_row, column=col_num).font = Font(bold=True)
-                
-
-            for index, instance in enumerate(labour_workout_instance.labour_workout_cutting_items_set.all().order_by('id'), start = start_row_items):
-                sheet.cell(row=index, column=start_column_items).value = instance.Remark
-                sheet.cell(row=index, column=start_column_items + 1).value = instance.pcs
-                sheet.cell(row=index, column=start_column_items + 2).value = instance.material_name
-                sheet.cell(row=index, column=start_column_items + 3).value = instance.total_comsumption
-
             
             headers = ["Item Name", "Part Name", "Total Part Pcs"]
 
@@ -4103,47 +4079,87 @@ def excel_download_production(request,module_name,pk):
             for col_num, header in enumerate(headers, start = 1):
                 sheet.cell(row = header_row, column = col_num).value = header
                 sheet.cell(row=header_row, column=col_num).font = Font(bold=True)
-
-            start_column_items = 1
+                sheet.cell(row=header_row, column=col_num).alignment = Alignment(wrap_text = True)
 
             product_with_combi = [] 
 
             combi_found = False
+
             
             for product in product_2_item_through_table.objects.filter(
                 PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.
                 purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID):
                 
-                
                 if product.product_item_configs.filter(body_combi = 'combi').exists():
                     product_with_combi.append(product)
                     combi_found = True
 
-            print(product_with_combi)
-                
+            
             if not combi_found:
                 body_instance = product_2_item_through_table.objects.filter(
                 PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.
                 purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID).first()
 
                 product_with_combi.append(body_instance)
+    
+            for record in product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU,Item_pk__Fabric_nonfabric = 'Fabric').order_by('id'):
+                list_to_append = []    
 
+                for instance in record.product_item_configs.all().order_by('id'):
 
-            
-            for index, instance in enumerate(set_prod_item_part_name.objects.filter(producttoitem__PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('id'), start = start_row_items):
+                    if instance.part_pieces is None or instance.part_pieces == 0 :
+                        part_pcs = 0 
+                    else:
+                        part_pcs =  instance.part_pieces
+
+                    list = [
+                        record.Item_pk.item_name,
+                        instance.part_name,
+                        part_pcs * labour_workout_instance.total_process_pcs,
+                    ]
+
+                    list_to_append.append(list)
                 
-                sheet.cell(row=index, column = start_column_items).value = instance.producttoitem.Item_pk.item_name
-                sheet.cell(row=index, column = start_column_items + 1).value = instance.part_name
+                for x in list_to_append:
+                    sheet.append(x)
 
-                if instance.part_pieces is None or instance.part_pieces == 0:
-
-                    part_pcs = 0 
-                else:
-                    part_pcs =  instance.part_pieces
-
-                sheet.cell(row=index, column = start_column_items + 2).value = part_pcs * labour_workout_instance.total_process_pcs
+                sheet.append(['', '' , ''])
             
+            start_column_items = 4 
 
+            
+            headers = ["Body/Combi", "Pcs", "Material Name", "Total Consump"]
+
+            
+            for col_num, header in enumerate(headers, start=4):
+                sheet.cell(row=header_row, column=col_num).value = header
+                sheet.cell(row=header_row, column=col_num).font = Font(bold=True)
+                sheet.cell(row=header_row, column=col_num).alignment = Alignment(wrap_text=True)
+
+
+            for index, instance in enumerate(labour_workout_instance.labour_workout_cutting_items_set.all().order_by('id'), start = start_row_items):
+                sheet.cell(row=index, column=start_column_items).value = instance.Remark
+                sheet.cell(row=index, column=start_column_items + 1).value = instance.pcs
+                sheet.cell(row=index, column=start_column_items + 2).value = instance.material_name
+                sheet.cell(row=index, column=start_column_items + 3).value = instance.total_comsumption
+
+
+        
+        
+        
+        
+        
+        
+
+        
+        
+
+        
+        
+
+        
+        
+        
         fileoutput = BytesIO()
         wb.save(fileoutput)
             
