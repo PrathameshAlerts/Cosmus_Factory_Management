@@ -4029,7 +4029,7 @@ def excel_download_production(request,module_name,pk):
 
                     
                     col_letter =  get_column_letter(index) 
-                    img_position = f'F{index}'
+                    img_position = f'G{index}'
 
                     
                     sheet.add_image(excel_img, img_position)
