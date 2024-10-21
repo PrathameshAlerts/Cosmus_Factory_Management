@@ -3851,7 +3851,6 @@ def excel_download_production(request, module_name, pk):
 
 
             
-            
             if len(purchase_order_cutting_p_2_item_qs) < len(items_qs) :
                 start_row_items = len(items_qs) + 2
             
@@ -3896,9 +3895,7 @@ def excel_download_production(request, module_name, pk):
 
             for instance in product_2_item_through_table.objects.filter(PProduct_pk__PProduct_SKU = product_with_combi[0].PProduct_pk.PProduct_SKU).order_by('row_number'):
                 list_to_append = []
-                
                 for record in instance.product_item_configs.all().order_by('id'):
-
                     list_1 = [
                         record.producttoitem.Item_pk.item_name,
                         record.part_name,
@@ -3907,7 +3904,6 @@ def excel_download_production(request, module_name, pk):
                         record.part_pieces,
                         record.body_combi
                         ]
-                    
                     
                     list_to_append.append(list_1)
 
