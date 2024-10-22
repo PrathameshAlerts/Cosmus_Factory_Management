@@ -3,15 +3,15 @@
 {% block body %}
 <div id="labourWorkOutPage">
   <div class="d-flex mb-3 mt-3">
-    <label class="fw-bold">Refrence No :</label><span class="text-danger mx-3"> {{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</span>
-    <lable class="fw-bold ">Model Name :</lable><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</span>
-    <label class="fw-bold">Party Name :</label><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</span>
+    <label class="fw-bold">Refrence No :</label><span class="text-danger fw-bold ms-2 me-3"> {{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</span>
+    <lable class="fw-bold ">Model Name :</lable><span class="text-danger fw-bold ms-2 me-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</span>
+    <label class="fw-bold">Party Name :</label><span class="text-danger fw-bold ms-2 me-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</span>
   </div>
   <div class="d-flex">
-    <label class="fw-bold">P.O No :</label><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</span>
-    <label class="fw-bold">P.O Total QTY :</label><span class="text-danger mx-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</span>
-    <label class="fw-bold">Processed QTY :</label><span class="text-danger mx-3">{{labour_work_out_master.total_approved_pcs}}</span>
-    <label class="fw-bold">Balance Qty for Cutting:</label><span class="text-danger mx-3 total_balance">{{labour_work_out_master.total_pending_pcs}}</span>
+    <label class="fw-bold">P.O No :</label><span class="text-danger fw-bold ms-2 me-3 ">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</span>
+    <label class="fw-bold">P.O Total QTY :</label><span class="text-danger fw-bold ms-2 me-3">{{labour_work_out_master.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</span>
+    <label class="fw-bold">Cutting Appvd QTY :</label><span class="text-danger fw-bold ms-2 me-3">{{labour_work_out_master.total_approved_pcs}}</span>
+    <label class="fw-bold">Balance QTY for LWO :</label><span class="text-danger fw-bold ms-2 me-3 total_balance">{{labour_work_out_master.total_pending_pcs}}</span>
     <div class="ms-3">
       <label class="fw-bold ps-3">Images :</label>
         {% for img in labour_work_out_master.purchase_order_cutting_master.purchase_order_id.product_reference_number.productdetails.all %}
@@ -23,7 +23,7 @@
    
   </div>
   <div class="mb-3">
-    <button class="item-btn"><a class="text-decoration-none text-white" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
+    <button class="item-btn"><a class="text-decoration-none text-white" id="createLabourWorkOut" href="{% url 'labour-workout-single' labour_master_pk %}">Create</a></button>
   </div>
 <div class="row">
     <div class="col-lg-8">
@@ -57,7 +57,6 @@
                         <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
                         <input type="hidden" id="id_primary_key" name="primary_key" value="{{record.id}}" class="primary_key">
                         <input type="hidden" id="id_labour_work_in_created" name="labour_work_in_created" value="{{record.labour_work_in_master_set.exists}}" >
-
                       </tr>
                     {% endfor %}
                 </tbody>
@@ -88,22 +87,6 @@
 
 <script>
 
-function deleteButtonCheck(){
-  var deleteButton = document.querySelectorAll('.delete-btn');
-  deleteButton.forEach(function(button){
-    var id_labour_work_in_created = button.closest('tr').querySelector('#id_labour_work_in_created').value;
-    if(id_labour_work_in_created === 'True'){
-   
-      button.disabled = true;
-      button.style.cursor = 'not-allowed';
-    }else{
-      button.disabled = false;
-      button.style.cursor = 'pointer';
-    }
-  })
- 
-}
-deleteButtonCheck();
 function createButton() {
     var totalBalance = parseFloat(document.querySelector('.total_balance').textContent);
 
@@ -123,7 +106,8 @@ function createButton() {
 }
 
   createButton();
-  document.body.appendChild(document.getElementById('exampleModal'));
+
+document.body.appendChild(document.getElementById('exampleModal'));
     
 $(document).ready(function(){
   $('.delete-btn').click(function(){
@@ -141,10 +125,9 @@ $(document).ready(function(){
     // Attach a one-time click event to the confirm delete button
     $('#confirmDeleteButton').off('click').on('click', function(){
       var labour_workout_child_pk = parseInt(cuttingData);
-      //var approvedValues = parseInt(approvedValue);
-
-      //if(approvedValues === 0){
-        // Send AJAX request to delete the cutting
+      var id_labour_work_in_created = deleteBtn.closest('tr').find('#id_labour_work_in_created').val();
+     console.log(id_labour_work_in_created);
+      if(id_labour_work_in_created === 'False'){
         $.ajax({
           type: 'POST',
           url: "{% url 'labour-workout-single-delete' %}",
@@ -155,7 +138,7 @@ $(document).ready(function(){
           success: function(response){
             console.log(response);
             $('#exampleModal').modal('hide');
-            $('#labourWorkOutPage').window.location.reload();
+            window.location.reload();
           },
           error: function(xhr, status, error){
             console.error("Error occurred: " + error);
@@ -163,15 +146,19 @@ $(document).ready(function(){
             $('#modal-body-text').html('An error occurred. Please try again.');
           }
         });
-      //} else {
+      } else {
         // Cannot delete approved cutting, update modal text
-        // $('#modal-body-text').html('Cannot delete this approved cutting ' + CuttingId + '.');
-        // $('.modal-footer').hide();
-        // $('.btn-close').on('click', function(){
-        //   $('.modal-footer').show();
-        //   $('.btn-close').off('click');
-        // });
-      //}
+        $('#modal-body-text').html('Cannot delete this approved cutting ' + CuttingId + '.');
+        $('.modal-footer').hide();
+        $('.btn-close').on('click', function(){
+          $('.modal-footer').show();
+          $('.btn-close').off('click');
+        });
+      }
+
+      
+        
+      
     });
     
   });
