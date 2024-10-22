@@ -193,8 +193,10 @@ urlpatterns = [
     path('cutting_room_update/<int:pk>',views.cutting_room_create_update_list, name = 'cutting_room-update'),
     path('cutting_room_delete/<int:pk>',views.cuttingroomdelete, name = 'cutting_room-delete'),
 
-    #approval
+    # approval
     path('purchaseordercuttingpopup/<int:cutting_id>',views.purchaseordercuttingpopup, name = 'purchase-order-cutting-popup'),
+
+    path('purchaseordercuttingapprovalcheckajax/',views.purchaseordercuttingapprovalcheckajax, name='purchase-order-cutting-approval-check-ajax'),
 
     #labour workout 
     path('labourworkoutall/',views.labourworkoutlistall, name='labour-workout-all'),
