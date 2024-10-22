@@ -4726,9 +4726,9 @@ def purchaseordercuttingapprovalcheckajax(request):
     for x in purchase_order_master_instances:
 
         dict_to_append = {
-            'Approved Date' : x.created_date,
-            'Approved Name' : 'approved_name',
-            'Approved Qty' : x.total_approved_pcs,
+            'Approved_Date' : x.created_date,
+            'Approved_Name' : 'approved_name',
+            'Approved_Qty' : x.total_approved_pcs,
         }
         approval_data.append(dict_to_append)
 
