@@ -61,10 +61,10 @@
               <td class="processedQty">{{cutting_order.processed_qty}}</td>
               <td class="approvedQty">{{cutting_order.approved_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
-              <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></td>
-              <td><button  class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
-              <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="border-0 bg-transparent " onclick="cuttingPkValue(this)"><i class="fa-regular fa-circle-check ps-3 fs-5"></i></button></td>
-              <td> <a href="{% url 'excel-download-production' 'purchase_order_cutting' cutting_order.raw_material_cutting_id %}"><i class="fa-regular fa-file-excel ms-3 fs-6"></i></a></td>
+              <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 fs-6"></i></a></td>
+              <td><button  class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
+              <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="border-0 bg-transparent " onclick="cuttingPkValue(this)"><i class="fa-solid fa-person-circle-check px-3 fs-5"></i></button></td>
+              <td> <a href="{% url 'excel-download-production' 'purchase_order_cutting' cutting_order.raw_material_cutting_id %}"><i class="fa-regular fa-file-excel px-3 fs-5"></i></a></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
               <input type="hidden" class="cuttingCancelled" value= "{{cutting_order.cutting_cancelled}}">
             </tr>
@@ -79,33 +79,28 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Approve Log</h1>
+          <h1 class="modal-title fs-5 text-danger" id="staticBackdropLabel">Approved Logs</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-10">
-                <table class="table table-striped table-hover table-bordered">
-                  <thead class="name_absolute sticky-top">
-                    <tr>
-                      <th>Date</th>
-                      <th>Name</th>
-                      <th>Approved QTY</th>
-                    </tr>
-                  </thead>
-                  <tbody class="mainTableList" id="approvalDataLogs">
+        
+            <table class="table table-striped table-hover table-bordered">
+              <thead class="name_absolute sticky-top">
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Approved QTY</th>
+                </tr>
+              </thead>
+              <tbody class="mainTableList" id="approvalDataLogs">
                   
-                    
-               
-                  </tbody>
-                </table>
-              </div>
-          </div>
+              </tbody>
+            </table>
+            <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">Close</button>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">Close</button>
-          <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-        </div>
+        <!-- <div class="modal-footer">
+          
+        </div> -->
       </div>
     </div>
   </div>
@@ -277,6 +272,7 @@ function cancelCutting(){
       },
       success: function(response) {
           var allApproveLogs = response.approval_data;
+          console.log('allApproveLogs',allApproveLogs)
           var newTable = document.getElementById('approvalDataLogs'); 
           newTable.innerHTML = ''; // Clear previous table rows
           
@@ -335,7 +331,7 @@ function cancelCutting(){
     cancelCutting();
   })
  
-
+ 
 
 </script>
   {% endblock %}
