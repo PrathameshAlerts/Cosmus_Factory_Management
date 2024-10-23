@@ -31,8 +31,8 @@
     
   </div>
 
-  <div class="row">
-    <div class="col-lg-10">
+  <div class="row" id="purchaseOrderCuttingorder">
+    <div class="col-lg-11">
       <div class="table-responsives">
         <table class="table table-striped table-hover table-bordered">
           <thead class="name_absolute sticky-top">
@@ -113,6 +113,7 @@
         </div>
         <div class="modal-body" id="modal-body-text">
             Are you sure you want to delete this Employee name?
+            <img src="https://loading.io/asset/762041" alt="">
         </div>
         <div class="modal-footer">
           <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
@@ -166,10 +167,13 @@
 
            // Disable the confirm button to prevent multiple clicks
            $(this).prop('disabled', true);
-           
+           var $this = $(this);
+           var originalHtml = $this.html();
+
+           $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
             var cuttingId = parseInt(cuttingData);
             var approvedValues = parseInt(approvedValue);
-
+ 
             if (approvedValues === 0) {
                 // Send AJAX request to delete the cutting
                 $.ajax({
@@ -194,6 +198,11 @@
                         console.error("Error occurred: " + error);
                         console.error(status);
                         $('#modal-body-text').html('An error occurred. Please try again.');
+                    },
+                    complete: function() {
+                      // Re-enable the confirm button and restore its original text
+                      $this.prop('disabled', false);
+                      $this.html(originalButtonText);
                     }
                 });
             } else {

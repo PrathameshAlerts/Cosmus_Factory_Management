@@ -578,7 +578,7 @@ function updateCuttingQuantity(finalTotal){
         const balanceValue = document.getElementById('id_balanceView_qty').value;
         console.log('ids',ids)
         console.log('balanceValue',balanceValue)
-        if(ids !== ""  || (ids == "none" && balanceValue == 0)){
+        if(ids !== "" && ids !== "None" || (ids == "" && balanceValue == 0)){
             let procumentValue =0;
             let CuttingValue =0;
             let balanceValue = 0;
