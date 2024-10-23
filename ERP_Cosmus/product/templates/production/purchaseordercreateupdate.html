@@ -84,7 +84,7 @@
         <!-- <input class="productinputtext text-danger text-capitalize ms-2 pb-2 " id="id_model_name" value="{{model_name | default_if_none:''}}" readonly> -->
         <lable class="fw-bold ps-3">Total :</lable>
         <input type="number" class="productinput ms-2  text-danger pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01" readonly>
-        <input type="hidden" class="" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
+        <input type="hidden" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
         <div class="mb-2 ms-2">
             <label class="fw-bold ps-3">Images :</label>
             {% for img in model_images.all %}
