@@ -11,7 +11,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Q, Sum, ProtectedError, Avg, Count,F,Exists, OuterRef
+from django.db.models import Q, Sum, ProtectedError, Avg, Count,F,Exists, OuterRef, Subquery, DecimalField
 from django.db.models.functions import Round
 from django.db import DatabaseError, IntegrityError, transaction
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -25,7 +25,6 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponse, HttpResponseServerError, JsonResponse
 from django.views.decorators.cache import cache_control
-from django.db.models import OuterRef, Subquery, DecimalField, F
 from django.db.models.functions import Coalesce
 import pandas as pd
 from openpyxl.drawing.image import Image  
@@ -4692,7 +4691,6 @@ def purchaseordercuttinglistall(request):
         .order_by('created_date')
     )
 
-
     purchase_orders_cutting_completed = purchase_order.objects.filter(
         balance_number_of_pieces=0).annotate(total_processed_qty = Sum('cutting_pos__processed_qty'),
         total_approved_qty_sum = Sum('cutting_pos__approved_qty')).annotate(total_approved_balance = F(
@@ -5524,7 +5522,6 @@ def labourworkinlistall(request):
     total_labour_workin_pending = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_workin_pending_pcs'))
 
 
-
     labour_workout_child_instances_all = labour_workout_childs.objects.all()
 
     return render(request,'production/labour_workin_listall.html',
@@ -5538,8 +5535,7 @@ def labourworkinlistall(request):
 def labourworkinpurchaseorderlist(request,p_o_no):
     purchase_order_instance = purchase_order.objects.get(id=p_o_no)
 
-    labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
-
+    labour_workin_purchase_order_list = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
 
     return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
 
@@ -5676,14 +5672,28 @@ def goods_return_popup(request,pk):
 
 def finished_goods_godown_wise_report(request, g_id):
     
-    product_quantity = Product.objects.filter(productdetails__godown_colors__godown_name__id = g_id).annotate(total_quantity_product=Sum('productdetails__godown_colors__quantity'))
+    
+    all_godown_stock = product_godown_quantity_through_table.objects.filter(
+        product_color_name__Product_id = OuterRef('pk')).values('product_color_name__Product_id'
+        ).annotate(sum_all_g_qty=Sum('quantity')).values('sum_all_g_qty')
+
+    
+    product_quantity = Product.objects.filter(
+        productdetails__godown_colors__godown_name__id=g_id).annotate(
+        total_quantity_product=Sum('productdetails__godown_colors__quantity'),  
+        all_godown_qty = Subquery(all_godown_stock))  
+
     return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity})
 
 
 def finished_goods_godown_product_ref_wise_report(request, ref_no):
-    purchase_instances = labour_workout_childs.objects.all()
 
-    return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances})
+    if ref_no:
+        product_instance = Product.objects.get(Product_Refrence_ID = ref_no)
+        purchase_instances = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no)
+
+    
+    return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances,'product_instance':product_instance})
 
 
 
