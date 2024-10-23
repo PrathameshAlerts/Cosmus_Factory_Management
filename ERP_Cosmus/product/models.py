@@ -51,8 +51,8 @@ class SubCategory(models.Model):
     product_sub_category_name = models.CharField(max_length = 250)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.PROTECT, related_name = 'subcategories')
 
-    class Meta:
-        unique_together = [['product_sub_category_name','product_main_category']]
+    
+    
 
     def __str__(self):
         return self.product_sub_category_name 

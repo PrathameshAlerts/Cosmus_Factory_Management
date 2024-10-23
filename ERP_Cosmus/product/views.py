@@ -1552,11 +1552,10 @@ def ledgercreate(request):
             messages.success(request,'Ledger Created')
             
             if request.path == '/ledgerpopupcreate/':
-                ledger_labour = Ledger.objects.filter(under_group__account_sub_group='Job charges(Exp of Mfg)').values('id','name')
+                ledger_labour = Ledger.objects.filter(under_group__account_sub_group='Sundry Creditors').values('id','name')
                               
                 return JsonResponse({'ledger_labour':list(ledger_labour)})
             
-          
             else:
                 return redirect('ledger-list')
         else:
@@ -2817,9 +2816,9 @@ def product2item(request,product_refrence_id):
                     
                     for form in formset_single.deleted_forms:
                         if form.instance.pk:  
-                            item_instance = form.instance.Item_pk
                             
-                            p_o_c_instance_single = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = item_instance)
+                            
+                            
                             
                             
                             
@@ -2874,7 +2873,7 @@ def product2item(request,product_refrence_id):
                         if form.instance.id: 
                             deleted_item = form.instance.Item_pk  
                             
-                            p_o_c_instance_common = purchase_order_for_raw_material_cutting_items.objects.filter(material_color_shade__items = deleted_item)
+                            
 
                             
                             for product in Products_all: 
@@ -4716,23 +4715,42 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
 
 @login_required(login_url='login')
 def purchaseordercuttingapprovalcheckajax(request):
-    
     cutting_pk_no = request.GET.get('cutting_pk_no')
 
-    if cutting_pk_no:
-        purchase_order_master_instances = labour_workout_master.objects.filter(purchase_order_cutting_master__raw_material_cutting_id=cutting_pk_no)
+    if not cutting_pk_no:
+        return JsonResponse({'status': 'error', 'message': 'Cutting ID not provided'}, status=400)
 
-    approval_data = []
-    for x in purchase_order_master_instances:
+    try:
+        
+        purchase_order_master_instances = labour_workout_master.objects.filter(
+            purchase_order_cutting_master__raw_material_cutting_id=cutting_pk_no
+        ).order_by('created_date')
 
-        dict_to_append = {
-            'Approved_Date' : x.created_date,
-            'Approved_Name' : 'approved_name',
-            'Approved_Qty' : x.total_approved_pcs,
-        }
-        approval_data.append(dict_to_append)
+        if not purchase_order_master_instances.exists():
+            return JsonResponse({'status': 'error', 'message': 'No records found for the given Cutting ID'}, status=404)
 
-    return JsonResponse({'approval_data':approval_data})
+        approval_data = []
+        for x in purchase_order_master_instances:
+            dict_to_append = {
+                'Approved_Date': x.created_date,
+                'Approved_Name': 'approved name',  
+                'Approved_Qty': x.total_approved_pcs,
+            }
+            approval_data.append(dict_to_append)
+
+        return JsonResponse({'status': 'success','approval_data': approval_data})
+
+    except ObjectDoesNotExist as e:
+        logger.error(f'Record not found: {e}')
+        return JsonResponse({'status': 'error', 'message': 'Record not found'}, status=404)
+
+    except ValidationError as e:
+        logger.error(f'Invalid data: {e}')
+        return JsonResponse({'status': 'error', 'message': 'Invalid input data'}, status=400)
+
+    except Exception as e:
+        logger.error(f'Unexpected error: {e}', exc_info=True)
+        return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred'}, status = 500)
 
 
 
@@ -5153,6 +5171,7 @@ def labourworkoutsingledeleteajax(request):
             with transaction.atomic():
                 
                 labour_workout_child_instance = labour_workout_childs.objects.get(id=labour_workout_child_pk)
+                
                 labour_master_instance = labour_workout_child_instance.labour_workout_master_instance
                 labour_master_instance.total_pending_pcs = labour_master_instance.total_pending_pcs + labour_workout_child_instance.total_process_pcs
 
@@ -5168,8 +5187,9 @@ def labourworkoutsingledeleteajax(request):
                     item_in_row = item_color_shade.objects.get(items__item_name=labour_workout_child_items.material_name,item_shade_name=labour_workout_child_items.material_color_shade)
                     
                     if item_in_row.items.Fabric_nonfabric == 'Fabric':
-                        purchase_order_cutting_item = purchase_order_for_raw_material_cutting_items.objects.get(purchase_order_cutting=labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id,material_color_shade=item_in_row)
-
+                        
+                        purchase_order_cutting_item = purchase_order_for_raw_material_cutting_items.objects.get(purchase_order_cutting=labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.raw_material_cutting_id, material_color_shade=item_in_row, product_sku=labour_workout_child_items.product_sku)
+                        
                         purchase_order_cutting_item.total_comsumption_in_cutting = purchase_order_cutting_item.total_comsumption_in_cutting + labour_workout_child_items.total_comsumption
                         purchase_order_cutting_item.entry_from_cutting_room = False
                         purchase_order_cutting_item.save()
@@ -5521,7 +5541,7 @@ def labourworkinpurchaseorderlist(request,p_o_no):
     labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
 
 
-    return render(request, 'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
+    return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
 
 
 
@@ -5656,8 +5676,9 @@ def goods_return_popup(request,pk):
 
 def finished_goods_godown_wise_report(request, g_id):
     
-    product_quantity = Product.objects.filter(productdetails__godown_colors__godown_name__id=g_id).annotate(total_quantity_product=Sum('productdetails__godown_colors__quantity'))
+    product_quantity = Product.objects.filter(productdetails__godown_colors__godown_name__id = g_id).annotate(total_quantity_product=Sum('productdetails__godown_colors__quantity'))
     return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity})
+
 
 def finished_goods_godown_product_ref_wise_report(request, ref_no):
     purchase_instances = labour_workout_childs.objects.all()

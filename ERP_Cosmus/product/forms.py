@@ -499,8 +499,8 @@ class product_sub_category_form(UniqueFieldMixin,forms.ModelForm):
         model = SubCategory
         fields = ['product_sub_category_name','product_main_category']
 
-    def clean_product_sub_category_name(self):
-        return self.clean_unique_field('product_sub_category_name',SubCategory)
+    
+    
 
 
 class purchase_order_form(forms.ModelForm):
