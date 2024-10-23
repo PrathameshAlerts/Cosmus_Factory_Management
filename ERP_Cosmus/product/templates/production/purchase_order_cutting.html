@@ -281,11 +281,11 @@
         </div>
     </div>
     <div class="d-flex mt-2">
-        <label for="id_note">Note:- </label>
+        <label for="id_note" class="text-dark">Note :-</label>
         {% if not purchase_order_cutting_form.instance.raw_material_cutting_id %}
         <textarea name="note" id="id_note" cols="10" rows="" class="form-control">{{purchase_order_cutting_form.instance.note | default_if_none:''}}</textarea>
         {% elif purchase_order_cutting_form.instance.raw_material_cutting_id %}
-        <span> {{purchase_order_cutting_form.instance.note | default_if_none:''}}</span>
+        <span class="text-danger text-capitalize ms-2"> {{purchase_order_cutting_form.instance.note | default_if_none:''}}</span>
         {% endif %}
     </div>
 <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrderCutting">
@@ -575,7 +575,10 @@ function updateCuttingQuantity(finalTotal){
 
     function submitForm(){
         const ids = document.getElementById('cutting_id').value ;
-        if(ids !== "" && ids !== "None"){
+        const balanceValue = document.getElementById('id_balanceView_qty').value;
+        console.log('ids',ids)
+        console.log('balanceValue',balanceValue)
+        if(ids !== ""  || (ids == "none" && balanceValue == 0)){
             let procumentValue =0;
             let CuttingValue =0;
             let balanceValue = 0;
