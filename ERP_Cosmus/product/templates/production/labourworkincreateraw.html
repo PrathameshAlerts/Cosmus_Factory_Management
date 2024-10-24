@@ -123,8 +123,18 @@
    
    
 
-    <button type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;">Submit</button>
+    <button type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
 </form>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
+</div>
 <script>
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
     document.getElementById("id_labour_charges").addEventListener('click', CalculateAmount);
@@ -541,11 +551,11 @@ function CalculateTotalValue() {
     document.getElementById('id_total_return_pcs').value = total;
     document.getElementById('id_total_balance_pcs').value = pendingPc;
 }
-// window.addEventListener("pageshow", function(event) {
-//         if (event.persisted) {
-//             document.forms[0].reset();
-//         }
-//     });
+window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            document.forms[0].reset();
+        }
+    });
 
 </script>
 

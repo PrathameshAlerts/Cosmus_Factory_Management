@@ -283,7 +283,7 @@
     <div class="d-flex mt-2">
         <label for="id_note" class="text-dark">Note :-</label>
         {% if not purchase_order_cutting_form.instance.raw_material_cutting_id %}
-        <textarea name="note" id="id_note" cols="10" rows="" class="form-control ms-2">{{purchase_order_cutting_form.instance.note | default_if_none:''}}</textarea>
+        <textarea name="note" id="id_note" cols="140" rows="1" class="ms-2 ps-2 rounded-2">{{purchase_order_cutting_form.instance.note | default_if_none:''}}</textarea>
         {% elif purchase_order_cutting_form.instance.raw_material_cutting_id %}
         <span class="text-danger text-capitalize ms-2"> {{purchase_order_cutting_form.instance.note | default_if_none:''}}</span>
         {% endif %}
@@ -362,13 +362,14 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         el.style.color = 'red';
     }
-});
+    });
     checkboxRows.forEach(row => {
         var checkboxes = row.querySelectorAll('input[type="checkbox"]');
         if (checkboxes.length > 0) {
             checkboxes[0].checked = true; // Set the first checkbox as checked
         }
     });
+
 });
 
 function processValueCheck(){
