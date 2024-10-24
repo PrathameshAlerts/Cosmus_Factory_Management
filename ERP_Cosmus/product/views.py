@@ -5708,11 +5708,16 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
 
 def finished_goods_vendor_model_wise_report(request, ref_no, vendor_id):
 
+    queryset_list = []
+
     if ref_no is not None and vendor_id is not None:
-        pass 
-    
+        
+        labour_workout_instances = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no, labour_name__id=vendor_id)
 
+        labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no,labour_voucher_number__labour_name__id=vendor_id)
 
+        print(labour_workin_instances)
+        print(labour_workout_instances)
 
 
 
