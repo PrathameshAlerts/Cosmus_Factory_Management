@@ -5,21 +5,54 @@
 Ref No - {{product_instance.Product_Refrence_ID}}
 Model Name - {{product_instance.Model_Name}}
 
-{% for instance in product_instance.productdetails.all %}
+<div class="ms-3"></div>
+        <label class="fw-bold ps-3">Images :</label>
+        {% for instance in product_instance.productdetails.all %}
+        {% if instance.PProduct_image.url is not None %}
+        <img src=" {{instance.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
+        {% endif %}
+        {% endfor %}
+     </div>
 
-Images - {{instance.PProduct_image.url}}
 
-{% endfor %}
+
 
 <h3>Model Wise</h3>
-{% for instance in purchase_instances %}
-{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}} Po No
+<table class="table table-striped table-hover table-bordered">
+<thead>
+    <tr>
+        <th>PO NO</th>
+        <th>GRN NO</th>
+        <th>Challan NO</th>
+        <th>Date</th>
+        <th>Vender Name</th>
+        <th>Total Labour Work Out</th>
+        <th>Total Labour Work In</th>
+        <th>Rep Out</th>
+        <th>Rep In</th>
+        <th>Total Balance to Vendor</th>
+        <th>Total Received</th>
+    </tr>
+</thead>
+<tbody>
+    {% for instance in purchase_instances %}
+    <tr>
+<td>{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+<td>{{instance.voucher_number}}</td>
+<td>{{instance.labour_voucher_number.challan_no}}</td>
+<td>{{instance.created_date}}</td>
+<td>{{instance.labour_voucher_number.labour_name.name}}</td>
+<td>{{instance.total_return_pcs}}</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 
-{{instance.challan_no}} GRN No 
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
 
-{{instance.labour_voucher_number.labour_name.name}} Vendor Name
-
-
-{% endfor %}
 
 {% endblock body %}

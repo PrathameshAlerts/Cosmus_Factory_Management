@@ -5535,7 +5535,7 @@ def labourworkinlistall(request):
 def labourworkinpurchaseorderlist(request,p_o_no):
     purchase_order_instance = purchase_order.objects.get(id=p_o_no)
 
-    labour_workin_purchase_order_list = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
+    labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
 
     return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
 
@@ -5595,7 +5595,6 @@ def goods_return_pending_list(request):
 
     labour_workin_instances = labour_work_in_master.objects.all().annotate(total_approved_pcs = Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval'))
     return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances})
-
 
 
 
@@ -5690,7 +5689,7 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
 
     if ref_no:
         product_instance = Product.objects.get(Product_Refrence_ID = ref_no)
-        purchase_instances = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no)
+        purchase_instances = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no)
 
     
     return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances,'product_instance':product_instance})
