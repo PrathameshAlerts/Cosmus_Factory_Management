@@ -2,11 +2,35 @@
 {% load static %}
 {% block body %}
 
-Reference No = {{reference_no}}
-Model Name  = {{model_number}} 
+<div class="mt-2">
+    <label class="fw-bold">Ref No :</label><span class="text-danger ms-2 refId fw-bold">{{reference_no}}</span>
+    <label class="fw-bold ms-3">Model Name :</label><span class="text-danger ms-2 fw-bold">{{model_number}}</span>
+</div>
+<div class="mb-3 mt-2">
+<table class="table table-striped table-hover table-bordered">
+    <thead class="name_absolute sticky-top">
+        <tr>
+            <th>GRN No / V No</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Sku</th>
+            <th>Qty</th>
+        </tr>
+    </thead>
+    <tbody class="mainTableList">
+        {% for instance in report_data_sorted %}
+        <tr>
+            <td>{{instance.GRN_No}}</td>
+            <td>{{instance.date}}</td>
+            <td>{{instance.description}}</td>
+            <td>{{instance.SKU_No}}</td>
+            <td>{{instance.Quantity}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>    
+</div>
 
-{% for instance in report_data_sorted %}
-{{instance}}
-{% endfor %}
+
 
 {% endblock body %}
