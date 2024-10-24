@@ -5706,18 +5706,45 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
     return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances,'product_instance':product_instance})
 
 
-def finished_goods_vendor_model_wise_report(request, ref_no, vendor_id):
+def finished_goods_vendor_model_wise_report(request, vendor_id, ref_no):
 
-    queryset_list = []
 
     if ref_no is not None and vendor_id is not None:
-        
-        labour_workout_instances = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no, labour_name__id=vendor_id)
+        queryset_list = []
 
-        labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no,labour_voucher_number__labour_name__id=vendor_id)
+        labour_workout_instances = product_to_item_labour_child_workout.objects.filter(labour_workout__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no, labour_workout__labour_name__id=vendor_id)
 
-        print(labour_workin_instances)
-        print(labour_workout_instances)
+        labour_workin_instances = labour_work_in_product_to_item.objects.filter(labour_workin_instance__labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no,labour_workin_instance__labour_voucher_number__labour_name__id=vendor_id)
+
+        product_instance = get_object_or_404(Product,Product_Refrence_ID=ref_no)
+        reference_no = ref_no
+        model_number = product_instance.Model_Name
+
+        for instance in labour_workout_instances:
+            dict_to_append = {
+                'GRN_No':instance.labour_workout.challan_no,
+                'date':instance.labour_workout.created_date,
+                'description' : 'LWI',
+                'SKU No' : instance.product_sku,
+                'Quantity': instance.processed_pcs
+            }
+            queryset_list.append(dict_to_append)
+
+        for instance in labour_workin_instances:
+
+            dict_to_append = {
+                'GRN_No' : instance.labour_workin_instance.voucher_number,
+                'date':instance.labour_workin_instance.created_date,
+                'description': 'LWO',
+                'SKU No': instance.product_sku,
+                'Quantity': instance.return_pcs
+            }
+            queryset_list.append(dict_to_append)
+
+        report_data_sorted = sorted(queryset_list, key = itemgetter('date'), reverse=False)
+
+        return render(request,'production/finishedgoodsvendormodelwisereport.html',{'report_data_sorted':report_data_sorted, 'reference_no':reference_no, 'model_number':model_number})
+
 
 
 
@@ -6072,7 +6099,6 @@ def godown_item_report(request,shade_id,g_id=None):
             opening_purchase_voucher_godown_item=shade_name, opening_godown_id=godown_name)
         
 
-
         
         
         purchase_voucher_godown_qty = item_purchase_voucher_master.objects.filter(
@@ -6245,7 +6271,7 @@ def allrawmaterialstockreport(request):
 def allfinishedgoodsstockreport(request):
     product_queryset = PProduct_Creation.objects.all().annotate(total_qty = Sum(
         'godown_colors__quantity')).order_by('Product__Model_Name')
-    print(product_queryset)
+    
     return render(request,'reports/allfinishedgoodsstockreport.html',{'product_queryset':product_queryset})
 
 

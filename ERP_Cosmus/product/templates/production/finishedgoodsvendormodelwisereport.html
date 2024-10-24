@@ -1,0 +1,12 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+Reference No = {{reference_no}}
+Model Name  = {{model_number}} 
+
+{% for instance in report_data_sorted %}
+{{instance}}
+{% endfor %}
+
+{% endblock body %}
