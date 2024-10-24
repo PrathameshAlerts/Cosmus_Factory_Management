@@ -21,11 +21,11 @@ Model Name - {{product_instance.Model_Name}}
 <table class="table table-striped table-hover table-bordered">
 <thead>
     <tr>
-        <th>PO NO</th>
-        <th>GRN NO</th>
-        <th>Challan NO</th>
+        <th>PO No</th>
+        <th>GRN No</th>
+        <th>Challan No</th>
         <th>Date</th>
-        <th>Vender Name</th>
+        <th>Vendor Name</th>
         <th>Total Labour Work Out</th>
         <th>Total Labour Work In</th>
         <th>Rep Out</th>
@@ -42,11 +42,11 @@ Model Name - {{product_instance.Model_Name}}
 <td>{{instance.labour_voucher_number.challan_no}}</td>
 <td>{{instance.created_date}}</td>
 <td>{{instance.labour_voucher_number.labour_name.name}}</td>
+<td>{{instance.labour_voucher_number.total_process_pcs}}</td>
 <td>{{instance.total_return_pcs}}</td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
+<td>{{instance.total_balance_to_vendor}}</td>
 <td></td>
 
     </tr>

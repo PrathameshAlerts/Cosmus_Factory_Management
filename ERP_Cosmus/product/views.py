@@ -3328,7 +3328,7 @@ def excel_download_production(request, module_name, pk):
 
             file_name = 'purchase_order_raw'
 
-            column_widths = [13, 16, 10, 30, 10, 10, 10, 15, 15]  
+            column_widths = [13, 16, 10, 30, 13, 10, 10, 15, 15]  
 
             
             for i, column_width in enumerate(column_widths, start=1):  
@@ -3344,6 +3344,7 @@ def excel_download_production(request, module_name, pk):
             sheet.cell(row=1, column=1).border = thin_border
             sheet.cell(row=1, column=2).border = thin_border
             sheet.cell(row=1, column=3).border = thin_border
+            sheet.cell(row=1, column=4).border = thin_border
 
             sheet.cell(row=2, column=1).value = f'Date:  {purchase_order_instance.created_date.replace(tzinfo=None).strftime("%d %B %Y")}'
             
@@ -3352,6 +3353,7 @@ def excel_download_production(request, module_name, pk):
             sheet.cell(row=2, column=1).border = thin_border
             sheet.cell(row=2, column=2).border = thin_border
             sheet.cell(row=2, column=3).border = thin_border
+            sheet.cell(row=2, column=4).border = thin_border
 
             sheet.cell(row=3, column=1).value = f'Ref No: { purchase_order_instance.product_reference_number.Product_Refrence_ID}'
             
@@ -3360,16 +3362,16 @@ def excel_download_production(request, module_name, pk):
             sheet.cell(row=3, column=1).border = thin_border
             sheet.cell(row=3, column=2).border = thin_border
             sheet.cell(row=3, column=3).border = thin_border
+            sheet.cell(row=3, column=4).border = thin_border
 
-
-            sheet.cell(row=4, column=1).value = f'Model Name:  {purchase_order_instance.product_reference_number.Model_Name}'
+            sheet.cell(row=4, column=1).value = f'Name:  {purchase_order_instance.product_reference_number.Model_Name}'
             
             sheet.cell(row=4, column=1).font = Font(bold=True)
            
             sheet.cell(row=4, column=1).border = thin_border
             sheet.cell(row=4, column=2).border = thin_border
             sheet.cell(row=4, column=3).border = thin_border
-
+            sheet.cell(row=4, column=4).border = thin_border
 
             sheet.cell(row=5, column=1).value = f'Party Name:  {purchase_order_instance.ledger_party_name.name}'
             
@@ -3378,7 +3380,7 @@ def excel_download_production(request, module_name, pk):
             sheet.cell(row=5, column=1).border = thin_border
             sheet.cell(row=5, column=2).border = thin_border
             sheet.cell(row=5, column=3).border = thin_border
-
+            sheet.cell(row=5, column=4).border = thin_border
 
             sheet.cell(row=6, column=1).value = f'Total PO Qty: {purchase_order_instance.number_of_pieces}'
            
@@ -3387,16 +3389,17 @@ def excel_download_production(request, module_name, pk):
             sheet.cell(row=6, column=1).border = thin_border
             sheet.cell(row=6, column=2).border = thin_border
             sheet.cell(row=6, column=3).border = thin_border
+            sheet.cell(row=6, column=4).border = thin_border
 
-
-            sheet.cell(row=1, column=4).value = 'Product SKU'
-            sheet.cell(row=1, column=5).value = 'Color'
-            sheet.cell(row=1, column=7).value = 'Proc Qty'
+            sheet.cell(row=1, column=5).value = 'Product SKU'
+            sheet.cell(row=1, column=6).value = 'Color'
+            sheet.cell(row=1, column=8).value = 'Proc Qty'
             
-            sheet.cell(row=1, column=4).font = Font(bold=True)
             sheet.cell(row=1, column=5).font = Font(bold=True)
-            sheet.cell(row=1, column=7).font = Font(bold=True)
+            sheet.cell(row=1, column=6).font = Font(bold=True)
+            sheet.cell(row=1, column=8).font = Font(bold=True)
             
+            sheet.cell(row=1, column=3).border = thin_border
             sheet.cell(row=1, column=4).border = thin_border
             sheet.cell(row=1, column=5).border = thin_border
             sheet.cell(row=1, column=6).border = thin_border
@@ -3405,7 +3408,7 @@ def excel_download_production(request, module_name, pk):
 
             
             start_row = 2
-            start_column = 4
+            start_column = 5
 
             product_2_item_qs = purchase_order_instance.p_o_to_products.all()
 
@@ -3461,7 +3464,7 @@ def excel_download_production(request, module_name, pk):
                     
                     
 
-                    img_position = f'H{index}'
+                    img_position = f'I{index}'
 
                     
                     sheet.add_image(excel_img, img_position)
@@ -3475,14 +3478,18 @@ def excel_download_production(request, module_name, pk):
             
             row_num = 2 + length_queryset
 
-            sheet.cell(row=row_num, column = 5).value = 'Total'
-            sheet.cell(row=row_num, column = 7).value = purchase_order_instance.number_of_pieces
+            sheet.cell(row=row_num, column = 6).value = 'Total'
+            sheet.cell(row=row_num, column = 8).value = purchase_order_instance.number_of_pieces
             sheet.cell(row=row_num, column = 5).font = Font(bold=True)
-            sheet.cell(row=row_num, column = 7).font = Font(bold=True)
-            sheet.cell(row=row_num, column = 5).border = thin_border
-            sheet.cell(row=row_num, column = 7).border = thin_border
+            sheet.cell(row=row_num, column = 8).font = Font(bold=True)
             sheet.cell(row=row_num, column = 6).border = thin_border
+            sheet.cell(row=row_num, column = 8).border = thin_border
+            sheet.cell(row=row_num, column = 7).border = thin_border
             
+
+
+
+
             
             if length_queryset < 6:
 
@@ -4174,7 +4181,7 @@ def excel_download_production(request, module_name, pk):
 @login_required(login_url = 'login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) 
 def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
-    print('len(request.POST)',len(request.POST))
+    
     purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)
@@ -5598,6 +5605,7 @@ def goods_return_pending_list(request):
 
 
 
+
 @login_required(login_url='login')
 def goods_return_popup(request,pk):
 
@@ -5689,10 +5697,21 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
 
     if ref_no:
         product_instance = Product.objects.get(Product_Refrence_ID = ref_no)
-        purchase_instances = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no)
 
-    
+        purchase_instances = labour_work_in_master.objects.filter(
+            labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no).annotate(
+            total_balance_to_vendor = F('labour_voucher_number__total_process_pcs') - F('total_return_pcs')    
+            )
+
     return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances,'product_instance':product_instance})
+
+
+def finished_goods_vendor_model_wise_report(request, ref_no, vendor_id):
+
+    if ref_no is not None and vendor_id is not None:
+        pass 
+    
+
 
 
 

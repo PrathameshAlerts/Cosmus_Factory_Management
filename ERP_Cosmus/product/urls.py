@@ -197,6 +197,7 @@ urlpatterns = [
     path('purchaseordercuttingpopup/<int:cutting_id>',views.purchaseordercuttingpopup, name = 'purchase-order-cutting-popup'),
 
     path('purchaseordercuttingapprovalcheckajax/',views.purchaseordercuttingapprovalcheckajax, name='purchase-order-cutting-approval-check-ajax'),
+    
 
     #labour workout 
     path('labourworkoutall/',views.labourworkoutlistall, name='labour-workout-all'),
@@ -234,6 +235,7 @@ urlpatterns = [
 
     path('godownproductreport/<int:g_id>', views.finished_goods_godown_wise_report, name = 'finished-goods-godown-wise-report'),
     path('finishedgoodsgodownproductrefwisereport/<int:ref_no>', views.finished_goods_godown_product_ref_wise_report, name = 'finished-goods-godown-product-ref-wise-report'),
+    path('finishedgoodsgodownproductrefvendorwisereport/<int:ref_no>/<int:vendor_id>', views.finished_goods_vendor_model_wise_report, name = 'finished-goods-godown-product-ref-vendor-wise-report'),
 
     path('allfinishedgoodsstockreport/', views.allfinishedgoodsstockreport, name = 'all-finished-goods-stock-report'),
 
