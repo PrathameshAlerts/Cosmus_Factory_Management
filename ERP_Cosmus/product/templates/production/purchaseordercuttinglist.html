@@ -25,7 +25,7 @@
         {% endfor %}
      </div>
     <div class=" mb-3">
-      <button class="item-btn"><a id="purchaseOrderCuttingOrder" class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-create' p_o_pk prod_ref_no %}">Create</a></button>
+      <button class="item-btn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"><a id="purchaseOrderCuttingOrder" class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-create' p_o_pk prod_ref_no %}" >Create</a></button>
     </div>
     </div>
     
@@ -61,7 +61,7 @@
               <td class="processedQty">{{cutting_order.processed_qty}}</td>
               <td class="approvedQty">{{cutting_order.approved_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
-              <td><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 fs-6"></i></a></td>
+              <td><button class="border-0 bg-transparent viewBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 fs-6"></i></a></button></td>
               <td><button  class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
               <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="border-0 bg-transparent " onclick="cuttingPkValue(this)"><i class="fa-solid fa-person-circle-check px-3 fs-5"></i></button></td>
               <td> <a href="{% url 'excel-download-production' 'purchase_order_cutting' cutting_order.raw_material_cutting_id %}"><i class="fa-regular fa-file-excel px-3 fs-5"></i></a></td>
@@ -98,9 +98,7 @@
             </table>
             <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">Close</button>
         </div>
-        <!-- <div class="modal-footer">
-          
-        </div> -->
+    
       </div>
     </div>
   </div>
@@ -122,7 +120,15 @@
       </div>
     </div>
   </div>
-     
+  <div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
+</div>  
   <script>
 
  function createButton() {
@@ -145,7 +151,7 @@
   createButton();
   document.body.appendChild(document.getElementById('exampleModal'));
   document.body.appendChild(document.getElementById('staticBackdrop'));
-  
+  document.body.appendChild(document.getElementById('exampleModalSpinner'));
   $(document).ready(function() {
     $('.delete-btn').click(function() {
         // Fetching data from the clicked row
@@ -216,6 +222,32 @@
             }
         });
     });
+   
+    // Show spinner when Create button or view button is clicked
+    $('.item-btn, .viewBtn').click(function() {
+        var spinner = $('#exampleModalSpinner');
+        spinner.show();
+        history.pushState(null, null);  // Push a new state to handle the back button properly
+    });
+
+    // Hide spinner when the modal is hidden
+    $('#exampleModalSpinner').on('hidden.bs.modal', function() {
+        var spinner = $('#exampleModalSpinner');
+        spinner.hide();  // Ensure spinner is hidden after the modal closes
+    });
+
+    // Listen for back button (popstate) events
+    window.addEventListener('popstate', function(event) {
+        var modal = $('#exampleModalSpinner');
+        if (modal.hasClass('show')) {
+            modal.modal('hide');  // Hide modal if it's visible
+        }
+        var spinner = $('#exampleModalSpinner');
+        if (spinner.is(':visible')) {
+            spinner.hide();  // Ensure spinner is hidden when back button is clicked
+        }
+    });
+    
 });
 
 
