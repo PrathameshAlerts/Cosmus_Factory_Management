@@ -16,11 +16,10 @@
                     <th>Brand Name</th>
                     <th>SKU ID</th>
                     <th>Category</th>
-                    <th>Ref No</th>
                     <th>Model Name</th>
                     <th>Stock </th>
                     <th>All Godown Stock</th>
-                    <th>UNfinished Stage</th>
+                    <th>Unfinished Stage</th>
                 </tr>
             </thead>
             <tbody class="mainTableList">
@@ -28,17 +27,12 @@
                 <tr id="refrenceIds">
                     <td>{{forloop.counter}}</td>
                     <td>{{record.Product_Brand}}</td>
-                    <td>
-                        {% for p in  record.productdetails.all %}
-                        <span>{{p.PProduct_SKU}}</span><br>
-                        {% endfor %}
-                    </td>
                     <td>{{record.product_cats.first.SubCategory_id.product_main_category.product_category_name}}</td>
                     <td class="refrenceId">{{record.Product_Refrence_ID}}</td>
                     <td><span class="text-danger fw-bold">{{record.Model_Name}}</span></td>
                     <td>{{record.total_quantity_product}}</td>
-                    <td>{{record.total_quantity_all_godown}}</td>
-                    <td>0000</td>
+                    <td>{{record.all_godown_qty}}</td>
+                    <td></td>
                 </tr>
                 {% endfor %}
             </tbody>
