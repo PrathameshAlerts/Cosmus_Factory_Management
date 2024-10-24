@@ -11,7 +11,7 @@
         <label for="id_product_category_name" class="form-label px-2">Main Category Name:</label>
         <input type="text" class="item-select" value="{{form.instance.product_category_name}}" name="product_category_name" maxlength="255" required id="id_product_category_name">
       </div>
-      <input type="submit" id="submitButtonMainCategory" class="create-btn mt-4" name="save" value="Save">
+      <button type="submit" id="submitButtonMainCategory" class="create-btn mt-4" name="save" value="Save">Save</button>
     </form>
   </div>
 
@@ -22,7 +22,7 @@
           <form method="GET">
             <div class="container-category ">
               <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="main_cat_product_search" value="{{main_cat_product_search | default_if_none:''}}" />
-              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+              <input type="submit" class="mx-2"></input>
             </div>
           </form>
         </div>

@@ -10,7 +10,7 @@
         <label for="id_color_name" class="item-form create_color_lable">Color Name:</label>
         <input type="text" class="item-select rounded" value="{{ form.instance.color_name }}" name="color_name" maxlength="255" required id="id_color_name">
       </div>
-      <input type="submit" id="submitButtoncreateColorUpdate" class="create-btn mt-4" name="save" value="save">
+      <button type="submit" id="submitButtoncreateColorUpdate" class="create-btn mt-4" name="save" value="save">Save</button>
     </form>
 
   </div>
@@ -21,7 +21,7 @@
           <form method="GET">
             <div class="container-category ">
               <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="color_search" value="{{color_search | default_if_none:''}}" />
-              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+              <input type="submit" class="mx-2"></input>
             </div>
           </form>
           <button class="item-btn mx-3" onclick="redirectColorFilter()">Clear Filter</button>

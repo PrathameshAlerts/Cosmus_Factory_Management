@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-    <form id="packingForm" action="" method="POST">
+    < id="packingForm" action="" method="POST">
       {% csrf_token %}
       <h2 class="mb-3 mt-3">Create Packing</h2>
       <div class="d-flex my-4">
@@ -10,7 +10,7 @@
         <input type="text" class="item-select" value="{{ form.instance.packing_material }}" name="packing_material" maxlength="255" required id="id_packing_material">
       </div>
   
-      <input type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">
+      <button type="submit" id="submitButton" class="create-btn mt-4" name="save" value="Save">Save</button>
     </form>
 
   

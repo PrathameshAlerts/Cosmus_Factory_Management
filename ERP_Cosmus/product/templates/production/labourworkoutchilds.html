@@ -124,9 +124,13 @@ $(document).ready(function(){
 
     // Attach a one-time click event to the confirm delete button
     $('#confirmDeleteButton').off('click').on('click', function(){
+      var $this = $(this);
+      var openSpinner = $this.html();
+      $this.prop('disabled', true);
+      $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
       var labour_workout_child_pk = parseInt(cuttingData);
       var id_labour_work_in_created = deleteBtn.closest('tr').find('#id_labour_work_in_created').val();
-     console.log(id_labour_work_in_created);
+    
       if(id_labour_work_in_created === 'False'){
         $.ajax({
           type: 'POST',
@@ -144,6 +148,10 @@ $(document).ready(function(){
             console.error("Error occurred: " + error);
             console.error(status)
             $('#modal-body-text').html('An error occurred. Please try again.');
+          },
+          complete: function(){
+            $this.prop('disabled', false);
+            $this.html(openSpinner);
           }
         });
       } else {

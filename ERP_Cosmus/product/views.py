@@ -4174,7 +4174,7 @@ def excel_download_production(request, module_name, pk):
 @login_required(login_url = 'login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True) 
 def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
-    
+    print('len(request.POST)',len(request.POST))
     purchase_order_instance = purchase_order.objects.get(pk=p_o_pk)
 
     form = purchase_order_form(instance = purchase_order_instance)

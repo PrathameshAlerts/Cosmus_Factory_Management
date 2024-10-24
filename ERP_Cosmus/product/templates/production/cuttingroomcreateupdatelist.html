@@ -9,7 +9,7 @@
           <label for="id_cutting_room_name" class="item-form me-3">Cutting Room Name:</label>
           <input type="text" class="item-select search-input " value="{{ form.instance.cutting_room_name }}" name="cutting_room_name" maxlength="100" required id="id_cutting_room_name">
         </div>
-        <input type="submit" class="create-btn mt-4" name="save" value="Save" id="submitButtonCuttongRoom"> 
+        <button type="submit" class="create-btn mt-4" name="save" value="Save" id="submitButtonCuttongRoom">Save</button> 
       </form>
   
     </div>
@@ -23,7 +23,7 @@
                     <input type="hidden" name="company" id="id_companyValue" value="" >
                   </div> -->
                   <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="color_search" value="{{color_search | default_if_none:''}}" />
-                  <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                  <input type="submit" class="mx-2"></input>
                 </div>
               </form>
               <!-- <button class="item-btn mx-3" onclick="redirectColorFilter()">Clear Filter</button> -->

@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="" >
-    <form method="POST" autocomplete="off">
+    <form method="POST" autocomplete="off" id="myProductForm">
         {% csrf_token %}
        
         <div class="row">
@@ -180,7 +180,8 @@
             <span> {{form.instance.note | default_if_none:''}}</span>
             {% endif %}
         </div>
-        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrder">
+        
+        <button type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrder" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
 
 
         <!-- {% if form.instance.id %}
@@ -194,171 +195,180 @@
     </form>
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
+</div>
 <script>
     // Function to update the consumption value calculated for pahna, units and grand total to assigne the value to consumption field
     function updateTotal() {
-            let total =0;
-            const processValues = document.querySelectorAll('input[name$="-order_processed_quantity"]');
-            processValues.forEach(element =>{
-                total += parseFloat(element.value);
-                document.getElementById('id_processTotal').value = total;
-            })
-            var totalForms = document.getElementById('id_raw_materials-TOTAL_FORMS').value;
- 
+        let total = 0;
+        const processValues = document.querySelectorAll('input[name$="-order_processed_quantity"]');
+        processValues.forEach(element => {
+            total += parseFloat(element.value);
+            document.getElementById('id_processTotal').value = total;
+        })
+        var totalForms = document.getElementById('id_raw_materials-TOTAL_FORMS').value;
 
-            for (var i = 0; i < totalForms; i++) {
-                var panha = document.getElementById('id_raw_materials-' + i + '-panha').value;
-                var units = document.getElementById('id_raw_materials-' + i + '-units').value;
-                var grandTotal = document.getElementById('id_raw_materials-' + i + '-g_total').value;
-                var physicalStock = document.getElementById('id_raw_materials-' + i + '-physical_stock');
-                var newPhysicalStock = document.getElementById('id_physical_stock').value;
-                var materialName = document.getElementById('id_raw_materials-' + i + '-material_name').value;
-                var gTotalCombi = document.getElementById('id_raw_materials-' + i + '-g_total_combi').value;
-            
-                var panhaValue = parseFloat(panha);
-                var unitsValue = parseFloat(units);
-                var grandTotalValue = parseFloat(grandTotal);
-                var gTotalCombiValue = parseFloat(gTotalCombi);
-            
-                if(newPhysicalStock != "None"){
-                    var mainstock = JSON.parse(newPhysicalStock);
-            
-                    for (var key in mainstock) {
-                        if (mainstock.hasOwnProperty(key)) {
-                            if(key === materialName){
-                                physicalStock.value = mainstock[key];
-                            }
+
+        for (var i = 0; i < totalForms; i++) {
+            var panha = document.getElementById('id_raw_materials-' + i + '-panha').value;
+            var units = document.getElementById('id_raw_materials-' + i + '-units').value;
+            var grandTotal = document.getElementById('id_raw_materials-' + i + '-g_total').value;
+            var physicalStock = document.getElementById('id_raw_materials-' + i + '-physical_stock');
+            var newPhysicalStock = document.getElementById('id_physical_stock').value;
+            var materialName = document.getElementById('id_raw_materials-' + i + '-material_name').value;
+            var gTotalCombi = document.getElementById('id_raw_materials-' + i + '-g_total_combi').value;
+
+            var panhaValue = parseFloat(panha);
+            var unitsValue = parseFloat(units);
+            var grandTotalValue = parseFloat(grandTotal);
+            var gTotalCombiValue = parseFloat(gTotalCombi);
+
+            if (newPhysicalStock != "None") {
+                var mainstock = JSON.parse(newPhysicalStock);
+
+                for (var key in mainstock) {
+                    if (mainstock.hasOwnProperty(key)) {
+                        if (key === materialName) {
+                            physicalStock.value = mainstock[key];
                         }
                     }
+                }
 
-                }
-            
-                if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && !isNaN(gTotalCombiValue)) {
-                    var consumption = grandTotalValue / (panhaValue * unitsValue);
-                    console.log('consumption',consumption);
-                    var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
-                    console.log('consumtionCombi',consumtionCombi);
-                    document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
-                    document.getElementById('id_raw_materials-' + i + '-combi_consumption').value = consumtionCombi.toFixed(3);
-                } else {
-                    document.getElementById('id_raw_materials-' + i + '-consumption').value = '0.000';
-                    document.getElementById('id_raw_materials-' + i + '-combi_consumption').value = '0.000';
-                }
             }
-            calculateTotalConsumption();
+
+            if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && !isNaN(gTotalCombiValue)) {
+                var consumption = grandTotalValue / (panhaValue * unitsValue);
+                console.log('consumption', consumption);
+                var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
+                console.log('consumtionCombi', consumtionCombi);
+                document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
+                document.getElementById('id_raw_materials-' + i + '-combi_consumption').value = consumtionCombi.toFixed(3);
+            } else {
+                document.getElementById('id_raw_materials-' + i + '-consumption').value = '0.000';
+                document.getElementById('id_raw_materials-' + i + '-combi_consumption').value = '0.000';
+            }
         }
-        function calculateTotalConsumption(){
-            let total =0;
-            const processQty = document.querySelectorAll('input[name$="-order_processed_quantity"]');
-           
-
-            processQty.forEach(input =>{
-                const processQuantity = parseInt(input.value) || 0; 
-                const row = input.closest('tr');
-                const productColor = row.querySelector('input[name$="-product_color"]').value;
-                const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
-                const processtotalQty = document.getElementById('id_processTotal');
-              
-                // total += processQuantity;
-               
-                // processtotalQty.value = total;
-                //  document.getElementById('id_processTotal').value = total;
-                totalConsumptionRows.forEach(totalRow => {
-                    const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
-                    const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
-                    const qtyPcs = totalRow.querySelector('input[name$="-pcs"]');
-                   
-                    if (totalConsumptionInput) {
-                        if (totalProductColor === productColor) {
-                        // Calculate total consumption for matching colors
-                            const consumptionInput = totalRow.querySelector('input[name$="-consumption"]');
-                            const gTotalCombi = totalRow.querySelector('input[name$="-combi_consumption"]');
-                            const processData = document.getElementById('id_processTotal');
-                           
-                            console.log('qtyPcs',qtyPcs);
-                            const process = parseFloat(processData.value) || 0;;
-                            const gTotalValue = parseFloat(gTotalCombi.value) || 0;
-                            const consumption = parseFloat(consumptionInput.value) || 0;
-                          
-                            let mainConsumption = gTotalValue * process;
-                    
-                            let ConsumptionTotal = processQuantity * consumption ;
-                       
-                            let totalConsumption = ConsumptionTotal + mainConsumption;
-                       
-                            totalConsumptionInput.value = totalConsumption.toFixed(3);
-                            if(qtyPcs){
-                                    qtyPcs.value = processQuantity;
-                            }
-                             
-                      
-                          
-
-                        }else if(totalProductColor === "Common Item"){
-                                
-                                const consumptionInputCommon = totalRow.querySelector('input[name$="-consumption"]').value;
-                                const consumtionCombi = totalRow.querySelector('input[name$="-combi_consumption"]').value;
-                                const proccessValue = document.getElementById('id_processTotal');
-                       
-                                const consumptions = parseFloat(consumptionInputCommon) || 0;
-                                const totalValue = parseFloat(proccessValue.value) || 0;
-                                const consumtionCombiValue = parseFloat(consumtionCombi) || 0;
-                                let commonConsumption = totalValue * consumptions;
-
-                                let commonConsumtionCombi = consumtionCombiValue * consumptions;
-
-                                let totalCommonConsumtion = commonConsumption + commonConsumtionCombi;
-                                totalConsumptionInput.value = totalCommonConsumtion.toFixed(3);
-                               
-                                if(qtyPcs){
-                                    qtyPcs.value = totalValue;
-                                }
-                                    
-                        }
-                    }
-                });
-            })
-              balanceStock();
-        }
-
         calculateTotalConsumption();
-function balanceStock(){
-    var totals = document.getElementById('id_raw_materials-TOTAL_FORMS').value;
-   
-    for (var i = 0; i < totals; i++) {
-        var totalConsumtionValue = document.getElementById('id_raw_materials-' + i + '-total_comsumption').value;
-        var newPhysicalStock = document.getElementById('id_raw_materials-' + i + '-physical_stock').value;
-        var balanceStock = document.getElementById('id_raw_materials-' + i + '-balance_physical_stock');
+    }
+    function calculateTotalConsumption() {
+        let total = 0;
+        const processQty = document.querySelectorAll('input[name$="-order_processed_quantity"]');
+
+
+        processQty.forEach(input => {
+            const processQuantity = parseInt(input.value) || 0;
+            const row = input.closest('tr');
+            const productColor = row.querySelector('input[name$="-product_color"]').value;
+            const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
+            const processtotalQty = document.getElementById('id_processTotal');
+
+            // total += processQuantity;
+
+            // processtotalQty.value = total;
+            //  document.getElementById('id_processTotal').value = total;
+            totalConsumptionRows.forEach(totalRow => {
+                const totalProductColor = totalRow.querySelector('input[name$="-product_color"]').value;
+                const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
+                const qtyPcs = totalRow.querySelector('input[name$="-pcs"]');
+
+                if (totalConsumptionInput) {
+                    if (totalProductColor === productColor) {
+                        // Calculate total consumption for matching colors
+                        const consumptionInput = totalRow.querySelector('input[name$="-consumption"]');
+                        const gTotalCombi = totalRow.querySelector('input[name$="-combi_consumption"]');
+                        const processData = document.getElementById('id_processTotal');
+
+                        console.log('qtyPcs', qtyPcs);
+                        const process = parseFloat(processData.value) || 0;;
+                        const gTotalValue = parseFloat(gTotalCombi.value) || 0;
+                        const consumption = parseFloat(consumptionInput.value) || 0;
+
+                        let mainConsumption = gTotalValue * process;
+
+                        let ConsumptionTotal = processQuantity * consumption;
+
+                        let totalConsumption = ConsumptionTotal + mainConsumption;
+
+                        totalConsumptionInput.value = totalConsumption.toFixed(3);
+                        if (qtyPcs) {
+                            qtyPcs.value = processQuantity;
+                        }
+
+
+
+
+                    } else if (totalProductColor === "Common Item") {
+
+                        const consumptionInputCommon = totalRow.querySelector('input[name$="-consumption"]').value;
+                        const consumtionCombi = totalRow.querySelector('input[name$="-combi_consumption"]').value;
+                        const proccessValue = document.getElementById('id_processTotal');
+
+                        const consumptions = parseFloat(consumptionInputCommon) || 0;
+                        const totalValue = parseFloat(proccessValue.value) || 0;
+                        const consumtionCombiValue = parseFloat(consumtionCombi) || 0;
+                        let commonConsumption = totalValue * consumptions;
+
+                        let commonConsumtionCombi = consumtionCombiValue * consumptions;
+
+                        let totalCommonConsumtion = commonConsumption + commonConsumtionCombi;
+                        totalConsumptionInput.value = totalCommonConsumtion.toFixed(3);
+
+                        if (qtyPcs) {
+                            qtyPcs.value = totalValue;
+                        }
+
+                    }
+                }
+            });
+        })
+        balanceStock();
+    }
+
+calculateTotalConsumption();
+    function balanceStock() {
+        var totals = document.getElementById('id_raw_materials-TOTAL_FORMS').value;
+
+        for (var i = 0; i < totals; i++) {
+            var totalConsumtionValue = document.getElementById('id_raw_materials-' + i + '-total_comsumption').value;
+            var newPhysicalStock = document.getElementById('id_raw_materials-' + i + '-physical_stock').value;
+            var balanceStock = document.getElementById('id_raw_materials-' + i + '-balance_physical_stock');
 
             balanceStock = newPhysicalStock - totalConsumtionValue;
             document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
-            if(balanceStock > 0){
+            if (balanceStock > 0) {
                 document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').style.color = 'green';
-            }else{
+            } else {
                 document.getElementById('id_raw_materials-' + i + '-balance_physical_stock').style.color = 'red';
             }
-            if(newPhysicalStock > 0){
+            if (newPhysicalStock > 0) {
                 document.getElementById('id_raw_materials-' + i + '-physical_stock').style.color = 'green';
-            }else{
-                document.getElementById('id_raw_materials-' + i + '-physical_stock').style.color = 'red'; 
+            } else {
+                document.getElementById('id_raw_materials-' + i + '-physical_stock').style.color = 'red';
             }
-            
-    }               
-}
-function submitForm(){
-    const ids = document.getElementById('id_raw_materials-0-id').value;
-    console.log(ids);
-    if(ids !== ""){
-        var submitButton = document.getElementById('id_submitPurchaseOrder');
-        submitButton.style.display = 'none';
-        var processQty = document.querySelectorAll('input[name$="-order_processed_quantity"]');
-        processQty.forEach(function(ele){
-            ele.style.border = 'none';
-            ele.style.background = 'transparent';
-            ele.style.outline = 'none';
-        })
+
+        }
     }
-}
+    function submitForm() {
+        const ids = document.getElementById('id_raw_materials-0-id').value;
+        console.log(ids);
+        if (ids !== "") {
+            var submitButton = document.getElementById('id_submitPurchaseOrder');
+            submitButton.style.display = 'none';
+            var processQty = document.querySelectorAll('input[name$="-order_processed_quantity"]');
+            processQty.forEach(function (ele) {
+                ele.style.border = 'none';
+                ele.style.background = 'transparent';
+                ele.style.outline = 'none';
+            })
+        }
+    }
 submitForm();
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"] , input[name$="-g_total_combi"]');
@@ -378,6 +388,15 @@ submitForm();
             document.forms[0].reset();
         }
     });
+    document.body.appendChild(document.getElementById('exampleModal'));
+    $(document).ready(function(){
+        $('#myProductForm').on('submit', function(){
+            var submitForm = $('#id_submitPurchaseOrder');
+            var newSpinner = $('#exampleModal');
+            newSpinner.show();
+            submitForm.val('Loading...');
+        })
+    })
 </script>
 {% endblock %}
 

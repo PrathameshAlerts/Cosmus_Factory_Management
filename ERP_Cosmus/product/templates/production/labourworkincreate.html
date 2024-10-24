@@ -200,7 +200,7 @@
         </div>
     </div>
 
-    <input type="submit" value="Submit" class="create-btn" id="id_submitLabourWorkIn">
+    <button type="submit" value="Submit" class="create-btn" id="id_submitLabourWorkIn">Submit</button>
 </form>
 
 <script>
@@ -390,6 +390,14 @@
             }
             
         })
+
+        $('labourWorkInForm').off('submit').on('submit', function () {
+            var $submitButton = $('#id_submitLabourWorkIn');  // The submit button
+            var originalButtonValue = $('#spinner');  // Store original button text
+
+            $submitButton.val('Loading...');
+            originalButtonValue.show();
+        });
     })
     window.addEventListener("pageshow", function(event) {
         if (event.persisted) {
