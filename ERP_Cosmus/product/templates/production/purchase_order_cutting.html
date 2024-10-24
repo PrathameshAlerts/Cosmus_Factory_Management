@@ -283,16 +283,28 @@
     <div class="d-flex mt-2">
         <label for="id_note" class="text-dark">Note :-</label>
         {% if not purchase_order_cutting_form.instance.raw_material_cutting_id %}
-        <textarea name="note" id="id_note" cols="10" rows="" class="form-control">{{purchase_order_cutting_form.instance.note | default_if_none:''}}</textarea>
+        <textarea name="note" id="id_note" cols="10" rows="" class="form-control ms-2">{{purchase_order_cutting_form.instance.note | default_if_none:''}}</textarea>
         {% elif purchase_order_cutting_form.instance.raw_material_cutting_id %}
         <span class="text-danger text-capitalize ms-2"> {{purchase_order_cutting_form.instance.note | default_if_none:''}}</span>
         {% endif %}
     </div>
-<input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrderCutting">
+    <div>
+        <button type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitPurchaseOrderCutting" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
+    </div>
+    
 </form>
-
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
+</div>
 
 <script>
+    document.body.appendChild(document.getElementById('exampleModal'));
 $(document).ready(function(){
         $('#id_raw_material_cutting_id').on('focusout',function(){
             var cutting_number = $(this).val();
@@ -327,11 +339,17 @@ $(document).ready(function(){
 
             })
 
-            $('#cuttingOrderForm').on('submit',function(){
-                $('#id_submitPurchaseOrderCutting').attr('disabled', 'disabled');
-            })
-           
+            
+            
         })
+        $('#cuttingOrderForm').off('submit').on('submit', function(e) {
+            var $submitButton = $('#id_submitPurchaseOrderCutting');  // The submit button
+            var originalButtonValue = $('#exampleModal');  // Store original button text
+          
+            $submitButton.val('Loading...');
+            originalButtonValue.show();
+        });
+
     })
 document.addEventListener('DOMContentLoaded', function() {
     var checkboxRows = document.querySelectorAll('.checkBox-row');
@@ -521,7 +539,7 @@ function updateCuttingQuantity(finalTotal){
                         }
                     } else {
                             totalConsumptionInput.value = '0.00';
-                        }
+                    }
                 }
             
             })

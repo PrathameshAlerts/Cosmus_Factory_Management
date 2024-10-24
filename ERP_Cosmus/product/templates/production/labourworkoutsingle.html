@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="" >
-    <form method="POST" autocomplete="off">
+    <form method="POST" autocomplete="off" id="labourWorkOutForm">
         {% csrf_token %}
        
         <div class="row">
@@ -220,8 +220,18 @@
             <span class="text-danger ms-2 text-capitalize"> {{labour_work_out_child_form.instance.note | default_if_none:''}}</span>{{labour_work_out_child_form.instance.note | default_if_none:''}}</spa>
             {% endif %}
         </div>
-        <input type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="Submit" id="id_submitLabourWorkOut">
+        <button type="submit" class="create-btn mt-3 mx-3" name="submit-form" value="submit" id="id_submitLabourWorkOut" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
     </form>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
 </div>
 <script>
 
@@ -307,6 +317,7 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
 </script>
 
 <script>
+document.body.appendChild(document.getElementById('exampleModal'));
  $(document).ready(function(){
 
         $('#id_challan_no').on('focusout',function(){
@@ -346,6 +357,13 @@ function populateDropdown(items, dropdownSelector, valueKey, defaultText) {
             })
             }
             
+        })
+        $('#labourWorkOutForm').off('submit').on('submit',function(){
+            var submitButton = $('#id_submitLabourWorkOut');
+            var forms = $('#exampleModal');
+    
+            submitButton.val('Loading...');
+            forms.show();
         })
     })
 

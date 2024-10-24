@@ -9,7 +9,7 @@
         <button class="item-btn" onclick="redirectVoucherCreate();">Create Invoice +</button>
         <div class="container-flex"> 
          <input class="" type="search" placeholder="Search" aria-label="Search" />
-           <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+         <input type="submit" class="mx-2"></input>
         </div>
         <button class="product-btn ml-3" onclick="redirectPurchaseFilter()">Clear Filter</button>
        </div>
@@ -77,10 +77,20 @@
       });
 
       // Confirm delete button click event
-      $('#confirmDeleteButton').click(function(){
+      $('#confirmDeleteButton').off('click').on('click', function(){
         var itemId = $(this).data('item-id');
+        var $this = $(this);
+        var spinner = $this.html();
+        $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
+        $this.prop('disabled', true);
           // Redirect to delete view
-          window.location.href = '/purchasevoucherdelete/' + itemId;
+          if(itemId){
+            $this.prop('disabled', false);
+            $this.html(spinner);
+            window.location.href = '/purchasevoucherdelete/' + itemId;
+
+          }
+          // window.location.href = '/purchasevoucherdelete/' + itemId;
       });
     });
 

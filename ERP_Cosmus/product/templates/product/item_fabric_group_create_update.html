@@ -14,7 +14,7 @@
         <label for="id_fab_grp_name" class=" item-form">Fabric Name:</label>
         <input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">
       </div>
-      <input type="submit" id="submitButtonFabricGroup" class="create-btn mt-4" name="save" value="Save">
+      <button type="submit" id="submitButtonFabricGroup" class="create-btn mt-4" name="save" value="Save">Save</button>
     </form>
   </div>
   <div class="col-lg-5 mt-4">
@@ -24,7 +24,7 @@
           <form method="GET">
             <div class="container-category ">
               <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="fabric_group_search" value="{{fabric_group_search | default_if_none:''}}" />
-              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+              <input type="submit" class="mx-2"></input>
             </div>
           </form>
           <button class="item-btn mx-2" onclick="redirecfabricFilter()">Clear Filter</button>

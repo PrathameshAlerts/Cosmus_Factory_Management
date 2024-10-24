@@ -11,7 +11,7 @@
         <form method="GET">
           <div class="container-flex">
             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" value="{{product_search | default_if_none:'' }}">
-            <button type="submit" class="mx-2"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <input type="submit" class="mx-2"></input>
           </div>
         </form>
         <button class="item-btn ms-4" onclick="redirectProductFilter()">Clear Filter</button>

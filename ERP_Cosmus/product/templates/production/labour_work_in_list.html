@@ -106,6 +106,10 @@ $(document).ready(function(){
 
     // Attach a one-time click event to the confirm delete button
     $('#confirmDeleteButton').off('click').on('click', function(){
+      var $this = $(this);
+      var openSpinner = $this.html();
+      $this.prop('disabled', true);
+      $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
       var labour_workin_pk = deleteBtn.data('item-id');
       var pendingValue = deleteBtn.closest('tr').find('.pendingValue').text();
       if(pendingValue !== '0'){
@@ -125,6 +129,10 @@ $(document).ready(function(){
           error: function(xhr, status, error){
             console.error("Error occurred: " + error);
             $('#modal-body-text').html('An error occurred. Please try again.');
+          },
+          complete: function(){
+            $this.prop('disabled', false);
+            $this.html(openSpinner);
           }
         });
       }else{

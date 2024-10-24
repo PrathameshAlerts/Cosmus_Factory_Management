@@ -10,7 +10,7 @@
                     <input type="number" name="gst_percentage" class="purchase-input" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}" step="0.01">    
                 </div>
             
-                <input type="submit" id="submitButtonGstCreate" class="create-btn " name="save" value="Save">
+                <button type="submit" id="submitButtonGstCreate" class="create-btn " name="save" value="Save">Save</button>
             
             </form>
 
@@ -22,7 +22,7 @@
                         <form method="GET">
                             <div class="container-cat"> 
                             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="gst_search" value="{{gst_search|default_if_none:''}}" />
-                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <input type="submit" class="mx-2"></input>
                             </div>
                         </form>
                         <button class="item-btn mx-2" onclick="redirectGstFilter()">Clear Filter</button>

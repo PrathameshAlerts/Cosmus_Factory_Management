@@ -19,7 +19,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
         <form method="GET">
           <div class="container-flex">
             <input type="search" placeholder="Search" name="item_search" aria-label="Search" value="{{item_search | default_if_none:''}}">
-            <button type="submit" class="mx-2"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <input type="submit" class="mx-2"></input>
           </div>
         </form>
         <button type="button" class="item-btn mb-2" onclick="redirectlistFilter()">Clear Filter</button>

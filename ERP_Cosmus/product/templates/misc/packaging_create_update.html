@@ -10,7 +10,7 @@
                 <label for="id_packing_material" class="item-form">Packaging :</label>
                 <input type="text" name="packing_material" class="item-select" required id="id_packing_material" value="{{form.instance.packing_material}}">
             </div>
-            <input type="submit" id="submitButtonPackagingCreate" class="create-btn mt-4" name="save" value="Save">
+            <button type="submit" id="submitButtonPackagingCreate" class="create-btn mt-4" name="save" value="Save">Save</button>
         </form>
     </div>
     <div class="col-lg-5 mt-2">
@@ -21,7 +21,7 @@
                         <div class="container-category ">
                             <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search"
                                 name="packaging_search" value="{{packaging_search|default_if_none:''}}" />
-                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <input type="submit" class="mx-2"></input>
                         </div>
                     </form>
                     <button class="item-btn mx-2" onclick="redirectPackagingFilter()">Clear Filter</button>
