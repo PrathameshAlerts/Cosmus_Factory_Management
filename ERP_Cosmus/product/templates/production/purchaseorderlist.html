@@ -108,25 +108,39 @@
         var name = $(this).closest('tr').find('td').eq(2).text();
         var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
         var oderedIdDelete = $(this).closest('tr').find('.purchaseOderDelete').val();
-        if(oderedIdDelete == 'True'){
-          $('#modal-body-text').html('Can not delete the Purchase Order ' + coloredName + '?');
-          $('#confirmDeleteButton').hide();
-          $('#noButton').hide();
-        }else{
+    
           $('#modal-body-text').html('Are you sure you want to delete the Purchase Order ' + coloredName + '?');
-          $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
-          $('#confirmDeleteModal').modal('show');
+          // $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+          $('#exampleModal').modal('show');
+      // Confirm delete button click event
+      $('#confirmDeleteButton').off('click').on('click', function(){
+        //var itemId = $(this).data('item-id');
+        var $this = $(this);
+        var openSpinner = $this.html();
+     
+       
+        console.log(oderedIdDelete);
+        if(oderedIdDelete == 'False'){
+          $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
+          $this.prop('disabled', true);
+          
+          window.location.href = '/purchaseorderdelete/' + itemId;
+        }else{
+          $('#modal-body-text').html('Cannot delete this approved cutting ' + coloredName + '.');
+          $('.modal-footer').hide();
+          $this.html(openSpinner);
+        $('.btn-close').on('click', function(){
+          $('.modal-footer').show();
+          $('.btn-close').off('click');
+        });
         }
+   
+         
+      })
           
       });
 
-      // Confirm delete button click event
-      $('#confirmDeleteButton').click(function(){
-        var itemId = $(this).data('item-id');
-          console.log(itemId);
-          // Redirect to delete view
-          window.location.href = '/purchaseorderdelete/' + itemId;
-      });
+    ;
   });
 </script>
 

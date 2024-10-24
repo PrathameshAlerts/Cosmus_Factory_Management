@@ -5725,7 +5725,7 @@ def finished_goods_vendor_model_wise_report(request, vendor_id, ref_no):
                 'GRN_No':instance.labour_workout.challan_no,
                 'date':instance.labour_workout.created_date,
                 'description' : 'LWI',
-                'SKU No' : instance.product_sku,
+                'SKU_No' : instance.product_sku,
                 'Quantity': instance.processed_pcs
             }
             queryset_list.append(dict_to_append)
@@ -5736,7 +5736,7 @@ def finished_goods_vendor_model_wise_report(request, vendor_id, ref_no):
                 'GRN_No' : instance.labour_workin_instance.voucher_number,
                 'date':instance.labour_workin_instance.created_date,
                 'description': 'LWO',
-                'SKU No': instance.product_sku,
+                'SKU_No': instance.product_sku,
                 'Quantity': instance.return_pcs
             }
             queryset_list.append(dict_to_append)
