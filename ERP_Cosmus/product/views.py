@@ -5710,37 +5710,63 @@ def finished_goods_vendor_model_wise_report(request, vendor_id, ref_no):
 
 
     if ref_no is not None and vendor_id is not None:
-        queryset_list = []
 
-        labour_workout_instances = product_to_item_labour_child_workout.objects.filter(labour_workout__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no, labour_workout__labour_name__id=vendor_id)
-
-        labour_workin_instances = labour_work_in_product_to_item.objects.filter(labour_workin_instance__labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no,labour_workin_instance__labour_voucher_number__labour_name__id=vendor_id)
+        labour_workout_instances = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no, labour_name__id = vendor_id)
+        
+        # labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no,labour_workin_instance__labour_voucher_number__labour_name__id=vendor_id)
 
         product_instance = get_object_or_404(Product,Product_Refrence_ID=ref_no)
         reference_no = ref_no
         model_number = product_instance.Model_Name
 
+        SKU_List = []
+
+        for sku_instance in product_instance.productdetails.all():
+            SKU_List.append(sku_instance.PProduct_SKU)
+
+        queryset_list = []
         for instance in labour_workout_instances:
             dict_to_append = {
-                'GRN_No':instance.labour_workout.challan_no,
-                'date':instance.labour_workout.created_date,
-                'description' : 'LWI',
-                'SKU_No' : instance.product_sku,
-                'Quantity': instance.processed_pcs
+                'GRN_No': instance.challan_no,
+                'date':instance.created_date,
+                'description' : 'LWO',
             }
+        
+            product_qty = {}
+
+            sku_to_processed_pcs = dict(instance.labour_workout_child_items.values_list('product_sku', 'processed_pcs'))
             
+            for x in SKU_List:
+
+                sku = str(x)  # Ensure the SKU is a string, if necessary
+
+                if sku in sku_to_processed_pcs: # change from querylist to python list
+        
+                    product_qty[sku] = sku_to_processed_pcs[sku]
+                    
+                else:
+                    product_qty[sku] = 0
+
+            dict_to_append['sku_qty'] = product_qty
+           
             queryset_list.append(dict_to_append)
 
-        for instance in labour_workin_instances:
 
-            dict_to_append = {
-                'GRN_No' : instance.labour_workin_instance.voucher_number,
-                'date':instance.labour_workin_instance.created_date,
-                'description': 'LWO',
-                'SKU_No': instance.product_sku,
-                'Quantity': instance.return_pcs
-            }
-            queryset_list.append(dict_to_append)
+                
+
+                
+
+        #     queryset_list.append(dict_to_append)
+
+        # for instance in labour_workin_instances:
+
+        #     dict_to_append = {
+        #         'GRN_No' : instance.voucher_number,
+        #         'date':instance.created_date,
+        #         'description': 'LWO',
+        #     }
+        #     queryset_list.append(dict_to_append)
+
 
         report_data_sorted = sorted(queryset_list, key = itemgetter('date'), reverse=False)
 
