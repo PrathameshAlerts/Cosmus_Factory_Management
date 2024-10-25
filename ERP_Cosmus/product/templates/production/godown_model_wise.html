@@ -9,6 +9,8 @@ Model Name - {{product_instance.Model_Name}} -->
 <div class="mt-2">
 <label class="fw-bold">Ref No :</label><span class="text-danger ms-2 refId"> {{product_instance.Product_Refrence_ID}}</span>
 <label class="fw-bold ms-3">Model Name :</label><span class="text-danger ms-2">{{product_instance.Model_Name}}</span>
+
+
         <label class="fw-bold ps-3">Images :</label>
         {% for instance in product_instance.productdetails.all %}
         {% if instance.PProduct_image.url is not None %}
@@ -25,7 +27,6 @@ Model Name - {{product_instance.Model_Name}} -->
         <thead class="name_absolute sticky-top">
             <tr>
                 <th>PO No</th>
-                <th>GRN No</th>
                 <th>Challan No</th>
                 <th>Date</th>
                 <th>Vendor Name</th>
@@ -40,18 +41,17 @@ Model Name - {{product_instance.Model_Name}} -->
         <tbody class="mainTableList" id="tableLabourWorkinId">
             {% for instance in purchase_instances %}
             <tr>
-                <td>{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
-                <td>{{instance.voucher_number}}</td>
-                <td>{{instance.labour_voucher_number.challan_no}}</td>
+                <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+                <td>{{instance.challan_no}}</td>
                 <td>{{instance.created_date}}</td>
-                <td>{{instance.labour_voucher_number.labour_name.name}}</td>
-                <td>{{instance.labour_voucher_number.total_process_pcs}}</td>
-                <td>{{instance.total_return_pcs}}</td>
+                <td>{{instance.labour_name.name}}</td>
+                <td>{{instance.total_process_pcs}}</td>
+                <td>{{instance.total_return_pcs_1|default_if_none:'0'}}</td>
                 <td></td>
                 <td></td>
-                <td>{{instance.total_balance_to_vendor}}</td>
+                <td>{{instance.total_balance_to_vendor|default_if_none:'0'}}</td>
                 <td></td>
-                    <input type="hidden" class="godownId" value="{{instance.labour_voucher_number.labour_name.id}}">
+                    <input type="hidden" class="godownId" value="{{instance.challan_no}}">
             </tr>
             {% endfor %}
         </tbody>
@@ -72,7 +72,7 @@ Model Name - {{product_instance.Model_Name}} -->
                 var godownId = item.querySelector('.godownId').value;
                 var refIds = $('.refId').text();
                 var newrefIds = parseInt(refIds);
-                window.location.href = "/finishedgoodsgodownproductrefvendorwisereport/" + godownId + "/" + newrefIds;
+                window.location.href = "/finishedgoodsgodownproductrefvendorwisereport/" + newrefIds + "/" + godownId;
             })
         })
    
