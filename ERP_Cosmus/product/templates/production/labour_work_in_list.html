@@ -158,11 +158,36 @@ $(document).ready(function(){
     });
     
   });
-  $('.item-btn, .viewBtn').click(function(){
+  // $('.item-btn, .viewBtn').click(function(){
+  //   var newSpinner = $('#exampleModalSpinner');
+  //   newSpinner.show();
+  //   history.pushState(null, null);  // Push a new state to handle the back button properly
+  // })
+});
+document.addEventListener('DOMContentLoaded', function() {
+  let statePushed = false;  // Flag to prevent multiple pushState calls
+
+  // Show spinner on button click
+  $('.item-btn, .viewBtn').click(function() {
     var newSpinner = $('#exampleModalSpinner');
-    newSpinner.show();
-    history.pushState(null, null);  // Push a new state to handle the back button properly
-  })
+    newSpinner.modal('show');  // Show the modal with the spinner
+
+    // Only push state the first time the spinner is shown
+    if (!statePushed) {
+      history.pushState(null, null, location.href);
+      statePushed = true;  // Set flag to true after pushing state
+    }
+  });
+
+  // Hide spinner when back button or browser left arrow is clicked
+  window.addEventListener('popstate', function() {
+    var newSpinner = $('#exampleModalSpinner');
+    console.log("popstate");
+    if (newSpinner.hasClass('show')) {
+      newSpinner.modal('hide');  // Hide the spinner modal
+      statePushed = false;  // Reset flag to allow pushState on next navigation
+    }
+  });
 });
 
 function totalBalanceCheck(){

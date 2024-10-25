@@ -6,13 +6,14 @@
 <form method="POST" autocomplete="off">
     {% csrf_token %}
 
-    <h2 class="mb-3 mt-3">Goods Return Pcs</h2>
-    <div>
+   
+    <div class="d-flex mb-3 mt-3">
+        <h2 class=" ">Goods Return Pcs</h2>
         <select name="godown_name_post" class="item-select mx-3" required id="id_godown_name_post" >
             {% for record in finished_goods_godowns %}
             <option class="item-select" value="{{record.id}}">{{record.godown_name_finished}}</option>
             {% endfor %}
-          </select>
+        </select>
     </div>
     <div class="row">
         <div class="col-lg-7">

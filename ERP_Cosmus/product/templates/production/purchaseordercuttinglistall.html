@@ -17,9 +17,9 @@
 
 <div>
     <div class="d-flex my-3">
-        <button  class=" border-0 py-1 px-3 rounded-2" style="margin-left: 100px; background-color: rgb(69, 105, 34);"><a class="text-decoration-none text-white " href="{% url 'cutting-room-qty' %}">Cutting Qty</a></button>
+        <button  class=" border-0 py-1 px-3 rounded-2 cuttingQtybtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner" style="margin-left: 100px; background-color: rgb(69, 105, 34);"><a class="text-decoration-none text-white " href="{% url 'cutting-room-qty' %}">Cutting Qty</a></button>
        
-        <button  class=" border-0 py-1 px-3 rounded-2" style="margin-left: 830px; background-color: rgba(167, 25, 25, 0.7);"><a class="text-decoration-none text-white " href="{% url 'pending-approv-all' %}">CAP List</a></button>     
+        <button  class=" border-0 py-1 px-3 rounded-2 cuttingApprovalbtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner" style="margin-left: 830px; background-color: rgba(167, 25, 25, 0.7);"><a class="text-decoration-none text-white " href="{% url 'pending-approv-all' %}">CAP List</a></button>     
     </div>
      <div class="">
         <button type="button" class="edit_btn w-100 mb-3" id="purchaseOrderCuttingPending_btn">Purchase Order Cutting - Pending<span class="purchaseOrderCuttingpendingArrow"><i class="fas fa-angle-right arrowBtn"></i></span></button>
@@ -135,6 +135,16 @@
       </div>
     </div>
 </div>
+<div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
+</div> 
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     function toggleVisible(toggleButtonId, dataContainerId) {
@@ -159,7 +169,7 @@
 </script>
  <script>
     document.body.appendChild(document.getElementById('exampleModal'));
-    
+    document.body.appendChild(document.getElementById('exampleModalSpinner'));
     $(document).ready(function(){
         $('.delete-btn').click(function(){
             var itemId = $(this).data('item-id');
@@ -179,7 +189,31 @@
         });
     });
      
+    document.addEventListener('DOMContentLoaded', function() {
+  let statePushed = false;  // Flag to prevent multiple pushState calls
 
+  // Show spinner on button click
+  $('.cuttingQtybtn, .cuttingApprovalbtn').click(function() {
+    var newSpinner = $('#exampleModalSpinner');
+    newSpinner.modal('show');  // Show the modal with the spinner
+
+    // Only push state the first time the spinner is shown
+    if (!statePushed) {
+      history.pushState(null, null, location.href);
+      statePushed = true;  // Set flag to true after pushing state
+    }
+  });
+
+  // Hide spinner when back button or browser left arrow is clicked
+  window.addEventListener('popstate', function() {
+    var newSpinner = $('#exampleModalSpinner');
+    console.log("popstate");
+    if (newSpinner.hasClass('show')) {
+      newSpinner.modal('hide');  // Hide the spinner modal
+      statePushed = false;  // Reset flag to allow pushState on next navigation
+    }
+  });
+});
     </script>
 
 
