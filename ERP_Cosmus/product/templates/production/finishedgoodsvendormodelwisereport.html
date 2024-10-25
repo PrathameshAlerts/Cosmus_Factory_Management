@@ -7,30 +7,62 @@
     <label class="fw-bold ms-3">Model Name :</label><span class="text-danger ms-2 fw-bold">{{model_number}}</span>
 </div>
 <div class="mb-3 mt-2">
-<table class="table table-striped table-hover table-bordered">
-    <thead class="name_absolute sticky-top">
-        <tr>
-            <th>GRN No / V No</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Sku</th>
-            <th>Qty</th>
-        </tr>
-    </thead>
-    <tbody class="mainTableList">
-        {% for instance in report_data_sorted %}
-        <tr>
-            <td>{{instance.GRN_No}}</td>
-            <td>{{instance.date}}</td>
-            <td>{{instance.description}}</td>
-            <td>{{instance.SKU_No}}</td>
-            <td>{{instance.Quantity}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>    
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table table-striped table-hover table-bordered" id="tableSkuId">
+                <thead class="name_absolute sticky-top">
+                    <tr id="tableHeaders">
+                        <th>GRN No / V No</th>
+                        <th>Date</th>
+                        <th>Description</th>
+            
+                    </tr>
+                </thead>
+                <tbody class="mainTableList" >
+                    <input type="hidden" name="instanceId" class="godownId" id="godownIds" value="{{report_data_sorted}}">
+                    {% for instance in report_data_sorted %}
+                    <tr>
+                        <td>{{ instance.GRN_No }}</td>
+                        <td>{{ instance.date }}</td>
+                        <td>{{ instance.description }}</td>
+                       
+                    </tr>
+                    <!-- <input type="hidden" name="instanceId" class="godownId" id="godownId-{{ forloop.counter }}" value=""> -->
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+   
 </div>
 
+<script>
+   function SkuTypeTable() {
+    var tableHeaderRow = document.getElementById('tableHeaders');
+    var skuData = document.querySelector('.godownId');
 
+    var headersAdded = skuData.value;
+    console.log(headersAdded)
+    for (var skuId in headersAdded) {
+        if (headersAdded.hasOwnProperty(skuId)) {
+            // Check if a header for this SKU already exists to avoid duplicates
+            if (!document.getElementById('header-' + skuId)) {
+                // Create a new <th> element with SKU ID and quantity as text
+                var th = document.createElement('th');
+                th.textContent = `${skuId} (${headersAdded[skuId]})`; // Display SKU ID and quantity
+                th.id = 'header-' + skuId; // Set a unique ID to prevent duplicates
+
+                // Append <th> to the table header row
+                tableHeaderRow.appendChild(th);
+            }
+        }
+    }
+}
+
+SkuTypeTable();
+
+
+</script>
 
 {% endblock body %}
