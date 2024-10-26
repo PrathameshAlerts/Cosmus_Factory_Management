@@ -80,8 +80,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-danger" id="staticBackdropLabel">Approved Logs</h1>
-          <label for="">Cuting V No.</label>
-          <span>{{cutting_pk_no}}</span>
+          <lable class="fw-bold ms-5">Cutting V No :</lable><span class="text-danger ms-2 fw-bold" id="cuttingVNo"></span>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -92,6 +91,7 @@
                   <th>Date</th>
                   <th>Approved By</th>
                   <th>Approved QTY</th>
+                  <th>Balance QTY</th>
                 </tr>
               </thead>
               <tbody class="mainTableList" id="approvalDataLogs">
@@ -320,12 +320,13 @@ function cancelCutting(){
           console.log('allApproveLogs',allApproveLogs)
           var newTable = document.getElementById('approvalDataLogs'); 
           newTable.innerHTML = ''; // Clear previous table rows
-          
+    
+           document.getElementById('cuttingVNo').textContent = cuttingoderId; 
           allApproveLogs.forEach(function(items, index) {
               var approveDate = new Date(items.Approved_Date).toLocaleDateString(); // Format the date
               var approveName = items.Approved_Name || 'N/A';  // Default if undefined
               var approveQty = items.Approved_Qty || 0;        // Default to 0 if undefined
-
+              var balanceQty = items.pending_Qty || 0;        // Default to 0 if undefined
               var row = document.createElement('tr'); // Create a new row
 
               // Create cells and set their content
@@ -337,11 +338,15 @@ function cancelCutting(){
 
               var cell3 = document.createElement('td');
               cell3.textContent = approveQty;
+              
+              var cell4 = document.createElement('td');
+              cell4.textContent = balanceQty;
 
               // Append cells to the row
               row.appendChild(cell1);
               row.appendChild(cell2);
               row.appendChild(cell3);
+              row.appendChild(cell4);
 
               // Append the row to the table
               newTable.appendChild(row);
