@@ -3487,9 +3487,6 @@ def excel_download_production(request, module_name, pk):
             sheet.cell(row=row_num, column = 7).border = thin_border
             
 
-
-
-
             
             if length_queryset < 6:
 
@@ -3946,12 +3943,14 @@ def excel_download_production(request, module_name, pk):
             
             sheet.cell(row=3, column=1).value = f'Vendor Name : {labour_workout_instance.labour_name.name}'
             
-            sheet.cell(row=4, column=1).value = f'Ref No : {labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}, Model Name : {labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}'
+            sheet.cell(row=4, column=1).value = f'Ref No : {labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}'
             
-            sheet.cell(row=5, column=1).value = f'No of Pcs : {labour_workout_instance.total_process_pcs}'
+            sheet.cell(row=5, column=1).value = f'Model Name : {labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}'
+
+            sheet.cell(row=6, column=1).value = f'No of Pcs : {labour_workout_instance.total_process_pcs}'
             
 
-            for cell in range(1,6):
+            for cell in range(1,7):
                 sheet.cell(row=cell, column=1).border = thin_border
                 sheet.cell(row=cell, column=2).border = thin_border
                 sheet.cell(row=cell, column=3).border = thin_border
@@ -4047,7 +4046,7 @@ def excel_download_production(request, module_name, pk):
             
             for index, instance in enumerate(product_2_item_through_table.objects.filter(
                 PProduct_pk__Product__Product_Refrence_ID=labour_workout_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.
-                product_reference_number.Product_Refrence_ID, Remark='BODY'), start = 7):
+                product_reference_number.Product_Refrence_ID, Remark='BODY'), start = 8):
                 
                 sheet.cell(row=index , column=1).value = instance.Item_pk.item_name
                 
@@ -4056,9 +4055,9 @@ def excel_download_production(request, module_name, pk):
                 product_reference_number.Product_Refrence_ID, Remark='BODY'))
 
             
-            if qs_length < len_items + 7:
+            if qs_length < len_items + 8:
 
-                start_row_items = len_items + 8
+                start_row_items = len_items + 9
             else:
                 start_row_items = qs_length + 4
                 
@@ -4174,6 +4173,7 @@ def excel_download_production(request, module_name, pk):
         return response
     
     else:
+
         return HttpResponse('INVALID ENTRY')
 
 
@@ -4740,10 +4740,11 @@ def purchaseordercuttingapprovalcheckajax(request):
                 'Approved_Date': x.created_date,
                 'Approved_Name': 'approved name',  
                 'Approved_Qty': x.total_approved_pcs,
+                'pending_Qty': x.total_pending_pcs
             }
             approval_data.append(dict_to_append)
 
-        return JsonResponse({'status': 'success','approval_data': approval_data})
+        return JsonResponse({'status': 'success','approval_data': approval_data,'cutting_pk_no':cutting_pk_no})
 
     except ObjectDoesNotExist as e:
         logger.error(f'Record not found: {e}')
@@ -5544,7 +5545,21 @@ def labourworkinpurchaseorderlist(request,p_o_no):
 
     labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
 
-    return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,'purchase_order_instance':purchase_order_instance})
+    lab_workout_master = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
+    total_lab_qty = 0
+    for instance in lab_workout_master:
+        total_lab_qty = total_lab_qty + instance.total_process_pcs
+
+
+    lab_work_in_qty = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
+    total_lab_workin_qty = 0
+    for instance in lab_work_in_qty:
+        total_lab_workin_qty = total_lab_workin_qty + instance.total_return_pcs
+
+    balance_qty = total_lab_qty - total_lab_workin_qty
+
+    return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,
+                    'purchase_order_instance':purchase_order_instance, 'total_lab_qty':total_lab_qty, 'total_lab_workin_qty':total_lab_workin_qty, 'balance_qty':balance_qty })
 
 
 
@@ -5600,7 +5615,7 @@ def labourworkinsingledeleteajax(request):
 @login_required(login_url='login')
 def goods_return_pending_list(request):
 
-    labour_workin_instances = labour_work_in_master.objects.all().annotate(total_approved_pcs = Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval'))
+    labour_workin_instances = labour_work_in_master.objects.annotate(total_approved_pcs = Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval')).filter(pending_for_approval_pcs__gt = 0)
     return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances})
 
 
