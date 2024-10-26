@@ -5693,6 +5693,18 @@ def finished_goods_godown_wise_report(request, g_id):
     return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity})
 
 
+def finished_goods_godown_wise_report_all(request):
+    
+    product_quantity = Product.objects.annotate(total_quantity_product=Sum(
+        'productdetails__godown_colors__quantity'))
+    
+
+
+    return render(request,'production/labour_workout_report.html', {'product_quantity' : product_quantity})
+
+
+
+
 def finished_goods_godown_product_ref_wise_report(request, ref_no):
 
     if ref_no:
@@ -5721,7 +5733,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
         SKU_List = []
 
-        for sku_instance in product_instance.productdetails.all():
+        for sku_instance in product_instance.productdetails.all().order_by('PProduct_SKU'):
             SKU_List.append(sku_instance.PProduct_SKU)
 
         queryset_list = []
@@ -5742,6 +5754,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
             else:
                 labour_workout_p_2_i[sku] = 0
 
+
         for instance in labour_workin_instances:
             dict_to_append = {
                 'GRN_No': instance.voucher_number,
@@ -5749,7 +5762,6 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
                 'description' : 'LWI',
             }
         
-
             product_qty = {}
 
             sku_to_processed_pcs = dict(instance.l_w_in_products.values_list('product_sku', 'return_pcs'))
@@ -5773,13 +5785,9 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
         report_data_sorted = sorted(queryset_list, key = itemgetter('date'), reverse=False)
 
-    
 
-
-
-        print(report_data_sorted)
         return render(request,'production/finishedgoodsvendormodelwisereport.html',{'report_data_sorted':report_data_sorted, 'reference_no':reference_no, 
-                                                                                    'model_number':model_number,'total_labour_workout':total_labour_workout,'labour_workout_p_2_i':labour_workout_p_2_i,})
+                                                                                    'model_number':model_number,'total_labour_workout':total_labour_workout,'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List})
 
 
 

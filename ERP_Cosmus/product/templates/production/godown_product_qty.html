@@ -9,7 +9,7 @@
             <h4>Finish Goods</h4>-<span class="text-danger fw-bold"></span>
         </div>
          
-        <table class="table table-striped table-hover table-bordered" id="goodsReports">
+        <table class="table table-striped table-hover table-bordered" >
             <thead class="name_absolute sticky-top">
                 <tr>
                     <th>No</th>
@@ -22,7 +22,7 @@
                     <th>Unfinished Stage</th>
                 </tr>
             </thead>
-            <tbody class="mainTableList">
+            <tbody class="mainTableList" id="goodsReports">
                 {% for record in product_quantity %}
                 <tr id="refrenceIds">
                     <td>{{forloop.counter}}</td>
@@ -40,20 +40,6 @@
     </div>
 </div>
 
-<script>
-    function referenceButtonClick(){
-        var goodsReports = document.querySelector('.mainTableList tr');
-       
-            goodsReports.style.cursor = 'pointer';
-            document.getElementById('goodsReports').addEventListener('click',function(event){
-                event.preventDefault();
-                var refrenceId = goodsReports.querySelector('.refrenceId').textContent;
-                var refId = parseInt(refrenceId);
-                console.log(typeof(refId));
-                window.location.href = "/finishedgoodsgodownproductrefwisereport/" + refId;
-            })
-    }
-    referenceButtonClick();
-</script>
+
 
 {% endblock %}
