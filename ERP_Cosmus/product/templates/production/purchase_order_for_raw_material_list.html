@@ -194,24 +194,41 @@
             window.location.href = '/purchaseorderforrawmaterialdelete/' + itemId;
         });
       
-        $('.AddButtonNewOrderClick').on('click',function(){
-            var spinner = $('#exampleModalSpinner');
-            spinner.show();
-        });
-        $('.editButtonNewOrderClick').on('click',function(){
-            var spinner = $('#exampleModalSpinner');
-            spinner.show();
-        })
+        // $('.AddButtonNewOrderClick').on('click',function(){
+        //     var spinner = $('#exampleModalSpinner');
+        //     spinner.show();
+        // });
+        // $('.editButtonNewOrderClick').on('click',function(){
+        //     var spinner = $('#exampleModalSpinner');
+        //     spinner.show();
+        // })
   
     });
-//     window.addEventListener('popstate', function(event) {
-//   // If the modal is open, close it
-//         var modal = $('#exampleModalSpinner');
-//         if (modal) {
-//             modal.hide();
-//         }
-//         });
-        
+document.addEventListener('DOMContentLoaded', function() {
+  let statePushed = false;  // Flag to prevent multiple pushState calls
+
+  // Show spinner on button click
+  $('.AddButtonNewOrderClick, .editButtonNewOrderClick').click(function() {
+    var newSpinner = $('#exampleModalSpinner');
+    newSpinner.modal('show');  // Show the modal with the spinner
+
+    // Only push state the first time the spinner is shown
+    if (!statePushed) {
+      history.pushState(null, null, location.href);
+      statePushed = true;  // Set flag to true after pushing state
+    }
+  });
+
+  // Hide spinner when back button or browser left arrow is clicked
+  window.addEventListener('popstate', function() {
+    var newSpinner = $('#exampleModalSpinner');
+    console.log("popstate");
+    if (newSpinner.hasClass('show')) {
+      newSpinner.modal('hide');  // Hide the spinner modal
+      statePushed = false;  // Reset flag to allow pushState on next navigation
+    }
+  });
+});
     </script>
 
 

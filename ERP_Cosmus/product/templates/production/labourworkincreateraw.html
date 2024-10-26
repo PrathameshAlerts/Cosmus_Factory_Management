@@ -85,8 +85,8 @@
                             <th>Product Sku</th>
                             <th>Color</th>
                             <th>Issue QTY</th>
+                            <th>Received QTY</th>
                             <th>Balance QTY</th>
-                            <th>Current Balance</th>
                             <th>Return QTY</th>
                         </tr>
                     </thead>
@@ -137,13 +137,17 @@
 </div>
 <script>
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
-    document.getElementById("id_labour_charges").addEventListener('click', CalculateAmount);
- 
+    document.getElementById("id_labour_charges").addEventListener('input', CalculateAmount);
+
+   
     function CalculateAmount() {
+        var totalReceivedPc = document.getElementById('id_total_return_pcs').value || 0;
         var labour_charges = document.getElementById('id_labour_charges').value;
         var other_charges = document.getElementById('id_other_charges').value;
-        console.log(labour_charges, other_charges)
-        var amounts = parseFloat(labour_charges) + parseFloat(other_charges);
+        console.log(totalReceivedPc, other_charges)
+        var newAmount = parseFloat(totalReceivedPc) * parseFloat(labour_charges);
+        console.log('newAmount',newAmount)
+        var amounts = newAmount + parseFloat(other_charges);
         document.getElementById('id_amount').value = amounts;
     }
 
@@ -252,11 +256,8 @@ $(document).ready(function () {
                 );
                 tables.append(newRows);
             })
-            $('#tableLabourWorkinId').on('click', function(){
-                
-               
-               })
-            $('#tableLabourWorkinId').show().mouseover(function(){
+    
+            $('#tableLabourWorkinIdBody').show().mouseover(function(){
                 // var balanceValue = $(this).find('#tableLabourWorkinIdBody').find('tr');
                 // console.log('balanceValue',balanceValue);
                 // balanceValue.each(function(){
@@ -412,19 +413,19 @@ $(document).on('click', '.search-input',function(){
             $.each(challan_instance, function (key, value) {
         
                 var newRows = $('<tr>').append(
-                $('<td>').text(value.Challan_No || 'N/A'),
-                $('<td>').text(value.PO_No || 'N/A'),
-                $('<td>').text(value.PO_Total_QTY || 'N/A'),
+                $('<td>').text(value.Challan_No || ''),
+                $('<td>').text(value.PO_No || ''),
+                $('<td>').text(value.PO_Total_QTY || '0'),
                 $('<td>').text(value.Ref_No || 'N/A'),
                 $('<td>').text(value.Model_Name || 'N/A'),
-                $('<td>').text(value.Issued_QTY || 'N/A'),
-                $('<td>').text(value.Rec_QTY || 'N/A'),
-                $('<td>').text(value.Balance_QTY || 'N/A'),
-                $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || 'N/A')  
+                $('<td>').text(value.Issued_QTY || '0'),
+                $('<td>').text(value.Rec_QTY || '0'),
+                $('<td>').text(value.Balance_QTY || '0'),
+                $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || '')  
                 );
                 tables.append(newRows);
             })
-            $('#tableLabourWorkinId').show().mouseover(function(){
+            $('#tableLabourWorkinIdBody').show().mouseover(function(){
 
                 $(this).find('tr').css('cursor', 'pointer');
             });
@@ -444,7 +445,7 @@ $(document).on('click', '.search-input',function(){
         }    
     })
 
-    $('#tableLabourWorkinId').on('click', 'tr', function () {
+    $('#tableLabourWorkinIdBody').on('click', 'tr', function () {
     var labourWorkOutId = $(this).find('#id_labour_workout_id').val();
 
         $.ajax({
@@ -550,6 +551,7 @@ function CalculateTotalValue() {
 
     document.getElementById('id_total_return_pcs').value = total;
     document.getElementById('id_total_balance_pcs').value = pendingPc;
+    CalculateAmount();
 }
 window.addEventListener("pageshow", function(event) {
         if (event.persisted) {

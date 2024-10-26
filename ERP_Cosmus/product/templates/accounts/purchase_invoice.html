@@ -611,15 +611,13 @@ function randomValue (){
 
         if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
-        console.log('selectedValue',selectedValue);
-           var namevalueCheck = selectedValue.match(/[a-zA-Z\s]+/g).join(' ');
-                var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
-          console.log('numberValue',numberValue)
-              
 
-               var valueKey = namevalueCheck + ' ' + numberValue ;
+        var namevalueCheck = selectedValue.match(/[a-zA-Z\s]+/g).join(' ');
+        var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
+
+        var valueKey = namevalueCheck + ' ' + numberValue ;
             
-         $(`input[name^="item_name_${purchaseValue}"]`).val(valueKey);
+        $(`input[name^="item_name_${purchaseValue}"]`).val(valueKey);
 
         $.ajax({
             url: '/purchasevouchercreate/',
