@@ -13,6 +13,10 @@
         {% for img in purchase_order_instance.product_reference_number.productdetails.all %}
         <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
         {% endfor %}
+
+        <span>Total LWO QTY : {{total_lab_qty}} </span>
+        <span>Total LWI QTY : {{total_lab_workin_qty}}</span>
+        <span>Balance Qty : {{balance_qty}}</span>
     </div>
     <div class="row">
         <div class="col-lg-12">
