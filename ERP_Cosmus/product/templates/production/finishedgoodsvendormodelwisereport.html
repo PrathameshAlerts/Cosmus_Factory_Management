@@ -5,62 +5,52 @@
 <div class="mt-2">
     <label class="fw-bold">Ref No :</label><span class="text-danger ms-2 refId fw-bold">{{reference_no}}</span>
     <label class="fw-bold ms-3">Model Name :</label><span class="text-danger ms-2 fw-bold">{{model_number}}</span>
+    <label class="fw-bold ms-3">Total Labour workout :</label><span
+        class="text-danger ms-2">{{total_labour_workout.total_process_pcs}}</span>
 </div>
 <div class="mb-3 mt-2">
     <div class="row">
-        <div class="col-lg-6">
-            <table class="table table-striped table-hover table-bordered" id="tableSkuId">
+        <div class="col-lg-8">
+            <table class="table table-striped table-hover table-bordered text-center">
                 <thead class="name_absolute sticky-top">
-                    <tr id="tableHeaders">
+                    <tr>
                         <th>GRN No / V No</th>
                         <th>Date</th>
                         <th>Description</th>
-            
+                        {% for header in SKU_List %}
+                        <th>{{ header }}</th>
+                        {% endfor %}
                     </tr>
                 </thead>
-                <tbody class="mainTableList" >
-                    <input type="hidden" name="instanceId" class="godownId" id="godownIds" value="{{report_data_sorted}}">
-                    {% for instance in report_data_sorted %}
+                <tbody class="mainTableList">
                     <tr>
-                        <td>{{ instance.GRN_No }}</td>
-                        <td>{{ instance.date }}</td>
-                        <td>{{ instance.description }}</td>
-                       
+                        <td></td>
+                        <td></td>
+                        <td>LWO</td>
+                        {% for key,val in labour_workout_p_2_i.items %}
+                        <td>{{ val }}</td>
+                        {% endfor %}
                     </tr>
-                    <!-- <input type="hidden" name="instanceId" class="godownId" id="godownId-{{ forloop.counter }}" value=""> -->
+                    {% for data in report_data_sorted %}
+                    <tr>
+                        <td>{{ data.GRN_No}}</td>
+                        <td>{{ data.date}}</td>
+                        <td>{{ data.description}}</td>
+                        {% for key,val in data.sku_qty.items %}
+                        <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            
         </div>
     </div>
-   
+
 </div>
 
 <script>
-   function SkuTypeTable() {
-    var tableHeaderRow = document.getElementById('tableHeaders');
-    var skuData = document.querySelector('.godownId');
 
-    var headersAdded = skuData.value;
-    console.log(headersAdded)
-    for (var skuId in headersAdded) {
-        if (headersAdded.hasOwnProperty(skuId)) {
-            // Check if a header for this SKU already exists to avoid duplicates
-            if (!document.getElementById('header-' + skuId)) {
-                // Create a new <th> element with SKU ID and quantity as text
-                var th = document.createElement('th');
-                th.textContent = `${skuId} (${headersAdded[skuId]})`; // Display SKU ID and quantity
-                th.id = 'header-' + skuId; // Set a unique ID to prevent duplicates
 
-                // Append <th> to the table header row
-                tableHeaderRow.appendChild(th);
-            }
-        }
-    }
-}
-
-SkuTypeTable();
 
 
 </script>

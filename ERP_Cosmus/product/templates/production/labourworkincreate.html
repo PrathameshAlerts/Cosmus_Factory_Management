@@ -122,8 +122,8 @@
                         <th>Product Sku</th>
                         <th>Color</th>
                         <th>Issue QTY</th>
+                        <th>Received QTY</th>
                         <th>Balance QTY</th>
-                        <th>Current Balance</th>
                         <th>Return QTY</th>   
                     </tr>
                 </thead>
@@ -347,10 +347,14 @@
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
     document.getElementById("id_labour_charges").addEventListener('input', CalculateAmount);
     function CalculateAmount() {
+        var totalReceivedPc = document.getElementById('id_total_return_pcs').value || 0;
         var labour_charges = document.getElementById('id_labour_charges').value;
         var other_charges = document.getElementById('id_other_charges').value;
-        var amounts = parseFloat(labour_charges) + parseFloat(other_charges);
-        document.getElementById('id_amount').value = amounts.toFixed(2);
+        console.log(totalReceivedPc, other_charges)
+        var newAmount = parseFloat(totalReceivedPc) * parseFloat(labour_charges);
+        console.log('newAmount',newAmount)
+        var amounts = newAmount + parseFloat(other_charges);
+        document.getElementById('id_amount').value = amounts;
     }
 
     
@@ -358,6 +362,7 @@
         element.addEventListener('input', function(){
             formSubmit();
             totalValueCheck();  
+            CalculateAmount();
         }
         
         );
