@@ -40,6 +40,7 @@
                                 <th>Total LWI QTY</th>
                                 <th>Balance Qty</th>
                                 <th>Create</th>
+                                <th>Over Due</th>
                             </tr>
                         </thead>
                         <tbody class="mainTableList" style="max-height: 350px; overflow-y: auto;">
@@ -55,7 +56,8 @@
                                 <td>{{instance.total_labour_workin_pcs}}</td>
                                 <td>{{instance.total_labour_workin_pending}}</td>
                                 <td><a href="{% url 'labour-workin-pur-order-list' instance.id %}" id="labourWorkInCreateClick"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
-                            </tr>
+                                <td></td>
+                              </tr>
                             {% endfor %}
                         </tbody>
                     </table>
