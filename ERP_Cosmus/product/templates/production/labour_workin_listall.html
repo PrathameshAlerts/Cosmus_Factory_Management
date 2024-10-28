@@ -1,5 +1,6 @@
 {% extends 'product/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block body %}
 <div class="mt-2 mb-3" style="padding-left: 250px;">
     <button class="bg-c-red border-0 py-1 px-2 rounded-4"><a class="text-decoration-none text-dark" href="{% url 'purchase-order-list' %}" >New Order </a></button>  ->
@@ -40,7 +41,7 @@
                                 <th>Total LWI QTY</th>
                                 <th>Balance Qty</th>
                                 <th>Create</th>
-                                <th>Over Due</th>
+                  
                             </tr>
                         </thead>
                         <tbody class="mainTableList" style="max-height: 350px; overflow-y: auto;">
@@ -56,7 +57,7 @@
                                 <td>{{instance.total_labour_workin_pcs}}</td>
                                 <td>{{instance.total_labour_workin_pending}}</td>
                                 <td><a href="{% url 'labour-workin-pur-order-list' instance.id %}" id="labourWorkInCreateClick"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
-                                <td></td>
+                                
                               </tr>
                             {% endfor %}
                         </tbody>
@@ -88,6 +89,7 @@
                             <th>Recieved Qty</th>
                             <th>Balance Qty</th>
                             <th>Edit</th>
+                            <th>Over Due</th>
                         </tr>
                     </thead>
                     <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
@@ -105,7 +107,15 @@
                             <td>{{instance.labour_workin_pcs}}</td>
                             <td>{{instance.labour_workin_pending_pcs}}</td>
                             <td><a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-                        </tr>
+                            <td class="text-nowrap">{{ instance.created_date.date}}<br>
+                              {% if instance.created_date|subtract_datestime:current_date < 0 %}
+                              <span style="color: red; font-weight : bold;" >{{ instance.created_date|subtract_datestime:current_date }} OverDue </span>
+                              {% elif  instance.created_date|subtract_datestime:current_date == 0 %}
+                              <span style="color: green; font-weight : bold;">{{ instance.created_date|subtract_datestime:current_date }} Remaining</span>
+                              {% endif %}
+                          </td>
+                          </tr>
+
                         {% endfor %}
                     </tbody>
                 </table>

@@ -1,5 +1,6 @@
 {% extends 'product/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block body %}
 
 <div class="mb-3 pt-2">
@@ -14,6 +15,7 @@
                     <th>Ref No</th>
                     <th>Model Name</th>
                     <th>GRN No</th>
+                    <th>Challan No</th>
                     <th>labour name</th>
                     <th>Issues Pcs</th>
                     <th>Return Pcs</th>
@@ -30,11 +32,12 @@
                 {% for record in labour_workin_instances %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td>{{record.purchase_order_number.purchase_order_number}}</td>
-                    <td>{{record.purchase_order_number.number_of_pieces}}</td>
-                    <td>{{record.purchase_order_number.product_reference_number.Product_Refrence_ID}}</td>
-                    <td class="text-nowrap">{{record.purchase_order_number.product_reference_number.Model_Name}}</td>
+                    <td>{{record.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+                    <td>{{record.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
+                    <td>{{record.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+                    <td class="text-nowrap">{{record.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
                     <td>{{record.voucher_number}}</td>
+                    <th>{{record.labour_voucher_number.challan_no}}</th>
                     <td>{{record.labour_voucher_number.labour_name.name}}</td>
                     <td >{{record.labour_voucher_number.total_process_pcs}}</td>
                     <td class="returnQty">{{record.total_return_pcs}}</td>
@@ -42,8 +45,18 @@
                     <td class="pendingValue">{{record.pending_for_approval_pcs}}</td>
                     <td class="processedQty">{{record.total_approved_pcs}}</td>
                     <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a  class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
-                    <td></td>
-                    <input type="hidden" name = "labour_work_in" value="{{record.id}}">
+
+
+                    <td class="text-nowrap">{{ record.created_date.date}}<br>
+                      {% if record.created_date|subtract_datestime:current_date < 0 %}
+                      <span style="color: red; font-weight : bold;" >{{ record.created_date|subtract_datestime:current_date }} OverDue </span>
+                      {% elif  record.created_date|subtract_datestime:current_date == 0 %}
+                      <span style="color: green; font-weight : bold;">{{ record.created_date|subtract_datestime:current_date }} Remaining</span>
+                      {% endif %}
+                  </td>
+                    
+                  
+                  <input type="hidden" name = "labour_work_in" value="{{record.id}}">
                 </tr>
                 {% endfor %}
             </tbody>

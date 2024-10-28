@@ -160,6 +160,11 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 3000
+
+
 # AUTH_USER_MODEL = 'core.CustomUser'
 
 
