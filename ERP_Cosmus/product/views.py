@@ -394,7 +394,7 @@ def product2subcategoryproductajax(request):
 
 @login_required(login_url='login')
 def product_color_sku(request,ref_id = None):
-
+    print(request.POST)
     color = Color.objects.all()
 
     if ref_id:
@@ -438,6 +438,8 @@ def product_color_sku(request,ref_id = None):
                     messages.error(request,f'{e}')
                     logger.error(e)
             else:
+                print(formset.errors)
+                print(formset.non_form_errors())
                 return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id})
 
 
@@ -5317,7 +5319,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                             'Issued_QTY':instance.total_process_pcs,
                             'Rec_QTY': instance.labour_workin_pcs,
                             'Balance_QTY': instance.labour_workin_pending_pcs,
-                            'labour_workout_id': instance.id}
+                            'labour_workout_id': instance.id,
+                            'created_date' : instance.created_date}
 
                         labour_workout_instance_dict.append(dict_to_append)
 
@@ -5344,7 +5347,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                         'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
                         'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
                         'total_balance_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,
-                        'created_date' : labour_workout_child_instance.created_date
+                        
                         }
 
                     product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
