@@ -5343,7 +5343,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                         'total_p_o_qty' : labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces,
                         'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
                         'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
-                        'total_balance_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs
+                        'total_balance_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,
+                        'created_date' : labour_workout_child_instance.created_date
                         }
 
                     product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
