@@ -21,7 +21,9 @@
             {% for query in product_queryset %}
             <tr class="text-nowrap">
                 <td>{{forloop.counter}}</td>
-                <td>{{query.PProduct_image|default_if_none:'' }}</td>
+                <td>{% if query.PProduct_image.url is not None %}
+                    <img src=" {{query.PProduct_image.url}}" alt="Product" style="width: 50px; height: 50px; padding:2px;">
+                    {% endif %}</td>
                 <td>{{query.Product.Product_Refrence_ID}}</td>
                 <td>{{query.Product.Model_Name}}</td>
                 <td>{{query.PProduct_color}}</td>

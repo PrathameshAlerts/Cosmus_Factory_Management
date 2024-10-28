@@ -98,8 +98,9 @@ function quantityCheck() {
 
 
     function submitForm(){
-        var balanceApprove = document.querySelectorAll('[name$= "-balance_pcs"]');
-        var currentApproved = document.querySelectorAll('[name$= "-approved_pcs"]');
+        var balanceApprove = document.querySelectorAll('[name$="-balance_pcs"]');
+        var currentApproved = document.querySelectorAll('[name$="-approved_pcs"]');
+       
         currentApproved.forEach(values =>{
             var current = parseInt(values.value);
             values.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value = current;
@@ -113,17 +114,32 @@ function quantityCheck() {
             return totalQty
         })
       
+        console.log('totalQty',totalQty)
         if(totalQty === 0){
-                var submitBtn = document.querySelector('.create-btn');
+                
                var approveBtn = document.querySelectorAll('[name$= "-approved_pcs"]');
                approveBtn.forEach(element =>{
                    element.setAttribute('readonly', true);
                })
                 
-                submitBtn.style.display = 'none';
-            }
+                
     }
-
+    checkBoxAndsubmit(totalQty)
+    }
+    function checkBoxAndsubmit(totalQty){
+        console.log('totalQtyss',totalQty)
+        var submitBtn = document.querySelector('.create-btn');
+        var checkBoxBtn = document.getElementById('id_checkAll');
+      if(totalQty === 0){
+         submitBtn.style.display = 'none'; 
+         checkBoxBtn.disabled = true;
+      }else{
+        submitBtn.style.display = 'block';
+        checkBoxBtn.disabled = false;
+      }
+        
+    }
+    //checkBoxAndsubmit()
     function approveValueCheck(){
         var approveCheck = document.querySelectorAll('[name$= "-approved_pcs"]');
         var submitButton = document.getElementById('cuttingOrderApproved');
@@ -147,13 +163,6 @@ function quantityCheck() {
             }
         } 
         });
-
-        if (hasInvalidValue) {
-        submitButton.style.display = 'none';
-        } else {
-            // If all values are valid, show the submit button
-            submitButton.style.display = 'block';
-        }
     }
 
     document.addEventListener('DOMContentLoaded', function () {
