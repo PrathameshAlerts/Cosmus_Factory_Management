@@ -90,9 +90,7 @@
             var rows = element.closest('tr');
             var cuttingApprovedValue = parseInt(rows.querySelector('[name$= "-return_pcs"]').value);
             var approvedDiffrenceValues = parseInt(rows.querySelector('[name$= "-approved_pcs_diffrence"]').value);
-            console.log('approvedValues',approvedValues);
-            console.log('approvedDiffrenceValues',approvedDiffrenceValues);
-            console.log('cuttingApprovedValue',cuttingApprovedValue);
+        
             if (cuttingApprovedValue < approvedValues) {
                 rows.querySelector('[name$= "-approved_qty"]').value = 0;
             }
@@ -116,6 +114,8 @@
     var balanceApprove = document.querySelectorAll('[name$= "-pending_for_approval"]');
     var totalQty = 0;
     var currentApproved = document.querySelectorAll('[name$= "-approved_qty"]');
+    var submitBtn = document.querySelector('.create-btn');
+    var checkboxBtn = document.getElementById('id_checkAll');
     currentApproved.forEach(values =>{
         var current = parseInt(values.value);
         values.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value = current;
@@ -127,12 +127,16 @@
     });
 
     if(totalQty === 0){
-        var submitBtn = document.querySelector('.create-btn');
+     
         var approveBtn = document.querySelectorAll('[name$= "-approved_qty"]');
         approveBtn.forEach(element =>{
             element.setAttribute('readonly', true);
         });
         submitBtn.style.display = 'none';
+        checkboxBtn.disabled = true;
+    }else{
+        submitBtn.style.display = 'block';
+        checkboxBtn.disabled = false;
     }
 }
 
