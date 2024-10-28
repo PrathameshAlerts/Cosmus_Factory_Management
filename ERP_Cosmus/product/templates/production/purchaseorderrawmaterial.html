@@ -244,9 +244,7 @@
 
             if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && !isNaN(gTotalCombiValue)) {
                 var consumption = grandTotalValue / (panhaValue * unitsValue);
-                console.log('consumption', consumption);
                 var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
-                console.log('consumtionCombi', consumtionCombi);
                 document.getElementById('id_raw_materials-' + i + '-consumption').value = consumption.toFixed(3);
                 document.getElementById('id_raw_materials-' + i + '-combi_consumption').value = consumtionCombi.toFixed(3);
             } else {
@@ -259,8 +257,6 @@
     function calculateTotalConsumption() {
         let total = 0;
         const processQty = document.querySelectorAll('input[name$="-order_processed_quantity"]');
-
-
         processQty.forEach(input => {
             const processQuantity = parseInt(input.value) || 0;
             const row = input.closest('tr');
@@ -283,46 +279,34 @@
                         const consumptionInput = totalRow.querySelector('input[name$="-consumption"]');
                         const gTotalCombi = totalRow.querySelector('input[name$="-combi_consumption"]');
                         const processData = document.getElementById('id_processTotal');
-
-                        console.log('qtyPcs', qtyPcs);
                         const process = parseFloat(processData.value) || 0;;
                         const gTotalValue = parseFloat(gTotalCombi.value) || 0;
                         const consumption = parseFloat(consumptionInput.value) || 0;
 
                         let mainConsumption = gTotalValue * process;
-
                         let ConsumptionTotal = processQuantity * consumption;
-
                         let totalConsumption = ConsumptionTotal + mainConsumption;
 
                         totalConsumptionInput.value = totalConsumption.toFixed(3);
                         if (qtyPcs) {
                             qtyPcs.value = processQuantity;
                         }
-
-
-
-
                     } else if (totalProductColor === "Common Item") {
 
                         const consumptionInputCommon = totalRow.querySelector('input[name$="-consumption"]').value;
                         const consumtionCombi = totalRow.querySelector('input[name$="-combi_consumption"]').value;
                         const proccessValue = document.getElementById('id_processTotal');
-
                         const consumptions = parseFloat(consumptionInputCommon) || 0;
                         const totalValue = parseFloat(proccessValue.value) || 0;
                         const consumtionCombiValue = parseFloat(consumtionCombi) || 0;
                         let commonConsumption = totalValue * consumptions;
-
                         let commonConsumtionCombi = consumtionCombiValue * consumptions;
-
                         let totalCommonConsumtion = commonConsumption + commonConsumtionCombi;
                         totalConsumptionInput.value = totalCommonConsumtion.toFixed(3);
 
                         if (qtyPcs) {
                             qtyPcs.value = totalValue;
                         }
-
                     }
                 }
             });
@@ -376,7 +360,6 @@ submitForm();
                 element.addEventListener('focus', updateTotal);
                 element.addEventListener('focus', calculateTotalConsumption);
             });
-
             submitForm();
             calculateTotalConsumption();
             updateTotal(); // Initialize the calculation on page load
@@ -389,11 +372,9 @@ submitForm();
     });
     document.body.appendChild(document.getElementById('exampleModal'));
     $(document).ready(function(){
-        $('#myProductForm').on('submit', function(){
-            var submitForm = $('#id_submitPurchaseOrder');
+        $('#id_submitPurchaseOrder').on('click', function(){
             var newSpinner = $('#exampleModal');
             newSpinner.show();
-            submitForm.val('Loading...');
         })
     })
 </script>

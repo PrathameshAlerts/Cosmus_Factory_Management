@@ -3,7 +3,7 @@
 {% block body %} 
 <div>
     <!-- <h2>Purchase invoice</h2> -->
-    <form class="mt-4" action=""method="POST" autocomplete="off">
+    <form class="mt-4" action=""method="POST" autocomplete="off" id="newForm">
         
         {% csrf_token %}
         <div class="">
@@ -60,7 +60,6 @@
                 <tr>
                     <th>No</th>
                     <th>Item Name</th>
-              
                     <th style="padding-left: 25px;">Colour</th>
                     <th style="padding-left:20px ;">Shade</th>
                     <th>Quantity</th>
@@ -194,8 +193,17 @@
         </div>
 
 
-      <button type="submit" class="ms-5 newProductCreateBtn" id="parentFormClick">Submit</button>
+      <button type="submit" class="ms-5 newProductCreateBtn" id="parentFormClick" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
     </form>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
 </div>
 <!--This script use for party name add which use in ledger create popup-->
 <script>
@@ -241,7 +249,6 @@ function newPopUpwindow(button, path){
   });
 }
 function handleOutsideClick(event) {
-
 var popUpRect = document.querySelector('body').getBoundingClientRect();
 var clickX = event.clientX;
 var clickY = event.clientY;
@@ -316,6 +323,52 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
             })
         })
     })
+    document.body.appendChild(document.getElementById('exampleModal'));
+ $(document).ready(function(){
+
+        $('#id_challan_no').on('focusout',function(){
+            var challanNo = $(this).val();
+            var challanId = $("#id_challan_no");
+            var errorElement = $('#challanError'); // The error message element
+            var submitButton = $('#id_submitLabourWorkOut');
+            var formId = $('#labourTable').find('#id_labour_workout_cutting_items_set-0-id').val();
+      
+            if(formId == ""){
+                $.ajax({
+                url: '/uniquevalidcheckajax/',
+                method: 'GET',
+                data: {
+                    'labour_workout_challan_no': challanNo,
+                    
+                },
+                success: function (data) {
+                    if(data.validation_flag === true){
+                        challanId.css('border', '1px solid red');
+                        errorElement.text('*Challan number already exists');
+                        errorElement.show();
+                        submitButton.attr('disabled', 'disabled');
+                    }else {
+                        
+                        challanId.css('border', '1px solid black'); 
+                        errorElement.text('');
+                        errorElement.hide();
+                        submitButton.removeAttr('disabled');
+                    }
+                   
+                },
+                error: function (error) {   
+                    console.log(error);
+                }
+
+            })
+            }
+            
+        })
+        $('#parentFormClick').on('click',function(){
+            var forms = $('#exampleModal');
+            forms.show();
+        })
+    })
   
     window.addEventListener('message', receiveMessage, false);
     function receiveMessage(event) {
@@ -378,7 +431,8 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
         const prefixId = newSessionData.prefixValue;
         const oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         const oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')  
-
+        console.log('newQty',newQty)
+        console.log('newRate',newRate)
         oldQty.value = newQty
         oldRate.value = newRate
         calculateTotalAmount()
@@ -531,7 +585,6 @@ function randomValue (){
                             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                         }
                         searchedItemNameDict = response.searched_item_name_dict;
-                        console.log(searchedItemNameDict);
                         var searchQuery = nameValue.toLowerCase();
                         var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                         var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
@@ -880,31 +933,31 @@ function randomValue (){
             }
         })
 
-    function handleShadeValueFalse() {
-    $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-        const selectedShade = $(this).val();
-        const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-        handlePopup(selectedShade, uniqueIdValue);
-    });
-}
-
-function handleShadeValueTrue() {
-    $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
-        event.preventDefault();
-        if (event.key === 'Enter') {
-            const row = $(this);
-            const selectedShade = $(this).val();
-            console.log("selectedShadeEnter",selectedShade)
-            const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-            const itemShades = $(this).closest('tr').find('[name^="input_item_shade_"]');
-            $(this).attr('disabled', 'disabled');
-            itemShades.hide();
-            handlePopup(selectedShade, uniqueIdValue);
-  
-            $(this).removeAttr('disabled');
+        function handleShadeValueFalse() {
+            $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
+                const selectedShade = $(this).val();
+                const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+                handlePopup(selectedShade, uniqueIdValue);
+            });
         }
-    });
-}
+
+        function handleShadeValueTrue() {
+            $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
+                event.preventDefault();
+                if (event.key === 'Enter') {
+                    const row = $(this);
+                    const selectedShade = $(this).val();
+                    console.log("selectedShadeEnter",selectedShade)
+                    const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+                    const itemShades = $(this).closest('tr').find('[name^="input_item_shade_"]');
+                    $(this).attr('disabled', 'disabled');
+                    itemShades.hide();
+                    handlePopup(selectedShade, uniqueIdValue);
+        
+                    $(this).removeAttr('disabled');
+                }
+            });
+        }
 
         function handlePopup(selectedShade, uniqueIdValue) {
             const purchaseId = $('#id_purchase_voucher_items_set-' + purchaseValue + '-id').val();
@@ -987,8 +1040,7 @@ function handleShadeValueTrue() {
 
 <script>
     //This script is to calculate the purchase invoice amount and create a new row to added and append it to the table-->
-   function calculateTotalAmount() {
-        const rows = document.querySelectorAll('#myTable tbody tr');
+    function calculateTotalAmount() {
         let total = 0; 
         let totalQty = 0;
         let newGst =0;
@@ -999,6 +1051,8 @@ function handleShadeValueTrue() {
         let grandTotal = 0;
         let grandTotalAmount = 0;
         // Iterate through each row
+        const rows = Array.from(document.querySelectorAll('.mainTableList tr'))
+        .filter(row => row.style.display !== 'none');
         rows.forEach(function(row) {
             // Find the quantity, rate, and amount input fields for the current row
             const quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
@@ -1007,7 +1061,6 @@ function handleShadeValueTrue() {
             const gstValue = row.querySelector('.purchase-gst[name^="purchase_voucher_items_set-"][name$="-gst"]');
             const cgstValue= row.querySelector('.purchase-cgst[name^="purchase_voucher_items_set-"][name$="-cgst"]');
             const sgstValue= row.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
-
             const totalAmountInput = row.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-total_amount"]');
          
             // Get the values of quantity and rate
@@ -1031,34 +1084,37 @@ function handleShadeValueTrue() {
             totalSgst +=  newSgst;
           
             total += amount; 
-            grandTotal = total + newCgst + newSgst;
-            totalAmountInput.value = isNaN(grandTotal) ? '' : grandTotal.toFixed(2); 
-            grandTotalAmount = grandTotalAmount + grandTotal; 
+            grandTotal = amount + newCgst + newSgst;
+
+          
         
            }else{
             cgstValue.value = ''
-            const newIgst = amount * gst / 100;
+            let newIgst = amount * gst / 100;
+
             sgstValue.value = isNaN(newIgst) ? '' : newIgst.toFixed(2);
             totalSgst += newIgst;
             total +=  amount;  
-            grandTotal = total + newIgst ;
+            grandTotal = amount + newIgst ;
+        
         }
-
             amountInput.value = isNaN(amount) ? '' : amount.toFixed(2);
             totalAmountInput.value = isNaN(grandTotal) ? '' : grandTotal.toFixed(2); 
+          
             grandTotalAmount += grandTotal; 
            
-        });   
+        }); 
+     
             document.getElementById('id_grand_taxableAmount').value = isNaN(total) ? '' :total.toFixed(2);
-           document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
-           document.getElementById('id_grand_cgst').value = isNaN(totalCgst) ? '' :totalCgst.toFixed(2);
-           document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
-           document.getElementById('id_grand_amount').value =isNaN(grandTotalAmount) ? '' : grandTotalAmount.toFixed(2);
+            document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
+            document.getElementById('id_grand_cgst').value = isNaN(totalCgst) ? '' :totalCgst.toFixed(2);
+            document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
+            document.getElementById('id_grand_amount').value =isNaN(grandTotalAmount) ? '' : grandTotalAmount.toFixed(2);      
     }
     function calculateOtherTotal(grandTotal) {
 
          const grandTotals = parseFloat(document.getElementById('id_grand_amount').value);
-        
+        console.log('grandTotals',grandTotals);
           let  grossTotal = grandTotals;      
     
         // Set the calculated gross total value to the gross total input field
@@ -1066,105 +1122,26 @@ function handleShadeValueTrue() {
 
         const frightTransport = parseFloat(document.getElementById('id_fright_transport').value);
 
-        const finalTotal = grossTotal + frightTransport;
+        let finalTotal = grossTotal + frightTransport;
 
         document.getElementById('temp_grand_total').value =isNaN(finalTotal) ? '' : finalTotal.toFixed(2);
 
           
-        const finalTotals = Math.round(finalTotal)
-        const roundOff = finalTotals - finalTotal;
+        let finalTotals = Math.round(finalTotal)
+        let roundOff = finalTotals - finalTotal;
 
         document.getElementById('id_round_off').value =isNaN(roundOff) ? '' : roundOff.toFixed(2);
         // Set the calculated grand total value to the grand total input field
         document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
     }
     // Call the function initially to calculate total amount, GST, and grand total on page load
-    calculateTotalAmount();
-   
+ 
     // Add onchange event handler to id_fright_transport
     document.getElementById('id_fright_transport').addEventListener('input', calculateOtherTotal);
     document.getElementById('id_round_off').addEventListener('input', calculateOtherTotal);
      
-    function deleteCalculationRow(){
-        let total = 0; // Total amount across all rows
-        let totalQty = 0; // Total quantity
-        let totalRate = 0;
-        let totalSgst= 0;
-        let totalCgst = 0;
-        let grandAmount =0;
-        
-        const totalRow = document.querySelectorAll('#myTable tbody tr');
-        
-        var visibleRow = Array.from(totalRow).filter(function(row) {
-            var style = window.getComputedStyle(row);
-            return style.display !== 'none';
-        })
-
-  
-
-        visibleRow.forEach(function (row){
-            const quantityInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-quantity_total"]');
-            const rateInput = row.querySelector('.purchase-input[name^="purchase_voucher_items_set-"][name$="-rate"]');
-            const amountInput = row.querySelector('.total-amount[name^="purchase_voucher_items_set-"][name$="-amount"]');
-            const gstValue = row.querySelector('.purchase-gst[name^="purchase_voucher_items_set-"][name$="-gst"]');
-            const cgstValue= row.querySelector('.purchase-cgst[name^="purchase_voucher_items_set-"][name$="-cgst"]');
-            const sgstValue= row.querySelector('.purchase-sgst[name^="purchase_voucher_items_set-"][name$="-sgst"]');
-            const totalAmountInput = row.querySelector('.purchase-total[name^="purchase_voucher_items_set-"][name$="-total_amount"]');
-
-            const quantity = parseFloat(quantityInput.value);
-            const rate = parseFloat(rateInput.value);
-            const amount = parseFloat(amountInput.value);
-            const gst = parseFloat(gstValue.value);
-            const cgst = parseFloat(cgstValue.value);
-            const sgst = parseFloat(sgstValue.value);
-            const totalAmount = parseFloat(totalAmountInput.value);
-
-            total += amount;
-            totalQty +=  quantity;
-            totalSgst += sgst;
-            totalCgst += cgst;
-            grandAmount += totalAmount;
-
-        });
-            document.getElementById('id_grand_taxableAmount').value = isNaN(total) ? '' :total.toFixed(2);
-            document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
-            document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
-            document.getElementById('id_grand_cgst').value = isNaN(totalCgst) ? '' : totalCgst.toFixed(2);
-            document.getElementById('id_grand_amount').value =isNaN(grandAmount) ? '' : grandAmount.toFixed(2)
-    }
     
-    function deleteAlltotal(grandAmount){
-        const grandTotalValue = parseFloat(document.getElementById('id_grand_amount').value); 
-        let  grossTotal = grandTotalValue;      
-  
-      // Set the calculated gross total value to the gross total input field
-      document.getElementById('id_gross_total').value =isNaN(grossTotal) ? '' : grossTotal.toFixed(2);
 
-      const frightTransport = parseFloat(document.getElementById('id_fright_transport').value);
-      const finalTotal = grossTotal + frightTransport;
-
-      document.getElementById('temp_grand_total').value =isNaN(finalTotal) ? '' : finalTotal.toFixed(2);
-
-      const finalTotals = Math.round(finalTotal)
-      const roundOff = finalTotals - finalTotal;
-
-      document.getElementById('id_round_off').value =isNaN(roundOff) ? '' : roundOff.toFixed(2);
-      document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
-
-    }
-    function addEventListenersToInputs() {
-        const inputs = document.querySelectorAll('#myTable tbody tr input');
-        inputs.forEach(function(input) {
-            input.addEventListener('input', function() {
-                calculateTotalAmount();
-                calculateOtherTotal();
-                deleteCalculationRow();
-                deleteAlltotal();
-             
-            });
-        });
-       
-    }
   
     // Event listener for the add row button
     document.addEventListener('DOMContentLoaded', function () {
@@ -1302,11 +1279,9 @@ function handleShadeValueTrue() {
             
             tableBody.appendChild(lastRow);
            
-            addEventListenersToInputs(lastRow);
-            calculateTotalAmount(); 
-            deleteCalculationRow();
-            deleteAlltotal();
-            deleteRowData();
+            calculateTotalAmount();
+            calculateOtherTotal();
+             deleteRowData();
             formCountInput.value = formCount + 1;    
         });
         
@@ -1314,16 +1289,9 @@ function handleShadeValueTrue() {
         console.error("Could not find addFormButton or table body element.");
 
     }
-	addEventListenersToInputs(); // Add event listeners to the new row inputs
-    calculateTotalAmount();
-    calculateOtherTotal();
-    deleteCalculationRow();
-    deleteAlltotal();
-  
 
 
-    // Call function to add event listeners to existing rows' inputs
-    
+    });
 
    function deleteRowData(){
     // Add click event listener to all delete buttons
@@ -1332,32 +1300,27 @@ function handleShadeValueTrue() {
             // Find the row containing the clicked delete button
             const row = this.closest('tr');
             const checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
-           
+           console.log('checkRow',checkRow)
             if (checkRow) {
                 checkRow.checked = true; // Mark as checked
                 checkRow.value = 'true'; // Set the value to 'true'
 
                 row.style.display = 'none';
-                deleteCalculationRow();
-                deleteAlltotal();
+                calculateTotalAmount();
+                calculateOtherTotal();
               
                 
             } else {
                 console.error("Checkbox for deletion not found in this row");
             }
         });
+      
     });
+ 
   };
-  deleteRowData();
- });
- addEventListenersToInputs();
-    // // Call calculateTotalAmount initially to calculate total on page load
-    // calculateTotalAmount();
+ deleteRowData();
 
-    // calculateOtherTotal();
-    // deleteCalculationRow();
-    // deleteAlltotal();
-   
+
 </script>
 
 {% endblock body %}
