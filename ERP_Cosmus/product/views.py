@@ -4282,7 +4282,7 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
 
 
     if request.method == 'POST':
-        print(request.POST)
+        
         purchase_order_raw_formset = purchase_order_raw_product_qty_formset(request.POST)
 
         purchase_order_raw_sheet_formset = purchase_order_raw_product_sheet_formset(request.POST, instance=purchase_order_instance)
@@ -4739,9 +4739,10 @@ def purchaseordercuttingapprovalcheckajax(request):
             dict_to_append = {
                 'Approved_Date': x.created_date,
                 'Approved_Name': 'approved name',  
+                
                 'Approved_Qty': x.total_approved_pcs,
                 'pending_Qty': x.total_pending_pcs
-            }
+                }
             approval_data.append(dict_to_append)
 
         return JsonResponse({'status': 'success','approval_data': approval_data,'cutting_pk_no':cutting_pk_no})
@@ -5517,6 +5518,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 @login_required(login_url='login')
 def labourworkinlistall(request):
 
+    current_date = datetime.date.today
+
     
     labour_workout_childs_exists = labour_workout_childs.objects.filter(
     labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id = OuterRef('pk')
@@ -5534,7 +5537,7 @@ def labourworkinlistall(request):
 
     return render(request,'production/labour_workin_listall.html',
                   {'labour_workout_child_instances_all':labour_workout_child_instances_all,
-                   'purchase_order_instances': purchase_orders_with_labour_workout_childs})
+                   'purchase_order_instances': purchase_orders_with_labour_workout_childs,'current_date':current_date})
 
 
 
@@ -5546,6 +5549,7 @@ def labourworkinpurchaseorderlist(request,p_o_no):
     labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
 
     lab_workout_master = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
+    
     total_lab_qty = 0
     for instance in lab_workout_master:
         total_lab_qty = total_lab_qty + instance.total_process_pcs
@@ -5614,9 +5618,9 @@ def labourworkinsingledeleteajax(request):
 
 @login_required(login_url='login')
 def goods_return_pending_list(request):
-
-    labour_workin_instances = labour_work_in_master.objects.annotate(total_approved_pcs = Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval')).filter(pending_for_approval_pcs__gt = 0)
-    return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances})
+    current_date = datetime.date.today
+    labour_workin_instances = labour_work_in_master.objects.annotate(total_approved_pcs=Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval')).filter(pending_for_approval_pcs__gt=0)
+    return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances, 'current_date':current_date})
 
 
 
@@ -5799,7 +5803,8 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
 
         report_data_sorted = sorted(queryset_list, key = itemgetter('date'), reverse=False)
-
+        
+        print(report_data_sorted)
 
         return render(request,'production/finishedgoodsvendormodelwisereport.html',{'report_data_sorted':report_data_sorted, 'reference_no':reference_no, 
                                                                                     'model_number':model_number,'total_labour_workout':total_labour_workout,'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List})
@@ -5938,12 +5943,12 @@ def itemdynamicsearchajax(request):
     except ValidationError as ve:
         error_message = str(ve)
         logger.error(f"Validaton errorin itemdynamicsearchajax - {ve}")
-        return JsonResponse({'error': error_message}, status=400)
+        return JsonResponse({'error': error_message}, status = 400)
     
     except Exception as e:
         logger.error(f"Exception in itemdynamicsearchajax - {ve}")
         error_message = f"An error occurred:{str(e)}"
-        return JsonResponse({'error': error_message}, status=500)
+        return JsonResponse({'error': error_message}, status = 500)
 
 
 
@@ -6496,7 +6501,10 @@ def raw_material_excel_upload(request):
 
 
 
+def finished_goods_model_wise_report(request,ref_id):
+    
 
+    return render(request,'reports/finishedgoodsmodelwisereport.html')
 
 
 

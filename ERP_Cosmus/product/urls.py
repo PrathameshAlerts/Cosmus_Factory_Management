@@ -233,13 +233,13 @@ urlpatterns = [
     path('rawmaterialexceldownload/', views.raw_material_excel_download, name='raw-material-excel-download'),
     path('rawmaterialexcelupload/', views.raw_material_excel_upload, name='raw-material-excel-upload'),
 
-    path('godownproductreport/<int:g_id>', views.finished_goods_godown_wise_report, name = 'finished-goods-godown-wise-report'), #TODO
+    path('godownproductreport/<int:g_id>', views.finished_goods_godown_wise_report, name = 'finished-goods-godown-wise-report'),
     path('godownproductreportall/', views.finished_goods_godown_wise_report_all, name = 'finished-goods-godown-wise-report-all'),
     path('finishedgoodsgodownproductrefwisereport/<int:ref_no>', views.finished_goods_godown_product_ref_wise_report, name = 'finished-goods-godown-product-ref-wise-report'),
     path('finishedgoodsgodownproductrefvendorwisereport/<int:ref_no>/<int:challan_no>', views.finished_goods_vendor_model_wise_report, name = 'finished-goods-godown-product-ref-vendor-wise-report'),
 
     path('allfinishedgoodsstockreport/', views.allfinishedgoodsstockreport, name = 'all-finished-goods-stock-report'),
-
+    path('finishedgoodsmodelwisereport/<int:ref_id>', views.finished_goods_model_wise_report, name = 'finished-goods-model-wise-report'),
 
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
