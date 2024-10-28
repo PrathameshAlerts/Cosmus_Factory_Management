@@ -191,6 +191,7 @@ $(document).ready(function () {
             },
             success: function (response) {
               const searchData = response.vendor_name_dict;
+              console.log('searchData',searchData)
               function escapeRegExp(string) {
                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                }
@@ -239,7 +240,9 @@ $(document).ready(function () {
             },
             success: function (response) {
             var challan_instance = response.labour_workout_instance_dict;
-        
+                console.log('challan_instance',challan_instance);
+                var dates = new Date();
+                console.log('dates',dates);
             var tables = $('#tableLabourWorkinId tbody.mainTableList');
             tables.empty();
             $.each(challan_instance, function (key, value) {
