@@ -32,7 +32,6 @@ from openpyxl.styles import Font
 from openpyxl.styles import Alignment
 from openpyxl.styles import Border, Side
 
-
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
@@ -6524,6 +6523,7 @@ def finished_goods_model_wise_report(request,ref_id):
                 'sale' : '0',
                 'Repair_Out' : '0',
                 'net_closing_stock' :'0'}
+            
             data_list.append(dict_to_append)
 
 

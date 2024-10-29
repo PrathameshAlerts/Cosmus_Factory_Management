@@ -9,7 +9,7 @@
         <h4 class="ms-3">Model Name - <span class="text-danger text-bold text-capitalize">{{product_instance.Model_Name}}</span></h4>
         <div class="d-flex">
             <lable>Images :</lable>
-            {% for record in Product_Refrence_ID.productdetails.all %}
+            {% for record in product_instance.productdetails.all %}
             {% if record.PProduct_image.url is not None %}
             <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
             {% endif %}
