@@ -5324,7 +5324,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 
                         labour_workout_instance_dict.append(dict_to_append)
 
-                
+    
                 labour_work_out_id = request.GET.get('labourWorkOutId')
                
                 master_initial_data = None
@@ -6364,7 +6364,7 @@ def raw_material_excel_download(request):
     
     response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     file_name = 'raw_material_create'
-    response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
+    response['Content-Disposition'] = f'attachment; filename = "{file_name}.xlsx"'
 
     return response
 
@@ -6507,8 +6507,27 @@ def raw_material_excel_upload(request):
 
 def finished_goods_model_wise_report(request,ref_id):
     
+    if ref_id:
+        labour_work_in_instances = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID=ref_id).annotate(total_qty = Sum('l_w_in_products__return_pcs'))
+        print(labour_work_in_instances)
+        data_list = []
 
-    return render(request,'reports/finishedgoodsmodelwisereport.html')
+        for instance in labour_work_in_instances:
+            dict_to_append = {
+                'voucher_number' : instance.voucher_number,
+                'date' : instance.created_date.replace(tzinfo=None).strftime("%d %B %Y"),
+                'name': instance.labour_voucher_number.labour_name.name,
+                'description' : 'Labour Work In',
+                'L_W_I' : instance.total_qty,
+                'Repair_In' : '0',
+                'sale' : '0',
+                'Repair_Out' : '0',
+                'net_closing_stock' :'0'
+            }
+            data_list.append(dict_to_append)
+
+
+    return render(request, 'reports/finishedgoodsmodelwisereport.html',{'data_list':data_list})
 
 
 
