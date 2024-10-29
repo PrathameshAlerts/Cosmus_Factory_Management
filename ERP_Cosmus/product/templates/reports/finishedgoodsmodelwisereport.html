@@ -1,11 +1,22 @@
+
+
 {% extends 'product/base.html' %}
 
 {% block body %}
 
     <div class="mt-4  mb-3 d-flex">
-        <h4>Reference No - <span class="text-danger text-bold text-capitalize"></span></h4>
-        <h4 class="ms-3">Model Name - <span class="text-danger text-bold text-capitalize"></span></h4>
-    
+        <h4>Reference No - <span class="text-danger text-bold text-capitalize">{{product_instance.Product_Refrence_ID}}</span></h4>
+        <h4 class="ms-3">Model Name - <span class="text-danger text-bold text-capitalize">{{product_instance.Model_Name}}</span></h4>
+        <div class="d-flex">
+            <lable>Images :</lable>
+            {% for record in Product_Refrence_ID.productdetails.all %}
+            {% if record.PProduct_image.url is not None %}
+            <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
+            {% endif %}
+            {% endfor %}
+        </div>
+      
+        
     </div>
     <div class="row">
         <div class="col-lg-12">
