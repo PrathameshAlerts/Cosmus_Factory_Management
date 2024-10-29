@@ -22,9 +22,9 @@
             <tr class="text-nowrap">
                 <td>{{forloop.counter}}</td>
                 <td>{% if query.PProduct_image.url is not None %}
-                    <img src=" {{query.PProduct_image.url}}" alt="Product" style="width: 50px; height: 50px; padding:2px;">
+                    <img src=" {{query.PProduct_image.url}}" alt="product" style="width: 50px; height: 50px; padding:2px;">
                     {% endif %}</td>
-                <td>{{query.Product.Product_Refrence_ID}}</td>
+                <td class="refrenceId">{{query.Product.Product_Refrence_ID}}</td>
                 <td>{{query.Product.Model_Name}}</td>
                 <td>{{query.PProduct_color}}</td>
                 <td>{{query.PProduct_SKU}}</td>
@@ -53,6 +53,20 @@
         });
     }
 
+    function finshegoodsData(){
+       
+        var finishGoodRow = document.querySelectorAll('.mainTableList tr');
+
+        finishGoodRow.forEach(element => {
+            element.style.cursor = "pointer";
+            element.addEventListener('click', function() {
+            var refId = element.querySelector('.refrenceId').textContent;
+            console.log(refId);
+            window.location.href = "/finishedgoodsmodelwisereport/"+refId
+        });
+        })
+    }
     totalValueCheck()
+    finshegoodsData();
 </script>
 {% endblock %}
