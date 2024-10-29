@@ -3,7 +3,6 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 import os
-from re import S
 from django.conf import settings
 
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
