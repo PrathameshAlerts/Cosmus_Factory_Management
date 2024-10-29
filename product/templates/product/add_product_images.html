@@ -1,0 +1,114 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
+
+
+<form id="myForm" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  <h2 class="mb-4">Add Product Images</h2>
+
+  <div class="row mb-3">
+
+    <div class="col-lg-7">
+      <div style="width:100%; overflow:auto; max-height:520px;">
+        <table class="table table-responsive table-striped table-bordered" id="myTable">
+          <thead class="name_absolute sticky-top">
+            <tr>
+              <th>No</th>
+              <th>choose Image</th>
+              <th>Image Type</th>
+              <th>Order By</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for form in formset %}
+            {{ form.id }}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>
+                <div style="max-width: 150px;">
+                  {% if form.instance.Image %}
+                  <img src="{{ form.instance.Image.url }}" alt="Image Preview" style="max-width: 150px;">
+                  {% endif %}
+                  <input type="file" class="my-file" name="{{form.prefix}}-Image" accept="image/*"
+                    id="{{form.prefix}}-Image">
+                </div>
+              </td>
+              <td>
+                <select name="{{form.prefix}}-Image_type" id="{{form.prefix}}-Image_type" class="item-select">
+                  <option value="{{form.instance.Image_type}}">{{form.instance.Image_type}}</option>
+                  <option value="Main Image">Main Image</option>
+                  <option value="White Background">White Background</option>
+                  <option value="Model Image">Model Image</option>
+                  <option value="Catalogue Image">Catalogue Image</option>
+                </select>
+              </td>
+              <td><input type="number" class="item-select" name="{{form.prefix}}-Order_by"
+                  value="{{form.instance.Order_by}}" id="{{form.prefix}}-Order_by"></td>
+              <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i
+                    class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox"
+                      class="product_image_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE"
+                      id="{{form.prefix}}-DELETE" value=""></i></span></td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="add_btn mb-3" id="addForm">Add</button>
+  <div>
+    <button type="submit" class="create-btn" id="submitButton">Submit</button>
+  </div>
+</form>
+
+
+<script>
+  let formSubmitted = false;
+  document.addEventListener("DOMContentLoaded", function () {
+    const addFormButton = document.getElementById("addForm");
+    const tableBody = document.querySelector("#myTable tbody");
+    const formCountInput = document.getElementById("id_productimages-TOTAL_FORMS");
+
+    function updateDeleteButtons() {
+      document.querySelectorAll('.delete-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const row = this.closest('tr');
+          const checkRow = row.querySelector('.product_image_deleteId');
+          if (checkRow) {
+            checkRow.checked = true;
+            checkRow.value = 'true';
+            row.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    if (addFormButton && tableBody) {
+      addFormButton.addEventListener("click", function () {
+        const formCount = parseInt(formCountInput.value);
+        const lastRow = tableBody.lastElementChild.cloneNode(true);
+        const formIndex = formCount;
+
+        lastRow.querySelectorAll("input, select").forEach(function (ele) {
+          if (ele.tagName === "INPUT") ele.value = "";
+          if (ele.id) ele.id = ele.id.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+          if (ele.name) ele.name = ele.name.replace(`-${formIndex - 1}-`, `-${formIndex}-`);
+        });
+
+        formCountInput.value = formCount + 1;
+        tableBody.appendChild(lastRow);
+        updateDeleteButtons();
+      });
+    } else {
+      console.error("Could not find addFormButton or table body element.");
+    }
+
+    updateDeleteButtons();
+  });
+
+</script>
+{% endblock body %}

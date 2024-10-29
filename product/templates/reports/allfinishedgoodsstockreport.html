@@ -1,0 +1,71 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="col-lg-10 mt-2">
+    <table class="table table-hover table-bordered table-striped">
+        <thead class="sticky-top name_absolute">
+            <tr>
+                <th>No</th> 
+                <th>Image</th>
+                <th>Reference No</th>
+                <th>Model Name</th> 
+                <th>Color</th>
+                <th>SKU ID</th>
+                <th>Total Received</th>
+                <th>Sales</th>
+                <th>Total Qty</th> 
+            </tr>
+        </thead>
+        <tbody class="mainTableList">
+            {% for query in product_queryset %}
+            <tr class="text-nowrap">
+                <td>{{forloop.counter}}</td>
+                <td>{% if query.PProduct_image.url is not None %}
+                    <img src=" {{query.PProduct_image.url}}" alt="product" style="width: 50px; height: 50px; padding:2px;">
+                    {% endif %}</td>
+                <td class="refrenceId">{{query.Product.Product_Refrence_ID}}</td>
+                <td>{{query.Product.Model_Name}}</td>
+                <td>{{query.PProduct_color}}</td>
+                <td>{{query.PProduct_SKU}}</td>
+                <td>{{query.total_qty | default_if_none:0}}</td>
+                <td></td>
+                <td class="toatlQty">{{query.total_qty | default_if_none:0}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+</div>
+
+<script>
+    function totalValueCheck(){
+        var  totalqty = document.querySelectorAll('.toatlQty');
+        totalqty.forEach(element => {
+            var value = element.textContent;
+        
+            if(value > 0){
+                element.style.color = "green";
+            }else{
+                element.style.color = "red";
+            }
+
+        });
+    }
+
+    function finshegoodsData(){
+       
+        var finishGoodRow = document.querySelectorAll('.mainTableList tr');
+        finishGoodRow.forEach(element => {
+            element.style.cursor = "pointer";
+            element.addEventListener('click', function() {
+            var refId = element.querySelector('.refrenceId').textContent;
+            console.log(refId);
+            window.location.href = "/finishedgoodsmodelwisereport/"+refId
+        });
+        })
+    }
+    totalValueCheck()
+    finshegoodsData();
+</script>
+{% endblock %}

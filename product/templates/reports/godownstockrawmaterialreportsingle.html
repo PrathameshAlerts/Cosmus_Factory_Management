@@ -1,0 +1,135 @@
+{% extends 'product/base.html' %}
+{% block body %}
+
+<div class="mt-4  mb-3 d-flex">
+    <h4>Godown Name - <span class="text-danger text-bold text-capitalize">{{godoown_name.godown_name_raw}}</span></h4>
+<h4 class="ms-3">Item Name - <span class="text-danger text-bold text-capitalize">{{shade_name.items.item_name}}</span></h4>
+
+  <h4 class="ms-3">Shade Name - <span class="text-danger text-bold text-capitalize">{{shade_name.item_shade_name}}</span></h4>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsives">
+            <table class="table table-bordered  table-striped" style="width: 100%;">
+                <thead class="name_absolute sticky-top">
+                
+                    <tr class ="text-nowrap text-center">
+                        <th>Date</th>
+                        <th>Particular</th>
+                        <th>Voucher Type</th>
+                        <th>Voucher No</th>
+                        <th colspan="2" class="bg-c-blue">INWards - {{shade_name.items.unit_name_item.unit_name}}</th>
+                        <th colspan="2" class="bg-c-red">Outwards - {{shade_name.items.unit_name_item.unit_name}}</th>
+                        <th colspan="3" class="bg-c-green">Closing - {{shade_name.items.unit_name_item.unit_name}}</th>
+                    </tr>
+                </thead>
+                <tbody class="mainTable" >
+                        <tr>
+                            <th colspan="4"></th>
+                            <th style="background-color: #90D5FF;">Quantity</th>
+                            <th style="background-color: #90D5FF;" >Value</th>
+                            <th style="background-color: #ffcccb;">Quantity</th>
+                            <th style="background-color: #ffcccb;">Value</th>
+                            <th style="background-color: #a3efe0;">Quantity</th>
+                            <th style="background-color: #a3efe0;" >Rate</th>
+                            <th style="background-color: #a3efe0;" >Value</th>
+                           
+                        </tr>
+                       
+                </tbody>
+              
+                <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                    {% for data in report_data %}
+                    <tr>
+                        <td>{{data.date}}</td>
+                        <td>{{data.particular}}</td>
+                        <td>{{data.voucher_type}}</td>
+                        <td>{{data.vch_no}}</td>
+                        <td style="background-color: #90D5FF;" class="inwardQty">{{data.inward_quantity}}</td>
+                        <td style="background-color: #90D5FF;" class="inwardValue">{{data.inward_value}}</td>
+                        <td style="background-color: #ffcccb;" class="outwardQty">{{data.outward_quantity}}</td>
+                        <td style="background-color: #ffcccb;" class="outwardValue">{{data.outward_value}}</td>
+                        <td class="closingQty" style="background-color: #a3efe0;">{{data.closing_quantity}}</td>
+                        <td style="background-color: #a3efe0;">{{data.rate}}</td>
+                        <td class="closingValue" style="background-color: #a3efe0;">{{data.closing_value}}</td>
+                
+                    </tr>
+                    
+                    {% endfor %}
+                </tbody>
+                <tbody class="mainTable">
+                    <tr>
+                        <td><span class="me-3 fw-bold">Total:</span></td>
+                        <td colspan="7"></td>
+                        <td><span id="TotalQty"></span></td>
+                        <td></td>
+                        <td><span id="TotalValue"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-end name_absolute">
+            
+            <span style="margin-right: 108px;"  id="TotalQty"></span>
+            <span style="margin-right: 25px;" id="TotalValue"></span>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+    document.addEventListener('DomContendLoadered',function(){
+ 
+        totalValueCalculation();
+    })
+    
+
+    function totalValueCalculation() {
+    var mainTable = document.querySelectorAll('.mainTableList tr');
+    var previousClosingQty = 0;
+    var previousClosingValue = 0;
+
+    mainTable.forEach((element, index) => {
+        var inwordQtyElement = element.querySelector('.inwardQty');
+        var inwordValueElement = element.querySelector('.inwardValue');
+        var outwordQtyElement = element.querySelector('.outwardQty');
+        var outwordValueElement = element.querySelector('.outwardValue');
+        
+        // Validate elements and extract values
+        var inwordQty = inwordQtyElement ? parseFloat(inwordQtyElement.textContent.trim()) || 0 : 0;
+        var inwordValue = inwordValueElement ? parseFloat(inwordValueElement.textContent.trim()) || 0 : 0;
+        var outwordQty = outwordQtyElement ? parseFloat(outwordQtyElement.textContent.trim()) || 0 : 0;
+        var outwordValue = outwordValueElement ? parseFloat(outwordValueElement.textContent.trim()) || 0 : 0;
+
+        var closeQtyElement = element.querySelector('.closingQty');
+        var closeValueElement = element.querySelector('.closingValue');
+
+        // Calculate closing quantities and values
+        if ((inwordQty > 0 && inwordValue >= 0) || (inwordQty > 0 && inwordValue == 0)) {
+            previousClosingQty += inwordQty;
+            previousClosingValue += inwordValue;
+        } else if ((outwordQty > 0 && outwordValue >= 0) || (outwordQty > 0 && outwordValue == 0)) {
+            previousClosingQty -= outwordQty;
+            previousClosingValue -= outwordValue;
+        }
+
+        // Set the calculated closing values to the current row
+        if (closeQtyElement) closeQtyElement.textContent = previousClosingQty.toFixed(3);
+        if (closeValueElement) closeValueElement.textContent = previousClosingValue.toFixed(3);
+    });
+
+    // Update the total quantity and value on the page
+    var totalQtyElement = document.getElementById('TotalQty');
+    var totalValueElement = document.getElementById('TotalValue');
+
+    if (totalQtyElement) totalQtyElement.textContent = previousClosingQty.toFixed(3);
+    if (totalValueElement) totalValueElement.textContent = previousClosingValue.toFixed(3);
+}
+
+
+    
+    totalValueCalculation()
+</script>
+{% endblock %}
+

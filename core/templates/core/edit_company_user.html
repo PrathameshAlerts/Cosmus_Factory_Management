@@ -1,0 +1,80 @@
+
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<!-- <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }} 
+    <button type="submit">Save Changes</button>
+</form> -->
+
+<div class="mt-2">
+    <h3 class="mb-3">Edit User</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="d-flex mb-3">
+            <label for="id_username" class="item-form">Username:</label>
+            <input type="text" class="item-select" name="username" maxlength="30" required id="id_username" value="{{ user.username }}">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_email" class="item-form">Email:</label>
+            <input type="email" class="item-select" name="email" maxlength="254" required id="id_email" value="{{ user.email }}">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_first_name" class="item-form">First name:</label>
+            <input type="text" class="item-select" name="first_name" maxlength="30" required id="id_first_name" value="{{ user.first_name }}">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_last_name" class="item-form">Last name:</label>
+            <input type="text" class="item-select" name="last_name" maxlength="30" required id="id_last_name" value="{{ user.last_name }}">
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_role" class="item-form">Role:</label>
+            <select name="role" required id="id_role" multiple class="item-select">
+                <option value="1">accountant</option>   
+
+            </select>
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_company" class="item-form">Company:</label>
+            <select name="company" id="id_company" class="item-select">
+                <option value="" selected>---------</option>
+
+                <option value="1">DHARAVI</option>
+
+                <option value="2">bihar</option>
+
+            </select>
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_password1" class="item-form">Password:</label>
+            <div disabled id="id_password">
+
+                <strong>algorithm</strong>: <bdi>pbkdf2_sha256</bdi>
+                
+                <strong>iterations</strong>: <bdi>600000</bdi>
+                
+                <strong>salt</strong>: <bdi>DCtNcB****************</bdi>
+                
+                <strong>hash</strong>: <bdi>VBhiZZ**************************************</bdi>
+                
+                </div>
+            <!-- <input type="password" class="item-select" name="password1" required id="id_password1"> -->
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_is_active" class="item-form">Is active:</label>
+            <input type="checkbox" name="is_active" id="id_is_active" checked>
+        </div>
+        <div class="d-flex mb-3">
+            <label for="id_is_staff" class="item-form">Is staff:</label>
+            <input type="checkbox" name="is_staff" id="id_is_staff" checked>
+        </div>
+        <a class="me-4" href="{% url 'password-change' %}">Change Password</a>
+        <input type="submit" class="create-btn" value="Save Changes">
+   
+    </form>
+</div>
+    
+
+{% endblock %}

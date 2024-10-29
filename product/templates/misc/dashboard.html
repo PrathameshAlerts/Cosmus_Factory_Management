@@ -1,0 +1,45 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<div class="row mt-4">
+    <!-- order-card start -->
+    <div class="dashboard-card col-lg-3 col-md-6 col-sm-10">
+        <div class="card bg-c-blue order-card rounded-4">
+            <div class="card-body">
+                <h6 class="text-white">Orders Received</h6>
+                <h2 class="text-right text-white"><i class="fa fa-solid fa-cart-shopping card-icons"></i><span class="bcard-pad">___</span></h2>
+                <p class=" text-white">Completed Orders<span class="bcard-pa">__</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-card col-lg-3 col-md-6 col-sm-10">
+        <div class="card bg-c-green order-card rounded-4">
+            <div class="card-body">
+                <h6 class="text-white">Total Sales</h6>
+                <h2 class="text-right text-white"><i class="fa-solid fa-tag card-icons"></i><span class="gcard-pad">___</span></h2>
+                <p class="text-right text-white">This Month<span class="gcard-pa">__</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-card col-lg-3 col-md-6 col-sm-10">
+        <div class="card bg-c-yellow order-card rounded-4">
+            <div class="card-body">
+                <h6 class="text-white">Revenue</h6>
+                <h2 class="text-right text-white"><i class="fa fa-solid fa-repeat card-icons"></i><span class="ycard-pad">$___</span></h2>
+                <p class="text-right text-white">This Month<span class="ycard-pa">$__</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-card col-lg-3 col-md-6 col-sm-10">
+        <div class="card bg-c-red order-card rounded-4">
+            <div class="card-body">
+                <h6 class="text-white">Total Profit</h6>
+                <h2 class="text-right text-white"><i class="fa-solid fa-award card-icons"></i><span class="rcard-pad">$___</span></h2>
+                <p class="text-right text-white">This Month<span class="rcard-pa">$__</span></p>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% endblock body %}

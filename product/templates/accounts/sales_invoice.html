@@ -1,0 +1,205 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+
+{% block body %} 
+<div>
+        <h2>Sales invoice</h2>
+      <form class="mt-5" action="" method="POST">
+           {% csrf_token %}
+           <div class="d-flex mb-3">
+            <label for="" class="form-label px-2">Type:</label>
+            <select>
+                <option>Raw Material</option>
+                <option>Finish Goods</option>
+            </select>
+          </div>
+       <div class="d-flex mb-3">
+      <label for="" class="form-label px-2">Sales No:</label>
+      <input type="number" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+    </div>
+    <div class="d-flex mb-3">
+        <label for="" class="form-label px-2">Sales Ledger:</label>
+        <input type="number" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+      </div>
+    <div class="d-flex mb-3">
+      <label for="" class="form-label px-2">Party A/C Name: </label>
+      <input type="text" class="item-select mx-3" value="" name="" maxlength="50" required id="">
+    </div>
+
+    <table class="table table-striped table-hover table-responsive">
+      <thead>
+        <tr>
+          <th>Item Names</th>
+          <th>Color /Shade</th>
+          <th>SKU</th>
+          <th>Category</th>
+          <th>QTY</th>
+          <th>Per</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody class="mainTableList">
+        <tr>
+          <td>1680 Arpan</td>
+          <td>Navy</td>
+          <td>Shades-2</td>
+          <td> 1,255.00 </td>
+          <td></td>
+          <td>Meter</td>
+          <td> 7,53,000.00 dr</td>
+        </tr>
+        
+      </tbody>
+    </table>
+
+    <table id="product-table" class="table table-striped table-hover table-bordered table-responsive">
+      <thead>
+        <tr>
+          <th>Model Name</th>
+          <th>Color</th>
+          <th>SKU No</th>
+          <th>Qty</th>
+          <th>MRP</th>
+          <th>CP/units</th>
+          <th>Treder Discount</th>
+          <th>Spl Dlr Discount</th>
+          <th>Net Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1680 Arpan</td>
+          <td>Navy</td>
+          <td>544554</td>
+          <td>10pc</td>
+          <td>4055</td>
+          <td>1599</td>
+          <td>40% </td>
+          <td>15%<td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1680 Arpan</td>
+          <td>Navy</td>
+          <td>544554</td>
+          <td>25pc</td>
+          <td>455</td>
+          <td>100</td>
+          <td>40% </td>
+          <td>15%<td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1680 Arpan</td>
+          <td>Navy</td>
+          <td>544554</td>
+          <td>1pc</td>
+          <td>4550</td>
+          <td>3400</td>
+          <td>40% </td>
+          <td>15%<td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="table-leftside">
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Gross Total</p>
+        <span id="grossTotal" class="px-2"></span>
+      </div>
+    <div class="d-flex mb-3 ">
+        <p>Spl Dic  3%</p>
+        <span id="splTotal" class="px-2"></span>
+    </div>
+   
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Grand Total</p>
+        <span id="grandValue" class="fw-bold px-2"></span>
+      </div>
+      <div class="d-flex mb-3">
+        <p>Taxable Value</p>
+        <span id="taxableValue" class=" px-2"></span>
+      </div>
+      <div class="d-flex mb-3">
+        <p>CGST 9%</p>
+      </p>
+        <span id="cgstValue" class=" px-2"></span>
+      </div>
+      <div class="d-flex mb-3">
+        <p>SGST 9%</p>
+        <span id="sgstValue" class="px-2"></span>
+      </div>
+   
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Net Total Rs</p>
+        <span id="netTotalValue" class="fw-bold px-2"></span>
+      </div>
+    
+      <div class="d-flex mb-3">
+        <p>Add:- </p>
+        <p>Frieght </p>
+        <span id="frieghtValue" class="px-2">150.00</span>
+      </div>
+        
+      <div class="d-flex mb-3">
+        <p class="fw-bold">Net Payable Rs </p>
+        <span id="netValue" class="fw-bold px-2"></span>
+       </div>
+      </div>
+    <input type="submit" class="create-btn mt-4" name="save" value="Save">
+    <input type="submit" class="create-btn" name="save_and_add_another" value="Save and Add Another">
+   <button type="button" class="create-btn"><a  class="text-decoration-none text-white" href="">Return</a></button>
+  </div>
+
+  <script>
+  $(document).ready(function() {
+  calculateValues();
+
+  // Function to calculate the values
+  function calculateValues() {
+    var grossTotal = 0;
+    var splDiscount = 0;
+    var grandTotal = 0;
+    var taxableValue = 0;
+    var cgstValue = 0;
+    var sgstValue = 0;
+    var netTotalValue = 0;
+
+    // Iterate through each row in the table
+    $('#product-table tbody tr').each(function() {
+      var qty = parseFloat($(this).find('td:eq(3)').text());
+      var mrp = parseFloat($(this).find('td:eq(4)').text());
+      var cpPerUnit = parseFloat($(this).find('td:eq(5)').text());
+      var trederDiscount = parseFloat($(this).find('td:eq(6)').text().replace('%', '')) / 100;
+      var splDlrDiscount = parseFloat($(this).find('td:eq(7)').text().replace('%', '')) / 100;
+
+      var totalCost = qty * cpPerUnit;
+      var totalAfterTrederDiscount = totalCost * (1 - trederDiscount);
+      var netPrice = totalAfterTrederDiscount * (1 - splDlrDiscount);
+
+      // Update the Net Price column in the table
+      $(this).find('td:eq(8)').text(netPrice.toFixed(2));
+
+      grossTotal += netPrice;
+      splDiscount += netPrice* 0.03;
+      grandTotal += netPrice - (netPrice* 0.03);
+      taxableValue +=  (netPrice - (netPrice* 0.03))* 0.18;
+      cgstValue += (netPrice - (netPrice* 0.03));
+      sgstValue += netPrice - (netPrice* 0.03);
+    });
+
+    // Update the elements in the HTML
+    $('#grossTotal').text(grossTotal.toFixed(2));
+    $('#splTotal').text(splDiscount.toFixed(2));
+    $('#grandValue').text(grandTotal.toFixed(2));
+    $('#taxableValue').text((grandTotal- taxableValue).toFixed(2));
+    $('#cgstValue').text((cgstValue * 0.09).toFixed(2));
+    $('#sgstValue').text((sgstValue* 0.09).toFixed(2));
+    $('#netTotalValue').text((grandTotal).toFixed(2));
+    $('#netValue').text((grandTotal + 150).toFixed(2));
+  }
+});
+
+</script>
+
+{% endblock body %}

@@ -1,0 +1,132 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
+<div id="printableArea">
+
+    <div class="mb-4 d-flex">
+        <lable class="fw-bold fs-5">Model Name: </lable><span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.Product.Model_Name}}</span>
+        <label class="fw-bold ms-5 fs-5">Product Sku:</label><span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_SKU}}</span>
+        <label class="fw-bold ms-5 fs-5">Product Color: </label><span class="mx-2 fs-5 text-danger">{{product2item_instances_first.PProduct_pk.PProduct_color}}</span>
+        <button class="print-button bg-transparent border-0"  id="printButton"><img src="../../../static/images/printer.png" alt="Print" width="25px" height="25px"></button>
+    </div>
+    <div class="row">
+        <div class="col-lg-11">
+            <div class="">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="name_absolute sticky-top text-nowrap">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>part_name</th>
+                            <th>part_dimentions</th>
+                            <th>dimention_total</th>
+                            <th>part_pieces</th>
+                            <th>Body/Combi</th>
+                            <th>Grand Total</th>
+                            <th>Grand Total Combi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mainTableList">
+                        {% for Items in product2item_instances %}
+                        
+                        <tr class="configValuesNot">
+                            <td class="text-nowrap text-danger">{{Items.Item_pk.item_name}}
+                                {% for item_config in Items.product_item_configs.all %}
+                            <tr class="configValues">
+                                <input type="hidden" value="{{item_config.id}}" class="item_config_id">
+                                <td></td>
+                                <td class="text-nowrap ">{{item_config.part_name}}</td>
+                                <td class="text-nowrap">{{item_config.part_dimentions}}</td>
+                                <td> {{item_config.dimention_total}}</td>
+                                <td>{{item_config.part_pieces}}</td>
+                                <td>{{item_config.body_combi}}</td>
+                            </tr>
+                        {% endfor %}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{Items.grand_total}}</td>
+                        <td>{{Items.grand_total_combi}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    // Get the main table body
+    let tableBody = document.querySelector(".mainTableList");
+
+    // Find all 'configValuesNot' rows (the main rows representing Items)
+    let mainRows = tableBody.querySelectorAll("tr.configValuesNot");
+
+    // Loop through each 'mainRow' and sort the config values within that group
+    mainRows.forEach(mainRow => {
+        // Collect all the sibling 'configValues' rows under this 'mainRow'
+        let configRows = [];
+        let currentRow = mainRow.nextElementSibling;
+
+        while (currentRow && currentRow.classList.contains('configValues')) {
+            configRows.push(currentRow);
+            currentRow = currentRow.nextElementSibling;
+        }
+
+        // Sort configRows by 'item_config_id' (ascending order)
+        configRows.sort((a, b) => {
+            let idA = parseInt(a.querySelector(".item_config_id").value, 10);
+            let idB = parseInt(b.querySelector(".item_config_id").value, 10);
+            return idA - idB;
+        });
+
+        // Insert the sorted config rows back into the DOM after the mainRow
+        configRows.forEach(row => {
+            tableBody.insertBefore(row, currentRow);
+        });
+    });
+});
+
+
+
+    let formSubmitted = false;
+    function printDiv(divId) {
+        const content = document.getElementById(divId).innerHTML;
+        const printWindow = window.open('', '', 'height=800,width=800');
+        printWindow.document.write('<html><head><title>Print</title>');
+        printWindow.document.write('<style>');
+        printWindow.document.write('body { font-family: Arial, sans-serif; }');
+        printWindow.document.write('table { width: 100%; border-collapse: collapse; }');
+        printWindow.document.write('th, td { border: 1px solid #000; padding: 8px; text-align: left; }');
+        printWindow.document.write('.text-nowrap { white-space: nowrap; }');
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(content);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const printButton = document.getElementById('printButton');
+        printButton.addEventListener('click', function () {
+            printDiv('printableArea');
+        });
+    });
+
+    // Handle the case when the window is closed without form submission
+    window.addEventListener('beforeunload', function (event) {
+        if (!formSubmitted) {
+            const data = { message: 'close' };
+            window.opener.postMessage(data, '*');
+        }
+    });
+</script>
+
+
+{% endblock %}

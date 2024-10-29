@@ -1,0 +1,586 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<form method="post" class="mt-2" id="labourWorkInForm" autocomplete="off">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-5">
+            <span id="labourWorkInError" class="error-messagescuttingCreate"></span>
+            <div class="d-flex mb-3">
+                <label for="id_voucher_number" class="item-form">GRN No:</label>
+                <input type="number" class="item-select" name="voucher_number" value="{{master_form.voucher_number.initial}}" required id="id_voucher_number">
+            </div>
+            
+            <div class="d-flex mb-3">
+                <label for="id_labour_name" class="item-form">Labour Name:</label>
+                <div class="custom-dropdown-container">
+                    <input  type="text" name="labour_name" id="id_labour_name" class="item-select search-input"  placeholder="Labour Name" autocomplete="off" value="{% if master_form.instance.instance.id %}{{master_form.instance.labour_voucher_number.labour_name.name}}{% endif %}"  > 
+                    <div name="labour_search" class="item-select item-name s-suggestion-container item-select_input" id="labour_search" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Labour Name"  >
+                      
+                     </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table class="table table-bordered table-hover table-striped" id="tableLabourWorkinId" style="display: none;">
+                <thead class="name_absolute ">
+                    <tr>
+                        <th>Challan No</th>
+                        <th>P.O No</th>
+                        <th>PO Total QTY</th>
+                        <th>Ref No </th>
+                        <th>Model Name</th>
+                        <th>Issued QTY</th>
+                        <th>Rec QTY</th>
+                        <th>Balance QTY</th>
+                        <th>Over Due</th>
+                    </tr>
+                </thead>
+                <tbody class="mainTableList" id="tableLabourWorkinIdBody">
+
+                </tbody>
+        
+            </table>
+        </div>
+    </div>
+    <div id="labourWorkInFormAfterClick" style="display: none;" >
+        <div class="row" >
+            <div class="col-lg-5">
+                <div class="d-flex mb-3">
+                    <label for="id_challan_no" class="item-form">Challan no:</label>
+                    <input type="text" class="item-select" name="challan_no" value="{{master_form.challan_no.initial | default_if_none:''}}"required id="id_challan_no" readonly style="border: 1px solid blue; outline: none;">
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_purchase_order_no" class="item-form">PO.No:</label>
+                    <input type="text" class="item-select" name="purchase_order_no" value="{{master_form.purchase_order_no.initial | default_if_none:''}}" required id="id_purchase_order_no" readonly style="border: 1px solid blue; outline: none;">
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_refrence_number" class="item-form">Refrence No:</label>
+                    <input type="number" class="item-select" name="refrence_number" value="{{master_form.refrence_number.initial | default_if_none:''}}" required id="id_refrence_number" readonly style="border: 1px solid blue; outline: none;">
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_model_name" class="item-form">Model Name:</label>
+                    <input type="text" class="item-select" name="model_name" value="{{master_form.model_name.initial | default_if_none:''}}" required id="id_model_name" readonly style="border: 1px solid blue; outline: none;" >
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_total_p_o_qty" class="item-form">Total PO. Qty:</label>
+                    <input type="number" class="item-select" name="total_p_o_qty" value="{{master_form.total_p_o_qty.initial | default_if_none:''}}" id="id_total_p_o_qty" readOnly style="border: 1px solid blue; outline: none;" readonly>
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_labour_workout_qty" class="item-form">Total Issued Qty:</label>
+                    <input type="number" class="item-select" name="labour_workout_qty" value="{{master_form.labour_workout_qty.initial | default_if_none:''}}" required id="id_labour_workout_qty" readonly style="border: 1px solid blue; outline: none;">
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_description" class="item-form">Naration:</label>
+                    <input type="text" class="item-select" name="description" maxlength="100" value="{{master_form.instance.description | default_if_none:''}}" id="id_description">
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+               
+                <table class="table table-striped table-hover table-bordered tables" id="labourworkInTables">
+                    <thead class="name_absolute sticky-top">
+                        <tr>
+                            <th>Product Sku</th>
+                            <th>Color</th>
+                            <th>Issue QTY</th>
+                            <th>Received QTY</th>
+                            <th>Balance QTY</th>
+                            <th>Return QTY</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mainTableList">
+                      
+                     
+                    </tbody>
+                </table>
+                
+                <div class="d-flex mb-3">
+                    <label for="id_total_balance_pcs" class="item-form">Pending Pcs:</label>
+                    <input type="number" class="item-select" name="total_balance_pcs" value="{{ master_form.total_balance_pcs.initial | default_if_none:'' }}"  required id="id_total_balance_pcs" readonly style="border: 1px solid blue; outline: none;">
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_total_return_pcs" class="item-form">Total Return Pcs:</label>
+                    <input type="number" class="item-select" name="total_return_pcs" value="" required id="id_total_return_pcs" readonly style="border: 1px solid blue; outline: none;">
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_labour_charges" class="item-form">Labour charges:</label>
+                    <input type="number" class="item-select" name="labour_charges" step="0.01"value="{{master_form.labour_charges.initial | default_if_none:''}}" required id="id_labour_charges" >
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_other_charges" class="item-form">Other Charges:</label>
+                    <input type="number" class="item-select" value="0" name="other_charges" step="0.01" required id="id_other_charges">
+                </div>
+                <div class="d-flex mb-3">
+                    <label for="id_amount" class="item-form">Amount:</label>
+                    <input type="number" class="item-select" name="amount" step="0.01" value="0" required id="id_amount" readonly style="border: 1px solid blue; outline: none;">
+                </div>
+                <input type="hidden" id="childId" name="labour_workout_child_instance_id" value="">
+            </div>
+        </div>
+    </div>
+   
+   
+
+    <button type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
+</form>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
+</div>
+<script>
+    document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
+    document.getElementById("id_labour_charges").addEventListener('input', CalculateAmount);
+
+   
+    function CalculateAmount() {
+        var totalReceivedPc = document.getElementById('id_total_return_pcs').value || 0;
+        var labour_charges = document.getElementById('id_labour_charges').value;
+        var other_charges = document.getElementById('id_other_charges').value;
+        console.log(totalReceivedPc, other_charges)
+        var newAmount = parseFloat(totalReceivedPc) * parseFloat(labour_charges);
+        console.log('newAmount',newAmount)
+        var amounts = newAmount + parseFloat(other_charges);
+        document.getElementById('id_amount').value = amounts;
+    }
+
+    function totalValueCheck(){
+    var totalValue = parseInt(document.getElementById('id_total_return_pcs').value);
+    var submitFomValue = document.getElementById('id_submit');
+    if(totalValue === 0){
+        submitFomValue.disabled = true;
+    }else{
+        submitFomValue.disabled = false;
+    }
+  }
+$(document).ready(function () {
+    let enterValue = false;
+    let index = 0; //  index outside of the event listener
+    let indexbool = false;
+
+    const suggestions = $('#labour_search')
+    $(document).on('input','#id_labour_name',function(){
+
+      const nameValue = $(this).val().trim();
+     
+        if(nameValue === '') {
+          suggestions.css('display', 'none');
+              $(this).attr('data-key', '');
+              return;
+        }
+          if(!enterValue){             // Show the dropdown only if Enter key was not pressed
+            suggestions.css('display', 'block');
+            }
+            enterValue = false;
+    
+    if(nameValue.length >= 1){
+ 
+      $.ajax({
+            url: '/labourworkinrawcreate/',
+            method: 'GET',
+            data: {
+                'nameValue': nameValue
+            },
+            success: function (response) {
+              const searchData = response.vendor_name_dict;
+              
+              function escapeRegExp(string) {
+                       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+               }
+               const searchQuery = nameValue.toLowerCase();
+               const escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+               const regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+
+               const filteredOptions = Object.entries(searchData).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+       
+                suggestions.empty();
+                $.each(filteredOptions, function(index, [key, value]) {
+                let highlightedText = value;
+        
+                if (searchQuery) {
+                    highlightedText = value.replace(regex, '<span class="highlight">$1</span>');
+                } 
+                  suggestions.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</div>`);
+                
+                });
+              
+            },
+            error:function(xhr){
+            // console.log(xhr.status + ": " + xhr.responseText);
+                if (xhr.status === 404 || xhr.status === 400) {
+                  suggestions.css('display', 'block');
+                  suggestions.empty().append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
+                }
+        }
+        });
+    }else{
+        suggestions.empty();
+    }
+    
+        suggestions.on('click', '.itemName-div-suggestion', function() {
+       
+        $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
+        $(this).addClass('selected').siblings().removeClass('selected');
+        var buttonClick = $(this).closest('form').find('#tableLabourWorkinId'); 
+        buttonClick.css('display', 'block');
+        const itemValue = $(this).attr('data-key');
+        $.ajax({
+                url: '/labourworkinrawcreate/',
+                method: 'GET',
+                data: {
+                    'itemValue': itemValue
+                },
+               
+         success: function (response) {
+                var challan_instance = response.labour_workout_instance_dict;
+                var dates = new Date().toISOString().split('T')[0];
+                    console.log('dates',dates);
+                 var  reminderCount = 0;
+                var tables = $('#tableLabourWorkinId tbody.mainTableList');
+                tables.empty();
+                $.each(challan_instance, function (key, value) {
+                    var createDate = value.created_date.split('T')[0];
+                    var newDate = createDate;
+             
+                    var remaining = 0;
+                    if(new Date(createDate) > new Date(dates)){
+                        reminderCount += 1; 
+                        newDate = createDate;           
+                        remaining = reminderCount +' ' +'Remaining';
+                    }else{
+                        reminderCount -= 1; 
+                        newDate = createDate;
+                        remaining = reminderCount + ' '+'OverDue';
+                    }
+                  
+                    var dateText = $('<div>').append(
+                    $('<span>').text(newDate),
+                        $('<br>'),
+                    $('<span>').text(remaining)
+                    );
+                    
+                    if (reminderCount === 0) {
+                        dateText.find('span:last').css('color', 'green');
+                        dateText.find('span:last').css('font-weight', 'bold');
+                    } else if (reminderCount < 0) {
+                        dateText.find('span:last').css('color', 'red');
+                        dateText.find('span:last').css('font-weight', 'bold');
+                    }
+
+                    var dateCell = $('<td>').append(dateText);
+
+                    // Apply color based on remaining value
+                 
+
+                    var newRows = $('<tr>').append(
+                    $('<td>').text(value.Challan_No || 'N/A'),
+                    $('<td>').text(value.PO_No || 'N/A'),
+                    $('<td>').text(value.PO_Total_QTY || '0'),
+                    $('<td>').text(value.Ref_No || 'N/A'),
+                    $('<td>').text(value.Model_Name || 'N/A'),
+                    $('<td>').text(value.Issued_QTY || '0'),
+                    $('<td>').text(value.Rec_QTY || '0'),
+                    $('<td>').text(value.Balance_QTY || 0),
+                    dateCell,
+                    $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || 'N/A')
+                    );
+                    tables.append(newRows);
+                })
+                $('#tableLabourWorkinIdBody').show().mouseover(function(){
+                   
+                    $(this).find('tr').css('cursor', 'pointer');
+                
+                    });
+                    CalculateAmount();
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log('Error sending value to the backend');
+                }
+            })
+            suggestions.css('display', 'none');
+    })
+
+        })
+    
+    
+$(document).on('click', '.search-input',function(){
+        var selectValue = $(this).next('.s-suggestion-container');
+        selectValue.css('display', 'none');
+        selectValue.empty();
+})
+
+    $(document).on('keydown', '[name^="labour_name"]', function (e) {
+        const $inputField = $(this);
+        const $dropdownOptions = $inputField.next('.s-suggestion-container');
+        const $options = $dropdownOptions.find('.itemName-div');
+        const optionsCount = $options.length - 1;
+       
+        const nameData = $inputField.val().trim();
+
+        if(nameData === ''){
+            index = 0;
+            indexbool = false;
+            return;
+        }
+
+        const newHeight = $inputField.offset();
+        const windowHeight = $(window).height();
+        const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+         $dropdownOptions.css({
+              'max-height': availableSpace + 'px',
+              'overflow-y': 'auto'
+         });
+       if(e.key=== 'ArrowDown'){
+          e.preventDefault();
+
+          if(index <= optionsCount){
+            const selectedItem = $options.eq(index);
+            const nextItem = selectedItem.next();
+            const nameDataKey= selectedItem.text();
+            const nameKey = selectedItem.data('key');
+                // Remove highlight from previously selected item   
+            $options.removeClass('bg-highlight');
+            selectedItem.addClass('bg-highlight');
+            $inputField.attr('data-key', nameKey);
+            $inputField.text(nameDataKey);
+           
+            const itemOffsetTop = nextItem.position() ? nextItem.position().top : 0;
+            const itemHeight = nextItem.outerHeight();
+            const selectScrollTop = $dropdownOptions.scrollTop();
+            const selectHeight = $dropdownOptions.height();
+
+            if (itemOffsetTop + itemHeight > selectHeight) {
+                $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+            } else if (itemOffsetTop < 0) {
+                $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+            }
+             
+          
+            if(index !== optionsCount ){
+                index += 1; 
+             indexbool = true;        
+            }     
+                
+          }else{
+            index = 0;
+          }
+      
+        }
+          if(e.key === 'ArrowUp'){
+            e.preventDefault(); 
+            if (index != 0 && indexbool == true)
+            {           
+                  index = index - 1;
+            }
+            
+            if(index <= selectLength){
+          
+           const selectedItem = $options.eq(index);
+           const prevItem = selectedItem.prev();
+           const nameDataKey= selectedItem.text();
+           const nameKey = selectedItem.data('key');
+
+            $options.removeClass('bg-highlight');
+            selectedItem.addClass('bg-highlight');
+            $inputField.attr('data-key', nameKey);
+            $inputField.text(nameDataKey);
+          
+            const itemOffsetTop = prevItem.position() ? prevItem.position().top : 0;
+            const itemHeight = prevItem.outerHeight();
+            const selectScrollTop = $dropdownOptions.scrollTop();
+            const selectHeight = $dropdownOptions.height();
+
+            if (itemOffsetTop < 0) {
+                $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+            } else if (itemOffsetTop + itemHeight > selectHeight) {
+                $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+            }
+              }
+              else{
+                      index = 0;
+              }   
+            
+          }
+          if(e.key === 'Enter'){
+          e.preventDefault();
+          const commomSugenstionHide = $inputField.closest('.custom-dropdown-container').find(`#labour_search`);
+          const nameValues = $inputField.text().trim();
+          const itemValue = $inputField.attr('data-key');
+     
+          const dropdownBtn = $inputField.closest('form').find('#tableLabourWorkinId');
+          dropdownBtn.css('display', 'block');
+          if ($inputField.length > 0) {
+              
+            $inputField.val(nameValues);
+           
+            $.ajax({           // this ajax reuest is to send the data and show the all the option will filed once click on the suggestion on the screen
+            url: '/labourworkinrawcreate/',
+            method: 'GET',
+            data: {
+                'itemValue': itemValue
+            },
+            success: function (response) {
+              
+              var challan_instance = response.labour_workout_instance_dict
+             
+              var tables = $('#tableLabourWorkinId tbody.mainTableList ');
+            tables.empty();
+            $.each(challan_instance, function (key, value) {
+        
+                var newRows = $('<tr>').append(
+                $('<td>').text(value.Challan_No || ''),
+                $('<td>').text(value.PO_No || ''),
+                $('<td>').text(value.PO_Total_QTY || '0'),
+                $('<td>').text(value.Ref_No || 'N/A'),
+                $('<td>').text(value.Model_Name || 'N/A'),
+                $('<td>').text(value.Issued_QTY || '0'),
+                $('<td>').text(value.Rec_QTY || '0'),
+                $('<td>').text(value.Balance_QTY || '0'),
+                $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || '')  
+                );
+                tables.append(newRows);
+            })
+            $('#tableLabourWorkinIdBody').show().mouseover(function(){
+
+                $(this).find('tr').css('cursor', 'pointer');
+            });
+
+                 
+            },
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+            }
+        }); 
+          }
+          index = 0;
+          indexbool = false;
+          enterValue = true; // Set the flag to true when Enter is pressed
+          commomSugenstionHide.css('display', 'none'); // Hide the dropdown
+          commomSugenstionHide.empty();
+        }    
+    })
+
+    $('#tableLabourWorkinIdBody').on('click', 'tr', function () {
+    var labourWorkOutId = $(this).find('#id_labour_workout_id').val();
+
+        $.ajax({
+            url: '/labourworkinrawcreate/',
+            method: 'GET',
+            data: {
+                'labourWorkOutId': labourWorkOutId,
+            },
+            success: function (response) {
+                var masterData = response.master_initial_data;
+                var formsetData = response.formset_initial_data;
+                var childId = response.labour_workout_child_instance_id;
+             
+                var tableWorkIn = $('#tableLabourWorkinId');
+                var challanRows = $('#labourWorkInFormAfterClick');
+                var submit = $('#id_submit');
+        
+                // Hide the table and show form sections
+                tableWorkIn.css("display", "none");
+                challanRows.css("display", "block");
+                submit.css("display", "block");
+                
+                // Update form fields with master data
+                challanRows.find('#id_challan_no').val(masterData.challan_no);
+                challanRows.find('#id_purchase_order_no').val(masterData.purchase_order_no);
+                challanRows.find('#id_refrence_number').val(masterData.refrence_number);
+                challanRows.find('#id_model_name').val(masterData.model_name);
+                challanRows.find('#id_total_p_o_qty').val(masterData.total_p_o_qty);
+                challanRows.find('#id_labour_charges').val(masterData.labour_charges);
+                challanRows.find('#id_pending_pcs').val(masterData.pending_pcs);
+                challanRows.find('#id_labour_workout_qty').val(masterData.labour_workout_qty);
+                challanRows.find('#childId').val(childId);
+                challanRows.find('#id_total_balance_pcs').val(masterData.total_balance_pcs);
+                // Populate the table with formset data
+                var tableRows = $('#labourworkInTables tbody');
+                tableRows.empty();
+                tableRows.append('<input type="hidden" name="l_w_in_products-INITIAL_FORMS" value="0" id="id_l_w_in_products-INITIAL_FORMS">');
+                tableRows.append('<input type="hidden" name="l_w_in_products-MAX_NUM_FORMS" value="1000" id="id_l_w_in_products-MAX_NUM_FORMS">');
+                tableRows.append('<input type="hidden" name="l_w_in_products-MIN_NUM_FORMS" value="0" id="id_l_w_in_products-MIN_NUM_FORMS">');
+                tableRows.append('<input type="hidden" name="l_w_in_products-TOTAL_FORMS" value="' + formsetData.length + '" id="id_l_w_in_products-TOTAL_FORMS">');
+                formsetData.forEach(function(rowData, index) {
+                    var newRow = $('<tr>');
+                        
+                        newRow.append('<input type="hidden" name="l_w_in_products-' + index + '-id" value="" id="id_l_w_in_products-0-id">');
+                    // Create the input fields dynamically for each column
+                    newRow.append($('<td>').html('<input type="text" class="productinput" name="l_w_in_products-' + index + '-product_sku" value="' + rowData.product_sku + '" maxlength="100" id="id_l_w_in_products-' + index + '-product_sku">'));
+                    
+                    newRow.append($('<td>').html('<input type="text" class="productinput" name="l_w_in_products-' + index + '-product_color" value="' + rowData.product_color + '" maxlength="100" id="id_l_w_in_products-' + index + '-product_color">'));
+                    
+                    newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-L_work_out_pcs" value="' + rowData.L_work_out_pcs + '" id="id_l_w_in_products-' + index + '-L_work_out_pcs">'));
+                    
+                    newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-pending_to_return_pcs" value="' + rowData.pending_to_return_pcs + '" id="id_l_w_in_products-' + index + '-pending_to_return_pcs">'));
+                    
+                    newRow.append($('<td>').html('<input type="number"  class="productorderrawqty-input" name="l_w_in_products-' + index +'-qty_to_compare" value="'+ rowData.qty_to_compare+'" id="id_id_l_w_in_products-' + index + '-qty_to_compare" readonly>'));
+                    
+                    newRow.append($('<td>').html('<input type="number" class="productorderqty-input" name="l_w_in_products-' + index + '-return_pcs" value="' + rowData.return_pcs + '" id="id_l_w_in_products-' + index + '-return_pcs">'));
+                    
+                    // Hidden field for balance
+                    newRow.append($('<input type="hidden" class="productorderrawqty-input" name="l_w_in_products-' + index + '-cur_bal_plus_return_qty" value="' + rowData.cur_bal_plus_return_qty + '" id="id_l_w_in_products-' + index + '-cur_bal_plus_return_qty" readonly>'));
+
+                    // Append the new row to the table body
+                    tableRows.append(newRow);
+                });
+
+                // Attach the event listener for input change after populating rows
+                document.querySelectorAll('[name$="-return_pcs"]').forEach(function(element){
+                    element.addEventListener('input', CalculateTotalValue);
+                });
+
+            },
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+            }
+        });
+    });
+
+})   
+
+function CalculateTotalValue() {
+    var total = 0;
+    var pendingPc = 0;
+    var table = document.querySelector('#labourworkInTables tbody');
+    var totalReturnPcs = document.querySelectorAll('[name$="-return_pcs"]');
+
+        totalReturnPcs.forEach(function(input){
+            var returnValue = parseInt(input.value) || 0;
+            var row = input.closest('tr'); 
+            var balance = parseInt(row.querySelector('input[name$="-pending_to_return_pcs"]').value) || 0;
+            var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
+          
+             if(returnValue > balance){
+                returnValue = 0;
+                input.value = 0;
+               row.querySelector('input[name$="-qty_to_compare"]').value = BalanceActualValue;
+             }
+           
+            var balanceQty = balance - returnValue;
+            row.querySelector('input[name$="-qty_to_compare"]').value = balanceQty;
+
+            total  += returnValue;
+             pendingPc += balanceQty;
+        })
+
+    document.getElementById('id_total_return_pcs').value = total;
+    document.getElementById('id_total_balance_pcs').value = pendingPc;
+    CalculateAmount();
+}
+window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            document.forms[0].reset();
+        }
+    });
+
+</script>
+
+{% endblock %}

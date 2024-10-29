@@ -1,0 +1,101 @@
+{% extends 'product/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="row mt-4">
+  <!-- <h2>Product Sub Category-{{title}}</h2> -->
+  <div class="col-lg-5 mt-2">
+
+    <form action="" method="POST" id="subCategoryForm">
+      {% csrf_token %}
+      <div class="d-flex mb-3">
+        <label for="id_product_main_category" class="item-form">Main Category:</label>
+        <select name="product_main_category" id="id_product_main_category" class="item-select">
+          {% if form.instance.id %}
+          <option value="{{form.instance.product_main_category.id}}">{{form.instance.product_main_category.product_category_name}}</option>
+          {% for main_cat in main_categories %}
+          <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
+          {% endfor %}
+
+          {% elif not form.instance.id %}
+          <option value=""></option>
+          {% for main_cat in main_categories %}
+          <option value="{{main_cat.id}}">{{main_cat.product_category_name}}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+
+      </div>
+
+      <div>
+        <div class="d-flex mb-3">
+          <label for="id_product_sub_category_name" class="item-form">Sub Category:</label>
+          <input type="text" class="product2Select" value="{{form.instance.product_sub_category_name}}" name="product_sub_category_name" maxlength="255" required id="id_product_sub_category_name">
+        </div>
+        <button type="submit" id="submitButtonSubCategory" class="product2create-btn" name="save" value="Save">Save</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-lg-7 mt-4">
+    
+<div class="row">
+  <div class="col-lg-9">
+    <div class="table-res">
+      <table class="table table-bordered table-striped table-hover" style="width: 100%;">
+        <thead class="name_absolute sticky-top text-nowrap">
+          <tr>
+            <th>No</th>
+            <th >Main Category</th>
+            <th colspan="3">Category Details
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Sub Category <span style="margin-left: 103px;">Edit</span> <span class="float-end">Delete</span></th>
+                
+              </tr>
+            </th>
+          
+          </tr>
+        </thead>
+        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+
+          {% for main_cat in main_categories %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td class="fw-bold">{{main_cat.product_category_name}}</td>
+            
+            <td>
+              <table class="table table-bordered table-striped table-hover">
+               
+               {% for sub_cat in main_cat.subcategories.all %}
+                <tr>
+                  <td>{{sub_cat.product_sub_category_name}}</td>
+                  <td><a class="ps-2" href="{% url 'define-sub-category-update-product' sub_cat.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                  <td><a class="ps-2" href="{% url 'define-sub-category-product-delete' sub_cat.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
+                </tr>
+                {% endfor %}
+              </table>
+            
+            </td>
+           
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+ 
+  </div>
+</div>
+
+<script>
+  $(Document).ready(function(){
+   
+    $('#subCategoryForm').on('submit', function () {
+      $('#submitButtonSubCategory').attr('disabled', 'disabled');
+    });
+  })
+</script>
+
+{% endblock body %}

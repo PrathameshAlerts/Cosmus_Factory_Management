@@ -1,0 +1,61 @@
+{% extends 'product/base.html' %} 
+{% load static %} 
+
+{% block body %}
+<div>
+  <h2>Sales Invoice List</h2>
+  <div class="">
+    
+      <div class="d-flex mb-3">
+        <button class="acc-btn" onclick="">Add Invoice +</button>
+        <div class="container-account"> 
+         <input class="" type="search" placeholder="Search" aria-label="Search" id="" name="" />
+           <a class="px-2 py-2" href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+        </div>
+       </div>
+      </div>  
+         
+        <div class="row">
+          <div class="col-lg-8">
+            <table class="table table-striped table-hover table-responsive">
+              <thead>
+                <tr>
+                  <th >No</th>
+                  <th >Date</th>
+                  <th >Party A/c Name</th>
+                  <th >Voucher Type</th>
+                  <th >Voucher No</th>
+                  <th >Debit Amount</th>
+                  <th >Credit Amount</th>
+                  <th >Edit</th>
+                  <th >Delete</th>
+                 
+                </tr>
+              </thead>
+              
+              <tbody class="mainTableList">
+              <tr>
+                <td>1</td>
+                <td>01-01-2024</td>
+                <td>akash</td>
+                <td>Sales</td>
+                <td>9078097</td>
+                <td></td>
+                <td>10</td>
+                <td><a href=""><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                <td><a href=""><i class="fa-solid fa-trash text-danger px-2"></i></a></td>
+              </tr>
+             
+             
+              </tbody>
+              
+            </table>
+          </div>  
+         
+        </div>
+   
+    </div>
+    
+    
+
+{% endblock body %}
