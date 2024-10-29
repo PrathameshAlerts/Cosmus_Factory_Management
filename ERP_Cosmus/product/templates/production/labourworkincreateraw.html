@@ -191,7 +191,7 @@ $(document).ready(function () {
             },
             success: function (response) {
               const searchData = response.vendor_name_dict;
-              console.log('searchData',searchData)
+              
               function escapeRegExp(string) {
                        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                }
@@ -227,69 +227,78 @@ $(document).ready(function () {
     
         suggestions.on('click', '.itemName-div-suggestion', function() {
        
-       $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
-       $(this).addClass('selected').siblings().removeClass('selected');
-      var buttonClick = $(this).closest('form').find('#tableLabourWorkinId'); 
-      buttonClick.css('display', 'block');
-       const itemValue = $(this).attr('data-key');
-       $.ajax({
-            url: '/labourworkinrawcreate/',
-            method: 'GET',
-            data: {
-                'itemValue': itemValue
-            },
-            success: function (response) {
-            var challan_instance = response.labour_workout_instance_dict;
-                console.log('challan_instance',challan_instance);
-                var dates = new Date();
-                console.log('dates',dates);
-            var tables = $('#tableLabourWorkinId tbody.mainTableList');
-            tables.empty();
-            $.each(challan_instance, function (key, value) {
-        
-                var newRows = $('<tr>').append(
-                $('<td>').text(value.Challan_No || 'N/A'),
-                $('<td>').text(value.PO_No || 'N/A'),
-                $('<td>').text(value.PO_Total_QTY || '0'),
-                $('<td>').text(value.Ref_No || 'N/A'),
-                $('<td>').text(value.Model_Name || 'N/A'),
-                $('<td>').text(value.Issued_QTY || '0'),
-                $('<td>').text(value.Rec_QTY || '0'),
-                $('<td>').text(value.Balance_QTY || 0),
-                $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || 'N/A')
-                );
-                tables.append(newRows);
-            })
-    
-            $('#tableLabourWorkinIdBody').show().mouseover(function(){
-                // var balanceValue = $(this).find('#tableLabourWorkinIdBody').find('tr');
-                // console.log('balanceValue',balanceValue);
-                // balanceValue.each(function(){
-                //   var balanceValues =  $(this).find('td').eq(7).text();
-                //   if(balanceValues == 0){
-                //     console.log("balanceValues",balanceValues);
-                //      var rows = $(this).closest('tr');
-                //      console.log('rows',rows);
-                //      rows.css('cursor', 'not-allowed');
-                //      rows.css('background-color', 'red');
+        $(this).closest('.custom-dropdown-container').find('.search-input').val($(this).text().trim());
+        $(this).addClass('selected').siblings().removeClass('selected');
+        var buttonClick = $(this).closest('form').find('#tableLabourWorkinId'); 
+        buttonClick.css('display', 'block');
+        const itemValue = $(this).attr('data-key');
+        $.ajax({
+                url: '/labourworkinrawcreate/',
+                method: 'GET',
+                data: {
+                    'itemValue': itemValue
+                },
+                success: function (response) {
+                var challan_instance = response.labour_workout_instance_dict;
+                var dates = new Date().toISOString().split('T')[0];
+                    console.log('dates',dates);
+                 var  reminderCount = 0;
+                var tables = $('#tableLabourWorkinId tbody.mainTableList');
+                tables.empty();
+                $.each(challan_instance, function (key, value) {
+                    var createDate = value.created_date.split('T')[0];
+                    var newDate = createDate;
+                    console.log('newDate',newDate);
+                    var remaining = 0;
+                    if(new Date(createDate) < new Date(dates)){
+                        reminderCount += 1; 
                     
-                //   }
-                
-                // })
-              
-                $(this).find('tr').css('cursor', 'pointer');
-              
-                });
-                CalculateAmount();
-            },
-            error: function (xhr, errmsg, err) {
-                console.log('Error sending value to the backend');
-            }
-        })
-        suggestions.css('display', 'none');
-   })
+                        newDate = dates;
+                        console.log('newDate',newDate);
+                        remaining = reminderCount;
+                    }
+                  
+                    var dateText = `${newDate} +${remaining} Remaining`;
 
+                    var dateCell = $('<td>').text(dateText);
+
+                    // Apply color based on remaining value
+                    if (remaining === 0) {
+                        dateCell.css('color', 'green');
+                    } else if (remaining < 0) {
+                        dateCell.css('color', 'red');
+                    }
+
+                    var newRows = $('<tr>').append(
+                    $('<td>').text(value.Challan_No || 'N/A'),
+                    $('<td>').text(value.PO_No || 'N/A'),
+                    $('<td>').text(value.PO_Total_QTY || '0'),
+                    $('<td>').text(value.Ref_No || 'N/A'),
+                    $('<td>').text(value.Model_Name || 'N/A'),
+                    $('<td>').text(value.Issued_QTY || '0'),
+                    $('<td>').text(value.Rec_QTY || '0'),
+                    $('<td>').text(value.Balance_QTY || 0),
+                        dateCell,
+                    $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || 'N/A')
+                    );
+                    tables.append(newRows);
+                })
+        
+                $('#tableLabourWorkinIdBody').show().mouseover(function(){
+                   
+                    $(this).find('tr').css('cursor', 'pointer');
+                
+                    });
+                    CalculateAmount();
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log('Error sending value to the backend');
+                }
+            })
+            suggestions.css('display', 'none');
     })
+
+        })
     
     
 $(document).on('click', '.search-input',function(){
