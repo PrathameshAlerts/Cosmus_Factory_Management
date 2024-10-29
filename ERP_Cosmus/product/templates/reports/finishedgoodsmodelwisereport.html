@@ -1,16 +1,16 @@
 
+refrence no - product_instance.Product_Refrence_ID
+Model Name - product_instance.Model_Name
+
+Image - 
+{% for record in Product_Refrence_ID.productdetails.all %}
+
+{{record.PProduct_image}}
+
+{% endfor %}
+
+
 
 {% for record in data_list %}
 {{record}}
 {% endfor %}
-
-
-<h6>'voucher_number' : instance.voucher_number,
-    'date' : instance.created_date.replace(tzinfo=None).strftime("%d %B %Y"),
-    'name': instance.labour_voucher_number.labour_name.name,
-    'description' : 'Labour Work In',
-    'L_W_I' : instance.total_qty,
-    'Repair_In' : '0',
-    'sale' : '0',
-    'Repair_Out' : '0',
-    'net_closing_stock' :'0'</h6>
