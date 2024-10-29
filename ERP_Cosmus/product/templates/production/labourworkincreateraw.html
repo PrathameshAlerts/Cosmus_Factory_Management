@@ -238,7 +238,8 @@ $(document).ready(function () {
                 data: {
                     'itemValue': itemValue
                 },
-                success: function (response) {
+               
+         success: function (response) {
                 var challan_instance = response.labour_workout_instance_dict;
                 var dates = new Date().toISOString().split('T')[0];
                     console.log('dates',dates);
@@ -248,26 +249,36 @@ $(document).ready(function () {
                 $.each(challan_instance, function (key, value) {
                     var createDate = value.created_date.split('T')[0];
                     var newDate = createDate;
-                    console.log('newDate',newDate);
+             
                     var remaining = 0;
-                    if(new Date(createDate) < new Date(dates)){
+                    if(new Date(createDate) > new Date(dates)){
                         reminderCount += 1; 
-                    
-                        newDate = dates;
-                        console.log('newDate',newDate);
-                        remaining = reminderCount;
+                        newDate = createDate;           
+                        remaining = reminderCount +' ' +'Remaining';
+                    }else{
+                        reminderCount -= 1; 
+                        newDate = createDate;
+                        remaining = reminderCount + ' '+'OverDue';
                     }
                   
-                    var dateText = `${newDate} +${remaining} Remaining`;
+                    var dateText = $('<div>').append(
+                    $('<span>').text(newDate),
+                        $('<br>'),
+                    $('<span>').text(remaining)
+                    );
+                    
+                    if (reminderCount === 0) {
+                        dateText.find('span:last').css('color', 'green');
+                        dateText.find('span:last').css('font-weight', 'bold');
+                    } else if (reminderCount < 0) {
+                        dateText.find('span:last').css('color', 'red');
+                        dateText.find('span:last').css('font-weight', 'bold');
+                    }
 
-                    var dateCell = $('<td>').text(dateText);
+                    var dateCell = $('<td>').append(dateText);
 
                     // Apply color based on remaining value
-                    if (remaining === 0) {
-                        dateCell.css('color', 'green');
-                    } else if (remaining < 0) {
-                        dateCell.css('color', 'red');
-                    }
+                 
 
                     var newRows = $('<tr>').append(
                     $('<td>').text(value.Challan_No || 'N/A'),
@@ -278,12 +289,11 @@ $(document).ready(function () {
                     $('<td>').text(value.Issued_QTY || '0'),
                     $('<td>').text(value.Rec_QTY || '0'),
                     $('<td>').text(value.Balance_QTY || 0),
-                        dateCell,
+                    dateCell,
                     $('<input type="hidden" id="id_labour_workout_id">').val(value.labour_workout_id  || 'N/A')
                     );
                     tables.append(newRows);
                 })
-        
                 $('#tableLabourWorkinIdBody').show().mouseover(function(){
                    
                     $(this).find('tr').css('cursor', 'pointer');
