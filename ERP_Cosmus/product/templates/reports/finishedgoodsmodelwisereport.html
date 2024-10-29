@@ -1,16 +1,151 @@
 
-refrence no - product_instance.Product_Refrence_ID
-Model Name - product_instance.Model_Name
 
-Image - 
-{% for record in Product_Refrence_ID.productdetails.all %}
+{% extends 'product/base.html' %}
 
-{{record.PProduct_image}}
+{% block body %}
 
-{% endfor %}
+    <div class="mt-4  mb-3 d-flex">
+        <h4>Reference No - <span class="text-danger text-bold text-capitalize">{{product_instance.Product_Refrence_ID}}</span></h4>
+        <h4 class="ms-3">Model Name - <span class="text-danger text-bold text-capitalize">{{product_instance.Model_Name}}</span></h4>
+        <div class="d-flex">
+            <lable>Images :</lable>
+            {% for record in Product_Refrence_ID.productdetails.all %}
+            {% if record.PProduct_image.url is not None %}
+            <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
+            {% endif %}
+            {% endfor %}
+        </div>
+      
+        
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="table-responsives">
+                <table class="table table-bordered  table-striped" style="width: 100%;">
+                    <thead class="name_absolute sticky-top">
+                    
+                        <tr class ="text-nowrap text-center">
+                            <th>GRN No/ V No</th>
+                            <th>Date</th>
+                            <th>Name / Description</th>
+                            <th colspan="2" class="bg-c-blue justify-content-center">INWards</th>
+                            <th colspan="2" class="bg-c-red justify-content-center">Outwards</th>
+                            <th colspan="1" class="bg-c-green justify-content-center">Closing </th>
+                        </tr>
+                    </thead>
+                    <tbody class="mainTable" >
+                            <tr>
+                                <th colspan="3"></th>
+                                <th style="background-color: #90D5FF; ">L.W.IN</th>
+                                <th style="background-color: #90D5FF;" >Repair In</th>
+                                <th style="background-color: #ffcccb;">Sale</th>
+                                <th style="background-color: #ffcccb;">Repair Out</th>
+                                <th style="background-color: #a3efe0;">Net Closing Stock</th>
+                               
+                               
+                            </tr>
+                           
+                    </tbody>
+                  
+                    <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                        {% for record in data_list %}
+                        <tr>
+                            <td>{{record.voucher_number}}</td>
+                            <td>{{record.date}}</td>
+                            <td>{{record.description}}</td>          
+                            <td style="background-color: #90D5FF;" class="inwardLwIn ">{{record.L_W_I}}</td>
+                            <td style="background-color: #90D5FF;" class="inwardRepairIn">{{record.Repair_In}}</td>
+                            <td style="background-color: #ffcccb;" class="outwardSale">{{record.sale}}</td>
+                            <td style="background-color: #ffcccb;" class="outwardRepairOut">{{record.Repair_Out}}</td>
+                            <td class="closingQty" style="background-color: #a3efe0;">{{data.net_closing_stock}}</td>
+                        </tr> 
+                        {% endfor %}
+                    </tbody>
+                    <tbody class="mainTableList">
+                        <tr>
+                            <td><span class="fw-bold">Total</span></td>
+                            <td colspan="2"></td>
+                            <td><span id="TotalLwin">0</span></td>
+                            <td><span id="TotalReapirIn">0</span></td>
+                            <td><span id="TotalSale">0</span></td>
+                            <td><span id="TotalRepairOut">0</span></td>
+                            <td><span id="TotalQty"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>
+        
+        document.addEventListener('DomContendLoadered',function(){
+     
+            totalValueCalculation();
+        })
+        
+    
+        function totalValueCalculation() {
+        var mainTable = document.querySelectorAll('.mainTableList tr');
+        var previousClosingQty = 0;
 
-
-
-{% for record in data_list %}
-{{record}}
-{% endfor %}
+        var lawInValue = 0;
+        var repairInValue = 0;
+        var saleValue = 0;
+        var repairOutValue = 0;
+    
+        mainTable.forEach((element, index) => {
+            var inwordQtyElement = element.querySelector('.inwardLwIn');
+            var inwordValueElement = element.querySelector('.inwardRepairIn');
+            var outwordQtyElement = element.querySelector('.outwardSale');
+            var outwordValueElement = element.querySelector('.outwardRepairOut');
+            
+            // Validate elements and extract values
+            var inwordQty = inwordQtyElement ? parseFloat(inwordQtyElement.textContent.trim()) || 0 : 0;
+            var inwordValue = inwordValueElement ? parseFloat(inwordValueElement.textContent.trim()) || 0 : 0;
+            var outwordQty = outwordQtyElement ? parseFloat(outwordQtyElement.textContent.trim()) || 0 : 0;
+            var outwordValue = outwordValueElement ? parseFloat(outwordValueElement.textContent.trim()) || 0 : 0;
+    
+            var closeQtyElement = element.querySelector('.closingQty');
+     
+    
+            // Calculate closing quantities and values
+            if ((inwordQty > 0 && inwordValue >= 0) || (inwordQty > 0 && inwordValue == 0)) {
+                previousClosingQty += inwordQty;
+                lawInValue += inwordQty;
+                repairInValue += inwordValue;
+            } else if ((outwordQty > 0 && outwordValue >= 0) || (outwordQty > 0 && outwordValue == 0)) {
+                previousClosingQty -= outwordQty;
+                saleValue -= outwordQty;
+                repairOutValue -= outwordValue;
+            }
+    
+            // Set the calculated closing values to the current row
+      
+            if (closeQtyElement) closeQtyElement.textContent = previousClosingQty.toFixed(2);
+            
+        });
+    
+        // Update the total quantity and value on the page
+        var totalQtyElement = document.getElementById('TotalQty');
+        var LwInqty = document.getElementById('TotalLwin');
+        var RepairInqty = document.getElementById('TotalReapirIn');
+        var Saleqty = document.getElementById('TotalSale');
+        var RepairOutqty = document.getElementById('TotalRepairOut');
+        if(LwInqty) LwInqty.textContent = lawInValue.toFixed(2);
+        if(RepairInqty) RepairInqty.textContent = repairInValue.toFixed(2);
+        if(Saleqty) Saleqty.textContent = saleValue.toFixed(2);
+        if(RepairOutqty) RepairOutqty.textContent = repairOutValue.toFixed(2);
+    
+        if (totalQtyElement) totalQtyElement.textContent = previousClosingQty.toFixed(2);
+      
+    }
+    
+    
+        
+        totalValueCalculation()
+    </script>
+    {% endblock %}
+    
+    

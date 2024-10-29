@@ -93,14 +93,9 @@
                               
                            
                              </div>
-                           </div> 
-
-                        
+                        </div> 
                     </td>
-                    <td>
-                        <input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly>
-                        
-                    </td>
+                    <td><input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
                     <td>
                         <input type="hidden" id="id_item_checkshade-{{forloop.counter0}}" name="item_checkshade-{{forloop.counter0}}" value=""> 
                         <input type ="text" name="input_item_shade_{{forloop.counter0}}" id="input_item_shade_{{forloop.counter0}}" class="purchase-select" style="border: none ;color: #000; background-color: transparent; display: none;" readonly value="">
@@ -116,15 +111,9 @@
                         </select>
                        
                     </td>
-                    <td>
-                        <input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly>
-                    </td>
-                    <td>
-                        <input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" readonly>
-                    </td>
-                    <td>
-                        <input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-mark" readonly>
-                    </td>
+                    <td><input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" readonly></td>
+                    <td><input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}" readonly></td>
+                    <td><input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-mark" readonly></td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
                     </td>
@@ -132,53 +121,52 @@
                         <input type="number" id="{{forms.prefix}}-gst" class="purchase-mark purchase-gst mb-2" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage}}" readonly >
                     </td>
                     <td>
-                    <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value=""readonly >
+                        <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst mb-2" name="{{forms.prefix}}-cgst" value=""readonly >
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst mb-2" name="{{forms.prefix}}-sgst" value=""readonly >
                     </td>
-                    <td>
-                        <input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly>
-                    </td>
-                    <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span>
-                    
-                    </td>
+                    <td><input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly></td>
+                    <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
                     
                 </tr>   
                 {% endfor %}
             </tbody>
+            <tbody>
+                <tr>
+                    <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
+                    <td colspan="3"></td>
+                    <td> <input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
+                    <td colspan="2"></td>
+                    <td><input type="number" class="purchase-amount" style="border: 1px solid red;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
+                    <td></td>
+                    <td><input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
+                    <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
+                    <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
+                </tr>
+            </tbody>
 
         </table>
-        <button type="button" class="item-btn ms-3 mb-3" id="addRowButton">Add +</button>
-    
-
-        <div class="mb-4">
-            <table class="table table-striped table-hover">
-                <tbody>
-                    <tr>
-                        <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
-                        <td> <input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 533px;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
-                        <td><input type="number" class="purchase-amount" style="border: 1px solid red; margin-left: 162px;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
-                        <td><input type="number" class="purchase-input" style="border: 1px solid red; margin-left: 69px;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
-                        <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
-                        <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="table-left mb-3">
+       
+    <div class="d-flex ">
+        <div class="ms-4">
+            <button type="button" class="item-btn mb-3" id="addRowButton">Add +</button>
+        </div>
+        
+        <div class="mb-4 table-left">
+            <div class=" mb-3">
                 <lable  class="purchase-lable fw-bold">Gross total</lable>
                 <span class="purchase-span">
                     <input type="number" class="purchaseTableLabel-Gtotal  purchase-amounts" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total | default_if_none:''}}" maxlength="50" step=".01" readonly >
                 </span>           
             </div>
-
-            <div class="table-left-transport mb-3">
+            <div class=" mb-3">
                 <lable class="purchase-lable fw-bold">Fright & Transport</lable>
                 <span class="purchase-span">
                     <input type="number" class="purchaseTableLabel-transport  purchase-amounts" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
                 </span>
             </div>
-            <div class="table-left-roundOf mb-3">
+            <div class=" mb-3">
                 <input type="hidden" id="temp_grand_total" value="">
                 <label class="purchase-lable fw-bold">Round Of </label>
                 <span class="purchase-span">
@@ -186,16 +174,18 @@
                 </span> 
             </div>
         
-            <div class="table-left-grandTotal mb-3">
+            <div class=" mb-3">
                 <label class="purchase-lable fw-bold">Grand total</label>
                 <span class="purchase-span"><input type="number" class="purchaseTableLabel-total purchase-amounts" name="grand_total" value="{{master_form.instance.grand_total | default_if_none:''}}" id="id_grand_total" step=".01" readonly required></span> 
             </div>
         </div>
-
-
+    </div>
       <button type="submit" class="ms-5 newProductCreateBtn" id="parentFormClick" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
     </form>
 </div>
+
+
+<!-- This below div is showing submit button click then loading image -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
@@ -1279,8 +1269,8 @@ function randomValue (){
             
             tableBody.appendChild(lastRow);
            
-            calculateTotalAmount();
-            calculateOtherTotal();
+            calculateTotalAmount(lastRow);
+            calculateOtherTotal(lastRow);
              deleteRowData();
             formCountInput.value = formCount + 1;    
         });
@@ -1319,7 +1309,8 @@ function randomValue (){
  
   };
  deleteRowData();
-
+ calculateTotalAmount();
+ calculateOtherTotal();
 
 </script>
 
