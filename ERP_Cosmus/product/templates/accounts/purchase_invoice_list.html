@@ -6,7 +6,7 @@
     <div class="col-lg-12 mt-4">
       <!-- <h2 class="mb-4">Purchase List</h2> -->
       <div class="d-flex mb-3">
-        <button class="item-btn" onclick="redirectVoucherCreate();">Create Invoice +</button>
+        <button class="item-btn" id="createVouchar" onclick="redirectVoucherCreate();">Create Invoice +</button>
         <div class="container-flex"> 
          <input class="" type="search" placeholder="Search" aria-label="Search" />
          <input type="submit" class="mx-2"></input>
@@ -62,8 +62,37 @@
     </div>
   </div>
 </div>
-
+<div class="">
+  <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image">
+</div>
   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+     function Loadingscreen(){
+        const form = document.getElementById("createVouchar");
+        const loadingImage = document.getElementById("loadingImage");
+        const body = document.getElementsByTagName('body')[0]
+     
+        form.addEventListener("click", function(event) {
+ 
+        loadingImage.style.display = "block";
+        document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+        body.backgroundColor ="rgba(0, 0, 0, 0.5)" 
+        history.pushState({ modalOpen: true }, null, location.href);
+        });
+        window.addEventListener('popstate', function(event) {
+            const myModal = document.getElementById("loadingImage");
+            if (myModal) {
+                myModal.style.display = 'none';
+            }
+            console.log(myModal)
+        });
+    }
+
+  
+        Loadingscreen()
+      })
+ 
+  
   document.body.appendChild(document.getElementById('exampleModal'));
     $(document).ready(function(){
       $('.delete-btn').click(function(){

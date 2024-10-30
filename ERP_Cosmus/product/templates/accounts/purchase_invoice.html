@@ -184,8 +184,10 @@
     </form>
 </div>
 
+<div class="">
+    <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image">
+</div>
 
-<img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image">
 
 
 <!--This script use for party name add which use in ledger create popup-->
@@ -196,13 +198,12 @@
         const body = document.getElementsByTagName('body')[0]
      
         form.addEventListener("submit", function(event) {
-        // Show the loading image
-        loadingImage.style.display = "block";
-        // document.body.style.backgroundColor = "#a9a9a9";
-        // document.body.style.color = "#a9a9a9";
-        loader.style.display = "block";
+            loadingImage.style.display = "block";
+            document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5)";   
+            body.backgroundColor ="rgba(0, 0, 0, 0.5)"   
         });
     }
+ 
     Loadingscreen()
 
     var popUpNewWindow = null;

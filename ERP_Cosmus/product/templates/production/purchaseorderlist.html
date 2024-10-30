@@ -105,16 +105,23 @@
 function Loadingscreen(){
         const form = document.getElementById("addNewOrderClick");
         const loadingImage = document.getElementById("loadingImage");
-        const body = document.getElementsByTagName('body')[0]
+      
      
         form.addEventListener("click", function(event) {
         // Show the loading image
         loadingImage.style.display = "block";
-        document.body.style.backgroundColor = "#a9a9a9";
-        document.body.style.color = "#a9a9a9";
-        loader.style.display = "block";
+      
+    
         });
-    }
+  }
+  window.addEventListener('popstate', function(event) {
+            const myModal = document.getElementById("loadingImage");
+            if (myModal) {
+                myModal.style.display = 'none';
+            }
+            console.log(myModal)
+     });
+
     Loadingscreen()
   function reversAddRowOrder() {
     window.location.href = "{% url 'purchase-order-create' %}";
