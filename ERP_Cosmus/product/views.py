@@ -3,7 +3,6 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 import os
-from re import S
 from django.conf import settings
 
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
@@ -32,7 +31,6 @@ from PIL import Image as PILImage
 from openpyxl.styles import Font
 from openpyxl.styles import Alignment
 from openpyxl.styles import Border, Side
-
 
 from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
@@ -86,7 +84,7 @@ def custom_404_view(request, exception):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request,'misc/dashboard.html')
+    return render(request,'misc/dashboard.html',{"page_name":"Dashboard"})
 
 
 
@@ -356,7 +354,8 @@ def edit_production_product(request,pk):
                                                                             'prod_main_cat_name':prod_main_cat_name,
                                                                             'prod_main_cat_id':prod_main_cat_id,
                                                                             'prod_sub_cat_dict':prod_sub_cat_dict,
-                                                                            'prod_sub_cat_dict_all':prod_sub_cat_dict_all})
+                                                                            'prod_sub_cat_dict_all':prod_sub_cat_dict_all,
+                                                                            'page_name':'Edit Product'})
 
 
     return render(request, 'product/edit_production_product.html',{'gsts':gsts,
@@ -369,7 +368,8 @@ def edit_production_product(request,pk):
                                                                    'prod_main_cat_name':prod_main_cat_name,
                                                                     'prod_main_cat_id':prod_main_cat_id,
                                                                     'prod_sub_cat_dict':prod_sub_cat_dict,
-                                                                    'prod_sub_cat_dict_all':prod_sub_cat_dict_all})
+                                                                    'prod_sub_cat_dict_all':prod_sub_cat_dict_all,
+                                                                    'page_name':'Edit Product'})
 
 
 
@@ -440,10 +440,10 @@ def product_color_sku(request,ref_id = None):
             else:
                 print(formset.errors)
                 print(formset.non_form_errors())
-                return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id})
+                return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id,'page_name':'Create Product'})
 
 
-    return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id})
+    return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id,'page_name':'Create Product'})
 
 
 
@@ -486,7 +486,8 @@ def pproduct_list(request):
     context = {
         'products': products,
         'page_range': page_range,
-        'product_search':product_search
+        'product_search':product_search,
+        'page_name':'Product List'
     }
 
     return render(request,'product/pproduct_list.html',context=context)
@@ -573,10 +574,12 @@ def definemaincategoryproduct(request,pk=None):
         instance = MainCategory.objects.get(pk=pk)
         title = 'Update'
         message = 'updated'
+        page_name = 'Edit Main Category'
     else:
         instance = None
         title = 'Create'
         message = 'created'
+        page_name = 'Create Main Category'
 
     
     form = product_main_category_form(instance=instance)
@@ -593,10 +596,12 @@ def definemaincategoryproduct(request,pk=None):
             return redirect('define-main-category-product')
         else:
             return render(request,'product/definemaincategoryproduct.html',{'form':form,'main_cats':queryset,
-                                                                    'title':title,'main_cat_product_search':main_cat_product_search})
+                                                                    'title':title,'main_cat_product_search':main_cat_product_search,
+                                                                    'page_name':page_name})
         
     return render(request,'product/definemaincategoryproduct.html',{'form':form,'main_cats':queryset,
-                                                                    'title':title,'main_cat_product_search':main_cat_product_search})
+                                                                    'title':title,'main_cat_product_search':main_cat_product_search,
+                                                                    'page_name':page_name})
 
 
 @login_required(login_url='login')
@@ -617,10 +622,12 @@ def definesubcategoryproduct(request, pk=None):
         instance = SubCategory.objects.get(pk=pk)
         title = 'Update'
         message = 'updated'
+        page_name = 'Edit Sub Category'
     else:
         instance = None
         title = 'Create'
         message = 'created'
+        page_name = 'Create Sub Category'
 
     main_categories = MainCategory.objects.all()
     sub_category = SubCategory.objects.all()
@@ -648,7 +655,7 @@ def definesubcategoryproduct(request, pk=None):
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
 
-    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category,'form':form,'title':title})
+    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category,'form':form,'title':title,'page_name':page_name})
 
 
 @login_required(login_url='login')
@@ -794,7 +801,8 @@ def item_create(request):
                                                                       'colors':colors,
                                                                       'packaging_material_all':packaging_material_all,
                                                                       'fab_finishes':fab_finishes,
-                                                                      'title':title,'form':form,'items_to_clone':items_to_clone})
+                                                                      'title':title,'form':form,'items_to_clone':items_to_clone
+                                                                      ,'page_name':'Create Raw Material'})
     
     
     return render(request,template_name,{'gsts':gsts,
@@ -804,7 +812,8 @@ def item_create(request):
                                                                  'title':title,
                                                                  'packaging_material_all':packaging_material_all,
                                                                     'fab_finishes':fab_finishes,
-                                                                 'form':form,'items_to_clone':items_to_clone})
+                                                                 'form':form,'items_to_clone':items_to_clone,
+                                                                 'page_name':'Create Raw Material'})
 
 # in request.get data is sent to server via url and it can be accessed using the name variable 
 # which has ?namevaraible = data data from the querystring
@@ -888,7 +897,7 @@ def item_list(request):
         if exact_desc != '' and exact_desc is not None:
             queryset = Item_Creation.objects.filter(item_name__exact=exact_desc)
 
-    return render(request,'product/list_item.html', {"items":queryset,"item_search":g_search})
+    return render(request,'product/list_item.html', {"items":queryset,"item_search":g_search,"page_name":"Raw Materials List"})
     
 
 
@@ -996,7 +1005,8 @@ def item_edit(request,pk):
                                                                  'packaging_material_all':packaging_material_all,
                                                                  'fab_finishes':fab_finishes,
                                                                  'form':form,
-                                                                 'formset': formset})
+                                                                 'formset': formset,
+                                                                 "page_name":"Edit Raw Material"})
         
     return render(request,'product/item_create_update.html',{'gsts':gsts,
                                                                  'fab_grp':fab_grp,
@@ -1006,7 +1016,8 @@ def item_edit(request,pk):
                                                                  'packaging_material_all':packaging_material_all,
                                                                  'fab_finishes':fab_finishes,
                                                                  'form':form,
-                                                                 'formset': formset})
+                                                                 'formset': formset,
+                                                                 "page_name":"Edit Raw Material"})
 
 
 
@@ -1159,10 +1170,12 @@ def color_create_update(request, pk=None):
     if request.path == '/simple_colorcreate_update/':
         template_name = 'product/color_create_update.html'
         title = 'Create Color'
+        page_name='Create Color'
 
     elif request.path == f'/simple_colorcreate_update/{pk}':
         template_name = 'product/color_create_update.html'
         title = 'Update Color'
+        page_name='Edit Color'
 
     elif request.path == '/colorcreate_update/':
         template_name = "product/create_color_modal.html"
@@ -1203,9 +1216,9 @@ def color_create_update(request, pk=None):
                 messages.success(request, 'Color created successfully.')
                 return JsonResponse({'color_all':list(color_all)}) 
         else:
-            return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search})
+            return render(request, template_name, {'title': title,'form': form,'colors':queryset,'color_search':color_search,'page_name':page_name})
     
-    return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search})
+    return render(request, template_name , {'title': title, 'form': form, 'colors':queryset,'color_search':color_search,'page_name':page_name})
 
 
 
@@ -1251,12 +1264,15 @@ def item_fabric_group_create_update(request, pk = None):
 
     if request.path == '/itemfabricgroupcreateupdate/':
         template_name = 'product/item_fabric_group_create_update.html'
+        page_name = "Create Fabric"
 
     elif request.path == '/fabric_popup/':
         template_name = 'product/fabric_popup.html'
-
+        page_name = None
+        
     elif request.path == f'/itemfabricgroupcreateupdate/{pk}':
         template_name = 'product/item_fabric_group_create_update.html'
+        page_name = "Edit Fabric"
 
     form = ItemFabricGroup(instance=instance)
     if request.method == 'POST':
@@ -1281,11 +1297,11 @@ def item_fabric_group_create_update(request, pk = None):
         else:
             
             return render(request,template_name,{'title': title,"fab_group_all":queryset,"fabric_group_search":fabric_group_search,
-                                                                                  'form':form})
+                                                                                  'form':form,'page_name':page_name})
 
 
     return render(request,template_name,{'title': title, "fab_group_all":queryset,"fabric_group_search":fabric_group_search,
-                                                                          'form':form})
+                                                                          'form':form,'page_name':page_name})
 
 
 
@@ -1332,12 +1348,18 @@ def unit_name_create_update(request,pk=None):
 
     if request.path == '/unitnamecreate/':
         template_name = 'product/unit_name_create_update.html'
+        page_name = "Create Unit"
+
 
     elif request.path == '/units_popup/':
         template_name = 'product/units_popup.html'
-    
+        page_name = None
+
+
     elif request.path == f'/unitnameupdate/{pk}':
         template_name = 'product/unit_name_create_update.html'
+        page_name = "Edit Unit"
+
 
     if request.method == 'POST':
         form = UnitName(request.POST, instance=instance)
@@ -1361,10 +1383,10 @@ def unit_name_create_update(request,pk=None):
 
         else:
             
-            return render(request, template_name, {'title': title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search})
+            return render(request, template_name, {'title': title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search,'page_name':page_name})
         
     else:
-        return render(request, template_name, {'title':title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search})
+        return render(request, template_name, {'title':title,'form':form,"unit_name_all":queryset,'unit_name_search':unit_name_search,'page_name':page_name})
 
 
 
@@ -1408,9 +1430,11 @@ def account_sub_group_create_update(request, pk=None):
     if pk:
         instance = get_object_or_404(AccountSubGroup ,pk=pk)
         title = 'Update'
+        page_name='Edit Group'
     else:
         instance = None
         title = 'Create'
+        page_name='Create Group'
 
     main_grp = AccountGroup.objects.all()
     form = account_sub_grp_form(request.POST or None, instance=instance)
@@ -1423,11 +1447,13 @@ def account_sub_group_create_update(request, pk=None):
         else:
             return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp,
                                                                              'title':title,
-                                                                             'form':form, "groups":groups})
+                                                                             'form':form, "groups":groups,
+                                                                             'page_name':page_name})
 
     return render(request,'product/acc_sub_grp_create_update.html', {'main_grp':main_grp, 
                                                                      'title':title,
-                                                                     'form':form, "groups":groups})
+                                                                     'form':form, "groups":groups,
+                                                                     'page_name':page_name})
 
 
 
@@ -1449,9 +1475,11 @@ def stock_item_create_update(request,pk=None):
     if pk:
         instance = get_object_or_404(StockItem ,pk=pk)
         title = 'Stock Item Update'
+        page_name = 'Edit Stock Item'
     else:
         instance = None
         title = 'Stock Item Update'
+        page_name = 'Create Stock Item'
 
     if request.user.is_superuser:
         stocks = StockItem.objects.all()
@@ -1483,12 +1511,14 @@ def stock_item_create_update(request,pk=None):
         else:
             return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
                                                                             'accsubgrps':accsubgrps,
-                                                                            'form':form,'stocks':stocks})
+                                                                            'form':form,'stocks':stocks,
+                                                                            'page_name':page_name})
     
     
     return render(request,'product/stock_item_create_update.html', {'title':'Stock Item Create',
                                                                     'accsubgrps':accsubgrps,
-                                                                    'form':form,'stocks':stocks})
+                                                                    'form':form,'stocks':stocks,
+                                                                            'page_name':page_name})
 
 
 
@@ -1560,9 +1590,9 @@ def ledgercreate(request):
             else:
                 return redirect('ledger-list')
         else:
-            return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create','ledgerTypes_query':ledgerTypes_query})
+            return render(request,template_name,{'form':form,'under_groups':under_groups,'title':'ledger Create','ledgerTypes_query':ledgerTypes_query,'page_name':'Create Leadger'})
     
-    return render(request, template_name ,{'form':form,'under_groups':under_groups,'title':'ledger Create','ledgerTypes_query':ledgerTypes_query})
+    return render(request, template_name ,{'form':form,'under_groups':under_groups,'title':'ledger Create','ledgerTypes_query':ledgerTypes_query,'page_name':'Create Leadger'})
     
 
 
@@ -1619,9 +1649,9 @@ def ledgerupdate(request,pk):
             return redirect('ledger-list')
         else:
             
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger'})
     
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger'})
 
 
 
@@ -1629,7 +1659,7 @@ def ledgerupdate(request,pk):
 @login_required(login_url='login')
 def ledgerlist(request):
     ledgers = Ledger.objects.select_related('under_group').all()
-    return render(request, 'accounts/ledger_list.html', {'ledgers':ledgers})
+    return render(request, 'accounts/ledger_list.html', {'ledgers':ledgers,'page_name':'Ledger List'})
 
 
 
@@ -1660,8 +1690,10 @@ def ledgerTypes_create_update(request,pk=None):
 
     if pk is not None:
         type_instance = ledgerTypes.objects.get(pk=pk)
+        page_name = 'Edit Ledger Type'
     else:
         type_instance = None
+        page_name = 'Create Ledger Type'
 
     form = ledger_types_form(request.POST or None, instance = type_instance)
 
@@ -1675,7 +1707,7 @@ def ledgerTypes_create_update(request,pk=None):
             else:  
                 return redirect('ledger-Types-create')
             
-    return render(request,template_name,{'form':form,'ledger_types':ledger_types})
+    return render(request,template_name,{'form':form,'ledger_types':ledger_types,'page_name':page_name})
 
 
 
@@ -1755,7 +1787,7 @@ def godowncreate(request):
             messages.error(request,'Error Selecting Godown.')
             return redirect('godown-list')
             
-    return render(request,'misc/godown_create.html')
+    return render(request,'misc/godown_create.html',{'page_name':'Create Godown'})
 
 
 
@@ -1790,7 +1822,8 @@ def godownupdate(request,str,pk):
     
     context = {
         'instance_data': instance_data,
-        'godown_type': godown_type
+        'godown_type': godown_type,
+        'page_name':'Edit Godown'
     }
     
     return render(request,'misc/godown_update.html', context)
@@ -1812,7 +1845,7 @@ def godownlist(request):
     #     godowns_finished = Godown_finished_goods.objects.filter(c_user__company = request.user.company)
 
     return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 
-                                                   'godowns_finished':godowns_finished})
+                                                   'godowns_finished':godowns_finished, "page_name":'Godown List'})
 
 
 
@@ -1952,12 +1985,13 @@ def stockTrasferRaw(request, pk=None):
         raw_transfer_instance = get_object_or_404(RawStockTransferMaster,voucher_no=pk)
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
         source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name = raw_transfer_instance.source_godown.id)
+        page_name = 'Edit Stock Transfer'
 
     else:
         source_godown_items = None
         raw_transfer_instance = None
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None,instance = raw_transfer_instance)
-
+        page_name = 'Create Stock Transfer'
 
     masterstockform = raw_material_stock_trasfer_master_form(request.POST or None, instance = raw_transfer_instance)
 
@@ -1986,7 +2020,7 @@ def stockTrasferRaw(request, pk=None):
             return redirect('stock-transfer-raw-list')
 
 
-    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'source_godown_items':source_godown_items}
+    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'source_godown_items':source_godown_items,'page_name':page_name}
 
     return render(request,'misc/stock_transfer_raw.html', context=context)
 
@@ -1997,7 +2031,7 @@ def stockTrasferRawList(request):
 
     stocktrasferall = RawStockTransferMaster.objects.all()
 
-    return render(request,'misc/stock_transfer_raw_list.html',{'stocktrasferall':stocktrasferall})
+    return render(request,'misc/stock_transfer_raw_list.html',{'stocktrasferall':stocktrasferall,'page_name':'Stock Transfer List'})
 
 
 
@@ -2025,10 +2059,12 @@ def purchasevouchercreateupdate(request, pk = None):
         if pk:
             purchase_invoice_instance = get_object_or_404(item_purchase_voucher_master,pk=pk)
             item_formsets_change = purchase_voucher_items_formset_update(request.POST or None, instance=purchase_invoice_instance)
+            page_name = 'Edit Purchase Invoice'
         
         else:
             purchase_invoice_instance = None
             item_formsets_change = purchase_voucher_items_formset(request.POST or None, instance=purchase_invoice_instance)
+            page_name = 'Create Purchase Invoice'
 
         items_formset = item_formsets_change
         Purchase_gst = gst.objects.all()
@@ -2329,7 +2365,7 @@ def purchasevouchercreateupdate(request, pk = None):
                'Purchase_gst':Purchase_gst,
                'godown_formsets':godown_items_formset,
                'item_godowns_raw':raw_material_godowns,
-               'items':item_name_searched
+               'items':item_name_searched,'page_name' : page_name
                }
 
     return render(request,'accounts/purchase_invoice.html',context=context)
@@ -2492,7 +2528,7 @@ def purchasevouchercreategodownpopupurl(request):
 @login_required(login_url='login')
 def purchasevoucherlist(request):
     purchase_invoice_list = item_purchase_voucher_master.objects.all()
-    return render(request,'accounts/purchase_invoice_list.html',{'purchase_invoice_list':purchase_invoice_list})
+    return render(request,'accounts/purchase_invoice_list.html',{'purchase_invoice_list':purchase_invoice_list,'page_name':'Purchase List'})
 
 
 
@@ -2567,14 +2603,14 @@ def gst_create_update(request, pk = None):
 
     if request.path == '/gstpopup/':
         template_name = 'accounts/gst_popup.html'
-    
+        page_name = None
     elif request.path == '/gstcreate/':
         template_name = 'accounts/gst_create_update.html'
-
+        page_name = "Create GST"
 
     elif request.path == f'/gstupdate/{pk}':
         template_name = 'accounts/gst_create_update.html'
- 
+        page_name = "Edit GST"
 
     form = gst_form(instance = instance)
     if request.method == 'POST':
@@ -2599,9 +2635,9 @@ def gst_create_update(request, pk = None):
                 
                 return JsonResponse({"gst_updated": list(gst_updated)})
         else:
-            return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
+            return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset,'page_name':page_name})
 
-    return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset})
+    return render(request,template_name,{'form':form, 'title':title, 'gsts':queryset,'page_name':page_name})
 
 
 
@@ -2637,6 +2673,13 @@ def fabric_finishes_create_update(request, pk = None):
 
     elif request.path == '/fabricfinishesscreate/' or f'/fabricfinishesupdate/{pk}':
         template_name = 'misc/fabric_finishes_create_update.html'
+        page_name = "Fabric Finishes"
+    
+    if request.path == '/fabricfinishesscreate/':
+        page_name = "Create Fabric Finishes"
+    else:
+        page_name = "Edit Fabric Finishes"
+
 
     form = FabricFinishes_form(instance = fabric_finishes_instance)
 
@@ -2662,9 +2705,9 @@ def fabric_finishes_create_update(request, pk = None):
                 return JsonResponse({"fabric_finishes_all": list(fabric_finishes_all)})
         else:
             
-            return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
+            return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search,'page_name':page_name})
 
-    return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search})
+    return render(request,template_name,{'form':form,'title':title,'fabricfinishes':queryset,'fabric_finishes_search':fabric_finishes_search,'page_name':page_name})
 
 
 
@@ -2701,6 +2744,11 @@ def packaging_create_update(request, pk = None):
     elif request.path == '/packaging_create/' or f'/packagingupdate/{pk}':
         template_name = 'misc/packaging_create_update.html'
 
+    if request.path == '/packaging_create/':
+        page_name = "Create Packaging"
+    else:
+        page_name = "Edit Packaging"
+
     form = packaging_form(instance = packaging_instance)
 
     if request.method == 'POST':
@@ -2725,9 +2773,9 @@ def packaging_create_update(request, pk = None):
 
                 return JsonResponse({'packaging_all_values': list(packaging_all_values)})
         else:
-            return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset}) 
+            return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset,'page_name':page_name}) 
 
-    return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset})
+    return render(request, template_name ,{'form':form,'title':title,'packaging_all':queryset,'page_name':page_name})
 
 
 
@@ -3180,12 +3228,13 @@ def purchaseordercreateupdate(request,pk=None):
             instance = get_object_or_404(purchase_order,pk=pk)
             model_name = instance.product_reference_number.Model_Name
             model_images = instance.product_reference_number.productdetails
-
+            page_name = 'Edit Order'
         else:
             instance = None
             model_name = None
             model_images = None
-        
+            page_name = 'New Order'
+
         formset = purchase_order_product_qty_formset(instance=instance)
         form = purchase_order_form(instance=instance)
 
@@ -3278,14 +3327,15 @@ def purchaseordercreateupdate(request,pk=None):
 
     return render(request,'production/purchaseordercreateupdate.html',{'form':form ,'formset':formset,'raw_material_godowns':raw_material_godowns,
                                                                           'ledger_party_names':ledger_party_names,
-                                                                          "products":products,'model_name':model_name,'model_images':model_images})
+                                                                          "products":products,'model_name':model_name,'model_images':model_images,
+                                                                          'page_name':page_name})
 
 
 
 @login_required(login_url='login')
 def purchaseorderlist(request):
     purchase_orders = purchase_order.objects.all().order_by('created_date')
-    return render(request,'production/purchaseorderlist.html',{'purchase_orders': purchase_orders})
+    return render(request,'production/purchaseorderlist.html',{'purchase_orders': purchase_orders,'page_name':'Order List'})
 
 
 
@@ -4326,7 +4376,7 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
                 return render(request,'production/purchaseorderrawmaterial.html',{'form': form ,'model_name':model_name,
                                                                         'purchase_order_raw_formset':purchase_order_raw_formset,
                                                                         'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
-                                                                        'physical_stock_all_godown_json':physical_stock_all_godown_json})
+                                                                        'physical_stock_all_godown_json':physical_stock_all_godown_json,'page_name':'Purchase Order View'})
 
             
             else:
@@ -4348,7 +4398,7 @@ def purchaseorderrawmaterial(request ,p_o_pk, prod_ref_no):
     return render(request,'production/purchaseorderrawmaterial.html',{'form':form, 'model_name':model_name,
                                                                       'purchase_order_raw_formset':purchase_order_raw_formset,
                                                                       'purchase_order_raw_sheet_formset':purchase_order_raw_sheet_formset,
-                                                                      'physical_stock_all_godown_json':physical_stock_all_godown_json})
+                                                                      'physical_stock_all_godown_json':physical_stock_all_godown_json,'page_name':'Purchase Order View'})
 
 
 
@@ -4362,7 +4412,7 @@ def purchase_order_for_raw_material_list(request):
 
     return render(request,'production/purchase_order_for_raw_material_list.html',
                   {'purchase_orders_pending': purchase_orders_pending,
-                   'purchase_orders_completed':purchase_orders_completed})
+                   'purchase_orders_completed':purchase_orders_completed,'page_name':'Purchase Order List'})
 
 
 
@@ -4667,12 +4717,12 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
             return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
                                                                     'purchase_order_to_product_formset_form':purchase_order_to_product_formset_form,
-                                                                     'purchase_order_for_raw_material_cutting_items_formset_form':purchase_order_for_raw_material_cutting_items_formset_form})
+                                                                     'purchase_order_for_raw_material_cutting_items_formset_form':purchase_order_for_raw_material_cutting_items_formset_form,'page_name':'Cutting Order View'})
 
 
     return render(request,'production/purchase_order_cutting.html',{'form':form,'labour_all':labour_all,'purchase_order_cutting_form':purchase_order_cutting_form,'p_o_pk':p_o_pk,
                                                                     'purchase_order_to_product_formset_form':purchase_order_to_product_formset_form,
-                                                                     'purchase_order_for_raw_material_cutting_items_formset_form':purchase_order_for_raw_material_cutting_items_formset_form})
+                                                                     'purchase_order_for_raw_material_cutting_items_formset_form':purchase_order_for_raw_material_cutting_items_formset_form,'page_name':'Cutting Order View'})
 
 
 
@@ -4706,7 +4756,7 @@ def purchaseordercuttinglistall(request):
         'number_of_pieces') - F('total_approved_qty_sum')).order_by('created_date')
 
 
-    return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed})
+    return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed,'page_name':'Cutting Order List'})
 
 
 
@@ -4715,10 +4765,10 @@ def purchaseordercuttinglist(request,p_o_pk,prod_ref_no):
     p_o_cutting_order_all = purchase_order_raw_material_cutting.objects.filter(
         purchase_order_id = p_o_pk).select_related('purchase_order_id__ledger_party_name',
         'factory_employee_id').order_by('created_date')
-
-
     Purchase_order_no = purchase_order.objects.get(id=p_o_pk)
-    return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_number':Purchase_order_no, 'prod_ref_no':prod_ref_no, 'p_o_pk':p_o_pk})
+    return render(request,'production/purchaseordercuttinglist.html', {'p_o_cutting_order_all':p_o_cutting_order_all, 'p_o_number':Purchase_order_no, 'prod_ref_no':prod_ref_no, 'p_o_pk':p_o_pk,'page_name':'Edit Cutting Order'})
+
+
 
 @login_required(login_url='login')
 def purchaseordercuttingapprovalcheckajax(request):
@@ -4766,7 +4816,7 @@ def purchaseordercuttingapprovalcheckajax(request):
 @login_required(login_url='login')
 def pendingapprovall(request):
     pending_approval_query = purchase_order_raw_material_cutting.objects.exclude(processed_qty = F('approved_qty')).order_by('created_date') # comparing processed_qty with approved_qty from same instance using F function
-    return render(request,'production/cuttingapprovallistall.html', {'pending_approval_query': pending_approval_query})
+    return render(request,'production/cuttingapprovallistall.html', {'pending_approval_query': pending_approval_query,'page_name':'Cutting Appr Pending List'})
 
 
 @login_required(login_url = 'login')
@@ -4915,7 +4965,7 @@ def labourworkoutlistall(request):
     labour_workout_pending = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__gt=0).order_by('created_date')
     labour_workout_completed = labour_workout_master.objects.all().annotate(total_processed_qty = Sum('labour_workout_childs__total_process_pcs')).filter(total_pending_pcs__lt=1).order_by('created_date')
     current_date = datetime.date.today
-    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending,'labour_workout_completed':labour_workout_completed,'current_date':current_date})
+    return render(request,'production/labourworkoutlistall.html', {'labour_workout_pending':labour_workout_pending,'labour_workout_completed':labour_workout_completed,'current_date':current_date, 'page_name':'Labour WorkOut List'})
 
 
 
@@ -5145,7 +5195,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
             return render(request,'production/labourworkoutsingle.html',
                   {'product_to_item_formset':product_to_item_formset,'labour_work_out_child_form':labour_work_out_child_form,
                    'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form,
-                   'ledger_labour_instances':ledger_labour_instances,'godown_id':godown_id})
+                   'ledger_labour_instances':ledger_labour_instances,'godown_id':godown_id,'page_name':'Labour WorkOut Create'})
 
 
             
@@ -5153,7 +5203,7 @@ def labourworkoutsingle(request, labour_workout_child_pk=None, pk=None):
     return render(request,'production/labourworkoutsingle.html',
                   {'product_to_item_formset':product_to_item_formset,'labour_work_out_child_form':labour_work_out_child_form,
                    'labour_workout_cutting_items_formset_form':labour_workout_cutting_items_formset_form,
-                   'ledger_labour_instances':ledger_labour_instances,'godown_id':godown_id})
+                   'ledger_labour_instances':ledger_labour_instances,'godown_id':godown_id,'page_name':'Labour WorkOut Create'})
 
 
 
@@ -5164,7 +5214,8 @@ def labour_workout_child_list(request, labour_master_pk):
     labour_workout_child_instances = labour_workout_childs.objects.filter(labour_workout_master_instance = labour_master_pk)
     return render(request,'production/labourworkoutchilds.html', {'labour_master_pk':labour_master_pk,
                                                                   'labour_workout_child_instances':labour_workout_child_instances,
-                                                                  'labour_work_out_master':labour_work_out_master})
+                                                                  'labour_work_out_master':labour_work_out_master,
+                                                                  'page_name':'Labour Workout Create'})
 
 
 
@@ -5248,7 +5299,7 @@ def labourworkoutsingledeleteajax(request):
 def cuttingroomqty(request):
     cutting_room_items = purchase_order_for_raw_material_cutting_items.objects.filter(total_comsumption_in_cutting__gt=0)
 
-    return render(request,'production/cuttingroomqty.html',{'cutting_room_items':cutting_room_items})
+    return render(request,'production/cuttingroomqty.html',{'cutting_room_items':cutting_room_items,'page_name':'Cutting Room Qty'})
 
 
 
@@ -5259,7 +5310,8 @@ def labourworkincreatelist(request,l_w_o_id):
     labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
     labour_workin_instances = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).annotate(approved_Qty_total=Sum('l_w_in_products__approved_qty'),total_approved_pcs = Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval'))
     return render(request,'production/labour_work_in_list.html',{'labour_workout_child_instance':labour_workout_child_instance,
-                                                                 'labour_workin_instances':labour_workin_instances})
+                                                                 'labour_workin_instances':labour_workin_instances,
+                                                                 'page_name':'Purchase Order Wise'})
 
 
 
@@ -5516,7 +5568,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
         except Exception as e:
             messages.error(request,f'Other exceptions {e}')
 
-    return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset,'approval_check':approval_check})
+    return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset,'approval_check':approval_check,'page_name':'Labour Workin Create'})
 
 
 @login_required(login_url='login')
@@ -5541,7 +5593,7 @@ def labourworkinlistall(request):
 
     return render(request,'production/labour_workin_listall.html',
                   {'labour_workout_child_instances_all':labour_workout_child_instances_all,
-                   'purchase_order_instances': purchase_orders_with_labour_workout_childs,'current_date':current_date})
+                   'purchase_order_instances': purchase_orders_with_labour_workout_childs,'current_date':current_date,'page_name':'Labour WorkIn List'})
 
 
 
@@ -5567,7 +5619,7 @@ def labourworkinpurchaseorderlist(request,p_o_no):
     balance_qty = total_lab_qty - total_lab_workin_qty
 
     return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,
-                    'purchase_order_instance':purchase_order_instance, 'total_lab_qty':total_lab_qty, 'total_lab_workin_qty':total_lab_workin_qty, 'balance_qty':balance_qty })
+                    'purchase_order_instance':purchase_order_instance, 'total_lab_qty':total_lab_qty, 'total_lab_workin_qty':total_lab_workin_qty, 'balance_qty':balance_qty,'page_name':'Purchase Order Wise' })
 
 
 
@@ -5624,7 +5676,7 @@ def labourworkinsingledeleteajax(request):
 def goods_return_pending_list(request):
     current_date = datetime.date.today
     labour_workin_instances = labour_work_in_master.objects.annotate(total_approved_pcs=Sum('l_w_in_products__approved_qty'),pending_for_approval_pcs = Sum('l_w_in_products__pending_for_approval')).filter(pending_for_approval_pcs__gt=0)
-    return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances, 'current_date':current_date})
+    return render(request,'production/goodsreturnpendinglist.html',{'labour_workin_instances':labour_workin_instances, 'current_date':current_date,'page_name':'Goods Return List'})
 
 
 
@@ -5821,7 +5873,11 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
 @login_required(login_url='login')
 def factory_employee_create_update_list(request ,pk=None):
-    
+
+    if request.path == '/factory_emp_create/':
+        page_name = "Create Factory Employee"
+    else:
+        page_name = "Edit Factory Employee"
 
     if request.user.is_superuser:
         factory_employees = factory_employee.objects.all()
@@ -5851,7 +5907,7 @@ def factory_employee_create_update_list(request ,pk=None):
         else:
             messages.error(request,f'Error with form submission {form.errors}')
 
-    return render(request,'production/factory_emp_create_update_list.html', {'form':form,'factory_employees':factory_employees,'title':title,'cutting_rooms':cutting_rooms})
+    return render(request,'production/factory_emp_create_update_list.html', {'form':form,'factory_employees':factory_employees,'title':title,'cutting_rooms':cutting_rooms,'page_name':page_name})
 
 
 
@@ -5869,7 +5925,12 @@ def factoryempdelete(request,pk=None):
 
 @login_required(login_url='login')
 def cutting_room_create_update_list(request, pk=None):
-    print(request.POST)
+    if request.path == '/cutting_room_create/':
+        page_name = "Create Cutting Room"
+    else:
+        page_name = "Edit Cutting Room"
+
+
     if pk:
         instance = cutting_room.objects.get(id = pk)
 
@@ -5889,7 +5950,7 @@ def cutting_room_create_update_list(request, pk=None):
             form.save()
             return redirect('cutting_room-create')
     
-    return render(request,'production/cuttingroomcreateupdatelist.html', {'form':form,'cutting_rooms':cutting_rooms})
+    return render(request,'production/cuttingroomcreateupdatelist.html', {'form':form,'cutting_rooms':cutting_rooms,'page_name':page_name})
 
 
 
@@ -6057,7 +6118,7 @@ def session_data_test(request):
 def creditdebitreport(request):
     all_reports = account_credit_debit_master_table.objects.all()
 
-    return render(request,'misc/credit_debit_master_report.html',{'all_reports':all_reports})
+    return render(request,'misc/credit_debit_master_report.html',{'all_reports':all_reports,'page_name':'Credit/Debit Report'})
 
 
 
@@ -6319,7 +6380,7 @@ def godown_item_report(request,shade_id,g_id=None):
     """
     
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
-                                                                             'shade_name':shade_name,'report_data':report_data_sorted})
+                                                                             'shade_name':shade_name,'report_data':report_data_sorted,'page_name':'Raw Material Report'})
 
 
 
@@ -6525,6 +6586,7 @@ def finished_goods_model_wise_report(request,ref_id):
                 'sale' : '0',
                 'Repair_Out' : '0',
                 'net_closing_stock' :'0'}
+            
             data_list.append(dict_to_append)
 
 

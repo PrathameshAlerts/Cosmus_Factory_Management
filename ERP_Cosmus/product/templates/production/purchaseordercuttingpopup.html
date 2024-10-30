@@ -149,24 +149,29 @@ function quantityCheck() {
             var approveValue = parseInt(data.value);
             var closerstTr = data.closest('tr');
             var currentCheckValue = closerstTr.querySelector('[name$= "-currentApproved_pcs"]').value;
-            console.log("approveValue",approveValue)
-            console.log(currentCheckValue)
+            // console.log("approveValue",approveValue)
+            // console.log(currentCheckValue)
          if (approveValue != 0) {
             // Check if approvedValues is less than currentCheckValue
             if (approveValue <= currentCheckValue) {
                 //closerstTr.querySelector('[name$= "-approved_pcs"]').value = currentCheckValue; // Reset to currentApprovedValue
                 data.style.borderColor = 'red';
                 hasInvalidValue = true; 
-                submitButton.style.cursor = "not-allowed";
-                submitButton.disabled = true;
+             
              
             }else{
                 data.style.borderColor = 'gray';
-                submitButton.style.cursor = "pointer";
-                submitButton.disabled = false;
+              
             }
         } 
         });
+        if (hasInvalidValue) {
+            submitButton.style.cursor = "not-allowed";
+            submitButton.disabled = true;
+        } else {
+            submitButton.style.cursor = "pointer";
+            submitButton.disabled = false;
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -181,7 +186,7 @@ function quantityCheck() {
                 approveValueCheck();
               
             });
-            element.addEventListener('focusout',()=>{
+            element.addEventListener('focus',()=>{
                 approveValueCheck();
             })
         })

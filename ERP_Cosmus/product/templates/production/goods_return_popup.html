@@ -156,20 +156,20 @@
                 // el.closest('tr').querySelector('[name$= "-approved_qty"]').value = currentApprovedValue; // Reset to currentApprovedValue
                 el.style.borderColor = 'red';
                 hasInvalidValue = true; 
-                goodsValueBtn.style.cursor = "not-allowed"
-                goodsValueBtn.disabled = true;
             } else{
                 el.style.borderColor = 'gray';
-                goodsValueBtn.style.cursor = "pointer";
-                goodsValueBtn.disabled = false;
             } 
         }
     });
-
+    if (hasInvalidValue) {
+            goodsValueBtn.style.cursor = "not-allowed";
+            goodsValueBtn.disabled = true;
+        } else {
+            goodsValueBtn.style.cursor = "pointer";
+            goodsValueBtn.disabled = false;
+        }
  
 }
-
-
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
