@@ -25,7 +25,7 @@
         {% endfor %}
      </div>
     <div class=" mb-3">
-      <button class="item-btn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"><a id="purchaseOrderCuttingOrder" class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-create' p_o_pk prod_ref_no %}" >Create</a></button>
+      <button class="item-btn" ><a id="purchaseOrderCuttingOrder" class="text-decoration-none text-white" href="{% url 'purchase-order-cutting-create' p_o_pk prod_ref_no %}" >Create</a></button>
     </div>
     </div>
     
@@ -61,7 +61,7 @@
               <td class="processedQty">{{cutting_order.processed_qty}}</td>
               <td class="approvedQty">{{cutting_order.approved_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
-              <td><button class="border-0 bg-transparent viewBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 fs-6"></i></a></button></td>
+              <td><button class="border-0 bg-transparent viewBtn"><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 fs-6"></i></a></button></td>
               <td><button  class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
               <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="border-0 bg-transparent " onclick="cuttingPkValue(this)"><i class="fa-solid fa-person-circle-check px-3 fs-5"></i></button></td>
               <td> <a href="{% url 'excel-download-production' 'purchase_order_cutting' cutting_order.raw_material_cutting_id %}"><i class="fa-regular fa-file-excel px-3 fs-5"></i></a></td>
@@ -122,7 +122,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- <div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
       <div class="modal-body justify-content-center text-center">
@@ -130,7 +130,7 @@
         </div>
         </div>
     </div> 
-</div>  
+</div>   -->
   <script>
 
  function createButton() {
@@ -153,7 +153,7 @@
   createButton();
   document.body.appendChild(document.getElementById('exampleModal'));
   document.body.appendChild(document.getElementById('staticBackdrop'));
-  document.body.appendChild(document.getElementById('exampleModalSpinner'));
+  // document.body.appendChild(document.getElementById('exampleModalSpinner'));
   $(document).ready(function() {
     $('.delete-btn').click(function() {
         // Fetching data from the clicked row
@@ -229,31 +229,31 @@
     
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  let statePushed = false;  // Flag to prevent multiple pushState calls
+// document.addEventListener('DOMContentLoaded', function() {
+//   let statePushed = false;  // Flag to prevent multiple pushState calls
 
-  // Show spinner on button click
-  $('.item-btn, .viewBtn').click(function() {
-    var newSpinner = $('#exampleModalSpinner');
-    newSpinner.modal('show');  // Show the modal with the spinner
+//   // Show spinner on button click
+//   $('.item-btn, .viewBtn').click(function() {
+//     var newSpinner = $('#exampleModalSpinner');
+//     newSpinner.modal('show');  // Show the modal with the spinner
 
-    // Only push state the first time the spinner is shown
-    if (!statePushed) {
-      history.pushState(null, null, location.href);
-      statePushed = true;  // Set flag to true after pushing state
-    }
-  });
+//     // Only push state the first time the spinner is shown
+//     if (!statePushed) {
+//       history.pushState(null, null, location.href);
+//       statePushed = true;  // Set flag to true after pushing state
+//     }
+//   });
 
-  // Hide spinner when back button or browser left arrow is clicked
-  window.addEventListener('popstate', function() {
-    var newSpinner = $('#exampleModalSpinner');
-    console.log("popstate");
-    if (newSpinner.hasClass('show')) {
-      newSpinner.modal('hide');  // Hide the spinner modal
-      statePushed = false;  // Reset flag to allow pushState on next navigation
-    }
-  });
-});
+//   // Hide spinner when back button or browser left arrow is clicked
+//   window.addEventListener('popstate', function() {
+//     var newSpinner = $('#exampleModalSpinner');
+//     console.log("popstate");
+//     if (newSpinner.hasClass('show')) {
+//       newSpinner.modal('hide');  // Hide the spinner modal
+//       statePushed = false;  // Reset flag to allow pushState on next navigation
+//     }
+//   });
+// });
 
 </script>
 <script>

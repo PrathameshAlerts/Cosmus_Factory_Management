@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<form method="POST" autocomplete="off">
+<form method="POST" autocomplete="off" id="purchaseOderCutting">
     {% csrf_token %}
 
     <h2 class="mb-3 mt-3">Cutting</h2>
@@ -149,17 +149,21 @@ function quantityCheck() {
             var approveValue = parseInt(data.value);
             var closerstTr = data.closest('tr');
             var currentCheckValue = closerstTr.querySelector('[name$= "-currentApproved_pcs"]').value;
-            
+            console.log("approveValue",approveValue)
+            console.log(currentCheckValue)
          if (approveValue != 0) {
             // Check if approvedValues is less than currentCheckValue
-            if (approveValue < currentCheckValue) {
-                closerstTr.querySelector('[name$= "-approved_pcs"]').value = currentCheckValue; // Reset to currentApprovedValue
+            if (approveValue <= currentCheckValue) {
+                //closerstTr.querySelector('[name$= "-approved_pcs"]').value = currentCheckValue; // Reset to currentApprovedValue
                 data.style.borderColor = 'red';
                 hasInvalidValue = true; 
+                submitButton.style.cursor = "not-allowed";
+                submitButton.disabled = true;
              
             }else{
-
                 data.style.borderColor = 'gray';
+                submitButton.style.cursor = "pointer";
+                submitButton.disabled = false;
             }
         } 
         });
@@ -169,14 +173,21 @@ function quantityCheck() {
     
         quantityCheck()
         submitForm()
+ 
         let approve = document.querySelectorAll('input[name$="-approved_pcs"]');
         approve.forEach(function (element) {
             element.addEventListener('input', () => {
                 quantityCheck();
+                approveValueCheck();
+              
             });
             element.addEventListener('focusout',()=>{
                 approveValueCheck();
             })
+        })
+    
+        document.getElementById('purchaseOderCutting').addEventListener('submit',function(){
+            approveValueCheck();
         })
 
     })

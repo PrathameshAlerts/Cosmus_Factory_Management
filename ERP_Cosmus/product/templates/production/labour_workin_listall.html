@@ -17,9 +17,9 @@
     </div>
     <div>
     <div class="d-flex my-3">
-        <button class=" border-0 py-1 px-3 rounded-2 my-1 directCreateBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner" style="margin-left: 60px; background-color: rgba(70, 137, 39, 0.7);"><a class="text-decoration-none text-white " href="{% url 'labour-workin-create-raw' %}">CREATE</a></button>
+        <button class=" border-0 py-1 px-3 rounded-2 my-1 directCreateBtn"  style="margin-left: 60px; background-color: rgba(70, 137, 39, 0.7);"><a class="text-decoration-none text-white " href="{% url 'labour-workin-create-raw' %}">CREATE</a></button>
         
-        <button class=" border-0 py-1 px-3 rounded-2 my-1 pendingBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner" style="margin-left: 850px; background-color: rgba(167, 25, 25, 0.7);"><a class="text-decoration-none text-white" href="{% url 'goods-return-list' %}">GR-QC-App Pending List</a></button>
+        <button class=" border-0 py-1 px-3 rounded-2 my-1 pendingBtn" style="margin-left: 850px; background-color: rgba(167, 25, 25, 0.7);"><a class="text-decoration-none text-white" href="{% url 'goods-return-list' %}">GR-QC-App Pending List</a></button>
     </div>
     <div class="">
        
@@ -124,7 +124,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
       <div class="modal-body justify-content-center text-center">
@@ -132,7 +132,7 @@
         </div>
         </div>
     </div> 
-</div> 
+</div>  -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     function toggleVisible(toggleButtonId, dataContainerId) {
@@ -155,32 +155,32 @@
 
   });
 
-  document.body.appendChild(document.getElementById('exampleModalSpinner'));
-document.addEventListener('DOMContentLoaded', function() {
-  let statePushed = false;  // Flag to prevent multiple pushState calls
+//   document.body.appendChild(document.getElementById('exampleModalSpinner'));
+// document.addEventListener('DOMContentLoaded', function() {
+//   let statePushed = false;  // Flag to prevent multiple pushState calls
 
-  // Show spinner on button click
-  $('.directCreateBtn, .pendingBtn').click(function() {
-    var newSpinner = $('#exampleModalSpinner');
-    newSpinner.modal('show');  // Show the modal with the spinner
+//   // Show spinner on button click
+//   $('.directCreateBtn, .pendingBtn').click(function() {
+//     var newSpinner = $('#exampleModalSpinner');
+//     newSpinner.modal('show');  // Show the modal with the spinner
 
-    // Only push state the first time the spinner is shown
-    if (!statePushed) {
-      history.pushState(null, null, location.href);
-      statePushed = true;  // Set flag to true after pushing state
-    }
-  });
+//     // Only push state the first time the spinner is shown
+//     if (!statePushed) {
+//       history.pushState(null, null, location.href);
+//       statePushed = true;  // Set flag to true after pushing state
+//     }
+//   });
 
-  // Hide spinner when back button or browser left arrow is clicked
-  window.addEventListener('popstate', function() {
-    var newSpinner = $('#exampleModalSpinner');
-    console.log("popstate");
-    if (newSpinner.hasClass('show')) {
-      newSpinner.modal('hide');  // Hide the spinner modal
-      statePushed = false;  // Reset flag to allow pushState on next navigation
-    }
-  });
-});
+//   // Hide spinner when back button or browser left arrow is clicked
+//   window.addEventListener('popstate', function() {
+//     var newSpinner = $('#exampleModalSpinner');
+//     console.log("popstate");
+//     if (newSpinner.hasClass('show')) {
+//       newSpinner.modal('hide');  // Hide the spinner modal
+//       statePushed = false;  // Reset flag to allow pushState on next navigation
+//     }
+//   });
+// });
 
 </script>
 {% endblock %}

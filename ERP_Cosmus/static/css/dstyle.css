@@ -1206,11 +1206,16 @@ input[type=number] {
     padding-left: 880px;
 }
 
-
-.arrowBtn{
-    
-    transition: transform 0.2s ease;
-}
+.loading-image {
+    display: none; /* Hide by default */
+    position: fixed;
+    /* background-color: #999; */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  
 .rotate{
     transform: rotate(90deg);
 }

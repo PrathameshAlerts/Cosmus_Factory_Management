@@ -7,7 +7,7 @@
     <div class="mt-4  mb-3 d-flex">
         <h4>Reference No - <span class="text-danger text-bold text-capitalize">{{product_instance.Product_Refrence_ID}}</span></h4>
         <h4 class="ms-3">Model Name - <span class="text-danger text-bold text-capitalize">{{product_instance.Model_Name}}</span></h4>
-        <div class="d-flex">
+        <div class="d-flex ms-3">
             <lable>Images :</lable>
             {% for record in Product_Refrence_ID.productdetails.all %}
             {% if record.PProduct_image.url is not None %}
