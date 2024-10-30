@@ -74,6 +74,7 @@ logger = logging.getLogger('product_views')
     logger.warning("This is a warning message")
     logger.error("This is an error message")
     logger.critical("This is a critical message")
+    
 """
 
 def custom_404_view(request, exception):
@@ -6580,7 +6581,7 @@ def finished_goods_model_wise_report(request,ref_id):
                 'voucher_number' : instance.voucher_number,
                 'date' : instance.created_date.replace(tzinfo=None).strftime("%d %B %Y"),
                 'name': instance.labour_voucher_number.labour_name.name,
-                'description' : 'Labour Work In',
+                'description' : f'Labour Work In - {instance.labour_voucher_number.labour_name.name}',
                 'L_W_I' : instance.total_qty,
                 'Repair_In' : '0',
                 'sale' : '0',
@@ -6595,6 +6596,3 @@ def finished_goods_model_wise_report(request,ref_id):
 
 
 #__________________________reports-end____________________________________
-
-
-
