@@ -53,10 +53,10 @@
 
                         
                         {% if record.approved_Qty_total == 0 %}
-                        <td><button class="border-0 bg-transparent viewBtn"><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id False %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></button></td>
+                        <td><button class="border-0 bg-transparent" id="viewBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id False %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></button></td>
                         
                         {% elif record.approved_Qty_total != 0 %}
-                        <td><button class="border-0 bg-transparent viewBtn"></button><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id True %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></button></td>
+                        <td><button class="border-0 bg-transparent" id="viewBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"></button><a href="{% url 'labour-workin-view-update' record.labour_voucher_number.id record.id True %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></button></td>
 
                         {% endif %}
                         
@@ -90,7 +90,7 @@
     </div>
 </div>
 
-<!-- <div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-transparent border-0">
     <div class="modal-body justify-content-center text-center">
@@ -98,9 +98,9 @@
       </div>
       </div>
   </div> 
-</div>  -->
+</div> 
 <script>
-  //document.body.appendChild(document.getElementById('exampleModalSpinner'));
+  document.body.appendChild(document.getElementById('exampleModalSpinner'));
   document.body.appendChild(document.getElementById('exampleModal'));
 $(document).ready(function(){
   $('.delete-btn').click(function(){
@@ -158,38 +158,33 @@ $(document).ready(function(){
     });
     
   });
-  // $('.item-btn, .viewBtn').click(function(){
-  //   var newSpinner = $('#exampleModalSpinner');
-  //   newSpinner.show();
-  //   history.pushState(null, null);  // Push a new state to handle the back button properly
-  // })
+
 });
-// document.addEventListener('DOMContentLoaded', function() {
-//   let statePushed = false;  // Flag to prevent multiple pushState calls
 
-//   // Show spinner on button click
-//   $('.item-btn, .viewBtn').click(function() {
-//     var newSpinner = $('#exampleModalSpinner');
-//     newSpinner.modal('show');  // Show the modal with the spinner
+function openModal() {
+  // Load content via AJAX if needed, or open the modal directly
+  const modal = new bootstrap.Modal(document.getElementById("viewBtn"));
+  modal.show();
 
-//     // Only push state the first time the spinner is shown
-//     if (!statePushed) {
-//       history.pushState(null, null, location.href);
-//       statePushed = true;  // Set flag to true after pushing state
-//     }
-//   });
+  // Push a new state to history
+  history.pushState({ modalOpen: true }, null, url);
+}
 
-//   // Hide spinner when back button or browser left arrow is clicked
-//   window.addEventListener('popstate', function() {
-//     var newSpinner = $('#exampleModalSpinner');
-//     console.log("popstate");
-//     if (newSpinner.hasClass('show')) {
-//       newSpinner.modal('hide');  // Hide the spinner modal
-//       statePushed = false;  // Reset flag to allow pushState on next navigation
-//     }
-//   });
-// });
+// Listen for the back button (popstate event)
+window.addEventListener("popstate", function(event) {
+  const modalElement = document.getElementById("viewBtn");
+  const modalInstance = bootstrap.Modal.getInstance(modalElement);
+  if (modalInstance) {
+    modalInstance.hide();
+  }
+});
 
+// Optional: Close the modal and remove history state if dismissed manually
+document.getElementById("viewBtn").addEventListener('hidden.bs.modal', function () {
+  history.back();
+});
+
+openModal()
 function totalBalanceCheck(){
   var totalBalance = document.querySelector('.totalBalancePcs').textContent;
   var createButton = document.querySelector('.item-btn');
