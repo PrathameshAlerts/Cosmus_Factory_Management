@@ -180,23 +180,32 @@
             </div>
         </div>
     </div>
-      <button type="submit" class="ms-5 newProductCreateBtn" id="parentFormClick" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
+      <button type="submit" class="ms-5 newProductCreateBtn" id="parentFormClick">Submit</button>
     </form>
 </div>
 
-
-<!-- This below div is showing submit button click then loading image -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-transparent border-0">
-      <div class="modal-body justify-content-center text-center">
-        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
-        </div>
-        </div>
-    </div> 
+<div class="">
+    <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image">
 </div>
+
+
+
 <!--This script use for party name add which use in ledger create popup-->
 <script>
+    function Loadingscreen(){
+        const form = document.getElementById("newForm");
+        const loadingImage = document.getElementById("loadingImage");
+        const body = document.getElementsByTagName('body')[0]
+     
+        form.addEventListener("submit", function(event) {
+            loadingImage.style.display = "block";
+            document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5)";   
+            body.backgroundColor ="rgba(0, 0, 0, 0.5)"   
+        });
+    }
+ 
+    Loadingscreen()
+
     var popUpNewWindow = null;
 function openPurchasePartyPopup(button){
     openNewPopup(button, '{% url "ledger-popup-create" %}');
@@ -313,7 +322,6 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
             })
         })
     })
-    document.body.appendChild(document.getElementById('exampleModal'));
  $(document).ready(function(){
 
         $('#id_challan_no').on('focusout',function(){
@@ -354,10 +362,7 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
             }
             
         })
-        $('#parentFormClick').on('click',function(){
-            var forms = $('#exampleModal');
-            forms.show();
-        })
+    
     })
   
     window.addEventListener('message', receiveMessage, false);

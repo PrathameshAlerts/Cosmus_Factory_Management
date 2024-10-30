@@ -45,8 +45,6 @@
                     <td class="pendingValue">{{record.pending_for_approval_pcs}}</td>
                     <td class="processedQty">{{record.total_approved_pcs}}</td>
                     <td><button class="border-0 bg-transparent btnValue" onclick="approvedGoodsReturn(this)"><a  class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button></td>
-
-
                     <td class="text-nowrap">{{ record.created_date.date}}<br>
                       {% if record.created_date|subtract_datestime:current_date < 0 %}
                       <span style="color: red; font-weight : bold;" >{{ record.created_date|subtract_datestime:current_date }} OverDue </span>

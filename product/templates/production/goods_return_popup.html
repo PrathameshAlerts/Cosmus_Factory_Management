@@ -3,7 +3,7 @@
 {% load static %}
 {% block body %}
 
-<form method="POST" autocomplete="off">
+<form method="POST" autocomplete="off" id="goodsReturnValue">
     {% csrf_token %}
 
    
@@ -48,7 +48,7 @@
         </div>
     </div>
    
-<button type="submit" name="" id="" class="create-btn mt-3 mx-3">Submit</button>
+<button type="submit" name="" id="goodsValueBtn" class="create-btn mt-3 mx-3">Submit</button>
 </form>
 
 
@@ -141,35 +141,35 @@
 }
 
 
-//     function approveValueCheck(){
-//     var approved = document.querySelectorAll('[name$= "-approved_qty"]');
-//     var submitButton = document.getElementById('cuttingOrderApproved');
-//     var hasInvalidValue = false; 
+    function approveValueCheck(){
+    var approved = document.querySelectorAll('[name$= "-approved_qty"]');
+    var submitButton = document.getElementById('goodsValueBtn');
+    var hasInvalidValue = false; 
 
-//     approved.forEach(el => {
-//         var approvedValues = parseInt(el.value) || 0;
-//         var currentApprovedValue = parseInt(el.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value);
-//         console.log(approvedValues, currentApprovedValue)
+    approved.forEach(el => {
+        var approvedValues = parseInt(el.value) || 0;
+        var currentApprovedValue = parseInt(el.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value);
+        console.log(approvedValues, currentApprovedValue)
 
-//         if(approvedValues != 0){
-//             if (currentApprovedValue < approvedValues) {
-//                 el.closest('tr').querySelector('[name$= "-approved_qty"]').value = currentApprovedValue; // Reset to currentApprovedValue
-//                 el.style.borderColor = 'red';
-//                 hasInvalidValue = true; 
-//             } else{
-//                 el.style.borderColor = 'gray';
-//             } 
-//         }
-//     });
-
-//     if(hasInvalidValue){
-//         submitButton.style.display = 'none';
-//     }else{
-//         submitButton.style.display = 'block';
-//     }
-// }
-
-
+        if(approvedValues != 0){
+            if (approvedValues < currentApprovedValue  ) {
+                // el.closest('tr').querySelector('[name$= "-approved_qty"]').value = currentApprovedValue; // Reset to currentApprovedValue
+                el.style.borderColor = 'red';
+                hasInvalidValue = true; 
+            } else{
+                el.style.borderColor = 'gray';
+            } 
+        }
+    });
+    if (hasInvalidValue) {
+            goodsValueBtn.style.cursor = "not-allowed";
+            goodsValueBtn.disabled = true;
+        } else {
+            goodsValueBtn.style.cursor = "pointer";
+            goodsValueBtn.disabled = false;
+        }
+ 
+}
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
@@ -178,10 +178,14 @@
         approve.forEach(function (element) {
             element.addEventListener('input', () => {
                 quantityCheck();
+                approveValueCheck();
             });
-            // element.addEventListener('focusout',()=>{
-            //     approveValueCheck();
-            // })
+            element.addEventListener('focusout',()=>{
+                approveValueCheck();
+            })
+        })
+        document.getElementById('goodsReturnValue').addEventListener('submit',function(){
+            approveValueCheck();
         })
 
     })

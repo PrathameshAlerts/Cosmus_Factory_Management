@@ -59,7 +59,6 @@
                                 <td>{{po.balance_number_of_pieces}}</td>
                                 <td>{{po.total_approved_balance | default_if_none:'0'}}</td>
                                 <td><a href="{% url 'purchase-order-cutting-list' po.id po.product_reference_number.Product_Refrence_ID %}"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
-                            
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -135,7 +134,7 @@
       </div>
     </div>
 </div>
-<div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
       <div class="modal-body justify-content-center text-center">
@@ -143,7 +142,7 @@
         </div>
         </div>
     </div> 
-</div> 
+</div>  -->
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -169,7 +168,7 @@
 </script>
  <script>
     document.body.appendChild(document.getElementById('exampleModal'));
-    document.body.appendChild(document.getElementById('exampleModalSpinner'));
+    // document.body.appendChild(document.getElementById('exampleModalSpinner'));
     $(document).ready(function(){
         $('.delete-btn').click(function(){
             var itemId = $(this).data('item-id');
@@ -189,31 +188,31 @@
         });
     });
      
-    document.addEventListener('DOMContentLoaded', function() {
-  let statePushed = false;  // Flag to prevent multiple pushState calls
+//     document.addEventListener('DOMContentLoaded', function() {
+//   let statePushed = false;  // Flag to prevent multiple pushState calls
 
-  // Show spinner on button click
-  $('.cuttingQtybtn, .cuttingApprovalbtn').click(function() {
-    var newSpinner = $('#exampleModalSpinner');
-    newSpinner.modal('show');  // Show the modal with the spinner
+//   // Show spinner on button click
+//   $('.cuttingQtybtn, .cuttingApprovalbtn').click(function() {
+//     var newSpinner = $('#exampleModalSpinner');
+//     newSpinner.modal('show');  // Show the modal with the spinner
 
-    // Only push state the first time the spinner is shown
-    if (!statePushed) {
-      history.pushState(null, null, location.href);
-      statePushed = true;  // Set flag to true after pushing state
-    }
-  });
+//     // Only push state the first time the spinner is shown
+//     if (!statePushed) {
+//       history.pushState(null, null, location.href);
+//       statePushed = true;  // Set flag to true after pushing state
+//     }
+//   });
 
-  // Hide spinner when back button or browser left arrow is clicked
-  window.addEventListener('popstate', function() {
-    var newSpinner = $('#exampleModalSpinner');
-    console.log("popstate");
-    if (newSpinner.hasClass('show')) {
-      newSpinner.modal('hide');  // Hide the spinner modal
-      statePushed = false;  // Reset flag to allow pushState on next navigation
-    }
-  });
-});
+//   // Hide spinner when back button or browser left arrow is clicked
+//   window.addEventListener('popstate', function() {
+//     var newSpinner = $('#exampleModalSpinner');
+//     console.log("popstate");
+//     if (newSpinner.hasClass('show')) {
+//       newSpinner.modal('hide');  // Hide the spinner modal
+//       statePushed = false;  // Reset flag to allow pushState on next navigation
+//     }
+//   });
+// });
     </script>
 
 

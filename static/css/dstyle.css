@@ -1206,11 +1206,17 @@ input[type=number] {
     padding-left: 880px;
 }
 
-
-.arrowBtn{
-    
-    transition: transform 0.2s ease;
-}
+.loading-image {
+    display: none; /* Hide by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden; /* Disable scrolling */
+    z-index: 1050; /* Ensure it appears above other content */
+    /* background-color: rgba(0, 0, 0, 0.5); Black w/ opacity */
+  }
+  
 .rotate{
     transform: rotate(90deg);
 }
