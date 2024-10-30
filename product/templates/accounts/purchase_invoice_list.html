@@ -62,35 +62,35 @@
     </div>
   </div>
 </div>
-<div class="">
+<!-- <div class="">
   <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image">
-</div>
+</div> -->
   <script>
-        document.addEventListener('DOMContentLoaded', function() {
-     function Loadingscreen(){
-        const form = document.getElementById("createVouchar");
-        const loadingImage = document.getElementById("loadingImage");
-        const body = document.getElementsByTagName('body')[0]
+    //     document.addEventListener('DOMContentLoaded', function() {
+    //  function Loadingscreen(){
+    //     const form = document.getElementById("createVouchar");
+    //     const loadingImage = document.getElementById("loadingImage");
+    //     const body = document.getElementsByTagName('body')[0]
      
-        form.addEventListener("click", function(event) {
+    //     form.addEventListener("click", function(event) {
  
-        loadingImage.style.display = "block";
-        document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-        body.backgroundColor ="rgba(0, 0, 0, 0.5)" 
-        history.pushState({ modalOpen: true }, null, location.href);
-        });
-        window.addEventListener('popstate', function(event) {
-            const myModal = document.getElementById("loadingImage");
-            if (myModal) {
-                myModal.style.display = 'none';
-            }
-            console.log(myModal)
-        });
-    }
+    //     loadingImage.style.display = "block";
+    //     document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    //     body.backgroundColor ="rgba(0, 0, 0, 0.5)" 
+    //     history.pushState({ modalOpen: true }, null, location.href);
+    //     });
+    //     window.addEventListener('popstate', function(event) {
+    //         const myModal = document.getElementById("loadingImage");
+    //         if (myModal) {
+    //             myModal.style.display = 'none';
+    //         }
+    //         console.log(myModal)
+    //     });
+    // }
 
   
-        Loadingscreen()
-      })
+    //     Loadingscreen()
+    //   })
  
   
   document.body.appendChild(document.getElementById('exampleModal'));

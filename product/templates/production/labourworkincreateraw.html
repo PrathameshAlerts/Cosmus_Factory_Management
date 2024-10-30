@@ -126,7 +126,7 @@
     <button type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;">Submit</button>
 </form>
 
-<img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image">
+<!-- <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image"> -->
 <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
@@ -138,22 +138,22 @@
 </div> -->
 <script>
     
-    function Loadingscreen(){
-        const form = document.getElementById("labourWorkInForm");
-        const loadingImage = document.getElementById("loadingImage");
-        const body = document.getElementsByTagName('body')[0]
+    // function Loadingscreen(){
+    //     const form = document.getElementById("labourWorkInForm");
+    //     const loadingImage = document.getElementById("loadingImage");
+    //     const body = document.getElementsByTagName('body')[0]
 
-        form.addEventListener("submit", function(event) {
-        // Show the loading image
-        loadingImage.style.display = "block";
-        document.body.style.backgroundColor = "#a9a9a9";
-        document.body.style.color = "#a9a9a9";
+    //     form.addEventListener("submit", function(event) {
+    //     // Show the loading image
+    //     loadingImage.style.display = "block";
+    //     document.body.style.backgroundColor = "#a9a9a9";
+    //     document.body.style.color = "#a9a9a9";
         
-        // Optionally prevent the default form submission to simulate loading (e.g., for AJAX requests)
-        // event.preventDefault();
-        });
-    }
-    Loadingscreen()
+    //     // Optionally prevent the default form submission to simulate loading (e.g., for AJAX requests)
+    //     // event.preventDefault();
+    //     });
+    // }
+    // Loadingscreen()
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
     document.getElementById("id_labour_charges").addEventListener('input', CalculateAmount);
 
@@ -280,7 +280,7 @@ $(document).ready(function () {
                   
                     var dateText = $('<div>').append(
                     $('<span>').text(newDate),
-                        $('<br>'),
+                    $('<br>'),
                     $('<span>').text(remaining)
                     );
                     
