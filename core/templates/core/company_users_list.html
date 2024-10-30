@@ -1,0 +1,46 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<div>
+<h3 class="mb-3">Manage Company Users</h3>
+
+<button class="item-btn mb-3"><a style="text-decoration: none; color: white;" href="{% url 'create_company_user' %}">Create User</a></button>
+
+<div class="row">
+    <div class="col-lg-9">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>
+                        <a href="{% url 'edit_company_user' user.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a> |
+                        <a href="{% url 'delete_company_user' user.id %}"><i class="fa-solid fa-trash text-danger px-2"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+
+
+{% endblock %}

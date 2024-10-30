@@ -1,0 +1,66 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<div class="col-lg-10 mt-2">
+    <table class="table table-hover table-bordered table-striped">
+        <thead class="sticky-top name_absolute">
+            <tr>
+                <th>No</th> 
+                <th>Material Name</th> 
+                <th>Material Shade</th>
+                <th>Total Qty</th> 
+                <th>Quantity</th>
+                
+            </tr>
+        </thead>
+        <tbody class="mainTableList">
+            {% for report in queryset %}
+            <tr class="text-nowrap">
+                <td>{{forloop.counter}}</td>   
+                <td>{{report.items.item_name}}</td>
+                <td><button style="background-color: #89CFF0;" class=" rounded text-white outline-none p-1 border-0"><a class="text-black text-decoration-none" href="{% url 'godown-item-report-all-godowns' report.id %}">{{report.item_shade_name}}</a></button></td>
+                <td class="toatlQty">{{report.total_qty | default_if_none:0}}</td>
+                {% if report.godown_shades.all %}
+                <td>
+                    {% for g_qty in report.godown_shades.all %}
+                    <button style="background-color: #FEDC56;" class=" rounded text-white p-1 outline-none border-0"><a class="text-black text-decoration-none" href="{% url 'godown-item-report' report.id g_qty.godown_name.id %}">{{g_qty.godown_name.godown_name_raw}} <span class="gTotalQty">{{g_qty.quantity}}</span></a></button>
+                    {% endfor %}
+                </td>
+                {% else %}
+                <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+</div>
+
+<script>
+    function totalValueCheck(){
+        var  totalqty = document.querySelectorAll('.toatlQty');
+        totalqty.forEach(element => {
+            var value = element.textContent;
+        
+            if(value > 0){
+                element.style.color = "green";
+            }else{
+                element.style.color = "red";
+            }
+
+        });
+
+        var gTotalqty = document.querySelectorAll('.gTotalQty');
+        gTotalqty.forEach(element => {
+            var value = element.textContent;
+            if(value > 0){
+                element.style.color = "green";
+            }else{
+                element.style.color = "red";
+            }
+        });
+    }
+
+    totalValueCheck()
+</script>
+{% endblock %}

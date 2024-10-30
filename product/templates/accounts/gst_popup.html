@@ -1,0 +1,71 @@
+{% extends 'misc/navbar_popup.html' %}
+{% load static %} 
+{% block body %}
+
+<form id="gstForm" action="" method="POST" >
+    {% csrf_token %}
+    <h2 class="mb-3 mt-3">GST</h2>
+    <div class="d-flex my-4">
+        <label for="id_gst_percentage" class="item-form px-2">Gst percentage :</label>
+        <input type="number" name="gst_percentage" class="item-select" required id="id_gst_percentage" value="{{form.instance.gst_percentage}}" step="0.01">    
+    </div>
+
+
+    <button type="submit" class="create-btn mt-4" name="save" value="Save"  id="submitButton">Save</button>
+
+</form>
+
+<script>
+    let formSubmitted = false;  // Flag to track whether form is submitted
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.onload = function() {
+        document.getElementById("id_gst_percentage").focus();
+    };
+    });
+    document.getElementById('gstForm').addEventListener('submit', async function(event) {
+    event.preventDefault();  // Prevent the default form submission
+    var submitBtn = document.getElementById('submitButton');
+    submitBtn.disabled = true;
+    submitBtn.value = "saving...";  
+    const form = event.target;
+    const formData = new FormData(form);
+
+   formData.append('save', 'Save');
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();  // Await the response.json() call
+            window.opener.postMessage(data, '*');
+            window.close();
+
+            formSubmitted = true;  // Set flag to true after successful submission
+        } else {
+            console.error('Failed to update GST.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+      
+    });
+
+    
+   // Handle the case when the window is closed without form submission
+  window.addEventListener('beforeunload',  function(event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
+  });
+    </script>
+    
+
+
+{% endblock body %}
