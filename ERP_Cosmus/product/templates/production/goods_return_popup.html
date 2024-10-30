@@ -152,7 +152,7 @@
         console.log(approvedValues, currentApprovedValue)
 
         if(approvedValues != 0){
-            if (approvedValues <= currentApprovedValue  ) {
+            if (approvedValues < currentApprovedValue  ) {
                 // el.closest('tr').querySelector('[name$= "-approved_qty"]').value = currentApprovedValue; // Reset to currentApprovedValue
                 el.style.borderColor = 'red';
                 hasInvalidValue = true; 

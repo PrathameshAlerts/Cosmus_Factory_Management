@@ -153,7 +153,7 @@ function quantityCheck() {
             // console.log(currentCheckValue)
          if (approveValue != 0) {
             // Check if approvedValues is less than currentCheckValue
-            if (approveValue <= currentCheckValue) {
+            if (approveValue < currentCheckValue) {
                 //closerstTr.querySelector('[name$= "-approved_pcs"]').value = currentCheckValue; // Reset to currentApprovedValue
                 data.style.borderColor = 'red';
                 hasInvalidValue = true; 
