@@ -1,0 +1,75 @@
+
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+
+{% block body %}
+  <form id="unitsForm" action="" method="POST">
+    {% csrf_token %}
+    <h2 class="mb-3 mt-4">Create Units</h2>
+    <div class="d-flex mb-3">
+      <label for="id_unit_name" class="item-form px-2">Name:</label>
+      <input type="text" class="item-select" value="{{ form.instance.unit_name }}" name="unit_name" maxlength="255" required id="id_unit_name">
+    </div>
+    <div class="d-flex mb-3">
+      <label for="id_unit_value" class="item-form px-2">Units:</label>
+        <input type="text" class="item-select" value="{{form.instance.unit_value}}" name="unit_value" maxlength="255" required id="id_unit_value">
+    </div>
+
+    <button type="submit" class="create-btn mt-4" name="save" value="Save"  id="submitButton">Save</button>
+  </form>
+
+
+
+
+<script>
+  let formSubmitted = false;  // Flag to track whether form is submitted
+  document.addEventListener("DOMContentLoaded", function () {
+        window.onload = function() {
+        document.getElementById("id_unit_name").focus();
+    };
+    })
+  document.getElementById('unitsForm').addEventListener('submit', async function (event) {
+    event.preventDefault();  // Prevent the default form submission
+    var submitBtn = document.getElementById('submitButton');
+    submitBtn.disabled = true;
+    submitBtn.value = 'Saving...';
+    const form = event.target;
+    const formData = new FormData(form);
+    formData.append('save', 'Save');
+    try {
+
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+        }
+      });
+
+      if (response.ok) {
+
+        const data = await response.json();  // Await the response.json() call
+        window.opener.postMessage(data, '*');
+        window.close();  // Now you can access the JSON data
+        formSubmitted = true;  // Set flag to true after successful submission
+      } else {
+        console.error('Failed to create Units.');
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+
+  // Handle the case when the window is closed without form submission
+  window.addEventListener('beforeunload', function (event) {
+    if (!formSubmitted) {
+      const data = { message: 'close' };
+      window.opener.postMessage(data, '*');
+    }
+  });
+</script>
+
+
+
+{% endblock body %}

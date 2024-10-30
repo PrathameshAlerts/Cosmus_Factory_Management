@@ -1,0 +1,12 @@
+{% extends 'product/base.html' %}
+{% block body %}
+  <h2>User List</h2>
+  <ul>
+    {% for user in users %}
+      <li>
+        {{ user.username }} - <a href="{% url 'edit_user_roles' user.id %}">Edit Roles</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'create_user' %}">Create New User</a>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{temp_uuid}}
+    {{temp_data_exists}}
+
+    {{temp_godown_data}}
+
+        <!-- get age of cookie -->
+        {{request.session.get_session_cookie_age}}
+        <!-- get expiry age -->
+        {{request.session.get_expiry_age}}
+        <!-- get expiry date -->
+        {{request.session.get_expiry_date}}
+        <!-- Browser Close Expiry -->
+        {{request.session.get_expire_at_browser_close}}
+</body>
+</html>
