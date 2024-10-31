@@ -85,7 +85,7 @@ def custom_404_view(request, exception):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request,'misc/dashboard.html',{"page_name":"Dashboard"})
+    return render(request,'misc/dashboard.html',{"page_name":"Dashboard" })
 
 
 
