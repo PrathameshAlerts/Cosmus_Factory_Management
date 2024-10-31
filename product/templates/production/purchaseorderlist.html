@@ -87,7 +87,7 @@
   </div>
 </div>
 
-<img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image">
+<!-- <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image"> -->
 <!-- <div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-transparent border-0">
@@ -102,27 +102,27 @@
 
 <script>
 
-function Loadingscreen(){
-        const form = document.getElementById("addNewOrderClick");
-        const loadingImage = document.getElementById("loadingImage");
+// function Loadingscreen(){
+//         const form = document.getElementById("addNewOrderClick");
+//         const loadingImage = document.getElementById("loadingImage");
       
      
-        form.addEventListener("click", function(event) {
-        // Show the loading image
-        loadingImage.style.display = "block";
+//         form.addEventListener("click", function(event) {
+//         // Show the loading image
+//         loadingImage.style.display = "block";
       
     
-        });
-  }
-  window.addEventListener('popstate', function(event) {
-            const myModal = document.getElementById("loadingImage");
-            if (myModal) {
-                myModal.style.display = 'none';
-            }
-            console.log(myModal)
-     });
+//         });
+//   }
+//   window.addEventListener('popstate', function(event) {
+//             const myModal = document.getElementById("loadingImage");
+//             if (myModal) {
+//                 myModal.style.display = 'none';
+//             }
+//             console.log(myModal)
+//      });
 
-    Loadingscreen()
+//     Loadingscreen()
   function reversAddRowOrder() {
     window.location.href = "{% url 'purchase-order-create' %}";
   }
