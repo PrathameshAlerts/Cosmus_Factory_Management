@@ -45,9 +45,7 @@
             item.addEventListener('click' ,function(event){
                 event.preventDefault();
                 var refrenceId =this.querySelector('.refrenceId').textContent;
-                console.log(refrenceId);
                 var refId = parseInt(refrenceId);
-                console.log(refId);
                 window.location.href = "/finishedgoodsgodownproductrefwisereport/" + refId;
             })
           })

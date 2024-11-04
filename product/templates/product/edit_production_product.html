@@ -5,7 +5,6 @@
 
 <form method="POST" enctype="multipart/form-data" action="" id="newForm" autocomplete="off"> 
   {% csrf_token %}
-  <!-- <h2 class="mb-3 mt-2">Update Product</h2> -->
   <div class="d-flex mb-3 mt-3 productItem">
     <input type="hidden" class="product_items" name="Number_of_items" id="id_Number_of_items" value="{{form.instance.Number_of_items | default_if_none:'0'}}">
     <input type="hidden" name="updated_url" id="updated_url" value="">
@@ -585,7 +584,6 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         success: function (response) {
           // Handle success response from the backend
-          console.log('Value sent to the backend successfully');
 
           sub_cats_of_maincat = response.sub_cat_dict
       

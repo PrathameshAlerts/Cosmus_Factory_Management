@@ -341,7 +341,7 @@ function TotalValueCalculation(){
         var totalValue = parseFloat(quantity) * parseFloat(rate);
 
         document.getElementById('id_'+i+'-total_value').value = totalValue.toFixed(2);
-        console.log(totalValue);
+
     }
   }
   }
@@ -392,24 +392,20 @@ $(document).ready(function(){
                     
                 },
                 success: function (data) {
-                  console.log(data);
                   var itemId = $('#id_items').val();
                   if(itemId == "None"){
                     if(data.validation_flag === true){
                        //alert("Purchase number already exists");
                        itemcreateName.css('border', '1px solid red');
-                        console.log(data)
                         errorElement.text('*Item Name already exists');
                         errorElement.show();
                         submitButton.attr('disabled', 'disabled');
                        
                     }else {
-                        console.log(data.validation_flag);
-                        itemcreateName.css('border', '1px solid lightgray');
-                         
-                    errorElement.text('');
-                    errorElement.hide();
-                    submitButton.removeAttr('disabled');
+                      itemcreateName.css('border', '1px solid lightgray'); 
+                      errorElement.text('');
+                      errorElement.hide();
+                      submitButton.removeAttr('disabled');
                     }
                   }
                     
@@ -466,12 +462,10 @@ $(document).ready(function(){
                         submitButton.attr('disabled', 'disabled');
                        
                     }else {
-                        console.log(data.validation_flag);
-                        material_code.css('border', '1px solid lightgray');
-                         
-                    errorElement.text('');
-                    errorElement.hide();
-                    submitButton.removeAttr('disabled');
+                      material_code.css('border', '1px solid lightgray');                        
+                      errorElement.text('');
+                      errorElement.hide();
+                      submitButton.removeAttr('disabled');
                     }
                    
                 },
@@ -567,7 +561,6 @@ $(document).ready(function(){
           
            var nameDataValue = $(this).text().trim();
           var parts = nameDataValue.match(/(.+?)(-?\d+(\.\d+)?)/);
-          console.log(parts)
           if(parts){
             var textParts = parts[1];
             var numberParts = parts[2];
@@ -820,7 +813,6 @@ $(document).ready(function(){
         
         },
         success: function (response){
-          console.log('Data sent successfully')
           const itemValues  = itemId.split('-')[1];
           const qtyData =document.getElementById('shades-'+itemValues+'-openingValue').value
 
@@ -829,28 +821,11 @@ $(document).ready(function(){
             const newUrl = encodeURIComponent(qtyData);
             const fullUrl = `${url}?data=${newUrl}`;
 
-  
             newPopup = window.open(fullUrl , '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
 
           }else{
             newPopup = window.open(response.popup_url, '_blank', 'width=' + minWidth + ', height=' + minHeight + ', resizable=yes');
-
-           
-         
           }
-          // window.addEventListener('message', function(event){
-          //   console.log(event.data.message)
-          //    if (event.data.message === 'close') {
-          //       $('body').removeClass('popup-open');
-          //       $('.popup-overlay').remove();
-          //       newPopup.close();
-          //    }
-          //  });
-        
-          //   // Listen for messages from the popup window
-          //   window.addEventListener('click', function(event) {
-          //     handleOutsideData(event);
-          //    });
         },
         error: function (xhr, errmsg, err) {
                console.log('Error getting popup URL');
@@ -860,24 +835,7 @@ $(document).ready(function(){
     })
   })
 
-  // function handleOutsideData(event) {
-  //   const popUpRect = document.querySelector('body').getBoundingClientRect();
-  //   const clickX = event.clientX;
-  //   const clickY = event.clientY;
-
-  //   // Check if the click is outside the popup window
-  //   if (
-  //     clickX > popUpRect.left || clickX <= popUpRect.right ||
-  //     clickY > popUpRect.top || clickY <= popUpRect.bottom
-  //   ) {
-    
-  //   newPopup.focus();
-      
-  //   }
-
-  //   }
-
-  </script>
+</script>
 
 
 

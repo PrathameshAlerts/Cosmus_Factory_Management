@@ -426,8 +426,6 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
         const prefixId = newSessionData.prefixValue;
         const oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         const oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')  
-        console.log('newQty',newQty)
-        console.log('newRate',newRate)
         oldQty.value = newQty
         oldRate.value = newRate
         calculateTotalAmount()
@@ -476,7 +474,6 @@ function getGstNo() {
                     'selected_party_name': selected_party_name,
                 },
                 success: function (response) {
-                    console.log('Data sent successfully')
                     const party_gst_no_response = response.party_gst_no
                     const gst_no_input = document.getElementById('id_GST_number')
                     gst_no_input.value = party_gst_no_response
@@ -674,7 +671,6 @@ function randomValue (){
                 'item_value': item_value,
             },
             success: function (response) {
-                console.log('Data sent successfully');
                 var itemrownameid = itemName.split('-')[1];
                 var differentShades = Object.keys(response.item_shade).length;
                 
@@ -942,7 +938,6 @@ function randomValue (){
                 if (event.key === 'Enter') {
                     const row = $(this);
                     const selectedShade = $(this).val();
-                    console.log("selectedShadeEnter",selectedShade)
                     const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
                     const itemShades = $(this).closest('tr').find('[name^="input_item_shade_"]');
                     $(this).attr('disabled', 'disabled');
@@ -1109,7 +1104,6 @@ function randomValue (){
     function calculateOtherTotal(grandTotal) {
 
          const grandTotals = parseFloat(document.getElementById('id_grand_amount').value);
-        console.log('grandTotals',grandTotals);
           let  grossTotal = grandTotals;      
     
         // Set the calculated gross total value to the gross total input field
@@ -1295,7 +1289,6 @@ function randomValue (){
             // Find the row containing the clicked delete button
             const row = this.closest('tr');
             const checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
-           console.log('checkRow',checkRow)
             if (checkRow) {
                 checkRow.checked = true; // Mark as checked
                 checkRow.value = 'true'; // Set the value to 'true'

@@ -271,21 +271,16 @@ function TotalValueCalculation(){
                     'item_name': item_name,
                 },
                 success: function (data) {
-                  console.log(data);
-                  
                     if(data.validation_flag === true){
-                       //alert("Purchase number already exists");
-                       itemcreateName.css('border', '1px solid red');
-                        console.log(data)
-                        errorElement.text('*Item Name already exists');
-                        errorElement.show();
-                        submitButton.attr('disabled', 'disabled');
-                       
+                      itemcreateName.css('border', '1px solid red');
+                      errorElement.text('*Item Name already exists');
+                      errorElement.show();
+                      submitButton.attr('disabled', 'disabled');
                     }else {
-                        itemcreateName.css('border', '1px solid lightgray');
-                        errorElement.text('');
-                        errorElement.hide();
-                        submitButton.removeAttr('disabled');
+                      itemcreateName.css('border', '1px solid lightgray');
+                      errorElement.text('');
+                      errorElement.hide();
+                      submitButton.removeAttr('disabled');
                     }
                 },
                 error: function (error) {   
@@ -320,23 +315,18 @@ function TotalValueCalculation(){
                     'item_material_code': item_material_code,
                     
                 },
-                success: function (data) {
-                  console.log(data);
-                    if(data.validation_flag === true){
-                       //alert("Purchase number already exists");
-                       material_code.css('border', '1px solid red');
-                        console.log(data)
-                        errorElement.text('*Material number already exists');
-                        errorElement.show();
-                        submitButton.attr('disabled', 'disabled');
+                success: function (data) {;
+                    if(data.validation_flag === true){                     
+                      material_code.css('border', '1px solid red');
+                      errorElement.text('*Material number already exists');
+                      errorElement.show();
+                      submitButton.attr('disabled', 'disabled');
                        
                     }else {
-                        console.log(data.validation_flag);
-                        material_code.css('border', '1px solid lightgray');
-                         
-                    errorElement.text('');
-                    errorElement.hide();
-                    submitButton.removeAttr('disabled');
+                      material_code.css('border', '1px solid lightgray');                        
+                      errorElement.text('');
+                      errorElement.hide();
+                      submitButton.removeAttr('disabled');
                     }
                    
                 },

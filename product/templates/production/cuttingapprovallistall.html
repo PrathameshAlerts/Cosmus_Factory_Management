@@ -115,7 +115,6 @@
               'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
             success: function(response){
-              console.log(response);
               $('#exampleModal').modal('hide');
               // Disable buttons and visually "disable" the row
               row.css('opacity', '0.5'); // Gray out the row
@@ -192,7 +191,6 @@ function cancelCutting(){
       var cancelCutting = document.querySelectorAll('.cuttingCancelled');
       cancelCutting.forEach(function(elemet){
         var cancelQty = elemet.value;
-            console.log(cancelQty)
         if(cancelQty === 'True'){
           var mainRows = elemet.closest('tr');
 

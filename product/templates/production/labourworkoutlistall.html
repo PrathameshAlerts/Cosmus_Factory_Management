@@ -189,7 +189,6 @@
       },
       success: function(response) {
           var allApproveLogs = response.approval_data;
-          console.log('allApproveLogs',allApproveLogs)
           var newTable = document.getElementById('approvalDataLogs'); 
           newTable.innerHTML = ''; // Clear previous table rows
           document.getElementById('cuttingVNo').textContent = cuttingoderId;  

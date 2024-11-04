@@ -317,7 +317,6 @@ $(document).ready(function(){
                     
                 },
                 success: function (data) {
-                  console.log(data);
                     if(data.validation_flag === true){
                        cutting_order.css('border', '1px solid red');
                         errorElement.text('*Cutting number already exists');
@@ -593,8 +592,7 @@ function updateCuttingQuantity(finalTotal){
     function submitForm(){
         const ids = document.getElementById('cutting_id').value ;
         const balanceValue = document.getElementById('id_balanceView_qty').value;
-        console.log('ids',ids)
-        console.log('balanceValue',balanceValue)
+
         if(ids !== "" && ids !== "None" || (ids == "" && balanceValue == 0)){
             let procumentValue =0;
             let CuttingValue =0;

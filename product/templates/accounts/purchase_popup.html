@@ -351,7 +351,6 @@
         const inputRate = row.find('.godown-rate[name^="shade_godown_items_set-"][name$="-rate"]').val();
         const inputRateValue = parseFloat(inputRate);
         let totalAmount = row.find('.godown-amount[name^="shade_godown_items_set-"][name$="-amount"]').val();
-        console.log('inputRateValue',inputRateValue)
         // Calculate and set the amount for this row
 
         if (isNaN(inputQtyValue) || isNaN(inputRateValue)) {
@@ -434,7 +433,6 @@
         //Delete row from delete button click then ajax request sent to backend foe deletion a row from table
         $(document).on('click', '.delete-btn', function() {
             const tableRows = $('#newTable').find('tbody tr'); 
-            console.log(tableRows.length);
             if (tableRows.length > 1) { 
                 const row = $(this).closest('tr'); 
                 const checkbox = row.find('.godown_delete[name^="shade_godown_items_set-"][name$="-DELETE"]');

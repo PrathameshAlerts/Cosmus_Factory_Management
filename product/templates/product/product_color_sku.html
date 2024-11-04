@@ -175,7 +175,7 @@ function setupImagePreview(card) {
         if (file) {
             compressImage(file, function (compressedFile, compressedDataUrl) {
                 imgPreview.src = compressedDataUrl;
-                console.log('Compressed file size: ', compressedFile.size / 1024, 'KB');
+                //console.log('Compressed file size: ', compressedFile.size / 1024, 'KB');
             });
         }
     });
