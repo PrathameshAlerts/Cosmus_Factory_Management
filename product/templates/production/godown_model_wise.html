@@ -26,6 +26,7 @@
                 <th>Rep Out</th>
                 <th>Rep In</th>
                 <th>Total Balance to Vendor</th>
+                <th>Approval Pending Qty</th>
                 <th>Total Received</th>
             </tr>
         </thead>
@@ -41,6 +42,7 @@
                 <td></td>
                 <td></td>
                 <td>{{instance.total_balance_to_vendor|default_if_none:'0'}}</td>
+                <td>{{instance.total_pending_to_approval_qty}}</td>
                 <td></td>
                     <input type="hidden" class="godownId" value="{{instance.challan_no}}">
             </tr>

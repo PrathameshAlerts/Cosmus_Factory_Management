@@ -5770,11 +5770,16 @@ def finished_goods_godown_wise_report(request, g_id):
 
 def finished_goods_godown_wise_report_all(request):
     
+    purchase_order_instances = purchase_order.objects.filter(
+        product_reference_number__Product_Refrence_ID = OuterRef('Product_Refrence_ID')).values(
+            'product_reference_number__Product_Refrence_ID').annotate(pending_approval_total = Sum(
+        'cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master__l_w_in_products__pending_for_approval')).values('pending_approval_total')
+
+
     product_quantity = Product.objects.annotate(total_quantity_product=Sum(
-        'productdetails__godown_colors__quantity'))
+        'productdetails__godown_colors__quantity'), total_qty_pending = Subquery(purchase_order_instances))
     
-
-
+    
     return render(request,'production/labour_workout_report.html', {'product_quantity' : product_quantity})
 
 
@@ -5785,16 +5790,22 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
     if ref_no:
         product_instance = Product.objects.get(Product_Refrence_ID = ref_no)
 
+        pending_approval_subquery = labour_workout_childs.objects.filter(
+            id=OuterRef('id')).annotate(total_pending = Sum('labour_work_in_master__l_w_in_products__pending_for_approval')
+                                        ).values('total_pending')
+
         purchase_instances = labour_workout_childs.objects.filter(
-            labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_no).annotate(
-            total_return_pcs_1 = Sum('labour_work_in_master__total_return_pcs'),total_balance_to_vendor = F('total_process_pcs') - F('total_return_pcs_1')    
-            )
+            labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID=ref_no
+            ).annotate(
+            total_return_pcs_1=Sum('labour_work_in_master__total_return_pcs'),
+            total_balance_to_vendor=F('total_process_pcs') - F('total_return_pcs_1'),
+            total_pending_to_approval_qty = Subquery(pending_approval_subquery))
+
 
     return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances,'product_instance':product_instance})
 
 
 def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
-
 
     if ref_no is not None and challan_no is not None:
         
@@ -5860,7 +5871,6 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
         report_data_sorted = sorted(queryset_list, key = itemgetter('date'), reverse=False)
         
-        print(report_data_sorted)
 
         return render(request,'production/finishedgoodsvendormodelwisereport.html',{'report_data_sorted':report_data_sorted, 'reference_no':reference_no, 
                                                                                     'model_number':model_number,'total_labour_workout':total_labour_workout,'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List})
