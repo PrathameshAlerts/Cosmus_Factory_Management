@@ -9,7 +9,6 @@
 
     <form action="" method="POST" id="fabricForm">
       {% csrf_token %}
-      <!-- <h2 class="mb-4">{{title}}</h2> -->
       <div class="d-flex">
         <label for="id_fab_grp_name" class=" item-form">Fabric Name:</label>
         <input type="text" class="item-select" value="{{ form.instance.fab_grp_name }}" name="fab_grp_name" maxlength="255" required id="id_fab_grp_name">

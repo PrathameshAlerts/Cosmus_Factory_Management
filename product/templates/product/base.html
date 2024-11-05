@@ -125,7 +125,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent" >
       <ul class="navbar-nav mb-2 mb-lg-0 me-auto" >
-        <li class="nav-item my-2 ms-3" >
+        <li class="my-2 ms-3 text-white" >
           <h3 id="newHeading"> {{ page_name}}</h3>
         </li>
       </ul>
@@ -199,6 +199,7 @@
           <ul class="dropdown-menu dropdown-menu-right">
             <li class="pro-head"><a href="{% url 'all-raw-material-stock-report' %}" class="navText">Raw Material</a></li>
             <li class="pro-head"><a href="{% url 'all-finished-goods-stock-report' %}" class="navText">Finished Goods</a></li>
+            <li class="pro-head"><a href="{% url 'finished-goods-godown-wise-report-all' %}" class="navText">LWO & LWI Report</a></li>
             <li class="pro-head"><a href="{% url 'credit-debit-report' %}" class="navText">Purchase Report</a></li> 
             <li class="pro-head"><a href="" class="navText">Stock Transfer Report</a></li> 
             <li class="pro-head"><a href="" class="navText">Sales Report</a></li>
@@ -508,7 +509,7 @@
       <div>
         {% for message in messages %}
         {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-        <div class="success message-timer message-timer" role="alert">
+        <div class="success  message-timer" role="alert">
           <svg class="bi flex-shrink-0 ms-2 alertImg" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
             &nbsp;{{message}}
         </div>
@@ -565,7 +566,7 @@
         if (stockCompany) {
             stockCompany.value = savedCompany; // Update stockCompany if it exists
         } else {
-            console.error('Element with id "id_companyValue" not found.');
+            //console.error('Element with id "id_companyValue" not found.');
         }
       }
     }
@@ -838,7 +839,7 @@
       }, duration);
     });
   } else {
-    console.warn("No elements with the class 'message-timer' found."); // Log a warning message if no elements exist
+   // console.warn("No elements with the class 'message-timer' found."); // Log a warning message if no elements exist
   }
 
   if (errorList.length > 0) {
@@ -850,7 +851,7 @@
       }, duration);
     })
   } else {
-    console.warn("No elements with the class 'errorshow' found.");
+    //console.warn("No elements with the class 'errorshow' found.");
     }
   }
 

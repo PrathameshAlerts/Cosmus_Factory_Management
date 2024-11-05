@@ -14,10 +14,10 @@
     <span class="text-danger ms-2 totalBalancePcs">{{labour_workout_child_instance.labour_workin_pending_pcs}}</span>
     </div>
     <div class="d-flex mb-3">
-      <button class="item-btn" ><a id="addLabourWorkIn" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
+      <button class="item-btn" id="createBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"><a id="addLabourWorkIn" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
     </div>
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
         <div class="table-responsives">
             <table class="table table-striped table-hover table-bordered">
                 <thead class="name_absolute sticky-top">
@@ -90,9 +90,18 @@
     </div>
 </div>
 
+<div class="modal fade" id="exampleModalSpinner" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
+      </div>
+    </div>
+  </div> 
+</div>
 
 <script>
-
+document.body.appendChild(document.getElementById('exampleModalSpinner'));
   document.body.appendChild(document.getElementById('exampleModal'));
 $(document).ready(function(){
   $('.delete-btn').click(function(){
@@ -152,7 +161,29 @@ $(document).ready(function(){
 
 });
 
+document.getElementById("createBtn").addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent the default action for the link
+    // Show the spinner modal
+    var spinnerModal = new bootstrap.Modal(document.getElementById('exampleModalSpinner'));
+    spinnerModal.show();
 
+    // Redirect to the link after a brief delay to allow the spinner to show
+    setTimeout(function() {
+      window.location.href = document.getElementById("addLabourWorkIn").href;
+    }, 500); // Adjust delay as needed
+  });
+
+  // Hide spinner modal on back button
+  window.addEventListener("popstate", function() {
+    console.log("test spinner");
+    var spinnerModalElement = document.getElementById('exampleModalSpinner');
+    var spinnerModal = bootstrap.Modal.getInstance(spinnerModalElement);
+    console.log('spinner',spinnerModal);
+   
+    if (spinnerModal) {
+      spinnerModal.hide();
+    }
+  });
 
 
 function totalBalanceCheck(){
@@ -207,7 +238,6 @@ totalBalanceCheck();
     function newPopups(button, path) {
    
       var goodsId = $(button).closest('tr').find('#id_labour_workin_id').val();
-      console.log(goodsId)
   
       var minWidth = 800; // minimum width
       var minHeight = 600;

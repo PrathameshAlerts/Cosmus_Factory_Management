@@ -157,7 +157,6 @@
     approved.forEach(el => {
         var approvedValues = parseInt(el.value) || 0;
         var currentApprovedValue = parseInt(el.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value);
-        console.log(approvedValues, currentApprovedValue)
 
         if(approvedValues != 0){
             if (approvedValues < currentApprovedValue  ) {

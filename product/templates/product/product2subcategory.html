@@ -52,8 +52,6 @@
           'selected_product_id': selectedproduct
         },
         success: function (response) {
-
-          console.log('Value sent to the backend successfully');
           $('.sub_category_name').prop('checked', false); // Uncheck all checkboxes
 
           // Populate the checkboxes from the response
@@ -67,7 +65,7 @@
           }
         },
         error: function (xhr, errmsg, err) {
-          console.log(xhr.status + ": " + xhr.responseText); // Log any errors
+          //console.log(xhr.status + ": " + xhr.responseText); // Log any errors
         }
       });
 

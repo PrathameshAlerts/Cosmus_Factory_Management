@@ -322,7 +322,6 @@
             var balance = parseInt(row.querySelector('input[name$="-pending_to_return_pcs"]').value) || 0;
             var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
             var pendingValue =document.getElementById('id_total_balance_pcs').value
-            console.log("pendingValue",pendingValue)
              if(returnValue > balance){
                 returnValue = 0;
                 input.value = 0;
@@ -350,9 +349,9 @@
         var totalReceivedPc = document.getElementById('id_total_return_pcs').value || 0;
         var labour_charges = document.getElementById('id_labour_charges').value;
         var other_charges = document.getElementById('id_other_charges').value;
-        console.log(totalReceivedPc, other_charges)
+
         var newAmount = parseFloat(totalReceivedPc) * parseFloat(labour_charges);
-        console.log('newAmount',newAmount)
+
         var amounts = newAmount + parseFloat(other_charges);
         document.getElementById('id_amount').value = amounts;
     }

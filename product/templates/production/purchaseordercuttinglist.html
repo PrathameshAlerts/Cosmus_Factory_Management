@@ -192,7 +192,6 @@
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function(response) {
-                        console.log(response);
                         $('#exampleModal').modal('hide');
                         // Disable buttons and visually "disable" the row
                         $row.css('opacity', '0.5'); // Gray out the row
@@ -317,7 +316,6 @@ function cancelCutting(){
       },
       success: function(response) {
           var allApproveLogs = response.approval_data;
-          console.log('allApproveLogs',allApproveLogs)
           var newTable = document.getElementById('approvalDataLogs'); 
           newTable.innerHTML = ''; // Clear previous table rows
     

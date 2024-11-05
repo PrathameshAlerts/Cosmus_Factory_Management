@@ -6,7 +6,6 @@
 
 <form action="" method="post" id="stockTransferForm" class="mt-3">
     {% csrf_token %}
-    <!-- <h2>Stock Transfer<span>(Raw material)</span></h2> -->
     <div class="d-flex mb-2">
         <label for="id_voucher_no" class="">Voucher No:</label>
         <input value="{{masterstockform.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">

@@ -5777,7 +5777,8 @@ def finished_goods_godown_wise_report(request, g_id):
         total_quantity_product=Sum('productdetails__godown_colors__quantity'),  
         all_godown_qty = Subquery(all_godown_stock))  
 
-    return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity})
+    g_name = Godown_finished_goods.objects.get(id=g_id).godown_name_finished
+    return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity,'g_name':g_name})
 
 
 def finished_goods_godown_wise_report_all(request):

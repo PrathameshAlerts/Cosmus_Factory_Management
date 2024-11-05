@@ -566,10 +566,7 @@
                     if (productData === productValue) {  // Check if product already exists in the form
                     
                         const currentItemPk = productCheck.closest('tr').find('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
-                        console.log('currentItemPksss',currentItemPk);
                             currentItemPk.each(function () {
-                                // console.log('currentItemPk',$(this).val());
-                                // console.log('nameKeyValue',nameKeyValue);
                                     if ($(this).val() === nameKeyValue) {  // Check if the item is a duplicate
                                     // Show error and highlight the input field
                                     errorForm.text('Item already exists').show();
@@ -938,8 +935,6 @@
             const existingRow = $(this).closest('tr');
             const itemexitRow = existingRow.find('[name$="-Item_pks"]');
             const productExitRow = existingRow.find('[name$="-PProduct_pk"]');
-             console.log(itemexitRow);
-            // console.log(productExitRow);
             const productValue = $(this).closest('tr').find('[name$="-PProduct_pk"]').val();
             const itemValue = existingRow.find('[name$="-Item_pk"]').val();
             const errorShowData = existingRow.find('.error-messagesorderCreate');
@@ -1152,8 +1147,6 @@
                 const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
                 const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
                 const submitBut= document.getElementById('id_submitForms');
-                console.log('submitBut',submitBut);
-                console.log('checkRow',checkRow);
                 if (checkRow) {
                     checkRow.checked = true;
                     checkRow.value = 'true';
@@ -1313,7 +1306,6 @@
                     const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
                     const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
                     const submitBut= document.getElementById('id_submitForms');
-                    console.log('submitBut',submitBut);
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'
@@ -1475,7 +1467,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
                     const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
                     const submitBut= document.getElementById('id_submitForms');
-                    console.log('submitBut',submitBut);
                     if (checkRow) {
                         checkRow.checked = true; // Mark as checked
                         checkRow.value = 'true'; // Set the value to 'true'

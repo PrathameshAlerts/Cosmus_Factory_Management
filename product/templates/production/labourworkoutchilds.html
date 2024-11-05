@@ -150,7 +150,6 @@ $(document).ready(function(){
             'csrfmiddlewaretoken': '{{ csrf_token }}',
           },
           success: function(response){
-            console.log(response);
             $('#exampleModal').modal('hide');
             window.location.reload();
           },

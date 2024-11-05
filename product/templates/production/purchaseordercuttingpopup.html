@@ -113,8 +113,7 @@ function quantityCheck() {
         
             return totalQty
         })
-      
-        console.log('totalQty',totalQty)
+
         if(totalQty === 0){
                 
                var approveBtn = document.querySelectorAll('[name$= "-approved_pcs"]');
@@ -127,7 +126,6 @@ function quantityCheck() {
     checkBoxAndsubmit(totalQty)
     }
     function checkBoxAndsubmit(totalQty){
-        console.log('totalQtyss',totalQty)
         var submitBtn = document.querySelector('.create-btn');
         var checkBoxBtn = document.getElementById('id_checkAll');
       if(totalQty === 0){
