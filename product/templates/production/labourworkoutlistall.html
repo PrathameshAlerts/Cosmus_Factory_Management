@@ -49,7 +49,8 @@
                             <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
                             <td class="text-nowrap">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
                             <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
-                            <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="border-0 bg-transparent" onclick="cuttingVNo(this)" style="color:green; text-decoration:underline">{{record.purchase_order_cutting_master.raw_material_cutting_id}}</button>{{record.purchase_order_cutting_master.processed_qty}}</td>
+                            <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="border-0 bg-transparent ms-2" onclick="cuttingVNo(this)" style="color:green; text-decoration:underline; text-decoration: bold;">{{record.purchase_order_cutting_master.raw_material_cutting_id}}</button>
+                              <div class="text-danger">{{record.purchase_order_cutting_master.processed_qty}}</div></td>
                             <td>{{record.total_approved_pcs}}</td>
                             <td>{{record.total_processed_qty | default_if_none:0}}</td>
                             <td>{{record.total_pending_pcs}}</td>

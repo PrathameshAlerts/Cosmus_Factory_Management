@@ -48,18 +48,40 @@
         </div>
     </div>
    
-<button type="submit" name="" id="goodsValueBtn" class="create-btn mt-3 mx-3">Submit</button>
+<button type="submit" id="goodsValueBtn" class="create-btn mt-2 mx-2">Submit</button>
 </form>
 
-<div>
-    {% for record in lab_workin_app_report %}
-    {{record.labour_w_i_p_2_i.product_sku}}
-    {{record.labour_w_i_p_2_i.product_color}}
-    {{record.creation_date}}
-    {{record.difference_qty}}
-    {% endfor %}
-</div>
+<button type="button" class="edit_btn w-75 mb-2" id="goodsRetutn_btn">Approved Logs<span class="goodsRetutnArrow"><i class="fas fa-angle-right arrowBtn"></i></span></button>
+<div id="goodsRetutn" style="display: none;">
+<div class="row">
+    <div class="col-lg-5">
+        <table class="table table-striped table-hover table-bordered tables">
+            <thead class="name_absolute sticky-top">
+                <tr class="text-nowrap">
+                    <th>Date</th>
+                    <th>Sku</th>
+                    <th>Color</th>
+                    <th>Qty</th>
+                </tr>
+            </thead>
+            <tbody class="mainTableList">
+                {% for record in lab_workin_app_report %}
+                <tr>
+                    <td>{{record.creation_date}}</td>
+                    <td>{{record.labour_w_i_p_2_i.product_sku}}</td>
+                    <td>{{record.labour_w_i_p_2_i.product_color}}</td>
+                    <td>{{record.difference_qty}}</td>
+                </tr>
+               
+                {% endfor %}
+                
+            </tbody>
+        </table>
 
+    </div>
+
+</div>
+</div>
 <script>
    document.addEventListener("DOMContentLoaded", function() {
     var checkAll = document.getElementById('id_checkAll');
@@ -87,6 +109,23 @@
             }
         });
     }
+    function toggleVisible(toggleButtonId, dataContainerId) {
+      const toggleButton = document.getElementById(toggleButtonId);
+      const icon = toggleButton.querySelector(".arrowBtn");
+      const dataContainer = document.getElementById(dataContainerId);
+      toggleButton.addEventListener("click", function () {
+        // Toggle the visibility of the data container
+        if (dataContainer.style.display === "none") {
+          dataContainer.style.display = "block";
+          icon.classList.add("rotate"); // Add rotate class to the icon
+        } else {
+          dataContainer.style.display = "none";
+          icon.classList.remove("rotate"); // Remove rotate class from the icon
+        }
+      });
+    }
+    toggleVisible("goodsRetutn_btn", "goodsRetutn");
+    
 });
 
 
@@ -102,8 +141,7 @@
             if (cuttingApprovedValue < approvedValues) {
                 rows.querySelector('[name$= "-approved_qty"]').value = 0;
             }
-    
-
+        
             if (!isNaN(approvedValues) && !isNaN(cuttingApprovedValue)) {
 
              var balanceApprovedValue = cuttingApprovedValue - approvedValues;
@@ -157,16 +195,20 @@
     approved.forEach(el => {
         var approvedValues = parseInt(el.value) || 0;
         var currentApprovedValue = parseInt(el.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value);
-
+        console.log(approvedValues, currentApprovedValue)
         if(approvedValues != 0){
             if (approvedValues < currentApprovedValue  ) {
                 // el.closest('tr').querySelector('[name$= "-approved_qty"]').value = currentApprovedValue; // Reset to currentApprovedValue
+                //alert('Please Enter Valid Approved Quantity')
                 el.style.borderColor = 'red';
                 hasInvalidValue = true; 
             } else{
                 el.style.borderColor = 'gray';
             } 
+
+           
         }
+    
     });
     if (hasInvalidValue) {
             goodsValueBtn.style.cursor = "not-allowed";
@@ -177,6 +219,27 @@
         }
  
 }
+
+function submitButtoncheck() {
+    var newapprove = document.querySelectorAll('[name$= "-approved_qty"]');
+    var allValuesEqual = true; 
+
+    newapprove.forEach(element => {
+        var approvedValues = parseInt(element.value) || 0;
+        var currentApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value) || 0;
+
+        // If any value does not match, set flag to false and stop checking
+        if (approvedValues !== currentApprovedValue) {
+            allValuesEqual = false;
+        }
+    });
+
+    // Close the window if all values in the table rows are equal
+    if (allValuesEqual) {
+        window.close();
+    }
+}
+
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
@@ -189,10 +252,12 @@
             });
             element.addEventListener('focusout',()=>{
                 approveValueCheck();
+               
             })
         })
         document.getElementById('goodsReturnValue').addEventListener('submit',function(){
             approveValueCheck();
+            submitButtoncheck();
         })
 
     })

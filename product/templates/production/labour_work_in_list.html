@@ -14,7 +14,7 @@
     <span class="text-danger ms-2 totalBalancePcs">{{labour_workout_child_instance.labour_workin_pending_pcs}}</span>
     </div>
     <div class="d-flex mb-3">
-      <button class="item-btn" id="openSpinnerBtn" data-bs-toggle="modal" data-bs-target="#exampleModalSpinner"><a id="addLabourWorkIn" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
+      <button class="item-btn" id="openSpinnerBtn"><a id="addLabourWorkIn" class="text-decoration-none text-white" href="{% url 'labour-workin-create' labour_workout_child_instance.id %}">Create</a></button>
     </div>
   <div class="row">
     <div class="col-lg-10">
@@ -160,35 +160,35 @@ $(document).ready(function(){
 
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Function to open the spinner modal
-    function openSpinnerModal() {
-        var spinnerModalElement = document.getElementById('exampleModalSpinner');
+// document.addEventListener("DOMContentLoaded", function() {
+//     // Function to open the spinner modal
+//     function openSpinnerModal() {
+//         var spinnerModalElement = document.getElementById('exampleModalSpinner');
        
-        spinnerModalElement.style.display = "block";
+//         spinnerModalElement.style.display = "block";
 
-        // Push a new state to the history
-        history.pushState({ modalOpen: true }, "", "#modalOpen");
-    }
+//         // Push a new state to the history
+//         history.pushState({ modalOpen: true }, "", "#modalOpen");
+//     }
 
-    // Event listener for the popstate event
-    window.addEventListener("popstate", function(event) {
-      console.log('tessttttttt')
-      window.location.reload();
-      history.pushState({ modalOpen: false }, "", "");
-        var spinnerModalElement = document.getElementById('exampleModalSpinner');
+//     // Event listener for the popstate event
+//     window.addEventListener("popstate", function(event) {
+//       console.log('tessttttttt')
+//       window.location.reload();
+//       history.pushState({ modalOpen: false }, "", "");
+//         var spinnerModalElement = document.getElementById('exampleModalSpinner');
            
-          spinnerModalElement.style.display = "none";
+//           spinnerModalElement.style.display = "none";
       
         
-    });
+//     });
 
-    // Example usage: Open the modal when a button is clicked
-    document.getElementById('openSpinnerBtn').addEventListener('click', function(event) {
-        //event.preventDefault(); // Prevent default link behavior
-        openSpinnerModal();
-    });
-});
+//     // Example usage: Open the modal when a button is clicked
+//     document.getElementById('openSpinnerBtn').addEventListener('click', function(event) {
+//         //event.preventDefault(); // Prevent default link behavior
+//         openSpinnerModal();
+//     });
+// });
 
 
   

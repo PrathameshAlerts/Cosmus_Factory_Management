@@ -5690,7 +5690,7 @@ def goods_return_popup(request,pk):
         labour_workin_instance = labour_work_in_master.objects.get(pk=pk)
         formset = labour_work_in_product_to_item_approval_formset(request.POST or None, instance=labour_workin_instance)
 
-        lab_workin_app_report = labour_workin_approval_report.objects.filter(labour_w_i_p_2_i__labour_workin_instance = pk)
+        lab_workin_app_report = labour_workin_approval_report.objects.filter(labour_w_i_p_2_i__labour_workin_instance = pk).order_by('creation_date')
 
         if request.method == 'POST':
             
