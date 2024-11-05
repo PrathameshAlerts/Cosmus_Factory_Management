@@ -418,5 +418,16 @@
             document.forms[0].reset();
         }
     });
+
+    window.addEventListener("popstate", function() {
+    console.log("test spinner");
+    var spinnerModalElement = document.getElementById('exampleModal');
+    var spinnerModal = bootstrap.Modal.getInstance(spinnerModalElement);
+    console.log('spinner',spinnerModal);
+   
+    if (spinnerModal) {
+      spinnerModal.hide();
+    }
+  });
 </script>
 {% endblock %}

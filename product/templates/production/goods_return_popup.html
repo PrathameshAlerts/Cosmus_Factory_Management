@@ -38,7 +38,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.instance.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-pending_for_approval" value="{{form.instance.pending_for_approval}}" id="id_{{form.prefix}}-pending_for_approval"></td>
-                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_qty" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-approved_qty"></td>
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_qty" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-approved_qty"> <span class="text-danger ms-2">{{form.instance.approved_qty}}</span></td>
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-currentApproved_goods" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-currentApproved_goods">
                     </tr>
