@@ -38,7 +38,7 @@ from . models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                            Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
-                                 item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
+                                 item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_godown_quantity_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items,
@@ -85,7 +85,7 @@ def custom_404_view(request, exception):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request,'misc/dashboard.html',{"page_name":"Dashboard" })
+    return render(request,'misc/dashboard.html',{"page_name":"Dashboard"})
 
 
 
@@ -5690,25 +5690,30 @@ def goods_return_popup(request,pk):
         labour_workin_instance = labour_work_in_master.objects.get(pk=pk)
         formset = labour_work_in_product_to_item_approval_formset(request.POST or None, instance=labour_workin_instance)
 
+        lab_workin_app_report = labour_workin_approval_report.objects.filter(labour_w_i_p_2_i__labour_workin_instance = pk)
+
         if request.method == 'POST':
+            
             godown_name_post = request.POST.get('godown_name_post')
             formset.forms = [form for form in formset if form.has_changed()]
 
             if formset.is_valid():
-                with transaction.atomic():
-                    try:
+                try:
+                    with transaction.atomic():
                         for form in formset:
                             form_instance = form.save(commit=False)
             
-                            godown_instance =  Godown_finished_goods.objects.get(id=godown_name_post)
+                            godown_instance = Godown_finished_goods.objects.get(id=godown_name_post)
                             selected_product = PProduct_Creation.objects.get(PProduct_SKU = form_instance.product_sku)
                             obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance, product_color_name = selected_product)
 
-                            if created:
-                                quantity_to_add = 0
+                            
+                            
 
-                            else:
-                                quantity_to_add = obj.quantity
+                            
+                            
+
+                            quantity_to_add = obj.quantity if not created else 0
                             
                             if form_instance.pk:
                                 labour_workin_instance = labour_work_in_product_to_item.objects.get(pk = form_instance.pk)
@@ -5718,14 +5723,21 @@ def goods_return_popup(request,pk):
                                 approved_qty_differ = form_instance.approved_qty
 
                             obj.quantity = quantity_to_add + approved_qty_differ  
-
+                            
                             obj.save()
                             form_instance.save()
+                            P2I_instance = labour_work_in_product_to_item.objects.get(id = form_instance.pk )
+                            labour_workin_approval_report.objects.create(labour_w_i_p_2_i= P2I_instance, difference_qty = approved_qty_differ)
 
                         messages.success(request,'Products Successfully recieved')
 
-                    except Exception as e:
-                        messages.error(request,f'Error with Formset - {e}')
+                except IntegrityError as e:
+                    print(f"Caught IntegrityError: {e}")
+                    messages.error(request,f'Error with Formset - {e}')
+                    
+                except Exception as e:
+                    messages.error(request,f'Error with Formset - {e}')
+                    
 
 
                 
@@ -5749,7 +5761,7 @@ def goods_return_popup(request,pk):
                 """
                 return HttpResponse(close_window_script)
 
-    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns})
+    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns,'lab_workin_app_report':lab_workin_app_report})
 
 
 def finished_goods_godown_wise_report(request, g_id):
@@ -5771,6 +5783,7 @@ def finished_goods_godown_wise_report(request, g_id):
 
 def finished_goods_godown_wise_report_all(request):
     
+    
     purchase_order_instances = purchase_order.objects.filter(
         product_reference_number__Product_Refrence_ID = OuterRef('Product_Refrence_ID')).values(
             'product_reference_number__Product_Refrence_ID').annotate(pending_approval_total = Sum(
@@ -5791,9 +5804,11 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
     if ref_no:
         product_instance = Product.objects.get(Product_Refrence_ID = ref_no)
 
+        
         pending_approval_subquery = labour_workout_childs.objects.filter(
             id=OuterRef('id')).annotate(total_pending = Sum('labour_work_in_master__l_w_in_products__pending_for_approval')
                                         ).values('total_pending')
+
 
         purchase_instances = labour_workout_childs.objects.filter(
             labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID=ref_no
@@ -5803,7 +5818,7 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
             total_pending_to_approval_qty = Subquery(pending_approval_subquery))
 
 
-    return render(request,'production/godown_model_wise.html', {'purchase_instances' : purchase_instances,'product_instance':product_instance})
+    return render(request,'production/godown_model_wise.html', {'purchase_instances': purchase_instances,'product_instance':product_instance})
 
 
 def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):

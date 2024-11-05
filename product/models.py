@@ -953,3 +953,9 @@ class godown_item_report_for_cutting_room(models.Model):
     inward = models.BooleanField() # true for inward and false for outward
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
+
+
+class labour_workin_approval_report(models.Model):
+    labour_w_i_p_2_i = models.ForeignKey(labour_work_in_product_to_item, on_delete=models.CASCADE, related_name='l_w_in_products_records')
+    creation_date = models.DateTimeField(auto_now = True)
+    difference_qty = models.IntegerField(null=False, blank=False)

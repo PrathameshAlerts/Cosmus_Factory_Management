@@ -51,6 +51,14 @@
 <button type="submit" name="" id="goodsValueBtn" class="create-btn mt-3 mx-3">Submit</button>
 </form>
 
+<div>
+    {% for record in lab_workin_app_report %}
+    {{record.labour_w_i_p_2_i.product_sku}}
+    {{record.labour_w_i_p_2_i.product_color}}
+    {{record.creation_date}}
+    {{record.difference_qty}}
+    {% endfor %}
+</div>
 
 <script>
    document.addEventListener("DOMContentLoaded", function() {
