@@ -7,23 +7,23 @@
     <div class="row mt-3">
         <div class="col-6">
             <div class="d-flex mb-3">
-                <lable class="fw-bold ">Ref ID :</lable>
+                <label class="fw-bold ">Ref ID :</label>
                 <span class="text-danger ms-2 me-5">{{purchase_order_instance.product_reference_number.Product_Refrence_ID}}</span>
-                <lable class="fw-bold ms-5">Model Name :</lable>
+                <label class="fw-bold ms-5">Model Name :</label>
                 <span class="text-danger ms-2">{{purchase_order_instance.product_reference_number.Model_Name}}</span>
                 
             </div>
             <div class="d-flex">
-                <lable class="fw-bold ">Total LWO QTY :</lable>
+                <label class="fw-bold ">Total LWO QTY :</label>
                 <span class="text-danger ms-2">{{total_lab_qty}}</span>
-                <lable class="fw-bold ms-5">Total LWI QTY :</lable>
+                <label class="fw-bold ms-5">Total LWI QTY :</label>
                 <span class="text-danger ms-2">{{total_lab_workin_qty}}</span>
-                <lable class="fw-bold ms-5">Balance Qty  :</lable>
+                <label class="fw-bold ms-5">Balance Qty  :</label>
                 <span class="text-danger ms-2">{{balance_qty}}</span>
             </div>
         </div>
         <div class="col-6">
-            <lable class="fw-bold">Images:</lable>
+            <label class="fw-bold">Images:</label>
             {% for img in purchase_order_instance.product_reference_number.productdetails.all %}
             <img src="{{img.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
             {% endfor %}

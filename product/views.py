@@ -1,8 +1,10 @@
+from collections import defaultdict
 import datetime
 import decimal
 from io import BytesIO
 from operator import itemgetter
 import os
+import uuid
 from django.conf import settings
 
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
@@ -5692,26 +5694,38 @@ def goods_return_popup(request,pk):
 
         lab_workin_app_report = labour_workin_approval_report.objects.filter(labour_w_i_p_2_i__labour_workin_instance = pk).order_by('creation_date')
 
+
+
+        
+        grouped_reports = defaultdict(list)
+        for report in lab_workin_app_report:
+            grouped_reports[report.unique_id].append({
+            "creation_date": report.creation_date,
+            "difference_qty": report.difference_qty,
+        })
+
+        
+        result = [{"unique_id": unique_id, "records": records} for unique_id, records in grouped_reports.items()]
+            
+        
+
         if request.method == 'POST':
             
             godown_name_post = request.POST.get('godown_name_post')
             formset.forms = [form for form in formset if form.has_changed()]
-
             if formset.is_valid():
                 try:
                     with transaction.atomic():
+
+                        unique_id1 = uuid.uuid4()
+
                         for form in formset:
                             form_instance = form.save(commit=False)
             
-                            godown_instance = Godown_finished_goods.objects.get(id=godown_name_post)
+                            godown_instance = Godown_finished_goods.objects.get(id = godown_name_post)
                             selected_product = PProduct_Creation.objects.get(PProduct_SKU = form_instance.product_sku)
                             obj, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown_instance, product_color_name = selected_product)
 
-                            
-                            
-
-                            
-                            
 
                             quantity_to_add = obj.quantity if not created else 0
                             
@@ -5725,21 +5739,22 @@ def goods_return_popup(request,pk):
                             obj.quantity = quantity_to_add + approved_qty_differ  
                             
                             obj.save()
+
                             form_instance.save()
-                            P2I_instance = labour_work_in_product_to_item.objects.get(id = form_instance.pk )
-                            labour_workin_approval_report.objects.create(labour_w_i_p_2_i= P2I_instance, difference_qty = approved_qty_differ)
+
+                            P2I_instance = labour_work_in_product_to_item.objects.get(id = form_instance.pk)
+
+                            labour_workin_approval_report.objects.create(labour_w_i_p_2_i = P2I_instance, difference_qty = approved_qty_differ, unique_id = unique_id1)
 
                         messages.success(request,'Products Successfully recieved')
 
                 except IntegrityError as e:
-                    print(f"Caught IntegrityError: {e}")
+                    print(f"Caught IntegrityError:{e}")
                     messages.error(request,f'Error with Formset - {e}')
                     
                 except Exception as e:
                     messages.error(request,f'Error with Formset - {e}')
                     
-
-
                 
                 close_window_script = """
                 <script>
@@ -5761,7 +5776,7 @@ def goods_return_popup(request,pk):
                 """
                 return HttpResponse(close_window_script)
 
-    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns,'lab_workin_app_report':lab_workin_app_report})
+    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns,'lab_workin_app_report':result})
 
 
 def finished_goods_godown_wise_report(request, g_id):
@@ -5777,8 +5792,7 @@ def finished_goods_godown_wise_report(request, g_id):
         total_quantity_product=Sum('productdetails__godown_colors__quantity'),  
         all_godown_qty = Subquery(all_godown_stock))  
 
-    g_name = Godown_finished_goods.objects.get(id=g_id).godown_name_finished
-    return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity,'g_name':g_name})
+    return render(request,'production/godown_product_qty.html', {'product_quantity' : product_quantity})
 
 
 def finished_goods_godown_wise_report_all(request):
