@@ -5703,11 +5703,12 @@ def goods_return_popup(request,pk):
             "creation_date": report.creation_date,
             "difference_qty": report.difference_qty,
         })
-
+        
+        print(grouped_reports)
         
         result = [{"unique_id": unique_id, "records": records} for unique_id, records in grouped_reports.items()]
             
-        
+        print(result)
 
         if request.method == 'POST':
             

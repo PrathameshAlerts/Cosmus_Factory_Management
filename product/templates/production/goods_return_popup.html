@@ -52,12 +52,7 @@
 </form>
 
 <div>
-    {% for record in lab_workin_app_report %}
-    {{record.labour_w_i_p_2_i.product_sku}}
-    {{record.labour_w_i_p_2_i.product_color}}
-    {{record.creation_date}}
-    {{record.difference_qty}}
-    {% endfor %}
+    {{lab_workin_app_report}}
 </div>
 
 <script>
