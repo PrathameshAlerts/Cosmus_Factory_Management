@@ -49,7 +49,11 @@
                             <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
                             <td class="text-nowrap">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
                             <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
-                            <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="border-0 bg-transparent" onclick="cuttingVNo(this)" style="color:green; text-decoration:underline">{{record.purchase_order_cutting_master.raw_material_cutting_id}}</button>{{record.purchase_order_cutting_master.processed_qty}}</td>
+
+
+                            <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="border-0 bg-transparent" onclick="cuttingVNo(this)" style="color:green; text-decoration:underline" data-pending="{{record.purchase_order_cutting_master.processed_qty}}">{{record.purchase_order_cutting_master.raw_material_cutting_id}}</button>{{record.purchase_order_cutting_master.processed_qty}}</td>
+
+
                             <td>{{record.total_approved_pcs}}</td>
                             <td>{{record.total_processed_qty | default_if_none:0}}</td>
                             <td>{{record.total_pending_pcs}}</td>
@@ -68,6 +72,8 @@
                                 <span style="color: green; font-weight : bold;">{{ record.purchase_order_cutting_master.created_date|subtract_datestime:current_date }} Remaining</span>
                             {% endif %}
                             </td>
+
+                            <input type="hidden" name="cutting_processed_value_table_1" id="id_cutting_processed_value_table_1" value="{{record.purchase_order_cutting_master.processed_qty}}" >
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -115,6 +121,7 @@
                                 <td>{{record.total_processed_qty | default_if_none:0}}</td>
                                 <td><a href="{% url 'labour-workout-child-list' record.id %}"><i class="fa-solid fa-eye px-2"></i></a></td>
                                 <td>Completed</td>
+                                <input type="hidden" name="cutting_processed_value_value_table_2" id="id_cutting_processed_value_value_table_2" value="{{record.purchase_order_cutting_master.processed_qty}}">
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -131,6 +138,7 @@
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-danger" id="staticBackdropLabel">Approved Logs</h1>
           <lable class="fw-bold ms-5">Cutting V No :</lable><span class="text-danger ms-2 fw-bold" id="cuttingVNo"></span>
+          <h4 class="qty"></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -178,8 +186,14 @@
   });
 
   function cuttingVNo(button){
+    var title = button.getAttribute('data-pending');
+    console.log(title)
+
+    var Qty = document.querySelector('.qty');
+
+    Qty.textContent = title
     var cuttingoderId = $(button).closest('tr').find('td').eq(7).text();
-   console.log('cuttingoderId',cuttingoderId)
+    console.log('cuttingoderId',cuttingoderId)
     $.ajax({
       type: "GET",
       url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
