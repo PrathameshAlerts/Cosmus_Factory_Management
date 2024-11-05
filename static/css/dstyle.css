@@ -1704,6 +1704,10 @@ input[type=number] {
 .purchaseOrderCuttingcompleteArrow{
     padding-left: 330px;
 }
+
+.goodsRetutnArrow{
+    padding-left: 300px;
+}
 .search-input {
     width: 300px;
     padding: 10px;

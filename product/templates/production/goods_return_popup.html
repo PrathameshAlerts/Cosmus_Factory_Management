@@ -38,7 +38,7 @@
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.instance.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-pending_for_approval" value="{{form.instance.pending_for_approval}}" id="id_{{form.prefix}}-pending_for_approval"></td>
-                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_qty" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-approved_qty"></td>
+                        <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_qty" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-approved_qty"> <span class="text-danger ms-2">{{form.instance.approved_qty}}</span></td>
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-currentApproved_goods" value="{{form.instance.approved_qty}}" id="id_{{form.prefix}}-currentApproved_goods">
                     </tr>
@@ -48,13 +48,12 @@
         </div>
     </div>
    
-<button type="submit" name="" id="goodsValueBtn" class="create-btn mt-3 mx-3">Submit</button>
+<button type="submit" id="goodsValueBtn" class="create-btn mt-2 mx-2">Submit</button>
 </form>
 
 <div>
     {{lab_workin_app_report}}
 </div>
-
 <script>
    document.addEventListener("DOMContentLoaded", function() {
     var checkAll = document.getElementById('id_checkAll');
@@ -82,6 +81,23 @@
             }
         });
     }
+    function toggleVisible(toggleButtonId, dataContainerId) {
+      const toggleButton = document.getElementById(toggleButtonId);
+      const icon = toggleButton.querySelector(".arrowBtn");
+      const dataContainer = document.getElementById(dataContainerId);
+      toggleButton.addEventListener("click", function () {
+        // Toggle the visibility of the data container
+        if (dataContainer.style.display === "none") {
+          dataContainer.style.display = "block";
+          icon.classList.add("rotate"); // Add rotate class to the icon
+        } else {
+          dataContainer.style.display = "none";
+          icon.classList.remove("rotate"); // Remove rotate class from the icon
+        }
+      });
+    }
+    toggleVisible("goodsRetutn_btn", "goodsRetutn");
+    
 });
 
 
@@ -97,8 +113,7 @@
             if (cuttingApprovedValue < approvedValues) {
                 rows.querySelector('[name$= "-approved_qty"]').value = 0;
             }
-    
-
+        
             if (!isNaN(approvedValues) && !isNaN(cuttingApprovedValue)) {
 
              var balanceApprovedValue = cuttingApprovedValue - approvedValues;
@@ -152,16 +167,20 @@
     approved.forEach(el => {
         var approvedValues = parseInt(el.value) || 0;
         var currentApprovedValue = parseInt(el.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value);
-
+        console.log(approvedValues, currentApprovedValue)
         if(approvedValues != 0){
             if (approvedValues < currentApprovedValue  ) {
                 // el.closest('tr').querySelector('[name$= "-approved_qty"]').value = currentApprovedValue; // Reset to currentApprovedValue
+                //alert('Please Enter Valid Approved Quantity')
                 el.style.borderColor = 'red';
                 hasInvalidValue = true; 
             } else{
                 el.style.borderColor = 'gray';
             } 
+
+           
         }
+    
     });
     if (hasInvalidValue) {
             goodsValueBtn.style.cursor = "not-allowed";
@@ -172,6 +191,27 @@
         }
  
 }
+
+function submitButtoncheck() {
+    var newapprove = document.querySelectorAll('[name$= "-approved_qty"]');
+    var allValuesEqual = true; 
+
+    newapprove.forEach(element => {
+        var approvedValues = parseInt(element.value) || 0;
+        var currentApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-currentApproved_goods"]').value) || 0;
+
+        // If any value does not match, set flag to false and stop checking
+        if (approvedValues !== currentApprovedValue) {
+            allValuesEqual = false;
+        }
+    });
+
+    // Close the window if all values in the table rows are equal
+    if (allValuesEqual) {
+        window.close();
+    }
+}
+
     document.addEventListener('DOMContentLoaded', function () {
     
         quantityCheck()
@@ -184,10 +224,12 @@
             });
             element.addEventListener('focusout',()=>{
                 approveValueCheck();
+               
             })
         })
         document.getElementById('goodsReturnValue').addEventListener('submit',function(){
             approveValueCheck();
+            submitButtoncheck();
         })
 
     })

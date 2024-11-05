@@ -137,9 +137,11 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5 text-danger" id="staticBackdropLabel">Approved Logs</h1>
-          <lable class="fw-bold ms-5">Cutting V No :</lable><span class="text-danger ms-2 fw-bold" id="cuttingVNo"></span>
-          <h4 class="qty"></h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div>
+          <lable class="fw-bold ms-3">Cutting V No :</lable><span class="text-danger ms-2 fw-bold" id="cuttingVNo"></span>
+          <label class="fw-bold ms-5">Total QTY :</label><span class="text-danger ms-2 fw-bold " id="tQty"></span>
         </div>
         <div class="modal-body">
         
@@ -187,13 +189,11 @@
 
   function cuttingVNo(button){
     var title = button.getAttribute('data-pending');
-    console.log(title)
-
-    var Qty = document.querySelector('.qty');
+    var Qty = document.getElementById('tQty');
 
     Qty.textContent = title
     var cuttingoderId = $(button).closest('tr').find('td').eq(7).text();
-    console.log('cuttingoderId',cuttingoderId)
+    document.getElementById('cuttingVNo').textContent = cuttingoderId; 
     $.ajax({
       type: "GET",
       url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
@@ -204,8 +204,7 @@
       success: function(response) {
           var allApproveLogs = response.approval_data;
           var newTable = document.getElementById('approvalDataLogs'); 
-          newTable.innerHTML = ''; // Clear previous table rows
-          document.getElementById('cuttingVNo').textContent = cuttingoderId;  
+          newTable.innerHTML = ''; // Clear previous table rows 
           allApproveLogs.forEach(function(items, index) {
               var approveDate = new Date(items.Approved_Date).toLocaleDateString(); // Format the date
               var approveName = items.Approved_Name || 'N/A';  // Default if undefined
