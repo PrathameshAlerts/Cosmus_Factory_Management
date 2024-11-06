@@ -5589,10 +5589,12 @@ def labourworkinlistall(request):
     has_labour_workout_childs=Exists(labour_workout_childs_exists)
     ).filter(has_labour_workout_childs = True).annotate(total_lwo_pcs = Sum('cutting_pos__labourworkouts__labour_workout_childs__total_process_pcs'),
     total_labour_workin_pcs = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_workin_pcs'),
-    total_labour_workin_pending = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_workin_pending_pcs'))
+    total_labour_workin_pending = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_workin_pending_pcs'),
+    total_approved_qty = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master__l_w_in_products__approved_qty'),
+    total_pending_approved_qty = Sum('cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master__l_w_in_products__pending_for_approval'))
 
 
-    labour_workout_child_instances_all = labour_workout_childs.objects.all()
+    labour_workout_child_instances_all = labour_workout_childs.objects.all().annotate(total_approved_qty = Sum('labour_work_in_master__l_w_in_products__approved_qty'),total_pending_approved_qty = Sum('labour_work_in_master__l_w_in_products__pending_for_approval'))
 
     return render(request,'production/labour_workin_listall.html',
                   {'labour_workout_child_instances_all':labour_workout_child_instances_all,
@@ -5605,7 +5607,7 @@ def labourworkinlistall(request):
 def labourworkinpurchaseorderlist(request,p_o_no):
     purchase_order_instance = purchase_order.objects.get(id=p_o_no)
 
-    labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
+    labour_workin_purchase_order_list = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no).annotate(total_approved_qty=Sum('labour_work_in_master__l_w_in_products__approved_qty'), total_pending_approved_qty=Sum('labour_work_in_master__l_w_in_products__pending_for_approval'))
 
     lab_workout_master = labour_workout_childs.objects.filter(labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__id = p_o_no)
     
@@ -5622,7 +5624,8 @@ def labourworkinpurchaseorderlist(request,p_o_no):
     balance_qty = total_lab_qty - total_lab_workin_qty
 
     return render(request,'production/labour_workin_purchase_order_list.html',{'labour_workin_purchase_order_list':labour_workin_purchase_order_list,
-                    'purchase_order_instance':purchase_order_instance, 'total_lab_qty':total_lab_qty, 'total_lab_workin_qty':total_lab_workin_qty, 'balance_qty':balance_qty,'page_name':'Purchase Order Wise' })
+                    'purchase_order_instance':purchase_order_instance, 'total_lab_qty':total_lab_qty, 'total_lab_workin_qty':total_lab_workin_qty,
+                    'balance_qty':balance_qty,'page_name':'Purchase Order Wise' })
 
 
 
@@ -5760,7 +5763,7 @@ def goods_return_popup(request,pk):
                 """
                 return HttpResponse(close_window_script)
 
-    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns,'lab_workin_app_report':result})
+    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns})
 
 
 def purchaseorderlabourworkinapprovecheckajax(request):
@@ -5787,7 +5790,7 @@ def purchaseorderlabourworkinapprovecheckajax(request):
             result = [{"unique_id": unique_id, "records": records} for unique_id, records in grouped_reports.items()]
                 
 
-            return JsonResponse({'status': 'success','result': result})
+            return JsonResponse({'status': 'success', 'result': result})
 
         except ObjectDoesNotExist as e:
             logger.error(f'Record not found: {e}')
@@ -5800,6 +5803,7 @@ def purchaseorderlabourworkinapprovecheckajax(request):
         except Exception as e:
             logger.error(f'Unexpected error: {e}', exc_info=True)
             return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred'}, status = 500)
+
 
 def finished_goods_godown_wise_report(request, g_id):
     
@@ -5921,10 +5925,47 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
 
         report_data_sorted = sorted(queryset_list, key = itemgetter('date'), reverse=False)
+        print(report_data_sorted)
+        
+        
+        
         
 
+
+        
+        
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        total_sku_qty = {}
+
+        for i in report_data_sorted:
+            sku_qty = i['sku_qty']
+            for key, value in sku_qty.items():
+                total_sku_qty[key] = total_sku_qty.get(key, 0) + value
+
+        final_dict = {key: labour_workout_p_2_i.get(key, 0) - total_sku_qty.get(key, 0) for key in total_sku_qty.keys()}
+        
         return render(request,'production/finishedgoodsvendormodelwisereport.html',{'report_data_sorted':report_data_sorted, 'reference_no':reference_no, 
-                                                                                    'product_instance':product_instance,'total_labour_workout':total_labour_workout,'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List})
+                                                                                    'product_instance':product_instance,'total_labour_workout':total_labour_workout,
+                                                                                    'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List,'result_dict':final_dict})
 
 
 
@@ -6650,8 +6691,9 @@ def finished_goods_model_wise_report(request,ref_id):
             
             data_list.append(dict_to_append)
 
+        initial_sorted_data = sorted(data_list, key=itemgetter('date'), reverse=False)
 
-    return render(request, 'reports/finishedgoodsmodelwisereport.html',{'data_list':data_list , 'product_instance':product_instance})
+    return render(request, 'reports/finishedgoodsmodelwisereport.html',{'data_list':initial_sorted_data , 'product_instance':product_instance})
 
 
 

@@ -940,6 +940,7 @@ class labour_work_in_product_to_item(models.Model):
     pending_to_return_pcs = models.IntegerField()
     pending_for_approval =  models.IntegerField()
     approved_qty = models.IntegerField(default = 0)
+    
 
 
 

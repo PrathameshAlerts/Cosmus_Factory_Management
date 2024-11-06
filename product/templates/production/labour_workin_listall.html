@@ -40,6 +40,8 @@
                                 <th>Total LWO QTY</th>
                                 <th>Total LWI QTY</th>
                                 <th>Balance Qty</th>
+                                <th>Approved QTY</th>
+                                <th>Pending Approval</th>
                                 <th>Create</th>
                   
                             </tr>
@@ -56,6 +58,8 @@
                                 <td>{{instance.total_lwo_pcs}}</td>
                                 <td>{{instance.total_labour_workin_pcs}}</td>
                                 <td>{{instance.total_labour_workin_pending}}</td>
+                                <td>{{instance.total_approved_qty}}</td>
+                                <td>{{instance.total_pending_approved_qty}}</td>
                                 <td><a href="{% url 'labour-workin-pur-order-list' instance.id %}" id="labourWorkInCreateClick"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
                                 
                               </tr>
@@ -88,6 +92,8 @@
                             <th>Issued Qty</th>
                             <th>Recieved Qty</th>
                             <th>Balance Qty</th>
+                            <th>Approved QTY</th>
+                            <th>Pending Approval</th>
                             <th>Edit</th>
                             <th>Over Due</th>
                         </tr>
@@ -106,6 +112,8 @@
                             <td>{{instance.total_process_pcs}}</td>
                             <td>{{instance.labour_workin_pcs}}</td>
                             <td>{{instance.labour_workin_pending_pcs}}</td>
+                            <td>{{instance.total_approved_qty}}</td>
+                            <td>{{instance.total_pending_approved_qty}}</td>
                             <td><a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                             <td class="text-nowrap">{{ instance.created_date.date}}<br>
                               {% if instance.created_date|subtract_datestime:current_date < 0 %}
