@@ -5692,22 +5692,6 @@ def goods_return_popup(request,pk):
         labour_workin_instance = labour_work_in_master.objects.get(pk=pk)
         formset = labour_work_in_product_to_item_approval_formset(request.POST or None, instance=labour_workin_instance)
 
-        lab_workin_app_report = labour_workin_approval_report.objects.filter(labour_w_i_p_2_i__labour_workin_instance = pk).order_by('creation_date')
-
-
-
-        
-        grouped_reports = defaultdict(list)
-        for report in lab_workin_app_report:
-            grouped_reports[report.unique_id].append({
-            "creation_date": report.creation_date,
-            "difference_qty": report.difference_qty,
-        })
-
-        
-        result = [{"unique_id": unique_id, "records": records} for unique_id, records in grouped_reports.items()]
-            
-        
 
         if request.method == 'POST':
             
@@ -5779,6 +5763,44 @@ def goods_return_popup(request,pk):
     return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns,'lab_workin_app_report':result})
 
 
+def purchaseorderlabourworkinapprovecheckajax(request):
+
+    labour_workin_key = request.GET.get('labour_workin_key')
+    
+    if labour_workin_key:
+        try:
+            lab_workin_app_report = labour_workin_approval_report.objects.filter(labour_w_i_p_2_i__labour_workin_instance__id = labour_workin_key).order_by('creation_date')
+
+            if not lab_workin_app_report.exists():
+                return JsonResponse({'status': 'error', 'message': 'No records found for the given Cutting ID'}, status=404)
+
+            
+            grouped_reports = defaultdict(list)
+            for report in lab_workin_app_report:
+                grouped_reports[report.unique_id].append({
+                "creation_date": report.creation_date,
+                "difference_qty": report.difference_qty,
+            })
+            
+            print(grouped_reports)
+            
+            result = [{"unique_id": unique_id, "records": records} for unique_id, records in grouped_reports.items()]
+                
+
+            return JsonResponse({'status': 'success','result': result})
+
+        except ObjectDoesNotExist as e:
+            logger.error(f'Record not found: {e}')
+            return JsonResponse({'status': 'error', 'message': 'Record not found'}, status=404)
+
+        except ValidationError as e:
+            logger.error(f'Invalid data: {e}')
+            return JsonResponse({'status': 'error', 'message': 'Invalid input data'}, status=400)
+
+        except Exception as e:
+            logger.error(f'Unexpected error: {e}', exc_info=True)
+            return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred'}, status = 500)
+
 def finished_goods_godown_wise_report(request, g_id):
     
     
@@ -5845,12 +5867,11 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
         product_instance = get_object_or_404(Product, Product_Refrence_ID=ref_no)
         reference_no = ref_no
-        model_number = product_instance.Model_Name
 
         SKU_List = []
 
         for sku_instance in product_instance.productdetails.all().order_by('PProduct_SKU'):
-            SKU_List.append(sku_instance.PProduct_SKU)
+            SKU_List.append(f'{sku_instance.PProduct_SKU}-{sku_instance.PProduct_color}')
 
         queryset_list = []
         
@@ -5861,7 +5882,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
             
         for x in SKU_List:
 
-            sku = str(x)  
+            sku = str(x.split('-')[0])  
 
             if sku in sku_to_processed_pcs: 
     
@@ -5884,7 +5905,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
             
             for x in SKU_List:
 
-                sku = str(x)  
+                sku = str(x.split('-')[0])  
 
                 if sku in sku_to_processed_pcs: 
         
@@ -5903,7 +5924,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
         
 
         return render(request,'production/finishedgoodsvendormodelwisereport.html',{'report_data_sorted':report_data_sorted, 'reference_no':reference_no, 
-                                                                                    'model_number':model_number,'total_labour_workout':total_labour_workout,'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List})
+                                                                                    'product_instance':product_instance,'total_labour_workout':total_labour_workout,'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List})
 
 
 

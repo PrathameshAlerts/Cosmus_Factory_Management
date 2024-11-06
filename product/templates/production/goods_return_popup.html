@@ -51,36 +51,8 @@
 <button type="submit" id="goodsValueBtn" class="create-btn mt-2 mx-2">Submit</button>
 </form>
 
-<button type="button" class="edit_btn w-75 mb-2" id="goodsRetutn_btn">Approved Logs<span class="goodsRetutnArrow"><i class="fas fa-angle-right arrowBtn"></i></span></button>
-<div id="goodsRetutn" style="display: none;">
-<div class="row">
-    <div class="col-lg-5">
-        <table class="table table-striped table-hover table-bordered tables">
-            <thead class="name_absolute sticky-top">
-                <tr class="text-nowrap">
-                    <th>Date</th>
-                    <th>Sku</th>
-                    <th>Color</th>
-                    <th>Qty</th>
-                </tr>
-            </thead>
-            <tbody class="mainTableList">
-                {% for record in lab_workin_app_report %}
-                <tr>
-                    <td>{{record.creation_date}}</td>
-                    <td>{{record.labour_w_i_p_2_i.product_sku}}</td>
-                    <td>{{record.labour_w_i_p_2_i.product_color}}</td>
-                    <td>{{record.difference_qty}}</td>
-                </tr>
-               
-                {% endfor %}
-                
-            </tbody>
-        </table>
-
-    </div>
-
-</div>
+<div>
+    {{lab_workin_app_report}}
 </div>
 <script>
    document.addEventListener("DOMContentLoaded", function() {
