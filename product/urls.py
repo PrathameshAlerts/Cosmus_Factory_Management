@@ -198,6 +198,7 @@ urlpatterns = [
 
     path('purchaseordercuttingapprovalcheckajax/',views.purchaseordercuttingapprovalcheckajax, name='purchase-order-cutting-approval-check-ajax'),
     
+    path('purchaseorderlabourworkinapprovecheckajax/', views.purchaseorderlabourworkinapprovecheckajax, name='purchase-order-labour-workin-approve-check-ajax'),
 
     #labour workout 
     path('labourworkoutall/',views.labourworkoutlistall, name='labour-workout-all'),

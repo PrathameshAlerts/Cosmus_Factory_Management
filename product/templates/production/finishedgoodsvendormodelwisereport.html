@@ -4,9 +4,15 @@
 
 <div class="mt-2">
     <label class="fw-bold">Ref No :</label><span class="text-danger ms-2 refId fw-bold">{{reference_no}}</span>
-    <label class="fw-bold ms-3">Model Name :</label><span class="text-danger ms-2 fw-bold">{{model_number}}</span>
+    <label class="fw-bold ms-3">Model Name :</label><span class="text-danger ms-2 fw-bold">{{product_instance.Model_Name}}</span>
     <label class="fw-bold ms-3">Total Labour workout :</label><span
         class="text-danger ms-2">{{total_labour_workout.total_process_pcs}}</span>
+
+    <div>
+        {%  for img in product_instance.productdetails.all %}
+        {{img.PProduct_image.url}}
+        {% endfor %}
+    </div>
 </div>
 <div class="mb-3 mt-2">
     <div class="row">
