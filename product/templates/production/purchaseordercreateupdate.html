@@ -82,11 +82,13 @@
     <div class="d-flex mb-2">
         <label class="fw-bold">Model Name :</label><span class="text-danger text-capitalize ms-2 pb-2 ">{{model_name | default_if_none:''}}</span>
         <!-- <input class="productinputtext text-danger text-capitalize ms-2 pb-2 " id="id_model_name" value="{{model_name | default_if_none:''}}" readonly> -->
-        <lable class="fw-bold ps-3">Total :</lable>
+        <label class="fw-bold ps-3">Total :</label>
         <input type="number" class="productinput ms-2  text-danger pb-2" name="grand_quantity" id="id_grand_quantity" value="" maxlength="50" step=".01" readonly>
         <input type="hidden" id="id_total-quantity" value="{{form.instance.number_of_pieces}}">
-        <div class="mb-2 ms-2">
-            <label class="fw-bold ps-3">Images :</label>
+        <label class="fw-bold ">Balance :</label>
+        <input type=" number" class="productinput ms-2  text-danger pb-2" name="balance_quantity" id="id_balance_quantity" value="{{form.instance.number_of_pieces}}" maxlength="50" step=".01" readonly>
+        <div class="mb-2 ms-1">
+            <label class="fw-bold">Images :</label>
             {% for img in model_images.all %}
             {% if img.PProduct_image.url is not None %}
             <img src="{{img.PProduct_image.url}}" alt="images" style="width: 70px; padding:2px ;">
@@ -95,7 +97,7 @@
         </div>
 
     </div>
-    <form method="POST">
+    <form method="POST" class="mt-3" id="productForm">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-5">
@@ -190,7 +192,7 @@
         $(document).on('focus','.oderedValues' , function (){
              $(this).prop('readonly', false);
         });
-        $('#id_submit_2').on('click',function(){
+        $('#productForm').on('submit',function(){
             var buttons = $('#exampleModal');
             buttons.show();
         })
@@ -229,19 +231,19 @@
             godownId.disabled = true;
         }
 
-        function IdsValueCalculate(){
-            var mainForms = document.getElementById('id_p_o_to_products-0-id').value;
+        // function IdsValueCalculate(){
+        //     var mainForms = document.getElementById('id_p_o_to_products-0-id').value;
             
-            if(mainForms != "None"){
-               var form = document.getElementById('id_p_o_to_products-TOTAL_FORMS').value;
+        //     if(mainForms != "None"){
+        //        var form = document.getElementById('id_p_o_to_products-TOTAL_FORMS').value;
             
-                for(var i=0;i<form;i++){
-                    var quantity = document.getElementById('id_p_o_to_products-'+ i+'-order_quantity').value;
-                    quantity.readOnly = false;
-                }
-            }
-        }
-        IdsValueCalculate()
+        //         for(var i=0;i<form; i++){
+        //             var quantity = document.getElementById('id_p_o_to_products-'+ i+'-order_quantity').value;
+        //             quantity.readOnly = true;
+        //         }
+        //     }
+        // }
+        // IdsValueCalculate()
 
         function submitButtonCheck(){
             var deleteForm = document.querySelector('.purchaseOderDelete').value;
@@ -268,13 +270,14 @@
             // Get the element that triggered the event
             const currentElement = event ? event.target : null;
             let currentIndex = -1;
-
             // Calculate the total quantity from all form inputs
             for (let i = 0; i < formCount; i++) {
                 const quantityElement = document.getElementById('id_p_o_to_products-' + i + '-order_quantity');
                 const quantityValue = parseFloat(quantityElement.value);
+            
                 if (!isNaN(quantityValue)) {
                     totalQuantity += quantityValue;
+                   
                 }
                 quantities.push({ element: quantityElement, value: quantityValue });
 
@@ -283,45 +286,58 @@
                     currentIndex = i;
                 }
             }
-
+                const newBalance = totalAllowedQuantity - totalQuantity
+    
             // Update the grand total quantity field
             grandQuantityElement.value = totalQuantity;
+          
+           document.getElementById('id_balance_quantity').value = newBalance;
 
             // Initially, set all input fields to read-only and reset their border color
             quantities.forEach(function (q) {
                 q.element.readOnly = true;
                 q.element.style.borderColor = ''; // Reset border color
+               
             });
-
             // Check if the total quantity equals the allowed quantity
             if (totalQuantity === totalAllowedQuantity) {
                 // If the total quantity matches the allowed quantity, only the current input field is editable
                 if (currentIndex !== -1) {
-                    quantities[currentIndex].element.readOnly = false;
+                    quantities[currentIndex].element.readOnly = false;  
                 }
             } else if (totalQuantity > totalAllowedQuantity) {
                 // If the total quantity exceeds the allowed quantity, set the current input field's border to red
                 if (currentIndex !== -1) {
                     quantities[currentIndex].element.style.borderColor = 'red';
                     quantities[currentIndex].element.value = '0';
-                    quantities[currentIndex].element.readOnly = false;
+                    quantities[currentIndex].element.readOnly = true;
                 }
-            } else {
+            } else{
                 // If total quantity is less than allowed quantity, make all fields editable
                 quantities.forEach(function (q) {
                     q.element.readOnly = false;
                     q.element.style.borderColor = '';
                 });
             }
+            if(newBalance == 0){
+                quantities.forEach(function (q) {
+                    const currentIndexValue = q.element.value
+    
+                    if(currentIndexValue == 0){
+                        q.element.readOnly = true;
+                    }else{
+                        q.element.readOnly = false;
+                    }
+                })
+            }
         }
 
-        // Attach event listeners to the quantity input fields
-        const formCount = parseInt(document.getElementById('id_p_o_to_products-TOTAL_FORMS').value);
-        for (let i = 0; i < formCount; i++) {
-            const quantityElement = document.getElementById('id_p_o_to_products-' + i + '-order_quantity');
-            quantityElement.addEventListener('input', updateTotalQuantity); // Trigger update on input change
-        }
-
+        const quantityElement = document.querySelectorAll('[name$="-order_quantity"]');
+        quantityElement.forEach(function(element){
+            element.addEventListener('input', updateTotalQuantity);
+            element.addEventListener('click', updateTotalQuantity);
+        })
+       
         // Initial calculation on page load
         updateTotalQuantity({ target: null });
     });
