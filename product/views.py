@@ -5760,17 +5760,17 @@ def goods_return_popup(request,pk):
                 """
                 return HttpResponse(close_window_script)
 
-    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns,'lab_workin_app_report':result})
+    return render(request,'production/goods_return_popup.html',{'formset':formset,'finished_goods_godowns':finished_goods_godowns})
 
 
 def purchaseorderlabourworkinapprovecheckajax(request):
-
+    print(request.GET)
     labour_workin_key = request.GET.get('labour_workin_key')
-    
+    print(labour_workin_key)
     if labour_workin_key:
         try:
             lab_workin_app_report = labour_workin_approval_report.objects.filter(labour_w_i_p_2_i__labour_workin_instance__id = labour_workin_key).order_by('creation_date')
-
+            print(lab_workin_app_report)
             if not lab_workin_app_report.exists():
                 return JsonResponse({'status': 'error', 'message': 'No records found for the given Cutting ID'}, status=404)
 

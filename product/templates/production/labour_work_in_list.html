@@ -117,7 +117,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div>
-        <label class="fw-bold ms-3">Cutting V No :</label><span class="text-danger ms-2 fw-bold" id="cuttingVNo"></span>
+        <label class="fw-bold ms-3">GR No :</label><span class="text-danger ms-2 fw-bold" id="cuttingVNo"></span>
         <label class="fw-bold ms-5">Total QTY :</label><span class="text-danger ms-2 fw-bold " id="tQty"></span>
       </div>
       <div class="modal-body">
@@ -126,9 +126,9 @@
             <thead class="name_absolute sticky-top">
               <tr>
                 <th>Date</th>
-                <th>Approved By</th>
+                <th>Sku</th>
+                <th>Color</th>
                 <th>Approved QTY</th>
-                <th>Balance QTY</th>
               </tr>
             </thead>
             <tbody class="mainTableList" id="approvalDataLogs">
@@ -213,86 +213,82 @@ $(document).ready(function(){
 
 });
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Function to open the spinner modal
-//     function openSpinnerModal() {
-//         var spinnerModalElement = document.getElementById('exampleModalSpinner');
-       
-//         spinnerModalElement.style.display = "block";
-
-//         // Push a new state to the history
-//         history.pushState({ modalOpen: true }, "", "#modalOpen");
-//     }
-
-//     // Event listener for the popstate event
-//     window.addEventListener("popstate", function(event) {
-//       console.log('tessttttttt')
-//       window.location.reload();
-//       history.pushState({ modalOpen: false }, "", "");
-//         var spinnerModalElement = document.getElementById('exampleModalSpinner');
-           
-//           spinnerModalElement.style.display = "none";
-      
-        
-//     });
-
-//     // Example usage: Open the modal when a button is clicked
-//     document.getElementById('openSpinnerBtn').addEventListener('click', function(event) {
-//         //event.preventDefault(); // Prevent default link behavior
-//         openSpinnerModal();
-//     });
-// });
 
 function cuttingPkValue(button){
-    var title = button.getAttribute('data-id');
-    console.log(title)
-    var Qty = document.getElementById('tQty');
+    // var title = button.getAttribute('data-id');
+    // console.log(title)
+    // var Qty = document.getElementById('tQty');
 
-    Qty.textContent = title
-    var cuttingoderId = $(button).closest('tr').find('td').eq(2).text();
-    document.getElementById('cuttingVNo').textContent = cuttingoderId; 
+    // Qty.textContent = title
+    var labour_workin_key = $(button).closest('tr').find('#id_labour_workin_id').val();
+    console.log(labour_workin_key)
+    document.getElementById('cuttingVNo').textContent = labour_workin_key; 
     $.ajax({
       type: "GET",
-      url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
+      url: "{% url 'purchase-order-labour-workin-approve-check-ajax' %}",
       data:{
-        'cutting_pk_no':cuttingoderId,
+        'labour_workin_key':labour_workin_key,
   
       },
       success: function(response) {
-          var allApproveLogs = response.approval_data;
+          var allApproveLogs = response.result;
+          var newlogs = allApproveLogs.length;
           var newTable = document.getElementById('approvalDataLogs'); 
           newTable.innerHTML = ''; // Clear previous table rows
-    
-          
-          allApproveLogs.forEach(function(items, index) {
-              var approveDate = new Date(items.Approved_Date).toLocaleDateString(); // Format the date
-              var approveName = items.Approved_Name || 'N/A';  // Default if undefined
-              var approveQty = items.Approved_Qty || 0;        // Default to 0 if undefined
-              var balanceQty = items.pending_Qty || 0;        // Default to 0 if undefined
-              var row = document.createElement('tr'); // Create a new row
 
+          for(var i = 0; i < newlogs; i++){
+            var newDate = allApproveLogs[i].records.length;
+            var newRow = document.createElement('tr');
+
+            var newCell1 = document.createElement('td');
+            newCell1.textContent = '';
+
+            var newCell2 = document.createElement('td');
+            newCell2.textContent = ' ';
+            
+            var newCell3 = document.createElement('td');  
+            newCell3.textContent = '';
+            
+            var newCell4 = document.createElement('td');
+            newCell4.textContent = '';
+            
+            newRow.appendChild(newCell1);
+            newRow.appendChild(newCell2);
+            newRow.appendChild(newCell3);
+            newRow.appendChild(newCell4);
+
+            for(var j = 0; j < newDate; j++){
+              var approveDate = new Date(allApproveLogs[i].records[j].creation_date).toLocaleDateString(); // Format the date
+              var approvedSku = allApproveLogs[i].records[j].approved_sku || 'N/A';  // Default if undefined
+              var approvedcolor = allApproveLogs[i].records[j].color || 'N/A';        // Default to 0 if undefined
+              var approvedQty = allApproveLogs[i].records[j].difference_qty || 0;        // Default to 0 if undefined
+          
+              var row = document.createElement('tr'); // Create a new row
+              
               // Create cells and set their content
               var cell1 = document.createElement('td');
               cell1.textContent = approveDate;
 
               var cell2 = document.createElement('td');
-              cell2.textContent = approveName;
+              cell2.textContent = approvedSku;
 
               var cell3 = document.createElement('td');
-              cell3.textContent = approveQty;
+              cell3.textContent = approvedcolor;
               
               var cell4 = document.createElement('td');
-              cell4.textContent = balanceQty;
-
+              cell4.textContent = approvedQty;
+        
               // Append cells to the row
               row.appendChild(cell1);
               row.appendChild(cell2);
               row.appendChild(cell3);
               row.appendChild(cell4);
-
+       
               // Append the row to the table
               newTable.appendChild(row);
-          });
+            }
+            newTable.appendChild(newRow);
+          }
       },
       error: function(xhr, status, error) {
         console.error("Error occurred: " + error);
