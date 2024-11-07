@@ -342,8 +342,6 @@ $(document).ready(function(){
         $('#cuttingOrderForm').off('submit').on('submit', function(e) {
             var $submitButton = $('#id_submitPurchaseOrderCutting');  // The submit button
             var originalButtonValue = $('#exampleModal');  // Store original button text
-          
-            $submitButton.val('Loading...');
             originalButtonValue.show();
         });
 
@@ -450,6 +448,8 @@ function cuttingBalanceQty(){
     for (var i = 0; i < totalforms; i++) {
         var physicalstock = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').value);
         var balance = parseFloat(document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').value);
+        console.log('physicalstock',physicalstock);
+        console.log('balance',balance);
 
         if(physicalstock > 0){
             document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-physical_stock').style.color = 'green';
@@ -464,6 +464,7 @@ function cuttingBalanceQty(){
            
             document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'red';
         }
+       
     }
 }
 
@@ -580,6 +581,11 @@ function updateCuttingQuantity(finalTotal){
         
                 var balanceStock = physicalStockValue - TotalConsumtionValue;
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = balanceStock.toFixed(3);
+                if(balanceStock > 0){
+                    document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').style.color = "green";
+                }else{
+                    document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').style.color = "red";
+                }
               }else{
                 document.getElementById('id_purchase_order_for_raw_material_cutting_items_set-'+i+'-balance_physical_stock').value = "0.00";
               }
@@ -692,7 +698,7 @@ function updateCuttingQuantity(finalTotal){
 
 
     document.addEventListener('DOMContentLoaded', ()=>{
-        let qty = document.querySelectorAll('input[name^="purchase_order_to_product_cutting_set-"][name$="-cutting_quantity"]');
+        let qty = document.querySelectorAll('input[name$="-cutting_quantity"]');
         qty.forEach(element => {
             
             element.addEventListener('input', () => {
