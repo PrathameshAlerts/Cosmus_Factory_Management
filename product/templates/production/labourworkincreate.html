@@ -214,6 +214,14 @@
         </div>
     </div>
 
+    <div>
+        {% for x in labour_workin_all %}
+        GRN No - {{x.voucher_number}}
+        Total Return Pcs - {{x.total_return_pcs}}
+        Total Approved Pcs - {{x.total_approved_qty}}
+        {% endfor %}
+    </div>
+
     <button type="submit" value="Submit" class="create-btn" id="id_submitLabourWorkIn" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
 </form>
 
