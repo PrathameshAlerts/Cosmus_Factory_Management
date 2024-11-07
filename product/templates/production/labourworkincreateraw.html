@@ -536,7 +536,7 @@ $(document).on('click', '.search-input',function(){
                     
                     newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-L_work_out_pcs" value="' + rowData.L_work_out_pcs + '" id="id_l_w_in_products-' + index + '-L_work_out_pcs">'));
                     
-                    newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-pending_to_return_pcs" value="' + rowData.pending_to_return_pcs + '" id="id_l_w_in_products-' + index + '-pending_to_return_pcs">'));
+                    newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-total_recieved_qty" value="' + rowData.total_recieved_qty + '" id="id_l_w_in_products-' + index + '-total_recieved_qty" readonly> <input type="hidden" class="productorderrawqty-input" name="l_w_in_products-' + index + '-pending_to_return_pcs" value="' + rowData.pending_to_return_pcs + '" id="id_l_w_in_products-' + index + '-pending_to_return_pcs">'));
                     
                     newRow.append($('<td>').html('<input type="number"  class="productorderrawqty-input" name="l_w_in_products-' + index +'-qty_to_compare" value="'+ rowData.qty_to_compare+'" id="id_id_l_w_in_products-' + index + '-qty_to_compare" readonly>'));
                     
