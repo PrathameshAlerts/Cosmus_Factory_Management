@@ -46,7 +46,7 @@
     </div>
     <div id="labourWorkInFormAfterClick" style="display: none;" >
         <div class="row" >
-            <div class="col-lg-5">
+            <div class="col-lg-4">
                 <div class="d-flex mb-3">
                     <label for="id_challan_no" class="item-form">Challan no:</label>
                     <input type="text" class="item-select" name="challan_no" value="{{master_form.challan_no.initial | default_if_none:''}}"required id="id_challan_no" readonly style="border: 1px solid blue; outline: none;">
@@ -77,46 +77,68 @@
                 </div>
             </div>
             
-            <div class="col-lg-6">
-               
-                <table class="table table-striped table-hover table-bordered tables" id="labourworkInTables">
-                    <thead class="name_absolute sticky-top">
-                        <tr>
-                            <th>Product Sku</th>
-                            <th>Color</th>
-                            <th>Issue QTY</th>
-                            <th>Received QTY</th>
-                            <th>Balance QTY</th>
-                            <th>Return QTY</th>
-                        </tr>
-                    </thead>
-                    <tbody class="mainTableList">
-                      
-                     
-                    </tbody>
-                </table>
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <table class="table table-striped table-hover table-bordered tables" id="labourworkInTables">
+                            <thead class="name_absolute sticky-top">
+                                <tr>
+                                    <th>Product Sku</th>
+                                    <th>Color</th>
+                                    <th>Issue QTY</th>
+                                    <th>Received QTY</th>
+                                    <th>Balance QTY</th>
+                                    <th>Return QTY</th>
+                                </tr>
+                            </thead>
+                            <tbody class="mainTableList">
+                              
+                             
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               <div class="row">
+                <div class="col-lg-5">
+                    <div class="d-flex mb-3">
+                        <label for="id_total_balance_pcs" class="item-form">Pending Pcs:</label>
+                        <input type="number" class="item-select" name="total_balance_pcs" value="{{ master_form.total_balance_pcs.initial | default_if_none:'' }}"  required id="id_total_balance_pcs" readonly style="border: 1px solid blue; outline: none;">
+                    </div>
+                    <div class="d-flex mb-3">
+                        <label for="id_total_return_pcs" class="item-form">Total Return Pcs:</label>
+                        <input type="number" class="item-select" name="total_return_pcs" value="" required id="id_total_return_pcs" readonly style="border: 1px solid blue; outline: none;">
+                    </div>
+                    <div class="d-flex mb-3">
+                        <label for="id_labour_charges" class="item-form">Labour charges:</label>
+                        <input type="number" class="item-select" name="labour_charges" step="0.01"value="{{master_form.labour_charges.initial | default_if_none:''}}" required id="id_labour_charges" >
+                    </div>
+                    <div class="d-flex mb-3">
+                        <label for="id_other_charges" class="item-form">Other Charges:</label>
+                        <input type="number" class="item-select" value="0" name="other_charges" step="0.01" required id="id_other_charges">
+                    </div>
+                    <div class="d-flex mb-3">
+                        <label for="id_amount" class="item-form">Amount:</label>
+                        <input type="number" class="item-select" name="amount" step="0.01" value="0" required id="id_amount" readonly style="border: 1px solid blue; outline: none;">
+                    </div>
+                    <input type="hidden" id="childId" name="labour_workout_child_instance_id" value="">
+                </div>
+                <div class="col-lg-5">
+                    <table class=" table table-striped table-hover table-bordered" id="grNoTotalQty">
+                        <thead class="name_absolute">
+                            <tr>
+                                <th>GR No</th>
+                                <th>T Return Pcs</th>
+                                <th>T Appr Pcs</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList">
+                            
+                        </tbody>
+                    </table>
+                </div>
+               </div>
                 
-                <div class="d-flex mb-3">
-                    <label for="id_total_balance_pcs" class="item-form">Pending Pcs:</label>
-                    <input type="number" class="item-select" name="total_balance_pcs" value="{{ master_form.total_balance_pcs.initial | default_if_none:'' }}"  required id="id_total_balance_pcs" readonly style="border: 1px solid blue; outline: none;">
-                </div>
-                <div class="d-flex mb-3">
-                    <label for="id_total_return_pcs" class="item-form">Total Return Pcs:</label>
-                    <input type="number" class="item-select" name="total_return_pcs" value="" required id="id_total_return_pcs" readonly style="border: 1px solid blue; outline: none;">
-                </div>
-                <div class="d-flex mb-3">
-                    <label for="id_labour_charges" class="item-form">Labour charges:</label>
-                    <input type="number" class="item-select" name="labour_charges" step="0.01"value="{{master_form.labour_charges.initial | default_if_none:''}}" required id="id_labour_charges" >
-                </div>
-                <div class="d-flex mb-3">
-                    <label for="id_other_charges" class="item-form">Other Charges:</label>
-                    <input type="number" class="item-select" value="0" name="other_charges" step="0.01" required id="id_other_charges">
-                </div>
-                <div class="d-flex mb-3">
-                    <label for="id_amount" class="item-form">Amount:</label>
-                    <input type="number" class="item-select" name="amount" step="0.01" value="0" required id="id_amount" readonly style="border: 1px solid blue; outline: none;">
-                </div>
-                <input type="hidden" id="childId" name="labour_workout_child_instance_id" value="">
+                
             </div>
         </div>
     </div>
@@ -126,34 +148,9 @@
     <button type="submit" value="Submit" class="create-btn" id="id_submit" style="display: none;">Submit</button>
 </form>
 
-<!-- <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px" id="loadingImage" class="loading-image"> -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-transparent border-0">
-      <div class="modal-body justify-content-center text-center">
-        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
-        </div>
-        </div>
-    </div> 
-</div> -->
+
 <script>
     
-    // function Loadingscreen(){
-    //     const form = document.getElementById("labourWorkInForm");
-    //     const loadingImage = document.getElementById("loadingImage");
-    //     const body = document.getElementsByTagName('body')[0]
-
-    //     form.addEventListener("submit", function(event) {
-    //     // Show the loading image
-    //     loadingImage.style.display = "block";
-    //     document.body.style.backgroundColor = "#a9a9a9";
-    //     document.body.style.color = "#a9a9a9";
-        
-    //     // Optionally prevent the default form submission to simulate loading (e.g., for AJAX requests)
-    //     // event.preventDefault();
-    //     });
-    // }
-    // Loadingscreen()
     document.getElementById("id_other_charges").addEventListener('input', CalculateAmount);
     document.getElementById("id_labour_charges").addEventListener('input', CalculateAmount);
 
@@ -497,10 +494,14 @@ $(document).on('click', '.search-input',function(){
                 var masterData = response.master_initial_data;
                 var formsetData = response.formset_initial_data;
                 var childId = response.labour_workout_child_instance_id;
-             
+                var totalData = response.labour_workin_all;
+
+
                 var tableWorkIn = $('#tableLabourWorkinId');
                 var challanRows = $('#labourWorkInFormAfterClick');
                 var submit = $('#id_submit');
+              
+               
         
                 // Hide the table and show form sections
                 tableWorkIn.css("display", "none");
@@ -536,7 +537,7 @@ $(document).on('click', '.search-input',function(){
                     
                     newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-L_work_out_pcs" value="' + rowData.L_work_out_pcs + '" id="id_l_w_in_products-' + index + '-L_work_out_pcs">'));
                     
-                    newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-pending_to_return_pcs" value="' + rowData.pending_to_return_pcs + '" id="id_l_w_in_products-' + index + '-pending_to_return_pcs">'));
+                    newRow.append($('<td>').html('<input type="number" class="productorderrawqty-input" name="l_w_in_products-' + index + '-total_recieved_qty" value="' + rowData.total_recieved_qty + '" id="id_l_w_in_products-' + index + '-total_recieved_qty" readonly> <input type="hidden" class="productorderrawqty-input" name="l_w_in_products-' + index + '-pending_to_return_pcs" value="' + rowData.pending_to_return_pcs + '" id="id_l_w_in_products-' + index + '-pending_to_return_pcs">'));
                     
                     newRow.append($('<td>').html('<input type="number"  class="productorderrawqty-input" name="l_w_in_products-' + index +'-qty_to_compare" value="'+ rowData.qty_to_compare+'" id="id_id_l_w_in_products-' + index + '-qty_to_compare" readonly>'));
                     
@@ -548,6 +549,19 @@ $(document).on('click', '.search-input',function(){
                     // Append the new row to the table body
                     tableRows.append(newRow);
                 });
+                var tableGrNoQty = $('#grNoTotalQty tbody');
+                tableGrNoQty.empty();
+               totalData.forEach(function(data, index){
+                var row = $('<tr>');
+                    console.log(data)
+                    row.append($('<td>').text(data.voucher_number))
+                    row.append($('<td>').text(data.total_return_pcs))
+                    row.append($('<td>').text(data.total_approved_qty))
+
+                    tableGrNoQty.append(row)
+               })
+
+                
 
                 // Attach the event listener for input change after populating rows
                 document.querySelectorAll('[name$="-return_pcs"]').forEach(function(element){

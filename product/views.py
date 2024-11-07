@@ -5396,7 +5396,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                     labour_workin_all = list(labour_workin_all_qd) # Convert QD to python list of dicts to send in json 
 
                     labour_workout_child_instance_id = labour_workout_child_instance.id
-
+                    print(labour_workin_all)
                     master_initial_data = {
                         'labour_name': labour_workout_child_instance.labour_name.name,
                         'challan_no' : labour_workout_child_instance.challan_no ,
@@ -5431,7 +5431,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                 
                 return JsonResponse({'vendor_name_dict':vendor_name_dict,'labour_workout_instance_dict':labour_workout_instance_dict,
                                      'master_initial_data':master_initial_data,'formset_initial_data':formset_initial_data,
-                                     'labour_workout_child_instance_id': labour_workout_child_instance_id})
+                                     'labour_workout_child_instance_id': labour_workout_child_instance_id ,'labour_workin_all':labour_workin_all})
 
             except ValueError as ve:
                     messages.error(request,f'Error Occured - {ve}')
@@ -5582,7 +5582,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 
         except Exception as e:
             messages.error(request,f'Other exceptions {e}')
-
+    print(labour_workin_all)
     return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset,
                     'approval_check':approval_check,'page_name':'Labour Workin Create','labour_workin_all':labour_workin_all})
 
