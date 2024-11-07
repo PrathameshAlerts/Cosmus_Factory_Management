@@ -138,7 +138,9 @@
                         <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku"readonly></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.initial.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs" readonly></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs" readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_recieved_qty" value="{{form.initial.total_recieved_qty}}" id="id_{{form.prefix}}-total_recieved_qty" readonly> <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.initial.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs" readonly></td>
+                    
+
                         <td><input type="number"  class="productorderrawqty-input" name="{{form.prefix}}-qty_to_compare" value="{{form.initial.qty_to_compare}}" id="id_{{form.prefix}}-qty_to_compare" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.initial.return_pcs}}" id="id_{{form.prefix}}-return_pcs"></td>
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-cur_bal_plus_return_qty" value="{{form.initial.cur_bal_plus_return_qty}}" id="id_{{form.prefix}}-cur_bal_plus_return_qty" readonly>   
@@ -148,7 +150,7 @@
                         <td><input type="text"class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-L_work_out_pcs" value="{{form.instance.L_work_out_pcs}}" id="id_{{form.prefix}}-L_work_out_pcs" readonly></td>
-                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"readonly></td>
+                        <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-total_recieved_qty" value="{{form.initial.total_recieved_qty}}" id="id_{{form.prefix}}-total_recieved_qty" readonly><input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-pending_to_return_pcs" value="{{form.instance.pending_to_return_pcs}}" id="id_{{form.prefix}}-pending_to_return_pcs"readonly></td>
                         <td><input type="number"  class="productorderrawqty-input" name="{{form.prefix}}-qty_to_compare" value="{{form.initial.qty_to_compare}}" id="id_{{form.prefix}}-qty_to_compare"readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-return_pcs" value="{{form.instance.return_pcs}}" id="id_{{form.prefix}}-return_pcs" ></td>
                         <input type="hidden" class="productorderrawqty-input" name="{{form.prefix}}-cur_bal_plus_return_qty" value="{{form.initial.cur_bal_plus_return_qty}}" id="id_{{form.prefix}}-cur_bal_plus_return_qty" readonly>   
