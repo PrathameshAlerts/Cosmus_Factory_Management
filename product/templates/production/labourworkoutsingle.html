@@ -595,8 +595,12 @@ function labourWorkOutCheck(){
 
             if(!isNaN(physicalstock) && !isNaN(totalConsumption)){
                 var balanceValue = physicalstock - totalConsumption;
-         
                 document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').value = balanceValue.toFixed(3);
+                if(balanceValue > 0){
+                    document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'green';
+                }else{
+                    document.getElementById('id_labour_workout_cutting_items_set-' + i + '-balance_physical_stock').style.color = 'red';
+                }
             }
            
          

@@ -324,6 +324,7 @@
             var balance = parseInt(row.querySelector('input[name$="-pending_to_return_pcs"]').value) || 0;
             var BalanceActualValue = parseInt(row.querySelector('input[name$="-qty_to_compare"]').value) || 0;
             var pendingValue =document.getElementById('id_total_balance_pcs').value
+            console.log(balance)
              if(returnValue > balance){
                 returnValue = 0;
                 input.value = 0;
