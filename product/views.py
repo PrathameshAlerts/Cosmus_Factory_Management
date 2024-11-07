@@ -5392,7 +5392,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                 if labour_work_out_id:
                     labour_workout_child_instance = labour_workout_childs.objects.get(id = labour_work_out_id)
 
-                    labour_workin_all_qd = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).values('voucher_number','total_return_pcs','total_approved_qty') # get the values required from the QS 
+                    labour_workin_all_qd = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).annotate(total_approved_quantity = Sum('l_w_in_products__approved_qty')).values('voucher_number','total_return_pcs','total_approved_quantity') # get the values required from the QS 
                     labour_workin_all = list(labour_workin_all_qd) # Convert QD to python list of dicts to send in json 
 
                     labour_workout_child_instance_id = labour_workout_child_instance.id
@@ -5448,7 +5448,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
         labour_workin_master_instance = None
         labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
 
-        labour_workin_all = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance)
+        labour_workin_all = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).annotate(total_approved_quantity = Sum('l_w_in_products__approved_qty'))  
 
 
         initial_data = {
@@ -5496,7 +5496,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
     
         labour_workout_child_instance = labour_workout_childs.objects.get(id = l_w_o_id)
 
-        labour_workin_all = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance)
+        labour_workin_all = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).annotate(total_approved_quantity = Sum('l_w_in_products__approved_qty'))
 
         product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
 
