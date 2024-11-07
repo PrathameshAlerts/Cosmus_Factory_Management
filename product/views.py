@@ -5325,6 +5325,7 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
     
     template_name = 'production/labourworkincreate.html'
     
+    labour_workin_all = None
 
     approval_check = approved
     
@@ -5390,6 +5391,10 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 
                 if labour_work_out_id:
                     labour_workout_child_instance = labour_workout_childs.objects.get(id = labour_work_out_id)
+
+                    labour_workin_all_qd = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance).values('voucher_number','total_return_pcs','total_approved_qty') 
+                    labour_workin_all = list(labour_workin_all_qd) 
+
                     labour_workout_child_instance_id = labour_workout_child_instance.id
 
                     master_initial_data = {
@@ -5402,7 +5407,6 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
                         'labour_workout_qty' : labour_workout_child_instance.total_process_pcs,
                         'labour_charges': labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.labour_charges,
                         'total_balance_pcs' :  labour_workout_child_instance.labour_workin_pending_pcs,
-                        
                         }
 
                     product_to_item_l_w_in_instance = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
@@ -5443,6 +5447,9 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
 
         labour_workin_master_instance = None
         labour_workout_child_instance = labour_workout_childs.objects.get(id=l_w_o_id)
+
+        labour_workin_all = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance)
+
 
         initial_data = {
             'labour_name': labour_workout_child_instance.labour_name.name,
@@ -5488,6 +5495,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
     elif l_w_o_id is not None and pk is not None:
     
         labour_workout_child_instance = labour_workout_childs.objects.get(id = l_w_o_id)
+
+        labour_workin_all = labour_work_in_master.objects.filter(labour_voucher_number=labour_workout_child_instance)
 
         product_to_item_l_w_in = product_to_item_labour_child_workout.objects.filter(labour_workout=labour_workout_child_instance)
 
@@ -5574,7 +5583,8 @@ def labourworkincreate(request, l_w_o_id = None, pk = None, approved=False):
         except Exception as e:
             messages.error(request,f'Other exceptions {e}')
 
-    return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset,'approval_check':approval_check,'page_name':'Labour Workin Create'})
+    return render(request,template_name,{'master_form':master_form,'labour_work_in_product_to_item_formset':product_to_item_formset,
+                    'approval_check':approval_check,'page_name':'Labour Workin Create','labour_workin_all':labour_workin_all})
 
 
 @login_required(login_url='login')
