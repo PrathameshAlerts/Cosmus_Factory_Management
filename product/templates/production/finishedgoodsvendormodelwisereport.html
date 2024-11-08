@@ -26,7 +26,7 @@
                         <th>Date</th>
                         <th>Description</th>
                         {% for header in SKU_List %}
-                        <th class=" finshHeader">{{ header }}</th>
+                        <th class=" finshHeader"><span class="headerTest">{{ header }}</span></th>
                         {% endfor %}
                     </tr>
                 </thead>
@@ -40,7 +40,7 @@
                         {% endfor %}
                     </tr>
                     {% for data in report_data_sorted %}
-                    <tr>
+                    <tr class="finshgoodRow">
                         <td>{{ data.GRN_No}}</td>
                         <td class="text-nowrap">{{ data.date}}</td>
                         <td>{{ data.description}}</td>
@@ -67,34 +67,34 @@
 
 <script>
 
-document.addEventListener("DOMContentLoaded",function(){
-    function colorChanges(){
-        var header = document.querySelectorAll('.finshHeader');
-        var Lwo = document.querySelectorAll('.finishLwo');
-        var finishLwo = document.querySelectorAll('.finishLwi');
-    console.log(finishLwo.length);
-    for(var i=0; i< header.length; i++){
-        if(i % 4 === 0){
-            header[i].classList.add('bg-c-green');
-            Lwo[i].style.backgroundColor = 'rgb(141 228 211)';
-            finishLwo[i].style.backgroundColor = 'rgb(141 228 211)'
-        }else if(i % 4 === 1){
-            header[i].classList.add('bg-c-red');
-            Lwo[i].style.backgroundColor = 'rgb(233 130 127)';
-            finishLwo[i].style.backgroundColor = 'rgb(233 130 127)';
-        }else if(i % 4 === 2){
-            header[i].classList.add('bg-c-yellow');
-            Lwo[i].style.backgroundColor = 'rgb(237 189 122)';
-            finishLwo[i].style.backgroundColor = 'rgb(237 189 122)';
-        }else{
-            header[i].classList.add('bg-c-purple');
-            Lwo[i].style.backgroundColor = '#a18ee3';
-            finishLwo[i].style.backgroundColor = '#a18ee3';
+    function colorChanges() {
+    var rows = document.querySelectorAll('.finshgoodRow');
+    var headers = document.querySelectorAll('.finshHeader');
+    var lwoElements = document.querySelectorAll('.finishLwo');
+
+    headers.forEach(function(header, index) {
+        if (index % 2 === 0) {
+            header.classList.add('bg-c-green');
+            lwoElements[index].style.backgroundColor = 'rgb(141, 228, 211)';
+        } else {
+            header.classList.add('bg-c-red');
+            lwoElements[index].style.backgroundColor = 'rgb(233, 130, 127)';
         }
-    }
-    }
-    colorChanges()
-})
+    });
+
+    rows.forEach(function(row) {
+        var finishLwiElements = row.querySelectorAll('.finishLwi');
+        finishLwiElements.forEach(function(finishLwi, index) {
+            if (index % 2 === 0) {
+                finishLwi.style.backgroundColor = 'rgb(141, 228, 211)';
+            } else {
+                finishLwi.style.backgroundColor = 'rgb(233, 130, 127)';
+            }
+        });
+    });
+}
+colorChanges()
+
 
 
 </script>
