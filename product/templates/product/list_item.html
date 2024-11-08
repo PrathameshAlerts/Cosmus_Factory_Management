@@ -94,8 +94,13 @@ the input field will be pre-filled with that value when the page is loaded. -->
             {% for item in items %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td class="text-nowrap">{{item.item_name}}</td>
-              <td class="text-nowrap">{{item.Color_Name}}<span class="colorCheck" style="float: right;">{{item.total_quantity | default_if_none:0}}</span></td>
+              <td class="text-nowrap fw-bold"><span class="">{{item.item_name}}</span>
+                <div class="pt-2 ms-4">
+                  <label class="fw-bold">F Group -</label><span class="fw-bold text-success ps-1">{{item.fab_grp}}</span><br>
+                  <lable class="fw-bold">M Code -</lable><span class="fw-bold text-success ps-1">{{item.Material_code}}</span>
+                </div>
+              </td>
+              <td class="text-nowrap">{{item.Color_Name}}<span class="colorCheck fw-bold" style="float: right;">{{item.total_quantity | default_if_none:0}}</span></td>
               <td>
                 <table class="table table-bordered">
                   <thead>
@@ -109,17 +114,22 @@ the input field will be pre-filled with that value when the page is loaded. -->
                     <tr>
                       <td style="width: 32%;">{{shade.item_shade_name}}</td>
                       <td>
-                        <table class="tables table-bordered" style="border-bottom: 1px solid #888;">
-                          <tr>
-                            <th style="width: 76%;">Name</th>
-                            <th>Qty</th>
-                          </tr>
-                          {% for shade_q in shade.godown_shades.all %}
-                          <tr>
-                            <td class="px-2">{{shade_q.godown_name}}</td>
-                            <td class="px-2 shadeColor float-right">{{shade_q.quantity}}</td>
-                          </tr>
+                        <table class="tables table-bordered" >
+                          <thead>
+                            <tr>
+                              <th style="width: 76%;">Name</th>
+                              <th >Qty</th>
+                            </tr>
+                          </thead>
+                          <tbody> 
+                            {% for shade_q in shade.godown_shades.all %}
+                              <tr>
+                                <td style="width: 76%;">{{shade_q.godown_name}}</td>
+                                <td style="width: 100%;" class="px-2 shadeColor float-right">{{shade_q.quantity}}</td>
+                              </tr>
                           {% endfor %}
+                          </tbody>
+                          
                         </table>
                       </td>
                     </tr>
