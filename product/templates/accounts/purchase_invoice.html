@@ -134,7 +134,7 @@
             </tbody>
             <tbody>
                 <tr>
-                    <td class="text-center" ><lable style="padding-left: 20px;">Total</lable></td>
+                    <td class="text-center" ><label style="padding-left: 20px;">Total</label></td>
                     <td colspan="3"></td>
                     <td> <input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
                     <td colspan="2"></td>
@@ -155,13 +155,13 @@
         
         <div class="mb-4 table-left">
             <div class=" mb-3">
-                <lable  class="purchase-lable fw-bold">Gross total</lable>
+                <label  class="purchase-lable fw-bold">Gross total</label>
                 <span class="purchase-span">
                     <input type="number" class="purchaseTableLabel-Gtotal  purchase-amounts" name="gross_total" id ="id_gross_total" value="{{master_form.instance.gross_total | default_if_none:''}}" maxlength="50" step=".01" readonly >
                 </span>           
             </div>
             <div class=" mb-3">
-                <lable class="purchase-lable fw-bold">Fright & Transport</lable>
+                <label class="purchase-lable fw-bold">Fright & Transport</label>
                 <span class="purchase-span">
                     <input type="number" class="purchaseTableLabel-transport  purchase-amounts" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
                 </span>

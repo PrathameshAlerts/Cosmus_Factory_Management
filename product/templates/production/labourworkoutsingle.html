@@ -16,7 +16,7 @@
                             
                             <input type="hidden" name="godown_id" id="id_godown_id" value="{{godown_id}}">
 
-                            <lable for="id_challan_no" class="">Challan No:</lable>
+                            <label for="id_challan_no" class="">Challan No:</label>
 
                              
                             {% if labour_work_out_child_form.instance.id %}
@@ -28,7 +28,7 @@
 
                         </div>
                         <div class="d-flex ms-1 ">
-                            <lable for="id_labour_name" class="">Labour:</lable>
+                            <label for="id_labour_name" class="">Labour:</label>
                             <select type="number" name="labour_name" id="id_labour_name" class="item-select ms-2 pb-2" required>
                             {% if labour_work_out_child_form.instance.id %}
                             <option value="{{labour_work_out_child_form.instance.labour_name.id}}">{{labour_work_out_child_form.instance.labour_name.name}}</option>
@@ -60,7 +60,7 @@
                         </div>
                    
                         <div class="d-flex ms-5"> 
-                            <lable for="id_total_process_pcs" class="">Proccess Pcs:</lable> 
+                            <label for="id_total_process_pcs" class="">Proccess Pcs:</label> 
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_process_pcs | default_if_none:0}}" name="total_process_pcs" id="id_total_process_pcs" readonly style="outline: none;">
                             
                         </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div>
                         <div class="d-flex"> 
-                        <lable for="id_total_balance_pcs" class="">Balance pcs:</lable> 
+                        <label for="id_total_balance_pcs" class="">Balance pcs:</label> 
 
                             {% if labour_work_out_child_form.instance.id %}
                             <input class="purchase-input text-danger ms-2 me-3 pb-2" value="{{labour_work_out_child_form.instance.total_balance_pcs}}" name="total_balance_pcs" id="id_total_balance_pcs" readonly style="outline: none;">
