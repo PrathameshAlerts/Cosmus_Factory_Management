@@ -295,7 +295,30 @@ function cancelCutting(){
 
   function approvedQty(button) {
     if (popupPage === null || popupPage.closed) {
-      newPopup(button, 'purchaseordercuttingpopup/')
+      newPopup(button, 'purchaseordercuttingpopup/') 
+      
+      
+        var cuttingoderId = $(button).closest('tr').find('td').eq(2).text();
+        console.log(cuttingoderId)
+        $.ajax({
+          type: "GET",
+          url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
+          data:{
+            'cutting_pk_no':cuttingoderId,
+      
+          },
+          success: function(response) {
+              var allApproveLogs = response.approval_data;
+              console.log('allApproveLogs',allApproveLogs)
+              window.sharedData = allApproveLogs;
+          },
+          error: function(xhr, status, error) {
+            console.error("Error occurred: " + error);
+            console.error(status);
+            
+          }
+        })
+
     } else {
       popupPage.focus();
     }

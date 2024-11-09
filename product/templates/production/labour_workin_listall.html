@@ -55,11 +55,11 @@
                                 <td>{{instance.product_reference_number.Product_Refrence_ID}}</td>
                                 <td>{{instance.number_of_pieces}}</td>
                                 <td>{{instance.product_reference_number.Model_Name}}</td>
-                                <td>{{instance.total_lwo_pcs}}</td>
-                                <td>{{instance.total_labour_workin_pcs}}</td>
-                                <td>{{instance.total_labour_workin_pending}}</td>
-                                <td>{{instance.total_approved_qty}}</td>
-                                <td>{{instance.total_pending_approved_qty}}</td>
+                                <td>{{instance.total_lwo_pcs|default_if_none:0}}</td>
+                                <td>{{instance.total_labour_workin_pcs|default_if_none:0}}</td>
+                                <td>{{instance.total_labour_workin_pending|default_if_none:0}}</td>
+                                <td>{{instance.total_approved_qty|default_if_none:0}}</td>
+                                <td>{{instance.total_pending_approved_qty|default_if_none:0}}</td>
                                 <td><a href="{% url 'labour-workin-pur-order-list' instance.id %}" id="labourWorkInCreateClick"><i class="fa-solid fa-circle-plus px-2"></i></a></td>
                                 
                               </tr>
@@ -92,10 +92,10 @@
                             <th>Issued Qty</th>
                             <th>Recieved Qty</th>
                             <th>Balance Qty</th>
-                            <th>Approved QTY</th>
+                            <th>Approved Qty</th>
                             <th>Pending Approval</th>
                             <th>Edit</th>
-                            <th>Over Due</th>
+                            <th>OverDue</th>
                         </tr>
                     </thead>
                     <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
@@ -108,12 +108,12 @@
                             <td>{{instance.challan_no}}</td>
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Name}}</td>
-                            <td>{{instance.labour_name.name}}</td>
-                            <td>{{instance.total_process_pcs}}</td>
-                            <td>{{instance.labour_workin_pcs}}</td>
-                            <td>{{instance.labour_workin_pending_pcs}}</td>
-                            <td>{{instance.total_approved_qty}}</td>
-                            <td>{{instance.total_pending_approved_qty}}</td>
+                            <td>{{instance.labour_name.name|default_if_none:0}}</td>
+                            <td>{{instance.total_process_pcs|default_if_none:0}}</td>
+                            <td>{{instance.labour_workin_pcs|default_if_none:0}}</td>
+                            <td>{{instance.labour_workin_pending_pcs|default_if_none:0}}</td>
+                            <td>{{instance.total_approved_qty|default_if_none:0}}</td>
+                            <td>{{instance.total_pending_approved_qty|default_if_none:0}}</td>
                             <td><a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
                             <td class="text-nowrap">{{ instance.created_date.date}}<br>
                               {% if instance.created_date|subtract_datestime:current_date < 0 %}

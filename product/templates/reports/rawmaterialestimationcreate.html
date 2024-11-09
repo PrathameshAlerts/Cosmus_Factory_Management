@@ -1,0 +1,20 @@
+{% extends 'product/base.html' %}
+{% block body %}
+
+<form method="POST">
+
+
+{% csrf_token %}
+
+{{product_estimation_form.as_p}}
+
+{{product_estimation_formset.management_form}}
+{% for form in product_estimation_formset %}
+{{form.as_p}}
+{% endfor %}
+
+<input type="submit">
+</form>
+
+
+{% endblock %}

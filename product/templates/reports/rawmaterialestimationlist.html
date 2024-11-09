@@ -1,0 +1,10 @@
+{% extends 'product/base.html' %}
+{% block body %}
+
+<a href="{% url 'rawmaterial-estimation-create' %}">Create</a>
+
+{% for record in product_estimation_instances %}
+{{record}}
+{% endfor %}
+
+{% endblock %}

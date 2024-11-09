@@ -220,6 +220,14 @@ urlpatterns = [
     path('goodsreturnlist/',views.goods_return_pending_list, name = 'goods-return-list'),
     path('goodsreturnpopup/<int:pk>',views.goods_return_popup, name = 'goods_return_popup'),
 
+    # rawmaterial production estimation
+
+    path('rawmaterialestimationlist/',views.rawmaterialestimationlist, name = 'rawmaterial-estimation-list'),
+    path('rawmaterialestimationcreate/',views.rawmaterialestimationcreateupdate, name = 'rawmaterial-estimation-create'),
+    path('rawmaterialestimationupdate/<int:pk>',views.rawmaterialestimationcreateupdate, name = 'rawmaterial-estimation-update'),
+
+
+
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),
@@ -245,6 +253,7 @@ urlpatterns = [
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),
+
 
 
     #testing

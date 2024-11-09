@@ -62,8 +62,8 @@
                             <td>{{instance.total_process_pcs}}</td>
                             <td>{{instance.labour_workin_pcs}}</td>
                             <td>{{instance.labour_workin_pending_pcs}}</td>
-                            <td>{{instance.total_approved_qty}}</td>
-                            <td>{{instance.total_pending_approved_qty}}</td>
+                            <td>{{instance.total_approved_qty|default_if_none:0}}</td>
+                            <td>{{instance.total_pending_approved_qty|default_if_none:0}}</td>
                             <td><button class="border-0 bg-transparent addNewBtn"><a href="{% url 'labour-workin-list-create' instance.id %}"><i class="fa-solid fa-circle-plus px-2"></i></a></button></td>
                         </tr>
                         {% endfor %}
