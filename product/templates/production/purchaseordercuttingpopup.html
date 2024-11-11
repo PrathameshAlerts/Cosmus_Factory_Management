@@ -30,7 +30,11 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>
-                        <td><span class="text-danger ms-2 me-3">{{form.instance.approved_pcs}}</span><input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"> </td>
+                        <td><span class="text-danger ms-2 me-3">{{form.instance.approved_pcs}}</span>
+                            <!-- <input type="number" class="productorderqty-input" name="{{form.prefix}}-" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"> -->
+                            <input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs">
+                        
+                        </td>
                       
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-approved_pcs_diffrence" value="{{form.instance.approved_pcs_diffrence}}" id="id_{{form.prefix}}-approved_pcs_diffrence">
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-currentApproved_pcs" value="" id="id_{{form.prefix}}-currentApproved_pcs">
@@ -50,11 +54,19 @@
           <th>Date</th>
           <th>Approved By</th>
           <th>Approved QTY</th>
-          <th>Balance QTY</th>
+          <th>Balance QTY LWO</th>
         </tr>
       </thead>
       <tbody class="mainTableList" >
           
+      </tbody>
+      <tbody class="mainTableList" id="totalApproved">
+        <tr>
+          <td colspan="2" class="fw-bold">Total</td>
+        
+          <td><span class="fw-bold" id="tApprovedQty">0</span></td>
+          <td><span class="fw-bold" id="tBalanceQty">0</span></td>
+        </tr>
       </tbody>
     </table>
 
@@ -165,12 +177,10 @@ function quantityCheck() {
             var approveValue = parseInt(data.value);
             var closerstTr = data.closest('tr');
             var currentCheckValue = closerstTr.querySelector('[name$= "-currentApproved_pcs"]').value;
-            // console.log("approveValue",approveValue)
-            // console.log(currentCheckValue)
          if (approveValue != 0) {
             // Check if approvedValues is less than currentCheckValue
             if (approveValue < currentCheckValue) {
-                //closerstTr.querySelector('[name$= "-approved_pcs"]').value = currentCheckValue; // Reset to currentApprovedValue
+
                 data.style.borderColor = 'red';
                 hasInvalidValue = true; 
              
@@ -216,7 +226,8 @@ function quantityCheck() {
 
     if (window.opener) {
         const dataFromParent = window.opener.sharedData;
-        console.log(dataFromParent);  // "data from the parent!"
+        var TotalApprove = 0;
+        var totalBalance = 0;
         var newTable = document.querySelector('#approvalDataLog tbody'); 
         
         newTable.innerHTML = ''; // Clear previous table rows
@@ -249,11 +260,15 @@ function quantityCheck() {
               row.appendChild(cell3);
               row.appendChild(cell4);
 
+              TotalApprove += approveQty;
+              totalBalance += balanceQty;
+
               // Append the row to the table
               newTable.appendChild(row);
           });
 
-
+          document.getElementById('tApprovedQty').textContent = TotalApprove;
+          document.getElementById('tBalanceQty').textContent = totalBalance;
 
       }
 
