@@ -967,18 +967,18 @@ class raw_material_production_estimation(models.Model):
 
 
 class raw_material_product_ref_items(models.Model):
-    raw_material_estimation_master = models.ForeignKey(raw_material_production_estimation, on_delete=models.CASCADE)
+    raw_material_estimation_master = models.ForeignKey(raw_material_production_estimation, related_name='raw_material_production_estimations', on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, on_delete=models.PROTECT)
     total_product_qty = models.IntegerField(default=0)
 
 class raw_material_product_wise_qty(models.Model):
-    raw_material_ref_id = models.ForeignKey(raw_material_product_ref_items, on_delete=models.CASCADE)
+    raw_material_ref_id = models.ForeignKey(raw_material_product_ref_items, related_name= 'raw_material_product_ref_itemss' , on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=100)
     product_color = models.CharField(max_length=100)
     estimate_qty = models.IntegerField(default=0)
 
 class raw_material_product_to_items(models.Model):
-    raw_material_ref_id = models.ForeignKey(raw_material_product_ref_items, on_delete=models.CASCADE)
+    raw_material_ref_id = models.ForeignKey(raw_material_product_ref_items, related_name= 'raw_material_product_ref_itemss_p_2_i' ,on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=50)
     product_color = models.CharField(max_length = 60, null=False, blank=False)
     material_name = models.CharField(max_length = 60, null=False, blank=False)
@@ -1000,7 +1000,7 @@ class raw_material_product_to_items(models.Model):
 
 
 class raw_material_production_total(models.Model):
-    raw_material_estination_master = models.ForeignKey(raw_material_production_estimation, on_delete=models.CASCADE)
+    raw_material_estination_master = models.ForeignKey(raw_material_production_estimation,related_name='raw_material_production_estimations_total' ,on_delete=models.CASCADE)
     item_name = models.CharField(max_length=100)
     total_consump = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     godown_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
