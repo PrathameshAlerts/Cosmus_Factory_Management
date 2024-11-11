@@ -3,7 +3,7 @@ from django import forms
 from django.shortcuts import get_object_or_404
 
 from core.models import Company
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_production_estimation, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.forms import modelformset_factory, BaseInlineFormSet 
@@ -901,7 +901,28 @@ class raw_material_production_estimation_form(forms.ModelForm):
 
 raw_material_product_estimation_formset = inlineformset_factory(raw_material_production_estimation, raw_material_product_ref_items, 
                                                                 
-                                                fields=['product_id','total_product_qty'], extra = 5, can_delete = False)
+                                                fields=['product_id','total_product_qty'], extra = 2, can_delete = True)
+
+
+
+
+
+class raw_material_product_estimation_product_2_item_form(forms.ModelForm):
+    class Meta:
+        model = raw_material_product_wise_qty
+        fields = ['product_sku','product_color','estimate_qty']
+
+
+
+class raw_material_product_estimation_items_form(forms.ModelForm):
+    class Meta:
+        model = raw_material_product_to_items
+        fields =  ['product_sku','product_color','material_name','rate','panha',
+                  'units','g_total','g_total_combi','consumption','unit_value',
+                  'total_comsumption','combi_consumption','physical_stock',
+                  'balance_physical_stock','Remark','pcs']
+
+
 
 
 

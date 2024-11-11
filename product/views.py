@@ -34,6 +34,7 @@ from openpyxl.styles import Font
 from openpyxl.styles import Alignment
 from openpyxl.styles import Border, Side
 
+
 from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
@@ -43,7 +44,7 @@ from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_godown_quantity_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
-                                 purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_production_estimation,
+                                 purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation,
                                    set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
@@ -51,7 +52,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                     CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, cutting_room_form,
                        factory_employee_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
-                       purchase_order_to_product_cutting_form, raw_material_production_estimation_form,raw_material_stock_trasfer_items_formset,
+                       purchase_order_to_product_cutting_form, raw_material_product_estimation_items_form, raw_material_product_estimation_product_2_item_form, raw_material_production_estimation_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
                        StockItemForm, UnitName, account_sub_grp_form, PProductaddFormSet,
@@ -5994,31 +5995,133 @@ def rawmaterialestimationlist(request):
 
 def rawmaterialestimationcreateupdate(request,pk=None):
 
-
     if pk:
-        product_estimation_form = raw_material_production_estimation_form()
+        raw_material_production_estimation_instance = raw_material_production_estimation.objects.get(pk=pk)
+        product_estimation_form = raw_material_production_estimation_form(instance=raw_material_production_estimation_instance)
+        product_estimation_formset  = raw_material_product_estimation_formset(instance=raw_material_production_estimation_instance)
 
-        product_estimation_formset  = raw_material_product_estimation_formset()
     else:
-
+        raw_material_production_estimation_instance = None
         product_estimation_form = raw_material_production_estimation_form()
-
         product_estimation_formset  = raw_material_product_estimation_formset()
 
 
     
     if request.method == 'POST':
-        product_estimation_form = raw_material_production_estimation_form(request.POST)
+        product_estimation_form = raw_material_production_estimation_form(request.POST,instance=raw_material_production_estimation_instance)
 
-        product_estimation_formset = raw_material_product_estimation_formset(request.POST)
+        product_estimation_formset = raw_material_product_estimation_formset(request.POST,instance=raw_material_production_estimation_instance)
 
 
         if product_estimation_form.is_valid() and product_estimation_formset.is_valid():
-            pass
+            
+            product_estimation_form_instance = product_estimation_form.save()
+
+            for form in product_estimation_formset.deleted_forms:
+                    if form.instance.pk:
+                        form.instance.delete()
+
+            for form in product_estimation_formset:
+                if form.is_valid():
+                    if not form.cleaned_data.get('DELETE'):
+                        product_e_form = form.save(commit=False)
+                        product_e_form.raw_material_estimation_master = product_estimation_form_instance
+                        product_e_form.save()
+            
 
     return render(request,'reports/rawmaterialestimationcreate.html',{
                   'product_estimation_formset': product_estimation_formset,
                   'product_estimation_form': product_estimation_form})
+
+
+
+def raw_material_estimation_popup(request,pk=None):
+
+    if pk:
+        product_ref_items_instance = raw_material_product_ref_items.objects.get(pk=pk) 
+
+        product_creation_instances = PProduct_Creation.objects.filter(Product=product_ref_items_instance.product_id) 
+
+        initial_p_2_i_dict = []
+        for instance in product_creation_instances:
+            dict_to_append = {
+                'product_sku' :instance.PProduct_SKU,
+                'product_color':instance.PProduct_color.color_name,
+                'estimate_qty' : '0' 
+                }
+
+            initial_p_2_i_dict.append(dict_to_append)
+        
+
+        product_2_items_instances_unique = product_2_item_through_table.objects.filter(
+                            PProduct_pk__Product__Product_Refrence_ID = product_ref_items_instance.product_id.Product_Refrence_ID, common_unique = False).order_by(
+                                'row_number')
+    
+        product_2_items_instances_common = product_2_item_through_table.objects.filter(
+                            PProduct_pk__Product__Product_Refrence_ID = product_ref_items_instance.product_id.Product_Refrence_ID, common_unique = True).order_by(
+                                'row_number','id').distinct('row_number')
+    
+        
+        
+        
+        
+        product_2_items_instances = product_2_items_instances_unique.union(product_2_items_instances_common)
+
+        
+        initial_p_2_i_items_dict = []
+        for query in product_2_items_instances:
+            rate_first = query.Item_pk.shades.order_by('id').first() 
+            
+            
+            if query.common_unique == True:
+                product_color_or_common_item = 'Common Item'
+                product_sku_or_common_item = 'Common Item'
+
+            else:
+                product_color_or_common_item = query.PProduct_pk.PProduct_color
+                product_sku_or_common_item = query.PProduct_pk.PProduct_SKU
+            
+            initial_data_dict = {'product_sku': product_sku_or_common_item,
+                                'product_color' : product_color_or_common_item,
+                                'material_name':query.Item_pk.item_name,
+                                'rate':rate_first.rate,
+                                'panha':query.Item_pk.Panha,
+                                'units':query.Item_pk.Units,
+                                'g_total':query.grand_total,
+                                'g_total_combi':query.grand_total_combi,
+                                'consumption':'0',
+                                'combi_consumption':0,
+                                'total_comsumption':'0',
+                                'unit_value': query.Item_pk.unit_name_item.unit_name,
+                                'physical_stock':'0',
+                                'balance_physical_stock':'0',
+                                'row_number':query.row_number,
+                                'Remark':query.Remark, 
+                                'pcs': '0' }
+            
+            initial_p_2_i_items_dict.append(initial_data_dict)
+
+
+
+        raw_material_product_estimation_product_2_item_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_wise_qty, 
+                                                                form=raw_material_product_estimation_product_2_item_form, extra = len(initial_p_2_i_dict), can_delete = False)
+        
+        product_2_item_formset = raw_material_product_estimation_product_2_item_formset(request.POST or None, initial=initial_p_2_i_dict)
+
+        raw_material_product_estimation_items_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_to_items, 
+                                                                
+                                                form=raw_material_product_estimation_items_form , extra = len(initial_p_2_i_items_dict), can_delete = False)
+
+
+        raw_material_product_estimation_items_formset = raw_material_product_estimation_items_formset(request.POST or None, initial=initial_p_2_i_items_dict)
+
+
+    if request.method == 'POST':
+        pass
+
+    return render(request,'reports/raw_material_estimation_popup.html',{
+                  'product_2_item_formset': product_2_item_formset,
+                  'raw_material_product_estimation_items_formset':raw_material_product_estimation_items_formset})
 
 
 
