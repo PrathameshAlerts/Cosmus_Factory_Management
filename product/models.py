@@ -971,7 +971,6 @@ class raw_material_product_ref_items(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.PROTECT)
     total_product_qty = models.IntegerField(default=0)
 
-
 class raw_material_product_wise_qty(models.Model):
     raw_material_ref_id = models.ForeignKey(raw_material_product_ref_items, on_delete=models.CASCADE)
     product_sku = models.CharField(max_length=100)

@@ -10,7 +10,7 @@
 
 {{product_estimation_formset.management_form}}
 {% for form in product_estimation_formset %}
-{{form.as_p}}
+{{form.as_p}} {% if form.instance.id %} <a href="{% url 'raw-material-estimation-popup' form.instance.pk %}">click</a> {% endif %}
 {% endfor %}
 
 <input type="submit">

@@ -4,7 +4,7 @@
 <a href="{% url 'rawmaterial-estimation-create' %}">Create</a>
 
 {% for record in product_estimation_instances %}
-{{record}}
+{{record}} <a href = "{% url 'rawmaterial-estimation-update' record.pk %}"> edit </a>
 {% endfor %}
 
 {% endblock %}
