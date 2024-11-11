@@ -5995,6 +5995,9 @@ def rawmaterialestimationlist(request):
 
 def rawmaterialestimationcreateupdate(request,pk=None):
 
+
+    godown_id = Godown_raw_material.objects.all()
+    product_all = Product.objects.all()
     if pk:
         raw_material_production_estimation_instance = raw_material_production_estimation.objects.get(pk=pk)
         product_estimation_form = raw_material_production_estimation_form(instance=raw_material_production_estimation_instance)
@@ -6031,7 +6034,7 @@ def rawmaterialestimationcreateupdate(request,pk=None):
 
     return render(request,'reports/rawmaterialestimationcreate.html',{
                   'product_estimation_formset': product_estimation_formset,
-                  'product_estimation_form': product_estimation_form})
+                  'product_estimation_form': product_estimation_form,'product_all':product_all,'godown_id':godown_id})
 
 
 
@@ -6041,6 +6044,8 @@ def raw_material_estimation_popup(request,pk=None):
         product_ref_items_instance = raw_material_product_ref_items.objects.get(pk=pk) 
 
         product_creation_instances = PProduct_Creation.objects.filter(Product=product_ref_items_instance.product_id) 
+
+
 
         initial_p_2_i_dict = []
         for instance in product_creation_instances:
@@ -6144,7 +6149,8 @@ def raw_material_estimation_popup(request,pk=None):
 
     return render(request,'reports/raw_material_estimation_popup.html',{
                   'product_2_item_formset': product_2_item_formset,
-                  'raw_material_product_estimation_items_formset':material_product_estimation_items_formset})
+                  'raw_material_product_estimation_items_formset':material_product_estimation_items_formset,
+                   })
 
 
 
