@@ -6106,22 +6106,57 @@ def raw_material_estimation_popup(request,pk=None):
         raw_material_product_estimation_product_2_item_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_wise_qty, 
                                                                 form=raw_material_product_estimation_product_2_item_form, extra = len(initial_p_2_i_dict), can_delete = False)
         
-        product_2_item_formset = raw_material_product_estimation_product_2_item_formset(request.POST or None, initial=initial_p_2_i_dict)
+        product_2_item_formset = raw_material_product_estimation_product_2_item_formset(request.POST or None, initial=initial_p_2_i_dict,instance=product_ref_items_instance)
 
         raw_material_product_estimation_items_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_to_items, 
                                                                 
                                                 form=raw_material_product_estimation_items_form , extra = len(initial_p_2_i_items_dict), can_delete = False)
 
-
-        raw_material_product_estimation_items_formset = raw_material_product_estimation_items_formset(request.POST or None, initial=initial_p_2_i_items_dict)
+        
+        material_product_estimation_items_formset = raw_material_product_estimation_items_formset(request.POST or None, initial=initial_p_2_i_items_dict,instance=product_ref_items_instance)
 
 
     if request.method == 'POST':
-        pass
+        if product_2_item_formset.is_valid() and material_product_estimation_items_formset.is_valid():
+            for form in product_2_item_formset:
+                if form.is_valid():
+                    p_2_i_form = form.save(commit= False)
+                    p_2_i_form.raw_material_ref_id = product_ref_items_instance
+                    p_2_i_form.save()
+
+                else:
+                    print(p_2_i_form.errors)
+
+            for form in material_product_estimation_items_formset:
+                if form.is_valid():
+                    p_2_i_items_form = form.save(commit=False)
+                    p_2_i_items_form.raw_material_ref_id = product_ref_items_instance
+                    p_2_i_items_form.save()
+
+                else:
+                    print(p_2_i_form.errors)
+
+        else:
+            print(product_2_item_formset.non_form_errors)
+            print(material_product_estimation_items_formset.non_form_errors)
+            print(product_2_item_formset.errors)
+            print(material_product_estimation_items_formset.errors)
 
     return render(request,'reports/raw_material_estimation_popup.html',{
                   'product_2_item_formset': product_2_item_formset,
-                  'raw_material_product_estimation_items_formset':raw_material_product_estimation_items_formset})
+                  'raw_material_product_estimation_items_formset':material_product_estimation_items_formset})
+
+
+
+
+
+def raw_material_estimation_calculate(request,pk):
+    if pk:
+        estimation_master_instance = get_object_or_404(raw_material_production_estimation, pk = pk)
+        
+        if estimation_master_instance:
+            pass
+
 
 
 
