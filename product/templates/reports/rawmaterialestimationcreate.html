@@ -1,20 +1,62 @@
 {% extends 'product/base.html' %}
 {% block body %}
 
-<form method="POST">
+<div class="mt-2">
+    <form method="POST">
+        {% csrf_token %}
+        <label class="item-form">Material Godoen Id :</label>
+        <select type="text" class="item-select" name="raw_material_godown_id" id="id_raw_material_godown_id" required>
+            <option></option>
+        </select>
 
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="name_absolute sticky-top">
+                <tr>
+                    <th>No</th>
+                    <th>Product Id</th>
+                    <th>Product Qty </th>
+                    <th>Purchase Order Estimation</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody class="mainTableList" >
+                {{product_estimation_formset.management_form}}
+                {% for form in product_estimation_formset %}
+                {{ form.id }}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>
+                        <select type="text" class="item-select" name="{{form.prefix}}-product_id" id="id_{{form.prefix}}-product_id" required>
+                            <option></option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" class="item-select" name="{{form.prefix}}-total_product_qty" value="{{form.instance.total_product_qty}}" id="id_{{form.prefix}}-total_product_qty">
+                    </td>
+                    <td>{% if form.instance.id %}
+                        <button class="border-0 bg-transparent"> <a href="{% url 'raw-material-estimation-popup' form.instance.pk %}">click</a> </button>
+                         {% endif %}
+                    </td>
+                    <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" class="create-btn" id="addRowMaterial">Add +</button>
+        <!-- {{product_estimation_form.as_p}}
+        
+        {{product_estimation_formset.management_form}}
+        {% for form in product_estimation_formset %}
+        {{form.as_p}} {% if form.instance.id %} <a href="{% url 'raw-material-estimation-popup' form.instance.pk %}">click</a> {% endif %}
+        {% endfor %} -->
+        
+        <button type="submit" class="create-btn mt-3 mx-3">Submit</button>
+    </form>
+</div>
 
-{% csrf_token %}
+<script>
 
-{{product_estimation_form.as_p}}
-
-{{product_estimation_formset.management_form}}
-{% for form in product_estimation_formset %}
-{{form.as_p}} {% if form.instance.id %} <a href="{% url 'raw-material-estimation-popup' form.instance.pk %}">click</a> {% endif %}
-{% endfor %}
-
-<input type="submit">
-</form>
+</script>
 
 
 {% endblock %}
