@@ -22,7 +22,7 @@
                 <td>{{forloop.counter}}</td>
                 <td>{{record.raw_material_godown_id.godown_name_raw}}</td>
                 <td><a href = "{% url 'rawmaterial-estimation-update' record.pk %}"> <i class="fa-solid fa-pen-to-square px-2"></i> </a></td>
-                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.pk}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
+                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -71,3 +71,4 @@
     })
 </script>
 {% endblock %}
+

@@ -901,7 +901,13 @@ class raw_material_production_estimation_form(forms.ModelForm):
 
 raw_material_product_estimation_formset = inlineformset_factory(raw_material_production_estimation, raw_material_product_ref_items, 
                                                                 
-                                                fields=['product_id','total_product_qty'], extra = 2, can_delete = True)
+                                                fields=['product_id','total_product_qty'], extra = 1, can_delete = True)
+
+
+raw_material_product_estimation_formset_update = inlineformset_factory(raw_material_production_estimation, raw_material_product_ref_items, 
+                                                                
+                                                fields=['product_id','total_product_qty'], extra = 0, can_delete = True)
+
 
 
 

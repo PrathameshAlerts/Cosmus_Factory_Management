@@ -44,7 +44,7 @@ from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_godown_quantity_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
-                                 purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation,
+                                 purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, raw_material_production_total,
                                    set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
@@ -59,7 +59,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                         ProductImagesFormSet, ProductVideoFormSet, purchase_order_form,purchase_voucher_items_godown_formset_shade_change,
                          gst_form, item_purchase_voucher_master_form,
                            packaging_form, product_main_category_form,  Product2ItemFormsetExtraForm,Product2CommonItemFormSetExtraForm,
-                            product_sub_category_form, purchase_voucher_items_formset,
+                            product_sub_category_form, purchase_voucher_items_formset,raw_material_product_estimation_formset_update,
                              purchase_voucher_items_godown_formset, purchase_voucher_items_formset_update, raw_material_stock_trasfer_master_form,
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
@@ -5996,27 +5996,31 @@ def rawmaterialestimationlist(request):
 
 def rawmaterialestimationcreateupdate(request,pk=None):
 
-
     godown_id = Godown_raw_material.objects.all()
     product_all = Product.objects.all()
+
     if pk:
         raw_material_production_estimation_instance = raw_material_production_estimation.objects.get(pk=pk)
         product_estimation_form = raw_material_production_estimation_form(instance=raw_material_production_estimation_instance)
-        product_estimation_formset  = raw_material_product_estimation_formset(instance=raw_material_production_estimation_instance)
+        product_estimation_formset  = raw_material_product_estimation_formset_update(instance=raw_material_production_estimation_instance)
+
+        instance_exists_check = raw_material_product_ref_items.objects.filter(raw_material_estimation_master = raw_material_production_estimation_instance).first().raw_material_product_ref_itemss_p_2_i.exists()
 
     else:
         raw_material_production_estimation_instance = None
         product_estimation_form = raw_material_production_estimation_form()
         product_estimation_formset  = raw_material_product_estimation_formset()
+        instance_exists_check = False
 
 
-    
     if request.method == 'POST':
-        product_estimation_form = raw_material_production_estimation_form(request.POST,instance=raw_material_production_estimation_instance)
+        product_estimation_form = raw_material_production_estimation_form(request.POST, instance=raw_material_production_estimation_instance)
+        
+        product_estimation_formset = raw_material_product_estimation_formset(request.POST, instance=raw_material_production_estimation_instance)
 
-        product_estimation_formset = raw_material_product_estimation_formset(request.POST,instance=raw_material_production_estimation_instance)
 
-
+        product_estimation_formset.forms = [form for form in product_estimation_formset if form.has_changed()]
+        
         if product_estimation_form.is_valid() and product_estimation_formset.is_valid():
             
             product_estimation_form_instance = product_estimation_form.save()
@@ -6031,11 +6035,13 @@ def rawmaterialestimationcreateupdate(request,pk=None):
                         product_e_form = form.save(commit=False)
                         product_e_form.raw_material_estimation_master = product_estimation_form_instance
                         product_e_form.save()
-            
+            print(product_estimation_form_instance.pk)
+            return redirect(reverse('rawmaterial-estimation-update', args=[product_estimation_form_instance.pk]))
 
     return render(request,'reports/rawmaterialestimationcreate.html',{
                   'product_estimation_formset': product_estimation_formset,
-                  'product_estimation_form': product_estimation_form,'product_all':product_all,'godown_id':godown_id})
+                  'product_estimation_form': product_estimation_form, 
+                  'product_all':product_all, 'godown_id':godown_id,'instance_exists_check':instance_exists_check})
 
 
 
@@ -6057,7 +6063,6 @@ def raw_material_estimation_popup(request,pk=None):
 
                 initial_p_2_i_dict.append(dict_to_append)
             
-
             product_2_items_instances_unique = product_2_item_through_table.objects.filter(
                                 PProduct_pk__Product__Product_Refrence_ID = product_ref_items_instance.product_id.Product_Refrence_ID, common_unique = False).order_by(
                                     'row_number')
@@ -6108,19 +6113,28 @@ def raw_material_estimation_popup(request,pk=None):
 
             initial_sorted_data = sorted(initial_p_2_i_items_dict, key = itemgetter('row_number'), reverse=False)
 
-            raw_material_product_estimation_product_2_item_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_wise_qty, 
+            if product_ref_items_instance.raw_material_product_ref_itemss.exists():
+                
+                raw_material_product_estimation_product_2_item_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_wise_qty, 
+                                                                    form=raw_material_product_estimation_product_2_item_form, extra = 0, can_delete = False)
+                
+
+                raw_material_product_estimation_items_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_to_items, 
+                                                    form=raw_material_product_estimation_items_form , extra = 0, can_delete = False)
+            else:
+                
+                raw_material_product_estimation_product_2_item_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_wise_qty, 
                                                                     form=raw_material_product_estimation_product_2_item_form, extra = len(initial_p_2_i_dict), can_delete = False)
-                        
-            product_2_item_formset = raw_material_product_estimation_product_2_item_formset(request.POST or None, initial=initial_p_2_i_dict,instance=product_ref_items_instance)
+                
 
-
-
-            raw_material_product_estimation_items_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_to_items, 
-                                                                    
+                raw_material_product_estimation_items_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_to_items, 
                                                     form=raw_material_product_estimation_items_form , extra = len(initial_sorted_data), can_delete = False)
 
+
+            product_2_item_formset = raw_material_product_estimation_product_2_item_formset(request.POST or None, initial = initial_p_2_i_dict, instance=product_ref_items_instance)
+
             
-            material_product_estimation_items_formset = raw_material_product_estimation_items_formset(request.POST or None, initial=initial_sorted_data,instance=product_ref_items_instance)
+            material_product_estimation_items_formset = raw_material_product_estimation_items_formset(request.POST or None, initial=initial_sorted_data, instance=product_ref_items_instance)
 
 
         except ObjectDoesNotExist as e:
@@ -6133,6 +6147,7 @@ def raw_material_estimation_popup(request,pk=None):
 
 
     if request.method == 'POST':
+
         if product_2_item_formset.is_valid() and material_product_estimation_items_formset.is_valid():
             try:
                 for form in product_2_item_formset:
@@ -6148,7 +6163,16 @@ def raw_material_estimation_popup(request,pk=None):
                     p_2_i_items_form.raw_material_ref_id = product_ref_items_instance
                     p_2_i_items_form.save()
                     logger.info(f"Saved material_product_estimation_items form instance with id={p_2_i_items_form.id}")
+                
+                close_window_script = """
+                <script>
+                window.opener.location.reload(true);  // Reload parent window if needed
+                window.close();  // Close current window
+                </script>
+                """
 
+                return HttpResponse(close_window_script)
+            
             except Exception as e:
                 logger.exception("Error saving form data in the POST request.")
                 return render(request, '500.html')  
@@ -6171,6 +6195,9 @@ def raw_material_estimation_calculate(request,pk):
     
     if pk:
         estimation_master_instance = get_object_or_404(raw_material_production_estimation,pk = pk)
+
+        for instance in estimation_master_instance.raw_material_production_estimations_total.all():
+            instance.delete()
         
         if estimation_master_instance:
             final_total_list = {}
@@ -6186,7 +6213,7 @@ def raw_material_estimation_calculate(request,pk):
                     material_name = x['material_name']
                     qty = x['total_comsumption']
 
-                    material_in_dict  = final_total_list.get('material_name')
+                    material_in_dict  = final_total_list.get(material_name)
 
                     if material_in_dict:
                         final_total_list[material_name] = qty + material_in_dict
@@ -6194,7 +6221,22 @@ def raw_material_estimation_calculate(request,pk):
                     else:
                         final_total_list[material_name] = qty
 
-            
+            for key, value in final_total_list.items():
+                try:
+                    godown_item_instance = item_godown_quantity_through_table.objects.get(Item_shade_name__items__item_name = key,godown_name=estimation_master_instance.raw_material_godown_id)
+                    godown_qty = godown_item_instance.quantity
+
+                except ObjectDoesNotExist:
+                    godown_qty = 0
+
+                total_godown_stock = godown_qty
+                total_balance_stock = godown_qty - value
+
+                raw_material_production_total.objects.create(raw_material_estination_master = estimation_master_instance,item_name=key,total_consump=value,godown_stock = total_godown_stock,balance_stock = total_balance_stock)
+
+        response_dict = raw_material_production_total.objects.filter(raw_material_estination_master = estimation_master_instance).values('item_name','total_consump','godown_stock','balance_stock')
+        
+        return JsonResponse({'response_dict':list(response_dict)})   
 def raw_material_estimate_delete(request,pk):
 
     try:
@@ -6205,7 +6247,7 @@ def raw_material_estimate_delete(request,pk):
 
     except IntegrityError as e:
         messages.error(request,f'Cannot delete {raw_material_estimation_instance.id} because it is referenced by other objects. {e}')
-    return redirect('account_sub_group-create')
+    return redirect('rawmaterial-estimation-list')
                 
         
 

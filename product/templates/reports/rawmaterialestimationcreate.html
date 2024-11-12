@@ -7,19 +7,20 @@
         <div class="mb-3">
             <label class="item-form">Material Godown Id :</label>
             <select type="text" class="item-select" name="raw_material_godown_id" id="id_raw_material_godown_id">
-                {% if form.instance.id %}
-                <option value="{{form.instance.raw_material_godown_id.id}}">{{form.instance.raw_material_godown_id.godown_name_raw}}</option>
+                {% if product_estimation_form.instance.id %}
+                <option value="{{product_estimation_form.instance.raw_material_godown_id.id}}">{{product_estimation_form.instance.raw_material_godown_id.godown_name_raw}}</option>
 
                 {% for x in godown_id %}
                 <option value="{{x.id}}">{{x.godown_name_raw}}</option>
                 {% endfor %}
-                {% elif not form.instance.id %}
+                {% elif not product_estimation_form.instance.id %}
                 <option value=""></option>
                 {% for x in godown_id %}
                 <option value="{{x.id}}">{{x.godown_name_raw}}</option>
                 {% endfor %}
                 {% endif %}
             </select>
+            <input type="hidden" id="id_unique_Value" name="unique_id" value="{{product_estimation_form.instance.pk}}">
         </div>
         
 <div class="row">
@@ -43,7 +44,7 @@
                     <input type="hidden" id="id_{{form.prefix}}-newid" name="{{form.prefix}}-newid" value="{{form.instance.id}}" class="newIdInstance">
                     <td><span>{{forloop.counter}}</span></td>
                     <td>
-                        <select type="text" class="item-select" name="{{form.prefix}}-product_id" id="id_{{form.prefix}}-product_id" required>
+                        <select type="text" class="item-select" name="{{form.prefix}}-product_id" id="id_{{form.prefix}}-product_id">
                             
                             {% if form.instance.id %}
                             <option value="{{form.instance.product_id.id}}">{{form.instance.product_id.Product_Name}}</option>
@@ -75,17 +76,36 @@
             </tbody>
         </table>
     </div>
-
+   
 </div>
-        
-        <button type="button" class="create-btn" id="addRowMaterial">Add +</button>
+      <div>
+        <button type="button" class="item-btn" id="addRowMaterial">Add +</button>
+      </div>  
+      
         
         <button type="submit" class="create-btn mt-3 mx-3">Submit</button>
     </form>
+    {% if instance_exists_check %}
+<button class="create-btn mt-3 mx-3" id="calculate" onclick="calculateRawMaterial(this)">Calculate</button>
+    <a href="{% url 'raw-material-estimation-calculate' product_estimation_form.instance.pk %}">Calculate</a>
+    {% endif %}
+
 </div>
 
 <script>
-
+    function calculateRawMaterial(button){
+        var unique_id = document.getElementById('id_unique_Value').value;
+        console.log(unique_id)
+        $.ajax({
+            url:"/rawmaterialestimationcalculate/",
+            type:"GET",
+            data:{'unique_id':unique_id},
+            success:function(data){
+                console.log(data)
+            }
+        })
+    }
+    calculateRawMaterial();
     document.addEventListener('DOMContentLoaded', function () {
 
         const addnewButton = document.getElementById('addRowMaterial');
