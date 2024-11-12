@@ -38,7 +38,7 @@ from openpyxl.styles import Border, Side
 from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
-                           Product2SubCategory,  ProductImage, RawStockTransferMaster, StockItem,
+                           Product2SubCategory,  ProductImage, RawStockTransferMaster, RawStockTrasferRecords, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
@@ -4733,6 +4733,7 @@ def purchaseordercuttingcreateupdate(request,p_o_pk,prod_ref_no,pk=None):
 
 @login_required(login_url='login')
 def purchaseordercuttinglistall(request):
+    current_date = datetime.date.today
 
     
     raw_materials_exists = purchase_order_for_raw_material.objects.filter(purchase_order_id=OuterRef('pk')
@@ -4760,7 +4761,8 @@ def purchaseordercuttinglistall(request):
         'number_of_pieces') - F('total_approved_qty_sum')).order_by('created_date')
 
 
-    return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,'purchase_orders_cutting_completed':purchase_orders_cutting_completed,'page_name':'Cutting Order List'})
+    return render(request,'production/purchaseordercuttinglistall.html', {'purchase_orders_cutting_pending':purchase_orders_cutting_pending,
+                                                'purchase_orders_cutting_completed':purchase_orders_cutting_completed,'page_name':'Cutting Order List','current_date':current_date})
 
 
 
@@ -4795,7 +4797,6 @@ def purchaseordercuttingapprovalcheckajax(request):
             dict_to_append = {
                 'Approved_Date': x.created_date,
                 'Approved_Name': 'approved name',  
-                
                 'Approved_Qty': x.total_approved_pcs,
                 'pending_Qty': x.total_pending_pcs
                 }
@@ -6041,127 +6042,173 @@ def rawmaterialestimationcreateupdate(request,pk=None):
 def raw_material_estimation_popup(request,pk=None):
 
     if pk:
-        product_ref_items_instance = raw_material_product_ref_items.objects.get(pk=pk) 
+        try:
+            product_ref_items_instance = raw_material_product_ref_items.objects.get(pk=pk) 
 
-        product_creation_instances = PProduct_Creation.objects.filter(Product=product_ref_items_instance.product_id) 
+            product_creation_instances = PProduct_Creation.objects.filter(Product=product_ref_items_instance.product_id) 
 
+            initial_p_2_i_dict = []
+            for instance in product_creation_instances:
+                dict_to_append = {
+                    'product_sku' :instance.PProduct_SKU,
+                    'product_color':instance.PProduct_color.color_name,
+                    'estimate_qty' : '0' 
+                    }
 
+                initial_p_2_i_dict.append(dict_to_append)
+            
 
-        initial_p_2_i_dict = []
-        for instance in product_creation_instances:
-            dict_to_append = {
-                'product_sku' :instance.PProduct_SKU,
-                'product_color':instance.PProduct_color.color_name,
-                'estimate_qty' : '0' 
-                }
-
-            initial_p_2_i_dict.append(dict_to_append)
+            product_2_items_instances_unique = product_2_item_through_table.objects.filter(
+                                PProduct_pk__Product__Product_Refrence_ID = product_ref_items_instance.product_id.Product_Refrence_ID, common_unique = False).order_by(
+                                    'row_number')
         
-
-        product_2_items_instances_unique = product_2_item_through_table.objects.filter(
-                            PProduct_pk__Product__Product_Refrence_ID = product_ref_items_instance.product_id.Product_Refrence_ID, common_unique = False).order_by(
-                                'row_number')
-    
-        product_2_items_instances_common = product_2_item_through_table.objects.filter(
-                            PProduct_pk__Product__Product_Refrence_ID = product_ref_items_instance.product_id.Product_Refrence_ID, common_unique = True).order_by(
-                                'row_number','id').distinct('row_number')
-    
+            product_2_items_instances_common = product_2_item_through_table.objects.filter(
+                                PProduct_pk__Product__Product_Refrence_ID = product_ref_items_instance.product_id.Product_Refrence_ID, common_unique = True).order_by(
+                                    'row_number','id').distinct('row_number')
         
-        
-        
-        
-        product_2_items_instances = product_2_items_instances_unique.union(product_2_items_instances_common)
-
-        
-        initial_p_2_i_items_dict = []
-        for query in product_2_items_instances:
-            rate_first = query.Item_pk.shades.order_by('id').first() 
             
             
-            if query.common_unique == True:
-                product_color_or_common_item = 'Common Item'
-                product_sku_or_common_item = 'Common Item'
-
-            else:
-                product_color_or_common_item = query.PProduct_pk.PProduct_color
-                product_sku_or_common_item = query.PProduct_pk.PProduct_SKU
             
-            initial_data_dict = {'product_sku': product_sku_or_common_item,
-                                'product_color' : product_color_or_common_item,
-                                'material_name':query.Item_pk.item_name,
-                                'rate':rate_first.rate,
-                                'panha':query.Item_pk.Panha,
-                                'units':query.Item_pk.Units,
-                                'g_total':query.grand_total,
-                                'g_total_combi':query.grand_total_combi,
-                                'consumption':'0',
-                                'combi_consumption':0,
-                                'total_comsumption':'0',
-                                'unit_value': query.Item_pk.unit_name_item.unit_name,
-                                'physical_stock':'0',
-                                'balance_physical_stock':'0',
-                                'row_number':query.row_number,
-                                'Remark':query.Remark, 
-                                'pcs': '0' }
             
-            initial_p_2_i_items_dict.append(initial_data_dict)
+            product_2_items_instances = product_2_items_instances_unique.union(product_2_items_instances_common)
+
+            
+            initial_p_2_i_items_dict = []
+            for query in product_2_items_instances:
+                rate_first = query.Item_pk.shades.order_by('id').first() 
+                
+                
+                if query.common_unique == True:
+                    product_color_or_common_item = 'Common Item'
+                    product_sku_or_common_item = 'Common Item'
+
+                else:
+                    product_color_or_common_item = query.PProduct_pk.PProduct_color
+                    product_sku_or_common_item = query.PProduct_pk.PProduct_SKU
+                
+                initial_data_dict = {'product_sku': product_sku_or_common_item,
+                                    'product_color' : product_color_or_common_item,
+                                    'material_name':query.Item_pk.item_name,
+                                    'rate':rate_first.rate,
+                                    'panha':query.Item_pk.Panha,
+                                    'units':query.Item_pk.Units,
+                                    'g_total':query.grand_total,
+                                    'g_total_combi':query.grand_total_combi,
+                                    'consumption':'0',
+                                    'combi_consumption':0,
+                                    'total_comsumption':'0',
+                                    'unit_value': query.Item_pk.unit_name_item.unit_name,
+                                    'physical_stock':'0',
+                                    'balance_physical_stock':'0',
+                                    'row_number':query.row_number,
+                                    'Remark':query.Remark, 
+                                    'pcs': '0' }
+                
+                initial_p_2_i_items_dict.append(initial_data_dict)
+
+            initial_sorted_data = sorted(initial_p_2_i_items_dict, key = itemgetter('row_number'), reverse=False)
+
+            raw_material_product_estimation_product_2_item_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_wise_qty, 
+                                                                    form=raw_material_product_estimation_product_2_item_form, extra = len(initial_p_2_i_dict), can_delete = False)
+                        
+            product_2_item_formset = raw_material_product_estimation_product_2_item_formset(request.POST or None, initial=initial_p_2_i_dict,instance=product_ref_items_instance)
 
 
 
-        raw_material_product_estimation_product_2_item_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_wise_qty, 
-                                                                form=raw_material_product_estimation_product_2_item_form, extra = len(initial_p_2_i_dict), can_delete = False)
+            raw_material_product_estimation_items_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_to_items, 
+                                                                    
+                                                    form=raw_material_product_estimation_items_form , extra = len(initial_sorted_data), can_delete = False)
+
+            
+            material_product_estimation_items_formset = raw_material_product_estimation_items_formset(request.POST or None, initial=initial_sorted_data,instance=product_ref_items_instance)
+
+
+        except ObjectDoesNotExist as e:
+            logger.error(f"Product reference item with pk={pk} does not exist: {e}")
+            return render(request, '404.html')  
         
-        product_2_item_formset = raw_material_product_estimation_product_2_item_formset(request.POST or None, initial=initial_p_2_i_dict,instance=product_ref_items_instance)
-
-        raw_material_product_estimation_items_formset = inlineformset_factory(raw_material_product_ref_items, raw_material_product_to_items, 
-                                                                
-                                                form=raw_material_product_estimation_items_form , extra = len(initial_p_2_i_items_dict), can_delete = False)
-
-        
-        material_product_estimation_items_formset = raw_material_product_estimation_items_formset(request.POST or None, initial=initial_p_2_i_items_dict,instance=product_ref_items_instance)
+        except Exception as e:
+            logger.exception("An unexpected error occurred while setting up the formsets.")
+            return render(request, '500.html')  
 
 
     if request.method == 'POST':
         if product_2_item_formset.is_valid() and material_product_estimation_items_formset.is_valid():
-            for form in product_2_item_formset:
-                if form.is_valid():
+            try:
+                for form in product_2_item_formset:
+                    
                     p_2_i_form = form.save(commit= False)
                     p_2_i_form.raw_material_ref_id = product_ref_items_instance
                     p_2_i_form.save()
+                    logger.info(f"Saved product_2_item form instance with id={p_2_i_form.id}")
 
-                else:
-                    print(p_2_i_form.errors)
-
-            for form in material_product_estimation_items_formset:
-                if form.is_valid():
+                for form in material_product_estimation_items_formset:
+                    
                     p_2_i_items_form = form.save(commit=False)
                     p_2_i_items_form.raw_material_ref_id = product_ref_items_instance
                     p_2_i_items_form.save()
+                    logger.info(f"Saved material_product_estimation_items form instance with id={p_2_i_items_form.id}")
 
-                else:
-                    print(p_2_i_form.errors)
+            except Exception as e:
+                logger.exception("Error saving form data in the POST request.")
+                return render(request, '500.html')  
 
         else:
-            print(product_2_item_formset.non_form_errors)
-            print(material_product_estimation_items_formset.non_form_errors)
-            print(product_2_item_formset.errors)
-            print(material_product_estimation_items_formset.errors)
+            logger.warning("Form validation failed in POST request.")
+            logger.debug(f"product_2_item_formset errors: {product_2_item_formset.errors}")
+            logger.debug(f"material_product_estimation_items_formset errors: {material_product_estimation_items_formset.errors}")
 
     return render(request,'reports/raw_material_estimation_popup.html',{
                   'product_2_item_formset': product_2_item_formset,
                   'raw_material_product_estimation_items_formset':material_product_estimation_items_formset,
-                   })
+                  'product_ref_items_instance':product_ref_items_instance})
 
 
 
 
 
 def raw_material_estimation_calculate(request,pk):
+    
     if pk:
-        estimation_master_instance = get_object_or_404(raw_material_production_estimation, pk = pk)
+        estimation_master_instance = get_object_or_404(raw_material_production_estimation,pk = pk)
         
         if estimation_master_instance:
-            pass
+            final_total_list = {}
+            for master_instance in estimation_master_instance.raw_material_production_estimations.all():
+                
+                primary_list = []
+
+                for master_items in master_instance.raw_material_product_ref_itemss_p_2_i.values('material_name','total_comsumption'):
+                    primary_list.append(master_items)
+                
+
+                for x in primary_list:
+                    material_name = x['material_name']
+                    qty = x['total_comsumption']
+
+                    material_in_dict  = final_total_list.get('material_name')
+
+                    if material_in_dict:
+                        final_total_list[material_name] = qty + material_in_dict
+
+                    else:
+                        final_total_list[material_name] = qty
+
+            
+def raw_material_estimate_delete(request,pk):
+
+    try:
+        raw_material_estimation_instance = get_object_or_404(raw_material_production_estimation,pk = pk)
+        raw_material_estimation_instance.delete()
+
+        messages.success(request,f'Account Sub Group {raw_material_estimation_instance.id} was deleted')
+
+    except IntegrityError as e:
+        messages.error(request,f'Cannot delete {raw_material_estimation_instance.id} because it is referenced by other objects. {e}')
+    return redirect('account_sub_group-create')
+                
+        
+
 
 
 
@@ -6546,8 +6593,20 @@ def godown_item_report(request,shade_id,g_id=None):
             material_color_shade = shade_name.item_shade_name,labour_workout_child_instance__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__temp_godown_select = g_id)
         
 
+
+        
+        Raw_Stock_Transfer_Master_object_qty_outward = RawStockTrasferRecords.objects.filter(master_instance__source_godown__godown_name_raw = godown_name, item_shade_transfer = shade_name) 
+
+        Raw_Stock_Transfer_Master_object_qty_inward = RawStockTrasferRecords.objects.filter(master_instance__destination_godown__godown_name_raw = godown_name, item_shade_transfer = shade_name) 
+
+        Raw_Stock_Transfer_Master_object_qty_both_with_shade_inward = []
+
     else:
-    
+        
+        Raw_Stock_Transfer_Master_object_qty_inward = []
+
+        Raw_Stock_Transfer_Master_object_qty_outward = []
+
         
         opening_godown_qty = opening_shade_godown_quantity.objects.filter(
             opening_purchase_voucher_godown_item=shade_name)
@@ -6575,7 +6634,11 @@ def godown_item_report(request,shade_id,g_id=None):
 
         labour_workout_report = labour_workout_cutting_items.objects.filter(material_name = shade_name.items.item_name,
             material_color_shade = shade_name.item_shade_name)
-    
+
+
+
+        
+        Raw_Stock_Transfer_Master_object_qty_both_with_shade_inward = RawStockTrasferRecords.objects.filter(item_shade_transfer = shade_name)
         
     for godown_qty in opening_godown_qty:
 
@@ -6660,6 +6723,59 @@ def godown_item_report(request,shade_id,g_id=None):
                 'closing_value': 0,
                 'rate': record.rate})
     
+    for stock_qty in Raw_Stock_Transfer_Master_object_qty_outward:
+
+        report_data.append({
+            'date': stock_qty.created_date,
+            'particular': 'Stock Transfer',
+            'voucher_type': 'Stock Transfer',
+            'vch_no': stock_qty.master_instance.voucher_no,
+            'inward_quantity': "",
+            'inward_value': "",
+            'outward_quantity': stock_qty.item_quantity_transfer,
+            'outward_value': round(stock_qty.item_shade_transfer.rate * stock_qty.item_quantity_transfer),
+            'closing_quantity': 0,
+            'closing_value': 0,
+            'rate': stock_qty.item_shade_transfer.rate
+        })
+
+    for stock_qty in Raw_Stock_Transfer_Master_object_qty_inward:
+
+        report_data.append({
+            'date': stock_qty.created_date,
+            'particular': 'Stock Transfer',
+            'voucher_type': 'Stock Transfer',
+            'vch_no': stock_qty.master_instance.voucher_no,
+            'inward_quantity': stock_qty.item_quantity_transfer,
+            'inward_value': round(stock_qty.item_shade_transfer.rate * stock_qty.item_quantity_transfer),
+            'outward_quantity': '',
+            'outward_value': '',
+            'closing_quantity': 0,
+            'closing_value': 0,
+            'rate':stock_qty.item_shade_transfer.rate
+        })
+
+
+
+    for stock_qty in Raw_Stock_Transfer_Master_object_qty_both_with_shade_inward:
+
+            report_data.append({
+                'date': stock_qty.created_date,
+                'particular': 'Stock Transfer',
+                'source_gowdown':stock_qty.master_instance.source_godown,
+                'destination_godown':stock_qty.master_instance.destination_godown,
+                'voucher_type': 'Stock Transfer',
+                'vch_no': stock_qty.master_instance.voucher_no,
+                'inward_quantity': stock_qty.item_quantity_transfer,
+                'inward_value': round(stock_qty.item_quantity_transfer * stock_qty.item_shade_transfer.rate),
+                'outward_quantity': stock_qty.item_quantity_transfer,
+                'outward_value': round(stock_qty.item_quantity_transfer * stock_qty.item_shade_transfer.rate),
+                'closing_quantity': 0,
+                'closing_value': 0,
+                'rate':stock_qty.item_shade_transfer.rate
+            })
+
+
     report_data_sorted = sorted(report_data, key = itemgetter('date'), reverse=False)
 
     """

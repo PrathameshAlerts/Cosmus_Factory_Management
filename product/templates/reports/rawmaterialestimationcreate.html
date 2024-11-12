@@ -6,20 +6,20 @@
         {% csrf_token %}
         <div class="mb-3">
             <label class="item-form">Material Godown Id :</label>
-        <select type="text" class="item-select" name="raw_material_godown_id" id="id_raw_material_godown_id" required>
-            {% if form.instance.id %}
-            <option value="{{form.instance.raw_material_godown_id.id}}">{{form.instance.raw_material_godown_id.godown_name_raw}}</option>
+            <select type="text" class="item-select" name="raw_material_godown_id" id="id_raw_material_godown_id" required>
+                {% if form.instance.id %}
+                <option value="{{form.instance.raw_material_godown_id.id}}">{{form.instance.raw_material_godown_id.godown_name_raw}}</option>
 
-            {% for x in godown_id %}
-            <option value="{{x.id}}">{{x.godown_name_raw}}</option>
-            {% endfor %}
-            {% elif not form.instance.id %}
-            <option value=""></option>
-            {% for x in godown_id %}
-            <option value="{{x.id}}">{{x.godown_name_raw}}</option>
-            {% endfor %}
-            {% endif %}
-        </select>
+                {% for x in godown_id %}
+                <option value="{{x.id}}">{{x.godown_name_raw}}</option>
+                {% endfor %}
+                {% elif not form.instance.id %}
+                <option value=""></option>
+                {% for x in godown_id %}
+                <option value="{{x.id}}">{{x.godown_name_raw}}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
         </div>
         
 
@@ -77,12 +77,6 @@
             </tbody>
         </table>
         <button type="button" class="create-btn" id="addRowMaterial">Add +</button>
-        <!-- {{product_estimation_form.as_p}}
-        
-        {{product_estimation_formset.management_form}}
-        {% for form in product_estimation_formset %}
-        {{form.as_p}} {% if form.instance.id %} <a href="{% url 'raw-material-estimation-popup' form.instance.pk %}">click</a> {% endif %}
-        {% endfor %} -->
         
         <button type="submit" class="create-btn mt-3 mx-3">Submit</button>
     </form>
@@ -137,10 +131,12 @@
                     deleteElement.value = "";
                     deleteElement.checked = false;
 
+
+
                     newForm.value = newFormCount + 1;
 
                     table.appendChild(newTable);
-
+                    deleteRow();
                 }
 
             })
@@ -148,10 +144,25 @@
         }
 
     })
+    function deleteRow(){
+        document.querySelectorAll('.delete-btn').forEach(function (button) {
+        button.addEventListener('click',function(){
+            var newRow = this.closest('tr');
+            var checkList = newRow.querySelector('.stock_deleteId[name^="raw_material_production_estimations-"][name$="-DELETE"]');
+            if(checkList){
+                checkList.checked = true;
+                checkList.value = 'true';
+                newRow.style.display = 'none';
+            }else {
+                console.error("Checkbox for deletion not found in this row");
+            }
 
-    $(document).ready(function(){
-
+        })
     })
+    }
+    deleteRow()
+
+  
 
     var popUpNewWindow = null;
     function openRawMaterialPopup(button){

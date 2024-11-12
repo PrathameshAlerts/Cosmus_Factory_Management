@@ -8,6 +8,12 @@
     <form method="POST">
         {% csrf_token %}
         <h4 class="mb-3">Raw Material Estimation</h4>
+        <div class="mb-2">
+            <label class="fw-bold">Product Name :</label>
+            <input type="text" name="product_name" class="productinput text-danger text-capitalize" value="{{product_ref_items_instance.product_id.Product_Name}}" id="id_product_name" readonly>
+            <label class="fw-bold">Total Qty :</label>
+            <input type="number" name="product_Qty" class="productinput text-danger" value="{{product_ref_items_instance.total_product_qty}}" id="id_product_Qty" readonly>
+        </div>
         <div class="row">
             <div class="col-lg-5">
                 <table class="table table-striped table-hover table-bordered">
@@ -37,10 +43,9 @@
                         {% endif %}
                         {% endfor %}
                     </tbody>
-                    <tbody class="mainTableList">
+                    <tbody class="mainTableList fw-bold">
                         <tr>
-                            <td class="fw-bold">Total</td>
-                            <td></td>
+                            <td colspan="2">Total</td>
                             <td> <input type="number" class="productorderqty-input text-danger pb-1 ms-3" name="processTotal" id="id_processTotal" value="" readonly></td>
                         </tr>
                     </tbody>
