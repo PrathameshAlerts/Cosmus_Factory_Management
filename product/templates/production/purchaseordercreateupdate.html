@@ -139,9 +139,9 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
-      <div class="modal-body justify-content-center text-center">
-        <img src="../../../static/images/Gear.png" alt="loading..." height="120px" width="120px">
-        </div>
+            <div class="modal-body justify-content-center text-center">
+                <img src="../../../static/images/Cosmus.png" alt="loading..." height="120px" width="120px" class="spinner_image">
+            </div>
         </div>
     </div> 
 </div>
@@ -194,8 +194,17 @@
         });
         $('#productForm').on('submit',function(){
             var buttons = $('#exampleModal');
-            buttons.show();
+            var balanceQty =$('#id_balance_quantity').val();
+            if(balanceQty !== "0"){
+                alert(error);
+                buttons.hide();
+               
+            }else{
+                buttons.show();
+            }
+     
         })
+
     })
   
     document.addEventListener('DOMContentLoaded', function () {

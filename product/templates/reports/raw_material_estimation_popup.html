@@ -1,24 +1,278 @@
 
 
+{% extends 'misc/navbar_popup.html' %}
+{% load static %}
+{% block body %}
 
+<div class="mt-2">
+    <form method="POST">
+        {% csrf_token %}
+        <h4 class="mb-3">Raw Material Estimation</h4>
+        <div class="mb-2">
+            <label class="fw-bold">Product Name :</label>
+            <input type="text" name="product_name" class="productinput text-danger text-capitalize" value="{{product_ref_items_instance.product_id.Product_Name}}" id="id_product_name" readonly>
+            <label class="fw-bold">Total Qty :</label>
+            <input type="number" name="product_Qty" class="productinput text-danger" value="{{product_ref_items_instance.total_product_qty}}" id="id_product_Qty" readonly>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="name_absolute sticky-top">
+                        <tr>
+                            <th>Sku</th>
+                            <th>Color</th>
+                            <th>Estimate Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mainTableList"> 
+                        {{product_2_item_formset.management_form}}
+                        {% for records in product_2_item_formset %}
+                        {{records.id}}
+                        {% if records.instance.id %}
+                        <tr>
+                           <td><input type="text" class="productinput" name="{{records.prefix}}-product_sku" value="{{records.instance.product_sku}}" maxlength="100" id="id_{{records.prefix}}-product_sku" readonly></td> 
+                           <td><input type="text" class="productinput" name="{{records.prefix}}-product_color" value="{{records.instance.product_color}}" maxlength="100" id="id_{{records.prefix}}-product_color" readonly></td> 
+                           <td><input type="number" class="productorderqty-input" name="{{records.prefix}}-estimate_qty" value="{{records.instance.estimate_qty}}" step="0.01" id="id_{{records.prefix}}-estimate_qty"></td> 
+                        </tr>
+                        {% elif not records.instance.id %}
+                        <tr>
+                            <td><input type="text" class="productinput" name="{{records.prefix}}-product_sku" value="{{records.initial.product_sku}}" maxlength="100" id="id_{{records.prefix}}-product_sku" readonly></td> 
+                            <td><input type="text" class="productinput" name="{{records.prefix}}-product_color" value="{{records.initial.product_color}}" maxlength="100" id="id_{{records.prefix}}-product_color" readonly></td> 
+                            <td><input type="number" class="productorderqty-input" name="{{records.prefix}}-estimate_qty" value="{{records.initial.estimate_qty}}" step="0.01" id="id_{{records.prefix}}-estimate_qty"></td> 
+                         </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                    <tbody class="mainTableList fw-bold">
+                        <tr>
+                            <td colspan="2">Total</td>
+                            <td> <input type="number" class="productorderqty-input text-danger pb-1 ms-3" name="processTotal" id="id_processTotal" value="" readonly></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="name_absolute sticky-top border-1">
+                <tr >
+                    <th>Product SKU</th>
+                    <th>Product Color</th>
+                    <th>Material Name</th>
+                    <th>Rate</th>
+                    <th>Panha</th>
+                    <th>Unit Name</th>
+                    <th>Units</th>
+                    <th>G-Total</th>
+                    <th>G-Total-Combi</th>
+                    <th>Comsump</th>
+                    <th>Comsump Combi</th>
+                    <th>Total Comsum</th>
+                    <th>Physical Stock</th>
+                    <th>Balance Stock</th>
+                </tr>
+            </thead>
+            <tbody class="mainTableList totalCalculate" style="max-height: 450px; overflow-y: auto;">
+                {{raw_material_product_estimation_items_formset.management_form}}
+                {% for form in raw_material_product_estimation_items_formset %}
+                
+                {{form.id}}
+                {% if form.instance.id %}
+                <tr class="text-nowrap">
+                    <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                    <td><input type="text" class="productinput rawProductColor" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                    <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.instance.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.instance.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.instance.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
+                    <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.instance.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.instance.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.instance.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                    <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.instance.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
+                    <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.instance.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-combi_consumption" class="productorderrawqty-input" value="{{form.instance.combi_consumption}}" step="0.01" id="id_{{form.prefix}}-combi_consumption" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.instance.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.instance.physical_stock |default_if_none:0}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorderrawqty-input" value="{{form.instance.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                </tr>
+                {% elif not form.instance.id %}
+                <tr class="text-nowrap">
+                    <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
+                    <td><input type="text" class="productinput rawProductColor" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
+                    <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.initial.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.initial.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
+                    <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.initial.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-units" class="productorderrawqty-input" value="{{form.initial.units}}" step="0.01" id="id_{{form.prefix}}-units" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-g_total" class="productorderrawqty-input" value="{{form.initial.g_total}}" step="0.01" id="id_{{form.prefix}}-g_total"readonly ></td>
+                    <td><input type="number" name="{{form.prefix}}-g_total_combi" class="productorderrawqty-input" value="{{form.initial.g_total_combi}}" step="0.01" id="id_{{form.prefix}}-g_total_combi"readonly ></td>
+                    <td><input type="number" name="{{form.prefix}}-consumption" class="productorderrawqty-input" value="{{form.initial.consumption}}" step="0.01" id="id_{{form.prefix}}-consumption" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-combi_consumption" class="productorderrawqty-input" value="{{form.initial.combi_consumption}}" step="0.01" id="id_{{form.prefix}}-combi_consumption" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-total_comsumption" class="productorderrawqty-input" value="{{form.initial.total_comsumption}}" step="0.01" id="id_{{form.prefix}}-total_comsumption" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-physical_stock" class="productorderrawqty-input" value="{{form.instance.physical_stock |default_if_none:0}}" step="0.01" id="id_{{form.prefix}}-physical_stock" readonly></td>
+                    <td><input type="number" name="{{form.prefix}}-balance_physical_stock" class="productorder_input " value="{{form.initial.balance_physical_stock}}" step="0.01" id="id_{{form.prefix}}-balance_physical_stock" readonly></td>
+                   <input type="hidden" name="{{form.prefix}}-Remark" class="productorder_input " value="{{form.initial.Remark}}" step="0.01" id="id_{{form.prefix}}-Remark" readonly>
+                  <input type="hidden" name="{{form.prefix}}-pcs" class="productorder_input " value="{{form.initial.pcs |default_if_none:0}}" step="0.01" id="id_{{form.prefix}}-pcs" readonly>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                <input type="hidden" id="id_physical_stock" value="">
+            </tbody>
+        </table>
+        <button type="submit" class="create-btn mt-3 mx-3" id="RawMaterialSubmit" name="submit-form" value="Submit" id="" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
+        </form>
+</div>
 
-{{product_ref_items_instance.product_id.Product_Name}}
-{{product_ref_items_instance.total_product_qty}}
-<form method="POST">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+      <div class="modal-body justify-content-center text-center">
+        <img src="../../../static/images/COSMUS LOGO FOR DUFFEL SHELL.svg" alt="loading..." height="120px" width="120px">
+        </div>
+        </div>
+    </div> 
+</div>
+<script>
+    function calculateRawData(){
+        let total = 0;
+        const processValues = document.querySelectorAll('input[name$="-estimate_qty"]');
+        processValues.forEach(element => {
+            console.log(element.value)
+            total += parseFloat(element.value);
+            document.getElementById('id_processTotal').value = total;
+        })
+        var newForms = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-TOTAL_FORMS').value;
 
-{% csrf_token %}
-{{product_2_item_formset.management_form}}
-{% for records in product_2_item_formset %}
-{{records}}
-{% endfor %}
+    for (var i = 0; i < newForms; i++) {
+    var panha = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-panha').value;
+    var units = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-units').value;
+    var grandTotal = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-g_total').value;
+    var physicalStock = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-physical_stock');
+    var newPhysicalStock = document.getElementById('id_physical_stock').value;
+    var materialName = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-material_name').value;
+    var gTotalCombi = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-g_total_combi').value;
 
+    var panhaValue = parseFloat(panha);
+    var unitsValue = parseFloat(units);
+    var grandTotalValue = parseFloat(grandTotal);
+    var gTotalCombiValue = parseFloat(gTotalCombi);
 
-{{raw_material_product_estimation_items_formset.management_form}}
-{% for records in raw_material_product_estimation_items_formset %}
+    if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && !isNaN(gTotalCombiValue)) {
+        var consumption = grandTotalValue / (panhaValue * unitsValue);
+        var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
+        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-consumption').value = consumption.toFixed(3);
+        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-combi_consumption').value = consumtionCombi.toFixed(3);
+    } else {
+        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-consumption').value = '0.000';
+        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-combi_consumption').value = '0.000';
+    }
+}
+    }
 
-{{records}}
+    calculateRawData()
+    function calculateTotalConsumption() {
+     
+        const processQty = document.querySelectorAll('input[name$="-estimate_qty"]');
+        processQty.forEach(input => {
+            const processQuantity = parseInt(input.value) || 0;
+            const row = input.closest('tr');
+            const productColor = row.querySelector('input[name$="-product_color"]').value;
+            const totalConsumptionRows = document.querySelectorAll('tbody.totalCalculate tr');
+            const processtotalQty = document.getElementById('id_processTotal');
 
-{% endfor %}
+            totalConsumptionRows.forEach(totalRow => {
+                const totalProductColor = totalRow.querySelector('.rawProductColor[name$="-product_color"]').value;
+                const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
+                const qtyPcs = totalRow.querySelector('input[name$="-pcs"]');
 
-<input type="submit" name="" id="">
-</form>
+                if (totalConsumptionInput) {
+                    if (totalProductColor === productColor) {
+                        // Calculate total consumption for matching colors
+                        const consumptionInput = totalRow.querySelector('input[name$="-consumption"]');
+                        const gTotalCombi = totalRow.querySelector('input[name$="-combi_consumption"]');
+                        const processData = document.getElementById('id_processTotal');
+                        const process = parseFloat(processData.value) || 0;;
+                        const gTotalValue = parseFloat(gTotalCombi.value) || 0;
+                        const consumption = parseFloat(consumptionInput.value) || 0;
+                        console.log('consumption',consumption)
+                        console.log('process',process)
+                        console.log('gTotalValue',gTotalValue)
+    
+                        let mainConsumption = gTotalValue * process;
+                        let ConsumptionTotal = processQuantity * consumption;
+                        let totalConsumption = ConsumptionTotal + mainConsumption;
+
+                        totalConsumptionInput.value = totalConsumption.toFixed(3);
+                        if (qtyPcs) {
+                            qtyPcs.value = processQuantity;
+                        }
+                    } else if (totalProductColor === "Common Item") {
+
+                        const consumptionInputCommon = totalRow.querySelector('input[name$="-consumption"]').value;
+                        const consumtionCombi = totalRow.querySelector('input[name$="-combi_consumption"]').value;
+                        const proccessValue = document.getElementById('id_processTotal');
+                        const consumptions = parseFloat(consumptionInputCommon) || 0;
+                        const totalValue = parseFloat(proccessValue.value) || 0;
+                        const consumtionCombiValue = parseFloat(consumtionCombi) || 0;
+                        let commonConsumption = totalValue * consumptions;
+                        let commonConsumtionCombi = consumtionCombiValue * consumptions;
+                        let totalCommonConsumtion = commonConsumption + commonConsumtionCombi;
+                        totalConsumptionInput.value = totalCommonConsumtion.toFixed(3);
+
+                        if (qtyPcs) {
+                            qtyPcs.value = totalValue;
+                        }
+                    }
+                }
+            });
+        })
+        balanceStock();
+    }
+    calculateTotalConsumption();
+    function balanceStock() {
+        var totals = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-TOTAL_FORMS').value;
+
+        for (var i = 0; i < totals; i++) {
+            var totalConsumtionValue = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-total_comsumption').value;
+            var newPhysicalStock = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-physical_stock').value;
+            var balanceStock = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-balance_physical_stock');
+
+            balanceStock = newPhysicalStock - totalConsumtionValue;
+            document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-balance_physical_stock').value = balanceStock.toFixed(3);
+            if (balanceStock > 0) {
+                document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-balance_physical_stock').style.color = 'green';
+            } else {
+                document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-balance_physical_stock').style.color = 'red';
+            }
+            if (newPhysicalStock > 0) {
+                document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-physical_stock').style.color = 'green';
+            } else {
+                document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-physical_stock').style.color = 'red';
+            }
+
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"] , input[name$="-g_total_combi"]');
+        var processQuantityElements = document.querySelectorAll('input[name$="-estimate_qty"]');
+        console.log('processQuantityElements',processQuantityElements)
+            formElements.forEach(element => {
+                element.addEventListener('focus', calculateRawData);
+                element.addEventListener('focus', calculateTotalConsumption);
+            });
+            processQuantityElements.forEach(elements => {
+                elements.addEventListener('input',calculateRawData);
+                elements.addEventListener('input',calculateTotalConsumption);
+            });
+            //submitForm();
+            calculateTotalConsumption();
+            calculateRawData(); // Initialize the calculation on page load
+    });
+    document.body.appendChild(document.getElementById('exampleModal'));
+    $(document).ready(function(){
+        $('#RawMaterialSubmit').on('click', function(){
+            var newSpinner = $('#exampleModal');
+            newSpinner.show();
+        })
+    })
+</script>
+
+{% endblock %}

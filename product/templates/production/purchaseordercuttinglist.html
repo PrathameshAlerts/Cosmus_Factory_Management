@@ -96,11 +96,19 @@
                   <th>Date</th>
                   <th>Approved By</th>
                   <th>Approved QTY</th>
-                  <th>Balance QTY</th>
+                  <th>Balance QTY LWO</th>
                 </tr>
               </thead>
               <tbody class="mainTableList" >
                   
+              </tbody>
+              <tbody class="mainTableList" id="totalApproved">
+                <tr>
+                  <td colspan="2" class="fw-bold">Total</td>
+                
+                  <td><span class="fw-bold" id="tApprovedQty">0</span></td>
+                  <td><span class="fw-bold" id="tBalanceQty">0</span></td>
+                </tr>
               </tbody>
             </table>
             <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">Close</button>
@@ -225,32 +233,6 @@
     
 });
 
-// document.addEventListener('DOMContentLoaded', function() {
-//   let statePushed = false;  // Flag to prevent multiple pushState calls
-
-//   // Show spinner on button click
-//   $('.item-btn, .viewBtn').click(function() {
-//     var newSpinner = $('#exampleModalSpinner');
-//     newSpinner.modal('show');  // Show the modal with the spinner
-
-//     // Only push state the first time the spinner is shown
-//     if (!statePushed) {
-//       history.pushState(null, null, location.href);
-//       statePushed = true;  // Set flag to true after pushing state
-//     }
-//   });
-
-//   // Hide spinner when back button or browser left arrow is clicked
-//   window.addEventListener('popstate', function() {
-//     var newSpinner = $('#exampleModalSpinner');
-//     console.log("popstate");
-//     if (newSpinner.hasClass('show')) {
-//       newSpinner.modal('hide');  // Hide the spinner modal
-//       statePushed = false;  // Reset flag to allow pushState on next navigation
-//     }
-//   });
-// });
-
 </script>
 <script>
 function approvedValues(){
@@ -325,10 +307,10 @@ function cancelCutting(){
   }
 
   function cuttingPkValue(button){
+    var TotalApprove = 0;
+    var totalBalance = 0;
     var title = button.getAttribute('data-id');
-    console.log(title)
     var Qty = document.getElementById('tQty');
-
     Qty.textContent = title
     var cuttingoderId = $(button).closest('tr').find('td').eq(2).text();
     var newTable = document.querySelector('#approvalDataLogs tbody'); 
@@ -342,7 +324,7 @@ function cancelCutting(){
       },
       success: function(response) {
           var allApproveLogs = response.approval_data;
-          console.log('allApproveLogs',allApproveLogs)
+  
          
           newTable.innerHTML = ''; // Clear previous table rows
      
@@ -374,9 +356,13 @@ function cancelCutting(){
               row.appendChild(cell3);
               row.appendChild(cell4);
 
+              TotalApprove += approveQty;
+              totalBalance += balanceQty;
               // Append the row to the table
               newTable.appendChild(row);
           });
+          document.getElementById('tApprovedQty').textContent = TotalApprove;
+          document.getElementById('tBalanceQty').textContent = totalBalance;
       },
       error: function(xhr, status, error) {
         console.error("Error occurred: " + error);
