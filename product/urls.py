@@ -228,6 +228,7 @@ urlpatterns = [
     path('rawmaterialestimationpopup/<int:pk>',views.raw_material_estimation_popup, name = 'raw-material-estimation-popup'),
     path('rawmaterialestimationcalculate/<int:pk>',views.raw_material_estimation_calculate, name = 'raw-material-estimation-calculate'),
 
+    path('rawmaterialestimatedelete/<int:pk>',views.raw_material_estimate_delete,name= 'raw-material-estimate-delete'),
 
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),

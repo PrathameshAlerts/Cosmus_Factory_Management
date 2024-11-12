@@ -5,7 +5,6 @@
 
 
 {% csrf_token %}
-
 {{product_estimation_form.as_p}}
 
 {{product_estimation_formset.management_form}}
@@ -15,6 +14,21 @@
 
 <input type="submit">
 </form>
+
+
+{% if product_estimation_form.instance.pk %}
+{{product_estimation_form.instance.pk}}
+{% elif not product_estimation_form.instance.pk %}
+create first
+
+{% endif %}
+
+<script>
+
+
+
+</script>
+
 
 
 {% endblock %}

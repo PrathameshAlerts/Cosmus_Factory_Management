@@ -42,7 +42,15 @@
                     {% for data in report_data %}
                     <tr>
                         <td>{{data.date}}</td>
-                        <td>{{data.particular}}</td>
+                        <td>{{data.particular}}<br>
+
+                            {% if data.destination_godown %}
+
+                            {{data.destination_godown}} <i class="fa-solid fa-arrow-left"></i> {{data.source_gowdown}}  
+
+                            {% endif %}
+
+                        </td>
                         <td>{{data.voucher_type}}</td>
                         <td>{{data.vch_no}}</td>
                         <td style="background-color: #90D5FF;" class="inwardQty">{{data.inward_quantity}}</td>
