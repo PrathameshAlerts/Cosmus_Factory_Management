@@ -131,43 +131,66 @@
     </div> 
 </div>
 <script>
-    function calculateRawData(){
+function calculateRawData(){
         let total = 0;
         const processValues = document.querySelectorAll('input[name$="-estimate_qty"]');
         processValues.forEach(element => {
-            console.log(element.value)
             total += parseFloat(element.value);
             document.getElementById('id_processTotal').value = total;
         })
-        var newForms = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-TOTAL_FORMS').value;
+    var newForms = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-TOTAL_FORMS').value;
 
     for (var i = 0; i < newForms; i++) {
-    var panha = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-panha').value;
-    var units = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-units').value;
-    var grandTotal = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-g_total').value;
-    var physicalStock = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-physical_stock');
-    var newPhysicalStock = document.getElementById('id_physical_stock').value;
-    var materialName = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-material_name').value;
-    var gTotalCombi = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-g_total_combi').value;
+        var panha = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-panha').value;
+        var units = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-units').value;
+        var grandTotal = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-g_total').value;
+        var physicalStock = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-physical_stock');
+        var newPhysicalStock = document.getElementById('id_physical_stock').value;
+        var materialName = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-material_name').value;
+        var gTotalCombi = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-g_total_combi').value;
 
-    var panhaValue = parseFloat(panha);
-    var unitsValue = parseFloat(units);
-    var grandTotalValue = parseFloat(grandTotal);
-    var gTotalCombiValue = parseFloat(gTotalCombi);
+        var panhaValue = parseFloat(panha);
+        var unitsValue = parseFloat(units);
+        var grandTotalValue = parseFloat(grandTotal);
+        var gTotalCombiValue = parseFloat(gTotalCombi);
 
-    if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && !isNaN(gTotalCombiValue)) {
-        var consumption = grandTotalValue / (panhaValue * unitsValue);
-        var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
-        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-consumption').value = consumption.toFixed(3);
-        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-combi_consumption').value = consumtionCombi.toFixed(3);
-    } else {
-        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-consumption').value = '0.000';
-        document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-combi_consumption').value = '0.000';
+        if (!isNaN(panhaValue) && !isNaN(unitsValue) && !isNaN(grandTotalValue) && !isNaN(gTotalCombiValue)) {
+            var consumption = grandTotalValue / (panhaValue * unitsValue);
+            var consumtionCombi = gTotalCombiValue / (panhaValue * unitsValue);
+            document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-consumption').value = consumption.toFixed(3);
+            document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-combi_consumption').value = consumtionCombi.toFixed(3);
+        } else {
+            document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-consumption').value = '0.000';
+            document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-combi_consumption').value = '0.000';
+        }
     }
 }
-    }
 
     calculateRawData()
+    function valueCheck() {
+    const estimateValues = document.querySelectorAll('input[name$="-estimate_qty"]');
+    var final = 0;
+    
+    estimateValues.forEach(element => {
+        final += parseFloat(element.value) || 0;
+        const row = element.closest('tr');
+
+       // const processtotalQty = parseInt(document.getElementById('id_processTotal').value);
+        const totalQty = parseInt(document.getElementById('id_product_Qty').value);
+        if (totalQty < final) {
+            // Set the current element to 0 and make it readonly if the condition is met
+            row.querySelector('input[name$="-estimate_qty"]').value = 0;
+            //row.querySelector('input[name$="-estimate_qty"]').readOnly = true;
+            calculateRawData();
+        } else {
+            // Otherwise, keep the element editable and retain its original value
+            row.querySelector('input[name$="-estimate_qty"]').value = element.value;
+            //row.querySelector('input[name$="-estimate_qty"]').readOnly = false;
+        }
+    });
+}
+
+    valueCheck();
     function calculateTotalConsumption() {
      
         const processQty = document.querySelectorAll('input[name$="-estimate_qty"]');
@@ -176,8 +199,7 @@
             const row = input.closest('tr');
             const productColor = row.querySelector('input[name$="-product_color"]').value;
             const totalConsumptionRows = document.querySelectorAll('tbody.totalCalculate tr');
-            const processtotalQty = document.getElementById('id_processTotal');
-
+          
             totalConsumptionRows.forEach(totalRow => {
                 const totalProductColor = totalRow.querySelector('.rawProductColor[name$="-product_color"]').value;
                 const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
@@ -192,10 +214,7 @@
                         const process = parseFloat(processData.value) || 0;;
                         const gTotalValue = parseFloat(gTotalCombi.value) || 0;
                         const consumption = parseFloat(consumptionInput.value) || 0;
-                        console.log('consumption',consumption)
-                        console.log('process',process)
-                        console.log('gTotalValue',gTotalValue)
-    
+                
                         let mainConsumption = gTotalValue * process;
                         let ConsumptionTotal = processQuantity * consumption;
                         let totalConsumption = ConsumptionTotal + mainConsumption;
@@ -212,6 +231,7 @@
                         const consumptions = parseFloat(consumptionInputCommon) || 0;
                         const totalValue = parseFloat(proccessValue.value) || 0;
                         const consumtionCombiValue = parseFloat(consumtionCombi) || 0;
+
                         let commonConsumption = totalValue * consumptions;
                         let commonConsumtionCombi = consumtionCombiValue * consumptions;
                         let totalCommonConsumtion = commonConsumption + commonConsumtionCombi;
@@ -253,14 +273,17 @@
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"] , input[name$="-g_total_combi"]');
         var processQuantityElements = document.querySelectorAll('input[name$="-estimate_qty"]');
-        console.log('processQuantityElements',processQuantityElements)
             formElements.forEach(element => {
                 element.addEventListener('focus', calculateRawData);
                 element.addEventListener('focus', calculateTotalConsumption);
             });
             processQuantityElements.forEach(elements => {
                 elements.addEventListener('input',calculateRawData);
-                elements.addEventListener('input',calculateTotalConsumption);
+                elements.addEventListener('input',function(){
+                    calculateTotalConsumption();
+                    valueCheck();
+                });
+
             });
             //submitForm();
             calculateTotalConsumption();

@@ -458,7 +458,7 @@ function updateBalanceAndProcessQty() {
             balanced.value = 0; // No remaining balance if process quantity exceeds balance view
         } else {
             totalProcess += processValue; // Accumulate process quantity if it's within the balance
-          var  balance = balanceViewValue - processValue; // Update balance for the row
+            var balance = balanceViewValue - processValue; // Update balance for the row
             
             balanced.value = balance;
             totalBalanceElement.value = balance;
