@@ -23,34 +23,34 @@ class Roles(models.Model):
     
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, username,is_active= True, is_superuser=False, is_staff= False, password=None, **extra_fields ): 
+    def create_user(self, username,is_active= True, is_superuser=False, is_staff= False, password=None, **extra_fields ): #takes in required fields username is required field as its a username field
         if not username:
             raise ValueError('users must have an User Name')
         
         if not password:
             raise ValueError('users must have password')
         
-        user_obj = self.model(username=username, **extra_fields) 
-        user_obj.set_password(password) 
+        user_obj = self.model(username=username, **extra_fields) # The line is creating a new user instance (user) by calling the model constructor (self.model) and providing values for the username field and any additional fields specified in extra_fields
+        user_obj.set_password(password) # The set_password method is typically called later to set the user's password before saving the user instance to the database.
         user_obj.is_staff = is_staff
         user_obj.is_active = is_active
         user_obj.is_superuser = is_superuser
-        user_obj.save(using=self._db) 
+        user_obj.save(using=self._db) # save user
 
-        
+        # Add user to groups based on roles
         self.update_user_groups(user_obj)
 
         return user_obj
 
-    def create_superuser(self, username, password=None, **extra_fields): 
+    def create_superuser(self, username, password=None, **extra_fields): #takes createuser and sets superuser attributes to true
         user = self.create_user(username, password = password, is_superuser=True , is_staff=True)
 
         return user
     
     def update_user_groups(self, user):
-        
+        # Clear existing groups
         user.groups.clear()
-        
+        # Add user to groups based on roles
         for role in user.role.all():
             group, created = Group.objects.get_or_create(name = role.user_type)
             user.groups.add(group)
@@ -77,23 +77,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
     
+    # def get_full_name(self):
+    #     return
     
+    # def get_short_name(self):
+    #     return
     
+    # @property
+    # def is_staff(self):
+    #     return self.is_staff
     
+    # @property
+    # def is_admin(self):
+    #     return self.is_admin
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    # @property
+    # def is_active(self):
+    #     return self.is_active
 
 
 
@@ -107,7 +107,7 @@ def update_user_groups_on_role_change(sender, instance, action, **kwargs):
     Triggered when roles are added, removed, or cleared.
     """
     if action in ["post_add", "post_remove", "post_clear"]:
-        CustomUser.objects.update_user_groups(instance)  
+        CustomUser.objects.update_user_groups(instance)  # Accessing manager from class, not instance
 
 
 
