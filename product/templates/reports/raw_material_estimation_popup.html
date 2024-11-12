@@ -66,7 +66,7 @@
                     <th>Balance Stock</th>
                 </tr>
             </thead>
-            <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+            <tbody class="mainTableList totalCalculate" style="max-height: 450px; overflow-y: auto;">
                 {{raw_material_product_estimation_items_formset.management_form}}
                 {% for form in raw_material_product_estimation_items_formset %}
                 
@@ -130,11 +130,11 @@
         let total = 0;
         const processValues = document.querySelectorAll('input[name$="-estimate_qty"]');
         processValues.forEach(element => {
+            console.log(element.value)
             total += parseFloat(element.value);
             document.getElementById('id_processTotal').value = total;
         })
         var newForms = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-TOTAL_FORMS').value;
-        console.log(newForms)
 
     for (var i = 0; i < newForms; i++) {
     var panha = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-' + i + '-panha').value;
@@ -170,15 +170,11 @@
             const processQuantity = parseInt(input.value) || 0;
             const row = input.closest('tr');
             const productColor = row.querySelector('input[name$="-product_color"]').value;
-            const totalConsumptionRows = document.querySelectorAll('tbody.mainTableList tr');
+            const totalConsumptionRows = document.querySelectorAll('tbody.totalCalculate tr');
             const processtotalQty = document.getElementById('id_processTotal');
 
-            // total += processQuantity;
-
-            // processtotalQty.value = total;
-            //  document.getElementById('id_processTotal').value = total;
             totalConsumptionRows.forEach(totalRow => {
-                const totalProductColor = totalRow.querySelector('.rawProductColor[name^="id_raw_material_product_ref_itemss_p_2_i-"][name$="-product_color"]').value;
+                const totalProductColor = totalRow.querySelector('.rawProductColor[name$="-product_color"]').value;
                 const totalConsumptionInput = totalRow.querySelector('input[name$="-total_comsumption"]');
                 const qtyPcs = totalRow.querySelector('input[name$="-pcs"]');
 
@@ -191,7 +187,10 @@
                         const process = parseFloat(processData.value) || 0;;
                         const gTotalValue = parseFloat(gTotalCombi.value) || 0;
                         const consumption = parseFloat(consumptionInput.value) || 0;
-
+                        console.log('consumption',consumption)
+                        console.log('process',process)
+                        console.log('gTotalValue',gTotalValue)
+    
                         let mainConsumption = gTotalValue * process;
                         let ConsumptionTotal = processQuantity * consumption;
                         let totalConsumption = ConsumptionTotal + mainConsumption;
@@ -222,6 +221,7 @@
         })
         balanceStock();
     }
+    calculateTotalConsumption();
     function balanceStock() {
         var totals = document.getElementById('id_raw_material_product_ref_itemss_p_2_i-TOTAL_FORMS').value;
 
@@ -247,10 +247,15 @@
     }
     document.addEventListener('DOMContentLoaded', () => {
         var formElements = document.querySelectorAll('input[name$="-panha"], input[name$="-units"], input[name$="-g_total"] , input[name$="-g_total_combi"]');
-        var processQuantityElements = document.querySelectorAll('input[name$="-estimate_qtyy"]');
+        var processQuantityElements = document.querySelectorAll('input[name$="-estimate_qty"]');
+        console.log('processQuantityElements',processQuantityElements)
             formElements.forEach(element => {
                 element.addEventListener('focus', calculateRawData);
                 element.addEventListener('focus', calculateTotalConsumption);
+            });
+            processQuantityElements.forEach(elements => {
+                elements.addEventListener('input',calculateRawData);
+                elements.addEventListener('input',calculateTotalConsumption);
             });
             //submitForm();
             calculateTotalConsumption();

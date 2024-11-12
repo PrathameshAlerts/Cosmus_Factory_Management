@@ -28,8 +28,4 @@
         </tbody>
     </table>
 </div>
-{% for record in product_estimation_instances %}
-{{record}} <a href = "{% url 'rawmaterial-estimation-update' record.pk %}"> edit </a>
-{% endfor %}
-
 {% endblock %}
