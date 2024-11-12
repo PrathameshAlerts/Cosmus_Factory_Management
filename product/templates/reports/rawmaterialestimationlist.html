@@ -22,10 +22,52 @@
                 <td>{{forloop.counter}}</td>
                 <td>{{record.raw_material_godown_id.godown_name_raw}}</td>
                 <td><a href = "{% url 'rawmaterial-estimation-update' record.pk %}"> <i class="fa-solid fa-pen-to-square px-2"></i> </a></td>
-                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
+                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{record.pk}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-trash text-danger px-2"></i></button></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body-text">
+          Are you sure you want to delete this Estimation?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+    document.body.appendChild(document.getElementById('exampleModal'));
+    $(document).ready(function() {
+        $('.delete-btn').click(function () {
+      var itemId = $(this).data('item-id');
+      var name = $(this).closest('tr').find('td').eq(1).text();
+      var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+
+      $('#modal-body-text').html('Are you sure you want to delete the Godown ' + coloredName + '?');
+      $('#confirmDeleteButton').attr('data-item-id', itemId);
+      $('#exampleModal').modal('show');
+    });
+
+    // Confirm delete button click event
+    $('#confirmDeleteButton').click(function () {
+      var itemId = $(this).data('item-id');
+      // Redirect to delete view
+      var deleteUrl = '/rawmaterialestimatedelete/'  + itemId
+
+      window.location.href = deleteUrl
+
+    });
+    })
+</script>
 {% endblock %}

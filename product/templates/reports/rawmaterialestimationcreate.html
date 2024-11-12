@@ -22,7 +22,8 @@
             </select>
         </div>
         
-
+<div class="row">
+    <div class="col-lg-8">
         <table class="table table-striped table-hover table-bordered" id="rawmaterialId">
             <thead class="name_absolute sticky-top">
                 <tr>
@@ -51,10 +52,7 @@
                             <option value="{{x.id}}">{{x.Product_Name}}</option>
                             {% endfor %}
 
-
                             {% elif not form.instance.id %}
-
-
                             <option value=""></option>
                             {% for x in product_all %}
                             <option value="{{x.id}}">{{x.Product_Name}}</option>
@@ -68,7 +66,7 @@
                         <input type="number" class="item-select" name="{{form.prefix}}-total_product_qty" value="{{form.instance.total_product_qty}}" id="id_{{form.prefix}}-total_product_qty">
                     </td>
                     <td>{% if form.instance.id %}
-                        <button class="border-0 bg-transparent" onclick="openRawMaterialPopup(this)">click</button>
+                        <button type="button" class="rounded px-3 py-1 bg-success text-white border-0" onclick="openRawMaterialPopup(this)">click</button>
                          {% endif %}
                     </td>
                     <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE"id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
@@ -76,6 +74,10 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+</div>
+        
         <button type="button" class="create-btn" id="addRowMaterial">Add +</button>
         
         <button type="submit" class="create-btn mt-3 mx-3">Submit</button>
