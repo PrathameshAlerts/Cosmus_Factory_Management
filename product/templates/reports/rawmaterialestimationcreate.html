@@ -50,11 +50,7 @@
                             {% for x in product_all %}
                             <option value="{{x.id}}">{{x.Product_Name}}</option>
                             {% endfor %}
-
-
                             {% elif not form.instance.id %}
-
-
                             <option value=""></option>
                             {% for x in product_all %}
                             <option value="{{x.id}}">{{x.Product_Name}}</option>
@@ -79,14 +75,42 @@
         <button type="button" class="create-btn" id="addRowMaterial">Add +</button>
         
         <button type="submit" class="create-btn mt-3 mx-3">Submit</button>
+
+        <input type="hidden" id="id_unique_Value" name="unique_id" value="{{product_estimation_form.instance.pk}}">
     </form>
     {% if instance_exists_check %}
-    <a href="{% url 'raw-material-estimation-calculate' product_estimation_form.instance.pk %}">Calculate</a>
+    <button class="create-btn mt-3 mx-3" id="calculate" onclick="calculateRawMaterial(this)">Calculate</button>
     {% endif %}
 
 </div>
 
 <script>
+    
+        function calculateRawMaterial(button){
+    
+            var unique_id = document.getElementById('id_unique_Value').value;
+    
+            $.ajax({
+    
+                url:"/rawmaterialestimationcalculate/",
+    
+                type:"GET",
+    
+                data:{'unique_id':unique_id},
+    
+                success:function(data){
+
+                    console.log(data.response_dict)
+    
+                }
+    
+            })
+    
+        }
+    
+        calculateRawMaterial();
+
+
 
     document.addEventListener('DOMContentLoaded', function () {
 
