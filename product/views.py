@@ -6035,7 +6035,7 @@ def rawmaterialestimationcreateupdate(request,pk=None):
                         product_e_form = form.save(commit=False)
                         product_e_form.raw_material_estimation_master = product_estimation_form_instance
                         product_e_form.save()
-            print(product_estimation_form_instance.pk)
+            
             return redirect(reverse('rawmaterial-estimation-update', args=[product_estimation_form_instance.pk]))
 
     return render(request,'reports/rawmaterialestimationcreate.html',{
@@ -6191,10 +6191,12 @@ def raw_material_estimation_popup(request,pk=None):
 
 
 
-def raw_material_estimation_calculate(request,pk):
+def raw_material_estimation_calculate(request):
     
-    if pk:
-        estimation_master_instance = get_object_or_404(raw_material_production_estimation,pk = pk)
+    master_pk = request.GET.get('unique_id')
+    print(master_pk)
+    if master_pk:
+        estimation_master_instance = get_object_or_404(raw_material_production_estimation,pk = master_pk)
 
         for instance in estimation_master_instance.raw_material_production_estimations_total.all():
             instance.delete()
@@ -6237,6 +6239,10 @@ def raw_material_estimation_calculate(request,pk):
         response_dict = raw_material_production_total.objects.filter(raw_material_estination_master = estimation_master_instance).values('item_name','total_consump','godown_stock','balance_stock')
         
         return JsonResponse({'response_dict':list(response_dict)})   
+
+
+
+
 def raw_material_estimate_delete(request,pk):
 
     try:
