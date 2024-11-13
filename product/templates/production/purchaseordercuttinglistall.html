@@ -126,6 +126,42 @@
     </div>
 </div>
 
+
+<div>
+
+    <table>
+        <tr>
+            <th>No</th>
+            <th>Vch No</th>
+            <th>Date</th>
+            <th>P.O No</th>
+            <th>Product Ref. No </th>
+            <th>Model Name</th>
+            <th>Party Name</th>
+            <th>Total P.O Qty</th>
+            <th>Total Processed Qty</th>
+            <th>balance For Cutting</th>
+            <th>View</th>
+        </tr>
+        {% for instance in purchase_order_cutting_all %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{instance.raw_material_cutting_id}}</td>
+            <td>{{instance.created_date}}</td>
+            <td>{{instance.purchase_order_id.purchase_order_number}}</td>
+            <td>{{instance.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+            <td>{{instance.purchase_order_id.product_reference_number.Model_Name}}</td>
+            <td>{{instance.purchase_order_id.ledger_party_name.name}}</td>
+            <td>{{instance.purchase_order_id.number_of_pieces}}</td>
+            <td>{{instance.processed_qty}}</td>
+            <td>{{instance.balance_qty}}</td>
+            <td><a href="{% url 'purchase-order-cutting-update' instance.purchase_order_id.id instance.purchase_order_id.product_reference_number.Product_Refrence_ID instance.raw_material_cutting_id %}">View</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+</div>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">

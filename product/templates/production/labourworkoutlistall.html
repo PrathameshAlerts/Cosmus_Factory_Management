@@ -174,6 +174,46 @@
       </div>
     </div>
   </div>
+
+
+  <div>
+
+
+    <table>
+      <tr>
+        <th>No</th>
+        <th>Challan No</th>
+        <th>Date</th>
+        <th>Vendor Name</th>
+        <th>LWO Total</th>
+        <th>LWI Total</th>
+        <th>Product Ref No</th>
+        <th>Model Name</th>
+        <th>party Name</th>
+        <th>P.O No</th>
+        <th>P.O Qty</th>
+        <th>Entree By</th>
+        <th>View</th>
+      </tr>
+      {% for instance in labour_workout_instance_all %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{instance.challan_no}}</td>
+        <td>{{instance.created_date}}</td>
+        <td>{{instance.labour_name.name}}</td>
+        <td>{{instance.labour_workout_master_instance.total_approved_pcs}}</td>
+        <td>{{instance.total_labour_workin_qty}}</td>
+        <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+        <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
+        <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
+        <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+        <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
+        <td>Entry By</td>
+        <td><a href="{% url 'labour-workout-single-view' instance.id %}">View</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 <script>
       document.body.appendChild(document.getElementById('staticBackdrop'));
     document.addEventListener("DOMContentLoaded", function () {

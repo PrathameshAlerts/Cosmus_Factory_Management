@@ -20,9 +20,11 @@
                 {% endfor %}
                 {% endif %}
             </select>
+            <input type="hidden" id="id_unique_Value" name="unique_id" value="{{product_estimation_form.instance.pk}}">
         </div>
         
-
+<div class="row">
+    <div class="col-lg-8">
         <table class="table table-striped table-hover table-bordered" id="rawmaterialId">
             <thead class="name_absolute sticky-top">
                 <tr>
@@ -64,19 +66,28 @@
                         <input type="number" class="item-select" name="{{form.prefix}}-total_product_qty" value="{{form.instance.total_product_qty}}" id="id_{{form.prefix}}-total_product_qty">
                     </td>
                     <td>{% if form.instance.id %}
-                        <button class="border-0 bg-transparent" onclick="openRawMaterialPopup(this)">click</button>
-                         {% endif %}
+                        <button type="button" id="id_{{form.prefix}}-clickBtn" class="rounded px-3 py-1 bg-success text-white border-0" onclick="openRawMaterialPopup(this)">click</button>
+
+                        {% if form.instance.raw_material_product_ref_itemss_p_2_i.exists %}
+                        <span id="id_{{form.prefix}}-icons" class="ms-5"><i class="fa-solid fa-circle-check"></i></span>
+                        {% endif %}
+                        {% endif %}
+                        
                     </td>
                     <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE"id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <button type="button" class="create-btn" id="addRowMaterial">Add +</button>
+    </div>
+   
+</div>
+      <div>
+        <button type="button" class="item-btn" id="addRowMaterial">Add +</button>
+      </div>  
+      
         
         <button type="submit" class="create-btn mt-3 mx-3">Submit</button>
-
-        <input type="hidden" id="id_unique_Value" name="unique_id" value="{{product_estimation_form.instance.pk}}">
     </form>
     {% if instance_exists_check %}
     <button class="create-btn mt-3 mx-3" id="calculate" onclick="calculateRawMaterial(this)">Calculate</button>
@@ -84,29 +95,72 @@
 
 </div>
 
+<div>
+    <table class="table table-striped table-hover table-bordered" >
+        <thead class="name_absolute sticky-top">
+            <tr>
+            
+                <th>Product Name</th>
+                <th>Total Consump</th>
+                <th>Godown Stock</th>
+                <th>Balance Stock</th>
+            </tr>
+        </thead>
+        <tbody class="mainTableList calculateTable" id="">
+            
+        </tbody>
+    </table>
+</div>
+
 <script>
     
         function calculateRawMaterial(button){
     
             var unique_id = document.getElementById('id_unique_Value').value;
-    
-            $.ajax({
-    
-                url:"/rawmaterialestimationcalculate/",
-    
-                type:"GET",
-    
+            $.ajax({  
+                url:"/rawmaterialestimationcalculate/",   
+                type:"GET",   
                 data:{'unique_id':unique_id},
     
                 success:function(data){
-
-                    console.log(data.response_dict)
+                    var responseData = data.response_dict
+                    var table = document.querySelector('.calculateTable');
     
+                    table.innerHTML = ''; // Clear previous table rows
+                    responseData.forEach(function(items){
+                        console.log(items)
+                        var itemName = items.item_name || 'N/A';
+                        var totalConsump = items.total_consump || 0;
+                        var godownStock = items.godown_stock || 0;
+                        var balanceStock = items.balance_stock || 0;
+
+                        var row = document.createElement('tr');
+
+                        var cell1 = document.createElement('td');
+                        cell1.textContent = itemName;
+                        var cell2 = document.createElement('td');
+                        cell2.textContent = totalConsump;
+                        var cell3 = document.createElement('td');
+                        cell3.textContent = godownStock;
+                        var cell4 = document.createElement('td');
+                        cell4.textContent = balanceStock;
+                     
+                        row.appendChild(cell1);
+                        row.appendChild(cell2);
+                        row.appendChild(cell3);
+                        row.appendChild(cell4);
+
+                        table.appendChild(row);
+                    }) 
+                    
                 }
     
             })
     
         }
+    
+       
+
 
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -156,8 +210,15 @@
                     deleteElement.value = "";
                     deleteElement.checked = false;
 
+                    const clickBtns = newTable.querySelector('button[id$="-clickBtn"]');
+                    clickBtns.id = `id_raw_material_production_estimations-${newFormCount}-clickBtn`;
+                    clickBtns.display = 'none';
 
+                    const newIcons = newTable.querySelector('span[id$="-icons"]')
+                    newIcons.id = `id_raw_material_production_estimations-${newFormCount}-icons`;
+                    newIcons.display ='none';
 
+                    
                     newForm.value = newFormCount + 1;
 
                     table.appendChild(newTable);
