@@ -158,7 +158,7 @@
           <td>{{instance.total_balance_pcs}}</td>
           <td>{{instance.labour_voucher_number.challan_no}}</td>
           <td>{{instance.labour_voucher_number.total_process_pcs}}</td>
-          <td></td>
+          <td><a href="{% url 'labour-workin-view-update' instance.labour_voucher_number.id instance.id True %}">View</a></td>
         </tr>
         {% endfor %}
       </table>
