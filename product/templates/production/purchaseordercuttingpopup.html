@@ -30,9 +30,9 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>
-                        <td><span class="text-danger ms-2 me-3 approvedcheckValue"></span>
-                            <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-current_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-current_pcs">
-                            <input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="0" id="id_{{form.prefix}}-approved_pcs">
+                        <td><span class="text-danger ms-2 me-3">{{form.instance.approved_pcs}}</span>
+                            <!-- <input type="number" class="productorderqty-input" name="{{form.prefix}}-" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"> -->
+                            <input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs">
                         
                         </td>
                       
@@ -107,16 +107,14 @@ function quantityCheck() {
         var approvedValues = parseInt(element.value);
         var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-cutting_quantity"]').value);
         var currentApproveValues = parseInt(element.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value);
-        var currentValue = parseInt(element.closest('tr').querySelector('[name$= "-current_pcs"]').value);
+        
        
-        var currentvalueCheck = approvedValues + currentValue;
-            if (cuttingApprovedValue < currentvalueCheck) {
+            if (cuttingApprovedValue < approvedValues) {
                 element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
             
-            if (!isNaN(currentvalueCheck) && !isNaN(cuttingApprovedValue)) {
-
-                var balanceApprovedValue = cuttingApprovedValue - currentvalueCheck;
+            if (!isNaN(approvedValues) && !isNaN(cuttingApprovedValue)) {
+                var balanceApprovedValue = cuttingApprovedValue - approvedValues;
                 if (balanceApprovedValue < 0) {
                     element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = cuttingApprovedValue;
                 } else {
@@ -130,23 +128,15 @@ function quantityCheck() {
 
 
     function submitForm(){
-        var totalQty = 0;
         var balanceApprove = document.querySelectorAll('[name$="-balance_pcs"]');
         var currentApproved = document.querySelectorAll('[name$="-approved_pcs"]');
-        var submitBtn = document.querySelector('.create-btn');
-        var checkBoxBtn = document.getElementById('id_checkAll');
+       
         currentApproved.forEach(values =>{
-            var current = parseInt(values.value) || 0;
-            var currentdata = parseInt(values.closest('tr').querySelector('[name$= "-current_pcs"]').value) || 0;
-            console.log('currentdata',currentdata)
-            console.log('current',current)
-            var updateCurrentApproved = currentdata + current;
-            console.log('updateCurrentApproved',updateCurrentApproved)
-            values.closest('tr').querySelector('.approvedcheckValue').textContent = updateCurrentApproved;
-            values.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value = updateCurrentApproved;
+            var current = parseInt(values.value);
+            values.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value = current;
 
         })
-      
+        var totalQty = 0;
         balanceApprove.forEach(ele =>{
             var balance = parseInt(ele.value);
            totalQty = totalQty + balance;
@@ -154,49 +144,61 @@ function quantityCheck() {
             return totalQty
         })
 
-        if(totalQty === 0){  
-            var approveBtn = document.querySelectorAll('[name$= "-approved_pcs"]');
-            approveBtn.forEach(element =>{
-                element.setAttribute('readonly', true);
-            })
-            submitBtn.style.display = 'none'; 
-            checkBoxBtn.disabled = true;
-        }else{
-            submitBtn.style.display = 'block';
-            checkBoxBtn.disabled = false;
+        if(totalQty === 0){
+                
+               var approveBtn = document.querySelectorAll('[name$= "-approved_pcs"]');
+               approveBtn.forEach(element =>{
+                   element.setAttribute('readonly', true);
+               })
+                
+                
+    }
+    checkBoxAndsubmit(totalQty)
+    }
+    function checkBoxAndsubmit(totalQty){
+        var submitBtn = document.querySelector('.create-btn');
+        var checkBoxBtn = document.getElementById('id_checkAll');
+      if(totalQty === 0){
+         submitBtn.style.display = 'none'; 
+         checkBoxBtn.disabled = true;
+      }else{
+        submitBtn.style.display = 'block';
+        checkBoxBtn.disabled = false;
+      }
+        
+    }
+    //checkBoxAndsubmit()
+    function approveValueCheck(){
+        var approveCheck = document.querySelectorAll('[name$= "-approved_pcs"]');
+        var submitButton = document.getElementById('cuttingOrderApproved');
+        var hasInvalidValue = false; 
+
+        approveCheck.forEach(function(data){
+            var approveValue = parseInt(data.value);
+            var closerstTr = data.closest('tr');
+            var currentCheckValue = closerstTr.querySelector('[name$= "-currentApproved_pcs"]').value;
+         if (approveValue != 0) {
+            // Check if approvedValues is less than currentCheckValue
+            if (approveValue < currentCheckValue) {
+
+                data.style.borderColor = 'red';
+                hasInvalidValue = true; 
+             
+             
+            }else{
+                data.style.borderColor = 'gray';
+              
+            }
+        } 
+        });
+        if (hasInvalidValue) {
+            submitButton.style.cursor = "not-allowed";
+            submitButton.disabled = true;
+        } else {
+            submitButton.style.cursor = "pointer";
+            submitButton.disabled = false;
         }
     }
-    // function approveValueCheck(){
-    //     var approveCheck = document.querySelectorAll('[name$= "-approved_pcs"]');
-    //     var submitButton = document.getElementById('cuttingOrderApproved');
-    //     var hasInvalidValue = false; 
-
-    //     approveCheck.forEach(function(data){
-    //         var approveValue = parseInt(data.value);
-    //         var closerstTr = data.closest('tr');
-    //         var currentCheckValue = closerstTr.querySelector('[name$= "-currentApproved_pcs"]').value;
-    //         var currentqty = parseInt(closerstTr.querySelector('[name$= "-current_pcs"]').value);
-
-    //         var newCurrentValue = approveValue + currentqty;
-    //      if (approveValue != 0) {
-    //         // Check if approvedValues is less than currentCheckValue
-    //         if (newCurrentValue < currentCheckValue) {
-
-    //             data.style.borderColor = 'red';
-    //             hasInvalidValue = true; 
-    //         }else{
-    //             data.style.borderColor = 'gray';
-    //         }
-    //     } 
-    //     });
-    //     // if (hasInvalidValue) {
-    //     //     submitButton.style.cursor = "not-allowed";
-    //     //     submitButton.disabled = true;
-    //     // } else {
-    //     //     submitButton.style.cursor = "pointer";
-    //     //     submitButton.disabled = false;
-    //     // }
-    // }
 
     document.addEventListener('DOMContentLoaded', function () {
     
@@ -207,25 +209,23 @@ function quantityCheck() {
         approve.forEach(function (element) {
             element.addEventListener('input', () => {
                 quantityCheck();
-                submitForm();
-                ///approveValueCheck();
+                approveValueCheck();
               
             });
             element.addEventListener('focus',()=>{
-                //approveValueCheck();
+                approveValueCheck();
             })
         })
     
-        // document.getElementById('purchaseOderCutting').addEventListener('submit',function(){
-        //     approveValueCheck();
-        // })
+        document.getElementById('purchaseOderCutting').addEventListener('submit',function(){
+            approveValueCheck();
+        })
 
     })
 
 
     if (window.opener) {
         const dataFromParent = window.opener.sharedData;
-        console.log(dataFromParent)
         var TotalApprove = 0;
         var totalBalance = 0;
         var newTable = document.querySelector('#approvalDataLog tbody'); 

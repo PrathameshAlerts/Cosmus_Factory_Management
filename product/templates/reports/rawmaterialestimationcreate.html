@@ -66,8 +66,8 @@
                         <input type="number" class="item-select" name="{{form.prefix}}-total_product_qty" value="{{form.instance.total_product_qty}}" id="id_{{form.prefix}}-total_product_qty">
                     </td>
                     <td>{% if form.instance.id %}
-                        <button type="button" class="rounded px-3 py-1 bg-success text-white border-0" onclick="openRawMaterialPopup(this)">click</button>
-                        <span class="ms-5"><i class="fa-solid fa-circle-check"></i></span>
+                        <button type="button" class="rounded px-3 py-1 bg-success text-white border-0" id="{{form.prefix}}-clickBtn" onclick="openRawMaterialPopup(this)">click</button>
+                        <span class="ms-5" id="{{form.prefix}}-icons"><i class="fa-solid fa-circle-check"></i></span>
                         {% endif %}
                         
                     </td>
@@ -90,28 +90,27 @@
     <button class="create-btn mt-3 mx-3" id="calculate" onclick="calculateRawMaterial(this)">Calculate</button>
     {% endif %}
 
-</div>
+</div> 
 
 <div>
     <table class="table table-striped table-hover table-bordered" >
         <thead class="name_absolute sticky-top">
             <tr>
-            
                 <th>Product Name</th>
                 <th>Total Consump</th>
                 <th>Godown Stock</th>
                 <th>Balance Stock</th>
             </tr>
         </thead>
-        <tbody class="mainTableList calculateTable" id="">
+        <tbody class="mainTableList calculateTable">
             
         </tbody>
-    </table>
+    </table>cula
 </div>
 
 <script>
     
-        function calculateRawMaterial(button){
+        function calteRawMaterial(button){
     
             var unique_id = document.getElementById('id_unique_Value').value;
             $.ajax({  
@@ -156,10 +155,6 @@
     
         }
     
-       
-
-
-
     document.addEventListener('DOMContentLoaded', function () {
 
         const addnewButton = document.getElementById('addRowMaterial');
@@ -207,6 +202,13 @@
                     deleteElement.value = "";
                     deleteElement.checked = false;
 
+                    const clickBtns = newTable.querySelector('button[id$="-clickBtn"]');
+                    clickBtns.id = `id_raw_material_production_estimations-${newFormCount}-clickBtn`;
+                    clickBtns.style.display = 'none';
+
+                    const newIcons = newTable.querySelector('span[id$="-icons"]')
+                    newIcons.id = `id_raw_material_production_estimations-${newFormCount}-icons`;
+                    newIcons.style.display ='none';
 
 
                     newForm.value = newFormCount + 1;
