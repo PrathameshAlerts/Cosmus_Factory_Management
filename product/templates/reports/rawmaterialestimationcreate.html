@@ -116,7 +116,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="modal-btn">Save changes</button>
+          <button type="button" class="modal-btn" onclick="dowunloadExel(this)">Download Excel</button>
         </div>
       </div>
     </div>
@@ -176,14 +176,25 @@
                         row.appendChild(cell4);
 
                         table.appendChild(row);
-                    }) 
+                    })
                     
                 }
     
             })
-    
         }
     calteRawMaterial()
+
+    function dowunloadExel(click){
+        var unique_id = document.getElementById('id_unique_Value').value;
+        $.ajax({
+            url:"//",   
+            type:"GET",   
+            data:{'unique_id':unique_id},
+            success:function(data){
+                console.log(data);
+            }
+        })
+    }
     document.addEventListener('DOMContentLoaded', function () {
 
         const addnewButton = document.getElementById('addRowMaterial');
