@@ -1507,21 +1507,24 @@ input[type=number] {
     height: 33px;
 }
 .purchase-input{
-    width: 79px;
+    width: 70px;
     border: 1px solid #cecdcd ;
     border-radius: 2px;
     padding-left: 5px; 
     height: 33px;
 }
 .purchase-mark{
-    width: 50px;
+    width: 42px;
     border: 1px solid #cecdcd ;
     border-radius: 2px;
     padding-left: 5px; 
     height: 33px;
 }
+table>:not(caption)>*>*{
+    padding: .4rem .4rem !important;
+}
 .purchase-amount{
-    width: 115px;
+    width: 110px;
     border: 1px solid #cecdcd ;
     border-radius: 3px;
     padding-left: 5px;
