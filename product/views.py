@@ -863,9 +863,9 @@ def item_list(request):
     if g_search != '':
         queryset = queryset.filter(Q(item_name__icontains=g_search)|
                                                 Q(Item_Color__color_name__icontains=g_search)|
-                                                Q(Fabric_Group__fab_grp_name__icontains=g_search))
+                                                Q(Fabric_Group__fab_grp_name__icontains=g_search)|
+                                                Q(Material_code__icontains=g_search))
         
-
     sort_name = request.GET.get('sort_name')
 
 
@@ -1914,8 +1914,6 @@ def stockTrasferRaw(request, pk=None):
                 item_name =  item.items.item_name
                 item_id = item.items.id
                 items_in_godown[item_id] = item_name
-
-
 
             
             
@@ -3570,7 +3568,6 @@ def excel_download_production(request, module_name, pk):
                     p_color = instance.product_color
 
                 else:
-
                     p_color = ''
 
                 sheet.cell(row=index, column=start_column_items + 1).value = p_color 
@@ -4171,13 +4168,12 @@ def excel_download_production(request, module_name, pk):
                     else:
                         item_name_present = record.Item_pk.item_name
 
-
                     list = [
                         item_name_present,
                         instance.part_name,
                         part_pcs * labour_workout_instance.total_process_pcs
-                        
                         ]
+                    
                     rows_iterated_inner = rows_iterated_inner + 1
 
                     item_name_last = record.Item_pk.item_name
@@ -4186,6 +4182,7 @@ def excel_download_production(request, module_name, pk):
 
                 for x in list_to_append:
                     sheet.append(x)
+
                 rows_iterated_outer = rows_iterated_outer + rows_iterated_inner + 1
                 sheet.append(['', '' , ''])
             
@@ -4216,8 +4213,6 @@ def excel_download_production(request, module_name, pk):
             for cell in range(1,narration_row):
                 sheet.cell(row=cell, column=1).font = Font(bold=True)
 
-
-        
         fileoutput = BytesIO()
         wb.save(fileoutput)
             
@@ -6028,13 +6023,14 @@ def rawmaterialestimationcreateupdate(request,pk=None):
         product_estimation_form = raw_material_production_estimation_form()
         product_estimation_formset  = raw_material_product_estimation_formset()
         instance_exists_check = False
+        
 
 
     if request.method == 'POST':
-        product_estimation_form = raw_material_production_estimation_form(request.POST, instance=raw_material_production_estimation_instance)
-        
-        product_estimation_formset = raw_material_product_estimation_formset(request.POST, instance=raw_material_production_estimation_instance)
 
+        product_estimation_form = raw_material_production_estimation_form(request.POST, instance=raw_material_production_estimation_instance)
+
+        product_estimation_formset = raw_material_product_estimation_formset(request.POST, instance=raw_material_production_estimation_instance)
 
         product_estimation_formset.forms = [form for form in product_estimation_formset if form.has_changed()]
         
@@ -6058,11 +6054,11 @@ def rawmaterialestimationcreateupdate(request,pk=None):
     return render(request,'reports/rawmaterialestimationcreate.html',{
                   'product_estimation_formset': product_estimation_formset,
                   'product_estimation_form': product_estimation_form, 
-                  'product_all':product_all, 'godown_id':godown_id,'instance_exists_check':instance_exists_check})
+                  'product_all':product_all, 'godown_id':godown_id,
+                  'instance_exists_check':instance_exists_check})
 
 
-
-def raw_material_estimation_popup(request,pk=None):
+def raw_material_estimation_popup(request, pk=None):
 
     if pk:
         try:
@@ -6207,13 +6203,16 @@ def raw_material_estimation_popup(request,pk=None):
 
 
 
-
 def raw_material_estimation_calculate(request):
     
     master_pk = request.GET.get('unique_id')
-    print(master_pk)
     if master_pk:
-        estimation_master_instance = get_object_or_404(raw_material_production_estimation,pk = master_pk)
+        print('master_pk',master_pk)
+        try:
+            estimation_master_instance = get_object_or_404(raw_material_production_estimation,pk = master_pk)
+
+        except ObjectDoesNotExist as e:
+            print(e)
 
         for instance in estimation_master_instance.raw_material_production_estimations_total.all():
             instance.delete()
@@ -6241,8 +6240,24 @@ def raw_material_estimation_calculate(request):
                         final_total_list[material_name] = qty
 
             for key, value in final_total_list.items():
+
                 try:
-                    godown_item_instance = item_godown_quantity_through_table.objects.get(Item_shade_name__items__item_name = key,godown_name=estimation_master_instance.raw_material_godown_id)
+                    
+                    difference_quantity_in_p_o_stage = purchase_order_for_raw_material.objects.filter(material_name=key).aggregate(total_po_qty=Sum('total_comsumption')) 
+                    
+                    total_po_qty = difference_quantity_in_p_o_stage['total_po_qty'] if difference_quantity_in_p_o_stage['total_po_qty'] else 0
+
+                    difference_quantity_in_cutting_stage = purchase_order_for_raw_material_cutting_items.objects.filter(material_name=key).aggregate(total_cutting_qty = Sum('total_comsumption'))
+
+                    total_cutting_qty = difference_quantity_in_cutting_stage['total_cutting_qty'] if difference_quantity_in_cutting_stage['total_cutting_qty'] else 0
+
+                    diffrence_qty = total_po_qty - total_cutting_qty
+
+                    print('diffrence_qty',diffrence_qty)
+                    print('____________________________')
+
+                    
+                    godown_item_instance = item_godown_quantity_through_table.objects.get(Item_shade_name__items__item_name = key, godown_name=estimation_master_instance.raw_material_godown_id)
                     godown_qty = godown_item_instance.quantity
 
                 except ObjectDoesNotExist:
@@ -6272,6 +6287,39 @@ def raw_material_estimate_delete(request,pk):
         messages.error(request,f'Cannot delete {raw_material_estimation_instance.id} because it is referenced by other objects. {e}')
     return redirect('rawmaterial-estimation-list')
                 
+
+def raw_material_estimation_calculate_excel_download(request,id):
+
+    estimation_master_instance = get_object_or_404(raw_material_production_estimation, pk = id)
+    response_dict = raw_material_production_total.objects.filter(raw_material_estination_master = estimation_master_instance).values('item_name','total_consump','godown_stock','balance_stock')
+
+    wb = Workbook()
+    default_sheet = wb['Sheet']
+    wb.remove(default_sheet)
+
+    wb.create_sheet('Product Estimation')
+    sheet1 = wb.worksheets[0]
+    headers =  ['item name','total consump','godown stock','balance stock']
+    sheet1.append(headers)
+
+    column_widths = [40, 20, 20, 20]
+    for col_num, width in enumerate(column_widths, start=1):
+        col_letter = sheet1.cell(row=1, column=col_num).column_letter
+        sheet1.column_dimensions[col_letter].width = width
+
+    for row in response_dict:
+        sheet1.append([
+            row.get('item_name'),
+            row.get('total_consump'),
+            row.get('godown_stock'),
+            row.get('balance_stock'),
+        ])
+
+    fileoutput = BytesIO()
+    wb.save(fileoutput)
+    response = HttpResponse(fileoutput.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="Product_Estimation.xlsx"'
+    return response
         
 
 
@@ -6385,7 +6433,7 @@ def itemdynamicsearchajax(request):
         
         logger.info(f"searched keyword via itemdynamicsearchajax {item_name_typed}")
         
-        item_name_searched = Item_Creation.objects.filter(item_name__icontains=item_name_typed).annotate(total_qty= Sum('shades__godown_shades__quantity'))
+        item_name_searched = Item_Creation.objects.filter(Q(item_name__icontains=item_name_typed) | Q(Material_code__contains=item_name_typed)).annotate(total_qty= Sum('shades__godown_shades__quantity'))
         
 
         if item_name_searched:
@@ -6402,12 +6450,13 @@ def itemdynamicsearchajax(request):
                 else:
                     total_qty = '0'
 
-                item_name = queryset.item_name + ' | ' + total_qty
+                item_name = queryset.item_name + ' | ' + total_qty +','+ queryset.Material_code
                 item_id = queryset.id
                 searched_item_name_dict[item_id] = item_name
             
             logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
             
+            print(searched_item_name_dict)
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
         else:
             return JsonResponse({'error': 'No items found.'}, status=404)

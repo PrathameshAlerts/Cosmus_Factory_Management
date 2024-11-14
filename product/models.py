@@ -229,11 +229,10 @@ class Product(models.Model):
     Product_IndiaMartPrice=models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank = True,null =True)
     Product_Retailer_dealer_Price=models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,  blank = True,null =True)
     Product_Wholesaler_DistributorPrice=models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,  blank = True,null =True)
-    Product_Create_Date=models.DateField(auto_now=True)
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank=True, null = True)
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
     labour_charges = models.IntegerField(default=0)
 
     def P_GST(self):
@@ -254,8 +253,8 @@ class PProduct_Creation(models.Model):
     Amazon_Link = models.URLField(max_length = 200,  blank = True)
     Flipkart_Link = models.URLField(max_length = 200,  blank = True) 
     Cosmus_link = models.URLField(max_length = 200, blank = True) 
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
     def product_color_name(self):
         return self.PProduct_color.color_name
@@ -275,8 +274,8 @@ class ProductImage(models.Model):
     Image = models.ImageField(upload_to ='product/images', blank=True)
     Image_type = models.CharField(max_length = 100, choices = IMAGE_TYPE, blank=True)
     Order_by = models.IntegerField(blank=True)
-    Image_Uploaded_at = models.DateTimeField(auto_now=True)
-    Image_Modified_at = models.DateTimeField(auto_now_add=True)
+    Image_Uploaded_at = models.DateTimeField(auto_now_add=True)
+    Image_Modified_at = models.DateTimeField(auto_now=True)
 
 
 class Product_A_plus_content(models.Model):
@@ -293,25 +292,23 @@ class Product_A_plus_content(models.Model):
     orderby = models.IntegerField()
     images = models.ImageField(upload_to = 'pproduct/images',  blank=True)
     dimensions = models.CharField(max_length = 70, choices = DIMENSIONS)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
 
 class ProductVideoUrls(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productvideourls')
     product_video_url =  models.URLField(max_length = 255, blank = True)
-    Image_Uploaded_at = models.DateTimeField(auto_now=True)
-    Image_Modified_at = models.DateTimeField(auto_now_add=True)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
 
 class Fabric_Group_Model(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
     
     class Meta:
         ordering = ['fab_grp_name']
@@ -320,8 +317,8 @@ class Unit_Name_Create(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     unit_name = models.CharField(max_length=100,unique = True, null = False, blank = False)
     unit_value = models.CharField(max_length=100,null = False, blank = False)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
     class Meta:
         ordering = ['unit_name']
@@ -372,8 +369,8 @@ class Item_Creation(models.Model):
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status = models.CharField(max_length = 50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
-    created_date = models.DateTimeField(auto_now =True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add =True)
+    modified_date_time = models.DateTimeField(auto_now = True)
     
 
     
@@ -407,8 +404,8 @@ class item_color_shade(models.Model):
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null=False, blank=False)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images') 
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
     class Meta:
         unique_together = [['items','item_shade_name']]
@@ -423,8 +420,8 @@ class opening_shade_godown_quantity(models.Model):
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
     opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     opening_rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
 
 class AccountGroup(models.Model):
@@ -442,8 +439,8 @@ class AccountSubGroup(models.Model):
 class StockItem(CompanyBaseModel):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     stock_item_name = models.CharField(max_length= 150)
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
     class Meta:
         unique_together = [['stock_item_name','company']]
@@ -494,8 +491,8 @@ class Ledger(models.Model):
     landline_no = models.BigIntegerField()
     bank_details =  models.TextField(blank = True)
     Debit_Credit =  models.CharField(choices = DEBIT_CREDIT ,max_length = 255, blank = True)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
     def account_sub_group_ledger(self):
         return self.under_group.account_sub_group
@@ -509,8 +506,8 @@ class account_credit_debit_master_table(models.Model):
     voucher_no = models.CharField(null = True, blank= True)
     voucher_type = models.CharField(max_length = 100)
     particulars = models.CharField(max_length = 100)
-    create_date = models.DateField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    create_date = models.DateField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
 
 
@@ -543,8 +540,8 @@ class item_shades_godown_report(models.Model):
     ]
 
     item_shade_name = models.ForeignKey(item_color_shade, on_delete =models.PROTECT)
-    create_date = models.DateField(auto_now = True)
-    modified_date = models.DateField(auto_now_add = True)
+    create_date = models.DateField(auto_now_add = True)
+    modified_date = models.DateField(auto_now = True)
     particulars = models.CharField(max_length = 150) 
     voucher_type = models.CharField(max_length = 150)
     voucher_no = models.IntegerField()
@@ -575,8 +572,8 @@ class product_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_finished_goods, on_delete = models.PROTECT, related_name= 'finished_godown_names')
     product_color_name = models.ForeignKey(PProduct_Creation, related_name = 'godown_colors', on_delete = models.PROTECT)
     quantity = models.BigIntegerField(default = 0)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
     class Meta:
@@ -591,8 +588,8 @@ class RawStockTransferMaster(models.Model):
     voucher_no = models.IntegerField(primary_key=True)
     source_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE , related_name='source_godowns')
     destination_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE, related_name='destination_godowns')
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 
@@ -601,8 +598,8 @@ class RawStockTrasferRecords(models.Model):
     item_shade_transfer = models.ForeignKey(item_color_shade , on_delete= models.CASCADE)
     item_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     remarks = models.CharField(max_length = 255, blank=True, null=True)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 class item_purchase_voucher_master(models.Model):
@@ -613,8 +610,8 @@ class item_purchase_voucher_master(models.Model):
     fright_transport = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     gross_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     grand_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
 
 class purchase_voucher_items(models.Model):
@@ -624,8 +621,8 @@ class purchase_voucher_items(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     deleted_directly = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 class shade_godown_items(models.Model):
@@ -650,8 +647,8 @@ class item_godown_quantity_through_table(models.Model):
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
     quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     item_rate = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
@@ -717,8 +714,8 @@ class purchase_order(models.Model):
     product_reference_number = models.ForeignKey(Product, on_delete=models.PROTECT)
     ledger_party_name = models.ForeignKey(Ledger, on_delete= models.PROTECT)
     target_date = models.DateField()
-    created_date = models.DateTimeField(auto_now=True)
-    modified_created_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_created_date = models.DateTimeField(auto_now=True)
     number_of_pieces = models.IntegerField(validators=[MinValueValidator(1)])
     balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
     process_status = models.CharField(max_length=10, choices=STATUS, blank=True, null= True)
@@ -733,8 +730,8 @@ class purchase_order_to_product(models.Model):
     order_quantity = models.IntegerField(default=0)
     order_processed_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     
 
 class purchase_order_for_raw_material(models.Model):
@@ -753,8 +750,8 @@ class purchase_order_for_raw_material(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -768,8 +765,8 @@ class purchase_order_raw_material_cutting(models.Model):
     balance_qty = models.IntegerField(default=0)
     approved_qty = models.IntegerField(default=0)
     cutting_cancelled = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     note = models.TextField(blank=True, null = True)
 
     
@@ -799,8 +796,8 @@ class purchase_order_to_product_cutting(models.Model):
     approved_pcs = models.IntegerField(default=0)
     balance_pcs = models.IntegerField(default=0)
     approved_pcs_diffrence = models.IntegerField(default=0)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 class purchase_order_for_raw_material_cutting_items(models.Model):
@@ -828,8 +825,8 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     cutting_room_status = models.CharField(max_length=25, choices = STATUS, blank=True, null=True)
     total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -837,8 +834,8 @@ class labour_workout_master(models.Model):
     purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
     total_approved_pcs = models.IntegerField(default=0)
     total_pending_pcs = models.IntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     
     
@@ -863,8 +860,8 @@ class product_to_item_labour_workout(models.Model):
     product_color = models.CharField(max_length=100)
     processed_pcs = models.IntegerField()
     pending_pcs = models.IntegerField()
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
 
 class labour_workout_childs(models.Model):
@@ -873,8 +870,8 @@ class labour_workout_childs(models.Model):
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=False, blank=False)
     total_process_pcs = models.IntegerField(null = True, blank=True)
     total_balance_pcs = models.IntegerField(null = True, blank=True)
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date = models.DateTimeField(auto_now=True)
     labour_workin_pcs = models.IntegerField(default = 0)
     labour_workin_pending_pcs = models.IntegerField()
     note = models.TextField(null=True, blank=True)
@@ -888,8 +885,8 @@ class product_to_item_labour_child_workout(models.Model):
     pending_pcs = models.IntegerField()
     balance_pcs = models.IntegerField()
     labour_w_in_pending = models.IntegerField()
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
 
 class labour_workout_cutting_items(models.Model):
@@ -909,8 +906,8 @@ class labour_workout_cutting_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -918,7 +915,7 @@ class labour_workout_cutting_items(models.Model):
 class labour_work_in_master(models.Model):
     labour_voucher_number = models.ForeignKey(labour_workout_childs ,on_delete=models.PROTECT)
     voucher_number = models.IntegerField(unique=True, null = False, blank = False)
-    created_date = models.DateTimeField(auto_now = True)
+    created_date = models.DateTimeField(auto_now_add = True)
     description = models.CharField(max_length=100, null=True, blank=True)
     total_return_pcs = models.IntegerField(null=False, blank=False)
     total_balance_pcs = models.IntegerField(null=False, blank=False)
@@ -926,7 +923,7 @@ class labour_work_in_master(models.Model):
     labour_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     other_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,null=False, blank=False)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
 
 
@@ -943,7 +940,7 @@ class labour_work_in_product_to_item(models.Model):
 
 
 class godown_item_report_for_cutting_room(models.Model):
-    creation_date = models.DateTimeField(auto_now = True)
+    creation_date = models.DateTimeField(auto_now_add = True)
     particular = models.CharField(max_length=100)
     voucher_type = models.CharField(max_length=100)
     voucher_number = models.CharField(max_length=100)
@@ -956,7 +953,7 @@ class godown_item_report_for_cutting_room(models.Model):
 
 class labour_workin_approval_report(models.Model):
     labour_w_i_p_2_i = models.ForeignKey(labour_work_in_product_to_item, on_delete=models.CASCADE, related_name='l_w_in_products_records')
-    creation_date = models.DateTimeField(auto_now = True)
+    creation_date = models.DateTimeField(auto_now_add = True)
     difference_qty = models.IntegerField(null=False, blank=False)
     unique_id = models.UUIDField(null=False, blank=False)
 
@@ -995,8 +992,8 @@ class raw_material_product_to_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -1007,4 +1004,9 @@ class raw_material_production_total(models.Model):
     total_consump = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     godown_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    
+    
+    
+    
 
+ 

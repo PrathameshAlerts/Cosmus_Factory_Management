@@ -230,6 +230,8 @@ urlpatterns = [
 
     path('rawmaterialestimatedelete/<int:pk>',views.raw_material_estimate_delete,name= 'raw-material-estimate-delete'),
 
+    path('rawmaterialestimationcalculateexceldownload/<int:id>',views.raw_material_estimation_calculate_excel_download, name = 'raw-material-estimation-calculate-excel-download'),
+
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),

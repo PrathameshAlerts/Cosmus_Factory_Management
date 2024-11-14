@@ -50,19 +50,20 @@
                         <select type="text" class="item-select" name="{{form.prefix}}-product_id" id="id_{{form.prefix}}-product_id">
                             
                             {% if form.instance.id %}
-                            <option value="{{form.instance.product_id.id}}">{{form.instance.product_id.Product_Name}}</option>
+                            
 
+                            <option value="{{form.instance.product_id.id}}">{{form.instance.product_id.Product_Name}}</option>
+                            
                             {% for x in product_all %}
                             <option value="{{x.id}}">{{x.Product_Name}}</option>
                             {% endfor %}
+
                             {% elif not form.instance.id %}
                             <option value=""></option>
                             {% for x in product_all %}
                             <option value="{{x.id}}">{{x.Product_Name}}</option>
                             {% endfor %}
                             {% endif %}
-
-
                         </select>
                     </td>
                     <td>
@@ -107,6 +108,8 @@
                         <th>Total Consump</th>
                         <th>Godown Stock</th>
                         <th>Balance Stock</th>
+                       
+                        
                     </tr>
                 </thead>
                 <tbody class="mainTableList calculateTable">
@@ -116,12 +119,17 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="modal-btn" onclick="dowunloadExel(this)">Download Excel</button>
+          {% if instance_exists_check %}
+
+         <a class="modal-btn" style = "text-decoration: none;" href="{% url 'raw-material-estimation-calculate-excel-download' product_estimation_form.instance.pk %}">Download Excel</a>
+        
+        {% endif %}
         </div>
       </div>
     </div>
   </div>
 <script>
+
      document.body.appendChild(document.getElementById('exampleModal'));
         function calteRawMaterial(button){
     
@@ -157,6 +165,7 @@
                         }
                         cell3.textContent = godownStock;
                         var cell4 = document.createElement('td');
+
                         if(balanceStock < "0"){
                             cell4.style.color='red';
                          
@@ -165,7 +174,10 @@
                 
                         }
 
+
                         cell4.textContent = balanceStock;
+
+                        
                      
                         row.appendChild(cell1);
                         row.appendChild(cell2);
