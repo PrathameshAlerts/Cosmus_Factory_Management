@@ -10,16 +10,30 @@
     width: 50px;
     height: 50px;
 }
-body{
+body {
     min-height: 100vh;
-    background-color:#f6f7fb;
+    background-color: #f6f7fb;
     color: #000;
-    background-size: cover;
+    background-image: url('../images/logo\ png\ 1.svg'); /* Replace with your image path */
+    background-size: 300px 300px; /* Set specific width and height, e.g., 300px by 300px */
     background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* Optional: Apply the blur only to the background image */
+body::before {
+    content: "";
+    position: absolute;
+    background-image:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('../images/logo\ png\ 1.svg'); /* Use the same image */
+    background-size: 400px 400px; /* Same specific size */
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(8px); 
+    z-index: -1; /* Keeps the background behind all content */
     
 }
 
-/* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -388,7 +402,7 @@ input[type=number] {
 /*====siderbar====*/
 
 .side-bar {
-    background: #fff;
+    background: #4b49ac;
     color: #666;
     backdrop-filter: blur(15px);
     width: 235px;
@@ -429,29 +443,32 @@ input[type=number] {
 .side-bar .menu .item{
     position: relative;
     cursor: pointer;
-    border: 1px solid #f1f1f1;
+    /* border: 1px solid #f1f1f1; */
    
 
 }
    
 .side-bar .menu .item a{
-    color: #666;
+    color: #fff;
     font-size: 16px;
     text-decoration: none;
     display: block;
     padding: 2px 17px;
     line-height: 50px;
-    background-color: #fff;
-    border: 1px solid #f1f1f1;
+    background-color: #4b49ac;
+    border: 1px solid #7da0fe;
     border-radius: 15px;
-    border-color: #f1f1f1 ;
+    border-color: #4b49ac ;
 }
    
 .side-bar .menu .item a:hover{
-    background: #888;
+    background: #7da0fe;
     color: #f1f1f1;
     transition: width 0.3s ease;
 
+}
+.side-bar .menu .item .sub-btn img:hover{
+    color: #f1f1f1; 
 }
    
 .side-bar .menu .item i{
@@ -566,8 +583,8 @@ input[type=number] {
 }
 
 .coder-navbar.header-blue{
-    background: -webkit-gradient(linear, left top, right top, from(#4998d1), to(#2fc2dc));
-    background: linear-gradient(45deg, #4998d1 70%, #2fc2dc 100%);
+    /* background: -webkit-gradient(linear, left top, right top, from(#4998d1), to(#2fc2dc)); */
+    background: #4b49ac;
     color: rgba(255, 255, 255, 0.8);
 }
 
@@ -677,7 +694,7 @@ input[type=number] {
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
     z-index: 0;
- 
+
 }
 
 .container-flex {
@@ -1726,7 +1743,15 @@ input[type=number] {
 .purchaseOrderCuttingcompleteArrow{
     padding-left: 330px;
 }
-
+.purchaseOrderCuttingVouchareArrow{
+    padding-left: 429px; 
+}
+.labourworkoutChallanArrow{
+    padding-left: 288px;  
+}
+.labourInGRNArrow{
+    padding-left: 556px;  
+}
 .goodsRetutnArrow{
     padding-left: 300px;
 }
