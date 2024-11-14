@@ -224,9 +224,9 @@
             {% if request.user.is_superuser %}
               {% if request.path == '/' %}
               <div class="nav-item my-4">
-                <label for="id_company" class="text-dark fw-bold">Company:</label>
+                <!-- <label for="id_company" class="text-dark fw-bold">Company:</label> -->
                 <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect">
-                  <option value="" selected>---------</option>
+                  <option value="" selected>Company</option>
                     {% for company in companies %}
                       <option style="width: auto;" value = "{{ company.id }}">{{ company.name }}</option>
                     {% endfor %}
@@ -234,7 +234,6 @@
               </div>
               {% elif request.path != '/' %}
                 <div class="nav-item my-4">
-                  <label for="id_company" class="text-dark fw-bold">Company:</label>
                   <select name="company" id="id_company"  onchange="saveSelectedCompany()" class="companySelect" disabled>
                     <option value="" selected>---------</option>
                       {% for company in companies %}
@@ -248,7 +247,7 @@
         </li>
         <li class="nav-item dropdown ms-5 mt-3">
           <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-user text-white fs-5 "></i></i><span class="text-danger fw-bold ms-2 text-uppercase">{{request.user.username}}</span>
+            <i class="fa-solid fa-user text-white fs-5 "></i></i><span class="text-white fw-bold ms-2 text-uppercase">{{request.user.username}}</span>
           </a>
           
           <ul class="dropdown-menu dropdown-menu-right">

@@ -1605,7 +1605,7 @@ def ledgercreate(request):
 @transaction.atomic
 def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
-    
+    ledgerTypes_query = ledgerTypes.objects.all()
     Ledger_pk = get_object_or_404(Ledger,pk = pk)
     ledgers = Ledger_pk.transaction_entry.all() 
 
@@ -1653,9 +1653,9 @@ def ledgerupdate(request,pk):
             return redirect('ledger-list')
         else:
             
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger'})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger','ledgerTypes_query':ledgerTypes_query})
     
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger'})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger','ledgerTypes_query':ledgerTypes_query})
 
 
 

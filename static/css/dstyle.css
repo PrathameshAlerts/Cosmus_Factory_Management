@@ -14,10 +14,6 @@ body {
     min-height: 100vh;
     background-color: #f6f7fb;
     color: #000;
-    background-image: url('../images/logo\ png\ 1.svg'); /* Replace with your image path */
-    background-size: 300px 300px; /* Set specific width and height, e.g., 300px by 300px */
-    background-position: center;
-    background-repeat: no-repeat;
     position: relative;
 }
 
@@ -25,12 +21,17 @@ body {
 body::before {
     content: "";
     position: absolute;
-    background-image:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('../images/logo\ png\ 1.svg'); /* Use the same image */
-    background-size: 400px 400px; /* Same specific size */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/logo.jpg');
+    mix-blend-mode: multiply;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(8px); 
-    z-index: -1; /* Keeps the background behind all content */
+ 
+    opacity: 0.1; /* Adjust opacity as needed (0.5 = 50% opacity) */
+    z-index: -1; /* Keeps the background behind content */
     
 }
 
@@ -457,7 +458,7 @@ input[type=number] {
     line-height: 50px;
     background-color: #4b49ac;
     border: 1px solid #7da0fe;
-    border-radius: 15px;
+    border-radius: 6px;
     border-color: #4b49ac ;
 }
    
@@ -467,8 +468,11 @@ input[type=number] {
     transition: width 0.3s ease;
 
 }
-.side-bar .menu .item .sub-btn img:hover{
-    color: #f1f1f1; 
+.side-bar .menu .item a img{
+    filter: invert(1) brightness(2); 
+}
+.side-bar .menu .item a img:hover{
+    filter: invert(1) brightness(2); 
 }
    
 .side-bar .menu .item i{

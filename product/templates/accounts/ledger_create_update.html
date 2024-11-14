@@ -59,7 +59,9 @@
             
             {% if form.instance.id %}
             <option value="{{form.instance.types.id}}">{{form.instance.types.type_name}}</option>
-
+            {% for type in ledgerTypes_query %}
+            <option value="{{type.id}}">{{type.type_name}}</option>
+            {% endfor %}
             {% elif not form.instance.id %}
             <option value=""></option>
             {% endif %}
