@@ -21,17 +21,17 @@ class CompanyBaseModel(models.Model):
     company = models.ForeignKey(Company, on_delete=models.PROTECT, null = True, blank=True)
     
     class Meta:
-        abstract = True  # This will be used as an abstract base class
+        abstract = True  
 
     def save(self, *args, **kwargs):
-        # Check if the user is not a superuser
+        
         if self.c_user and not self.c_user.is_superuser:
-            # Automatically assign company if it's not already set and the user has a company (failsafe option)
+            
             if not self.company:
                 self.company = self.c_user.company
 
-        # company for superusers is set from frontend dropdown menu directly and password to form variables
-        # Ensure company is assigned before saving, even for superusers
+        
+        
         if not self.company:
             raise ValidationError('Company must be specified.')
 
@@ -51,8 +51,8 @@ class SubCategory(models.Model):
     product_sub_category_name = models.CharField(max_length = 250)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.PROTECT, related_name = 'subcategories')
 
-    # class Meta:
-    #     unique_together = [['product_sub_category_name','product_main_category']]
+    
+    
 
     def __str__(self):
         return self.product_sub_category_name 
@@ -63,15 +63,15 @@ class Product2SubCategory(models.Model):
     Product_id = models.ForeignKey('Product', on_delete=models.PROTECT, related_name='product_cats')
     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='subcategories')
 
-    # def validate_unique(self, exclude=None):
-    #     if self.Product_id and self.SubCategory_id:
-    #         queryset = Product2SubCategory.objects.filter(
-    #             Product_id = self.Product_id,
-    #             SubCategory_id__product_main_category=self.SubCategory_id.product_main_category)
-    #         if queryset.exists() and not self.pk:
-    #             raise ValidationError(
-    #                 {'Product_id': 'This combination already exists for the same main category.'}
-    #             )
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     class Meta:
         unique_together = [['Product_id','SubCategory_id']]
@@ -229,18 +229,17 @@ class Product(models.Model):
     Product_IndiaMartPrice=models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank = True,null =True)
     Product_Retailer_dealer_Price=models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,  blank = True,null =True)
     Product_Wholesaler_DistributorPrice=models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,  blank = True,null =True)
-    Product_Create_Date=models.DateField(auto_now=True)
     Product_Gender= models.CharField(max_length=15, choices= PRODUCT_GENDER, blank=True, null = True)
     Product_QtyPerBox = models.IntegerField(blank = True,null =True)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
     labour_charges = models.IntegerField(default=0)
 
     def P_GST(self):
         if self.Product_GST is not None:
             return self.Product_GST.gst_percentage
         else:
-            return None  # or any default value you prefer
+            return None  
 
 
 class PProduct_Creation(models.Model):
@@ -254,8 +253,8 @@ class PProduct_Creation(models.Model):
     Amazon_Link = models.URLField(max_length = 200,  blank = True)
     Flipkart_Link = models.URLField(max_length = 200,  blank = True) 
     Cosmus_link = models.URLField(max_length = 200, blank = True) 
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
     def product_color_name(self):
         return self.PProduct_color.color_name
@@ -275,8 +274,8 @@ class ProductImage(models.Model):
     Image = models.ImageField(upload_to ='product/images', blank=True)
     Image_type = models.CharField(max_length = 100, choices = IMAGE_TYPE, blank=True)
     Order_by = models.IntegerField(blank=True)
-    Image_Uploaded_at = models.DateTimeField(auto_now=True)
-    Image_Modified_at = models.DateTimeField(auto_now_add=True)
+    Image_Uploaded_at = models.DateTimeField(auto_now_add=True)
+    Image_Modified_at = models.DateTimeField(auto_now=True)
 
 
 class Product_A_plus_content(models.Model):
@@ -293,25 +292,23 @@ class Product_A_plus_content(models.Model):
     orderby = models.IntegerField()
     images = models.ImageField(upload_to = 'pproduct/images',  blank=True)
     dimensions = models.CharField(max_length = 70, choices = DIMENSIONS)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
 
 class ProductVideoUrls(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     Product = models.ForeignKey(PProduct_Creation, on_delete = models.CASCADE, related_name='productvideourls')
     product_video_url =  models.URLField(max_length = 255, blank = True)
-    Image_Uploaded_at = models.DateTimeField(auto_now=True)
-    Image_Modified_at = models.DateTimeField(auto_now_add=True)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
 
 class Fabric_Group_Model(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     fab_grp_name = models.CharField(max_length=255,unique= True, null = False, blank = False)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
     
     class Meta:
         ordering = ['fab_grp_name']
@@ -320,8 +317,8 @@ class Unit_Name_Create(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT)
     unit_name = models.CharField(max_length=100,unique = True, null = False, blank = False)
     unit_value = models.CharField(max_length=100,null = False, blank = False)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
     class Meta:
         ordering = ['unit_name']
@@ -372,11 +369,11 @@ class Item_Creation(models.Model):
     HSN_Code = models.CharField(max_length = 100, blank = True)
     status = models.CharField(max_length = 50, choices= STATUS)
     item_shade_image = models.ImageField(upload_to = 'rawmaterial/images', null=True , blank=True)
-    created_date = models.DateTimeField(auto_now =True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add =True)
+    modified_date_time = models.DateTimeField(auto_now = True)
     
 
-    # these functions are used to show related attributes instead of PK id in listview
+    
     def Color_Name(self):
         return self.Item_Color.color_name
 
@@ -407,8 +404,8 @@ class item_color_shade(models.Model):
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null=False, blank=False)
     item_color_image = models.ImageField(upload_to ='rawmaterial/images') 
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
     class Meta:
         unique_together = [['items','item_shade_name']]
@@ -423,8 +420,8 @@ class opening_shade_godown_quantity(models.Model):
     opening_godown_id = models.ForeignKey('Godown_raw_material', on_delete = models.PROTECT)
     opening_quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     opening_rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
 
 class AccountGroup(models.Model):
@@ -442,8 +439,8 @@ class AccountSubGroup(models.Model):
 class StockItem(CompanyBaseModel):
     acc_sub_grp = models.ForeignKey(AccountSubGroup, on_delete = models.PROTECT)
     stock_item_name = models.CharField(max_length= 150)
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
     class Meta:
         unique_together = [['stock_item_name','company']]
@@ -453,7 +450,7 @@ class StockItem(CompanyBaseModel):
     
     def save(self, *args, **kwargs):
 
-        # Exclude current instance from the validation check
+        
         existing_objects = StockItem.objects.exclude(id=self.id)
         if existing_objects.filter(stock_item_name__iexact = self.stock_item_name, company = self.company):
              raise ValidationError(f'{self.stock_item_name} already exists!')
@@ -494,8 +491,8 @@ class Ledger(models.Model):
     landline_no = models.BigIntegerField()
     bank_details =  models.TextField(blank = True)
     Debit_Credit =  models.CharField(choices = DEBIT_CREDIT ,max_length = 255, blank = True)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    created_date = models.DateTimeField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
     def account_sub_group_ledger(self):
         return self.under_group.account_sub_group
@@ -509,16 +506,16 @@ class account_credit_debit_master_table(models.Model):
     voucher_no = models.CharField(null = True, blank= True)
     voucher_type = models.CharField(max_length = 100)
     particulars = models.CharField(max_length = 100)
-    create_date = models.DateField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add= True)
+    create_date = models.DateField(auto_now_add= True)
+    modified_date_time = models.DateTimeField(auto_now= True)
 
 
 
-class Godown_raw_material(models.Model): # CompanyBaseModel
+class Godown_raw_material(models.Model): 
     godown_name_raw = models.CharField(max_length = 225, unique= True)
 
     class Meta:
-        unique_together = [['godown_name_raw']] # ,'company'
+        unique_together = [['godown_name_raw']] 
 
     def __str__(self) -> str:
         return self.godown_name_raw      
@@ -526,11 +523,11 @@ class Godown_raw_material(models.Model): # CompanyBaseModel
     def save(self, *args, **kwargs):
         existing_objects = Godown_raw_material.objects.exclude(id = self.id)
 
-        # if self.user.is_superuser:
-        #     if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): # ,company=self.company
-        #         raise ValidationError(f'{self.godown_name_raw} already exists!')
-        # else:
-        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): # c_user__company=self.c_user.company
+        
+        
+        
+        
+        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): 
             raise ValidationError(f'{self.godown_name_raw} already exists!')
 
         super().save(*args, **kwargs)
@@ -543,8 +540,8 @@ class item_shades_godown_report(models.Model):
     ]
 
     item_shade_name = models.ForeignKey(item_color_shade, on_delete =models.PROTECT)
-    create_date = models.DateField(auto_now = True)
-    modified_date = models.DateField(auto_now_add = True)
+    create_date = models.DateField(auto_now_add = True)
+    modified_date = models.DateField(auto_now = True)
     particulars = models.CharField(max_length = 150) 
     voucher_type = models.CharField(max_length = 150)
     voucher_no = models.IntegerField()
@@ -558,12 +555,12 @@ class Godown_finished_goods(models.Model):
 
 
     class Meta:
-        unique_together = [['godown_name_finished']]  # ,'company'
+        unique_together = [['godown_name_finished']]  
 
     def save(self,*args, **kwargs):
         existing_objects = Godown_finished_goods.objects.exclude(id=self.id)
 
-        if existing_objects.filter(godown_name_finished__iexact = self.godown_name_finished).exists(): # c_user__company=self.c_user.company
+        if existing_objects.filter(godown_name_finished__iexact = self.godown_name_finished).exists(): 
             raise ValidationError(f'{self.godown_name_finished} already exists!')
 
         super().save(*args, **kwargs)
@@ -575,8 +572,8 @@ class product_godown_quantity_through_table(models.Model):
     godown_name = models.ForeignKey(Godown_finished_goods, on_delete = models.PROTECT, related_name= 'finished_godown_names')
     product_color_name = models.ForeignKey(PProduct_Creation, related_name = 'godown_colors', on_delete = models.PROTECT)
     quantity = models.BigIntegerField(default = 0)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
     class Meta:
@@ -591,8 +588,8 @@ class RawStockTransferMaster(models.Model):
     voucher_no = models.IntegerField(primary_key=True)
     source_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE , related_name='source_godowns')
     destination_godown = models.ForeignKey(Godown_raw_material, on_delete=models.CASCADE, related_name='destination_godowns')
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 
@@ -601,8 +598,8 @@ class RawStockTrasferRecords(models.Model):
     item_shade_transfer = models.ForeignKey(item_color_shade , on_delete= models.CASCADE)
     item_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     remarks = models.CharField(max_length = 255, blank=True, null=True)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 class item_purchase_voucher_master(models.Model):
@@ -613,8 +610,8 @@ class item_purchase_voucher_master(models.Model):
     fright_transport = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     gross_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     grand_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now= True)
-    modified_date_time = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
 
 
 class purchase_voucher_items(models.Model):
@@ -624,8 +621,8 @@ class purchase_voucher_items(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     deleted_directly = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 class shade_godown_items(models.Model):
@@ -650,15 +647,15 @@ class item_godown_quantity_through_table(models.Model):
     Item_shade_name = models.ForeignKey(item_color_shade, related_name = 'godown_shades', on_delete = models.PROTECT)
     quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     item_rate = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
-        # godown and items unique together as
-        # if there are already item in a godown if user again enters quantity instead of creating
-        # one more entry for the same item in godown u just need to update the quantity of the item in that
-        # godown.
+        
+        
+        
+        
 
 
     def __str__(self):
@@ -669,10 +666,10 @@ class product_2_item_through_table(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
-    row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
+    row_number = models.IntegerField(null = True, blank=True)   
     grand_total = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     grand_total_combi = models.DecimalField(default = 0,max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    common_unique = models.BooleanField(default = False)  #True if its common and false if its special
+    common_unique = models.BooleanField(default = False)  
     no_of_rows = models.PositiveIntegerField(default = 1, validators=[MinValueValidator(1)])
     Remark = models.CharField(max_length = 50, blank = True, null=True)
 
@@ -717,8 +714,8 @@ class purchase_order(models.Model):
     product_reference_number = models.ForeignKey(Product, on_delete=models.PROTECT)
     ledger_party_name = models.ForeignKey(Ledger, on_delete= models.PROTECT)
     target_date = models.DateField()
-    created_date = models.DateTimeField(auto_now=True)
-    modified_created_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_created_date = models.DateTimeField(auto_now=True)
     number_of_pieces = models.IntegerField(validators=[MinValueValidator(1)])
     balance_number_of_pieces = models.IntegerField(default=0, blank=True, null = True)
     process_status = models.CharField(max_length=10, choices=STATUS, blank=True, null= True)
@@ -733,8 +730,8 @@ class purchase_order_to_product(models.Model):
     order_quantity = models.IntegerField(default=0)
     order_processed_quantity = models.IntegerField(default=0)
     process_quantity = models.IntegerField(default=0)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     
 
 class purchase_order_for_raw_material(models.Model):
@@ -753,8 +750,8 @@ class purchase_order_for_raw_material(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -768,11 +765,11 @@ class purchase_order_raw_material_cutting(models.Model):
     balance_qty = models.IntegerField(default=0)
     approved_qty = models.IntegerField(default=0)
     cutting_cancelled = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     note = models.TextField(blank=True, null = True)
 
-    # to save an auto field which acts as an autoincrement field
+    
     def save(self, *args, **kwargs):
         if self._state.adding:
             last_id = purchase_order_raw_material_cutting.objects.order_by('auto_id').last()
@@ -799,8 +796,8 @@ class purchase_order_to_product_cutting(models.Model):
     approved_pcs = models.IntegerField(default=0)
     balance_pcs = models.IntegerField(default=0)
     approved_pcs_diffrence = models.IntegerField(default=0)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
 class purchase_order_for_raw_material_cutting_items(models.Model):
@@ -828,8 +825,8 @@ class purchase_order_for_raw_material_cutting_items(models.Model):
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     cutting_room_status = models.CharField(max_length=25, choices = STATUS, blank=True, null=True)
     total_comsumption_in_cutting = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -837,25 +834,25 @@ class labour_workout_master(models.Model):
     purchase_order_cutting_master = models.ForeignKey(purchase_order_raw_material_cutting, related_name='labourworkouts',on_delete=models.CASCADE)
     total_approved_pcs = models.IntegerField(default=0)
     total_pending_pcs = models.IntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
-    # def save(self, *args, **kwargs):
-    #     if self._state.adding:
-    #         self.challan_no = self.generate_unique_challan_no()
-    #     super().save(*args, **kwargs)
+    
+    
+    
+    
 
-    # def generate_unique_challan_no(self):
-    #     max_attempts = 1000
-    #     attempts = 0
+    
+    
+    
         
-    #     while attempts < max_attempts:
-    #         challan_no = int(get_random_string(length=9, allowed_chars='0123456789'))
-    #         if not labour_workout_master.objects.filter(challan_no=challan_no).exists():
-    #             return challan_no
-    #         attempts += 1
+    
+    
+    
+    
+    
         
-    #     raise ValueError("Unable to generate a unique challan_no after 1000 attempts")
+    
 
 class product_to_item_labour_workout(models.Model):
     labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
@@ -863,8 +860,8 @@ class product_to_item_labour_workout(models.Model):
     product_color = models.CharField(max_length=100)
     processed_pcs = models.IntegerField()
     pending_pcs = models.IntegerField()
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
 
 class labour_workout_childs(models.Model):
@@ -873,8 +870,8 @@ class labour_workout_childs(models.Model):
     labour_name = models.ForeignKey(Ledger, on_delete=models.PROTECT, null=False, blank=False)
     total_process_pcs = models.IntegerField(null = True, blank=True)
     total_balance_pcs = models.IntegerField(null = True, blank=True)
-    created_date = models.DateTimeField(auto_now = True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date = models.DateTimeField(auto_now=True)
     labour_workin_pcs = models.IntegerField(default = 0)
     labour_workin_pending_pcs = models.IntegerField()
     note = models.TextField(null=True, blank=True)
@@ -888,8 +885,8 @@ class product_to_item_labour_child_workout(models.Model):
     pending_pcs = models.IntegerField()
     balance_pcs = models.IntegerField()
     labour_w_in_pending = models.IntegerField()
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
 
 class labour_workout_cutting_items(models.Model):
@@ -909,8 +906,8 @@ class labour_workout_cutting_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now = True)
-    updated_date = models.DateTimeField(auto_now_add = True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -918,7 +915,7 @@ class labour_workout_cutting_items(models.Model):
 class labour_work_in_master(models.Model):
     labour_voucher_number = models.ForeignKey(labour_workout_childs ,on_delete=models.PROTECT)
     voucher_number = models.IntegerField(unique=True, null = False, blank = False)
-    created_date = models.DateTimeField(auto_now = True)
+    created_date = models.DateTimeField(auto_now_add = True)
     description = models.CharField(max_length=100, null=True, blank=True)
     total_return_pcs = models.IntegerField(null=False, blank=False)
     total_balance_pcs = models.IntegerField(null=False, blank=False)
@@ -926,7 +923,7 @@ class labour_work_in_master(models.Model):
     labour_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     other_charges = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,null=False, blank=False)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
 
 
@@ -941,22 +938,22 @@ class labour_work_in_product_to_item(models.Model):
     approved_qty = models.IntegerField(default = 0)
     
 
-# reports
+
 class godown_item_report_for_cutting_room(models.Model):
-    creation_date = models.DateTimeField(auto_now = True)
+    creation_date = models.DateTimeField(auto_now_add = True)
     particular = models.CharField(max_length=100)
     voucher_type = models.CharField(max_length=100)
     voucher_number = models.CharField(max_length=100)
     material_color_shade = models.CharField(max_length=255)
     godown_id = models.CharField(max_length=50)
-    inward = models.BooleanField() # true for inward and false for outward
+    inward = models.BooleanField() 
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
 
 
 class labour_workin_approval_report(models.Model):
     labour_w_i_p_2_i = models.ForeignKey(labour_work_in_product_to_item, on_delete=models.CASCADE, related_name='l_w_in_products_records')
-    creation_date = models.DateTimeField(auto_now = True)
+    creation_date = models.DateTimeField(auto_now_add = True)
     difference_qty = models.IntegerField(null=False, blank=False)
     unique_id = models.UUIDField(null=False, blank=False)
 
@@ -995,8 +992,8 @@ class raw_material_product_to_items(models.Model):
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_physical_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
@@ -1007,4 +1004,9 @@ class raw_material_production_total(models.Model):
     total_consump = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     godown_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    
+    
+    
+    
 
+ 
