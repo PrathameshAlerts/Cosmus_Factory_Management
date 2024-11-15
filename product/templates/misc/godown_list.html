@@ -67,7 +67,41 @@
     </div>
   </div>
 </div>
+<h3>Warehouse</h3>
 
+<div class="table-responsives">
+
+  <table class="table table-striped table-hover table-bordered" style="width: 100%;">
+
+    <thead class="name_absolute sticky-top">
+
+      <tr>
+
+        <th>No</th>
+
+        <th>Name</th>
+
+        <th>Edit</th>
+
+        <th>Delete</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+
+      {% for warehouse in warehouses %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ warehouse.warehouse_name_finished }}</a></td>
+        <td><a href="{% url 'godown-update' 'Warehouse' warehouse.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+        <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ warehouse.id }}" data-type="{{ 'Warehouse' }}" data-bs-toggle="" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">

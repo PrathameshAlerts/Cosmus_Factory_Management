@@ -36,22 +36,22 @@ from openpyxl.styles import Border, Side
 
 
 from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
-                       FabricFinishes, Godown_finished_goods, Godown_raw_material,
+                       FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_warehouse, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
-                           Product2SubCategory,  ProductImage, RawStockTransferMaster, RawStockTrasferRecords, StockItem,
+                           Product2SubCategory, Product_warehouse_quantity_through_table,  ProductImage, RawStockTransferMaster, RawStockTrasferRecords, StockItem,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
-                                 packaging, product_2_item_through_table, product_godown_quantity_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
+                                 packaging, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, raw_material_production_total,
                                    set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
-                    CustomPProductaddFormSet, ProductCreateSkuFormsetCreate,
+                    CustomPProductaddFormSet, Finished_goods_Stock_TransferMaster_form, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, cutting_room_form,
-                       factory_employee_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, product_purchase_voucher_master_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form, raw_material_product_estimation_items_form, raw_material_product_estimation_product_2_item_form, raw_material_production_estimation_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -64,7 +64,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
-                                purchase_order_cutting_approval_formset,
+                                purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form, raw_material_product_estimation_formset)
 
 
@@ -1735,7 +1735,7 @@ def ledgerTypes_delete(request,pk):
 def godowncreate(request):
     if request.method == 'POST':
        
-        godown_name =  request.POST['godown_name']
+        godown_name = request.POST['godown_name']
         godown_type = request.POST['Godown_types']
 
         if godown_type == 'Raw Material':
@@ -1761,7 +1761,29 @@ def godowncreate(request):
             except Exception as e:
                 messages.error(request,f"{e}")
                 return redirect('godown-list')
-        
+            
+
+        elif godown_type == 'Warehouse Finished Goods':
+
+            try:
+                warehouse = Finished_goods_warehouse(warehouse_name_finished=godown_name) 
+                warehouse.save()  
+                messages.success(request,'warehouse created successfully')
+
+                if 'save' in request.POST:
+                    return redirect('godown-list')
+                
+                elif 'save_and_add_another' in request.POST:
+                    return redirect('godown-create')
+                
+            except ValidationError as ve:
+                messages.error(request,f"{ve}")
+                return redirect('godown-list')
+
+            except Exception as e:
+                messages.error(request,f"{e}")
+                return redirect('godown-list')
+
         elif godown_type == 'Finished Goods':
             try:
                 godown_finished = Godown_finished_goods(godown_name_finished=godown_name) 
@@ -1821,6 +1843,18 @@ def godownupdate(request,str,pk):
             raw_godown_pk.save()
             messages.success(request,'Raw material godown updated.')
             return redirect('godown-list')
+
+
+    elif str == 'Warehouse':
+        godown_type = 'Warehouse Finished Goods'
+        warehouse_pk = get_object_or_404(Finished_goods_warehouse, pk=pk)
+        instance_data = warehouse_pk.warehouse_name_finished
+        if request.method == 'POST':
+            godown_name =  request.POST['godown_name']
+            warehouse_pk.warehouse_name_finished = godown_name
+            warehouse_pk.save()
+            messages.success(request,'warehouse updated.')
+            return redirect('godown-list')
     else:
         messages.error(request,'error in godownupdate str variable')
     
@@ -1840,6 +1874,7 @@ def godownlist(request):
 
     godowns_raw = Godown_raw_material.objects.all()
     godowns_finished = Godown_finished_goods.objects.all()
+    warehouses = Finished_goods_warehouse.objects.all()
     
     
     
@@ -1849,7 +1884,8 @@ def godownlist(request):
     
 
     return render(request,'misc/godown_list.html',{'godowns_raw':godowns_raw, 
-                                                   'godowns_finished':godowns_finished, "page_name":'Godown List'})
+                                                   'godowns_finished':godowns_finished,
+                                                "page_name":'Godown List','warehouses':warehouses})
 
 
 
@@ -1875,6 +1911,16 @@ def godowndelete(request,str,pk):
         except Exception as e:
             messages.error(request,f'Cannot delete {raw_godown_pk.godown_name_raw} because it is referenced by other objects. ')
             
+    elif str == 'Warehouse':
+        try:
+            warehouse_pk = get_object_or_404(Finished_goods_warehouse, pk=pk)
+            warehouse_pk.delete()
+            messages.success(request,f'warehouse {warehouse_pk} was deleted')
+        except Exception as e:
+            messages.error(request,f'Cannot delete {warehouse_pk} because it is referenced by other objects. ')
+    
+    
+    
     else:
         messages.error(request, f'Error Deleting Godowns')
     return redirect('godown-list')
@@ -6342,7 +6388,6 @@ def factory_employee_create_update_list(request ,pk=None):
         
         
 
-
     if pk:
         title = 'Update'
         instance = get_object_or_404(factory_employee,pk=pk)
@@ -6421,6 +6466,123 @@ def cuttingroomdelete(request,pk):
 
 
 
+
+
+def product_purchase_voucher_create_update(request, pk=None):
+    
+    if pk:
+        product_pur_vouch_instance = product_purchase_voucher_master.objects.get(pk=pk)
+
+        product_pur_vouch_form = product_purchase_voucher_master_form(instance=product_pur_vouch_instance)
+        product_purchase_voucher_items_formset_instance = product_purchase_voucher_items_formset(instance=product_pur_vouch_instance)
+    else:
+        product_pur_vouch_instance = None
+        product_pur_vouch_form = product_purchase_voucher_master_form()
+        product_purchase_voucher_items_formset_instance = product_purchase_voucher_items_formset()
+
+
+        if request.method == 'POST':
+            product_pur_vouch_form = product_purchase_voucher_master_form(request.POST,instance=product_pur_vouch_instance)
+
+            product_purchase_voucher_items_formset_instance = product_purchase_voucher_items_formset(request.POST,instance=product_pur_vouch_instance)
+
+            product_purchase_voucher_items_formset_instance.forms = [form for form in product_purchase_voucher_items_formset_instance.forms if form.has_changed()]
+
+            if product_pur_vouch_form.is_valid() and product_purchase_voucher_items_formset_instance.is_valid():
+                product_pur_vouch_form_instance = product_pur_vouch_form.save()
+                
+
+                for form in product_purchase_voucher_items_formset_instance.deleted_forms:
+                    if form.instance.pk:
+                        form.instance.delete()
+
+
+                for form in product_purchase_voucher_items_formset_instance:
+                    if not form.cleaned_data.get('DELETE'):
+                        product_purchase_voucher_items_form = form.save(commit=False)
+                        product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
+                        product_purchase_voucher_items_form.save()
+
+                return redirect('product-purchase-voucher-list')
+
+    return render(request,'finished_product/product_purchase_voucher_create_update.html',{'product_pur_vouch_form':product_pur_vouch_form,
+            'product_purchase_voucher_items_formset_instance':product_purchase_voucher_items_formset_instance})
+
+
+def product_purchase_voucher_list(request):
+
+    product_purchase_voucher_all = product_purchase_voucher_master.objects.all()
+
+    return render(request,'finished_product/product_purchase_voucher_list.html',{'product_purchase_voucher_all':product_purchase_voucher_all})
+
+def product_purchase_voucher_delete(request,pk):
+
+    pass
+
+
+def product_transfer_to_warehouse(request):
+
+    if request.method == 'POST':
+        form = Finished_goods_Stock_TransferMaster_form(request.POST)
+        formset = Finished_goods_transfer_records_formset(request.POST)
+
+        if form.is_valid() and formset.is_valid():
+            first_form = form.save(commit=False)
+            first_form.save()
+
+            for form in formset:
+                form_instance = form.save(commit=False)
+                form_instance.Finished_goods_Stock_TransferMasterinstance = first_form
+                form_instance.save()
+
+                warehouse = first_form.source_warehouse
+                product = form_instance.product
+                quantity = form_instance.product_quantity_transfer
+
+            
+                warehouse_instace = Finished_goods_warehouse.objects.get(warehouse_name_finished = warehouse)
+                product_instance = PProduct_Creation.objects.get(PProduct_SKU = product.PProduct_SKU)
+                print(warehouse_instace)
+                print(product_instance)
+
+                source_stock, created = Product_warehouse_quantity_through_table.objects.get_or_create(
+                    warehouse= warehouse_instace,
+                    product= product_instance,
+                    quantity = quantity
+                )
+
+        else:
+            print(form.errors)
+    else:
+        form = Finished_goods_Stock_TransferMaster_form()
+        formset = Finished_goods_transfer_records_formset()
+    return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset})
+
+
+
+def product_transfer_to_warehouse_list(request):
+    warehouse_product_transfer_list = Finished_goods_Stock_TransferMaster.objects.all()
+    return render(request,'finished_product/product_transfer_to_warehouse_list.html',{'warehouse_product_transfer_list':warehouse_product_transfer_list})
+
+
+
+
+
+
+def product_transfer_to_warehouse_delete(request,id):
+    obj = Finished_goods_Stock_TransferMaster.objects.get(id = id)
+    obj.delete()
+    return redirect('all-product-transfer-to-warehouse')
+
+
+
+
+
+
+
+
+
+
 @login_required(login_url='login')
 def itemdynamicsearchajax(request):
     
@@ -6458,6 +6620,7 @@ def itemdynamicsearchajax(request):
             
             print(searched_item_name_dict)
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
+        
         else:
             return JsonResponse({'error': 'No items found.'}, status=404)
 
@@ -6668,7 +6831,7 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
 
 
 @login_required(login_url='login')
-def godown_item_report(request,shade_id,g_id=None):
+def godown_item_report(request, shade_id,g_id=None):
     
     shade_name = item_color_shade.objects.get(id=shade_id)
     godown_name = 'All Stock'

@@ -3,7 +3,7 @@ from django import forms
 from django.shortcuts import get_object_or_404
 
 from core.models import Company
-from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, shade_godown_items, shade_godown_items_temporary_table
+from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
 from django.forms import modelformset_factory, BaseInlineFormSet 
@@ -933,10 +933,42 @@ class raw_material_product_estimation_items_form(forms.ModelForm):
 
 
 
+class product_purchase_voucher_master_form(forms.ModelForm):
+    class Meta:
+        model = product_purchase_voucher_master
+        fields = [
+            'purchase_number','supplier_invoice_number', 'ledger_type', 'party_name',
+            'fright_transport','gross_total','grand_total','finished_godowns']
+
+
+class product_purchase_voucher_items_form(forms.ModelForm):
+    class Meta:
+        model = product_purchase_voucher_items
+        fields = [
+            'product_name','quantity_total','rate', 'amount']
+        
+
+product_purchase_voucher_items_formset = inlineformset_factory(product_purchase_voucher_master,product_purchase_voucher_items,
+                                                                form = product_purchase_voucher_items_form, extra=1, can_delete=True)
 
 
 
 
+
+class Finished_goods_Stock_TransferMaster_form(forms.ModelForm):
+    class Meta:
+        model = Finished_goods_Stock_TransferMaster
+        fields = ['voucher_no','source_warehouse','destination_warehouse']
+
+
+
+
+class Finished_goods_transfer_records_form(forms.ModelForm):
+    class Meta:
+        model = Finished_goods_transfer_records
+        fields = ['product','product_quantity_transfer','remarks']
+
+Finished_goods_transfer_records_formset = inlineformset_factory(Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, form=Finished_goods_transfer_records_form, extra=1, can_delete=False)
 
 
 

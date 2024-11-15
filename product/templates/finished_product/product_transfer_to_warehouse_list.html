@@ -1,0 +1,10 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<a href="{% url 'warehouse-product-transfer-create' %}">create</a>
+{% comment %} {{ warehouse_product_transfer_list }} {% endcomment %}
+{% for warehouse_product_transfer in warehouse_product_transfer_list %}
+{{ warehouse_product_transfer }}
+<a href="{% url 'product-transfer-to-warehouse-delete' warehouse_product_transfer.id %}" onclick="return confirm('Are you sure you want to delete this item?');">delete</a>
+{% endfor %}
+{% endblock body %}

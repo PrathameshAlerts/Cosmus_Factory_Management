@@ -227,10 +227,7 @@
                 });
             }
         });
-    });
-   
-
-    
+    });    
 });
 
 </script>
@@ -273,38 +270,42 @@ function cancelCutting(){
       })
 }
 
-  var popupPage = null;
+var popupPage = null;
 
-  function approvedQty(button) {
-    if (popupPage === null || popupPage.closed) {
-      newPopup(button, 'purchaseordercuttingpopup/') 
-      
-      
-        var cuttingoderId = $(button).closest('tr').find('td').eq(2).text();
-        console.log(cuttingoderId)
-        $.ajax({
-          type: "GET",
-          url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
-          data:{
-            'cutting_pk_no':cuttingoderId,
-      
-          },
-          success: function(response) {
-              var allApproveLogs = response.approval_data;
-              console.log('allApproveLogs',allApproveLogs)
-              window.sharedData = allApproveLogs;
-          },
-          error: function(xhr, status, error) {
-            console.error("Error occurred: " + error);
-            console.error(status);
-            
-          }
-        })
+function approvedQty(button) {
+  if (popupPage === null || popupPage.closed) {
+    newPopup(button, 'purchaseordercuttingpopup/');
+    
+    // Fetch the cutting order ID
+    var cuttingoderId = $(button).closest('tr').find('td').eq(2).text();
+    console.log(cuttingoderId);
 
-    } else {
-      popupPage.focus();
-    }
+    // Perform the AJAX request
+    $.ajax({
+      type: "GET",
+      url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
+      data: {
+        'cutting_pk_no': cuttingoderId,
+      },
+      success: function(response) {
+        var allApproveLogs = response.approval_data;
+
+        // Assign data to sharedData and notify the child window if it's open
+        window.sharedData = allApproveLogs;
+
+        if (popupPage && !popupPage.closed) {
+          popupPage.postMessage({ type: "dataReady", data: allApproveLogs }, "*");
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error("Error occurred: " + error);
+        console.error(status);
+      }
+    });
+  } else {
+    popupPage.focus();
   }
+}
 
   function cuttingPkValue(button){
     var TotalApprove = 0;

@@ -52,7 +52,7 @@
                                 <td>{{forloop.counter}}</td>
                                 <td class="text-nowrap">{{po.created_date}}</td>
                                 <td>{{po.purchase_order_number}}</td>
-                                <td>{{po.product_reference_number.Product_Refrence_ID}}</td>
+                                <td><a href="{% url 'edit_production_product' po.product_reference_number.Product_Refrence_ID %}">{{po.product_reference_number.Product_Refrence_ID}}</a></td>
                                 <td class="text-nowrap">{{po.product_reference_number.Model_Name}}</td>
                                 <td class="text-nowrap">{{po.ledger_party_name.name}}</td>
                                 
@@ -107,7 +107,7 @@
                                 <td>{{forloop.counter}}</td>
                                 <td>{{po.created_date}}</td>
                                 <td>{{po.purchase_order_number}}</td>
-                                <td>{{po.product_reference_number.Product_Refrence_ID}}</td>
+                                <td><a href="{% url 'edit_production_product' po.product_reference_number.Product_Refrence_ID %}">{{po.product_reference_number.Product_Refrence_ID}}</a></td>
                                 <td>{{po.product_reference_number.Model_Name}}</td>
                                 <td>{{po.ledger_party_name.name}}</td>
                                 <td>{{po.target_date}}</td>
@@ -155,7 +155,7 @@
                             <td>{{instance.raw_material_cutting_id}}</td>
                             <td>{{instance.created_date}}</td>
                             <td>{{instance.purchase_order_id.purchase_order_number}}</td>
-                            <td>{{instance.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+                            <td><a href="{% url 'edit_production_product' instance.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{instance.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></td>
                             <td>{{instance.purchase_order_id.product_reference_number.Model_Name}}</td>
                             <td>{{instance.purchase_order_id.ledger_party_name.name}}</td>
                             <td>{{instance.purchase_order_id.number_of_pieces}}</td>
