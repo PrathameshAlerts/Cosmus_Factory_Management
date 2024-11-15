@@ -42,17 +42,37 @@
           <td>{{ forloop.counter }}</td>
           <td class="text-nowrap">{{ product.Model_Name | default_if_none:''}}</td>
           <td>{{ product.Product_Refrence_ID }}</td>
-          <td>
+          <td class="expandable-cell">
             {% for pproduct in product.productdetails.all %}
-            <span>{{ pproduct.product_color_name }}</span><br>
+            {% if forloop.first %}
+            <span class="half-content">{{ pproduct.product_color_name }}</span>
+            {% else %}
+            <span class="more-content">{{ pproduct.product_color_name }}</span>
+            {% endif %}
             {% endfor %}
           </td>
-          <td >
+          <td class="expandable-cell">
             {% for pproduct in product.productdetails.all %}
-            <span >{{ pproduct.PProduct_SKU }}</span><br>
+            {% if forloop.first %}
+            <span class="half-content" >{{ pproduct.PProduct_SKU }}</span>
+            {% else %}
+            <span class="more-content" >{{ pproduct.PProduct_SKU }}</span>
+            {% endif %}
             {% endfor %}
           </td>
-          <td style="width: 8%;">{{ product.Product_Channel | default_if_none:''}}</td>
+          <td style="width: 8%;">
+           
+            {% for x in product.Product_Channel %}
+            {% if forloop.first %}
+            <span  class="half-content">{{x}}</span>
+            
+            {% else %}
+            <span class="more-content" >{{x}}</span>
+            {% endif %}
+
+            {% endfor %}
+          
+          </td>
           <td>{{ product.Product_Brand | default_if_none:''}}</td>
           <td>{{ product.Product_SalePrice_CustomerPrice | default_if_none:''}}</td>
           <td>{{ product.Product_MRP | default_if_none:''}}</td>
