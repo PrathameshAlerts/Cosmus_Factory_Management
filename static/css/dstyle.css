@@ -1245,10 +1245,28 @@ input[type=number] {
 .qty-pad{
     padding-left: 50px;
 }
-.table-left{
-    padding-left: 880px;
-}
-
+.expandable-cell {
+    cursor: pointer; /* Indicate that this part of the row is clickable */
+  }
+  
+  .half-content {
+    display: block;
+    /* Optionally, limit the height or content visibility if necessary */
+  }
+  
+  .more-content {
+    display: none;  /* Hide additional content initially */
+  }
+  
+  .expandable-row.expanded .half-content {
+    display: block;  /* Hide the half content when the row is expanded */
+  }
+  
+  .expandable-row.expanded .more-content {
+    display: block;  /* Show additional content when the row is expanded */
+  }
+  
+  
 .loading-image {
     display: none; /* Hide by default */
     position: fixed;
@@ -1514,12 +1532,13 @@ input[type=number] {
     height: 33px;
 }
 .purchase-mark{
-    width: 42px;
+    width: 45px;
     border: 1px solid #cecdcd ;
     border-radius: 2px;
     padding-left: 5px; 
     height: 33px;
 }
+
 table>:not(caption)>*>*{
     padding: .4rem .4rem !important;
 }

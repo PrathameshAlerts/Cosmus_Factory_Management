@@ -24,14 +24,7 @@
           <th>No</th>
           <th>Model Name</th>
           <th>Refrence ID</th>
-          <th>Color
-            <!-- <div class="nav-item dropdown packing_icons">
-                  <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><input type="text" class="dropdown-item input_text" placeholder="Any match.."/></li>
-                  </ul>
-                </div> -->
-          </th>
+          <th>Color</th>
           <th>SKU</th>
           <th>Channel</th>
           <th>Brand</th>
@@ -45,18 +38,18 @@
       </thead>
       <tbody class="mainrawTable" style="max-height: 450px; overflow-y: auto;">
         {% for product in products %}
-        <tr>
+        <tr class="expandable-row expandable-cell" data-item-id="{{ item.id }}" >
           <td>{{ forloop.counter }}</td>
           <td class="text-nowrap">{{ product.Model_Name | default_if_none:''}}</td>
           <td>{{ product.Product_Refrence_ID }}</td>
           <td>
             {% for pproduct in product.productdetails.all %}
-            {{ pproduct.product_color_name }}<br>
+            <span>{{ pproduct.product_color_name }}</span><br>
             {% endfor %}
           </td>
-          <td>
+          <td >
             {% for pproduct in product.productdetails.all %}
-            {{ pproduct.PProduct_SKU }}<br>
+            <span >{{ pproduct.PProduct_SKU }}</span><br>
             {% endfor %}
           </td>
           <td style="width: 8%;">{{ product.Product_Channel | default_if_none:''}}</td>
@@ -161,6 +154,15 @@
   function redirectProductFilter() {
     window.location.href = "{% url 'pproductlist' %}";
   }
+
+
+  document.querySelectorAll('.expandable-row').forEach(row => {
+  row.addEventListener('click', function() {
+    // Toggle the expanded class on the clicked row
+    this.classList.toggle('expanded');
+  });
+});
+
 </script>
 
 {% endblock body %}

@@ -53,82 +53,52 @@ the input field will be pre-filled with that value when the page is loaded. -->
           <thead class="name_absolute sticky-top bg-white">
             <tr>
               <th>No</th>
-              <th>Name
-                <!-- <div class="nav-item dropdown name_icons">
-                      <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down"></i></a>
-                      <ul class="dropdown-menu">
-                        <li><button class="dropdown-item" href="#">Sort Ascending<i class="fa-solid fa-arrow-up-long"></i></button></li>
-                        <li><button class="dropdown-item" href="#">Sort Decending<i class="fa-solid fa-arrow-down-long"></i></button></li>
-                        <li><hr class="dropdown-divider"/></li>
-                        <li class="nav-item dropend">
-                          <button class="nav-link dropdown px-4 fs-6" data-bs-toggle=" dropdown" aria-expanded="false">Filter
-                            <i class="fa-solid fa-angle-right text-decoration-none"></i>
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li><input  type="text" class="dropdown-item input_text" placeholder="Any match.." /></li>
-                            <li><input  type="text"class="dropdown-item input_text" placeholder="Exact match.."/></li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </div> -->
-              </th>
+              <th>Name</th>
               <th>Item Color</th>
-              <th>Shades</th>
-              <th>Material Code
-                <!-- <div class="nav-item dropdown material_icons">
-                      <a class="nav-link dropdown" href="#" role="button" data-bs-toggle="dropdown"aria-expanded="false"><i class="fa-solid fa-angle-down mx-2"></i></a>
-                      <ul class="dropdown-menu">
-                        <li><input type="text" class="dropdown-item input_text" placeholder="Any match.."/></li>
-                      </ul>
-                    </div>  -->
-              </th>
+              <th>Shades</th> <!-- Colspan spans across the two sub-headers -->
+              <th>Material Code</th>
               <th>Unit Name</th>
               <th>Units</th>
               <th>Panha</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
+            <tr>
+              <th colspan="3"></th>
+              <th><span class="me-5">Shade</span><span class="ms-4">Shade Details <span style="float: right; width: 16%;">QTY</span></span></th>
+              <th colspan="6"></th>
+            </tr>
           </thead>
     
           <tbody class="mainrawTable" style="max-height: 450px; overflow-y: auto;">
             {% for item in items %}
-            <tr>
+            <tr class="expandable-row" data-item-id="{{ item.id }}">
               <td>{{ forloop.counter }}</td>
-              <td class="text-nowrap fw-bold"><span class="">{{item.item_name}}</span>
-                <div class="pt-2 ms-4">
-                  <label class="fw-bold">F Group -</label><span class="fw-bold text-success ps-1">{{item.fab_grp}}</span><br>
-                  <lable class="fw-bold">M Code -</lable><span class="fw-bold text-success ps-1">{{item.Material_code}}</span>
+              <td class="text-nowrap fw-bold expandable-cell">
+                <span class="half-content">{{ item.item_name }}</span>
+                <div class="more-content">
+                  <label class="fw-bold">F Group -</label>
+                  <span class="fw-bold text-success ps-1">{{ item.fab_grp }}</span><br>
+                  <label class="fw-bold">M Code -</label>
+                  <span class="fw-bold text-success ps-1">{{ item.Material_code }}</span>
                 </div>
               </td>
               <td class="text-nowrap">{{item.Color_Name}}<span class="colorCheck fw-bold" style="float: right;">{{item.total_quantity | default_if_none:0}}</span></td>
-              <td>
+              <td class="expandable-cell">
                 <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Shade</th>
-                      <th>Shade Details</th>
-                    </tr>
-                  </thead>
                   <tbody>
                     {% for shade in item.shades.all %}
-                    <tr>
-                      <td style="width: 32%;">{{shade.item_shade_name}}</td>
-                      <td>
-                        <table class="tables table-bordered" >
-                          <thead>
-                            <tr>
-                              <th style="width: 76%;">Name</th>
-                              <th >Qty</th>
-                            </tr>
-                          </thead>
-                          <tbody> 
+                    <tr class="more-content" >
+                      <td  style="width: 32%;">{{shade.item_shade_name}}</td>
+                      <td class="">
+                        <table class="table-bordered">
                             {% for shade_q in shade.godown_shades.all %}
-                              <tr>
+                              <tr >
                                 <td style="width: 76%;">{{shade_q.godown_name}}</td>
                                 <td style="width: 100%;" class="px-2 shadeColor float-right">{{shade_q.quantity}}</td>
                               </tr>
                           {% endfor %}
-                          </tbody>
+                        
                           
                         </table>
                       </td>
@@ -223,6 +193,16 @@ document.getElementById('file-input').addEventListener('change', function() {
   function redirectlistFilter() {
     window.location.href = "{% url 'item-list'%}"
   }
+
+
+  document.querySelectorAll('.expandable-row').forEach(row => {
+  row.addEventListener('click', function() {
+    // Toggle the expanded class on the clicked row
+    this.classList.toggle('expanded');
+  });
+});
+
+
 </script>
 
 

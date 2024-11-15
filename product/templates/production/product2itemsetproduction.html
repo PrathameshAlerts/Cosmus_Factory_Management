@@ -298,16 +298,26 @@
                             let colorStyle = '';
                             if (searchQuery) {
                                 highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
-                                const valueCalculate = value.split("|")[1].trim(); 
+                                const valueCalculate = value.split("|")[1].split(",")[0].trim(); 
+                                const numberKey = value.split(/-?\d+(\.\d+)?,/)[2].trim();
 
                                 // Initialize the color based on valueCalculate
                                 
                                 if (parseFloat(valueCalculate) > 0) {
                                     colorStyle = 'color: green; float: right;';
                                 } else {
-                                    colorStyle = 'color: red; float: right;';
+                                    colorStyle = 'color: red;  float: right;';
                                 }
-                                suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+
+                                if(numberKey.includes(searchQuery)){
+                                    numberKeyHighlighted = `<span class="highlight">M Code - ${numberKey}</span>`;
+                                }else {
+                                    numberKeyHighlighted = `M Code - ${numberKey}`;
+                                }
+                                suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span>
+                                    <br>
+                                    <span style="font-weight:bold">${numberKeyHighlighted}</span>
+                                    </div>`);
                             } 
                             
                             
@@ -329,6 +339,7 @@
             suggestionsContainerUniqueId.one('click', '.itemName-div-suggestion', function () {
                 const currentRow = $(this).closest('tr');
                 const dataKey = $(this).attr('data-key');
+                const newDataValue = $(this).text().match(/^[a-zA-Z\s().]+/)[0].trim(); 
                 const dropdownContainer = $(this).closest('.custom-dropdown-container');
                 const nameData = dropdownContainer.find('.input_hidden-value');
                 const errorForm = currentRow.find('.error-messagesorderCreate');
@@ -339,7 +350,7 @@
                 const selectedProductValue = currentRow.find('[name$="-PProduct_pk"]').val();
                 const otherProductRows = $(this).closest('form').find('[name$="-PProduct_pk"]').not(currentRow.find('[name$="-PProduct_pk"]'));
                 let isDuplicate = false;
-
+                console.log(newDataValue)
                 addButtonUnique.attr('disabled', false);
                 addRowButtonUnique.attr('disabled', false);
                 addButtonUnique.css('cursor', 'pointer');
@@ -363,7 +374,7 @@
                 }
 
                 // Update the input text and highlight the selected suggestion
-                dropdownContainer.find('.input_text').val($(this).text().trim());
+                dropdownContainer.find('.input_text').val(newDataValue);
                 $(this).addClass('selected').siblings().removeClass('selected');
 
                 otherProductRows.each(function () {
@@ -533,7 +544,7 @@
             }
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const nameValues = $inputField.text().trim();  // Get input value
+                const nameValues = $inputField.text().match(/^[\w\s()]+(?:\.\s*)?/)[0].trim();  // Get input value
                 const nameKeyValue = $inputField.attr('data-key');  // Get the data-key value
                 const currentRowData = $(this).closest('tr');  // Get the current table row
                 const errorForm = currentRowData.find('.error-messagesorderCreate');  // Error message container
@@ -541,14 +552,14 @@
                 const submitButton = $inputField.closest('form').find('#id_submitForms');  // Submit button
                 const nameData = $inputField.closest('.custom-dropdown-container').find('.input_hidden-value');  // Hidden input for data storage
                 const productData = currentRowData.find('[name$="-PProduct_pk"]').val();  // Product ID value from the current row
-                
+                console.log('nameValues',nameValues)
                 let isDuplicate = false;  // Flag to track if a duplicate item is found
                 addButtonUnique.prop('disabled', false);
                 addRowButtonUnique.prop('disabled', false);
                 addButtonUnique.css('cursor', 'pointer');
                 addRowButtonUnique.css('cursor', 'pointer');
                 // Check if input field has text, then set the values and hide suggestions
-                if (nameValues.length > 0) {
+                if (newNameValues.length > 0) {
                     nameData.val('');  // Clear the hidden input field
                     $inputField.val(nameValues);  // Set the value of the input field
                     suggestionHide.hide();  // Hide suggestions dropdown
@@ -679,16 +690,26 @@
                             let colorStyle = '';
                             if (searchQuery) {
                                 highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
-                                const valueCalculate = value.split("|")[1].trim(); 
-
+                                const valueCalculate = value.split("|")[1].split(",")[0].trim(); 
+                                const numberKey = value.split(/-?\d+(\.\d+)?,/)[2].trim();
+                        
                                 // Initialize the color based on valueCalculate
                                 
                                 if (parseFloat(valueCalculate) > 0) {
                                     colorStyle = 'color: green; float: right;';
                                 } else {
-                                    colorStyle = 'color: red; float: right;';
+                                    colorStyle = 'color: red;  float: right;';
                                 }
-                                suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span></div>`);
+
+                                if(numberKey.includes(searchQuery)){
+                                    numberKeyHighlighted = `<span class="highlight">M Code - ${numberKey}</span>`;
+                                }else {
+                                    numberKeyHighlighted = `M Code - ${numberKey}`;
+                                }
+                                suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span>
+                                    <br>
+                                    <span style="font-weight:bold">${numberKeyHighlighted}</span>
+                                    </div>`);
                             } 
                             
                             
@@ -709,7 +730,8 @@
             }
 
             suggestionsContainerCommon.on('click', '.itemName-div-suggestion', function () {
-                const currentRow = $(this).closest('tr');  
+                const currentRow = $(this).closest('tr'); 
+                const newDataValue = $(this).text().match(/^[a-zA-Z\s().]+/)[0].trim();  
                 const dataKey = $(this).attr('data-key');  // New row's data-key (item to be added)
                 const errorShow = currentRow.find('.error-messagesorderCreate');  // Error display element
                 const submitButton = $(this).closest('form').find('#id_submitForms');
@@ -718,7 +740,7 @@
            
                 let isDuplicate = false;
                 // Update the input with the selected value and mark the selection
-                $(this).closest('.custom-dropdown-container').find('.commom_item').val($(this).text().trim());
+                $(this).closest('.custom-dropdown-container').find('.commom_item').val(newDataValue);
                 $(this).addClass('selected').siblings().removeClass('selected');
                 addButton.prop('disabled', false);
                 rowAddButton.prop('disabled', false);
@@ -882,7 +904,7 @@
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const currentRows = $(this).closest('tr'); 
-                const nameValues = $inputField.text().trim();
+                const nameValues = $inputField.text().match(/^[\w\s()]+(?:\.\s*)?/)[0].trim();
                 const dataKey = $inputField.attr('data-key');
                
                 const errorShowData = currentRows.find('.error-messagesorderCreate');
@@ -1674,5 +1696,19 @@ document.querySelector('#myProductForm').addEventListener('submit', function() {
         submitFormRowNumber();
 });
  
+</script>
+
+<script>
+    var forms = document.getElementById('myProductForm');
+    var submitButton = document.getElementById('id_submitForms');
+
+    forms.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevents the default form submission on Enter key
+        }
+    });
+    submitButton.addEventListener('click',function(event){
+        forms.submit()
+    });
 </script>
 {% endblock body %}
