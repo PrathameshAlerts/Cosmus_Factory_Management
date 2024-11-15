@@ -22,7 +22,7 @@
             </select>
             <input type="hidden" id="id_unique_Value" name="unique_id" value="{{product_estimation_form.instance.pk}}">
             {% if instance_exists_check %}
-            <button onclick="calteRawMaterial()" class="create-btn mt-3" id="calculate"type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Calculate</button>
+            <button class="create-btn mt-3" id="calculate" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="calteRawMaterial(this)">Calculate</button>
             {% endif %}
         </div>
         
@@ -43,7 +43,6 @@
                 {% for form in product_estimation_formset %}
                 {{ form.id }}
                 <tr>
-                    
                     <input type="hidden" id="id_{{form.prefix}}-newid" name="{{form.prefix}}-newid" value="{{form.instance.id}}" class="newIdInstance">
                     <td><span>{{forloop.counter}}</span></td>
                     <td>
@@ -51,7 +50,6 @@
                             
                             {% if form.instance.id %}
                             
-
                             <option value="{{form.instance.product_id.id}}">{{form.instance.product_id.Product_Name}}</option>
                             
                             {% for x in product_all %}
@@ -72,7 +70,7 @@
                     <td>{% if form.instance.id %}
                         <button type="button" class="rounded px-3 py-1 bg-success text-white border-0" id="{{form.prefix}}-clickBtn" onclick="openRawMaterialPopup(this)">click</button>
                         {% if form.instance.raw_material_product_ref_itemss_p_2_i.exists %}
-                        <span class="ms-3 text-success my-2" id="{{form.prefix}}-icons"><i class="fa-solid fa-circle-check fs-4"></i></span>
+                        <span class="ms-3 text-success icons" id="{{form.prefix}}-icons"><i class="fa-solid fa-circle-check fs-4"></i></span>
                         {% endif %}
                         {% endif %}
                         
@@ -108,8 +106,6 @@
                         <th>Total Consump</th>
                         <th>Godown Stock</th>
                         <th>Balance Stock</th>
-                       
-                        
                     </tr>
                 </thead>
                 <tbody class="mainTableList calculateTable">
@@ -145,15 +141,11 @@
     
                     table.innerHTML = ''; // Clear previous table rows
                     responseData.forEach(function(items){
-                        console.log(items)
                         var itemName = items.item_name || 'N/A';
                         var totalConsump = items.total_consump || 0;
                         var godownStock = items.godown_stock|| 0;
                         var balanceStock = items.balance_stock || 0;
-                        
-
-                        console.log(typeof(balanceStock))
-                    
+    
                         var row = document.createElement('tr');
 
                         var cell1 = document.createElement('td');
@@ -161,6 +153,7 @@
                 
                         var cell2 = document.createElement('td');
                         cell2.textContent = totalConsump;
+
                         var cell3 = document.createElement('td');
                         if(godownStock < "0"){
                             cell3.style.color = "red";
@@ -177,12 +170,8 @@
                             cell4.style.color='green';
                 
                         }
-
-
                         cell4.textContent = balanceStock;
 
-                        
-                     
                         row.appendChild(cell1);
                         row.appendChild(cell2);
                         row.appendChild(cell3);
@@ -197,6 +186,7 @@
         }
 
 
+  
     document.addEventListener('DOMContentLoaded', function () {
 
         const addnewButton = document.getElementById('addRowMaterial');

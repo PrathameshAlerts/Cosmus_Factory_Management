@@ -10,16 +10,31 @@
     width: 50px;
     height: 50px;
 }
-body{
+body {
     min-height: 100vh;
-    background-color:#f6f7fb;
+    background-color: #f6f7fb;
     color: #000;
-    background-size: cover;
+    position: relative;
+}
+
+/* Optional: Apply the blur only to the background image */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/logo.jpg');
+    mix-blend-mode: multiply;
     background-position: center;
+    background-repeat: no-repeat;
+ 
+    opacity: 0.1; /* Adjust opacity as needed (0.5 = 50% opacity) */
+    z-index: -1; /* Keeps the background behind content */
     
 }
 
-/* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -388,7 +403,7 @@ input[type=number] {
 /*====siderbar====*/
 
 .side-bar {
-    background: #fff;
+    background: #4b49ac;
     color: #666;
     backdrop-filter: blur(15px);
     width: 235px;
@@ -429,29 +444,35 @@ input[type=number] {
 .side-bar .menu .item{
     position: relative;
     cursor: pointer;
-    border: 1px solid #f1f1f1;
+    /* border: 1px solid #f1f1f1; */
    
 
 }
    
 .side-bar .menu .item a{
-    color: #666;
+    color: #fff;
     font-size: 16px;
     text-decoration: none;
     display: block;
     padding: 2px 17px;
     line-height: 50px;
-    background-color: #fff;
-    border: 1px solid #f1f1f1;
-    border-radius: 15px;
-    border-color: #f1f1f1 ;
+    background-color: #4b49ac;
+    border: 1px solid #7da0fe;
+    border-radius: 6px;
+    border-color: #4b49ac ;
 }
    
 .side-bar .menu .item a:hover{
-    background: #888;
+    background: #7da0fe;
     color: #f1f1f1;
     transition: width 0.3s ease;
 
+}
+.side-bar .menu .item a img{
+    filter: invert(1) brightness(2); 
+}
+.side-bar .menu .item a img:hover{
+    filter: invert(1) brightness(2); 
 }
    
 .side-bar .menu .item i{
@@ -566,8 +587,8 @@ input[type=number] {
 }
 
 .coder-navbar.header-blue{
-    background: -webkit-gradient(linear, left top, right top, from(#4998d1), to(#2fc2dc));
-    background: linear-gradient(45deg, #4998d1 70%, #2fc2dc 100%);
+    /* background: -webkit-gradient(linear, left top, right top, from(#4998d1), to(#2fc2dc)); */
+    background: #4b49ac;
     color: rgba(255, 255, 255, 0.8);
 }
 
@@ -677,7 +698,7 @@ input[type=number] {
     -webkit-transition: all 0.15s ease-in-out;
     transition: all 0.15s ease-in-out;
     z-index: 0;
- 
+
 }
 
 .container-flex {
@@ -1224,10 +1245,28 @@ input[type=number] {
 .qty-pad{
     padding-left: 50px;
 }
-.table-left{
-    padding-left: 880px;
-}
-
+.expandable-cell {
+    cursor: pointer; /* Indicate that this part of the row is clickable */
+  }
+  
+  .half-content {
+    display: block;
+    /* Optionally, limit the height or content visibility if necessary */
+  }
+  
+  .more-content {
+    display: none;  /* Hide additional content initially */
+  }
+  
+  .expandable-row.expanded .half-content {
+    display: block;  /* Hide the half content when the row is expanded */
+  }
+  
+  .expandable-row.expanded .more-content {
+    display: block;  /* Show additional content when the row is expanded */
+  }
+  
+  
 .loading-image {
     display: none; /* Hide by default */
     position: fixed;
@@ -1486,21 +1525,25 @@ input[type=number] {
     height: 33px;
 }
 .purchase-input{
-    width: 79px;
+    width: 70px;
     border: 1px solid #cecdcd ;
     border-radius: 2px;
     padding-left: 5px; 
     height: 33px;
 }
 .purchase-mark{
-    width: 50px;
+    width: 45px;
     border: 1px solid #cecdcd ;
     border-radius: 2px;
     padding-left: 5px; 
     height: 33px;
 }
+
+table>:not(caption)>*>*{
+    padding: .4rem .4rem !important;
+}
 .purchase-amount{
-    width: 115px;
+    width: 110px;
     border: 1px solid #cecdcd ;
     border-radius: 3px;
     padding-left: 5px;
@@ -1726,7 +1769,15 @@ input[type=number] {
 .purchaseOrderCuttingcompleteArrow{
     padding-left: 330px;
 }
-
+.purchaseOrderCuttingVouchareArrow{
+    padding-left: 429px; 
+}
+.labourworkoutChallanArrow{
+    padding-left: 288px;  
+}
+.labourInGRNArrow{
+    padding-left: 556px;  
+}
 .goodsRetutnArrow{
     padding-left: 300px;
 }
