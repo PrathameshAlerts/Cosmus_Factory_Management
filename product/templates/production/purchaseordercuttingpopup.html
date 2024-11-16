@@ -225,21 +225,22 @@ function quantityCheck() {
 
 
     if (window.opener) {
+        
         const dataFromParent = window.opener.sharedData;
         var TotalApprove = 0;
         var totalBalance = 0;
         var newTable = document.querySelector('#approvalDataLog tbody'); 
-        
+        console.log(dataFromParent)
         newTable.innerHTML = ''; // Clear previous table rows
 
 
         dataFromParent.forEach(function(items, index) {
             console.log(items)
               var approveDate = new Date(items.Approved_Date).toLocaleDateString(); // Format the date
-              var approveName = items.Approved_Name || 'N/A';  // Default if undefined
+              var approveName = items.Approved_Name || 'N/A';   // Default if undefined
               var approveQty = items.Approved_Qty || 0;        // Default to 0 if undefined
               var balanceQty = items.pending_Qty || 0;        // Default to 0 if undefined
-              var row = document.createElement('tr'); // Create a new row
+              var row = document.createElement('tr');        // Create a new row
              
               // Create cells and set their content
               var cell1 = document.createElement('td');
@@ -270,8 +271,8 @@ function quantityCheck() {
           document.getElementById('tApprovedQty').textContent = TotalApprove;
           document.getElementById('tBalanceQty').textContent = totalBalance;
 
-      }
-
+      
+    }
 </script>
 
 {% endblock %}

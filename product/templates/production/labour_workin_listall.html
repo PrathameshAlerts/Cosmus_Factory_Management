@@ -52,7 +52,7 @@
                                 <td>{{forloop.counter}}</td>
                                 <td>{{instance.purchase_order_number}}</td>
                                 <td>{{instance.ledger_party_name.name}}</td>
-                                <td>{{instance.product_reference_number.Product_Refrence_ID}}</td>
+                                <td><a href="{% url 'edit_production_product' instance.product_reference_number.Product_Refrence_ID %}">{{instance.product_reference_number.Product_Refrence_ID}}</a></td>
                                 <td>{{instance.number_of_pieces}}</td>
                                 <td>{{instance.product_reference_number.Model_Name}}</td>
                                 <td>{{instance.total_lwo_pcs|default_if_none:0}}</td>
@@ -106,7 +106,7 @@
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
                             <td>{{instance.challan_no}}</td>
-                            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+                            <td><a href="{% url 'edit_production_product' instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></td>
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Name}}</td>
                             <td>{{instance.labour_name.name|default_if_none:0}}</td>
                             <td>{{instance.total_process_pcs|default_if_none:0}}</td>
@@ -159,11 +159,11 @@
             <td>{{instance.voucher_number}}</td>
             <td>{{instance.created_date}}</td>
             <td>{{instance.labour_voucher_number.labour_name.name}}</td>
-            <td>{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+            <td><a href="{% url 'edit_production_product' instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></td>
             <td>{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
             <td>{{instance.total_return_pcs}}</td>
             <td>{{instance.total_balance_pcs}}</td>
-            <td>{{instance.labour_voucher_number.challan_no}}</td>
+            <td><a href="{% url 'labour-workout-single-view' instance.labour_voucher_number.id %}">{{instance.labour_voucher_number.challan_no}}</a></td>
             <td>{{instance.labour_voucher_number.total_process_pcs}}</td>
             <td><a href="{% url 'labour-workin-view-update' instance.labour_voucher_number.id instance.id True %}">View</a></td>
           </tr>

@@ -925,8 +925,6 @@ class labour_work_in_master(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,null=False, blank=False)
     modified_date = models.DateTimeField(auto_now=True)
 
-
-
 class labour_work_in_product_to_item(models.Model):
     labour_workin_instance = models.ForeignKey(labour_work_in_master, on_delete=models.CASCADE, related_name='l_w_in_products')
     product_sku = models.CharField(max_length=100)
@@ -957,11 +955,8 @@ class labour_workin_approval_report(models.Model):
     difference_qty = models.IntegerField(null=False, blank=False)
     unique_id = models.UUIDField(null=False, blank=False)
 
-
-
 class raw_material_production_estimation(models.Model):
     raw_material_godown_id = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
-
 
 class raw_material_product_ref_items(models.Model):
     raw_material_estimation_master = models.ForeignKey(raw_material_production_estimation, related_name='raw_material_production_estimations', on_delete=models.CASCADE)
@@ -974,7 +969,6 @@ class raw_material_product_wise_qty(models.Model):
     product_sku = models.CharField(max_length=100)
     product_color = models.CharField(max_length=100)
     estimate_qty = models.IntegerField(default=0)
-
 
 class raw_material_product_to_items(models.Model):
     raw_material_ref_id = models.ForeignKey(raw_material_product_ref_items, related_name= 'raw_material_product_ref_itemss_p_2_i' ,on_delete=models.CASCADE)
@@ -997,7 +991,6 @@ class raw_material_product_to_items(models.Model):
     Remark = models.CharField(max_length = 50, null=False, blank=False)
     pcs = models.IntegerField(default = 0)
 
-
 class raw_material_production_total(models.Model):
     raw_material_estination_master = models.ForeignKey(raw_material_production_estimation,related_name='raw_material_production_estimations_total' ,on_delete=models.CASCADE)
     item_name = models.CharField(max_length=100)
@@ -1009,4 +1002,59 @@ class raw_material_production_total(models.Model):
     
     
 
- 
+
+class Finished_goods_warehouse(models.Model):
+    warehouse_name_finished = models.CharField(max_length=100)
+
+
+class Product_warehouse_quantity_through_table(models.Model):
+    warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT)
+    product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
+    quantity = models.BigIntegerField(default = 0)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
+
+    class Meta:
+        unique_together = [['warehouse','product']]
+
+
+class product_purchase_voucher_master(models.Model):
+    purchase_number = models.CharField(max_length = 100, unique = True, null = False, blank = False)
+    supplier_invoice_number = models.CharField(max_length = 100)
+    ledger_type = models.CharField(max_length = 20, default = 'purchase(product)')
+    finished_godowns = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT)
+    party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
+    fright_transport = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    gross_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
+
+class product_purchase_voucher_items(models.Model):
+    product_purchase_master = models.ForeignKey(product_purchase_voucher_master, on_delete=models.CASCADE)
+    product_name = models.ForeignKey(PProduct_Creation, on_delete = models.PROTECT)
+    quantity_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
+    amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+
+
+class Finished_goods_Stock_TransferMaster(models.Model):
+    voucher_no = models.IntegerField(unique=True,blank=False,null=False)
+    source_warehouse = models.ForeignKey(Godown_finished_goods, on_delete=models.PROTECT , related_name='source_warehouse')
+    destination_warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT, related_name='destination_warehouse')
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
+
+
+
+class Finished_goods_transfer_records(models.Model):
+    Finished_goods_Stock_TransferMasterinstance = models.ForeignKey(Finished_goods_Stock_TransferMaster, on_delete = models.CASCADE)
+    product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
+    product_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    remarks = models.CharField(max_length = 255, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add = True)
+    updated_date = models.DateTimeField(auto_now = True)
+
+

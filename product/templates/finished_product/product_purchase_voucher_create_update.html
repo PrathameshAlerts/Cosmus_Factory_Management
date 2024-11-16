@@ -1,0 +1,21 @@
+
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+
+<form method="POST">
+{% csrf_token %}
+{{product_pur_vouch_form.as_p}}
+{{product_purchase_voucher_items_formset_instance.management_form}}
+{% for form in product_purchase_voucher_items_formset_instance %}
+{{form}}
+
+{% endfor %}
+
+<input type="submit" name="" id="">
+
+</form>
+
+
+{% endblock body %}

@@ -1,0 +1,15 @@
+
+{% extends 'product/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<a href="{% url 'product-purchase-voucher-create' %}">Create</a>
+
+
+{% for record in product_purchase_voucher_all %}
+{{record}}
+{% endfor %}
+
+
+{% endblock body %}

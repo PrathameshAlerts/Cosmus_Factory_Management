@@ -46,7 +46,7 @@
                             <td class="text-nowrap">{{record.created_date}}</td>
                             <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
                             <td>{{record.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
-                            <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+                            <td><a href="{% url 'edit_production_product' record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a> </td>
                             <td class="text-nowrap">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
                             <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
 
@@ -114,7 +114,7 @@
                                 <td class="text-nowrap">{{record.created_date}}</td>
                                 <td>{{record.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
                                 <td>{{record.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
-                                <td>{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+                                <td><a href="{% url 'edit_production_product' record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></td>
                                 <td class="text-nowrap">{{record.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
                                 <td>{{record.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
                                 <td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="border-0 rounded ms-2 mb-1" onclick="cuttingVNo(this)" style="color:white; text-decoration:underline; background-color: rgb(70, 70, 70); width: 20px;" data-pending="{{record.purchase_order_cutting_master.processed_qty}}"><span class="cuttingValueId">{{record.purchase_order_cutting_master.raw_material_cutting_id}}</span></button>
@@ -167,7 +167,7 @@
             <td>{{instance.labour_name.name}}</td>
             <td>{{instance.labour_workout_master_instance.total_approved_pcs}}</td>
             <td>{{instance.total_labour_workin_qty}}</td>
-            <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+            <td><a href="{% url 'edit_production_product' instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}"> {{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}} </a> </td>
             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
