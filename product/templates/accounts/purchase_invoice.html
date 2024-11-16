@@ -1182,7 +1182,7 @@ function randomValue (){
                     const rowElement = lastRow.querySelector('.rowNo[name^="rowNo_"]');
                     rowElement.id = `rowNo_${formIndex}`;
                     rowElement.name = `rowNo_${formIndex}`;
-                    rowElement.textContent = formIndex + 1;
+                    rowElement.value = formIndex + 1 ;
                     rowElement.style.border="none";
 
                     const inputSelectElement = lastRow.querySelector('.search-input[name^="item_name_"]');
