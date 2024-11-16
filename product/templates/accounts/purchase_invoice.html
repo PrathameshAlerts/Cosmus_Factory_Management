@@ -596,7 +596,6 @@ function randomValue (){
                                 highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
                                 const valueCalculate = value.split("|")[1].split(",")[0].trim(); 
                                 const numberKey = value.split(/-?\d+(\.\d+)?,/)[2].trim();
-                                console.log('valueCalculate',valueCalculate)
 
                                 // Initialize the color based on valueCalculate
                                 
@@ -671,10 +670,8 @@ function randomValue (){
 
         if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
-        console.log('selectedValue',selectedValue)
         var namevalueCheck = selectedValue.match(/[a-zA-Z\s().]+/g).join('');
         var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
-        console.log('namevalueCheck',namevalueCheck)
         var newnameValue = namevalueCheck.replace(/[\.\s]+$/, '');
         var valueKey = namevalueCheck + ' ' + numberValue ;
             
@@ -886,47 +883,38 @@ function randomValue (){
 
         if (event.key === 'Enter') {
              event.preventDefault();
-     
-        const itemEnterValue = $(this);
-        const item_value = itemEnterValue.attr('data-key');
+            const itemEnterValue = $(this);
+            const item_value = itemEnterValue.attr('data-key');
 
-        nameDataKey = '';
-        nameKey = '';
-        index = 0;
-        indexbool = false;
+            nameDataKey = '';
+            nameKey = '';
+            index = 0;
+            indexbool = false;
 
-        const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+            const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+            const itemShade = $('#input_item_shade_' + purchaseValue);
+            const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
         
-        const itemShade = $('#input_item_shade_' + purchaseValue);
-        const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
-      
 
-        if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
-            itemShade.text(itemShadeValue);
-            itemShade.show();
-        }else{
+            if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
+                itemShade.text(itemShadeValue);
+                itemShade.show();
+            }else{
 
-            itemShade.hide();
+                itemShade.hide();
+            }
+            handleSelection(purchaseValue,itemName, item_value);
+            enterPressed = true;
+            hiddenValue.css("display" ,"none");
+    
         }
-        handleSelection(purchaseValue,itemName, item_value);
-        enterPressed = true;
-        hiddenValue.css("display" ,"none");
-        }
+   
      });
 
 
      // This ajax call then select item name value send to the backend and append the shade ,color,per gst data show in the table
         var popupWindow = null; // Variable to hold the reference to the popup window
         
-        // $(document).on('focusout', 'input[name^="item_name_"]', function () {
-        //     var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
-        //     if (shadeValue === "false") {
-        //         handleShadeValueFalse();
-        //     } else if (shadeValue === "true") {
-        //         handleShadeValueTrue();
-        //     }
-        // })
-
         $(document).on('focusin', 'select[name^="purchase_voucher_items_set-"]', function () {
             var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
     
@@ -1305,6 +1293,7 @@ function randomValue (){
                 calculateTotalAmount();
                 calculateOtherTotal();
                 deleteRowData();
+                inputCheck();
             }   
              
         });
@@ -1331,7 +1320,7 @@ function randomValue (){
                 row.style.display = 'none';
                 calculateTotalAmount();
                 calculateOtherTotal();
-              
+                inputCheck();
                 
             } else {
                 console.error("Checkbox for deletion not found in this row");
@@ -1361,6 +1350,73 @@ function randomValue (){
     submitButton.addEventListener("click", function(event) {
       form.submit();
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const submitButton = document.getElementById("parentFormClick");
+    const itemNameInputs = document.querySelectorAll("input[id^='item_name_']");
+    const itemShadeSelects = document.querySelectorAll("select[id$='-item_shade']");
+
+    function validateInputs() {
+        let isValid = true;
+
+        // Check all item name inputs
+        itemNameInputs.forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+            }
+        });
+
+        // Check all item shade selects
+        itemShadeSelects.forEach(select => {
+            if (!select.value.trim()) {
+                isValid = false;
+            }
+        });
+
+        // Enable or disable the submit button
+        submitButton.disabled = !isValid;
+        submitButton.style.cursor = 'not-allow'
+    }
+
+    // Attach event listeners to inputs and selects
+    itemNameInputs.forEach(input => {
+        input.addEventListener("input", validateInputs);
+    });
+
+    itemShadeSelects.forEach(select => {
+        select.addEventListener("change", validateInputs);
+    });
+
+    
+    // Initial validation on page load
+    validateInputs();
+    inputCheck();
+});
+
+
+function inputCheck(){
+        const itemNameInputsid = document.querySelectorAll('[name^="item_name_"]');
+    console.log(itemNameInputsid)
+    // Loop through each input and add keydown event listener
+    itemNameInputsid.forEach((input, index) => {
+        input.addEventListener("keydown", function (event) {
+            if (event.key === "Tab") {
+                event.preventDefault(); // Prevent default tab behavior
+
+                // Check if the current input has a value
+                if (input.value.trim() !== "") {
+                    // If not the last input, move focus to the next row's item name
+                    if (itemNameInputsid[index + 1]) {
+                        itemNameInputsid[index + 1].focus();
+                    }
+                } else {
+                    // If current input is empty, refocus on it
+                    input.focus();
+                }
+            }
+        });
+    });
+    }
   </script>
 
 {% endblock body %}

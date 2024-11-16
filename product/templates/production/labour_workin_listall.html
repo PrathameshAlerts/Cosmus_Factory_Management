@@ -52,8 +52,10 @@
                                 <td>{{forloop.counter}}</td>
                                 <td>{{instance.purchase_order_number}}</td>
                                 <td>{{instance.ledger_party_name.name}}</td>
-                                <td><a href="{% url 'edit_production_product' instance.product_reference_number.Product_Refrence_ID %}">{{instance.product_reference_number.Product_Refrence_ID}}</a></td>
-                                <td>{{instance.number_of_pieces}}</td>
+                                <!-- <td><a href="{% url 'edit_production_product' instance.product_reference_number.Product_Refrence_ID %}">{{instance.product_reference_number.Product_Refrence_ID}}</a></td> -->
+                                
+                            <td><button class="border-0 rounded  mb-1 px-2 py-1" style="color:white; background-color: #ab2e3c;"><a style="color: white; text-decoration: none;" href="{% url 'edit_production_product' instance.product_reference_number.Product_Refrence_ID %}">{{instance.product_reference_number.Product_Refrence_ID}}</a></button></td>
+                            <td>{{instance.number_of_pieces}}</td>
                                 <td>{{instance.product_reference_number.Model_Name}}</td>
                                 <td>{{instance.total_lwo_pcs|default_if_none:0}}</td>
                                 <td>{{instance.total_labour_workin_pcs|default_if_none:0}}</td>
@@ -98,7 +100,7 @@
                             <th>OverDue</th>
                         </tr>
                     </thead>
-                    <tbody class="mainTableList text-nowrap" style="max-height: 350px; overflow-y: auto;">
+                    <tbody class="mainTableList text-nowrap">
                         {% for instance in labour_workout_child_instances_all %}
                         <tr>
                             <td>{{forloop.counter}}</td>
@@ -106,7 +108,7 @@
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name}}</td>
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.number_of_pieces}}</td>
                             <td>{{instance.challan_no}}</td>
-                            <td><a href="{% url 'edit_production_product' instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></td>
+                            <td><button class="border-0 rounded  mb-1 px-2 py-1" style="color:white; background-color: #ab2e3c;"><a style="color: white; text-decoration: none;" href="{% url 'edit_production_product' instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></button></td>
                             <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Name}}</td>
                             <td>{{instance.labour_name.name|default_if_none:0}}</td>
                             <td>{{instance.total_process_pcs|default_if_none:0}}</td>
@@ -152,20 +154,20 @@
           <th>View</th>
         </tr>
         </thead>
-        <tbody class="mainTableList">
+        <tbody class="mainTableList text-nowrap">
           {% for instance in labour_workin_child_instances_all %}
           <tr>
             <td>{{forloop.counter}}</td>
             <td>{{instance.voucher_number}}</td>
             <td>{{instance.created_date}}</td>
             <td>{{instance.labour_voucher_number.labour_name.name}}</td>
-            <td><a href="{% url 'edit_production_product' instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></td>
+            <td><button class="border-0 rounded  mb-1 px-2 py-1" style="color:white; background-color: #ab2e3c;"><a style="color:white; text-decoration: none;" href="{% url 'edit_production_product' instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID %}">{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</a></button></td>
             <td>{{instance.labour_voucher_number.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Model_Name}}</td>
             <td>{{instance.total_return_pcs}}</td>
             <td>{{instance.total_balance_pcs}}</td>
-            <td><a href="{% url 'labour-workout-single-view' instance.labour_voucher_number.id %}">{{instance.labour_voucher_number.challan_no}}</a></td>
+            <td><button class="border-0 rounded  mb-1 px-2 py-1" style="color:white; background-color: #f5a623;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workout-single-view' instance.labour_voucher_number.id %}">{{instance.labour_voucher_number.challan_no}}</a></button></td>
             <td>{{instance.labour_voucher_number.total_process_pcs}}</td>
-            <td><a href="{% url 'labour-workin-view-update' instance.labour_voucher_number.id instance.id True %}">View</a></td>
+            <td><a href="{% url 'labour-workin-view-update' instance.labour_voucher_number.id instance.id True %}"><i class="fa-solid fa-eye px-2"></i></a></td>
           </tr>
           {% endfor %}
         </tbody>

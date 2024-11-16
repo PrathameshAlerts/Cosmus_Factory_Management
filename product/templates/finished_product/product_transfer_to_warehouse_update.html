@@ -2,6 +2,28 @@
 {% load static %}
 {% block body %}
 
+<form>
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    
+
+        {{ formset.management_form }}
+
+        {% for form in formset %}
+
+            
+
+            {{ form.as_p }}
+
+        {% empty %}
+
+        <p>No forms available.</p>
+
+        {% endfor %}
+
+</form>
 <form action="" method="post" id="stockTransferToWarehouseForm" class="mt-3">
     {% csrf_token %}
     <div class="d-flex mb-2">
@@ -66,8 +88,7 @@
                 <tr>
                     <td><span id="id_stock_{{forloop.counter0}}">{{forloop.counter}}</span></td>
                     <td>
-                        
-                        <select name="{{form.prefix}}-product" id="id_{{form.prefix}}-product" class="acc-subInput stock_input_name">
+                        <select name="stock_name_{{forloop.counter0}}" class="acc-subInput stock_input_name" placeholder="Item Name" id="id_stock_name_{{forloop.counter0}}">
                             <!-- if master form is on update show the data of the source godown  -->
                             {% if masterstockform.instance.pk %}
                             <option value="{{form.instance.item_shade_transfer.items.pk}}">
@@ -81,10 +102,10 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" class="purchase-amount" name="{{form.prefix}}-product_quantity_transfer" step="0.001" id="id_{{form.prefix}}-product_quantity_transfer">
+                        <input type="number" name="{{form.prefix}}-product_quantity_transfer" step="0.001" id="id_{{form.prefix}}-product_quantity_transfer">
                     </td>
                   
-                    <td><input type="text" class="purchase-amount" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks"></td>
+                    <td><input type="text" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks"></td>
                   
                 </tr>
                 {% endfor %}
@@ -110,7 +131,7 @@
                     }
                 });
                 if (lastVisibleRow) {
-                    const newForm = document.getElementById('id_finished_goods_transfer_records_set-TOTAL_FORMS');
+                    const newForm = document.getElementById('id_rawstocktrasferrecords_set-TOTAL_FORMS');
                     const newFormCount = parseInt(newForm.value);
                     const newTable = lastVisibleRow.cloneNode(true);
                     newTable.querySelectorAll("input select").forEach(function (e) {
@@ -122,7 +143,7 @@
                     newId.textContent = newFormCount + 1;
                    
 
-                    const itemNameElement = newTable.querySelector('select[name^="finished_goods_transfer_records_set-"][name$="-product"]');
+                    const itemNameElement = newTable.querySelector('select[name^="finished_goods_transfer_records_set"][name$="-product"]');
                     itemNameElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-product`;
                     itemNameElement.name = `finished_goods_transfer_records_set-${newFormCount}-product`;
                     itemNameElement.value = "";
@@ -296,6 +317,4 @@
     })
 </script>
 
-
 {% endblock body %}
-

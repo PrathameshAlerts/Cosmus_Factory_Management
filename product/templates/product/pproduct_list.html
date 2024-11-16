@@ -24,8 +24,8 @@
           <th>No</th>
           <th>Model Name</th>
           <th>Refrence ID</th>
-          <th>Color</th>
-          <th>SKU</th>
+          <!-- <th>Color</th>
+          <th>SKU</th> -->
           <th>Channel</th>
           <th>Brand</th>
           <th>Sale Price</th>
@@ -40,7 +40,22 @@
         {% for product in products %}
         <tr class="expandable-row expandable-cell" data-item-id="{{ item.id }}" >
           <td>{{ forloop.counter }}</td>
-          <td class="text-nowrap">{{ product.Model_Name | default_if_none:''}}</td>
+          <td class="expandable-cell">
+            
+            <span class="half-content">{{ product.Model_Name | default_if_none:''}}</span>
+            {% for detail in product.productdetails.all %}
+            {% if detail.PProduct_image %}
+                {% if forloop.first %}
+                    <!-- First image with unique style -->
+                   <span class="half-content"><img src="{{ detail.PProduct_image.url }}" alt="First Image" style="width:30px;"></span> 
+                {% else %}
+                    <!-- Other images -->
+                    <span class="more-content"><img src="{{ detail.PProduct_image.url }}" alt="Other Image" style="width:30px;"></span>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        
+          </td>
           <td>{{ product.Product_Refrence_ID }}</td>
           <td class="expandable-cell">
             {% for pproduct in product.productdetails.all %}
@@ -54,9 +69,9 @@
           <td class="expandable-cell">
             {% for pproduct in product.productdetails.all %}
             {% if forloop.first %}
-            <span class="half-content" >{{ pproduct.PProduct_SKU }}</span>
+            <span class="half-content">{{ pproduct.PProduct_SKU }}</span>
             {% else %}
-            <span class="more-content" >{{ pproduct.PProduct_SKU }}</span>
+            <span class="more-content">{{ pproduct.PProduct_SKU }}</span>
             {% endif %}
             {% endfor %}
           </td>
