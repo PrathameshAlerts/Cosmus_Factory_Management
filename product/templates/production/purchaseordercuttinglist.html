@@ -45,7 +45,7 @@
               <th>Cutting Apr QTY</th>
               <th>Balance Qty for Cutting</th>
               <th>View</th>
-              <th>Approve Status</th>
+              <th class="text-danger">Approval Status</th>
               <th>Approve log</th>
               <th>Download</th>
               <th>Cancel</th>
@@ -62,7 +62,7 @@
               <td class="approvedQty">{{cutting_order.approved_qty}}</td>
               <td>{{cutting_order.balance_qty}}</td>
               <td><button class="border-0 bg-transparent viewBtn"><a href="{% url 'purchase-order-cutting-update' p_o_pk prod_ref_no cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 fs-6"></i></a></button></td>
-              <td><button  class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button></td>
+              <td><button  class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up px-2 fs-5"></i></a></button><br><span class="text-danger fw-bold">Bal = </span><span class="text-danger balanceValue fw-bold"></span></td>
 
               <td><button type="button" data-id="{{ cutting_order.processed_qty }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="border-0 bg-transparent " onclick="cuttingPkValue(this)"><i class="fa-solid fa-person-circle-check px-3 fs-5"></i></button></td>
 
@@ -91,7 +91,7 @@
         <div class="modal-body">
        
             <table class="table table-striped table-hover table-bordered" id="approvalDataLogs">
-              <thead class="name_absolute sticky-top">
+              <thead class="name_absolute">
                 <tr>
                   <th>Date</th>
                   <th>Approved By</th>
@@ -246,6 +246,9 @@ function approvedValues(){
       approvedButton.innerHTML = '<i class="fa-solid fa-circle-check ps-3 fs-5"></i>';
 
     }
+    var balanceqty = processQty - approvedQty;
+    console.log('balance',balanceqty)
+    el.closest('tr').querySelector('.balanceValue').textContent = balanceqty;
   })
 }
 

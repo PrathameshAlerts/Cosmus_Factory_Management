@@ -64,7 +64,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 shade_godown_items_temporary_table_formset,shade_godown_items_temporary_table_formset_update,
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,
-                                purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset,
+                                purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset_create,Finished_goods_transfer_records_formset_update,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form, raw_material_product_estimation_formset)
 
 
@@ -6521,42 +6521,44 @@ def product_purchase_voucher_delete(request,pk):
 
 
 def product_transfer_to_warehouse(request):
-
     if request.method == 'POST':
         form = Finished_goods_Stock_TransferMaster_form(request.POST)
-        formset = Finished_goods_transfer_records_formset(request.POST)
-
+        formset = Finished_goods_transfer_records_formset_create(request.POST)
         if form.is_valid() and formset.is_valid():
-            first_form = form.save(commit=False)
-            first_form.save()
-
-            for form in formset:
-                form_instance = form.save(commit=False)
-                form_instance.Finished_goods_Stock_TransferMasterinstance = first_form
-                form_instance.save()
-
-                warehouse = first_form.source_warehouse
-                product = form_instance.product
-                quantity = form_instance.product_quantity_transfer
-
-            
-                warehouse_instace = Finished_goods_warehouse.objects.get(warehouse_name_finished = warehouse)
-                product_instance = PProduct_Creation.objects.get(PProduct_SKU = product.PProduct_SKU)
-                print(warehouse_instace)
-                print(product_instance)
-
-                source_stock, created = Product_warehouse_quantity_through_table.objects.get_or_create(
-                    warehouse= warehouse_instace,
-                    product= product_instance,
-                    quantity = quantity
-                )
-
+            try:
+                with transaction.atomic():
+                    first_form = form.save(commit=False)
+                    first_form.save()
+                    for form in formset:
+                        form_instance = form.save(commit=False)
+                        form_instance.Finished_goods_Stock_TransferMasterinstance = first_form
+                        form_instance.save()
+                        warehouse = first_form.destination_warehouse
+                        product = form_instance.product
+                        quantity = form_instance.product_quantity_transfer
+                        source_stock, created = Product_warehouse_quantity_through_table.objects.get_or_create(
+                            warehouse= warehouse,
+                            product= product,
+                            quantity = quantity
+                        )
+            except Exception as e:
+                messages.error(request, f"An error occurred: {e}")
         else:
             print(form.errors)
     else:
         form = Finished_goods_Stock_TransferMaster_form()
-        formset = Finished_goods_transfer_records_formset()
+        formset = Finished_goods_transfer_records_formset_create()
     return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset})
+
+
+
+def product_transfer_to_warehouse_update(request,id):
+    voucher_instance = Finished_goods_Stock_TransferMaster.objects.get(id =id)
+    form = Finished_goods_Stock_TransferMaster_form(instance=voucher_instance)
+    formset = Finished_goods_transfer_records_formset_update(instance=voucher_instance)
+    return render(request,'finished_product/product_transfer_to_warehouse_update.html',{'form':form , 'formset':formset})
+
+
 
 
 
@@ -6733,6 +6735,7 @@ def session_data_test(request):
 
 def finished_goods_stock_all(request,pk=None):
     wareshouse_all = Finished_goods_warehouse.objects.all()
+    
     if pk:
         warehouse_data = Product_warehouse_quantity_through_table.objects.filter(product__PProduct_SKU = OuterRef('pk'),                     
                          warehouse__id = pk).values('quantity')     # or .annotate(all_sum = Sum('quantity')).values('quantity') but constraint is [['warehouse','product']] so warehouse will have a single product so sum is not required 

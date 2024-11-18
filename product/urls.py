@@ -241,6 +241,7 @@ urlpatterns = [
 
     # warehouse product transfer
     path('warehouseproducttransfercreate/', views.product_transfer_to_warehouse,name='warehouse-product-transfer-create'),
+    path('warehouseproducttransferupdate/<int:id>/', views.product_transfer_to_warehouse_update,name='warehouse-product-transfer-update'),
     path('allproducttransfertowarehouse/', views.product_transfer_to_warehouse_list,name='all-product-transfer-to-warehouse'),
     path('producttransfertowarehousedelete/<int:id>/', views.product_transfer_to_warehouse_delete,name='product-transfer-to-warehouse-delete'),
 

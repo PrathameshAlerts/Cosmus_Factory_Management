@@ -52,7 +52,7 @@
                 <td>{{forloop.counter}}</td>
                 <td>{{po.created_date}}</td>
                 <td>{{po.purchase_order_number}}</td>
-                <td> <a href="{% url 'edit_production_product' po.product_reference_number.Product_Refrence_ID %}">{{po.product_reference_number.Product_Refrence_ID}}</a></td>
+                <td><button class="border-0 rounded  mb-1 px-2 py-1" style="color:white; background-color: #ab2e3c;"><a style="color:white; text-decoration: none;" href="{% url 'edit_production_product' po.product_reference_number.Product_Refrence_ID %}">{{po.product_reference_number.Product_Refrence_ID}}</a></button></td>
                 <td>{{po.product_reference_number.Model_Name}}</td>
                 <td>{{po.ledger_party_name.name}}</td>
                 <td>{{po.target_date}}</td>

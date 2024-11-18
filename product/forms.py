@@ -968,8 +968,9 @@ class Finished_goods_transfer_records_form(forms.ModelForm):
         model = Finished_goods_transfer_records
         fields = ['product','product_quantity_transfer','remarks']
 
-Finished_goods_transfer_records_formset = inlineformset_factory(Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, form=Finished_goods_transfer_records_form, extra=1, can_delete=False)
+Finished_goods_transfer_records_formset_create = inlineformset_factory(Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, form=Finished_goods_transfer_records_form, extra=3, can_delete=False)
 
+Finished_goods_transfer_records_formset_update = inlineformset_factory(Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, form=Finished_goods_transfer_records_form, extra=0, can_delete=False)
 
 
 

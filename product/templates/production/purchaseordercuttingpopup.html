@@ -30,9 +30,9 @@
                         <td><input type="text" class="productinput" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
                         <td><input type="number" class="productorderrawqty-input" name="{{form.prefix}}-cutting_quantity" value="{{form.instance.cutting_quantity}}" id="id_{{form.prefix}}-cutting_quantity" readonly></td>
                         <td><input type="number" class="productorderqty-input" name="{{form.prefix}}-balance_pcs" value="{{form.instance.balance_pcs}}" id="id_{{form.prefix}}-balance_pcs" readonly></td>
-                        <td><span class="text-danger ms-2 me-3">{{form.instance.approved_pcs}}</span>
+                        <td><input class="text-danger productorderrawqty-input" value="{{form.instance.approved_pcs}}">
                             <!-- <input type="number" class="productorderqty-input" name="{{form.prefix}}-" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs"> -->
-                            <input type="number" class="productorderqty-input" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs">
+                            <input type="number" class="productorderqty-input ms-2" name="{{form.prefix}}-approved_pcs" value="{{form.instance.approved_pcs}}" id="id_{{form.prefix}}-approved_pcs">
                         
                         </td>
                       
@@ -40,7 +40,14 @@
                         <input type="hidden" class="productorderqty-input" name="{{form.prefix}}-currentApproved_pcs" value="" id="id_{{form.prefix}}-currentApproved_pcs">
                     </tr>
                     {% endfor %}
+                    <tr class="fw-bold text-danger">
+                        <td colspan="2">Total</td>
+                        <td><span class="ms-2" id="TotalCutting">0</span></td>
+                        <td><span class="ms-2" id="TotalApprove">0</span></td>
+                        <td><span class="ms-2" id="TotalBalance">0</span></td>
+                    </tr>
                 </tbody>
+
             </table>
         </div>
     </div>
@@ -101,14 +108,18 @@
 });
 
 function quantityCheck() {
+    totalCutting = 0;
+    totalapprove = 0;
+    totalbalance = 0;
     var approved = document.querySelectorAll('[name$= "-approved_pcs"]');
 
     approved.forEach(element => {
         var approvedValues = parseInt(element.value);
         var cuttingApprovedValue = parseInt(element.closest('tr').querySelector('[name$= "-cutting_quantity"]').value);
         var currentApproveValues = parseInt(element.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value);
+        var balanceValueKey = parseInt(element.closest('tr').querySelector('[name$="-balance_pcs"]').value)
         
-       
+       console.log(approvedValues)
             if (cuttingApprovedValue < approvedValues) {
                 element.closest('tr').querySelector('[name$= "-approved_pcs"]').value = 0;
             }
@@ -121,7 +132,12 @@ function quantityCheck() {
                     element.closest('tr').querySelector('[name$= "-balance_pcs"]').value = balanceApprovedValue;
                 }
             }
-        
+            totalCutting += cuttingApprovedValue;
+            totalapprove += approvedValues;
+            totalbalance += balanceValueKey;
+            document.getElementById('TotalCutting').textContent =totalCutting
+            document.getElementById('TotalApprove').textContent = totalapprove;
+            document.getElementById('TotalBalance').textContent =totalbalance;
         
     });
 }
@@ -130,7 +146,8 @@ function quantityCheck() {
     function submitForm(){
         var balanceApprove = document.querySelectorAll('[name$="-balance_pcs"]');
         var currentApproved = document.querySelectorAll('[name$="-approved_pcs"]');
-       
+        var submitBtn = document.querySelector('.create-btn');
+        var checkBoxBtn = document.getElementById('id_checkAll');
         currentApproved.forEach(values =>{
             var current = parseInt(values.value);
             values.closest('tr').querySelector('[name$= "-currentApproved_pcs"]').value = current;
@@ -145,29 +162,19 @@ function quantityCheck() {
         })
 
         if(totalQty === 0){
-                
-               var approveBtn = document.querySelectorAll('[name$= "-approved_pcs"]');
+            var approveBtn = document.querySelectorAll('[name$= "-approved_pcs"]');
                approveBtn.forEach(element =>{
                    element.setAttribute('readonly', true);
-               })
-                
-                
-    }
-    checkBoxAndsubmit(totalQty)
-    }
-    function checkBoxAndsubmit(totalQty){
-        var submitBtn = document.querySelector('.create-btn');
-        var checkBoxBtn = document.getElementById('id_checkAll');
-      if(totalQty === 0){
-         submitBtn.style.display = 'none'; 
-         checkBoxBtn.disabled = true;
-      }else{
+               }) 
+               submitBtn.style.display = 'none'; 
+               checkBoxBtn.disabled = true;          
+        }else{
         submitBtn.style.display = 'block';
         checkBoxBtn.disabled = false;
       }
-        
+  
     }
-    //checkBoxAndsubmit()
+ 
     function approveValueCheck(){
         var approveCheck = document.querySelectorAll('[name$= "-approved_pcs"]');
         var submitButton = document.getElementById('cuttingOrderApproved');

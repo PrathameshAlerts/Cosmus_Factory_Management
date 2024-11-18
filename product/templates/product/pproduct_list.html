@@ -24,8 +24,8 @@
           <th>No</th>
           <th>Model Name</th>
           <th>Refrence ID</th>
-          <th>Color</th>
-          <th>SKU</th>
+          <!-- <th>Color</th>
+          <th>SKU</th> -->
           <th>Channel</th>
           <th>Brand</th>
           <th>Sale Price</th>
@@ -61,9 +61,9 @@
           <td class="expandable-cell">
             {% for pproduct in product.productdetails.all %}
             {% if forloop.first %}
-            <span class="half-content" >{{ pproduct.PProduct_SKU }}</span>
+            <span class="half-content">{{ pproduct.PProduct_SKU }}</span>
             {% else %}
-            <span class="more-content" >{{ pproduct.PProduct_SKU }}</span>
+            <span class="more-content">{{ pproduct.PProduct_SKU }}</span>
             {% endif %}
             {% endfor %}
           </td>
