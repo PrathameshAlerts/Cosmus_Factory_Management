@@ -416,6 +416,7 @@ input[type=number] {
     margin: 3px 0px;
     z-index: 1;
     overflow-y: scroll;
+  
 }
 
 .side-bar::-webkit-scrollbar {
@@ -445,6 +446,7 @@ input[type=number] {
     position: relative;
     cursor: pointer;
     /* border: 1px solid #f1f1f1; */
+  
    
 
 }
@@ -468,6 +470,7 @@ input[type=number] {
     transition: width 0.3s ease;
 
 }
+
 .side-bar .menu .item a img{
     filter: invert(1) brightness(2); 
 }
@@ -516,8 +519,6 @@ input[type=number] {
     align-items: center;
     padding: 50px;
 }
-   
-
 @media (max-width: 900px){
     .main h1{
       font-size: 40px;
@@ -1249,7 +1250,7 @@ input[type=number] {
     cursor: pointer; /* Indicate that this part of the row is clickable */
   }
   
-  .half-content {
+.half-content {
     display: block;
     /* Optionally, limit the height or content visibility if necessary */
   }
