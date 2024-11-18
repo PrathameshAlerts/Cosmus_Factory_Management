@@ -43,7 +43,7 @@
               <td>{{cutting_order.purchase_order_id.balance_number_of_pieces}}</td>
               <td><button class="border-0 bg-transparent viewBtn"><a href="{% url 'purchase-order-cutting-update' cutting_order.purchase_order_id.id cutting_order.purchase_order_id.product_reference_number.Product_Refrence_ID cutting_order.raw_material_cutting_id %}"><i class="fa-solid fa-eye px-2 "></i></a></button></td>
               <td><button class="border-0 bg-transparent btnValue" onclick="approvedQty(this)"><a class="approved-btn" ><i class="fa-regular fa-thumbs-up ps-3 fs-5"></i></a></button><br><span class="text-danger fw-bold">Bal = </span><span class="text-danger balanceValue fw-bold"></span></td>
-              <td><button type="button" data-id="{{ cutting_order.processed_qty }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="border-0 bg-transparent " onclick="cuttingPkValue(this)"><i class="fa-solid fa-person-circle-check px-3 fs-5"></i></button></td>
+              <td><button type="button" data-id="{{ cutting_order.processed_qty }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="border-0 bg-transparent cuttingApprovalLogs"><i class="fa-solid fa-person-circle-check px-3 fs-5"></i></button></td>
               <td><button class="border-0 bg-transparent delete-btn" data-item-id="" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
               <input type="hidden" class="cuttingCancelled" value="{{cutting_order.cutting_cancelled}}">
             </tr>
@@ -174,31 +174,7 @@
       
     });
   });
-// document.addEventListener('DOMContentLoaded', function() {
-//   let statePushed = false;  // Flag to prevent multiple pushState calls
 
-//   // Show spinner on button click
-//   $('.viewBtn').click(function() {
-//     var newSpinner = $('#exampleModalSpinner');
-//     newSpinner.modal('show');  // Show the modal with the spinner
-
-//     // Only push state the first time the spinner is shown
-//     if (!statePushed) {
-//       history.pushState(null, null, location.href);
-//       statePushed = true;  // Set flag to true after pushing state
-//     }
-//   });
-
-//   // Hide spinner when back button or browser left arrow is clicked
-//   window.addEventListener('popstate', function() {
-//     var newSpinner = $('#exampleModalSpinner');
-//     console.log("popstate");
-//     if (newSpinner.hasClass('show')) {
-//       newSpinner.modal('hide');  // Hide the spinner modal
-//       statePushed = false;  // Reset flag to allow pushState on next navigation
-//     }
-//   });
-// });
 
 </script>
 <script>
@@ -217,7 +193,6 @@ function approvedValues(){
 
     }
     var balanceqty = processQty - approvedQty;
-    console.log('balance',balanceqty)
     el.closest('tr').querySelector('.balanceValue').textContent = balanceqty;
   })
 }
@@ -266,76 +241,109 @@ function cancelCutting(){
    
   }
 
-  function cuttingPkValue(button){
+  async function cuttingPkValue(button){
     var TotalApprove = 0;
-    var totalBalance = 0;
+    var TotalBalance = 0;
     var title = button.getAttribute('data-id');
     var Qty = document.getElementById('tQty');
     Qty.textContent = title
     var cuttingoderId = $(button).closest('tr').find('td').eq(2).text();
+    console.log('cuttingoderId',cuttingoderId)
     var newTable = document.querySelector('#approvalDataLogs tbody'); 
     document.getElementById('cuttingVNo').textContent = cuttingoderId; 
-    $.ajax({
-      type: "GET",
-      url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
-      data:{
-        'cutting_pk_no':cuttingoderId,
-  
-      },
-      success: function(response) {
-          var allApproveLogs = response.approval_data;
-  
-         
-          newTable.innerHTML = ''; // Clear previous table rows
-     
-          
-          allApproveLogs.forEach(function(items, index) {
-            console.log(items)
-              var approveDate = new Date(items.Approved_Date).toLocaleDateString(); // Format the date
-              var approveName = items.Approved_Name || 'N/A';  // Default if undefined
-              var approveQty = items.Approved_Qty || 0;        // Default to 0 if undefined
-              var balanceQty = items.pending_Qty || 0;        // Default to 0 if undefined
-              var row = document.createElement('tr'); // Create a new row
-             
-              // Create cells and set their content
-              var cell1 = document.createElement('td');
-              cell1.textContent = approveDate;
+    try {
+      const response = await $.ajax({
+          type: "GET",
+        url: "{% url 'purchase-order-cutting-approval-check-ajax' %}",
+        data:{
+          'cutting_pk_no':cuttingoderId,
+        }
+      })
+      console.log('response',response)
+      if (response && response.approval_data && response.approval_data.length > 0) {
+            var allApproveLogs = response.approval_data;
 
-              var cell2 = document.createElement('td');
-              cell2.textContent = approveName;
+            console.log('allApproveLogs', allApproveLogs);
+            newTable.innerHTML = ''; // Clear previous table rows
 
-              var cell3 = document.createElement('td');
-              cell3.textContent = approveQty;
-              
-              var cell4 = document.createElement('td');
-              cell4.textContent = balanceQty;
+            allApproveLogs.forEach(function (items, index) {
+                console.log(items);
+                var approveDate = new Date(items.Approved_Date).toLocaleDateString(); // Format the date
+                var approveName = items.Approved_Name || 'N/A';  // Default if undefined
+                var approveQty = items.Approved_Qty || 0;        // Default to 0 if undefined
+                var balanceQty = items.pending_Qty || 0;         // Default to 0 if undefined
+                var row = document.createElement('tr'); // Create a new row
 
-              // Append cells to the row
-              row.appendChild(cell1);
-              row.appendChild(cell2);
-              row.appendChild(cell3);
-              row.appendChild(cell4);
+                // Create cells and set their content
+                row.innerHTML = `
+                    <td>${approveDate}</td>
+                    <td>${approveName}</td>
+                    <td>${approveQty}</td>
+                    <td>${balanceQty}</td>
+                `;
 
-              TotalApprove += approveQty;
-              totalBalance += balanceQty;
-              // Append the row to the table
-              newTable.appendChild(row);
-          });
-          document.getElementById('tApprovedQty').textContent = TotalApprove;
-          document.getElementById('tBalanceQty').textContent = totalBalance;
-      },
-      error: function(xhr, status, error) {
-        console.error("Error occurred: " + error);
-        console.error(status);
-        newTable.innerHTML = '';
+
+                newTable.appendChild(row);
+                TotalApprove += approveQty;
+                TotalBalance += balanceQty;
+            });
+
+            // Update totals
+            document.getElementById('tApprovedQty').textContent = TotalApprove || 0;
+            document.getElementById('tBalanceQty').textContent = TotalBalance || 0;
+
+            // Open the popup
+            $('#staticBackdrop').modal('show');
+        } else {
+            console.error("No approval data available.");
+            alert('No approval data found to display.');
+            $('#staticBackdrop').modal('hide');
+        }
+    } catch (error) {
+      console.error("Error occurred: " + error);
+        newTable.innerHTML = ''; // Clear previous table rows
+        document.getElementById('tApprovedQty').textContent =  0;
+        document.getElementById('tBalanceQty').textContent = 0;
         $('#modal-body-text').html('An error occurred. Please try again.');
-      }
-    })
+    }
+  
   }
+
 
   document.addEventListener("DOMContentLoaded",function(){
     approvedValues();
     cancelCutting();
+    var newtableValue =document.querySelectorAll('.cuttingApprovalLogs')
+    newtableValue.forEach(function(element){
+    element.addEventListener('click',function(){
+      cuttingPkValue(element)
+    })
+
+    })
+    $('#staticBackdrop').on('hidden.bs.modal', function () {
+        // Clear the table when the modal is closed
+        var newTable = document.querySelector('#approvalDataLogs tbody');
+        if (newTable) {
+            newTable.innerHTML = ''; // Clear all rows
+        }
+        // Clear totals
+        document.getElementById('tApprovedQty').textContent = 0;
+        document.getElementById('tBalanceQty').textContent = 0;
+    });
+
+    // Optional: Clear the table on close button click
+    var closeButton = document.querySelector('#staticBackdrop .btn-close');
+    if (closeButton) {
+        closeButton.addEventListener('click', function () {
+            var newTable = document.querySelector('#approvalDataLogs tbody');
+            if (newTable) {
+                newTable.innerHTML = ''; // Clear all rows
+            }
+            // Clear totals
+            document.getElementById('tApprovedQty').textContent = 0;
+            document.getElementById('tBalanceQty').textContent = 0;
+        });
+    }
   })
  
 

@@ -325,9 +325,6 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
 
             })
         })
-    })
- $(document).ready(function(){
-
         $('#id_challan_no').on('focusout',function(){
             var challanNo = $(this).val();
             var challanId = $("#id_challan_no");
@@ -365,9 +362,32 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
             }
             
         })
-    
+//this ajax is for gst no 
+        $(document).on('change', 'select[name^="party_name"]', function () {
+
+        const selected_party_name = $(this).val()
+        const int_selected_party_name = parseInt(selected_party_name)
+
+        $.ajax({
+            url: '/purchasevouchercreate/',
+            method: 'GET',
+            data: {
+                'selected_party_name': selected_party_name,
+            },
+            success: function (response) {
+                const party_gst_no_response = response.party_gst_no
+                const gst_no_input = document.getElementById('id_GST_number')
+                gst_no_input.value = party_gst_no_response
+                getGstNo()
+                calculateTotalAmount()
+            },
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+            }
+        })
+        })
     })
-  
+
     window.addEventListener('message', receiveMessage, false);
     function receiveMessage(event) {
         const dataWithPrefix = event.data;
@@ -422,10 +442,8 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
 
 //pefix value on item-shade change 
     function updateFormData(newSessionData){
-       // const newId = newSessionData.newUniqueId;
         const newQty = newSessionData.newTotalQty;
         const newRate = newSessionData.newTotalRate;
-        //const primaryKey = newSessionData.newPrimaryKey;
         const prefixId = newSessionData.prefixValue;
         const oldQty =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-quantity_total')
         const oldRate =  document.getElementById('purchase_voucher_items_set-'+ prefixId + '-rate')  
@@ -439,8 +457,6 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
     function BackendQuantityjson(jsonString){
         const jsonData = JSON.parse(jsonString);
         const row_prefix_child = jsonData.parent_row_prefix_id;
-        // const all_rate_child = jsonData.all_Rate;
-        // const godown_data = jsonData.newRow; 
         const updateJsonData= document.getElementById('purchase_voucher_items_set-'+ row_prefix_child + '-jsonDataInputquantity');
 
             updateJsonData.value = JSON.stringify(jsonData);
@@ -462,33 +478,8 @@ function getGstNo() {
 
 </script>
  <script>
-//this ajax is for gst no 
-    $(document).ready(function () {
 
-        $(document).on('change', 'select[name^="party_name"]', function () {
 
-            const selected_party_name = $(this).val()
-            const int_selected_party_name = parseInt(selected_party_name)
-
-            $.ajax({
-                url: '/purchasevouchercreate/',
-                method: 'GET',
-                data: {
-                    'selected_party_name': selected_party_name,
-                },
-                success: function (response) {
-                    const party_gst_no_response = response.party_gst_no
-                    const gst_no_input = document.getElementById('id_GST_number')
-                    gst_no_input.value = party_gst_no_response
-                    getGstNo()
-                    calculateTotalAmount()
-                },
-                error: function (xhr, errmsg, err) {
-                    console.log('Error sending value to the backend');
-                }
-            })
-        })
-    })
 
     // this function gereate a randow uuid and store the value in unique id
 function randomValue (){
@@ -582,7 +573,6 @@ function randomValue (){
                         searchedItemNameDict = response.searched_item_name_dict;
                         var searchQuery = nameValue.toLowerCase();
                         var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
-                        console.log('escapedSearchQuery',searchedItemNameDict)
                         var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
                         var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
                         
@@ -778,10 +768,7 @@ function randomValue (){
         $(document).on('click','[name^="item_name_"]', function(event) {
 
             event.preventDefault();
-            // const  selectName = $(this).closest('tr').find('[id^="select_item_name_"]').attr('id');
-            // const selectItem = $(`#${selectName}`);
             var purchaseData = $(`#purchase_voucher_items_set-${purchaseValue}-popupData`).val();
-            //selectItem.css("display" ,"none");
             if(purchaseData != ""){
                 var itemNames = $(this).closest('tr').find('input[name^="item_name_"]');
                 var itemShade = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
@@ -808,10 +795,7 @@ function randomValue (){
         const newHeight = $inputField.offset();
         const windowHeight = $(window).height();
         const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
-        //  $dropdownOptions.css({
-        // 'max-height': availableSpace + 'px',
-        // 'overflow-y': 'auto'
-        //  });
+   
 
         if (event.key === 'ArrowDown') {
              event.preventDefault();
@@ -903,11 +887,17 @@ function randomValue (){
 
                 itemShade.hide();
             }
+         
+          
             handleSelection(purchaseValue,itemName, item_value);
             enterPressed = true;
             hiddenValue.css("display" ,"none");
-    
+            $inputField.blur();
         }
+        if (event.key === 'Tab' && enterPressed) {
+        enterPressed = false; // Reset Enter key handling
+        return true; // Allow default Tab behavior
+    }
    
      });
 
@@ -917,24 +907,56 @@ function randomValue (){
         
         $(document).on('focusin', 'select[name^="purchase_voucher_items_set-"]', function () {
             var shadeValue = $('#id_item_checkshade-' + purchaseValue ).val();
-    
+            console.log("shadeValue",shadeValue)
           // Unbind any previously bound events before binding new ones
             $(document).off('change', 'select[name^="purchase_voucher_items_set-"]');
             $(document).off('keydown', 'select[name^="purchase_voucher_items_set-"]');
+        
             if (shadeValue === "false") {
                 handleShadeValueFalse();
             } else if (shadeValue === "true") {
                 handleShadeValueTrue();
             }
+           
         })
 
         function handleShadeValueFalse() {
-            $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
-                const selectedShade = $(this).val();
-                const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
-                handlePopup(selectedShade, uniqueIdValue);
-            });
+            $(document).on('keydown', 'select[name^="{{forms.prefix}}-item_shade"]', function (event) {
+    const $dropdown = $(this);
+
+    // Handle Enter key press
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent form submission or default behavior
+
+        // Focus the dropdown and trigger mouse click if it's not disabled
+        if (!$dropdown.prop('disabled')) {
+            $dropdown.focus(); // Focus the dropdown to bring it into view
+            $dropdown.trigger('mousedown'); // Simulate click to open dropdown
         }
+    }
+
+    // Handle Tab key press to trigger the popup logic
+    if (event.key === 'Tab') {
+        const selectedShade = $dropdown.val();
+        const uniqueIdValue = $dropdown.closest('tr').find('input[name^="item_unique_id_"]').val();
+        const itemShades = $dropdown.closest('tr').find('[name^="input_item_shade_"]');
+
+        $dropdown.attr('disabled', 'disabled'); // Temporarily disable dropdown to prevent conflicts
+        itemShades.hide(); // Hide irrelevant fields if any
+        handlePopup(selectedShade, uniqueIdValue); // Call the function to handle the popup logic
+        $dropdown.removeAttr('disabled'); // Re-enable dropdown after action
+    }
+});
+
+    // Handle the change event for dropdown selection
+    $(document).on('change', 'select[name^="purchase_voucher_items_set-"]', function () {
+        const selectedShade = $(this).val();
+        const uniqueIdValue = $(this).closest('tr').find('input[name^="item_unique_id_"]').val();
+
+        // Trigger the popup on selection
+        handlePopup(selectedShade, uniqueIdValue);
+    });
+}
 
         function handleShadeValueTrue() {
             $(document).on('keydown', 'select[name^="purchase_voucher_items_set-"]', function (event) {
@@ -1396,7 +1418,6 @@ function randomValue (){
 
 function inputCheck(){
         const itemNameInputsid = document.querySelectorAll('[name^="item_name_"]');
-    console.log(itemNameInputsid)
     // Loop through each input and add keydown event listener
     itemNameInputsid.forEach((input, index) => {
         input.addEventListener("keydown", function (event) {
