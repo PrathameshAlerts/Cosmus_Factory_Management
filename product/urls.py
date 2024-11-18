@@ -239,10 +239,15 @@ urlpatterns = [
     path('productpurchasevoucherlist/',views.product_purchase_voucher_list, name = 'product-purchase-voucher-list'),
     path('productpurchasevoucherdelete/<int:pk>',views.product_purchase_voucher_delete, name = 'product-purchase-voucher-delete'),
 
-    #warehouse product transfer
+    # warehouse product transfer
     path('warehouseproducttransfercreate/', views.product_transfer_to_warehouse,name='warehouse-product-transfer-create'),
     path('allproducttransfertowarehouse/', views.product_transfer_to_warehouse_list,name='all-product-transfer-to-warehouse'),
     path('producttransfertowarehousedelete/<int:id>/', views.product_transfer_to_warehouse_delete,name='product-transfer-to-warehouse-delete'),
+
+    #finished_goods
+
+    path('finished-goods-stock-all/', views.finished_goods_stock_all, name = 'finished-goods-stock-all'),
+    path('finished-goods-stock-all/<int:pk>', views.finished_goods_stock_all, name = 'finished-goods-stock-single'),
 
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),

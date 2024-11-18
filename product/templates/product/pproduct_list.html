@@ -40,7 +40,14 @@
         {% for product in products %}
         <tr class="expandable-row expandable-cell" data-item-id="{{ item.id }}" >
           <td>{{ forloop.counter }}</td>
-          <td class="text-nowrap">{{ product.Model_Name | default_if_none:''}}</td>
+          <td class="text-nowrap">{{ product.Model_Name | default_if_none:''}}
+            {% if product.productdetails.first.PProduct_image %}
+
+            <img src="{{product.productdetails.first.PProduct_image.url }}" alt="img" style="width:40px;">
+            
+          {% endif %}
+          </td>
+
           <td>{{ product.Product_Refrence_ID }}</td>
           <td class="expandable-cell">
             {% for pproduct in product.productdetails.all %}
