@@ -6,10 +6,26 @@
 
 <a href="{% url 'product-purchase-voucher-create' %}">Create</a>
 
+<table>
+<tr>
+<th>No</th>
+<th>Purchase Voucher No</th>
+<th>Party Name</th>
+<th>supplier_invoice_number</th>
+<th>Grand Total</th>
+</tr>
 
 {% for record in product_purchase_voucher_all %}
-{{record}}
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{record.purchase_number}}</td>
+<td>{{record.party_name.name}}</td>
+<td>{{record.supplier_invoice_number}}</td>
+<td>{{record.grand_total}}</td>
+<td><a href="{% url 'product-purchase-voucher-update' record.id %}">Edit</a></td>
+<td><span><a href="{% url 'product-purchase-voucher-delete' record.id %}">Delete</a></td>
+</tr>
 {% endfor %}
 
-
+</table>
 {% endblock body %}
