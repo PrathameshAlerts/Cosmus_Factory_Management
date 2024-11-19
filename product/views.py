@@ -4,6 +4,7 @@ import decimal
 from io import BytesIO
 from operator import itemgetter
 import os
+from sys import exception
 import uuid
 from django.conf import settings
 
@@ -42,7 +43,7 @@ from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                              SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
-                                 packaging, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
+                                 packaging, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
                                  purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, raw_material_production_total,
                                    set_prod_item_part_name, shade_godown_items,
@@ -854,10 +855,10 @@ def item_list(request):
 
     
     
-    queryset = Item_Creation.objects.all().annotate(total_quantity=Sum('shades__godown_shades__quantity')).order_by('item_name').select_related('Item_Color','unit_name_item',
+    queryset = Item_Creation.objects.all().annotate(total_quantity=Sum('shades__godown_shades__quantity'), shade_num = Count('shades', distinct=True),godown_num=Count('shades__godown_shades', distinct=True)).order_by('item_name').select_related('Item_Color','unit_name_item',
                                                     'Fabric_Group','Item_Creation_GST','Item_Fabric_Finishes',
                                                     'Item_Packing').prefetch_related('shades',
-                                                    'shades__godown_shades')
+                                                    'shades__godown_shades','shades__godown_shades__godown_name')
 
     
     if g_search != '':
@@ -1605,7 +1606,7 @@ def ledgercreate(request):
 @transaction.atomic
 def ledgerupdate(request,pk):
     under_groups = AccountSubGroup.objects.all()
-    ledgerTypes_query = ledgerTypes.objects.all()
+    
     Ledger_pk = get_object_or_404(Ledger,pk = pk)
     ledgers = Ledger_pk.transaction_entry.all() 
 
@@ -1653,9 +1654,9 @@ def ledgerupdate(request,pk):
             return redirect('ledger-list')
         else:
             
-            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger','ledgerTypes_query':ledgerTypes_query})
+            return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger'})
     
-    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger','ledgerTypes_query':ledgerTypes_query})
+    return render(request,'accounts/ledger_create_update.html',{'form':form,'under_groups':under_groups,'title':'ledger Update', 'open_bal':opening_balance,'page_name':'Edit Leadger'})
 
 
 
@@ -2196,7 +2197,7 @@ def purchasevouchercreateupdate(request, pk = None):
         try:
             with transaction.atomic(): 
                 
-                master_form = item_purchase_voucher_master_form(request.POST,instance=purchase_invoice_instance)
+                master_form = item_purchase_voucher_master_form(request.POST, instance = purchase_invoice_instance)
 
                 
                 items_formset = item_formsets_change
@@ -2226,7 +2227,7 @@ def purchasevouchercreateupdate(request, pk = None):
                     
                     for form in items_formset:
                         if form.is_valid():
-
+                            
                             
                             if not form.cleaned_data.get('DELETE'):
                                 items_instance = form.save(commit=False)
@@ -2234,17 +2235,19 @@ def purchasevouchercreateupdate(request, pk = None):
                                 items_instance.save()
                                 
                                 form_prefix_number = form.prefix[-1] 
-                                
+                                print(request.POST)
                                 
                                 unique_id_no = request.POST.get(f'item_unique_id_{form_prefix_number}')
                                 primary_key = request.POST.get(f'purchase_voucher_items_set-{form_prefix_number}-id')
-                                
+                            
                                 
                                 if primary_key == '' or primary_key == None: 
+                                    
                                     purchase_voucher_temp_data = shade_godown_items_temporary_table.objects.filter(unique_id=unique_id_no)
+                                    
                                     for data in purchase_voucher_temp_data:
                                         all_purchase_temp_data.append(data)
-                                
+                                    
                                     godown_temp_data = {}
                                     form_set_id = 0
                                     for temp_godown_row_data in purchase_voucher_temp_data:
@@ -2363,7 +2366,7 @@ def purchasevouchercreateupdate(request, pk = None):
                                 
                                 if popup_godowns_exists != '':
                                     popup_godown_data = json.loads(popup_godowns_exists)
-                                
+                                    
                                     row_prefix_id = popup_godown_data.get('prefix_id')
 
                                     if row_prefix_id == form_prefix_number:
@@ -2421,7 +2424,6 @@ def purchasevouchercreateupdate(request, pk = None):
 
 
 
-@login_required(login_url='login')
 def purchasevoucherpopupupdate(popup_godown_data,shade_id,prefix_id,primarykey,old_item_shade):
         
         if primarykey is not None:
@@ -3382,7 +3384,7 @@ def purchaseordercreateupdate(request,pk=None):
 
 @login_required(login_url='login')
 def purchaseorderlist(request):
-    purchase_orders = purchase_order.objects.all().order_by('created_date')
+    purchase_orders = purchase_order.objects.all().select_related('ledger_party_name','product_reference_number').prefetch_related('raw_materials').order_by('created_date')
     return render(request,'production/purchaseorderlist.html',{'purchase_orders': purchase_orders,'page_name':'Order List'})
 
 
@@ -6479,31 +6481,84 @@ def product_purchase_voucher_create_update(request, pk=None):
         product_pur_vouch_instance = None
         product_pur_vouch_form = product_purchase_voucher_master_form()
         product_purchase_voucher_items_formset_instance = product_purchase_voucher_items_formset()
+    
 
+    if request.method == 'POST':
+        
+        product_pur_vouch_form = product_purchase_voucher_master_form(request.POST,instance=product_pur_vouch_instance)
 
-        if request.method == 'POST':
-            product_pur_vouch_form = product_purchase_voucher_master_form(request.POST,instance=product_pur_vouch_instance)
+        product_purchase_voucher_items_formset_instance = product_purchase_voucher_items_formset(request.POST,instance=product_pur_vouch_instance)
 
-            product_purchase_voucher_items_formset_instance = product_purchase_voucher_items_formset(request.POST,instance=product_pur_vouch_instance)
+        product_purchase_voucher_items_formset_instance.forms = [form for form in product_purchase_voucher_items_formset_instance.forms if form.has_changed()]
 
-            product_purchase_voucher_items_formset_instance.forms = [form for form in product_purchase_voucher_items_formset_instance.forms if form.has_changed()]
+        if product_pur_vouch_form.is_valid() and product_purchase_voucher_items_formset_instance.is_valid():
+            print(request.POST)
+            try:
+                with transaction.atomic():
+                    product_pur_vouch_form_instance = product_pur_vouch_form.save()
+                    
+                    for form in product_purchase_voucher_items_formset_instance.deleted_forms:
+                        if form.instance.pk:
+                            form.instance.delete()
 
-            if product_pur_vouch_form.is_valid() and product_purchase_voucher_items_formset_instance.is_valid():
-                product_pur_vouch_form_instance = product_pur_vouch_form.save()
+                    for form in product_purchase_voucher_items_formset_instance:
+
+                        if form.instance.pk: 
+
+                            if not form.cleaned_data.get('DELETE'):
+                               
+                                product_purchase_voucher_items_form = form.save(commit=False)
+                                product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
+                                
+                                product_name = form.cleaned_data.get('product_name')
+
+                                print(product_name)
+
+                                db_instance = product_purchase_voucher_items.objects.get(id=form.instance.pk)
+                                diff_qty_to_deduct = product_purchase_voucher_items_form.quantity_total - db_instance.quantity_total
+                                
+                                obj, created = Product_warehouse_quantity_through_table.objects.get_or_create(
+                                    warehouse= product_purchase_voucher_items_form.product_purchase_master.finished_godowns, 
+                                    product = product_purchase_voucher_items_form.product_name)
+                                
+                                if created:
+                                    obj.quantity = diff_qty_to_deduct
+                                
+                                else:
+                                    obj.quantity = obj.quantity + diff_qty_to_deduct
+
+                                obj.save()
+
+                                product_purchase_voucher_items_form.save()
+
+                        elif not form.instance.pk:
+                            if not form.cleaned_data.get('DELETE'):
+                                product_purchase_voucher_items_form = form.save(commit=False)
+                                product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
+                                
+                                
+                                obj, created = Product_warehouse_quantity_through_table.objects.get_or_create(
+                                    warehouse= product_purchase_voucher_items_form.product_purchase_master.finished_godowns, 
+                                    product = product_purchase_voucher_items_form.product_name)
+                            
+                                if created:
+                                    obj.quantity = product_purchase_voucher_items_form.quantity_total
+                                
+                                else:
+                                    obj.quantity = obj.quantity + product_purchase_voucher_items_form.quantity_total
+
+                                obj.save()
+
+                                product_purchase_voucher_items_form.save()
+
+                    return redirect('product-purchase-voucher-list')
                 
+            except Exception as e:
+                print(e)
 
-                for form in product_purchase_voucher_items_formset_instance.deleted_forms:
-                    if form.instance.pk:
-                        form.instance.delete()
-
-
-                for form in product_purchase_voucher_items_formset_instance:
-                    if not form.cleaned_data.get('DELETE'):
-                        product_purchase_voucher_items_form = form.save(commit=False)
-                        product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
-                        product_purchase_voucher_items_form.save()
-
-                return redirect('product-purchase-voucher-list')
+        else:
+            print(product_pur_vouch_form.errors)
+            print(product_purchase_voucher_items_formset_instance.errors)
 
     return render(request,'finished_product/product_purchase_voucher_create_update.html',{'product_pur_vouch_form':product_pur_vouch_form,
             'product_purchase_voucher_items_formset_instance':product_purchase_voucher_items_formset_instance})
@@ -6517,7 +6572,12 @@ def product_purchase_voucher_list(request):
 
 def product_purchase_voucher_delete(request,pk):
 
-    pass
+    if pk:
+        product_purchase_voucher_instance = get_object_or_404(product_purchase_voucher_master,pk=pk)
+        product_purchase_voucher_instance.delete()
+        return redirect('product-purchase-voucher-list')
+    
+
 
 
 def product_transfer_to_warehouse(request):
@@ -6620,7 +6680,6 @@ def itemdynamicsearchajax(request):
             
             logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
             
-            print(searched_item_name_dict)
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
         
         else:
@@ -6639,7 +6698,7 @@ def itemdynamicsearchajax(request):
 
 
 def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
-    
+    print('test',searched_value)
     if searched_value:
         validation_flag = False
         try:
@@ -6654,23 +6713,23 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
             
         except Exception as e:
             return JsonResponse({f'Status':'Exception Occoured - {e}'}, status=404)
-        
+        print(validation_flag)
         return JsonResponse({'validation_flag':validation_flag})
     else:
         return JsonResponse({f'Status':'No data recieved - {e}'}, status=404)
 
 
-@login_required(login_url='login')
+
 def UniqueValidCheckAjax(request):
     searched_from = request.GET.keys()
     
     if 'purchase_number' in searched_from:
         searched_value = request.GET.get('purchase_number').strip()
-        print(searched_value)
+        print('searched_value',searched_value)
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
 
-    if 'new_order_number' in searched_from:
+    elif 'new_order_number' in searched_from:
         searched_value = request.GET.get('new_order_number').strip()
         model_name = purchase_order
         col_name = 'purchase_order_number'
@@ -6705,7 +6764,9 @@ def UniqueValidCheckAjax(request):
         searched_value = None
         col_name = None
 
-
+    print(model_name)
+    print(searched_value)
+    print(col_name)
     
     if model_name and searched_value and col_name:
         return CheckUniqueFieldDuplicate(model_name, searched_value, col_name)
@@ -6730,7 +6791,28 @@ def session_data_test(request):
         print(f"Key: {key}, Value: {value}")
 
     context = {}
-    return render(request,'misc/session_test.html',context=context)
+    return render(request,'misc/session_test.html', context=context)
+
+
+def finished_goods_stock_all(request,pk=None):
+    wareshouse_all = Finished_goods_warehouse.objects.all()
+    
+    if pk:
+        warehouse_data = Product_warehouse_quantity_through_table.objects.filter(product__PProduct_SKU = OuterRef('pk'),                     
+                         warehouse__id = pk).values('quantity')     
+
+        finished_godown_all = PProduct_Creation.objects.annotate(total_warehouse_stock = Subquery(
+            warehouse_data)).order_by('Product__Product_Name').select_related('PProduct_color')
+
+    else:
+        finished_godown_all = PProduct_Creation.objects.annotate(total_warehouse_stock = Sum( 
+            'product_warehouse_quantity_through_table__quantity')).order_by('Product__Product_Name').select_related('PProduct_color') 
+
+
+    return render(request,'finished_product/finishedgoodsstockall.html',{
+                                'finished_godown_all':finished_godown_all, 'wareshouse_all':wareshouse_all})
+
+
 
 
 
@@ -7089,7 +7171,7 @@ def allrawmaterialstockreport(request):
 @login_required(login_url='login')
 def allfinishedgoodsstockreport(request):
     product_queryset = PProduct_Creation.objects.all().annotate(total_qty = Sum(
-        'godown_colors__quantity')).order_by('Product__Model_Name')
+        'godown_colors__quantity')).order_by('Product__Model_Name').select_related('Product','PProduct_color')
     
     return render(request,'reports/allfinishedgoodsstockreport.html',{'product_queryset':product_queryset})
 

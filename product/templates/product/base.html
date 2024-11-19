@@ -79,7 +79,8 @@
         <a class="sub-btn"><img src="../../../static/images/shop.png" alt="document" style="width: 33px; padding-right: 10px; ">
           <span>Vouchers</span><i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
-          <a href="{% url 'purchase-voucher-list' %}" class="sub-item">Purchase Invoice</a>
+          <a href="{% url 'purchase-voucher-list' %}" class="sub-item">Purchase Invoice(RM)</a>
+          <a href="{% url 'product-purchase-voucher-list' %}" class="sub-item">Purchase Invoice(FG)</a>
           <a href="" class="sub-item">Sales Invoice</a>
           <a href="{% url 'stock-transfer-raw-list' %}" class="sub-item">Stock Transfer(RM)</a>
           <a href="{% url 'all-product-transfer-to-warehouse' %}" class="sub-item">Stock Transfer(FG)</a>
@@ -122,6 +123,16 @@
           <a href="" class="sub-item">Repair Pcs In</a>
         </div>
       </div>
+
+      <div class="item">
+        <a class="sub-btn"><img src="../../../static/images/warehouse.png" alt="industry icon" style="width: 33px; padding-right: 10px;">Warehouse<i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <a href="{% url 'finished-goods-stock-all' %}" class="sub-item">Finished Goods Stock</a>
+          
+        </div>
+      </div>
+
+
     </div>
 </div> 
 <nav class="navbar navbar-expand-lg coder-navbar navbar-light headerpos-fixed header-blue navbar-fixed-top ">
@@ -191,7 +202,8 @@
         <li class="nav-item my-3 mx-2 dropdown">
           <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vouchers</a> 
           <ul class="dropdown-menu dropdown-menu-right">
-            <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice</a></li> 
+            <li class="pro-head"> <a href="{% url 'purchase-voucher-list' %}" class="navText">Purchase Invoice(RM)</a></li>
+            <li class="pro-head"> <a href="{% url 'product-purchase-voucher-list' %}" class="navText">Purchase Invoice(FG)</a></li>  
             <li class="pro-head"><a href="" class="navText">Sales Invoice</a></li>  
             <li class="pro-head"><a href="{% url 'stock-transfer-raw-list' %}" class="navText">Stock Transfer(RM)</a></li>  
             <li class="pro-head"><a href="{% url 'all-product-transfer-to-warehouse' %}" class="navText">Stock Transfer(FG)</a></li>  
@@ -225,6 +237,14 @@
             <li class="pro-head"><a href="" class="navText">Repair Pcs In</a></li>
          </ul>  
         </li> 
+      </li>
+      <li class="nav-item my-3 mx-2 dropdown">
+        <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Warehouse</a> 
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li class="pro-head"><a href="{% url 'finished-goods-stock-all' %}" class="navText">Finished Goods Stock</a></li>
+
+       </ul>  
+      </li> 
         <li class="nav-item ms-5">
           <div>
             {% if request.user.is_superuser %}

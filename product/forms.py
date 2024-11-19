@@ -949,7 +949,7 @@ class product_purchase_voucher_items_form(forms.ModelForm):
         
 
 product_purchase_voucher_items_formset = inlineformset_factory(product_purchase_voucher_master,product_purchase_voucher_items,
-                                                                form = product_purchase_voucher_items_form, extra=1, can_delete=True)
+                                                                form = product_purchase_voucher_items_form, extra=5, can_delete=True)
 
 
 

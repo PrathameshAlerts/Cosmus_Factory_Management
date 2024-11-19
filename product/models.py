@@ -258,7 +258,8 @@ class PProduct_Creation(models.Model):
 
     def product_color_name(self):
         return self.PProduct_color.color_name
-     
+
+
 
 class ProductImage(models.Model):
 
@@ -403,7 +404,7 @@ class item_color_shade(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT,blank=True,default=0)
     item_name_rank = models.PositiveIntegerField(blank = True, null = True)
     item_shade_name =  models.CharField(max_length=100, null=False, blank=False)
-    item_color_image = models.ImageField(upload_to ='rawmaterial/images') 
+    item_color_image = models.ImageField(upload_to ='rawmaterial/images',null=False, blank=False) 
     created_date = models.DateTimeField(auto_now_add = True)
     modified_date_time = models.DateTimeField(auto_now = True)
 
@@ -1010,7 +1011,7 @@ class Finished_goods_warehouse(models.Model):
 class Product_warehouse_quantity_through_table(models.Model):
     warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT)
     product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
-    quantity = models.BigIntegerField(default = 0)
+    quantity =  models.BigIntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
 
@@ -1033,7 +1034,7 @@ class product_purchase_voucher_master(models.Model):
 class product_purchase_voucher_items(models.Model):
     product_purchase_master = models.ForeignKey(product_purchase_voucher_master, on_delete=models.CASCADE)
     product_name = models.ForeignKey(PProduct_Creation, on_delete = models.PROTECT)
-    quantity_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    quantity_total = models.BigIntegerField()
     rate = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
@@ -1048,11 +1049,10 @@ class Finished_goods_Stock_TransferMaster(models.Model):
     updated_date = models.DateTimeField(auto_now = True)
 
 
-
 class Finished_goods_transfer_records(models.Model):
     Finished_goods_Stock_TransferMasterinstance = models.ForeignKey(Finished_goods_Stock_TransferMaster, on_delete = models.CASCADE)
     product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
-    product_quantity_transfer = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    product_quantity_transfer = models.BigIntegerField()
     remarks = models.CharField(max_length = 255, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)

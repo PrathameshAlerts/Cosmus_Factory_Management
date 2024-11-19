@@ -2,10 +2,11 @@
 from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
 from django.forms import ValidationError
-from .models import (Ledger, PProduct_Creation, Product, RawStockTrasferRecords,
+from django.core.exceptions import ValidationError , ObjectDoesNotExist
+from .models import (Ledger, PProduct_Creation, Product, Product_warehouse_quantity_through_table, RawStockTrasferRecords,
                       account_credit_debit_master_table, godown_item_report_for_cutting_room,  item_purchase_voucher_master, 
                       item_godown_quantity_through_table,Item_Creation,item_color_shade, labour_workout_master, 
-                      opening_shade_godown_quantity, product_2_item_through_table, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting,
+                      opening_shade_godown_quantity, product_2_item_through_table, product_purchase_voucher_items, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting,
                         purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name,
                           shade_godown_items)
 
@@ -274,12 +275,15 @@ def created_updated_raw_stock_trasfer(sender, instance, created, **kwargs):
         item_shade = instance.item_shade_transfer
         item_quantity = instance.item_quantity_transfer
 
-        item_to_godown_quantity_through_source = item_godown_quantity_through_table.objects.get(godown_name=source_godown_value,Item_shade_name=item_shade)
+        item_to_godown_quantity_through_source = item_godown_quantity_through_table.objects.get(
+            godown_name=source_godown_value,Item_shade_name=item_shade)
+        
         item_to_godown_quantity_through_source.quantity = item_to_godown_quantity_through_source.quantity - item_quantity
         item_to_godown_quantity_through_source.save()
 
 
-        item_to_godown_quantity_through_destination, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=destination_godown_value,Item_shade_name=item_shade)
+        item_to_godown_quantity_through_destination, created = item_godown_quantity_through_table.objects.get_or_create(
+            godown_name=destination_godown_value,Item_shade_name=item_shade)
 
         if created:
             item_to_godown_quantity_through_destination.quantity = item_quantity
@@ -408,10 +412,33 @@ def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
 
 
 
+@receiver(pre_delete, sender=product_purchase_voucher_items)
+def handle_product_invoice_items_godowns_delete(sender, instance, **kwargs):
+    product_instance = instance.product_name
+    warehouse_instance = instance.product_purchase_master.finished_godowns
+    qty = instance.quantity_total
+
+    if product_instance and warehouse_instance: 
+
+        try:
+            product_2_warehouse_instance = Product_warehouse_quantity_through_table.objects.get(warehouse=warehouse_instance,product=product_instance)
+        
+        except ObjectDoesNotExist:
+            product_2_warehouse_instance = Product_warehouse_quantity_through_table.objects.create(warehouse=warehouse_instance, product=product_instance)
+
+        product_2_warehouse_instance.quantity = product_2_warehouse_instance.quantity - qty
+        product_2_warehouse_instance.save()
 
 
 
-
+@receiver(post_save, sender=Product_warehouse_quantity_through_table)
+def delete_product_warehouse_quantity_if_0(sender, instance, created, **kwargs):
+    
+    if not created:  
+        quantity_after_save = instance.quantity
+        if quantity_after_save == 0:
+            logger.info(f"product warehouse quantity instance deleted as quantity is 0, id - {instance.id}, - {instance.warehouse.warehouse_name_finished}, - {instance.product.PProduct_SKU}")
+            instance.delete()
 
 """
         or in forms
