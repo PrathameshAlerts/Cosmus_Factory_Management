@@ -314,7 +314,7 @@
                                 }else {
                                     numberKeyHighlighted = `M Code - ${numberKey}`;
                                 }
-                                suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span>
+                                suggestionsContainerUniqueId.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}"><span class="itemhighlightname">${highlightedText}</span> <span style="${colorStyle}">${valueCalculate}</span>
                                     <br>
                                     <span style="font-weight:bold">${numberKeyHighlighted}</span>
                                     </div>`);
@@ -339,7 +339,8 @@
             suggestionsContainerUniqueId.one('click', '.itemName-div-suggestion', function () {
                 const currentRow = $(this).closest('tr');
                 const dataKey = $(this).attr('data-key');
-                const newDataValue = $(this).text().match(/^[a-zA-Z\s().]+/)[0].trim(); 
+                const newDataValue = $(this).find('.itemhighlightname').text().trim(); 
+              
                 const dropdownContainer = $(this).closest('.custom-dropdown-container');
                 const nameData = dropdownContainer.find('.input_hidden-value');
                 const errorForm = currentRow.find('.error-messagesorderCreate');
@@ -544,7 +545,9 @@
             }
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const nameValues = $inputField.text().match(/^[\w\s()]+(?:\.\s*)?/)[0].trim();  // Get input value
+                const nameValues = $inputField.closest('tr').find('.s-suggestion-container').find('.bg-highlight').find('.itemhighlightname').text().trim();  // Get input value
+                console.log('nameValues',nameValues)
+    
                 const nameKeyValue = $inputField.attr('data-key');  // Get the data-key value
                 const currentRowData = $(this).closest('tr');  // Get the current table row
                 const errorForm = currentRowData.find('.error-messagesorderCreate');  // Error message container
@@ -552,14 +555,15 @@
                 const submitButton = $inputField.closest('form').find('#id_submitForms');  // Submit button
                 const nameData = $inputField.closest('.custom-dropdown-container').find('.input_hidden-value');  // Hidden input for data storage
                 const productData = currentRowData.find('[name$="-PProduct_pk"]').val();  // Product ID value from the current row
-                console.log('nameValues',nameValues)
+           
                 let isDuplicate = false;  // Flag to track if a duplicate item is found
                 addButtonUnique.prop('disabled', false);
                 addRowButtonUnique.prop('disabled', false);
                 addButtonUnique.css('cursor', 'pointer');
                 addRowButtonUnique.css('cursor', 'pointer');
+                //
                 // Check if input field has text, then set the values and hide suggestions
-                if (newNameValues.length > 0) {
+                if ($inputField.length > 0) {
                     nameData.val('');  // Clear the hidden input field
                     $inputField.val(nameValues);  // Set the value of the input field
                     suggestionHide.hide();  // Hide suggestions dropdown
@@ -577,12 +581,15 @@
                     if (productData === productValue) {  // Check if product already exists in the form
                     
                         const currentItemPk = productCheck.closest('tr').find('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+                    
                             currentItemPk.each(function () {
+                                console.log('values',$(this).val())
                                     if ($(this).val() === nameKeyValue) {  // Check if the item is a duplicate
                                     // Show error and highlight the input field
                                     errorForm.text('Item already exists').show();
                                     submitButton.prop('disabled', true);
                                     uniqueRow.css('border', '1px solid red');
+                                    submitButton.css('cursor', 'not-allowed');
                                     nameData.val('');  // Clear the hidden value
                                     isDuplicate = true;
                                     return false;  // Break the loop
@@ -608,6 +615,7 @@
                             if (commonItemPk === nameKeyValue) {  // Check if the item is a duplicate in common set
                                 errorForm.text('Item already exists').show();
                                 submitButton.prop('disabled', true);
+                                submitButton.css('cursor', 'not-allowed');
                                 uniqueRow.css('border', '1px solid red');
                                 nameData.val('');  // Clear hidden field
                                 isDuplicate = true;
@@ -624,6 +632,7 @@
                     submitButton.prop('disabled', false);  // Enable the submit button
                     uniqueRow.css('border', '1px solid #ced4da');  // Reset input border style
                     nameData.val(nameKeyValue);  // Set hidden input value
+                    submitButton.css('cursor', 'pointer');
                 }
 
                 // Set the flag to indicate that Enter key was pressed
@@ -706,7 +715,7 @@
                                 }else {
                                     numberKeyHighlighted = `M Code - ${numberKey}`;
                                 }
-                                suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span>
+                                suggestionsContainerCommon.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}"><span class="itemhighlightname">${highlightedText}</span> <span style="${colorStyle}">${valueCalculate}</span>
                                     <br>
                                     <span style="font-weight:bold">${numberKeyHighlighted}</span>
                                     </div>`);
@@ -731,7 +740,8 @@
 
             suggestionsContainerCommon.on('click', '.itemName-div-suggestion', function () {
                 const currentRow = $(this).closest('tr'); 
-                const newDataValue = $(this).text().match(/^[a-zA-Z\s().]+/)[0].trim();  
+                const newDataValue = $(this).find('.itemhighlightname').text().trim();
+                console.log('newDataValue',newDataValue)
                 const dataKey = $(this).attr('data-key');  // New row's data-key (item to be added)
                 const errorShow = currentRow.find('.error-messagesorderCreate');  // Error display element
                 const submitButton = $(this).closest('form').find('#id_submitForms');
@@ -904,7 +914,9 @@
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const currentRows = $(this).closest('tr'); 
-                const nameValues = $inputField.text().match(/^[\w\s()]+(?:\.\s*)?/)[0].trim();
+                const nameValues = $inputField.closest('tr').find('.s-suggestion-container').find('.bg-highlight').find('.itemhighlightname').text().trim();
+                console.log('nameValues',nameValues)
+        
                 const dataKey = $inputField.attr('data-key');
                
                 const errorShowData = currentRows.find('.error-messagesorderCreate');
@@ -934,6 +946,7 @@
                             errorShowData.text('Already Item Added');
                             errorShowData.show();
                             submitButtons.prop('disabled', true);
+                            submitButtons.css('cursor','not-allowed')
                             commonItemInputsValue.css('border', '1px solid red');
                             isDuplicate = true;
                             return false;
@@ -945,6 +958,7 @@
                     errorShowData.text('');
                     errorShowData.hide();
                     submitButtons.prop('disabled', false);
+                    submitButtons.css('cursor','pointer')
                     commonItemInputsValue.css('border', '1px solid #ced4da');
                    }
                 enterPressed = true; // Set the flag to true when Enter is pressed
