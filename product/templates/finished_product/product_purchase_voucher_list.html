@@ -3,29 +3,98 @@
 {% load static %}
 
 {% block body %}
+<div class="row">
+    <div class="col-lg-12 mt-4">
+      <div class="d-flex mb-2">
+        <button class="product-btn" id="addLedgerClick" onclick="reversAddVoucharList()">Add +</button>
+        <div class="container-flex"> 
+         <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
+         <input type="submit" class="mx-2"></input>
+        </div>
+        <button class="product-btn ml-3" onclick="redirectLedgerFilter()">Clear Filter</button>
+      </div>
+    </div>  
+  </div>   
 
-<a href="{% url 'product-purchase-voucher-create' %}">Create</a>
+<div>
+    <table class="table table-striped table-hover table-responsive table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Purchase Voucher No</th>
+                <th>Party Name</th>
+                <th>supplier_invoice_number</th>
+                <th>Grand Total</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in product_purchase_voucher_all %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{record.purchase_number}}</td>
+                <td>{{record.party_name.name}}</td>
+                <td>{{record.supplier_invoice_number}}</td>
+                <td>{{record.grand_total}}</td>
+                <td><a href="{% url 'product-purchase-voucher-update' record.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ record.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                <!-- <td><span><a href="{% url 'product-purchase-voucher-delete' record.id %}">Delete</a></td> -->
+            </tr>
+                {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="confirmDeleteMessage">
+            Are you sure you want to delete this Purcahase Voucher?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+      document.body.appendChild(document.getElementById('exampleModal'));
+    $(document).ready(function(){
+      $('.delete-btn').click(function(){
+        var itemId = $(this).data('item-id');
+        var name = $(this).closest('tr').find('td').eq(1).text();
+        var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+  
+          $('#confirmDeleteMessage').html('Are you sure you want to delete the Purchase Voucher ' + coloredName + '?');
+          $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+          $('#confirmDeleteModal').modal('show');
+      });
 
-<table>
-<tr>
-<th>No</th>
-<th>Purchase Voucher No</th>
-<th>Party Name</th>
-<th>supplier_invoice_number</th>
-<th>Grand Total</th>
-</tr>
+      // Confirm delete button click event
+      $('#confirmDeleteButton').off('click').on('click', function(){
+        var itemId = $(this).data('item-id');
+        var $this = $(this);
+        var spinner = $this.html();
+        $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
+        $this.prop('disabled', true);
+          // Redirect to delete view
+          if(itemId){
+            $this.prop('disabled', false);
+            $this.html(spinner);
+            window.location.href = '/productpurchasevoucherdelete/' + itemId;
 
-{% for record in product_purchase_voucher_all %}
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{record.purchase_number}}</td>
-<td>{{record.party_name.name}}</td>
-<td>{{record.supplier_invoice_number}}</td>
-<td>{{record.grand_total}}</td>
-<td><a href="{% url 'product-purchase-voucher-update' record.id %}">Edit</a></td>
-<td><span><a href="{% url 'product-purchase-voucher-delete' record.id %}">Delete</a></td>
-</tr>
-{% endfor %}
-
-</table>
+          }
+          // window.location.href = '/purchasevoucherdelete/' + itemId;
+      });
+    });
+    function reversAddVoucharList(){
+        window.location.href = "{% url 'product-purchase-voucher-create' %}"
+    }
+</script>
 {% endblock body %}

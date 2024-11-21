@@ -6471,7 +6471,21 @@ def cuttingroomdelete(request,pk):
 
 
 def product_purchase_voucher_create_update(request, pk=None):
+    products = PProduct_Creation.objects.all()
+    warehouses = Finished_goods_warehouse.objects.all()
+    party_names = Ledger.objects.all()
+
+
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        sku = request.GET.get('productName')
+        color_obj = PProduct_Creation.objects.get(PProduct_SKU = sku)
+        color = color_obj.PProduct_color.color_name
+        pro = PProduct_Creation.objects.get(PProduct_SKU = sku)
+        gst_obj = pro.Product.Product_GST
+        gst = gst_obj.gst_percentage
+        return JsonResponse({'color':color,'gst':gst})
     
+
     if pk:
         product_pur_vouch_instance = product_purchase_voucher_master.objects.get(pk=pk)
 
@@ -6584,7 +6598,7 @@ def product_purchase_voucher_create_update(request, pk=None):
             print(product_purchase_voucher_items_formset_instance.non_form_errors())
 
     return render(request,'finished_product/product_purchase_voucher_create_update.html',{'product_pur_vouch_form':product_pur_vouch_form,
-            'product_purchase_voucher_items_formset_instance':product_purchase_voucher_items_formset_instance})
+            'product_purchase_voucher_items_formset_instance':product_purchase_voucher_items_formset_instance,'products':products,'warehouses':warehouses,'party_names':party_names})
 
 
 def product_purchase_voucher_list(request):
