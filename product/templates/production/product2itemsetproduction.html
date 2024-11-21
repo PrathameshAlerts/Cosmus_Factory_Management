@@ -356,8 +356,8 @@
                 addRowButtonUnique.attr('disabled', false);
                 addButtonUnique.css('cursor', 'pointer');
                 addRowButtonUnique.css('cursor', 'pointer');
-                submitValue.attr('disabled', false);
-                submitValue.css('cursor', 'pointer');
+                submitButton.attr('disabled', false);
+                submitButton.css('cursor', 'pointer');
                 // Helper function to display error
                 function showError(message) {
                     errorForm.text(message).show();
@@ -766,12 +766,11 @@
                  
                     uncheckedCheckboxes.each(function () {
                         const dataValue = $(this).closest('tr').find('input[name$="Item_pk"]').val();
-                        // console.log( dataValue);
-                        // console.log(dataKey);
+
                         if (dataKey === dataValue) {  // If duplicate is found
                             // Show error and disable form submission
                             errorShow.text('Item already added').show();
-                            submitButton.attr('disabled', 'disabled');
+                            submitButton.attr('disabled', true);
                             commonItemInput.css('border', '1px solid red');
                             suggestionData.val('');  // Clear the hidden field
                             isDuplicate = true;
@@ -786,7 +785,7 @@
                 // If no duplicate, reset error and allow form submission
                 if (!isDuplicate) {
                     errorShow.text('').hide();
-                    submitButton.removeAttr('disabled');
+                    submitButton.attr('disabled', false);
                     commonItemInput.css('border', '1px solid #ced4da');
                     suggestionData.val(dataKey);  // Set the hidden field value
                 }
@@ -817,7 +816,7 @@
         
                 errorShow.hide();
                 commonItemInputs.css('border', '1px solid #ced4da');
-                submitButton.attr('disabled',false)
+                submitButton.attr('disabled',true)
                 $inputField.closest('.custom-dropdown-container').find('.commom_item_hidden').val('');
                 index = 0;
                 indexbool = false;
@@ -962,6 +961,7 @@
                     commonItemInputsValue.css('border', '1px solid #ced4da');
                    }
                 enterPressed = true; // Set the flag to true when Enter is pressed
+                inputCheck()
             }
         })
    
@@ -1169,31 +1169,46 @@
             // Re-bind delete functionality after adding a new 
             deleteRowSingle();
             updateAddButtonVisibility();
+            inputCheck()
             // Update the total forms count
             mainForms.value = formsInsertValue + 1;
     
         });
     });
     }
-
+    function getVisibleuniqueRows() {
+    // Select all rows that are not hidden (excluding those with display: none)
+    const visibleRowsunique = document.querySelectorAll('.mainTableList tr:not([style*="display: none"])');
+    return visibleRowsunique;
+}
     function deleteRowSingle() {
         document.querySelectorAll('.delete-btn').forEach(function (button) {
             button.addEventListener('click', function () {
-                const row = this.closest('tr');
-                const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
-                const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
-                const submitBut= document.getElementById('id_submitForms');
-                if (checkRow) {
-                    checkRow.checked = true;
-                    checkRow.value = 'true';
-                    rowValue.required = false;
-                    row.style.display = 'none';
-                    submitBut.disabled = false;
-                    submitBut.style.cursor = 'pointer';
-                } else {
-                    console.error("Checkbox for deletion not found in this row");
+                const rows = getVisibleuniqueRows()
+                if(rows.length > 1){
+                    const row = this.closest('tr');
+                    if(row){
+                        const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
+                        const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
+                        const submitBut= document.getElementById('id_submitForms');
+                        if (checkRow) {
+                            checkRow.checked = true;
+                            checkRow.value = 'true';
+                            rowValue.required = false;
+                            row.style.display = 'none';
+                            submitBut.disabled = false;
+                            submitBut.style.cursor = 'pointer';
+                        } else {
+                            console.error("Checkbox for deletion not found in this row");
+                        }
+                    }
+                    
+                }else{
+                    alert('Cannot delete this row; at least one row must remain.');
                 }
+                
                     submitFormRowNumber();
+                    inputCheck()
             });
         });
     };
@@ -1230,7 +1245,7 @@
                     const forms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
                     const submitbutton = document.getElementById('id_submitForms');
 
-                    submitbutton.setAttribute('disabled', false);
+                    submitbutton.setAttribute('disabled', true);
                    
                  
                     for(let i = 0; i<addInputRow; i++){
@@ -1324,6 +1339,7 @@
                     }
                     document.getElementById('id_productNoRow').value = '1';
                     deleteRow();
+                    inputCheck()
                    
                     // updateAddButtonVisibility();
                
@@ -1332,13 +1348,21 @@
                 }
             });
         }
-
+        function getVisibleuniqueRowsdata() {
+            // Select all rows that are not hidden (excluding those with display: none)
+            const visibleRowsData = document.querySelectorAll('.mainTableList tr:not([style*="display: none"])');
+            return visibleRowsData;
+        }
         function deleteRow() {
             // Add click event listener to all delete buttons
             document.querySelectorAll('.delete-btn').forEach(function (button) {
                 button.addEventListener('click', function () {
-                    // Find the row containing the clicked delete button
+                    const rows = getVisibleuniqueRowsdata()
+                if(rows.length > 1){
                     const row = this.closest('tr');
+                    if(row){
+                    // Find the row containing the clicked delete button
+                 
                     const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
                     const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
                     const submitBut= document.getElementById('id_submitForms');
@@ -1352,7 +1376,12 @@
                     } else {
                         console.error("Checkbox for deletion not found in this row");
                     }
+                }
+            }else{
+                alert('Cannot delete this row; at least one row must remain.');
+            }
                     submitFormRowNumber();
+                    inputCheck()
                 });
             });
         };
@@ -1395,16 +1424,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         addButtonValues.forEach(function (el){
             el.addEventListener('click',function(){
-             
-              
+
                 const currentRow = el.closest('tr');
-     
-                const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
-      
-                const mainForms = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
-          
-                const formsInsertValue = parseInt(mainForms.value);
-          
+                const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');     
+                const mainForms = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');         
+                const formsInsertValue = parseInt(mainForms.value);   
                 const formValue = inputValue.split('-')[1];
                 
                 const formsInsert = parseInt(formValue) + 2;
@@ -1413,7 +1437,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const newRow = currentRow.cloneNode(true);
      
                 const submitbutton = document.getElementById('id_submitForms');
-                submitbutton.setAttribute('disabled', false);
+                submitbutton.setAttribute('disabled', true);
                
                 newRow.querySelectorAll("input select").forEach(function (e) {
                         e.value = "";
@@ -1491,29 +1515,46 @@ document.addEventListener('DOMContentLoaded', function () {
             mainForms.value = formDataValues + 1;
                  deletedRowCommonRow();
                  updateAddButton();
+                 inputCheck()
             })
            
         })
+        function getVisiblecommonRows() {
+            // Select all rows that are not hidden (excluding those with display: none)
+            return document.querySelectorAll('.mainTable tr:not([style*="display: none"])');
+          
+        
+        }
         function deletedRowCommonRow() {
             // Add click event listener to all delete buttons
             document.querySelectorAll('.deleteButton').forEach(function (button) {
                 button.addEventListener('click', function () {
-                    // Find the row containing the clicked delete button
-                    const row = this.closest('tr');
-                    const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
-                    const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
-                    const submitBut= document.getElementById('id_submitForms');
-                    if (checkRow) {
-                        checkRow.checked = true; // Mark as checked
-                        checkRow.value = 'true'; // Set the value to 'true'
-                        rowValues.required = false;
-                        row.style.display = 'none';
-                        submitBut.disabled = false;
-                        submitBut.style.cursor = 'pointer';
-                  
-                    } else {
-                        console.error("Checkbox for deletion not found in this row");
+                    const rows =  getVisiblecommonRows();
+                    console.log(rows)
+                    if(rows.length > 1){
+                        // Find the row containing the clicked delete button
+                        const row = this.closest('tr');
+                        if(row){
+                            const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
+                        const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
+                        const submitBut= document.getElementById('id_submitForms');
+                        if (checkRow) {
+                            checkRow.checked = true; // Mark as checked
+                            checkRow.value = 'true'; // Set the value to 'true'
+                            rowValues.required = false;
+                            row.style.display = 'none';
+                            submitBut.disabled = false;
+                            submitBut.style.cursor = 'pointer';
+                    
+                        } else {
+                            console.error("Checkbox for deletion not found in this row");
+                        }
+                        }
+                    }else{
+                        alert('Cannot delete this row; at least one row must remain.');
                     }
+                    
+                    
                     submitFormRowNumber();
                 });
             });
@@ -1542,7 +1583,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 if (lastVisibleRow) {
                     const tableRow = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');
-                    
+                    const submitbutton = document.getElementById('id_submitForms');
+
+                    submitbutton.setAttribute('disabled', true);
                     for(let i=0; i<newRowsForm; i++){
                         const newCount = parseInt(tableRow.value);
                         const tableValue = newCount  + 1;
@@ -1626,7 +1669,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     document.getElementById('id_commonNoRow').value = '1';
                     deletedRow();
-                 
+                    inputCheck()
             
 
                 } else {
@@ -1634,27 +1677,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
-
+        function getVisibleRows() {
+            // Select all rows that are not hidden (excluding those with display: none)
+            return document.querySelectorAll('.mainTable tr:not([style*="display: none"])');
+        
+        }
         function deletedRow() {
             // Add click event listener to all delete buttons
             document.querySelectorAll('.deleteButton').forEach(function (button) {
                 button.addEventListener('click', function () {
-                    // Find the row containing the clicked delete button
-                    const row = this.closest('tr');
-                    const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
-                    const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
-                    const submitButtons= document.getElementById('id_submitForms');
-                    if (checkRow) {
-                        checkRow.checked = true; // Mark as checked
-                        checkRow.value = 'true'; // Set the value to 'true'
-                        rowValues.required = false;
-                        row.style.display = 'none';
-                        submitButtons.disabled = false;
-                        submitButtons.style.cursor = 'pointer';
-                  
-                    } else {
-                        console.error("Checkbox for deletion not found in this row");
+                    const rows =  getVisibleRows();
+                    console.log(rows)
+                    if(rows.length > 1){
+                         // Find the row containing the clicked delete button
+                        const row = this.closest('tr');
+                        if(row){
+                        const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
+                        const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
+                        const submitButtons= document.getElementById('id_submitForms');
+                        if (checkRow) {
+                            checkRow.checked = true; // Mark as checked
+                            checkRow.value = 'true'; // Set the value to 'true'
+                            rowValues.required = false;
+                            row.style.display = 'none';
+                            submitButtons.disabled = false;
+                            submitButtons.style.cursor = 'pointer';
+                    
+                        } else {
+                            console.error("Checkbox for deletion not found in this row");
+                        }
+                        }
+                        
+                    }else{
+                        alert('Cannot delete this row; at least one row must remain.');
                     }
+                   
                 });
             });
         };
@@ -1687,6 +1744,7 @@ submitFormRowNumber();
 // Call the function on page load
 document.addEventListener('DOMContentLoaded', function() {
     submitFormRowNumber();
+    inputCheck();
  
 });
 
@@ -1721,8 +1779,51 @@ document.querySelector('#myProductForm').addEventListener('submit', function() {
             event.preventDefault(); // Prevents the default form submission on Enter key
         }
     });
-    submitButton.addEventListener('click',function(event){
-        forms.submit()
-    });
+ 
+
+    function inputCheck(){
+        const itemNameInputsid = document.querySelectorAll('[name$="-Item_pks"]');
+       
+    // Loop through each input and add keydown event listener
+    itemNameInputsid.forEach((input, index) => {
+        input.addEventListener("keydown", function (event) {
+            if (event.key === "Tab") {
+                event.preventDefault(); // Prevent default tab behavior
+                console.log('test')
+                // Check if the current input has a value
+                if (input.value.trim() !== "") {
+                    // If not the last input, move focus to the next row's item name
+                    if (itemNameInputsid[index + 1]) {
+                        itemNameInputsid[index + 1].focus();
+                    }
+                } else {
+                    // If current input is empty, refocus on it
+                    input.focus();
+                }
+            }
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default Enter key behavior
+
+                // Find the current <td> containing this input
+                const currentTd = this.closest('td');
+                    console.log('currentId',currentTd)
+                // Find the next <td> sibling
+                if (currentTd) {
+                    const nextTd = currentTd.nextElementSibling;
+
+                    // Check if next <td> exists and contains an input
+                    if (nextTd) {
+                        const nextInput = nextTd.querySelector('input');
+                        if (nextInput) {
+                            nextInput.focus(); // Move focus to the next input
+                        }
+                    }
+                }
+            }
+        });
+    })
+  
+}
+inputCheck()
 </script>
 {% endblock body %}

@@ -2,7 +2,7 @@
 {% load static %} 
 {% block body %} 
 <div>
-    <!-- <h2>Purchase invoice</h2> -->
+
     <form class="mt-4" action=""method="POST" autocomplete="off" id="newForm">
         
         {% csrf_token %}
@@ -1137,6 +1137,7 @@ function getGstNo() {
                         lastVisibleRow = row;
                     }
             });
+            console.log(lastVisibleRow)
             if (lastVisibleRow) {
                 const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
                
@@ -1287,28 +1288,49 @@ function getGstNo() {
     }
     });
 
+    function getVisibleRows() {
+    // Select all rows that are not hidden (excluding those with display: none)
+    const visibleRows = document.querySelectorAll('.mainTableList tr:not([style*="display: none"])');
+    return visibleRows;
+}
    function deleteRowData(){
     // Add click event listener to all delete buttons
-    document.querySelectorAll('.delete-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
+    document.querySelectorAll('.delete-btn').forEach(function (button) {
+    button.addEventListener('click', function () {
+        // Find all rows in the table
+        const rows =  getVisibleRows();
+        console.log(rows)
+        // Check if more than one row exists
+        if (rows.length > 1) {
             // Find the row containing the clicked delete button
             const row = this.closest('tr');
-            const checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
-            if (checkRow) {
-                checkRow.checked = true; // Mark as checked
-                checkRow.value = 'true'; // Set the value to 'true'
 
-                row.style.display = 'none';
-                calculateTotalAmount();
-                calculateOtherTotal();
-                inputCheck();
-                
-            } else {
-                console.error("Checkbox for deletion not found in this row");
+            if (row) {
+                // Find the checkbox for deletion in the row
+                const checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+
+                if (checkRow) {
+                    checkRow.checked = true; // Mark as checked
+                    checkRow.value = 'true'; // Set the value to 'true'
+
+                    // Optionally hide the row visually
+                    row.style.display = 'none';
+
+                    // Call functions to recalculate totals or perform other updates
+                    calculateTotalAmount();
+                    calculateOtherTotal();
+                    inputCheck();
+                } else {
+                    console.error("Checkbox for deletion not found in this row");
+                }
             }
-        });
-      
+        } else {
+            // If only one row remains, alert the user
+            alert('Cannot delete this row; at least one row must remain.');
+        }
     });
+});
+
  
   };
  deleteRowData();
@@ -1328,23 +1350,14 @@ function getGstNo() {
       }
     });
   
-    // // Only submit the form when the submit button is clicked
-    // submitButton.addEventListener("click", function(event) {
-    
-    //         form.submit();
-        
-   
-    // });
-
     document.addEventListener("DOMContentLoaded", function () {
     const submitButton = document.getElementById("parentFormClick");
     const itemNameInputs = document.querySelectorAll("input[id^='item_name_']");
     const itemShadeSelects = document.querySelectorAll("select[id$='-item_shade']");
     const itemQtyInputs = document.querySelectorAll("input[id$='-quantity_total']");
- 
+
     function validateInputs() {
         let isValid = true;
-
         // Check all item name inputs
         itemNameInputs.forEach(input => {
             console.log('ew',typeof(input.value.trim()))
@@ -1402,6 +1415,7 @@ function getGstNo() {
         console.log('tesssssssttt')
         validateInputs()
     })
+ 
     // Initial validation on page load
     validateInputs();
     inputCheck();
@@ -1427,9 +1441,28 @@ function inputCheck(){
                     input.focus();
                 }
             }
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default Enter key behavior
+
+                // Find the current <td> containing this input
+                const currentTd = this.closest('td');
+                    console.log('currentId',currentTd)
+                // Find the next <td> sibling
+                if (currentTd) {
+                    const nextTd = currentTd.nextElementSibling;
+
+                    // Check if next <td> exists and contains an input
+                    if (nextTd) {
+                        const nextInput = nextTd.querySelector('input');
+                        if (nextInput) {
+                            nextInput.focus(); // Move focus to the next input
+                        }
+                    }
+                }
+            }
         });
     });
     }
-  </script>
+</script>
 
 {% endblock body %}
