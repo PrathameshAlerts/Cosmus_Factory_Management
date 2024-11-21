@@ -6492,33 +6492,54 @@ def product_purchase_voucher_create_update(request, pk=None):
         product_purchase_voucher_items_formset_instance.forms = [form for form in product_purchase_voucher_items_formset_instance.forms if form.has_changed()]
 
         if product_pur_vouch_form.is_valid() and product_purchase_voucher_items_formset_instance.is_valid():
-            print(request.POST)
+           
             try:
                 with transaction.atomic():
                     product_pur_vouch_form_instance = product_pur_vouch_form.save()
                     
+                    selected_warehouse = product_pur_vouch_form_instance.finished_godowns
+
                     for form in product_purchase_voucher_items_formset_instance.deleted_forms:
                         if form.instance.pk:
                             form.instance.delete()
 
                     for form in product_purchase_voucher_items_formset_instance:
 
-                        if form.instance.pk: 
+                        if form.instance.pk and not form.cleaned_data.get('DELETE'): 
+                            
+                            
+                            product_purchase_voucher_items_form = form.save(commit=False)
+                            product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
+                            
+                            old_quantity = form.initial.get('quantity_total')
 
-                            if not form.cleaned_data.get('DELETE'):
-                               
-                                product_purchase_voucher_items_form = form.save(commit=False)
-                                product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
+                            if form.has_changed() and 'product_name' in form.changed_data:
+
+                                old_product_name = form.initial.get('product_name')
                                 
-                                product_name = form.cleaned_data.get('product_name')
+                                
+                                if old_product_name and old_quantity:
+                                    
+                                    obj1, created = Product_warehouse_quantity_through_table.objects.get_or_create(
+                                    warehouse= selected_warehouse , 
+                                    product = old_product_name )
+                                    obj1.quantity = obj1.quantity - old_quantity 
 
-                                print(product_name)
+                                    obj1.save()
 
-                                db_instance = product_purchase_voucher_items.objects.get(id=form.instance.pk)
-                                diff_qty_to_deduct = product_purchase_voucher_items_form.quantity_total - db_instance.quantity_total
+                                    obj2, created = Product_warehouse_quantity_through_table.objects.get_or_create(
+                                    warehouse= selected_warehouse , 
+                                    product = product_purchase_voucher_items_form.product_name)
+
+                                    obj2.quantity = obj1.quantity + product_purchase_voucher_items_form.quantity_total 
+                                    obj2.save()
+
+                            else:   
+
+                                diff_qty_to_deduct = product_purchase_voucher_items_form.quantity_total - old_quantity
                                 
                                 obj, created = Product_warehouse_quantity_through_table.objects.get_or_create(
-                                    warehouse= product_purchase_voucher_items_form.product_purchase_master.finished_godowns, 
+                                    warehouse= selected_warehouse, 
                                     product = product_purchase_voucher_items_form.product_name)
                                 
                                 if created:
@@ -6529,16 +6550,17 @@ def product_purchase_voucher_create_update(request, pk=None):
 
                                 obj.save()
 
-                                product_purchase_voucher_items_form.save()
+                            product_purchase_voucher_items_form.save()
 
                         elif not form.instance.pk:
                             if not form.cleaned_data.get('DELETE'):
+
                                 product_purchase_voucher_items_form = form.save(commit=False)
                                 product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
                                 
                                 
                                 obj, created = Product_warehouse_quantity_through_table.objects.get_or_create(
-                                    warehouse= product_purchase_voucher_items_form.product_purchase_master.finished_godowns, 
+                                    warehouse= selected_warehouse, 
                                     product = product_purchase_voucher_items_form.product_name)
                             
                                 if created:
@@ -6559,6 +6581,7 @@ def product_purchase_voucher_create_update(request, pk=None):
         else:
             print(product_pur_vouch_form.errors)
             print(product_purchase_voucher_items_formset_instance.errors)
+            print(product_purchase_voucher_items_formset_instance.non_form_errors())
 
     return render(request,'finished_product/product_purchase_voucher_create_update.html',{'product_pur_vouch_form':product_pur_vouch_form,
             'product_purchase_voucher_items_formset_instance':product_purchase_voucher_items_formset_instance})
