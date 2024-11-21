@@ -1,54 +1,59 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-<div>
-
-    <span>Warehouse</span>
-
-    <span>
-    <select name="warehouse_select" id="id_warehouse_select">
-        <option value=""disabled selected>Select Warehouse</option>
-        {% for x in wareshouse_all %}
-        <option value="{% url 'finished-goods-stock-single' x.id %}">{{x.warehouse_name_finished}}</option>
-        {% endfor %}
-    </select>
+<div class="mt-2 mb-3">
+    <h2>Warehouse List</h2>
+    <div class="d-flex ">
+        <label id="id_warehouse_select" class="">Warehouse :</label>
+        <select name="warehouse_select" id="id_warehouse_select" class="ms-2 item-select">
+            <option value=""disabled selected>Select Warehouse</option>
+            {% for x in wareshouse_all %}
+            <option value="{% url 'finished-goods-stock-single' x.id %}">{{x.warehouse_name_finished}}</option>
+            {% endfor %}
+        </select>
+        <button class="package_btn ms-4"><a style="text-decoration: none; color: white;" href="{% url 'finished-goods-stock-all' %}">All Stock</a></button>
+    </div>
+    
 
 </div>
-<span><a href="{% url 'finished-goods-stock-all' %}">All Stock</a></span>
+<table class="table table-striped table-hover table-responsive table-bordered">
+<thead class="name_absolute"> 
+    <tr>
+        <th>Product Name</th>
+        <th>Refrence No</th>
+        <th>Product SKU</th>
+        <th>Product Color</th>
+        <th>Quantity</th>
+    </tr>
+</thead>
 
 
-</span>
-<table>
+<tbody class="mainTableList">
+    {% for record in finished_godown_all %}
+    <tr>
+        <td>{{record.Product.Product_Name}}</td>
+        <td>{{record.Product.Product_Refrence_ID}}</td>
+        <td>{{record.PProduct_SKU}}</td>
+        <td>{{record.PProduct_color}}</td>
+        <td>{{record.total_warehouse_stock | default_if_none:0}}</td>
+    </tr>
+    {% endfor %}
+</tbody>
 
-<tr>
-    <th>Product Name</th>
-    <th>Refrence No</th>
-    <th>Product SKU</th>
-    <th>Product Color</th>
-    <th>Quantity</th>
-</tr>
-
-{% for record in finished_godown_all %}
-<tr>
-    <td>{{record.Product.Product_Name}}</td>
-    <td>{{record.Product.Product_Refrence_ID}}</td>
-    <td>{{record.PProduct_SKU}}</td>
-    <td>{{record.PProduct_color}}</td>
-    <td>{{record.total_warehouse_stock | default_if_none:0}}</td>
-</tr>
-{% endfor %}
 </table>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('id_warehouse_select').addEventListener('change', function() { 
         
         var selectedValue = this.value; 
         console.log(selectedValue)
-        if (selectedValue) 
-        { window.location.href = selectedValue; 
-        } }); 
-    
-    </script>
+        if (selectedValue) {
+             window.location.href = selectedValue; 
+        } 
+    }); 
+    })
+</script>
 
     
 
