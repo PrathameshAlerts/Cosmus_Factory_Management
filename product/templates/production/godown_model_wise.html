@@ -11,6 +11,9 @@
         <img src=" {{instance.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
         {% endif %}
         {% endfor %}
+
+        <label for="">Approval Pending Qty</label><span>{{purchase_order_instances.pending_approval_total}}</span>
+        <label for="">Total Approved QTY</label><span>{{product_quantity.total_quantity_product}}</span>
 </div> 
 <div class=" mt-2">
     <!-- <h3>Model Wise</h3> -->
