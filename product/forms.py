@@ -14,7 +14,7 @@ from .mixins import CompanyUniqueFieldMixin, UniqueFieldMixin
 
 logger = logging.getLogger('product_forms')
 
-# notes in notes/customuserandcompany.txt
+
 class CompanyBaseForm(forms.ModelForm):
 
     """
@@ -22,23 +22,23 @@ class CompanyBaseForm(forms.ModelForm):
     """
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')  # Pass the request user in the form
+        self.user = kwargs.pop('user')  
         super().__init__(*args, **kwargs)
 
 
     def save(self, commit=True):
         instance = super().save(commit=False)
 
-        # For normal users, auto-assign the company based on the user
+        
         if not self.user.is_superuser:
             instance.c_user = self.user 
             instance.company = self.user.company
 
-        # For superusers, the company is assigined in form which is selected from dropdown
+        
         else:
             instance.c_user = self.user
         
-        # if commit is performed
+        
         if commit:
             instance.save()
 
@@ -53,15 +53,15 @@ class PProductCreateForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-            self.user = kwargs.pop('user', None)  # Extract the user from kwargs
+            self.user = kwargs.pop('user', None)  
             super(PProductCreateForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
         instance = super(PProductCreateForm, self).save(commit=False)
 
-        # Assign the user if necessary
+        
         if self.user:
-            instance.c_user = self.user  # Assuming the model has a 'user' field
+            instance.c_user = self.user  
 
         if commit:
             instance.save()
@@ -73,7 +73,7 @@ class PProductCreateForm(forms.ModelForm):
 class PProductCreateFormset(BaseInlineFormSet):
 
     def __init__(self, *args, **kwargs):
-        self.c_user = kwargs.pop('c_user', None)  # Pop the c_user from kwargs
+        self.c_user = kwargs.pop('c_user', None)  
         super().__init__(*args, **kwargs)
 
     def get_form_kwargs(self, index):
@@ -81,7 +81,7 @@ class PProductCreateFormset(BaseInlineFormSet):
         Override this method to pass `c_user` (user) to each form.
         """
         kwargs = super().get_form_kwargs(index)
-        kwargs['user'] = self.c_user  # Pass c_user (user) to the form
+        kwargs['user'] = self.c_user  
         return kwargs
         
 
@@ -103,19 +103,19 @@ ProductCreateSkuFormsetCreate = inlineformset_factory(Product, PProduct_Creation
 
 class ProductImageForm(forms.ModelForm):
     class Meta:
-        model = ProductImage  # Assuming a model called ProductImage
-        fields = ['Image','Image_type','Order_by']  # Example fields
+        model = ProductImage  
+        fields = ['Image','Image_type','Order_by']  
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)  # Extract the user from kwargs
+        self.user = kwargs.pop('user', None)  
         super(ProductImageForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
         instance = super(ProductImageForm, self).save(commit=False)
 
-        # Assign the user if necessary
+        
         if self.user:
-            instance.c_user = self.user  # Assuming the model has a 'user' field
+            instance.c_user = self.user  
 
         if commit:
             instance.save()
@@ -125,7 +125,7 @@ class ProductImageForm(forms.ModelForm):
 class ProductImageFormSet(BaseInlineFormSet):
 
     def __init__(self, *args, **kwargs):
-        self.c_user = kwargs.pop('c_user', None)  # Pop the c_user from kwargs
+        self.c_user = kwargs.pop('c_user', None)  
         super().__init__(*args, **kwargs)
 
     def get_form_kwargs(self, index):
@@ -133,26 +133,26 @@ class ProductImageFormSet(BaseInlineFormSet):
         Override this method to pass `c_user` (user) to each form.
         """
         kwargs = super().get_form_kwargs(index)
-        kwargs['user'] = self.c_user  # Pass c_user (user) to the form
+        kwargs['user'] = self.c_user  
         return kwargs
 
 
 
 class ProductVideoForm(forms.ModelForm):
     class Meta:
-        model = ProductVideoUrls  # Assuming a model called ProductVideoUrls
-        fields = ['product_video_url']  # Example fields
+        model = ProductVideoUrls  
+        fields = ['product_video_url']  
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)  # Extract the user from kwargs
+        self.user = kwargs.pop('user', None)  
         super(ProductVideoForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
         instance = super(ProductVideoForm, self).save(commit=False)
 
-        # Assign the user if necessary
+        
         if self.user:
-            instance.c_user = self.user  # Assuming the model has a 'user' field
+            instance.c_user = self.user  
 
         if commit:
             instance.save()
@@ -164,7 +164,7 @@ class ProductVideoForm(forms.ModelForm):
 class ProductVideoFormSet1(BaseInlineFormSet):
 
     def __init__(self, *args, **kwargs):
-        self.c_user = kwargs.pop('c_user', None)  # Pop the c_user from kwargs
+        self.c_user = kwargs.pop('c_user', None)  
         super().__init__(*args, **kwargs)
 
     def get_form_kwargs(self, index):
@@ -172,7 +172,7 @@ class ProductVideoFormSet1(BaseInlineFormSet):
         Override this method to pass `c_user` (user) to each form.
         """
         kwargs = super().get_form_kwargs(index)
-        kwargs['user'] = self.c_user  # Pass c_user (user) to the form
+        kwargs['user'] = self.c_user  
         return kwargs
 
 
@@ -188,7 +188,7 @@ class Product2ItemForm(forms.ModelForm):
         model = product_2_item_through_table
         fields= ['PProduct_pk','Item_pk','Remark','no_of_rows','grand_total','row_number','grand_total_combi']
         
-    # validate so that the entered value should not be less then the existing value
+    
     def clean_no_of_rows(self):
         new_value = self.cleaned_data.get('no_of_rows')
 
@@ -196,7 +196,7 @@ class Product2ItemForm(forms.ModelForm):
             existing_instance = product_2_item_through_table.objects.get(pk=self.instance.pk)
             existing_value = existing_instance.no_of_rows
 
-            # Compare new value with the existing value
+            
             if new_value < existing_value:
                 raise forms.ValidationError(f'The number of rows cannot be less than the current value of {existing_value}.')
 
@@ -206,7 +206,7 @@ class Product2ItemForm(forms.ModelForm):
 
 
 
-# when using modelformset need to add can_delete = True or delete wont be added in form
+
 Product2ItemFormset = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=0, can_delete=True)
 Product2ItemFormsetExtraForm = modelformset_factory(product_2_item_through_table,form = Product2ItemForm, extra=1, can_delete=True)
 
@@ -217,7 +217,7 @@ class Product2CommonItem(forms.ModelForm):
         model = product_2_item_through_table
         fields= ['Item_pk','Remark','no_of_rows','row_number','grand_total','grand_total_combi']
     
-    # validate so that the entered value should not be less then the existing value
+    
     def clean_no_of_rows(self):
         new_value = self.cleaned_data.get('no_of_rows')
 
@@ -225,7 +225,7 @@ class Product2CommonItem(forms.ModelForm):
             existing_instance = product_2_item_through_table.objects.get(pk=self.instance.pk)
             existing_value = existing_instance.no_of_rows
 
-            # Compare new value with the existing value
+            
             if new_value < existing_value:
                 raise forms.ValidationError(f'The number of rows cannot be less than the current value of {existing_value}.')
 
@@ -278,15 +278,15 @@ PProductaddFormSet = inlineformset_factory(Product, PProduct_Creation, fields=('
                                                                                'Amazon_Link','Flipkart_Link','Cosmus_link'),extra=0)
 
 
-# Customize the formset to make PProduct_SKU read-only
+
 class CustomPProductaddFormSet(PProductaddFormSet):
 
     def __init__(self, *args, **kwargs):
         super(CustomPProductaddFormSet, self).__init__(*args, **kwargs)
 
-        # Loop through the forms in the formset
+        
         for form in self.forms:
-            # Set PProduct_SKU field as read-only
+            
             form.fields['PProduct_SKU'].widget.attrs['readonly'] = True
 
 
@@ -306,10 +306,10 @@ class ColorForm(UniqueFieldMixin,forms.ModelForm):
             def clean_color_name(self):
         data = self.cleaned_data['color_name']
         
-        # Exclude current instance from validation logic when updating 
+        
         colors = Color.objects.exclude(id=self.instance.id)
 
-        #further filter the excluded query if color_name 
+        
         if colors.filter(color_name__iexact = data).exists():
                 raise ValidationError('Color already created!')
 
@@ -333,16 +333,16 @@ class Itemform(UniqueFieldMixin,forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Retrieve the last instance of the Item_Creation model
+        
         last_item = Item_Creation.objects.order_by('pk').last()
         
 
-        # If there's a previous instance, set Material_code to last_item.pk + 1
+        
         if last_item:
             self.fields['Material_code'].initial = last_item.pk + 1
 
         else:
-            # If no previous instance exists, you can set a default initial value
+            
             self.fields['Material_code'].initial = 1
 
 """ 
@@ -386,7 +386,7 @@ class account_sub_grp_form(UniqueFieldMixin,forms.ModelForm):
 class StockItemForm(CompanyBaseForm):
     class Meta:
         model = StockItem
-        fields = ['acc_sub_grp','stock_item_name','company'] # Include company for superusers
+        fields = ['acc_sub_grp','stock_item_name','company'] 
 
 
 
@@ -498,8 +498,8 @@ class product_sub_category_form(UniqueFieldMixin,forms.ModelForm):
         model = SubCategory
         fields = ['product_sub_category_name','product_main_category']
 
-    # def clean_product_sub_category_name(self):
-    #     return self.clean_unique_field('product_sub_category_name',SubCategory)
+    
+    
 
 
 class purchase_order_form(forms.ModelForm):
@@ -523,7 +523,7 @@ class purchase_order_to_product_form(forms.ModelForm):
             'product_id': forms.TextInput(),
         }
 
-# custom formset for validation extended form BaseInlineFormset
+
 
 class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
     def clean(self):
@@ -532,17 +532,17 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
         total_order_quantity = 0
         for form in self.forms:
             if not form.cleaned_data.get('DELETE', False):
-                # Get the order_quantity from the cleaned_data of each form:
+                
                 order_quantity = form.cleaned_data.get('order_quantity')
                 total_order_quantity += order_quantity
 
-                # set the process qty same as orderqty using form.insatnce
+                
                 form.instance.process_quantity = order_quantity
         
-        # Access the parent model's number_of_pieces field
+        
         parent_quantity = self.instance.number_of_pieces  
 
-        # Raise a validation error if the total order quantity exceeds the parent quantity
+        
         if total_order_quantity != parent_quantity:
             raise ValidationError(f'The total order quantity ({total_order_quantity}) exceeds the available quantity ({parent_quantity}) it should equal')
 
@@ -556,7 +556,7 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
         for form in self.forms:
             form.cleaned_data.get(''MODEL FIELD NAME'', ''DEFAULT VALUE'')
             OR
-            child_instance = form.instance  # Get the child model instance
+            child_instance = form.instance  
             OR
             child_instance_fields = form.instance.FIELD NAME
         """
@@ -565,15 +565,15 @@ class BasePurchaseOrderProductQtyFormSet(BaseInlineFormSet):
 purchase_order_product_qty_formset = inlineformset_factory(purchase_order,
                                                             purchase_order_to_product,
                                                               form=purchase_order_to_product_form,
-                                                              formset=BasePurchaseOrderProductQtyFormSet, # custom formset for validation
+                                                              formset=BasePurchaseOrderProductQtyFormSet, 
                                                                 extra=0, can_delete=True)
 
 
-# inherited from purchase_order_to_product_form
+
 class purchase_order_raw_to_product_form(purchase_order_to_product_form):
-    class Meta(purchase_order_to_product_form.Meta):  # inherited from purchase_order_to_product_form meta class
+    class Meta(purchase_order_to_product_form.Meta):  
         
-        fields = purchase_order_to_product_form.Meta.fields + ['process_quantity', 'order_processed_quantity']   # inherited from purchase_order_to_product_form fields of meta class
+        fields = purchase_order_to_product_form.Meta.fields + ['process_quantity', 'order_processed_quantity']   
 
 
 
@@ -584,7 +584,7 @@ class Basepurchase_order_raw_product_qty_formset(BaseInlineFormSet):
 
         for form in self.forms:
             if not form.cleaned_data.get('DELETE', False):
-                # Get the order_quantity from the cleaned_data of each form:
+                
                 order_quantity = form.cleaned_data.get('order_quantity', 0)
                 proc_color_wise_qty = form.cleaned_data.get('process_quantity', 0)
                 
@@ -604,13 +604,13 @@ purchase_order_raw_product_qty_formset = inlineformset_factory(purchase_order,
 
 class purchase_order_raw_product_sheet_form(forms.ModelForm):
 
-    # extra field added in front end not in table which is populated by initial data 
-    # product_color = forms.CharField(
-    #     required=False,
-    #     widget=forms.TextInput(attrs={'readonly': 'readonly'}),
+    
+    
+    
+    
         
-    # )
-    #added product_color to table later on
+    
+    
 
     class Meta:
         model = purchase_order_for_raw_material
@@ -669,7 +669,7 @@ class purchase_order_to_product_cutting_form(forms.ModelForm):
 
 class purchase_order_for_raw_material_cutting_items_form(forms.ModelForm):
 
-    #extra field added in front end 
+    
     purchase_order_pk = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={'type': 'readonly'}),
@@ -690,8 +690,8 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
     def clean(self):
         super().clean()
 
-        # get the data from parent instance
-        # po_godown = self.instance.purchase_order_cutting_id.purchase_order_id.temp_godown_select
+        
+        
         
         for form in self.forms:
             if not form.cleaned_data.get('DELETE', False):
@@ -713,20 +713,20 @@ class Basepurchase_order_for_raw_material_cutting_items_form(BaseInlineFormSet):
                         elif material_color_shade is not None:
                             if material_color_shade.items.Fabric_nonfabric == 'Fabric':
 
-                                # try:
-                                #     item_in_godown = item_godown_quantity_through_table.objects.get(godown_name=po_godown,Item_shade_name=material_color_shade)
-
-                                # except item_godown_quantity_through_table.DoesNotExist:
-                                #     raise ValidationError(f'No such item {material_color_shade} in godown {po_godown}.')
                                 
-                                # item_quantity_in_godown = item_in_godown.quantity
+                                
 
-                                # if item_quantity_in_godown >= total_consumption:
-                                #     item_in_godown.quantity = item_in_godown.quantity - total_consumption
-                                #     item_in_godown.save()
+                                
+                                
+                                
+                                
 
-                                # else:
-                                #     raise ValidationError(f'Insufficient quantity in godown {po_godown} for material {material_color_shade}. Required: {total_consumption},Available: {item_quantity_in_godown}')
+                                
+                                
+                                
+
+                                
+                                
 
 
                                 try:
@@ -872,24 +872,24 @@ class labour_work_in_product_to_item_approval_form(forms.ModelForm):
 labour_work_in_product_to_item_approval_formset = inlineformset_factory(labour_work_in_master,labour_work_in_product_to_item, 
             form = labour_work_in_product_to_item_approval_form, extra = 0, can_delete = False)
 
-class cutting_room_form(forms.ModelForm):  #UniqueFieldMixin,
+class cutting_room_form(forms.ModelForm):  
     class Meta:
         model = cutting_room
-        fields = ['cutting_room_name'] # ,'company' company only for superusers
+        fields = ['cutting_room_name'] 
 
-    # this way we can use a custom mixin or the below commented code 
-    # def clean_cutting_room_name(self):
-    #     return self.clean_unique_field('cutting_room_name',cutting_room)
+    
+    
+    
 
 
 
-class factory_employee_form(forms.ModelForm):  #UniqueFieldMixin,
+class factory_employee_form(forms.ModelForm):  
     class Meta:
         model = factory_employee
-        fields = ['factory_emp_name','cutting_room_id'] #company only for superusers
+        fields = ['factory_emp_name','cutting_room_id'] 
 
-    # def clean_factory_emp_name(self):
-    #     return self.clean_unique_field('factory_emp_name',factory_employee)
+    
+    
     
 
 class raw_material_production_estimation_form(forms.ModelForm):
@@ -1004,24 +1004,24 @@ Finished_goods_transfer_records_formset_update = inlineformset_factory(Finished_
 
 """
         
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     instance = kwargs.get('instance')
-    #     print('instance=',instance.Product_Name)
-    #     if instance:
-    #         if instance.Product_Name is None:
-    #             self.initial['Product_Name'] = 'test'
-    #         if instance.Model_Name is None:
-    #             self.initial['Model_Name'] = ' '
-    #         if instance.Product_Status is None:
-    #             self.initial['Product_Status'] = ' '
-    #         if instance.Product_Brand is None:
-    #             self.initial['Product_Brand'] = ' '
-    #         if instance.Product_WarrantyTime is None:
-    #             self.initial['Product_WarrantyTime'] = ' '
-    #         if instance.Product_GST is None:
-    #             self.initial['Product_GST']
-    #     print('instance=',instance.Product_Name)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
