@@ -20,29 +20,30 @@
                     {% endif %}
                 </div>
                 <span id="SupplierError" class="error-messages"></span>
-                <div class="d-flex ms-3">
-                    <label for="id_supplier_invoice_number" class="item-form" >Supplier Invoice No :</label>
+                <div class="d-flex ms-2">
+                    <label for="id_supplier_invoice_number" class="" >Supplier No :</label>
                     <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{product_pur_vouch_form.instance.supplier_invoice_number}}" maxlength="255" required  aria-required="true">
                 </div>
                
                 <div class="d-flex ms-3">
-                    <label for="id_GST_numbers" class="item-form" >Company GST No :</label>
+                    <label for="id_GST_numbers" class="" >Company GST No :</label>
                     <input type="text" class="item-select" name="GST_numbers" id ="id_company_GST_numbers" value="27AAACG20210238" maxlength="50" readonly >
                 </div>
                 <div class="d-flex ms-3">
-                    <label for="id_GST_numbers" class="item-form" >Finished godowns :</label>
-                    <select name="finished_godowns" required id="id_finished_godowns" class="product2Select">
+                    <label for="id_ledger_type" class="me-2" >ledger Type :</label>
+                    <input type="text" class="item-select border-0 bg-transparent" name="ledger_type" id ="id_ledger_type" value="{{product_pur_vouch_form.instance.ledger_type}}" maxlength="50" default='Purchase(Product)' readonly placeholder="Purchase(Product)" >
+                </div>
+                
+            </div>
+            <span id="ledgerError" class="error-messages"></span>
+            <div class="d-flex mb-3">
+                <div class="d-flex">
+                    <label for="id_GST_numbers" class="me-2" >Finished godowns :</label>
+                    <select name="finished_godowns" required id="id_finished_godowns" class="item-select">
                         {% for warehouse in warehouses %}
                           <option value="{{ warehouse.pk }}">{{ warehouse.warehouse_name_finished }}</option>
                         {% endfor %}
                     </select>
-                </div>
-            </div>
-            <span id="ledgerError" class="error-messages"></span>
-            <div class="d-flex">
-                <div class="d-flex mb-3">
-                    <label for="id_ledger_type" class="me-3" >ledger Type :</label>
-                    <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{product_pur_vouch_form.instance.ledger_type}}" maxlength="50" default='purchase(product)' readonly required placeholder="purchase(product)" >
                 </div>
                 <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ms-3">
@@ -68,7 +69,7 @@
             </div>
         </div>
 
-        <table id="myTable" class="table table-striped table-hover table-responsive">
+        <table id="myTable" class="table table-striped table-hover table-responsive table-bordered">
             <thead class="name_absolute">
                 <th>No</th>
                 <th colspan="2">Product Name</th>
@@ -97,7 +98,7 @@
                     
                     <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
                     <td colspan="2">
-                        <select  class="product2Selectpurchase" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name">
+                        <!-- <select  class="product2Selectpurchase" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name">
                         
                         {% if forms.instance.pk %}
                         <option value="{{forms.instance.product_name.PProduct_SKU}}">{{forms.instance.product_name.PProduct_SKU}} - {{forms.instance.product_name.Product.Product_Name}}</option>
@@ -109,14 +110,14 @@
                         {% for product in products %}
                         <option value="{{ product.PProduct_SKU }}">{{ product.PProduct_SKU }} - {{ product.Product.Product_Name }}</option>
                         {% endfor %}
-                        </select>
-                        <!-- <div class="custom-dropdown-container">
-                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="product2Selectpurchase search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                            <div name="select_item_name_{{forloop.counter0}}" class="product2Selectpurchase item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                        </select> -->
+                        <div class="custom-dropdown-container">
+                            <input type="text" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name" class="product2Selectpurchase search-input"  placeholder="Product Name" autocomplete="off" value="" > 
+                            <div name="select_product_name_{{forloop.counter0}}" class="product2Selectpurchase product-name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
                               
                            
                              </div>
-                        </div>  -->
+                        </div> 
                     </td>
                     <td><input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{forms.instance.product_name.PProduct_color}}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
            
@@ -144,7 +145,7 @@
             </tbody>
             <tbody>
                 <tr>
-                    <td class="text-center" ><label style="padding-left: 20px;">Total</label></td>
+                    <td class="text-center fw-bold" ><span>Total</span></td>
                     <td colspan="3"></td>
                     <td> <input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
                     <td colspan="2"></td>
@@ -407,390 +408,389 @@ function getGstNo() {
 
  <script>
     //This ajax call is to populate the shade and color based on the selected item once retrive the value
-    // When click the item name then append the shades with the color, per 
-    // $(document).ready(function () {
-    //     var itemName;
-    //     var uniqueIdValue;
-    //     var purchaseValue;
-    //     var selectName;
-    //     var searchedItemNameDic; 
-    //     var enterPressed = false;
+    //When click the item name then append the shades with the color, per 
+    $(document).ready(function () {
+        var itemName;
+        var uniqueIdValue;
+        var purchaseValue;
+        var selectName;
+        var searchedItemNameDic; 
+        var enterPressed = false;
 
-    //      // perfix value on item-name change
-    //     // $(document).on('click input keyup focus keydown', 'input[name^="item_name_"]', function () {
-    //     // itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
-    //     // purchaseValue = itemName.split('-')[1];
+         // perfix value on item-name change
+        // $(document).on('click input keyup focus keydown', 'input[name^="-product_name"]', function () {
+        // itemName = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]').attr('name');
+        // purchaseValue = itemName.split('-')[1];
                 
-    //     // });
+        // });
 
-       
+        // This ajax request for a input type value send to the backend and show the product name 
+        $(document).on('input', 'input[name$="-product_name"]', function(e) {
+            var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
+            console.log(purchaseValue)
+            var productnamevalue = $(this).val().trim();
+            var selectNameValue = `select_product_name_${purchaseValue}`;
+            var suggestionsContainer = $(`#${selectNameValue}`);
         
-    //     // This ajax request for a input type value send to the backend and show the input name 
-    //     $(document).on('change', 'select[name^="-product_name"]', function(e) {
-    //         var purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
-    //         var nameValue = $(this).val().trim();
-    //         var selectNameValue = `select_item_name_${purchaseValue}`;
-    //         var suggestionsContainer = $(`#${selectNameValue}`);
-        
-        
-    //         if (nameValue === 'None') {
-    //             var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+            console.log('nameValue',productnamevalue)
+            if (productnamevalue === 'None') {
+                var selectNameValue = $(this).closest('tr').find('[name^="select_product_name_"]');
                     
-    //             selectNameValue.css('display', 'none');
-    //             $(this).attr('data-key', '');
-    //             return;
-    //         }
+                selectNameValue.css('display', 'none');
+                $(this).attr('data-key', '');
+                return;
+            }
 
-    //         if(!enterPressed){
-    //             suggestionsContainer.css('display', 'block');
-    //         }
-    //         enterPressed = false;
+            if(!enterPressed){
+                suggestionsContainer.css('display', 'block');
+            }
+            enterPressed = false;
         
-    //         if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
-    //             if(nameValue.length >= 1){
-    //                 $.ajax({
-    //                 url: '/itemdynamicsearchajax/',
-    //                 method: 'GET',
-    //                 data: { 'nameValue': nameValue },
-    //                 success: function (response) {
+            // if ((purchaseData === '' && uniqueValue !== '') || (purchaseData === '' && uniqueValue === '' && jsonData === '')) {
+                if(productnamevalue.length >= 1){
+                    $.ajax({
+                    url: '/productdynamicsearchajax/',
+                    method: 'GET',
+                    data: { 'productnamevalue': productnamevalue },
+                    success: function (response) {
 
-    //                     // Function to escape special characters in the search query
-    //                     function escapeRegExp(string) {
-    //                         return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
-    //                     }
-    //                     searchedItemNameDict = response.searched_item_name_dict;
-    //                     var searchQuery = nameValue.toLowerCase();
-    //                     var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
-    //                     var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
-    //                     var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+                        // Function to escape special characters in the search query
+                        function escapeRegExp(string) {
+                            return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
+                        }
+                        searchedItemNameDict = response.searched_item_name_dict;
+                        var searchQuery = productnamevalue.toLowerCase();
+                        var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+                        var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+                        var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
                         
-    //                     // Clear and repopulate options
-    //                     suggestionsContainer.empty();
+                        // Clear and repopulate options
+                        suggestionsContainer.empty();
 
-    //                     $.each(filteredOptions, function(index, [key, value]) {
-    //                         let highlightedText = value;
-    //                         let colorStyle = '';
-    //                         if (searchQuery) {
-    //                             highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
-    //                             const valueCalculate = value.split("|")[1].split(",")[0].trim(); 
-    //                             const numberKey = value.split(/-?\d+(\.\d+)?,/)[2].trim();
+                        $.each(filteredOptions, function(index, [key, value]) {
+                            let highlightedText = value;
+                            let colorStyle = '';
+                            if (searchQuery) {
+                                highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                                const valueCalculate = value.split("|")[1].split(",")[0].trim(); 
+                                const numberKey = value.split(/-?\d+(\.\d+)?,/)[2].trim();
 
-    //                             // Initialize the color based on valueCalculate
+                                // Initialize the color based on valueCalculate
                                 
-    //                             if (parseFloat(valueCalculate) > 0) {
-    //                                 colorStyle = 'color: green; float: right;';
-    //                             } else {
-    //                                 colorStyle = 'color: red;  float: right;';
-    //                             }
+                                if (parseFloat(valueCalculate) > 0) {
+                                    colorStyle = 'color: green; float: right;';
+                                } else {
+                                    colorStyle = 'color: red;  float: right;';
+                                }
 
-    //                             if(numberKey.includes(searchQuery)){
-    //                                 numberKeyHighlighted = `<span class="highlight">M Code - ${numberKey}</span>`;
-    //                             }else {
-    //                                 numberKeyHighlighted = `M Code - ${numberKey}`;
-    //                             }
-    //                             suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span>
-    //                                 <br>
-    //                                 <span style="font-weight:bold">${numberKeyHighlighted}</span>
-    //                                 </div>`);
-    //                         } 
+                                if(numberKey.includes(searchQuery)){
+                                    numberKeyHighlighted = `<span class="highlight">M Code - ${numberKey}</span>`;
+                                }else {
+                                    numberKeyHighlighted = `M Code - ${numberKey}`;
+                                }
+                                suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText} <span style="${colorStyle}">${valueCalculate}</span>
+                                    <br>
+                                    <span style="font-weight:bold">${numberKeyHighlighted}</span>
+                                    </div>`);
+                            } 
                             
                 
-    //                     });
+                        });
                         
                     
-    //                 },
-    //                 error: function (xhr) {
-    //                     console.log(xhr.status + ": " + xhr.responseText);
-    //                     if (xhr.status === 404) {
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.status + ": " + xhr.responseText);
+                        if (xhr.status === 404) {
                             
-    //                         suggestionsContainer.show();
-    //                         suggestionsContainer.empty();
-    //                         suggestionsContainer.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
-    //                     }
-    //                 }
-    //             });
-    //             }else{
-    //                 suggestionsContainer.empty();
-    //             }
+                            suggestionsContainer.show();
+                            suggestionsContainer.empty();
+                            suggestionsContainer.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
+                        }
+                    }
+                });
+                }else{
+                    suggestionsContainer.empty();
+                }
                 
-    //         } else {
-    //             var itemNameData = $(this).closest('tr').find('input[name^="item_name_"]');
-    //             var shadeNameData = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
-    //             itemNameData.attr('readonly', true);
-    //             shadeNameData.prop('disabled', true);
-    //         }
+            // } else {
+            //     var itemNameData = $(this).closest('tr').find('input[name^="item_name_"]');
+            //     var shadeNameData = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
+            //     itemNameData.attr('readonly', true);
+            //     shadeNameData.prop('disabled', true);
+            // }
         
-    //         suggestionsContainer.on('click', '.itemName-div', function(e) {
-    //             var item_value = $(this).data('key');
-    //             var itemNamevaluesCheck = $(this).text();
-    //             var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
-    //             var itemShade = $('#input_item_shade_' + purchaseValue);
-    //             var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+            suggestionsContainer.on('click', '.itemName-div', function(e) {
+                var item_value = $(this).data('key');
+                var itemNamevaluesCheck = $(this).text();
+                var newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+                var itemShade = $('#input_item_shade_' + purchaseValue);
+                var itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
             
-    //             $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
-    //             $(this).addClass('selected').siblings().removeClass('selected');
+                $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
+                $(this).addClass('selected').siblings().removeClass('selected');
 
-    //             if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
-    //                 itemShade.text(itemShadeValue);
-    //                 itemShade.show();
-    //             }
-    //             handleSelection(purchaseValue,itemName, item_value)
-    //             suggestionsContainer.css('display', 'none');
+                if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
+                    itemShade.text(itemShadeValue);
+                    itemShade.show();
+                }
+                handleSelection(purchaseValue,itemName, item_value)
+                suggestionsContainer.css('display', 'none');
                 
-    //         });
+            });
         
         
-    //     });
+        });
 
-    //    // Function to handle the AJAX request and UI updates
-    //     function handleSelection(purchaseValue,itemName, item_value) {
+       // Function to handle the AJAX request and UI updates
+        function handleSelection(purchaseValue,itemName, item_value) {
 
-    //     if (item_value !== undefined) {
-    //     var selectedValue = searchedItemNameDict[item_value];
-    //     var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
+        if (item_value !== undefined) {
+        var selectedValue = searchedItemNameDict[item_value];
+        var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
 
-    //     var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
-    //     var newnameValue = namevalueCheck.replace(/[\.\s 0-9]+$/, '');
-    //     var valueKey = namevalueCheck + ' ' + numberValue ;
+        var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
+        var newnameValue = namevalueCheck.replace(/[\.\s 0-9]+$/, '');
+        var valueKey = namevalueCheck + ' ' + numberValue ;
             
-    //     $(`input[name^="item_name_${purchaseValue}"]`).val(newnameValue);
+        $(`input[name^="item_name_${purchaseValue}"]`).val(newnameValue);
 
-    //     $.ajax({
-    //         url: '/purchasevouchercreate/',
-    //         method: 'GET',
-    //         data: {
-    //             'item_value': item_value,
-    //         },
-    //         success: function (response) {
-    //             var itemrownameid = itemName.split('-')[1];
-    //             var differentShades = Object.keys(response.item_shade).length;
+        $.ajax({
+            url: '/purchasevouchercreate/',
+            method: 'GET',
+            data: {
+                'item_value': item_value,
+            },
+            success: function (response) {
+                var itemrownameid = itemName.split('-')[1];
+                var differentShades = Object.keys(response.item_shade).length;
                 
-    //             var itemCheckshadeValue = document.querySelector('#id_item_checkshade-' + itemrownameid);
-    //             itemCheckshadeValue.value = response.auto_popup_flag;
-    //                 var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
-    //                 var item_color = response.item_color;
+                var itemCheckshadeValue = document.querySelector('#id_item_checkshade-' + itemrownameid);
+                itemCheckshadeValue.value = response.auto_popup_flag;
+                    var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
+                    var item_color = response.item_color;
 
-    //                 var itemperinput = document.querySelector('#item_per_' + itemrownameid);
-    //                 var itemperinput_response = response.item_per;
+                    var itemperinput = document.querySelector('#item_per_' + itemrownameid);
+                    var itemperinput_response = response.item_per;
 
-    //                 itemcolorinput.value = item_color;
-    //                 itemperinput.value = itemperinput_response;
+                    itemcolorinput.value = item_color;
+                    itemperinput.value = itemperinput_response;
 
-    //                 var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst');
-    //                 var item_gst_value_response = response.item_gst_out;
-    //                 itemgstinput.value = item_gst_value_response;
+                    var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst');
+                    var item_gst_value_response = response.item_gst_out;
+                    itemgstinput.value = item_gst_value_response;
 
-    //             if(differentShades > 1){
-    //                 $('#' + itemName).empty().append('<option value="">Select Shade</option>');
+                if(differentShades > 1){
+                    $('#' + itemName).empty().append('<option value="">Select Shade</option>');
 
                     
-    //                 var item_shade_response = response.item_shade;
-    //                 var item_shade__quantity = response.item_shades_total_quantity_dict;
+                    var item_shade_response = response.item_shade;
+                    var item_shade__quantity = response.item_shades_total_quantity_dict;
 
-    //                 $.each(item_shade_response, function (key, value) {
-    //                     if (item_shade__quantity.hasOwnProperty(key)) {
+                    $.each(item_shade_response, function (key, value) {
+                        if (item_shade__quantity.hasOwnProperty(key)) {
 
-    //                         var item_shade_qty = item_shade__quantity[key];
-    //                         var optionHtml;
+                            var item_shade_qty = item_shade__quantity[key];
+                            var optionHtml;
 
-    //                         if (item_shade_qty > 0) {
-    //                             optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
-    //                         } else {
-    //                             optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
-    //                         }
+                            if (item_shade_qty > 0) {
+                                optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
+                            } else {
+                                optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
+                            }
 
-    //                         var $option = $(optionHtml);
-    //                         $('#' + itemName).append($option);
+                            var $option = $(optionHtml);
+                            $('#' + itemName).append($option);
 
-    //                         // Additional fallback for browsers that don't support <span> within <option>
-    //                         if ($option.find('span').length === 0) {
-    //                             $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
-    //                         }
+                            // Additional fallback for browsers that don't support <span> within <option>
+                            if ($option.find('span').length === 0) {
+                                $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
+                            }
 
-    //                     } else {
-    //                         $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
-    //                     }
-    //                 }); 
-    //             }else{
+                        } else {
+                            $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
+                        }
+                    }); 
+                }else{
 
-    //                 $('#' + itemName).empty();
-    //                 var item_shade_response = response.item_shade;
-    //                 var item_shade__quantity = response.item_shades_total_quantity_dict;
+                    $('#' + itemName).empty();
+                    var item_shade_response = response.item_shade;
+                    var item_shade__quantity = response.item_shades_total_quantity_dict;
 
-    //                 $.each(item_shade_response, function (key, value) {
-    //                     if (item_shade__quantity.hasOwnProperty(key)) {
+                    $.each(item_shade_response, function (key, value) {
+                        if (item_shade__quantity.hasOwnProperty(key)) {
 
-    //                         var item_shade_qty = item_shade__quantity[key];
-    //                         var optionHtml;
+                            var item_shade_qty = item_shade__quantity[key];
+                            var optionHtml;
 
-    //                         if (item_shade_qty > 0) {
-    //                             optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
-    //                         } else {
-    //                             optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
-    //                         }
+                            if (item_shade_qty > 0) {
+                                optionHtml = '<option value="' + key + '" style="color: green;">' + value + '&nbsp;&nbsp;&nbsp;' +item_shade_qty + '</option>';
+                            } else {
+                                optionHtml = '<option value="' + key + '" style="color: red;">' + value + '&nbsp;&nbsp;&nbsp;' + item_shade_qty + '</option>';
+                            }
 
-    //                         var $option = $(optionHtml);
-    //                         $('#' + itemName).append($option);
+                            var $option = $(optionHtml);
+                            $('#' + itemName).append($option);
 
-    //                         // Additional fallback for browsers that don't support <span> within <option>
-    //                         if ($option.find('span').length === 0) {
-    //                             $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
-    //                         }
+                            // Additional fallback for browsers that don't support <span> within <option>
+                            if ($option.find('span').length === 0) {
+                                $option.css('color', item_shade_qty > 0 ? 'green' : 'red');
+                            }
 
-    //                     } else {
-    //                         $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
-    //                     }
-    //                 }); 
+                        } else {
+                            $('#' + itemName).append('<option value="' + key + '">' + value + '</option>');
+                        }
+                    }); 
 
-    //             }
-    //             ajaxInProgress = false;
-    //         },
-    //         error: function (xhr, errmsg, err) {
-    //             console.log('Error sending value to the backend');
-    //             ajaxInProgress = false;
-    //         }
-    //     });
-    //   }
-    //   }
+                }
+                ajaxInProgress = false;
+            },
+            error: function (xhr, errmsg, err) {
+                console.log('Error sending value to the backend');
+                ajaxInProgress = false;
+            }
+        });
+      }
+      }
 
-    //     $(document).on('click','[name^="item_name_"]', function(event) {
+        $(document).on('click','[name^="item_name_"]', function(event) {
 
-    //         event.preventDefault();
-    //         var purchaseData = $(`#purchase_voucher_items_set-${purchaseValue}-popupData`).val();
-    //         if(purchaseData != ""){
-    //             var itemNames = $(this).closest('tr').find('input[name^="item_name_"]');
-    //             var itemShade = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
-    //             itemNames.attr('readonly', true);
-    //             itemShade.prop('disabled', true);
-    //         }
+            event.preventDefault();
+            var purchaseData = $(`#purchase_voucher_items_set-${purchaseValue}-popupData`).val();
+            if(purchaseData != ""){
+                var itemNames = $(this).closest('tr').find('input[name^="item_name_"]');
+                var itemShade = $(this).closest('tr').find('select[name^="purchase_voucher_items_set-"]');
+                itemNames.attr('readonly', true);
+                itemShade.prop('disabled', true);
+            }
             
-    //     })
+        })
 
-    //     var index = 0; // Declare index outside of the event listener
-    //     var indexbool = true;
+        var index = 0; // Declare index outside of the event listener
+        var indexbool = true;
 
-    //  $(document).on('keydown', 'input[name^="item_name_"]', function(event) {
-    //     const $inputField = $(this);
-    //     const $dropdownOptions = $inputField.next('.item-name');
-    //     const $options = $dropdownOptions.find('.itemName-div');
-    //     const optionsCount = $options.length - 1;
-    //     const searchText = $inputField.val().trim();
-    //     const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_item_name_${purchaseValue}`);
-    //     if (searchText === '') {
-    //         index = 0;
-    //         return;
-    //     }
-    //     const newHeight = $inputField.offset();
-    //     const windowHeight = $(window).height();
-    //     const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+     $(document).on('keydown', 'input[name^="item_name_"]', function(event) {
+        const $inputField = $(this);
+        const $dropdownOptions = $inputField.next('.item-name');
+        const $options = $dropdownOptions.find('.itemName-div');
+        const optionsCount = $options.length - 1;
+        const searchText = $inputField.val().trim();
+        const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_item_name_${purchaseValue}`);
+        if (searchText === '') {
+            index = 0;
+            return;
+        }
+        const newHeight = $inputField.offset();
+        const windowHeight = $(window).height();
+        const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
    
 
-    //     if (event.key === 'ArrowDown') {
-    //          event.preventDefault();
+        if (event.key === 'ArrowDown') {
+             event.preventDefault();
 
-    //         if (index <= optionsCount) {
+            if (index <= optionsCount) {
             
-    //             const $selectedItem = $options.eq(index);
-    //             const $nextItem = $selectedItem.next();
-    //             const nameDataKey = $selectedItem.text();
-    //             const nameKey = $selectedItem.data('key');
+                const $selectedItem = $options.eq(index);
+                const $nextItem = $selectedItem.next();
+                const nameDataKey = $selectedItem.text();
+                const nameKey = $selectedItem.data('key');
 
-    //             $inputField.attr('data-key', nameKey);
+                $inputField.attr('data-key', nameKey);
              
-    //             $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
-    //             const itemOffsetTop = $nextItem.position().top;
-    //             const itemHeight = $nextItem.outerHeight();
-    //             const selectScrollTop = $dropdownOptions.scrollTop();
-    //             const selectHeight = $dropdownOptions.height();
+                $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+                const itemOffsetTop = $nextItem.position().top;
+                const itemHeight = $nextItem.outerHeight();
+                const selectScrollTop = $dropdownOptions.scrollTop();
+                const selectHeight = $dropdownOptions.height();
 
-    //             if (itemOffsetTop + itemHeight > selectHeight) {
-    //                 $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
-    //             } else if (itemOffsetTop < 0) {
-    //                 $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
-    //             }
-    //             $selectedItem.addClass('selected');
-    //             if (index !== optionsCount) {
-    //                 index += 1;
-    //                 indexbool = true;
-    //             }
-    //         } else {
-    //             index = 0;
-    //         }
-    //     }
+                if (itemOffsetTop + itemHeight > selectHeight) {
+                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                } else if (itemOffsetTop < 0) {
+                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                }
+                $selectedItem.addClass('selected');
+                if (index !== optionsCount) {
+                    index += 1;
+                    indexbool = true;
+                }
+            } else {
+                index = 0;
+            }
+        }
 
-    //     if (event.key === 'ArrowUp') {
-    //          event.preventDefault();
+        if (event.key === 'ArrowUp') {
+             event.preventDefault();
 
-    //         if (index != 0 && indexbool == true) {
-    //             index -= 1;
-    //         }
+            if (index != 0 && indexbool == true) {
+                index -= 1;
+            }
 
-    //         if (index <= optionsCount) {
+            if (index <= optionsCount) {
                
-    //             const $selectedItem = $options.eq(index);
-    //             const $prevItem = $selectedItem.prev();
-    //             const nameDataKey = $selectedItem.text();
-    //             const nameKey = $selectedItem.data('key');
+                const $selectedItem = $options.eq(index);
+                const $prevItem = $selectedItem.prev();
+                const nameDataKey = $selectedItem.text();
+                const nameKey = $selectedItem.data('key');
 
-    //             $inputField.attr('data-key', nameKey);
+                $inputField.attr('data-key', nameKey);
                 
-    //             $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+                $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
                 
-    //             const itemOffsetTop = $prevItem.position().top;
-    //             const itemHeight = $prevItem.outerHeight();
-    //             const selectScrollTop = $dropdownOptions.scrollTop();
-    //             const selectHeight = $dropdownOptions.height();
+                const itemOffsetTop = $prevItem.position().top;
+                const itemHeight = $prevItem.outerHeight();
+                const selectScrollTop = $dropdownOptions.scrollTop();
+                const selectHeight = $dropdownOptions.height();
 
-    //             if (itemOffsetTop < 0) {
-    //                 $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
-    //             } else if (itemOffsetTop + itemHeight > selectHeight) {
-    //                 $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
-    //             }
+                if (itemOffsetTop < 0) {
+                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                } else if (itemOffsetTop + itemHeight > selectHeight) {
+                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                }
 
-    //             $selectedItem.addClass('selected');
-    //         } else {
-    //             index = 0;
-    //         }
-    //     }
+                $selectedItem.addClass('selected');
+            } else {
+                index = 0;
+            }
+        }
 
-    //     if (event.key === 'Enter') {
-    //          event.preventDefault();
-    //         const itemEnterValue = $(this);
-    //         const item_value = itemEnterValue.attr('data-key');
+        if (event.key === 'Enter') {
+             event.preventDefault();
+            const itemEnterValue = $(this);
+            const item_value = itemEnterValue.attr('data-key');
 
-    //         nameDataKey = '';
-    //         nameKey = '';
-    //         index = 0;
-    //         indexbool = false;
+            nameDataKey = '';
+            nameKey = '';
+            index = 0;
+            indexbool = false;
 
-    //         const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
-    //         const itemShade = $('#input_item_shade_' + purchaseValue);
-    //         const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+            const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+            const itemShade = $('#input_item_shade_' + purchaseValue);
+            const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
         
 
-    //         if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
-    //             itemShade.text(itemShadeValue);
-    //             itemShade.show();
-    //         }else{
+            if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
+                itemShade.text(itemShadeValue);
+                itemShade.show();
+            }else{
 
-    //             itemShade.hide();
-    //         }
+                itemShade.hide();
+            }
          
           
-    //         handleSelection(purchaseValue,itemName, item_value);
-    //         enterPressed = true;
-    //         hiddenValue.css("display" ,"none");
-    //         $inputField.blur();
-    //     }
-    //     if (event.key === 'Tab' && enterPressed) {
-    //     enterPressed = false; // Reset Enter key handling
-    //     return true; // Allow default Tab behavior
-    // }
+            handleSelection(purchaseValue,itemName, item_value);
+            enterPressed = true;
+            hiddenValue.css("display" ,"none");
+            $inputField.blur();
+        }
+        if (event.key === 'Tab' && enterPressed) {
+        enterPressed = false; // Reset Enter key handling
+        return true; // Allow default Tab behavior
+    }
    
-    //  });
+     });
 
 
-    // })
+    })
 </script>
 
 
@@ -821,10 +821,10 @@ function getGstNo() {
          
             // Get the values of quantity and rate
             const quantity = parseFloat(quantityInput.value);
-            console.log(quantity)
+            // console.log(quantity)
             const rate = parseFloat(rateInput.value);
             const gst = parseFloat(gstValue.value);
-            console.log(rate)
+            //console.log(rate)
             // Calculate the amount for the current row
             const amount = quantity * rate;
             totalQty  += quantity;
@@ -873,7 +873,7 @@ function getGstNo() {
     function calculateOtherTotal(grandTotal) {
 
          const grandTotals = parseFloat(document.getElementById('id_grand_amount').value);
-         console.log('grandTotals',grandTotals)
+         //console.log('grandTotals',grandTotals)
           let  grossTotal = grandTotals;      
     
         // Set the calculated gross total value to the gross total input field
@@ -1004,7 +1004,7 @@ function getGstNo() {
                 document.getElementById('id_productRow').value = '1';
                 calculateTotalAmount();
                 calculateOtherTotal();
-            
+                deleteRowData()
 
             }   
              
@@ -1028,57 +1028,57 @@ function getGstNo() {
     });
 
 
-//     function getVisibleRows() {
-//     // Select all rows that are not hidden (excluding those with display: none)
-//     const visibleRows = document.querySelectorAll('.mainTableList tr:not([style*="display: none"])');
-//     return visibleRows;
-// }
-//    function deleteRowData(){
-//     // Add click event listener to all delete buttons
-//     document.querySelectorAll('.delete-btn').forEach(function (button) {
-//     button.addEventListener('click', function () {
-//         // Find all rows in the table
-//         const rows =  getVisibleRows();
-//         console.log(rows)
-//         // Check if more than one row exists
-//         if (rows.length > 1) {
-//             // Find the row containing the clicked delete button
-//             const row = this.closest('tr');
+    function getVisibleRows() {
+    // Select all rows that are not hidden (excluding those with display: none)
+    const visibleRows = document.querySelectorAll('.mainTableList tr:not([style*="display: none"])');
+    return visibleRows;
+}
+   function deleteRowData(){
+    // Add click event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(function (button) {
+    button.addEventListener('click', function () {
+        // Find all rows in the table
+        const rows =  getVisibleRows();
+        console.log(rows)
+        // Check if more than one row exists
+        if (rows.length > 1) {
+            // Find the row containing the clicked delete button
+            const row = this.closest('tr');
 
-//             if (row) {
-//                 // Find the checkbox for deletion in the row
-//                 const checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+            if (row) {
+                // Find the checkbox for deletion in the row
+                const checkRow = row.querySelector('.godown_deleteId[name^="product_purchase_voucher_items_set-"][name$="-DELETE"]');
 
-//                 if (checkRow) {
-//                     checkRow.checked = true; // Mark as checked
-//                     checkRow.value = 'true'; // Set the value to 'true'
+                if (checkRow) {
+                    checkRow.checked = true; // Mark as checked
+                    checkRow.value = 'true'; // Set the value to 'true'
 
-//                     // Optionally hide the row visually
-//                     row.style.display = 'none';
+                    // Optionally hide the row visually
+                    row.style.display = 'none';
 
-//                     // Call functions to recalculate totals or perform other updates
-//                     calculateTotalAmount();
-//                     calculateOtherTotal();
-//                     inputCheck();
-//                 } else {
-//                     console.error("Checkbox for deletion not found in this row");
-//                 }
-//             }
-//         } else {
-//             // If only one row remains, alert the user
-//             alert('Cannot delete this row; at least one row must remain.');
-//         }
-//     });
-// });
+                    // Call functions to recalculate totals or perform other updates
+                    calculateTotalAmount();
+                    calculateOtherTotal();
+                    //inputCheck();
+                } else {
+                    console.error("Checkbox for deletion not found in this row");
+                }
+            }
+        } else {
+            // If only one row remains, alert the user
+            alert('Cannot delete this row; at least one row must remain.');
+        }
+    });
+});
 
  
-//   };
+  };
 document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll('[name$="-quantity_total"], [name$="-rate"]').forEach(input => {
     input.addEventListener('input', function(){
         calculateTotalAmount();
-                    calculateOtherTotal();
+        calculateOtherTotal();
     });
 });
 
@@ -1088,101 +1088,101 @@ document.addEventListener("DOMContentLoaded", function () {
 
  calculateTotalAmount();
  calculateOtherTotal();
-
+ deleteRowData()
 </script>
 <script>
-//     const form = document.getElementById("newForm");
-//     const submitButton = document.getElementById("parentFormClick");
-//     const supplier_invoice_number = document.getElementById('')
-//     // Prevent Enter key from submitting the form
-//     form.addEventListener("keydown", function(event) {
-//       if (event.key === "Enter") {
-//         event.preventDefault();
+    const form = document.getElementById("newForm");
+    const submitButton = document.getElementById("parentFormClick");
+    const supplier_invoice_number = document.getElementById('')
+    // Prevent Enter key from submitting the form
+    form.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
       
-//       }
-//     });
+      }
+    });
   
-//     document.addEventListener("DOMContentLoaded", function () {
-//     const submitButton = document.getElementById("parentFormClick");
-//     const itemNameInputs = document.querySelectorAll("input[id^='item_name_']");
+    document.addEventListener("DOMContentLoaded", function () {
+    const submitButton = document.getElementById("parentFormClick");
+    const itemNameInputs = document.querySelectorAll("input[id^='item_name_']");
 
-//     const itemQtyInputs = document.querySelectorAll("input[id$='-quantity_total']");
+    const itemQtyInputs = document.querySelectorAll("input[id$='-quantity_total']");
 
-//     function validateInputs() {
-//         let isValid = true;
-//         // Check all item name inputs
-//         itemNameInputs.forEach(input => {
-//             console.log('ew',typeof(input.value.trim()))
-//             if (!input.value.trim()) {
-//                 isValid = false;
-//             }
-//             if(input.value.trim() == ""){
-//                 submitButton.disabled = true;
-//             }else{
-//                 submitButton.disabled = false; 
-//             }
+    function validateInputs() {
+        let isValid = true;
+        // Check all item name inputs
+        itemNameInputs.forEach(input => {
+            console.log('ew',typeof(input.value.trim()))
+            if (!input.value.trim()) {
+                isValid = false;
+            }
+            if(input.value.trim() == ""){
+                submitButton.disabled = true;
+            }else{
+                submitButton.disabled = false; 
+            }
             
-//         });
+        });
 
-//     }
+    }
 
 
-//     itemNameInputs.forEach(input => {
-//         input.addEventListener("input", validateInputs);
-//     });
+    itemNameInputs.forEach(input => {
+        input.addEventListener("input", validateInputs);
+    });
 
  
-//     submitButton.addEventListener('click',function(){
-//         validateInputs()
-//     })
+    submitButton.addEventListener('click',function(){
+        validateInputs()
+    })
  
-//     // Initial validation on page load
-//     validateInputs();
-//     inputCheck();
-// });
+    // Initial validation on page load
+    validateInputs();
+    inputCheck();
+});
 
 
-// function inputCheck(){
-    //     const itemNameInputsid = document.querySelectorAll('[name^="item_name_"]');
-    // // Loop through each input and add keydown event listener
-    // itemNameInputsid.forEach((input, index) => {
-    //     input.addEventListener("keydown", function (event) {
-    //         if (event.key === "Tab") {
-    //             event.preventDefault(); // Prevent default tab behavior
+function inputCheck(){
+        const itemNameInputsid = document.querySelectorAll('[name$="-product_name"]');
+    // Loop through each input and add keydown event listener
+    itemNameInputsid.forEach((input, index) => {
+        input.addEventListener("keydown", function (event) {
+            if (event.key === "Tab") {
+                event.preventDefault(); // Prevent default tab behavior
 
-    //             // Check if the current input has a value
-    //             if (input.value.trim() !== "") {
-    //                 // If not the last input, move focus to the next row's item name
-    //                 if (itemNameInputsid[index + 1]) {
-    //                     itemNameInputsid[index + 1].focus();
-    //                 }
-    //             } else {
-    //                 // If current input is empty, refocus on it
-    //                 input.focus();
-    //             }
-    //         }
-    //         if (event.key === 'Enter') {
-    //             event.preventDefault(); // Prevent default Enter key behavior
+                // Check if the current input has a value
+                if (input.value.trim() !== "") {
+                    // If not the last input, move focus to the next row's item name
+                    if (itemNameInputsid[index + 1]) {
+                        itemNameInputsid[index + 1].focus();
+                    }
+                } else {
+                    // If current input is empty, refocus on it
+                    input.focus();
+                }
+            }
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default Enter key behavior
 
-    //             // Find the current <td> containing this input
-    //             const currentTd = this.closest('td');
-    //                 console.log('currentId',currentTd)
-    //             // Find the next <td> sibling
-    //             if (currentTd) {
-    //                 const nextTd = currentTd.nextElementSibling;
+                // Find the current <td> containing this input
+                const currentTd = this.closest('td');
+                    console.log('currentId',currentTd)
+                // Find the next <td> sibling
+                if (currentTd) {
+                    const nextTd = currentTd.nextElementSibling;
 
-    //                 // Check if next <td> exists and contains an input
-    //                 if (nextTd) {
-    //                     const nextInput = nextTd.querySelector('input');
-    //                     if (nextInput) {
-    //                         nextInput.focus(); // Move focus to the next input
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-    // });
-    // }
+                    // Check if next <td> exists and contains an input
+                    if (nextTd) {
+                        const nextInput = nextTd.querySelector('input');
+                        if (nextInput) {
+                            nextInput.focus(); // Move focus to the next input
+                        }
+                    }
+                }
+            }
+        });
+    });
+    }
 </script>
 
 

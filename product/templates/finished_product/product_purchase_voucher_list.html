@@ -18,7 +18,7 @@
 
 <div>
     <table class="table table-striped table-hover table-responsive table-bordered">
-        <thead>
+        <thead class="name_absolute">
             <tr>
                 <th>No</th>
                 <th>Purchase Voucher No</th>
@@ -29,7 +29,7 @@
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="mainTableList">
             {% for record in product_purchase_voucher_all %}
             <tr>
                 <td>{{forloop.counter}}</td>
@@ -39,7 +39,7 @@
                 <td>{{record.grand_total}}</td>
                 <td><a href="{% url 'product-purchase-voucher-update' record.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ record.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-                <!-- <td><span><a href="{% url 'product-purchase-voucher-delete' record.id %}">Delete</a></td> -->
+          
             </tr>
                 {% endfor %}
             
@@ -90,7 +90,7 @@
             window.location.href = '/productpurchasevoucherdelete/' + itemId;
 
           }
-          // window.location.href = '/purchasevoucherdelete/' + itemId;
+        
       });
     });
     function reversAddVoucharList(){
