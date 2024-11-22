@@ -5,7 +5,7 @@
 
 <div>
 
-    <form class="mt-4" action=""method="POST" autocomplete="off" id="newForm">
+    <form class="mt-4" action="" method="POST" autocomplete="off" id="newForm">
         
         {% csrf_token %}
         <div class="">
@@ -13,16 +13,16 @@
                 <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ">
                     <label for="id_purchase_number"  class="me-3">Purchase No :</label>
-                    {% if master_form.instance.id %}
-                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.instance.purchase_number}}" maxlength="255" required readonly>
-                    {% elif not master_form.instance.id %}
-                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{master_form.purchase_number.initial}}" maxlength="255" required>
+                    {% if product_pur_vouch_form.instance.id %}
+                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{product_pur_vouch_form.instance.purchase_number}}" maxlength="255" required readonly>
+                    {% elif not product_pur_vouch_form.instance.id %}
+                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{product_pur_vouch_form.purchase_number.initial|default_if_none:''}}" maxlength="255" required>
                     {% endif %}
                 </div>
                 <span id="SupplierError" class="error-messages"></span>
                 <div class="d-flex ms-3">
                     <label for="id_supplier_invoice_number" class="item-form" >Supplier Invoice No :</label>
-                    <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{master_form.instance.supplier_invoice_number}}" maxlength="255" required  aria-required="true">
+                    <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{product_pur_vouch_form.instance.supplier_invoice_number}}" maxlength="255" required  aria-required="true">
                 </div>
                
                 <div class="d-flex ms-3">
@@ -42,13 +42,18 @@
             <div class="d-flex">
                 <div class="d-flex mb-3">
                     <label for="id_ledger_type" class="me-3" >ledger Type :</label>
-                    <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{master_form.instance.ledger_type}}" maxlength="50" default='Purchase' readonly required placeholder="Purchase" >
+                    <input type="text" class="item-select" name="ledger_type" id ="id_ledger_type" value="{{product_pur_vouch_form.instance.ledger_type}}" maxlength="50" default='purchase(product)' readonly required placeholder="purchase(product)" >
                 </div>
                 <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ms-3">
                     <label for="id_party_name" class="me-3" >Party A/C Name :</label>
                     <select class="product2Select" name="party_name" required id="id_party_name">
+                        {% if product_pur_vouch_form.instance.id %}
+                        <option value="{{product_pur_vouch_form.instance.party_name.id}}">{{product_pur_vouch_form.instance.party_name.name}}</option>
+                        {% elif not form.instance.id %}
                         <option value=""></option>
+                        {% endif %}
+                        
                         {% for x in party_names %}
                         <option value="{{x.id}}">{{x.name}}</option>
                         {% endfor %}
@@ -57,7 +62,7 @@
                 </div>
                 <div class="d-flex ms-3">
                     <label for="id_GST_number" class="me-2" >Party GST No :</label>
-                    <input type="text" class="item-select" name="GST_number" id ="id_GST_number"  value="{% if master_form.instance.id %}{{ master_form.instance.party_name.Gst_no }}{% endif %}" maxlength="15" readonly required>
+                    <input type="text" class="item-select" name="GST_number" id ="id_GST_number"  value="{% if product_pur_vouch_form.instance.id %}{{ product_pur_vouch_form.instance.party_name.Gst_no }}{% endif %}" maxlength="15" readonly required>
                 </div>
             
             </div>
@@ -93,8 +98,15 @@
                     <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
                     <td colspan="2">
                         <select  class="product2Selectpurchase" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name">
-                        <option value="" selected disabled>select product</option>
-                            {% for product in products %}
+                        
+                        {% if forms.instance.pk %}
+                        <option value="{{forms.instance.product_name.PProduct_SKU}}">{{forms.instance.product_name.PProduct_SKU}} - {{forms.instance.product_name.Product.Product_Name}}</option>
+                        {% elif not forms.instance.pk %}
+                        <option value=""></option>
+                        {% endif %}
+                        
+                        
+                        {% for product in products %}
                         <option value="{{ product.PProduct_SKU }}">{{ product.PProduct_SKU }} - {{ product.Product.Product_Name }}</option>
                         {% endfor %}
                         </select>
@@ -106,7 +118,7 @@
                              </div>
                         </div>  -->
                     </td>
-                    <td><input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
+                    <td><input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{forms.instance.product_name.PProduct_color}}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
            
                     <td><input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" ></td>
                     <td><input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}"></td>
@@ -115,7 +127,8 @@
                         <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
                     </td>
                     <td>
-                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-mark purchase-gst" name="{{forms.prefix}}-gst" value="{{ forms.instance.item_shade.items.Item_Creation_GST.gst_percentage}}" readonly >
+                        
+                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-mark purchase-gst" name="{{forms.prefix}}-gst" value="{{ forms.instance.product_name.Product.Product_GST.gst_percentage }}" readonly >
                     </td>
                     <td>
                         <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst" name="{{forms.prefix}}-cgst" value=""readonly >
