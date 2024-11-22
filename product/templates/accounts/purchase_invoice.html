@@ -531,6 +531,7 @@ function getGstNo() {
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                         }
                         searchedItemNameDict = response.searched_item_name_dict;
+                        console.log('search',response.searched_item_name_dict)
                         var searchQuery = nameValue.toLowerCase();
                         var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                         var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
@@ -619,6 +620,7 @@ function getGstNo() {
 
         if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
+        console.log(selectedValue)
         var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
 
         var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
