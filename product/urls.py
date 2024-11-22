@@ -250,6 +250,9 @@ urlpatterns = [
     path('finished-goods-stock-all/', views.finished_goods_stock_all, name = 'finished-goods-stock-all'),
     path('finished-goods-stock-all/<int:pk>', views.finished_goods_stock_all, name = 'finished-goods-stock-single'),
 
+    path('productdynamicsearchajax/',views.productdynamicsearchajax,name = 'product-dynamic-search-ajax'),
+
+
     #reports
     # path('stocktransferreport/',views.stocktransferreport, name = 'stock-transfer-report'),
     path('creditdebitreport/', views.creditdebitreport, name = 'credit-debit-report'),

@@ -21,17 +21,17 @@ class CompanyBaseModel(models.Model):
     company = models.ForeignKey(Company, on_delete=models.PROTECT, null = True, blank=True)
     
     class Meta:
-        abstract = True  
+        abstract = True  # This will be used as an abstract base class
 
     def save(self, *args, **kwargs):
-        
+        # Check if the user is not a superuser
         if self.c_user and not self.c_user.is_superuser:
-            
+            # Automatically assign company if it's not already set and the user has a company (failsafe option)
             if not self.company:
                 self.company = self.c_user.company
 
-        
-        
+        # company for superusers is set from frontend dropdown menu directly and password to form variables
+        # Ensure company is assigned before saving, even for superusers
         if not self.company:
             raise ValidationError('Company must be specified.')
 
@@ -51,8 +51,8 @@ class SubCategory(models.Model):
     product_sub_category_name = models.CharField(max_length = 250)
     product_main_category = models.ForeignKey(MainCategory, on_delete = models.PROTECT, related_name = 'subcategories')
 
-    
-    
+    # class Meta:
+    #     unique_together = [['product_sub_category_name','product_main_category']]
 
     def __str__(self):
         return self.product_sub_category_name 
@@ -63,15 +63,15 @@ class Product2SubCategory(models.Model):
     Product_id = models.ForeignKey('Product', on_delete=models.PROTECT, related_name='product_cats')
     SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='subcategories')
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    # def validate_unique(self, exclude=None):
+    #     if self.Product_id and self.SubCategory_id:
+    #         queryset = Product2SubCategory.objects.filter(
+    #             Product_id = self.Product_id,
+    #             SubCategory_id__product_main_category=self.SubCategory_id.product_main_category)
+    #         if queryset.exists() and not self.pk:
+    #             raise ValidationError(
+    #                 {'Product_id': 'This combination already exists for the same main category.'}
+    #             )
 
     class Meta:
         unique_together = [['Product_id','SubCategory_id']]
@@ -239,7 +239,7 @@ class Product(models.Model):
         if self.Product_GST is not None:
             return self.Product_GST.gst_percentage
         else:
-            return None  
+            return None  # or any default value you prefer
 
 
 class PProduct_Creation(models.Model):
@@ -374,7 +374,7 @@ class Item_Creation(models.Model):
     modified_date_time = models.DateTimeField(auto_now = True)
     
 
-    
+    # these functions are used to show related attributes instead of PK id in listview
     def Color_Name(self):
         return self.Item_Color.color_name
 
@@ -451,7 +451,7 @@ class StockItem(CompanyBaseModel):
     
     def save(self, *args, **kwargs):
 
-        
+        # Exclude current instance from the validation check
         existing_objects = StockItem.objects.exclude(id=self.id)
         if existing_objects.filter(stock_item_name__iexact = self.stock_item_name, company = self.company):
              raise ValidationError(f'{self.stock_item_name} already exists!')
@@ -512,11 +512,11 @@ class account_credit_debit_master_table(models.Model):
 
 
 
-class Godown_raw_material(models.Model): 
+class Godown_raw_material(models.Model): # CompanyBaseModel
     godown_name_raw = models.CharField(max_length = 225, unique= True)
 
     class Meta:
-        unique_together = [['godown_name_raw']] 
+        unique_together = [['godown_name_raw']] # ,'company'
 
     def __str__(self) -> str:
         return self.godown_name_raw      
@@ -524,11 +524,11 @@ class Godown_raw_material(models.Model):
     def save(self, *args, **kwargs):
         existing_objects = Godown_raw_material.objects.exclude(id = self.id)
 
-        
-        
-        
-        
-        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): 
+        # if self.user.is_superuser:
+        #     if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): # ,company=self.company
+        #         raise ValidationError(f'{self.godown_name_raw} already exists!')
+        # else:
+        if existing_objects.filter(godown_name_raw__iexact = self.godown_name_raw).exists(): # c_user__company=self.c_user.company
             raise ValidationError(f'{self.godown_name_raw} already exists!')
 
         super().save(*args, **kwargs)
@@ -556,12 +556,12 @@ class Godown_finished_goods(models.Model):
 
 
     class Meta:
-        unique_together = [['godown_name_finished']]  
+        unique_together = [['godown_name_finished']]  # ,'company'
 
     def save(self,*args, **kwargs):
         existing_objects = Godown_finished_goods.objects.exclude(id=self.id)
 
-        if existing_objects.filter(godown_name_finished__iexact = self.godown_name_finished).exists(): 
+        if existing_objects.filter(godown_name_finished__iexact = self.godown_name_finished).exists(): # c_user__company=self.c_user.company
             raise ValidationError(f'{self.godown_name_finished} already exists!')
 
         super().save(*args, **kwargs)
@@ -653,10 +653,10 @@ class item_godown_quantity_through_table(models.Model):
 
     class Meta:
         unique_together = [['godown_name','Item_shade_name']]
-        
-        
-        
-        
+        # godown and items unique together as
+        # if there are already item in a godown if user again enters quantity instead of creating
+        # one more entry for the same item in godown u just need to update the quantity of the item in that
+        # godown.
 
 
     def __str__(self):
@@ -667,10 +667,10 @@ class product_2_item_through_table(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
     PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
-    row_number = models.IntegerField(null = True, blank=True)   
+    row_number = models.IntegerField(null = True, blank=True)   # row no used to download excel in the same order as form using order_by 
     grand_total = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     grand_total_combi = models.DecimalField(default = 0,max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-    common_unique = models.BooleanField(default = False)  
+    common_unique = models.BooleanField(default = False)  #True if its common and false if its special
     no_of_rows = models.PositiveIntegerField(default = 1, validators=[MinValueValidator(1)])
     Remark = models.CharField(max_length = 50, blank = True, null=True)
 
@@ -770,7 +770,7 @@ class purchase_order_raw_material_cutting(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     note = models.TextField(blank=True, null = True)
 
-    
+    # to save an auto field which acts as an autoincrement field
     def save(self, *args, **kwargs):
         if self._state.adding:
             last_id = purchase_order_raw_material_cutting.objects.order_by('auto_id').last()
@@ -838,22 +838,22 @@ class labour_workout_master(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    
-    
-    
-    
+    # def save(self, *args, **kwargs):
+    #     if self._state.adding:
+    #         self.challan_no = self.generate_unique_challan_no()
+    #     super().save(*args, **kwargs)
 
-    
-    
-    
+    # def generate_unique_challan_no(self):
+    #     max_attempts = 1000
+    #     attempts = 0
         
-    
-    
-    
-    
-    
+    #     while attempts < max_attempts:
+    #         challan_no = int(get_random_string(length=9, allowed_chars='0123456789'))
+    #         if not labour_workout_master.objects.filter(challan_no=challan_no).exists():
+    #             return challan_no
+    #         attempts += 1
         
-    
+    #     raise ValueError("Unable to generate a unique challan_no after 1000 attempts")
 
 class product_to_item_labour_workout(models.Model):
     labour_workout = models.ForeignKey(labour_workout_master,related_name='labour_workout_items' ,on_delete=models.CASCADE)
@@ -937,7 +937,7 @@ class labour_work_in_product_to_item(models.Model):
     approved_qty = models.IntegerField(default = 0)
     
 
-
+# reports
 class godown_item_report_for_cutting_room(models.Model):
     creation_date = models.DateTimeField(auto_now_add = True)
     particular = models.CharField(max_length=100)
@@ -945,7 +945,7 @@ class godown_item_report_for_cutting_room(models.Model):
     voucher_number = models.CharField(max_length=100)
     material_color_shade = models.CharField(max_length=255)
     godown_id = models.CharField(max_length=50)
-    inward = models.BooleanField() 
+    inward = models.BooleanField() # true for inward and false for outward
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
 
@@ -999,9 +999,9 @@ class raw_material_production_total(models.Model):
     godown_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     balance_stock = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     
-    
-    
-    
+    #TODO
+    # stock_in_cutting_stage  = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    # stock_in_labour_workout_stage  = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
 
 
 class Finished_goods_warehouse(models.Model):

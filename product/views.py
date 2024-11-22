@@ -5941,8 +5941,7 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
 
 
     return render(request,'production/godown_model_wise.html', {'purchase_instances': purchase_instances,
-                                                                'product_instance':product_instance,
-                                                                })
+                                                                'product_instance' : product_instance})
 
 
 def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
@@ -6478,7 +6477,7 @@ def cuttingroomdelete(request,pk):
 def product_purchase_voucher_create_update(request, pk=None):
     products = PProduct_Creation.objects.all()
     warehouses = Finished_goods_warehouse.objects.all()
-    party_names = Ledger.objects.all()
+    party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
     
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         sku = request.GET.get('productName')
@@ -6736,9 +6735,46 @@ def itemdynamicsearchajax(request):
         return JsonResponse({'error': error_message}, status = 500)
 
 
+@login_required(login_url='login')
+def productdynamicsearchajax(request):
+    
+    try:
+        
+        product_name_typed = request.GET.get('productnamevalue')
+        print( product_name_typed)
+        if not product_name_typed:
+            raise ValidationError("partial name provided.")
+        
+        logger.info(f"searched keyword via itemdynamicsearchajax {product_name_typed}")
+        
+        product_name_searched = PProduct_Creation.objects.filter(Q(PProduct_SKU__icontains = product_name_typed) 
+                                                                 | Q(PProduct_color__color_name__icontains=product_name_typed)
+                                                                 | Q(Product__Product_Name__icontains=product_name_typed)
+                                                                 ).values('Product__Product_Name','PProduct_SKU').distinct() 
+        
+        if product_name_searched:
+
+            logger.info(f"searched result via itemdynamicsearchajax {product_name_searched}")
+            
+            return JsonResponse({'item_name_typed': product_name_typed, 'searched_item_name_dict': product_name_searched}, status=200)
+        
+        else:
+            return JsonResponse({'error': 'No items found.'}, status=404)
+
+    except ValidationError as ve:
+        error_message = str(ve)
+        logger.error(f"Validaton errorin productdynamicsearchajax - {ve}")
+        return JsonResponse({'error': error_message}, status = 400)
+    
+    except Exception as e:
+        logger.error(f"Exception in productdynamicsearchajax - {e}")
+        error_message = f"An error occurred:{str(e)}"
+        return JsonResponse({'error': error_message}, status = 500)
+
+
 
 def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
-    print('test',searched_value)
+    
     if searched_value:
         validation_flag = False
         try:
