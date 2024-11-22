@@ -6,7 +6,7 @@ class UniqueFieldMixin:
     def clean_unique_field(self,field_name,model_class):
         data = self.cleaned_data.get(field_name)
 
-         
+         # Exclude current instance from the validation check
         existing_objects = model_class.objects.exclude(id=self.instance.id)
         
         if existing_objects.filter(**{f"{field_name}__iexact": data}).exists():
@@ -19,7 +19,7 @@ class CompanyUniqueFieldMixin:
     def clean_unique_field(self,field_name,model_class):
         data = self.cleaned_data.get(field_name)
         
-        
+        # Exclude current instance from the validation check
         existing_objects = model_class.objects.exclude(id=self.instance.id)
         
         if existing_objects.filter(**{f"{field_name}__iexact": data},company = self.instance.company).exists():
