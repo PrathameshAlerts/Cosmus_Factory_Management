@@ -5916,7 +5916,23 @@ def finished_goods_godown_wise_report_all(request):
     return render(request,'production/labour_workout_report.html', {'product_quantity' : product_quantity})
 
 
+""" Coalesce is a SQL function provided by Django through the django.db.models.functions module.
+    It is used to handle NULL (or None in Python) values by replacing them with a specified fallback value.
+    This is especially useful in aggregate queries, where calculations like Sum, Count, or Avg might return
+    None if there are no matching rows or if the data contains only NULL values.
 
+    Sum('productdetails__godown_colors__quantity'):
+
+    Calculates the sum of quantity from the related model.
+    If no rows match or all quantity values are NULL, it returns None.
+    Coalesce(Sum(...), 0):
+
+    If the Sum result is None, it replaces it with 0.
+    Result:
+
+    The query will always return a number (e.g., 0 if no data is found or None values exist).
+    
+    """
 
 def finished_goods_godown_product_ref_wise_report(request, ref_no):
 
@@ -5936,12 +5952,20 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
             total_balance_to_vendor=F('total_process_pcs') - F('total_return_pcs_1'),
             total_pending_to_approval_qty = Subquery(pending_approval_subquery))
 
-        
-         
 
+        
+        product_quantity = Product.objects.filter(Product_Refrence_ID=ref_no).aggregate(
+            total_quantity=Coalesce(Sum('productdetails__godown_colors__quantity'), 0))
+        
+        
+        purchase_order_instance = Product.objects.filter(Product_Refrence_ID = ref_no).aggregate(
+            total_approval_pending = Sum('purchase_order__cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master__l_w_in_products__pending_for_approval'))
+        
+        print(purchase_order_instance['total_approval_pending'])
 
     return render(request,'production/godown_model_wise.html', {'purchase_instances': purchase_instances,
-                                                                'product_instance' : product_instance})
+                                                                'product_instance' : product_instance,'product_quantity':product_quantity,
+                                                                'purchase_order_instance':purchase_order_instance})
 
 
 def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
@@ -6304,9 +6328,6 @@ def raw_material_estimation_calculate(request):
                     total_cutting_qty = difference_quantity_in_cutting_stage['total_cutting_qty'] if difference_quantity_in_cutting_stage['total_cutting_qty'] else 0
 
                     diffrence_qty = total_po_qty - total_cutting_qty
-
-                    print('diffrence_qty',diffrence_qty)
-                    print('____________________________')
 
                     
                     godown_item_instance = item_godown_quantity_through_table.objects.get(Item_shade_name__items__item_name = key, godown_name=estimation_master_instance.raw_material_godown_id)
@@ -6750,9 +6771,10 @@ def productdynamicsearchajax(request):
         product_name_searched = PProduct_Creation.objects.filter(Q(PProduct_SKU__icontains = product_name_typed) 
                                                                  | Q(PProduct_color__color_name__icontains=product_name_typed)
                                                                  | Q(Product__Product_Name__icontains=product_name_typed)
-                                                                 ).values('Product__Product_Name','PProduct_SKU').distinct() 
+                                                                 ).values('Product__Product_Name','PProduct_SKU','PProduct_color__color_name','Product__Product_GST__gst_percentage').distinct() 
         
         if product_name_searched:
+            print(list(product_name_searched))
 
             logger.info(f"searched result via itemdynamicsearchajax {product_name_searched}")
             
@@ -6840,9 +6862,7 @@ def UniqueValidCheckAjax(request):
         searched_value = None
         col_name = None
 
-    print(model_name)
-    print(searched_value)
-    print(col_name)
+
     
     if model_name and searched_value and col_name:
         return CheckUniqueFieldDuplicate(model_name, searched_value, col_name)
@@ -7246,9 +7266,17 @@ def allrawmaterialstockreport(request):
 
 @login_required(login_url='login')
 def allfinishedgoodsstockreport(request):
+
+    product_queryset_subquery = labour_work_in_product_to_item.objects.filter(
+        product_sku = OuterRef('PProduct_SKU')).values('product_sku').annotate(
+            total_labour_workin_qty_sum = Coalesce(Sum('return_pcs'), 0)).values('total_labour_workin_qty_sum')
+
+
     product_queryset = PProduct_Creation.objects.all().annotate(total_qty = Sum(
-        'godown_colors__quantity')).order_by('Product__Model_Name').select_related('Product','PProduct_color')
+        'godown_colors__quantity'),total_labour_workin_qty = Subquery(
+            product_queryset_subquery)).order_by('Product__Model_Name').select_related('Product','PProduct_color')
     
+
     return render(request,'reports/allfinishedgoodsstockreport.html',{'product_queryset':product_queryset})
 
 
@@ -7417,7 +7445,9 @@ def raw_material_excel_upload(request):
 def finished_goods_model_wise_report(request,ref_id):
     
     if ref_id:
-        labour_work_in_instances = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID=ref_id).annotate(total_qty = Sum('l_w_in_products__return_pcs'))
+        labour_work_in_instances = labour_work_in_master.objects.filter(
+        labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID=ref_id).annotate(
+        total_qty = Sum('l_w_in_products__return_pcs'))
         
         data_list = []
 
@@ -7430,6 +7460,7 @@ def finished_goods_model_wise_report(request,ref_id):
                 'name': instance.labour_voucher_number.labour_name.name,
                 'description' : f'Labour Work In - {instance.labour_voucher_number.labour_name.name}',
                 'L_W_I' : instance.total_qty,
+                'challan_No' : instance.labour_voucher_number.challan_no,
                 'Repair_In' : '0',
                 'sale' : '0',
                 'Repair_Out' : '0',
@@ -7437,7 +7468,7 @@ def finished_goods_model_wise_report(request,ref_id):
             
             data_list.append(dict_to_append)
 
-        initial_sorted_data = sorted(data_list, key=itemgetter('date'), reverse=False)
+        initial_sorted_data = sorted(data_list, key = itemgetter('date'), reverse=False)
 
     return render(request, 'reports/finishedgoodsmodelwisereport.html',{'data_list':initial_sorted_data , 'product_instance':product_instance})
 
