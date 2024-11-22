@@ -6756,7 +6756,7 @@ def productdynamicsearchajax(request):
 
             logger.info(f"searched result via itemdynamicsearchajax {product_name_searched}")
             
-            return JsonResponse({'item_name_typed': product_name_typed, 'searched_item_name_dict': product_name_searched}, status=200)
+            return JsonResponse({'item_name_typed': product_name_typed, 'searched_item_name_dict': list(product_name_searched)}, status=200)
         
         else:
             return JsonResponse({'error': 'No items found.'}, status=404)

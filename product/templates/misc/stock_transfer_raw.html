@@ -52,8 +52,8 @@
         
     </div>
    
-    <div class="table-responsive ms-3">
-        <table class="table table-striped table-hover table-responsive table-bordered" id="mainProductForm">
+    <div class=" ms-3">
+        <table class="table table-striped table-hover table-bordered" id="mainProductForm">
             <thead>
                 <tr>
                     <th>No</th>
@@ -66,7 +66,7 @@
                     <th>Delete</th>
                 </tr>
             </thead>
-            <tbody class="mainTableList text-nowrap">
+            <tbody class="mainTableList">
                 {{ formset.management_form}}
                 {% for form in formset %}
                 {{ form.id }}
@@ -152,10 +152,15 @@
                     newId.textContent = newFormCount + 1;
                    
 
-                    const itemNameElement = newTable.querySelector('select[name^="stock_name_"]');
+                    const itemNameElement = newTable.querySelector('input[name^="stock_name_"]');
                     itemNameElement.id = `id_stock_name_${newFormCount}`;
                     itemNameElement.name = `stock_name_${newFormCount}`;
                     itemNameElement.value = "";
+
+                    const selectElement = newTable.querySelector('.stock_input_name[name^="select_item_name_"]');
+                    selectElement.id = `select_item_name_${newFormCount}`;
+                    selectElement.name = `select_item_name_${newFormCount}`;
+                    selectElement.innerHTML = '';
 
                     const itemColorElement = newTable.querySelector('input[name^="stock_color_"]');
                     itemColorElement.id = `id_stock_color_${newFormCount}`;
@@ -299,8 +304,9 @@
                         var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                         var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
                         var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
-
+                       
                         suggestionsContainer.empty();
+                     
                         $.each(filteredOptions, function(index, [key, value]) {
                             let highlightedText = value;
                             let colorStyle = '';

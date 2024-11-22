@@ -351,7 +351,7 @@
                 const selectedProductValue = currentRow.find('[name$="-PProduct_pk"]').val();
                 const otherProductRows = $(this).closest('form').find('[name$="-PProduct_pk"]').not(currentRow.find('[name$="-PProduct_pk"]'));
                 let isDuplicate = false;
-                console.log(newDataValue)
+             
                 addButtonUnique.attr('disabled', false);
                 addRowButtonUnique.attr('disabled', false);
                 addButtonUnique.css('cursor', 'pointer');
