@@ -6507,7 +6507,7 @@ def product_purchase_voucher_create_update(request, pk=None):
         gst = pro.Product.Product_GST.gst_percentage
         return JsonResponse({'color':color,'gst':gst})
     
-
+    print(request.POST)
     if pk:
         product_pur_vouch_instance = product_purchase_voucher_master.objects.get(pk=pk)
 
