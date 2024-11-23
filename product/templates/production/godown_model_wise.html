@@ -11,7 +11,7 @@
         <img src=" {{instance.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;">
         {% endif %}
         {% endfor %}
-
+    
         
 </div class="mt-2"> 
 <label  class="fw-bold" for="">Approval Pending Qty : </label><span class="text-danger"> {{purchase_order_instance.total_approval_pending}}</span>
@@ -33,9 +33,11 @@
                 <th>Total Labour Work In</th>
                 <th>Rep Out</th>
                 <th>Rep In</th>
+                <th>Total Received</th>
                 <th>Total Balance to Vendor</th>
                 <th>Approval Pending Qty</th>
-                <th>Total Received</th>
+                <th>Total Approved Qty</th>
+                
             </tr>
         </thead>
         <tbody class="mainTableList" id="tableLabourWorkinId">
@@ -49,9 +51,10 @@
                 <td><span class="tolatLwiqty">{{instance.total_return_pcs_1|default_if_none:'0'}}</span></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td><span class="tolatBalanceQty">{{instance.total_balance_to_vendor|default_if_none:'0'}}</span></td>
                 <td><span class="tolatPendingQty">{{instance.total_pending_to_approval_qty}}</span></td>
-                <td></td>
+                <td>{{instance.total_approved_qty}}</td>
                     <input type="hidden" class="godownId" value="{{instance.challan_no}}">
             </tr>
             {% endfor %}
@@ -61,6 +64,7 @@
                 <td colspan="4" class="fw-bold">Total</td>
                 <td><span class="fw-bold" id="tLabourWorkQty">0</span></td>
                 <td><span class="fw-bold" id="tLabourWorkInQty">0</span></td>
+                <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td><span class="fw-bold" id="tBalanceQty">0</span></td>

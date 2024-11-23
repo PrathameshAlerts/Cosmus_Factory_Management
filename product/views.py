@@ -5945,14 +5945,18 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
                                         ).values('total_pending')
 
 
+        approved_subquery = labour_workout_childs.objects.filter(
+            id=OuterRef('id')).annotate(total_approved = Sum('labour_work_in_master__l_w_in_products__approved_qty')
+                                        ).values('total_approved')
+
         purchase_instances = labour_workout_childs.objects.filter(
             labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID=ref_no
             ).annotate(
             total_return_pcs_1=Sum('labour_work_in_master__total_return_pcs'),
             total_balance_to_vendor=F('total_process_pcs') - F('total_return_pcs_1'),
-            total_pending_to_approval_qty = Subquery(pending_approval_subquery))
+            total_pending_to_approval_qty = Subquery(pending_approval_subquery), total_approved_qty=Subquery(approved_subquery))
 
-
+        
         #query for displaying total godown qty of a ref no 
         product_quantity = Product.objects.filter(Product_Refrence_ID=ref_no).aggregate(
             total_quantity=Coalesce(Sum('productdetails__godown_colors__quantity'), 0))
@@ -5961,7 +5965,7 @@ def finished_goods_godown_product_ref_wise_report(request, ref_no):
         purchase_order_instance = Product.objects.filter(Product_Refrence_ID = ref_no).aggregate(
             total_approval_pending = Sum('purchase_order__cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master__l_w_in_products__pending_for_approval'))
         
-        print(purchase_order_instance['total_approval_pending'])
+        
 
     return render(request,'production/godown_model_wise.html', {'purchase_instances': purchase_instances,
                                                                 'product_instance' : product_instance,'product_quantity':product_quantity,
@@ -6032,7 +6036,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
 
 
         report_data_sorted = sorted(queryset_list, key = itemgetter('date'), reverse=False)
-        print(report_data_sorted)
+        print(queryset_list)
         # list_dict = []
         # for x in report_data_sorted:
         #     skus = x.get('sku_qty')
@@ -6069,7 +6073,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
                 total_sku_qty[key] = total_sku_qty.get(key, 0) + value
 
         final_dict = {key: labour_workout_p_2_i.get(key, 0) - total_sku_qty.get(key, 0) for key in total_sku_qty.keys()}
-        
+        print(report_data_sorted)
         return render(request,'production/finishedgoodsvendormodelwisereport.html',{'report_data_sorted':report_data_sorted, 'reference_no':reference_no, 
                                                                                     'product_instance':product_instance,'total_labour_workout':total_labour_workout,
                                                                                     'labour_workout_p_2_i':labour_workout_p_2_i, 'SKU_List':SKU_List,'result_dict':final_dict})
@@ -6773,7 +6777,7 @@ def productdynamicsearchajax(request):
             Q(Product__Product_Name__icontains=product_name_typed)
         ).distinct().values('PProduct_SKU', 'PProduct_color__color_name', 
                             'Product__Product_Name', 'Product__Product_GST__gst_percentage')
-        
+        print(products)
         if products.exists():
             product_searched_dict = {
                 product['PProduct_SKU']: [
@@ -6782,9 +6786,8 @@ def productdynamicsearchajax(request):
                     product.get('Product__Product_GST__gst_percentage', '')
                 ] for product in products
             }
-
-           
-
+            print(product_name_typed)
+            print(product_searched_dict)
             logger.info(f"Search results for {product_name_typed}: {product_searched_dict}")
             return JsonResponse({'typed': product_name_typed, 
                                  'products': product_searched_dict}, status=200)
@@ -7462,7 +7465,8 @@ def finished_goods_model_wise_report(request,ref_id):
                 'name': instance.labour_voucher_number.labour_name.name,
                 'description' : f'Labour Work In - {instance.labour_voucher_number.labour_name.name}',
                 'L_W_I' : instance.total_qty,
-                'challan_No' : instance.labour_voucher_number.challan_no,
+                'challan_No' : instance.labour_voucher_number.id,
+                'LWI_ID' : instance.id,
                 'LWO_Total' : instance.labour_voucher_number.total_process_pcs,
                 'Repair_In' : '0',
                 'sale' : '0',

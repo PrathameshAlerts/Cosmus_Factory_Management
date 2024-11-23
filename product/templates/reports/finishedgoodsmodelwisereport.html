@@ -52,7 +52,7 @@
                     <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                         {% for record in data_list %}
                         <tr>
-                            <td>  <button class="border-0 rounded  mb-1 px-2 py-0.7" style="color:white; background-color: #f5239a;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-view-update' record.challan_No record.voucher_number True %}">{{record.voucher_number}}</a></button> </td>
+                            <td>  <button class="border-0 rounded  mb-1 px-2 py-0.7" style="color:white; background-color: #f5239a;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-view-update' record.challan_No record.LWI_ID True %}">{{record.voucher_number}}</a></button> </td>
                             <td>{{record.date}}</td>
                             <td>{{record.description}}</td> 
                             <td>  <button class="border-0 rounded  mb-1 px-2 py-0.7" style="color:white; background-color: #f5a623;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workout-single-view' record.challan_No %}">{{record.challan_No}}</a></button> </td> 
