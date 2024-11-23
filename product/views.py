@@ -6283,7 +6283,7 @@ def raw_material_estimation_calculate(request):
     
     master_pk = request.GET.get('unique_id')
     if master_pk:
-        print('master_pk',master_pk)
+        
         try:
             estimation_master_instance = get_object_or_404(raw_material_production_estimation,pk = master_pk)
 
@@ -6731,10 +6731,11 @@ def itemdynamicsearchajax(request):
 
                 if queryset.total_qty is not None:
                     total_qty = str(queryset.total_qty)
+
                 else:
                     total_qty = '0'
 
-                item_name = queryset.item_name + ' | ' + total_qty +','+ queryset.Material_code
+                item_name = queryset.item_name + ' | ' + total_qty + ',' + queryset.Material_code
                 item_id = queryset.id
                 searched_item_name_dict[item_id] = item_name
             
@@ -6758,40 +6759,41 @@ def itemdynamicsearchajax(request):
 
 @login_required(login_url='login')
 def productdynamicsearchajax(request):
-    
     try:
-        
         product_name_typed = request.GET.get('productnamevalue')
-        print( product_name_typed)
+
         if not product_name_typed:
-            raise ValidationError("partial name provided.")
+            return JsonResponse({'error': 'Please enter a search term.'}, status=400)
         
-        logger.info(f"searched keyword via itemdynamicsearchajax {product_name_typed}")
+        logger.info(f"Search initiated by {request.user}: {product_name_typed}")
         
-        product_name_searched = PProduct_Creation.objects.filter(Q(PProduct_SKU__icontains = product_name_typed) 
-                                                                 | Q(PProduct_color__color_name__icontains=product_name_typed)
-                                                                 | Q(Product__Product_Name__icontains=product_name_typed)
-                                                                 ).values('Product__Product_Name','PProduct_SKU','PProduct_color__color_name','Product__Product_GST__gst_percentage').distinct() 
+        products = PProduct_Creation.objects.filter(
+            Q(PProduct_SKU__icontains=product_name_typed) |
+            Q(PProduct_color__color_name__icontains=product_name_typed) |
+            Q(Product__Product_Name__icontains=product_name_typed)
+        ).distinct().values('PProduct_SKU', 'PProduct_color__color_name', 
+                            'Product__Product_Name', 'Product__Product_GST__gst_percentage')
         
-        if product_name_searched:
-            print(list(product_name_searched))
+        if products.exists():
+            product_searched_dict = {
+                product['PProduct_SKU']: [
+                    product.get('Product__Product_Name', ''),
+                    product.get('PProduct_color__color_name', ''),
+                    product.get('Product__Product_GST__gst_percentage', '')
+                ] for product in products
+            }
 
-            logger.info(f"searched result via itemdynamicsearchajax {product_name_searched}")
-            
-            return JsonResponse({'item_name_typed': product_name_typed, 'searched_product_name_dict': list(product_name_searched)}, status=200)
-        
-        else:
-            return JsonResponse({'error': 'No items found.'}, status=404)
+            print(product_searched_dict)
 
-    except ValidationError as ve:
-        error_message = str(ve)
-        logger.error(f"Validaton errorin productdynamicsearchajax - {ve}")
-        return JsonResponse({'error': error_message}, status = 400)
-    
+            logger.info(f"Search results for {product_name_typed}: {product_searched_dict}")
+            return JsonResponse({'typed': product_name_typed, 
+                                 'products': product_searched_dict}, status=200)
+        
+        return JsonResponse({'error': 'No items found.'}, status=404)
+
     except Exception as e:
-        logger.error(f"Exception in productdynamicsearchajax - {e}")
-        error_message = f"An error occurred:{str(e)}"
-        return JsonResponse({'error': error_message}, status = 500)
+        logger.error(f"Error during search by {request.user}: {e}")
+        return JsonResponse({'error': f"An error occurred: {str(e)}"}, status=500)
 
 
 
@@ -7461,6 +7463,7 @@ def finished_goods_model_wise_report(request,ref_id):
                 'description' : f'Labour Work In - {instance.labour_voucher_number.labour_name.name}',
                 'L_W_I' : instance.total_qty,
                 'challan_No' : instance.labour_voucher_number.challan_no,
+                'LWO_Total' : instance.labour_voucher_number.total_process_pcs,
                 'Repair_In' : '0',
                 'sale' : '0',
                 'Repair_Out' : '0',

@@ -12,7 +12,8 @@
                 <th>Model Name</th> 
                 <th>Color</th>
                 <th>SKU ID</th>
-                <th>Total Received</th>
+                <th>Total Rec As LWI</th> 
+                <th>Total QC APP QTY</th>
                 <th>Sales</th>
                 <th>Total Qty</th> 
             </tr>
@@ -28,8 +29,9 @@
                 <td>{{query.Product.Model_Name}}</td>
                 <td>{{query.PProduct_color}}</td>
                 <td>{{query.PProduct_SKU}}</td>
+                <td>{{query.total_labour_workin_qty | default_if_none:0}}</td>
                 <td>{{query.total_qty | default_if_none:0}}</td>
-                <td></td>
+                <td>0</td>
                 <td class="toatlQty">{{query.total_qty | default_if_none:0}}</td>
             </tr>
             {% endfor %}
