@@ -28,6 +28,8 @@
                             <th>GRN No/ V No</th>
                             <th>Date</th>
                             <th>Name / Description</th>
+                            <th>challan No</th>
+                            <th>LWO Total</th>
                             <th colspan="2" class="bg-c-blue justify-content-center">INWards</th>
                             <th colspan="2" class="bg-c-red justify-content-center">Outwards</th>
                             <th colspan="1" class="bg-c-green justify-content-center">Closing </th>
@@ -35,7 +37,7 @@
                     </thead>
                     <tbody class="mainTable" >
                             <tr>
-                                <th colspan="3"></th>
+                                <th colspan="5"></th>
                                 <th style="background-color: #90D5FF; ">L.W.IN</th>
                                 <th style="background-color: #90D5FF;" >Repair In</th>
                                 <th style="background-color: #ffcccb;">Sale</th>
@@ -50,9 +52,11 @@
                     <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                         {% for record in data_list %}
                         <tr>
-                            <td>{{record.voucher_number}}</td>
+                            <td>  <button class="border-0 rounded  mb-1 px-2 py-0.7" style="color:white; background-color: #f5239a;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-view-update' record.challan_No record.voucher_number True %}">{{record.voucher_number}}</a></button> </td>
                             <td>{{record.date}}</td>
-                            <td>{{record.description}}</td>          
+                            <td>{{record.description}}</td> 
+                            <td>  <button class="border-0 rounded  mb-1 px-2 py-0.7" style="color:white; background-color: #f5a623;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workout-single-view' record.challan_No %}">{{record.challan_No}}</a></button> </td> 
+                            <td>{{record.LWO_Total}}</td>       
                             <td style="background-color: #90D5FF;" class="inwardLwIn ">{{record.L_W_I}}</td>
                             <td style="background-color: #90D5FF;" class="inwardRepairIn">{{record.Repair_In}}</td>
                             <td style="background-color: #ffcccb;" class="outwardSale">{{record.sale}}</td>
@@ -64,7 +68,7 @@
                     <tbody class="mainTableList">
                         <tr>
                             <td><span class="fw-bold">Total</span></td>
-                            <td colspan="2"></td>
+                            <td colspan="4"></td>
                             <td><span id="TotalLwin" class="text-dark fw-bold">0</span></td>
                             <td><span id="TotalReapirIn" class="text-dark fw-bold">0</span></td>
                             <td><span id="TotalSale" class="text-dark fw-bold">0</span></td>

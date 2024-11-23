@@ -28,7 +28,7 @@
                     <td class="refrenceId">{{record.Product_Refrence_ID | default_if_none:''}}</td>
                     <td><span class="text-danger fw-bold">{{record.Model_Name|default_if_none:''}}</span></td>
                     <td>{{record.total_quantity_product|default_if_none:0}}</td>
-                    <td>{{record.total_qty_pending}}</td>
+                    <td>{{record.total_qty_pending|default_if_none:0}}</td>
                     <!-- <td>{{record.all_godown_qty}}</td> -->
                     <td></td>
                 </tr>

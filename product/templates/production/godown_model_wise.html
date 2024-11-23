@@ -12,9 +12,14 @@
         {% endif %}
         {% endfor %}
 
-        <label for="">Approval Pending Qty</label><span>{{purchase_order_instances.pending_approval_total}}</span>
-        <label for="">Total Approved QTY</label><span>{{product_quantity.total_quantity_product}}</span>
-</div> 
+        
+</div class="mt-2"> 
+<label  class="fw-bold" for="">Approval Pending Qty : </label><span class="text-danger"> {{purchase_order_instance.total_approval_pending}}</span>
+<label  class="fw-bold" for="">Total Approved QTY : </label><span class="text-danger"> {{product_quantity.total_quantity}}</span>
+<div>
+
+</div>
+
 <div class=" mt-2">
     <!-- <h3>Model Wise</h3> -->
     <table class="table table-striped table-hover table-bordered" id="tableLabourWorkinIdBody">
