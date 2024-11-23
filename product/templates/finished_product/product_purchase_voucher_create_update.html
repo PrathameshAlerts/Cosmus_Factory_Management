@@ -420,12 +420,11 @@ function getGstNo() {
 
         // This ajax request for a input type value send to the backend and show the product name 
         $(document).on('input', 'input[name$="-product_name"]', function(e) {
-             purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
+           var  purchaseValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
             var productnamevalue = $(this).val().trim();
             var selectNameValue = `select_product_name_${purchaseValue}`;
             var suggestionsContainer = $(`#${selectNameValue}`);
-        
-        
+ 
                 if (productnamevalue === 'None') {
                     var selectNameValue = $(this).closest('tr').find('[name^="select_product_name_"]');
                         
@@ -439,16 +438,13 @@ function getGstNo() {
                 }
                 enterPressed = false;
         
-        
                 if(productnamevalue.length >= 1){
                     $.ajax({
                     url: '/productdynamicsearchajax/',
                     method: 'GET',
                     data: { 'productnamevalue': productnamevalue },
                     success: function (response) {
-                        console.log(response.searched_product_name_dict)
                         // Function to escape special characters in the search query
-                       
                         function escapeRegExp(string) {
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                         }
@@ -459,7 +455,7 @@ function getGstNo() {
                         const filteredOptions = searchedProductNameDic.filter(item => item.Product__Product_Name.toLowerCase().includes(searchQuery) ||
                             item.PProduct_SKU.toString().includes(searchQuery)
                             );
-                        // // Clear and repopulate options
+                        
                         suggestionsContainer.empty();
 
                         filteredOptions.forEach((item, index) => {
@@ -467,7 +463,7 @@ function getGstNo() {
                             const highlightedText = item.Product__Product_Name.replace(regex, '<span class="highlight">$1</span>');
                             const highlightedSKU = item.PProduct_SKU.toString().replace(regex, '<span class="highlight">$1</span>');
                             const skuId = JSON.parse(item.PProduct_SKU);
-                            console.log('skuId',skuId)
+                            // console.log('skuId',skuId)
                             // Add the suggestion to the container
                             suggestionsContainer.append(`
                                 <div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-sku="${skuId}">
@@ -495,7 +491,7 @@ function getGstNo() {
             suggestionsContainer.on('click', '.itemName-div', function(e) {
                 var item_value = $(this).data('sku');
                  itemNamevaluesCheck = $(this).text().trim();
-          
+                console.log(item_value)
                 $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
                 $(this).addClass('selected').siblings().removeClass('selected');
 
@@ -511,50 +507,29 @@ function getGstNo() {
        // Function to handle the AJAX request and UI updates
         function handleProductSelection(purchaseValue,itemName, item_value,itemNamevaluesCheck) {
             console.log('item_value',item_value)
-        if (item_value !== undefined) {
-        var selectedValue = itemNamevaluesCheck;
-        console.log(selectedValue)
-        
-        var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
-
-        //var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
-        var newnameValue = namevalueCheck.replace(/[\.\s 0-9]+$/, '');
-        //var valueKey = namevalueCheck + ' ' + numberValue ;
-        console.log('newnameValue',newnameValue)  
-        $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name"]`).val(newnameValue);
-
-        $.ajax({
-            url: '/purchasevouchercreate/',
-            method: 'GET',
-            data: {
-                'item_value': item_value,
-            },
-            success: function (response) {
-                console.log('response',response)
-                var itemrownameid = itemName.split('-')[1];
+                if (item_value !== undefined) {
+                var selectedValue = itemNamevaluesCheck;
+                console.log(selectedValue)
                 
-                    var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
-                    var item_color = response.item_color;
+                var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
+                var newnameValue = namevalueCheck.replace(/[\.\s 0-9]+$/, '');
 
-                    // var itemperinput = document.querySelector('#item_per_' + itemrownameid);
-                    // var itemperinput_response = response.item_per;
+                console.log('newnameValue',newnameValue)  
+                    $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name"]`).val(newnameValue);
+                    
+                    searchedProductNameDic.forEach((element,index) =>{
+                    const productColor = element.PProduct_color__color_name;
+                    const productGst = element.Product__Product_GST__gst_percentage || 0;
+                    var itemcolorinput = document.querySelector('#item_color_' + purchaseValue);
+                    var itemgstinputs = document.getElementById('product_purchase_voucher_items_set-' + purchaseValue + '-gst');
+                                        
+                        itemcolorinput.value = productColor;
+                        itemgstinputs.value = productGst ;
 
-                    itemcolorinput.value = item_color;
-                    //itemperinput.value = itemperinput_response;
-
-                    var itemgstinput = document.querySelector('#purchase_voucher_items_set-' + itemrownameid + '-gst');
-                    var item_gst_value_response = response.item_gst_out;
-                    itemgstinput.value = item_gst_value_response;
-
-                ajaxInProgress = false;
-            },
-            error: function (xhr, errmsg, err) {
-                console.log('Error sending value to the backend');
-                ajaxInProgress = false;
+                })
+            
             }
-        });
-      }
-      }
+        }
 
 
         var index = 0; // Declare index outside of the event listener
@@ -581,15 +556,15 @@ function getGstNo() {
              event.preventDefault();
 
             if (index <= optionsCounts) {
-            
-                const $selectedItems = $option.eq(index);
+        
+                const $selectedItems = $('.product-name .itemName-div').eq(index);
                 console.log('selectedItem',$selectedItems)
                 const $nextItems = $selectedItems.next();
                 const nameDataKeys = $selectedItems.text().trim();
                 console.log(nameDataKeys)
-                const nameKeys = $option.data('sku')
+                const nameKeys = $selectedItems.data('sku');
                 console.log('namekey'.nameKeys)
-                $inputFields.attr('data-key', nameKeys);
+                $inputFields.attr('data-sku', nameKeys);
              
                 $selectedItems.addClass('bg-highlight').siblings().removeClass('bg-highlight');
                 const itemOffsetTop = $nextItems.position().top;
@@ -619,26 +594,26 @@ function getGstNo() {
                 index -= 1;
             }
 
-            if (index <= optionsCount) {
+            if (index <= optionsCounts) {
                
-                const $selectedItem = $options.eq(index);
+                const $selectedItem = $option.eq(index);
                 const $prevItem = $selectedItem.prev();
                 const nameDataKey = $selectedItem.text();
                 const nameKey = $selectedItem.data('sku');
 
-                $inputField.attr('data-sku', nameKey);
+                $inputFields.attr('data-sku', nameKey);
                 
                 $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
                 
                 const itemOffsetTop = $prevItem.position().top;
                 const itemHeight = $prevItem.outerHeight();
-                const selectScrollTop = $dropdownOptions.scrollTop();
-                const selectHeight = $dropdownOptions.height();
+                const selectScrollTop = $dropdownOption.scrollTop();
+                const selectHeight = $dropdownOption.height();
 
                 if (itemOffsetTop < 0) {
-                    $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                    $dropdownOption.scrollTop(selectScrollTop - itemHeight);
                 } else if (itemOffsetTop + itemHeight > selectHeight) {
-                    $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                    $dropdownOption.scrollTop(selectScrollTop + itemHeight);
                 }
 
                 $selectedItem.addClass('selected');
@@ -661,7 +636,7 @@ function getGstNo() {
             handleProductSelection(purchaseValue,itemName, item_value, itemNamevaluesCheck);
             enterPressed = true;
             hiddenValue.css("display" ,"none");
-            $inputField.blur();
+            $inputFields.blur();
         }
         if (event.key === 'Tab' && enterPressed) {
         enterPressed = false; // Reset Enter key handling
@@ -821,11 +796,15 @@ function getGstNo() {
                     rowElement.value = formIndex + 1 ;
                     rowElement.style.border="none";
 
-                    const inputSelectElement = lastRow.querySelector('select[name$="-product_name"]');
+                    const inputSelectElement = lastRow.querySelector('input[name$="-product_name"]');
                     inputSelectElement.id = `id_product_purchase_voucher_items_set-${formIndex}-product_name`;
                     inputSelectElement.name = `product_purchase_voucher_items_set-${formIndex}-product_name`;
                     inputSelectElement.value="";
-        
+                    
+                    const selectElement = lastRow.querySelector('.product-name[name^="select_product_name_"]');
+                    selectElement.id = `select_product_name_${formIndex}`;
+                    selectElement.name = `select_product_name_${formIndex}`;
+                    selectElement.innerHTML = '';
             
                     const colorInputElement = lastRow.querySelector('.purchase-input[name^="item_color"]');
                     colorInputElement.id = `item_color_${formIndex}`;

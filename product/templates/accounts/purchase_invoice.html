@@ -541,6 +541,7 @@ function getGstNo() {
                         suggestionsContainer.empty();
 
                         $.each(filteredOptions, function(index, [key, value]) {
+                            console.log('key',key)
                             let highlightedText = value;
                             let colorStyle = '';
                             if (searchQuery) {
