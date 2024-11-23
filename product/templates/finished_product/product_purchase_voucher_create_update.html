@@ -412,35 +412,58 @@ function getGstNo() {
                         function escapeRegExp(string) {
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                         }
-                        searchedProductNameDic = response.products;
-                        var searchQuery = productnamevalue.toLowerCase();
-                        var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
-                        var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+
+                        searchedProductNameDic = response.products; // Example: { '101': ['MADISON', '40051011046', 'Blue', 18] }
+
+                        // Lowercase search query for case-insensitive comparison
+                        const searchQuery = productnamevalue.toLowerCase();
+
+                        // Split the query into parts (e.g., ["MADISON", "40051011046", "Blue"])
+                        const searchTerms = searchQuery.split(/\s+/);
+                        const convertStringData = searchTerms.toString();
+                         console.log(convertStringData)
+                        // Escape each search term for use in a regex
+                        const escapedTerms = searchTerms.map(escapeRegExp);
+
+                        // Create regex for highlighting (matches any term)
+                        const regex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
+
+                        const normalizeSpaces = (str) => str.replace(/\s+/g, ' ').trim();
+                        console.log(normalizeSpaces)
                         const filteredOptions = Object.entries(searchedProductNameDic).filter(
-                            ([key, value]) => value.some(item => item.toString().toLowerCase().includes(searchQuery))
-                        );
-                        console.log(filteredOptions)
+                        ([key, value]) => {
+                            const normalizedKey = normalizeSpaces(key.toString().toLowerCase());
+                            const normalizedProductName = normalizeSpaces(value[0].toString().toLowerCase());
+                            const normalizedColor = normalizeSpaces(value[1].toString().toLowerCase());
+                        
+                            const normalizedQuery = normalizeSpaces(convertStringData.toLowerCase());
+                            console.log(normalizedColor)
+                            return normalizedKey.includes(normalizedQuery) ||
+                                normalizedProductName.includes(normalizedQuery) ||
+                                normalizedColor.includes(normalizedQuery);
+                        }
+                    );
+                        console.log(filteredOptions);
                         suggestionsContainer.empty();
 
+                        // Generate suggestions for matching options
                         filteredOptions.forEach(([key, value], index) => {
-                            // Example of values from the dictionary
-                            const productName = value[0]; // Assuming this is the product name
-                            const productSKU = key; // Assuming this is the SKU
-                            const productQuantity = value[2]; // Assuming this is the quantity
-                            const cleanedSKU = productSKU.toString().replace(/[()]/g, '');
-                            // Highlight text based on a search query (regex should be predefined)
+                            // Extract relevant fields
+                            const productName = value[0]; // Product name
+                            const productSKU = key; // SKU
+                            const productColor = value[1];
+                            // Highlight matches in name, SKU, and color
                             const highlightedText = productName.replace(regex, '<span class="highlight">$1</span>');
-                            const highlightedSKU = cleanedSKU.replace(regex, '<span class="highlight">$1</span>');
+                            const highlightedSKU = productSKU.replace(regex, '<span class="highlight">$1</span>');
+                            const highlightedColor = productColor.replace(regex, '<span class="highlight">$1</span>');
 
                             // Add the suggestion to the container
                             suggestionsContainer.append(`
                                 <div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion" data-key="${key}">
-                                    ${highlightedText}-<span>${highlightedSKU}</span>
-                        
+                                    ${highlightedText}<span>${highlightedSKU}</span>&nbsp;<span>${highlightedColor}</span>
                                 </div>
                             `);
                         });
-   
                     
                     },
                     error: function (xhr) {
@@ -468,7 +491,7 @@ function getGstNo() {
 
                 if (item_value !== undefined) {
                 var selectedValue = searchedProductNameDic[item_value];
-                console.log(selectedValue,'selectedValue')
+                // console.log(selectedValue,'selectedValue')
                 var namevalueCheck = selectedValue[0];
 
                 $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name"]`).val(selectedValue);
@@ -592,7 +615,7 @@ function getGstNo() {
                 var selectedValue = searchedProductNameDic[item_value];
                 console.log(selectedValue,'selectedValue')
                 var namevalueCheck = selectedValue[0];
-                 var newnameValue = namevalueCheck + '-'+item_value;
+                 var newnameValue = namevalueCheck + ' '+item_value;
 
                 $(`input[name$="product_purchase_voucher_items_set-${purchasedata}-product_name"]`).val(item_value);
                 $(`input[name$="product_purchase_voucher_items_set-${purchasedata}-product_name_value"]`).val(newnameValue)
