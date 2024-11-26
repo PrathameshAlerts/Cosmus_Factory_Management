@@ -3,10 +3,10 @@ from django.db.models.signals import pre_delete , post_save,pre_save
 from django.dispatch import receiver
 from django.forms import ValidationError
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
-from .models import (Ledger, PProduct_Creation, Product, Product_warehouse_quantity_through_table, RawStockTrasferRecords,
+from .models import (Finished_goods_transfer_records, Ledger, PProduct_Creation, Product, Product_warehouse_quantity_through_table, RawStockTrasferRecords,
                       account_credit_debit_master_table, godown_item_report_for_cutting_room,  item_purchase_voucher_master, 
                       item_godown_quantity_through_table,Item_Creation,item_color_shade, labour_workout_master, 
-                      opening_shade_godown_quantity, product_2_item_through_table, product_purchase_voucher_items, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting,
+                      opening_shade_godown_quantity, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_items, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting,
                         purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, set_prod_item_part_name,
                           shade_godown_items)
 
@@ -439,6 +439,31 @@ def delete_product_warehouse_quantity_if_0(sender, instance, created, **kwargs):
         if quantity_after_save == 0:
             logger.info(f"product warehouse quantity instance deleted as quantity is 0, id - {instance.id}, - {instance.warehouse.warehouse_name_finished}, - {instance.product.PProduct_SKU}")
             instance.delete()
+
+
+
+
+@receiver(post_save, sender=Finished_goods_transfer_records)
+def create_update_warehouse_stock_transfer(sender, instance, created, **kwargs):
+    product = instance.product
+    quantity = instance.product_quantity_transfer
+    master_instance = instance.Finished_goods_Stock_TransferMasterinstance
+
+    godown = master_instance.source_warehouse
+    warehouse = master_instance.destination_warehouse
+
+    if created:
+        
+        godown_qty_value, created = product_godown_quantity_through_table.objects.get_or_create(godown_name = godown,product_color_name=product)
+        godown_qty_value.quantity = godown_qty_value.quantity - quantity
+        godown_qty_value.save()
+
+    else:
+        pass
+
+
+
+
 
 """
         or in forms
