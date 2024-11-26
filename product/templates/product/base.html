@@ -77,16 +77,30 @@
       </div>
       <div class="item">
         <a class="sub-btn"><img src="../../../static/images/shop.png" alt="document" style="width: 33px; padding-right: 10px; ">
-          <span>Vouchers</span><i class="fas fa-angle-right dropdown"></i></a>
+          <span>Vouchers <b>(RM)</b></span><i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'purchase-voucher-list' %}" class="sub-item">Purchase Invoice(RM)</a>
-          <a href="{% url 'product-purchase-voucher-list' %}" class="sub-item">Purchase Invoice(FG)</a>
-          <a href="" class="sub-item">Sales Invoice</a>
+          <!-- <a href="{% url 'product-purchase-voucher-list' %}" class="sub-item">Purchase Invoice(FG)</a>
+          <a href="" class="sub-item">Sales Invoice</a> -->
           <a href="{% url 'stock-transfer-raw-list' %}" class="sub-item">Stock Transfer(RM)</a>
-          <a href="{% url 'all-product-transfer-to-warehouse' %}" class="sub-item">Stock Transfer(FG)</a>
+          <!-- <a href="{% url 'all-product-transfer-to-warehouse' %}" class="sub-item">Stock Transfer(FG)</a>
           <a href="" class="sub-item">Sales Return</a>
           <a href="" class="sub-item">Purchase Return</a>
-          <a href="" class="sub-item">Payment</a>
+          <a href="" class="sub-item">Payment</a> -->
+        </div>
+      </div>
+      <div class="item">
+        <a class="sub-btn"><img src="../../../static/images/shop.png" alt="document" style="width: 33px; padding-right: 10px; ">
+          <span>Vouchers <b>(FG)</b></span><i class="fas fa-angle-right dropdown"></i></a>
+        <div class="sub-menu">
+          <!-- <a href="{% url 'purchase-voucher-list' %}" class="sub-item">Purchase Invoice(RM)</a> -->
+          <a href="{% url 'product-purchase-voucher-list' %}" class="sub-item">Purchase Invoice(FG)</a>
+          <!-- <a href="" class="sub-item">Sales Invoice</a> -->
+          <!-- <a href="{% url 'stock-transfer-raw-list' %}" class="sub-item">Stock Transfer(RM)</a> -->
+          <a href="{% url 'all-product-transfer-to-warehouse' %}" class="sub-item">Stock Transfer(FG)</a>
+          <!-- <a href="" class="sub-item">Sales Return</a>
+          <a href="" class="sub-item">Purchase Return</a>
+          <a href="" class="sub-item">Payment</a> -->
         </div>
       </div>
       <div class="item">
