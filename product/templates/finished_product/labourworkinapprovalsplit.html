@@ -1,0 +1,365 @@
+{% extends 'product/base.html' %}
+
+
+
+
+
+
+
+{% load static %}
+
+
+
+
+
+
+
+{% block body %}
+
+
+
+
+
+
+
+   
+
+
+
+<div class="container mt-5">
+
+
+
+  <table id="data-table" class="table table-bordered">
+
+
+
+    <thead>
+
+
+
+      <tr>
+
+
+
+        <th>GRN No</th>
+
+
+
+          <th>Challan</th>
+
+
+
+          <th>Vendor</th>
+
+
+
+        {% for key, value in headers.items %}
+
+
+
+        <th>{{ value }}</th>
+
+
+
+        {% endfor %}
+
+
+
+        <th>Row Total</th> 
+
+
+
+      </tr>
+
+
+
+    </thead>
+
+
+
+    <tbody>
+
+
+
+       
+
+
+
+      {% for row in data %}
+
+
+
+      <tr>
+
+
+
+        <td>{{ row.grn_no }}</td>
+
+
+
+          <td>{{ row.challan }}</td>
+
+
+
+          <td>{{ row.vendor }}</td>
+
+
+
+        {% for key, value in headers.items %}
+
+
+
+        <td data-key="{{ value }}">
+
+
+
+          {% if row.product_sku == value %}
+
+
+
+          {{ row.aprv_qty }}
+
+
+
+          {% else %}
+
+
+
+          -
+
+
+
+          {% endif %}
+
+
+
+        </td>
+
+
+
+        {% endfor %}
+
+
+
+        <td class="row-total"></td> <!-- Placeholder for row totals -->
+
+
+
+      </tr>
+
+
+
+      {% endfor %}
+
+
+
+    </tbody>
+
+
+
+    <tfoot>
+
+
+
+      <tr>
+
+
+
+        <th></th>
+
+
+
+        <th></th>
+
+
+
+        <th></th>
+
+
+
+        {% for key, value in headers.items %}
+
+
+
+        <th class="column-total" data-key="{{ value }}"></th>
+
+
+
+        {% endfor %}
+
+
+
+        <th id="grand-total"></th> <!-- Grand total cell -->
+
+
+
+      </tr>
+
+
+
+    </tfoot>
+
+
+
+  </table>
+
+
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+
+
+  $(document).ready(function() {
+
+
+
+    // Calculate totals
+
+
+
+    const table = $('#data-table');
+
+
+
+
+
+
+
+    // Calculate row totals
+
+
+
+    table.find('tbody tr').each(function() {
+
+
+
+      let rowTotal = 0;
+
+
+
+      $(this).find('td[data-key]').each(function() {
+
+
+
+        rowTotal += parseFloat($(this).text()) || 0;
+
+
+
+      });
+
+
+
+      $(this).find('.row-total').text(rowTotal);
+
+
+
+    });
+
+
+
+
+
+
+
+    // Calculate column totals
+
+
+
+    const columnTotals = {};
+
+
+
+    table.find('td[data-key]').each(function() {
+
+
+
+      const key = $(this).data('key');
+
+
+
+      const value = parseFloat($(this).text()) || 0;
+
+
+
+      columnTotals[key] = (columnTotals[key] || 0) + value;
+
+
+
+    });
+
+
+
+
+
+
+
+    // Append column totals to the footer
+
+
+
+    table.find('tfoot .column-total').each(function() {
+
+
+
+      const key = $(this).data('key');
+
+
+
+      $(this).text(columnTotals[key] || 0);
+
+
+
+    });
+
+
+
+
+
+
+
+    // Calculate grand total (sum of all row totals)
+
+
+
+    let grandTotal = 0;
+
+
+
+    table.find('.row-total').each(function() {
+
+
+
+      grandTotal += parseFloat($(this).text()) || 0;
+
+
+
+    });
+
+
+
+    $('#grand-total').text(grandTotal);
+
+
+
+  });
+
+
+
+</script>
+
+
+
+
+
+
+
+{% endblock body %}

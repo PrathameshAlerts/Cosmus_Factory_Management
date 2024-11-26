@@ -5992,7 +5992,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
         labour_workout_p_2_i={}
 
         sku_to_processed_pcs = dict(total_labour_workout.labour_workout_child_items.all().values_list('product_sku', 'processed_pcs'))
-
+        print( sku_to_processed_pcs)
         for x in SKU_List:
 
             sku = str(x.split('-')[0])  
@@ -6283,6 +6283,28 @@ def raw_material_estimation_popup(request, pk=None):
                   'raw_material_product_estimation_items_formset':material_product_estimation_items_formset,
                   'product_ref_items_instance':product_ref_items_instance})
 
+
+def labour_workin_approval_split(request,ref_id):
+    queryset = labour_work_in_product_to_item.objects.filter(
+        labour_workin_instance__labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_id)
+    
+    headers ={}
+    list_to_send = []
+    
+    for i in queryset:
+
+        headers[i.product_sku] = i.product_sku
+
+        dict_to_append = {
+      'product_sku' : i.product_sku,
+      'aprv_qty' : i.approved_qty,
+      'grn_no' : i.labour_workin_instance.voucher_number,
+      'challan' : i.labour_workin_instance.labour_voucher_number.challan_no,
+      'vendor' : i.labour_workin_instance.labour_voucher_number.labour_name.name }
+
+        list_to_send.append(dict_to_append)
+  
+    return render(request,'finished_product/labourworkinapprovalsplit.html',{'data':list_to_send,'headers':headers})
 
 
 
@@ -7396,9 +7418,72 @@ def qc_approved_model_wise_report(request,ref_id):
     if ref_id:
         product_instance = get_object_or_404(Product,Product_Refrence_ID=ref_id)
 
+        all_sku = [f'{sku.PProduct_SKU}-{sku.PProduct_color}' for sku in product_instance.productdetails.all().order_by('PProduct_SKU')]
+        
+        l_w_in_instances = labour_work_in_master.objects.filter(
+            labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID=ref_id)
+        
+        all_l_w_in_dict = []
+
+        approved_qty_all = []
+        for record in l_w_in_instances:
+
+            dict_to_append = {
+                'GRN_No':record.voucher_number,
+                'Date' : record.created_date,
+                'Description' : f'Description /{record.labour_voucher_number.labour_name.name}',
+                'challan_no' : record.labour_voucher_number.challan_no,
+                'total_lwo' : record.labour_voucher_number.total_process_pcs,
+                'desc':'LWI'
+            }
+
+            lwi_p_2_i = dict(record.l_w_in_products.all().values_list('product_sku','return_pcs')) 
+
+            lwi_p_2_i_approved = dict(record.l_w_in_products.all().values_list('product_sku','approved_qty'))
+
+            
+            
+            
+            
+
+            skus = {}
+            
+            approved_qty = {}
+            for sku in all_sku:   
+                
+                only_sku = int(sku.split('-')[0])
+                
+                if only_sku in lwi_p_2_i:
+                    skus[only_sku] = lwi_p_2_i[only_sku]
+                else:
+                    
+                    skus[only_sku] = 0
+
+                value = approved_qty.get(only_sku, 0)
+                approved_qty[only_sku] = value + lwi_p_2_i_approved.get(only_sku,0)
+
+            dict_to_append['SKUS'] = skus
+
+            all_l_w_in_dict.append(dict_to_append)
+
+            approved_qty_all.append(approved_qty)
         
 
-    return render(request, 'reports/qcapprovedmodelwisereport.html',{'product_instance':product_instance})
+        consolidated_approval_dict = {}
+
+        for dicts in approved_qty_all:
+            
+            for key,value in dicts.items():
+                if key in consolidated_approval_dict:
+                    consolidated_approval_dict[key] = consolidated_approval_dict[key] + value
+                else:
+                     consolidated_approval_dict[key] = value
+
+        sorted_data = sorted(all_l_w_in_dict, key = itemgetter('Date'), reverse=False)
+
+    return render(request, 'reports/qcapprovedmodelwisereport.html',{'product_instance':product_instance,
+                                                                     'sorted_data':sorted_data,'all_sku':all_sku,
+                                                                     'consolidated_approval_dict':consolidated_approval_dict})
 
 @login_required(login_url='login')
 def raw_material_excel_download(request):
