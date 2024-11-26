@@ -1,92 +1,71 @@
 {% extends 'product/base.html' %}
+
 {% load static %}
+
 {% block body %}
 
-<div class="row">
-    <div class="col-lg-12 mt-4">
-      <div class="d-flex mb-2">
-        <button class="product-btn" id="addLedgerClick" onclick="reversAddTransfer()">Add +</button>
-        <div class="container-flex"> 
-         <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
-         <input type="submit" class="mx-2"></input>
-        </div>
-        <button class="product-btn ml-3" onclick="redirectLedgerFilter()">Clear Filter</button>
-      </div>
-    </div>  
-  </div> 
-<div class="row">
-    <div class="col-lg-12">
-        <table class="table table-striped table-hover table-responsive table-bordered mt-3">
-            <thead class="name_absolute ">
-                <tr>
-                    <th>No</th>
-                    <td>Voucher No</td>
-                    <td>Source Godown</td>
-                    <td>Destination Godown</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
-                </tr>
-            </thead>
-            <tbody class="mainTableList">
-                {% for warehouse_product_transfer in warehouse_product_transfer_list %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{ warehouse_product_transfer.voucher_no }}</td>
-                    <td>{{ warehouse_product_transfer.source_warehouse.godown_name_finished }}</td>
-                    <td>{{ warehouse_product_transfer.destination_warehouse.warehouse_name_finished }}</td>
-                    <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><i class="fa-solid fa-pen-to-square px-2"></i></a></td>
-                    <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ warehouse_product_transfer.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-                    <td><a href="{% url 'product-transfer-to-warehouse-delete' warehouse_product_transfer.id %}" onclick="return confirm('Are you sure you want to delete this item?');">delete</a></td>
-                </tr>
-                {% endfor %}
+<a href="{% url 'warehouse-product-transfer-create' %}">create</a>
 
-            </tbody>
+<tr>
+    <th></th>
+</tr>
 
-        </table>
-    </div>
-</div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="modal-body-text">
-            Are you sure you want to delete this voucher No?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
-          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
-        </div>
-      </div>
-    </div>
-</div>
+<tr>
+    <td></td>
+</tr>
+
+{% for warehouse_product_transfer in warehouse_product_transfer_list %}
+
+{{ warehouse_product_transfer.voucher_no }}
+
+{{ warehouse_product_transfer.source_warehouse }}
+
+{{ warehouse_product_transfer.destination_warehouse }}
+
+<a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}" >edit</a>
+
+<form action="{% url 'product-transfer-to-warehouse-delete' warehouse_product_transfer.id %}" method='POST' class="btn btn-sm">
+    {% csrf_token %}
+    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">
+</form>
+
+{% endfor %}
+
+
 
 <script>
-    function reversAddTransfer(){
-        window.location.href="{% url 'warehouse-product-transfer-create' %}";
-    }
-    document.body.appendChild(document.getElementById('exampleModal'));
 
-  $(document).ready(function(){
-      $('.delete-btn').click(function(){
-        var itemId = $(this).data('item-id');
-        var name = $(this).closest('tr').find('td').eq(1).text();
-        var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+    $('.delete-button').click(function(){
 
-          $('#modal-body-text').html('Are you sure you want to delete the Voucher ' + coloredName + '?');
-          $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
-          $('#confirmDeleteModal').modal('show');
-      });
+        const objId = $(this).data('id');
 
-      // Confirm delete button click event
-      $('#confirmDeleteButton').click(function(){
-        var itemId = $(this).data('item-id');
-          // Redirect to delete view
-          window.location.href = '/ledgerdelete/' + itemId;
-      });
-  });
+        console.log(objId)
+
+        $.ajax({
+
+            url:'/producttransfertowarehousedelete/',
+
+            type:'GET',
+
+            data:{'objId': objId},
+
+            success : function(respones){
+
+                console.log(response)
+
+            },
+
+            error: function() {
+
+                alert('Failed to delete the item!');
+
+            }
+
+        })
+
+    })
+
 </script>
+
 {% endblock body %}

@@ -1,0 +1,40 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<div>
+    <span>Refrence ID - {{product_instance.Product_Refrence_ID}}</span>
+    <span>Model Name - {{product_instance.Model_Name}}</span>
+    <span>
+
+        <label>Images :</label>
+            {% for record in product_instance.productdetails.all %}
+            {% if record.PProduct_image.url is not None %}
+            <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
+            {% endif %}
+            {% endfor %}
+    </span>
+</div>
+
+<div>
+<table>
+    <tr>
+        <th>GRN No</th>
+        <th>Date</th>
+        <th>Description / Vendor Name</th>
+        <th>Challan No</th>
+        <th>LWO Total</th>
+        <th>Description</th>
+    </tr>
+
+    <tr></tr>
+
+
+</table>
+
+
+</div>
+
+
+
+{% endblock %}

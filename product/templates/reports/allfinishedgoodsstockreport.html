@@ -29,8 +29,8 @@
                 <td>{{query.Product.Model_Name}}</td>
                 <td>{{query.PProduct_color}}</td>
                 <td>{{query.PProduct_SKU}}</td>
-                <td>{{query.total_labour_workin_qty | default_if_none:0}}</td>
-                <td>{{query.total_qty | default_if_none:0}}</td>
+                <td><button class="border-0 rounded  mb-1 px-2 py-1" style= "color: rgb(255, 255, 255); background-color: #1030ff;"><a style="color: rgb(255, 255, 255); text-decoration: none;" href="{% url 'finished-goods-model-wise-report' query.Product.Product_Refrence_ID %}">{{query.total_labour_workin_qty | default_if_none:0}}</a></button></td>
+                <td> <button class="border-0 rounded  mb-1 px-2 py-1" style= "color: rgb(255, 255, 255); background-color: #10a7ff;"><a style="color: rgb(255, 255, 255); text-decoration: none;" href="{% url 'qc_approved-goods-model-wise-report' query.Product.Product_Refrence_ID %}">{{query.total_qty | default_if_none:0}}</a></button></td>
                 <td>0</td>
                 <td class="toatlQty">{{query.total_qty | default_if_none:0}}</td>
             </tr>
@@ -55,18 +55,7 @@
         });
     }
 
-    function finshegoodsData(){
-       
-        var finishGoodRow = document.querySelectorAll('.mainTableList tr');
-        finishGoodRow.forEach(element => {
-            element.style.cursor = "pointer";
-            element.addEventListener('click', function() {
-            var refId = element.querySelector('.refrenceId').textContent;
-            window.location.href = "/finishedgoodsmodelwisereport/"+refId
-        });
-        })
-    }
-    totalValueCheck()
+    
     finshegoodsData();
 </script>
 {% endblock %}
