@@ -1,71 +1,123 @@
 {% extends 'product/base.html' %}
-
 {% load static %}
-
 {% block body %}
+<div>
+    <div class="row">
+      <div class="col-lg-12 mt-4">
+        <div class="d-flex mb-3">
+          <button class="item-btn" onclick="redirectStockProductList()">Add +</button>
+          <div class="container-flex">
+            <input class="" type="search" placeholder="Search" aria-label="Search">  <input type="submit" class="mx-2"></input>
+          </div>
+          <button class="item-btn ms-1">Clear Filter</button>
+        </div>
+      </div>
+    </div>
+      <table class="table table-striped table-bordered table-hover" style="width:100%;">
+        <thead class="text-nowrap name_absolute sticky-top">
+          <tr>
+            <th>Voucher No</th>
+            <th>Source Godown</th>
+            <th>Destination Godown</th>
+            <th>Creation date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody class="mainTableList">
+            {% for warehouse_product_transfer in warehouse_product_transfer_list %}
+          <tr>
+            <td>{{ warehouse_product_transfer.voucher_no }}</td>
+            <td>{{ warehouse_product_transfer.source_warehouse.godown_name_finished }}</td>
+            <td>{{ warehouse_product_transfer.destination_warehouse.warehouse_name_finished }}</td>
+            <td>{{warehouse_product_transfer.created_date}}</td>
+            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i class="fa-solid fa-pen-to-square"></i></span></a></td>
+            <td>
+              <form  method='POST' action="{% url 'product-transfer-to-warehouse-delete' warehouse_product_transfer.id %}" class="formdelete">
+                {% csrf_token %}
+                <button type="button" value="Delete" class="border-0 bg-transparent delete-btn" onclick="deletedRow(this)"><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button>
+            </form>
+          </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-<a href="{% url 'warehouse-product-transfer-create' %}">create</a>
+  
+  
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Deletion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body-text">
+            Are you sure you want to delete this Warehouse name?
+            <!-- <img src="https://loading.io/asset/762041" alt=""> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="add_btn rounded-2" data-bs-dismiss="modal">No</button>
+          <button type="button" class="modal-btn" id="confirmDeleteButton">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function redirectStockProductList() {
+      window.location.href = "{% url 'warehouse-product-transfer-create' %}";
 
-<tr>
-    <th></th>
-</tr>
+    }
+  
+    document.body.appendChild(document.getElementById('exampleModal'));
+  
+    function deletedRow(button) {
+    // Find the closest form element
+    var $form = $(button).closest('form');
+    var lastRow = $(button).closest('tr')
+    var actionUrl = $form.attr('action'); // Get the form's action URL
+
+    // Display a confirmation dialog
+    if (confirm('Are you sure you want to delete this item?')) {
+        // Programmatically submit the form
+        $form.submit();
+        lastRow.css('opacity',0.5)
+    }
+}
+    
+    // $(document).ready(function(){
+    //     $('.delete-btn').click(function(){
+    //       var itemId = $(this).data('item-id');
+    //       var name = $(this).closest('tr').find('td').eq(1).text();
+    //       var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+    //       var $currentForm = $(this).closest('form');
+    //         $('#confirmDeleteMessage').html('Are you sure you want to delete the Purchase Voucher ' + coloredName + '?');
+    //        // $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+    //         $('#confirmDeleteModal').modal('show');
+    //     });
+
+    //     // Confirm delete button click event
+    //     $('#confirmDeleteButton').off('click').on('click', function(){
+    //       var itemId = $(this).data('item-id');
+    //       var $this = $(this);
+    //      // var spinner = $this.html();
+    //       $currentForm.submit();
+    //      // $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
+    //       $this.prop('disabled', true);
+    //         // Redirect to delete view
+    //         if(itemId){
+    //           $this.prop('disabled', false);
+    //           //$this.html(spinner);
+    //           //window.location.href = '/productpurchasevoucherdelete/' + itemId;
+
+    //         }
+          
+    //     });
+    // });
 
 
-<tr>
-    <td></td>
-</tr>
-
-{% for warehouse_product_transfer in warehouse_product_transfer_list %}
-
-{{ warehouse_product_transfer.voucher_no }}
-
-{{ warehouse_product_transfer.source_warehouse }}
-
-{{ warehouse_product_transfer.destination_warehouse }}
-
-<a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}" >edit</a>
-
-<form action="{% url 'product-transfer-to-warehouse-delete' warehouse_product_transfer.id %}" method='POST' class="btn btn-sm">
-    {% csrf_token %}
-    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">
-</form>
-
-{% endfor %}
-
-
-
-<script>
-
-    $('.delete-button').click(function(){
-
-        const objId = $(this).data('id');
-
-        console.log(objId)
-
-        $.ajax({
-
-            url:'/producttransfertowarehousedelete/',
-
-            type:'GET',
-
-            data:{'objId': objId},
-
-            success : function(respones){
-
-                console.log(response)
-
-            },
-
-            error: function() {
-
-                alert('Failed to delete the item!');
-
-            }
-
-        })
-
-    })
-
-</script>
+  </script>
 
 {% endblock body %}

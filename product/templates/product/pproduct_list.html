@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="table-res">
+  <div>
     <table class="table table-striped table-bordered table-hover ">
       <thead class="name_absolute sticky-top bg-white">
         <tr>
@@ -36,11 +36,11 @@
           <th>Delete</th>
         </tr>
       </thead>
-      <tbody class="mainrawTable" style="max-height: 450px; overflow-y: auto;">
+      <tbody class="mainrawTable">
         {% for product in products %}
         <tr class="expandable-row expandable-cell" data-item-id="{{ item.id }}" >
           <td>{{ forloop.counter }}</td>
-          <td class="text-nowrap">{{ product.Model_Name | default_if_none:''}}
+          <td>{{ product.Model_Name | default_if_none:''}}
             {% if product.productdetails.first.PProduct_image %}
 
             <img src="{{product.productdetails.first.PProduct_image.url }}" alt="img" style="width:40px;">

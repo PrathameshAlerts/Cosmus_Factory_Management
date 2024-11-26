@@ -6649,7 +6649,9 @@ def product_purchase_voucher_delete(request,pk):
 
 
 def warehouse_product_transfer_create_and_update(request,pk=None):
-
+    products = PProduct_Creation.objects.all()
+    godowns = Godown_finished_goods.objects.all()
+    warehouses =Finished_goods_warehouse.objects.all()
     if pk:
         voucher_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=pk)
     else:
@@ -6773,7 +6775,7 @@ def warehouse_product_transfer_create_and_update(request,pk=None):
 
             except Exception as e:
                 print(e)
-    return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset})
+    return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset,'godowns':godowns,'warehouses':warehouses})
 
 
 

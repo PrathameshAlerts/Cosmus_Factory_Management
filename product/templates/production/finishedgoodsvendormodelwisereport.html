@@ -22,7 +22,7 @@
             <table class="table table-striped table-hover table-bordered text-center">
                 <thead class="name_absolute sticky-top">
                     <tr>
-                        <th>GRN No / V No</th>
+                        <th class="text-nowrap">GRN No / V No</th>
                         <th>Date</th>
                         <th>Description</th>
                         {% for header in SKU_List %}
@@ -34,16 +34,16 @@
                     <tr>                        
                         <td>V No/ <span style="color: green; font-weight:bold">{{lwo_id}}</span></td>
                         <td>{{lwo_date}}</td>
-                        <td><span style="color: rgb(0, 97, 0); font-weight:bold">LWO = {{lwo_total_qty.0}}</span></td>
+                        <td><span style="color: green; font-weight:bold">LWO = {{lwo_total_qty.0}}</span></td>
                         {% for key, val in labour_workout_p_2_i.items %}
                         <td class="finishLwo">{{ val }}</td>
                         {% endfor %}
                     </tr>
                     {% for data in report_data_sorted %}
                     <tr class="finshgoodRow">
-                        <td>GRN/<span style="color: rgb(0, 97, 0); font-weight:bold">{{data.GRN_No}}</span></td>
+                        <td>GRN/ <span style="color: green; font-weight:bold">{{data.GRN_No}}</span></td>
                         <td class="text-nowrap">{{ data.date}}</td>
-                        <td> <span style="color: rgb(0, 97, 0); font-weight:bold">{{ data.description}}</span></td>
+                        <td> <span style="color: green; font-weight:bold">{{ data.description}}</span></td>
                         {% for key, val in data.sku_qty.items %}
                         <td class="finishLwi">{{ val }}</td>
                         {% endfor %}
@@ -52,8 +52,7 @@
                 </tbody>
                 <tbody class="mainTableList">
                     <tr>
-                        <td colspan="2"></td>
-                        <td class="text-center"><b>Balance Pcs for LWI</b></td>
+                        <td  colspan="3" class="text-end"><b>Balance Pcs for LWI</b></td>
                         {% for key, val in result_dict.items %}
                         <td class="fw-bold" >{{ val }}</td>  
                         {% endfor %}
