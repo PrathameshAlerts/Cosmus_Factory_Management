@@ -41,9 +41,9 @@
                     </tr>
                     {% for data in report_data_sorted %}
                     <tr class="finshgoodRow">
-                        <td>GRN/ <span style="color: green; font-weight:bold">{{data.GRN_No}}</span></td>
+                        <td>GRN/ <span style="color: rgb(0, 97, 0); font-weight:bold">{{data.GRN_No}}</span></td>
                         <td class="text-nowrap">{{ data.date}}</td>
-                        <td> <span style="color: green; font-weight:bold">{{ data.description}}</span></td>
+                        <td> <span style="color: rgb(0, 97, 0); font-weight:bold">{{ data.description}}</span></td>
                         {% for key, val in data.sku_qty.items %}
                         <td class="finishLwi">{{ val }}</td>
                         {% endfor %}

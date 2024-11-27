@@ -32,12 +32,8 @@
             <td>{{ warehouse_product_transfer.destination_warehouse.warehouse_name_finished }}</td>
             <td>{{warehouse_product_transfer.created_date}}</td>
             <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i class="fa-solid fa-pen-to-square"></i></span></a></td>
-            <td>
-              <form  method='POST' action="{% url 'product-transfer-to-warehouse-delete' warehouse_product_transfer.id %}" class="formdelete">
-                {% csrf_token %}
-                <button type="button" value="Delete" class="border-0 bg-transparent delete-btn" onclick="deletedRow(this)"><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button>
-            </form>
-          </td>
+  
+          <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{warehouse_product_transfer.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -72,50 +68,38 @@
     }
   
     document.body.appendChild(document.getElementById('exampleModal'));
-  
-    function deletedRow(button) {
-    // Find the closest form element
-    var $form = $(button).closest('form');
-    var lastRow = $(button).closest('tr')
-    var actionUrl = $form.attr('action'); // Get the form's action URL
-
-    // Display a confirmation dialog
-    if (confirm('Are you sure you want to delete this item?')) {
-        // Programmatically submit the form
-        $form.submit();
-        lastRow.css('opacity',0.5)
-    }
-}
     
-    // $(document).ready(function(){
-    //     $('.delete-btn').click(function(){
-    //       var itemId = $(this).data('item-id');
-    //       var name = $(this).closest('tr').find('td').eq(1).text();
-    //       var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-    //       var $currentForm = $(this).closest('form');
-    //         $('#confirmDeleteMessage').html('Are you sure you want to delete the Purchase Voucher ' + coloredName + '?');
-    //        // $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
-    //         $('#confirmDeleteModal').modal('show');
-    //     });
-
-    //     // Confirm delete button click event
-    //     $('#confirmDeleteButton').off('click').on('click', function(){
-    //       var itemId = $(this).data('item-id');
-    //       var $this = $(this);
-    //      // var spinner = $this.html();
-    //       $currentForm.submit();
-    //      // $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
-    //       $this.prop('disabled', true);
-    //         // Redirect to delete view
-    //         if(itemId){
-    //           $this.prop('disabled', false);
-    //           //$this.html(spinner);
-    //           //window.location.href = '/productpurchasevoucherdelete/' + itemId;
-
-    //         }
+    $(document).ready(function(){
+        $('.delete-btn').click(function(){
+          var itemId = $(this).data('item-id');
+          var name = $(this).closest('tr').find('td').eq(1).text();
+          var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+          var $currentForm = $(this).closest('form');
+          var row = $(this).closest('tr')
+            $('#confirmDeleteMessage').html('Are you sure you want to delete the Purchase Voucher ' + coloredName + '?');
+            //$('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+            $('#confirmDeleteModal').modal('show');
+            $('#confirmDeleteButton').off('click').on('click', function(){
+          var itemId = $(this).data('item-id');
+          var $this = $(this);
+         var spinner = $this.html();
+        
+         row.css('opacity',0.5)
+         $('#exampleModal').modal('hide');
+            // Redirect to delete view
+            if(itemId){
           
-    //     });
-    // });
+              window.location.href = '/producttransfertowarehousedelete/' + itemId;
+        
+
+            }
+          
+        });
+        });
+
+        // Confirm delete button click event
+        
+    });
 
 
   </script>

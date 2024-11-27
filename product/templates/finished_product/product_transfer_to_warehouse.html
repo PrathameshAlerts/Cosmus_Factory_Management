@@ -127,7 +127,7 @@
                           <input type="text" value="{{form.instance.remarks|default_if_none:''}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
                       </td>
                       <td>
-                          <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
+                          <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: block;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
                       </td>
                   </tr>
                   {% endfor %}

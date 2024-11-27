@@ -2,73 +2,145 @@
 {% load static %}
 {% block body %}
 
-<div>
-    <span>Refrence ID - {{product_instance.Product_Refrence_ID}}</span>
-    <span>Model Name - {{product_instance.Model_Name}}</span>
-    <span>
+<div class="mt-2 mb-3">
+    <Label class="fw-bold">Refrence ID : <span class="text-danger ms-2 me-4">{{product_instance.Product_Refrence_ID}}</span></Label>
+    <label class="fw-bold">Model No: <span class="text-danger ms-2 me-4"> {{product_instance.Model_Name}}</span></label>
+    <label class="fw-bold">Images :</label>
+        {% for record in product_instance.productdetails.all %}
+        {% if record.PProduct_image.url is not None %}
+        <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
+        {% endif %}
+        {% endfor %}
 
-        <label>Images :</label>
-            {% for record in product_instance.productdetails.all %}
-            {% if record.PProduct_image.url is not None %}
-            <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
-            {% endif %}
-            {% endfor %}
-    </span>
 </div>
 
 <div>
-<table>
-    <tr>
-        <th>GRN No</th>
-        <th>Date</th>
-        <th>Description / Vendor Name</th>
-        <th>Challan No</th>
-        <th>LWO Total</th>
-        <th>Description</th>
-        {% for x in all_sku %}
-        <th>{{x}}</th>
+<table class="table table-striped table-bordered table-hover" id="qctableRow">
+    <thead class="name_absolute sticky-top">
+        <tr>
+            <th>GRN No</th>
+            <th>Date</th>
+            <th>Description / Vendor Name</th>
+            <th>Challan No</th>
+            <th>LWO Total</th>
+            <th>Description</th>
+            {% for x in all_sku %}
+            <th>{{x}}</th>
+            {% endfor %}
+            <th>Total</th>
+        </tr>
+        <tr>
+            <th colspan="5"></th>
+            <th style="background-color:#8ce28c;color: darkblue;">Approved</th>
+            {% for key,value in consolidated_approval_dict.items %}
+            <th style="background-color: #8ce28c"><a class="text-decoration-none text-black"  href="{% url 'labour-workin-approval-split' product_instance.Product_Refrence_ID %}"><span style=" color: darkblue;" class="productApprove">{{ value }}</span></a></th>
+            {% endfor %}
+            <th style="background-color: #8ce28c ;color: darkblue;"><span class="totalApprovedValueCheck"></span></th>
+        </tr>
+    </thead>
+   <tbody class="mainTableList">
+        {% for record in sorted_data %}
+        <tr class="lwicheckValue">
+            <td>{{record.GRN_No}}</td>
+            <td>{{record.Date}}</td>
+            <td>{{record.Description}}</td>
+            <td>{{record.challan_no}}</td>
+            <td >{{record.total_lwo}}</td>
+            <td class="text-danger">{{record.desc}}</td>
+            {% for key,val in record.SKUS.items %}
+            <td ><span class="lwiValues"> {{val}}</span></td>
+            {% endfor %}
+            <td class="totalCalculation text-danger fw-bold" style="background-color: #8ce28c"></td>
+         </tr>
         {% endfor %}
-        
-        <th>Total</th>
-       
-    </tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>Approved</td>
-    {% for key,value in consolidated_approval_dict.items %}
-    <td><a href="{% url 'labour-workin-approval-split' product_instance.Product_Refrence_ID %}">{{key}} - {{ value }}</a></td>
-    {% endfor %}
-
-
-    {% for record in sorted_data %}
-    <tr>
-    <td>{{record.GRN_No}}</td>
-    <td>{{record.Date}}</td>
-    <td>{{record.Description}}</td>
-    <td>{{record.challan_no}}</td>
-    <td>{{record.total_lwo}}</td>
-    <td>{{record.desc}}</td>
-    {% for key,val in record.SKUS.items %}
-    <td>
-        {{val}}
-    </td>
-    {% endfor %}
-   </tr>
-    {% endfor %}
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-   <td>Total Aproval Pending</td>
+        <tr>
+            <td colspan="4"></td>
+            <td colspan="2" class="fw-bold">Total Aproval Pending</td>
+            {% for x in all_sku %}
+            <td><span class="totalApprovalPending text-success fw-bold"></span></td>
+            {% endfor %}
+          
+            <td style="background-color: #8ce28c "><span class="grandTotalValue text-danger fw-bold"></span></td>
+        </tr>
+   </tbody>
 </table>
 
 
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function calculateValues() {
+        const approveValue = document.querySelectorAll('.productApprove');
+        let total = 0;
+        approveValue.forEach(element => {
+            const approveQty = parseInt(element.textContent) || 0;
+            total += approveQty;
+        });
+        const totalApprove = document.querySelector('.totalApprovedValueCheck');
+        totalApprove.textContent = total; // Format to 2 decimal places
+    }
 
+    const tableRows = document.querySelectorAll(".mainTableList .lwicheckValue");
+    const totalApprovalPendingCells = document.querySelectorAll(".productApprove");
+    const totalAllLwiValue = document.querySelectorAll('.totalCalculation');
+    const columnCount = tableRows[0].querySelectorAll("td").length - 1;
+
+    // Initialize column totals
+    const columnTotals = new Array(columnCount).fill(0);
+
+    // Calculate row-wise totals
+    tableRows.forEach(row => {
+        const lwiValues = row.querySelectorAll(".lwiValues");
+        let rowTotal = 0;
+        lwiValues.forEach(cell => {
+            const value = parseInt(cell.textContent.trim()) || 0;
+            rowTotal += value;
+        });
+
+        const totalCell = row.querySelector(".totalCalculation");
+        if (totalCell) {
+            totalCell.textContent = rowTotal;
+        }
+    });
+
+    // Calculate column-wise totals
+    tableRows.forEach(row => {
+        const cells = row.querySelectorAll(".lwiValues");
+        cells.forEach((cell, index) => {
+            const value = parseInt(cell.textContent.trim()) || 0;
+            columnTotals[index] += value;
+        });
+    });
+
+    // Calculate and display pending approvals
+    totalApprovalPendingCells.forEach((cell, index) => {
+        const currentTotal = parseInt(cell.textContent.trim()) || 0;
+        const newTotal = (columnTotals[index] || 0) - currentTotal;
+
+        const totalCell = document.querySelectorAll(".totalApprovalPending")[index];
+        if (totalCell) {
+            totalCell.textContent = newTotal;
+        }
+    });
+
+    // Calculate grand total
+    let newValue = 0;
+    totalAllLwiValue.forEach(value => {
+        newValue += parseInt(value.textContent.trim()) || 0;
+    });
+
+    const totalApproveData = parseInt(document.querySelector('.totalApprovedValueCheck').textContent) || 0;
+    const grandTotal = newValue - totalApproveData;
+    document.querySelector('.grandTotalValue').textContent = grandTotal;
+
+    // Call calculateValues to ensure totals are updated
+    calculateValues();
+});
+
+    </script>
+    
+        
+    
 
 {% endblock %}
