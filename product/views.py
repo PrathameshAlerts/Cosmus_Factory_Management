@@ -6523,7 +6523,7 @@ def cuttingroomdelete(request,pk):
 
 
 
-
+@login_required(login_url='login')
 def product_purchase_voucher_create_update(request, pk=None):
 
     products = PProduct_Creation.objects.all()
@@ -6654,12 +6654,15 @@ def product_purchase_voucher_create_update(request, pk=None):
             'product_purchase_voucher_items_formset_instance':product_purchase_voucher_items_formset_instance,'products':products,'warehouses':warehouses,'party_names':party_names})
 
 
+
+@login_required(login_url='login')
 def product_purchase_voucher_list(request):
 
     product_purchase_voucher_all = product_purchase_voucher_master.objects.all()
 
     return render(request,'finished_product/product_purchase_voucher_list.html',{'product_purchase_voucher_all':product_purchase_voucher_all})
 
+@login_required(login_url='login')
 def product_purchase_voucher_delete(request,pk):
 
     if pk:
@@ -6669,7 +6672,7 @@ def product_purchase_voucher_delete(request,pk):
     
 
 
-
+@login_required(login_url='login')
 def warehouse_product_transfer_create_and_update(request,pk=None):
     products = PProduct_Creation.objects.all()
     godowns = Godown_finished_goods.objects.all()
@@ -6801,13 +6804,13 @@ def warehouse_product_transfer_create_and_update(request,pk=None):
 
 
 
-
+@login_required(login_url='login')
 def product_transfer_to_warehouse_list(request):
     warehouse_product_transfer_list = Finished_goods_Stock_TransferMaster.objects.all().order_by('voucher_no')
     return render(request,'finished_product/product_transfer_to_warehouse_list.html',{'warehouse_product_transfer_list':warehouse_product_transfer_list})
 
 
-
+@login_required(login_url='login')
 def product_transfer_to_warehouse_delete(request,id):
     if request.method == 'POST':  
         transfer_records = Finished_goods_transfer_records.objects.filter(Finished_goods_Stock_TransferMasterinstance = id)
@@ -6823,7 +6826,25 @@ def product_transfer_to_warehouse_delete(request,id):
     return redirect('all-product-transfer-to-warehouse')
 
 
+def product_transfer_to_warehouse_ajax(request):
+    
+    godown_id = request.GET.get('godown_id')
 
+    if godown_id:
+
+        try:
+            filtered_product = list(product_godown_quantity_through_table.objects.filter(godown_name__id = godown_id).values('product_color_name__Product__Product_Name','product_color_name__PProduct_SKU','product_color_name__PProduct_color__color_name','quantity'))
+            
+            
+            
+            
+            return JsonResponse({'filtered_product':filtered_product})
+        except ObjectDoesNotExist as oe:
+            print('TEST')
+            return JsonResponse({'filtered_product':filtered_product})
+    
+
+    
 
 
 
@@ -7329,7 +7350,7 @@ def godown_item_report(request, shade_id,g_id=None):
                 'closing_quantity': 0,
                 'closing_value': 0,
                 'rate': record.rate,
-                'embedded_url' : f'{root_url}labourworkoutsingleview/{stock_qty.labour_workout_child_instance.id}'
+                'embedded_url' : f'{root_url}labourworkoutsingleview/{record.labour_workout_child_instance.id}'
                 })
     
     for stock_qty in Raw_Stock_Transfer_Master_object_qty_outward:
@@ -7469,6 +7490,12 @@ def qc_approved_model_wise_report(request,ref_id):
 
             
             
+            
+
+            
+            
+
+
             
             
 
