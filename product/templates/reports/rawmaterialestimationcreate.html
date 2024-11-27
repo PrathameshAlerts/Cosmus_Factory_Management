@@ -67,10 +67,11 @@
                     <td>
                         <input type="number" class="item-select" name="{{form.prefix}}-total_product_qty" value="{{form.instance.total_product_qty}}" id="id_{{form.prefix}}-total_product_qty">
                     </td>
-                    <td>{% if form.instance.id %}
-                        <button type="button" class="rounded px-3 py-1 bg-success text-white border-0" id="{{form.prefix}}-clickBtn" onclick="openRawMaterialPopup(this)">click</button>
+                    <td>
+                        {% if form.instance.id %}
+                        <button type="button" class="rounded px-3 py-1 bg-success text-white border-0 clickBtn" id="id_{{forloop.counter0}}-clickBtn" onclick="openRawMaterialPopup(this)">click</button>
                         {% if form.instance.raw_material_product_ref_itemss_p_2_i.exists %}
-                        <span class="ms-3 text-success icons" id="{{form.prefix}}-icons"><i class="fa-solid fa-circle-check fs-4"></i></span>
+                        <span class="ms-3 text-success icons" id="id_{{forloop.counter0}}-icons"><i class="fa-solid fa-circle-check fs-4"></i></span>
                         {% endif %}
                         {% endif %}
                         
@@ -187,73 +188,61 @@
 
 
   
-    document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            const addnewButton = document.getElementById('addRowMaterial');
+            const table = document.querySelector('.mainTableList');
 
-        const addnewButton = document.getElementById('addRowMaterial');
-        const table = document.querySelector('.mainTableList');
-        if (addnewButton && table) {
-            addnewButton.addEventListener('click', function () {
-                let lastVisibleRow = null;
-                table.querySelectorAll('tr').forEach(row => {
-                    if (window.getComputedStyle(row).display !== 'none') {
-                        lastVisibleRow = row;
-                    }
-                });
-                if(lastVisibleRow){
-                    const newForm = document.getElementById('id_raw_material_production_estimations-TOTAL_FORMS');
-                    const newFormCount = parseInt(newForm.value);
-                    const newTable = lastVisibleRow.cloneNode(true);
+            if (addnewButton && table) {
+                addnewButton.addEventListener('click', function () {
+                    let lastVisibleRow = null;
 
-                    newTable.querySelectorAll("input select").forEach(function (e) {
-                        e.value = "";
+                    // Find the last visible row in the table
+                    table.querySelectorAll('tr').forEach(row => {
+                        if (window.getComputedStyle(row).display !== 'none') {
+                            lastVisibleRow = row;
+                        }
                     });
 
-                    const newIds = newTable.querySelector('[name^="raw_material_production_estimations-"][name$="-newid"]');
-                    newIds.id = `id_raw_material_production_estimations-${newFormCount}-newid`;
-                    newIds.name = `raw_material_production_estimations-${newFormCount}-newid`;
-                    newIds.value = "";
+                    if (lastVisibleRow) {
+                        const newForm = document.getElementById('id_raw_material_production_estimations-TOTAL_FORMS');
+                        const newFormCount = parseInt(newForm.value);
+                        const newTable = lastVisibleRow.cloneNode(true);
 
-                    const ids = newTable.querySelector('span');
-                    ids.id = `id_raw_material_production_estimations-${newFormCount}`;
-                    ids.textContent = newFormCount + 1;
+                        // Update and reset only the necessary fields
+                        const serialNumber = newTable.querySelector('span');
+                        serialNumber.textContent = newFormCount + 1;
 
-                    const newProductId = newTable.querySelector('select[name$="-product_id"]');
-                    newProductId.id = `id_raw_material_production_estimations-${newFormCount}-product_id`;
-                    newProductId.name = `raw_material_production_estimations-${newFormCount}-product_id`;
-                    newProductId.value = "";
-                    // newProductId.innerHTML = "";
+                        const productSelect = newTable.querySelector('select[name$="-product_id"]');
+                        productSelect.id = `id_raw_material_production_estimations-${newFormCount}-product_id`;
+                        productSelect.name = `raw_material_production_estimations-${newFormCount}-product_id`;
+                        productSelect.value = "";
 
-                    const newproductQty = newTable.querySelector('input[name$="-total_product_qty"]');
-                    newproductQty.id = `id_raw_material_production_estimations-${newFormCount}-total_product_qty`;
-                    newproductQty.name = `raw_material_production_estimations-${newFormCount}-total_product_qty`;
-                    newproductQty.value = "";
+                        const productQty = newTable.querySelector('input[name$="-total_product_qty"]');
+                        productQty.id = `id_raw_material_production_estimations-${newFormCount}-total_product_qty`;
+                        productQty.name = `raw_material_production_estimations-${newFormCount}-total_product_qty`;
+                        productQty.value = "";
 
-                    const deleteElement = newTable.querySelector('input[name^="raw_material_production_estimations-"][name$="DELETE"]');
-                    deleteElement.id = `id_raw_material_production_estimations-${newFormCount}-DELETE`;
-                    deleteElement.name = `raw_material_production_estimations-${newFormCount}-DELETE`;
-                    deleteElement.value = "";
-                    deleteElement.checked = false;
+                        const deleteCheckbox = newTable.querySelector('input[name$="-DELETE"]');
+                        deleteCheckbox.id = `id_raw_material_production_estimations-${newFormCount}-DELETE`;
+                        deleteCheckbox.name = `raw_material_production_estimations-${newFormCount}-DELETE`;
+                        deleteCheckbox.checked = false;
 
-                    const clickBtns = newTable.querySelector('button[id$="-clickBtn"]');
-                    clickBtns.id = `id_raw_material_production_estimations-${newFormCount}-clickBtn`;
-                    clickBtns.style.display = 'none';
+                        newTable.querySelectorAll('.clickBtn, .icons').forEach(element => {
+                            element.style.display = 'none';
+                        });
 
-                    const newIcons = newTable.querySelector('span[id$="-icons"]')
-                    newIcons.id = `id_raw_material_production_estimations-${newFormCount}-icons`;
-                    newIcons.style.display ='none';
+                        newForm.value = newFormCount + 1;
 
-                    
-                    newForm.value = newFormCount + 1;
+                        table.appendChild(newTable);
+                        if (typeof deleteRow === 'function') {
+                            deleteRow();
+                        }
+                    }
+                });
+            }
+        });
 
-                    table.appendChild(newTable);
-                    deleteRow();
-                }
 
-            })
-
-        }
-
-    })
     function deleteRow(){
         document.querySelectorAll('.delete-btn').forEach(function (button) {
         button.addEventListener('click',function(){

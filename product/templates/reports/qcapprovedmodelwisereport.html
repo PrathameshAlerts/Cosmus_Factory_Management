@@ -46,10 +46,10 @@
             <td>{{record.Description}}</td>
             <td>{{record.challan_no}}</td>
             <td >{{record.total_lwo}}</td>
-            <td class="text-danger">{{record.desc}}</td>
+            <td class="text-danger fw-bold">{{record.desc}}</td>
             {% for key,val in record.SKUS.items %}
             <td ><span class="lwiValues"> {{val}}</span></td>
-            {% endfor %}
+            {% endfor %} 
             <td class="totalCalculation text-danger fw-bold" style="background-color: #8ce28c"></td>
          </tr>
         {% endfor %}
@@ -57,7 +57,7 @@
             <td colspan="4"></td>
             <td colspan="2" class="fw-bold">Total Aproval Pending</td>
             {% for x in all_sku %}
-            <td><span class="totalApprovalPending text-success fw-bold"></span></td>
+            <td><span class="totalApprovalPending fw-bold"></span></td>
             {% endfor %}
           
             <td style="background-color: #8ce28c "><span class="grandTotalValue text-danger fw-bold"></span></td>

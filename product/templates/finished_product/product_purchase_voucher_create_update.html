@@ -68,78 +68,80 @@
             
             </div>
         </div>
-
-        <table id="myTable" class="table table-striped table-hover table-responsive table-bordered">
-            <thead class="name_absolute">
-                <th>No</th>
-                <th colspan="2">Product Name</th>
-                <th style="padding-left: 25px;">Colour</th>
-                <th>Quantity</th>
-                <th>Rate</th>
-                <th>Units</th>
-                <th>Tax</th>
-                <th>GST %</th>
-                <th>CGST</th>
-                <th>SGST/IGST</th>
-                <th>Total Amount</th>
-                <th>DELETE</th>
-            </thead>
-            <tbody class="mainTableList">
-                {{product_purchase_voucher_items_formset_instance.management_form}}
-                {% for forms in product_purchase_voucher_items_formset_instance %}
-                {{ forms.id }}
-                
-                <tr> 
-                    <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
-                    <td colspan="2">
-                        <div class="custom-dropdown-container">
-                            <input type="hidden" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name"  value="" > 
-                            <input type="text" name="{{forms.prefix}}-product_name_value" id="id_{{forms.prefix}}-product_name_Value" class="product2Selectpurchase search-input"  placeholder="Product Name" autocomplete="off" value="{% if forms.instance.id %}{{forms.instance.product_name.Product.Product_Name}}{% endif %}" > 
-                            <div name="select_product_name_{{forloop.counter0}}" class="product2Selectpurchase product-name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
-                              
-                           
-                             </div>
-                        </div> 
-                    </td>
-                    <td><input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{forms.instance.product_name.PProduct_color}}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
-           
-                    <td><input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" ></td>
-                    <td><input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}"></td>
-                    <td style="width: 50px;"><input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="NOS" class="purchase-mark" readonly></td>
-                    <td>
-                        <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
-                    </td>
-                    <td>
-                        
-                        <input type="number" id="{{forms.prefix}}-gst" class="purchase-mark purchase-gst" name="{{forms.prefix}}-gst" value="{{ forms.instance.product_name.Product.Product_GST.gst_percentage }}" readonly >
-                    </td>
-                    <td>
-                        <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst" name="{{forms.prefix}}-cgst" value=""readonly >
-                    </td>
-                    <td>
-                        <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value=""readonly >
-                    </td>
-                    <td><input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly></td>
-                    <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+        <div class="table-res"> 
+            <table id="myTable" class="table table-striped table-hover  table-bordered">
+                <thead class="name_absolute">
+                    <th>No</th>
+                    <th colspan="2">Product Name</th>
+                    <th style="padding-left: 25px;">Colour</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Units</th>
+                    <th>Tax</th>
+                    <th>GST %</th>
+                    <th>CGST</th>
+                    <th>SGST/IGST</th>
+                    <th>Total Amount</th>
+                    <th>DELETE</th>
+                </thead>
+                <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                    {{product_purchase_voucher_items_formset_instance.management_form}}
+                    {% for forms in product_purchase_voucher_items_formset_instance %}
+                    {{ forms.id }}
                     
-                </tr>   
-                {% endfor %}
-            </tbody>
-            <tbody>
-                <tr>
-                    <td class="text-center fw-bold" ><span>Total</span></td>
-                    <td colspan="3"></td>
-                    <td> <input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
-                    <td colspan="2"></td>
-                    <td><input type="number" class="purchase-amount" style="border: 1px solid red;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
-                    <td></td>
-                    <td><input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
-                    <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
-                    <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
-                </tr>
-            </tbody>
-
-        </table>
+                    <tr> 
+                        <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
+                        <td colspan="2">
+                            <div class="custom-dropdown-container">
+                                <input type="hidden" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name"  value="" > 
+                                <input type="text" name="{{forms.prefix}}-product_name_value" id="id_{{forms.prefix}}-product_name_Value" class="product2Selectpurchase search-input"  placeholder="Product Name" autocomplete="off" value="{% if forms.instance.id %}{{forms.instance.product_name.Product.Product_Name}}{% endif %}" > 
+                                <div name="select_product_name_{{forloop.counter0}}" class="product2Selectpurchase product-name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
+                                  
+                               
+                                 </div>
+                            </div> 
+                        </td>
+                        <td><input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{forms.instance.product_name.PProduct_color}}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
+               
+                        <td><input type="number" id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" ></td>
+                        <td><input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}"></td>
+                        <td style="width: 50px;"><input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="NOS" class="purchase-mark" readonly></td>
+                        <td>
+                            <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
+                        </td>
+                        <td>
+                            
+                            <input type="number" id="{{forms.prefix}}-gst" class="purchase-mark purchase-gst" name="{{forms.prefix}}-gst" value="{{ forms.instance.product_name.Product.Product_GST.gst_percentage }}" readonly >
+                        </td>
+                        <td>
+                            <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst" name="{{forms.prefix}}-cgst" value=""readonly >
+                        </td>
+                        <td>
+                            <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value=""readonly >
+                        </td>
+                        <td><input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly></td>
+                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+                        
+                    </tr>   
+                    {% endfor %}
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="text-center fw-bold" ><span>Total</span></td>
+                        <td colspan="3"></td>
+                        <td> <input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_quantity" id ="id_grand_quantity" value="" maxlength="50" step=".01" readonly></td>
+                        <td colspan="2"></td>
+                        <td><input type="number" class="purchase-amount" style="border: 1px solid red;"  name="grand_taxableAmount" id ="id_grand_taxableAmount" value="" maxlength="50" step=".01" readonly ></td>
+                        <td></td>
+                        <td><input type="number" class="purchase-input" style="border: 1px solid red;" name="grand_cgst" id ="id_grand_cgst" value="" maxlength="50" step=".01" readonly></td>
+                        <td><input type="number" class="purchase-input" style="border: 1px solid red; " name="grand_Sgst" id ="id_grand_sgst" value="" maxlength="50" step=".01" readonly > </td>
+                        <td> <input type="number" class="purchase-amount" style="border: 1px solid red;" name="grand_amount" id ="id_grand_amount" value="" maxlength="50" step=".01" readonly></td>
+                    </tr>
+                </tbody>
+    
+            </table>
+        </div>
+        
        
     <div class="row">
         <div class="col-lg-9">
