@@ -56,7 +56,7 @@
           </div>
           <span class="pt-3 px-2">To</span>
           <div class="mx-2">
-              <label for="" class="item-form">Target Godown:</label>
+              <label for="" class="item-form">Target Warehouse:</label>
               <p>(Transfer to)</p>
           </div>
           <div class=" d-flex mb-3 ms-3 my-2">
@@ -242,16 +242,15 @@
           var enterPressed = false;
           var itemName;
           var purchaseValue
-          $('#id_source_godown').on('change', function () {
-              const selectedGodownId = $(this).val();
+          $('#id_source_warehouse').on('change', function () {
+              const godown_id = $(this).val();
               const id = $(this).attr('id');
-             
+             console.log(godown_id)
               $.ajax({
-                  url: '/stocktransferrawcreate/',
+                  url: '/producttransfertowarehouseajax/',
                   method: 'GET',
                   data: {
-                      'selected_godown_id': selectedGodownId
-                  },
+                    godown_id                  },
                   success: function (response) {
                       $('.stock_product_name').empty()
                       $('.stock_color').val('');
@@ -260,8 +259,8 @@
                       $('.stock_remarks').val('');
   
   
-                  //     const itemsInGodown = response.items_in_godown;
-                  //   console.log('itemsInGodown',itemsInGodown)
+                    const itemsInGodown = response;
+                  console.log('itemsInGodown',itemsInGodown)
                       $(document).on('click input keyup focus keydown', 'input[name$="-products"]', function () {
                       itemName = $(this).closest('tr').find('input[name$="-product_quantity_transfer"]').attr('name');
                       purchaseValue = itemName.split('-')[1];
