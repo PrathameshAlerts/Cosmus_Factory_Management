@@ -948,6 +948,9 @@ class godown_item_report_for_cutting_room(models.Model):
     inward = models.BooleanField() 
     total_comsumption = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     rate = models.DecimalField(max_digits=10, decimal_places = DECIMAL_PLACE_CONSTANT)
+    p_o_id = models.CharField(max_length=20)
+    product_ref_no = models.PositiveBigIntegerField()
+    cutting_pk = models.IntegerField()
 
 
 class labour_workin_approval_report(models.Model):

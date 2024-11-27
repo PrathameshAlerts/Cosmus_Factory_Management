@@ -7144,11 +7144,24 @@ def godown_stock_raw_material_report_fab_grp(request,g_id,fab_id=None):
 
 @login_required(login_url='login')
 def godown_item_report(request, shade_id,g_id=None):
-    
+
+    """
+    scheme = request.scheme
+    host = request.get_host()
+    path = request.get_full_path()
+    request.build_absolute_uri()    
+    """
+    scheme = request.scheme
+    host = request.get_host()
+
+    root_url = f'{scheme}://{host}/'
+
     shade_name = item_color_shade.objects.get(id=shade_id)
     godown_name = 'All Stock'
 
     report_data = []
+
+    opening_godown_data = []
 
     if g_id is not None:
         godown_name = Godown_raw_material.objects.get(id=g_id)
@@ -7231,7 +7244,7 @@ def godown_item_report(request, shade_id,g_id=None):
         
     for godown_qty in opening_godown_qty:
 
-        report_data.append({
+        opening_godown_data.append({
             'date': godown_qty.created_date,
             'particular': 'Opening Balance',
             'voucher_type': '',
@@ -7249,7 +7262,7 @@ def godown_item_report(request, shade_id,g_id=None):
 
         report_data.append({
             'date': purchase_voucher_item_qty.created_date,
-            'particular': 'Puchase Voucher',
+            'particular': purchase_voucher_item_qty.party_name.name,
             'voucher_type': purchase_voucher_item_qty.ledger_type,
             'vch_no': purchase_voucher_item_qty.purchase_number,
             'inward_quantity': f"{purchase_voucher_item_qty.godown_qty_total}",
@@ -7258,7 +7271,8 @@ def godown_item_report(request, shade_id,g_id=None):
             'outward_value': '',
             'closing_quantity':0,
             'closing_value': 0,
-            'rate': purchase_voucher_item_qty.item_rate
+            'rate': purchase_voucher_item_qty.item_rate,
+            'embedded_url' : f'{root_url}purchasevoucherupdate/{purchase_voucher_item_qty.id}'
             })
         
 
@@ -7266,8 +7280,8 @@ def godown_item_report(request, shade_id,g_id=None):
         outward_value = round(fabric_cutting_items.total_comsumption * fabric_cutting_items.rate , 2)
         report_data.append({
             'date': fabric_cutting_items.creation_date,
-            'particular': 'Cutting Room',
-            'voucher_type': 'Cutting Room',
+            'particular': fabric_cutting_items.particular,
+            'voucher_type': fabric_cutting_items.voucher_type,
             'vch_no': fabric_cutting_items.voucher_number,
             'inward_quantity': '',
             'inward_value': '',
@@ -7275,15 +7289,17 @@ def godown_item_report(request, shade_id,g_id=None):
             'outward_value': outward_value,
             'closing_quantity': 0,
             'closing_value': 0,
-            'rate': fabric_cutting_items.rate})
+            'rate': fabric_cutting_items.rate,
+            'embedded_url' : f'{root_url}purchaseordercuttingupdate/{fabric_cutting_items.p_o_id}/{fabric_cutting_items.product_ref_no}/{fabric_cutting_items.cutting_pk}'
+             })
     
 
     for fabric_cutting_cancelled_items in purchase_order_cutting_room_qty_cancelled:
         inward_value = round(fabric_cutting_cancelled_items.total_comsumption * fabric_cutting_items.rate, 2)
         report_data.append({
             'date': fabric_cutting_cancelled_items.creation_date,
-            'particular': 'Cutting Room Cancelled',
-            'voucher_type': 'Cutting Room',
+            'particular': fabric_cutting_cancelled_items.particular,
+            'voucher_type': fabric_cutting_cancelled_items.voucher_type,
             'vch_no': fabric_cutting_cancelled_items.voucher_number,
             'inward_quantity': f"{fabric_cutting_cancelled_items.total_comsumption}",
             'inward_value': inward_value,
@@ -7291,18 +7307,20 @@ def godown_item_report(request, shade_id,g_id=None):
             'outward_value': '',
             'closing_quantity': 0,
             'closing_value': 0,
-            'rate': fabric_cutting_cancelled_items.rate})
+            'rate': fabric_cutting_cancelled_items.rate,
+            'embedded_url':f'{root_url}purchaseordercuttingupdate/{fabric_cutting_items.p_o_id}/{fabric_cutting_items.product_ref_no}/{fabric_cutting_items.cutting_pk}'
+            })
         
     for record in labour_workout_report:
         item_instance = item_color_shade.objects.get(items__item_name=record.material_name,item_shade_name=record.material_color_shade)
         
         if item_instance.items.Fabric_nonfabric == 'Non Fabric':
             outward_value = round(record.total_comsumption * record.rate , 2)
-
+            
             report_data.append({
                 'date': record.created_date,
-                'particular': 'Labour workout',
-                'voucher_type': 'Labour workout',
+                'particular': record.labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.ledger_party_name.name,
+                'voucher_type': f'Labour workout/{record.labour_workout_child_instance.labour_name.name}',
                 'vch_no': record.labour_workout_child_instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number,
                 'inward_quantity': '',
                 'inward_value': '',
@@ -7310,7 +7328,9 @@ def godown_item_report(request, shade_id,g_id=None):
                 'outward_value': outward_value,
                 'closing_quantity': 0,
                 'closing_value': 0,
-                'rate': record.rate})
+                'rate': record.rate,
+                'embedded_url' : f'{root_url}labourworkoutsingleview/{stock_qty.labour_workout_child_instance.id}'
+                })
     
     for stock_qty in Raw_Stock_Transfer_Master_object_qty_outward:
 
@@ -7325,7 +7345,8 @@ def godown_item_report(request, shade_id,g_id=None):
             'outward_value': round(stock_qty.item_shade_transfer.rate * stock_qty.item_quantity_transfer),
             'closing_quantity': 0,
             'closing_value': 0,
-            'rate': stock_qty.item_shade_transfer.rate
+            'rate': stock_qty.item_shade_transfer.rate,
+            'embedded_url' : f'{root_url}stocktransferrawupdate/{stock_qty.master_instance.voucher_no}'
         })
 
     for stock_qty in Raw_Stock_Transfer_Master_object_qty_inward:
@@ -7341,7 +7362,8 @@ def godown_item_report(request, shade_id,g_id=None):
             'outward_value': '',
             'closing_quantity': 0,
             'closing_value': 0,
-            'rate':stock_qty.item_shade_transfer.rate
+            'rate':stock_qty.item_shade_transfer.rate,
+            'embedded_url' : f'{root_url}stocktransferrawupdate/{stock_qty.master_instance.voucher_no}'
         })
 
 
@@ -7367,6 +7389,7 @@ def godown_item_report(request, shade_id,g_id=None):
 
     report_data_sorted = sorted(report_data, key = itemgetter('date'), reverse=False)
 
+    
     """
     The sorted() function is used to sort the list. It returns a new list that is sorted 
     according to the specified key.
@@ -7380,7 +7403,8 @@ def godown_item_report(request, shade_id,g_id=None):
     """
     
     return render(request,'reports/godownstockrawmaterialreportsingle.html',{'godoown_name':godown_name,
-                                                                             'shade_name':shade_name,'report_data':report_data_sorted,'page_name':'Raw Material Report'})
+                                                                             'shade_name':shade_name,'report_data':report_data_sorted,
+                                                                             'page_name':'Raw Material Report','opening_godown_data':opening_godown_data})
 
 
 
@@ -7434,7 +7458,9 @@ def qc_approved_model_wise_report(request,ref_id):
                 'Description' : f'Description /{record.labour_voucher_number.labour_name.name}',
                 'challan_no' : record.labour_voucher_number.challan_no,
                 'total_lwo' : record.labour_voucher_number.total_process_pcs,
-                'desc':'LWI'
+                'desc':'LWI',
+                'id' : record.id,
+                'l_w_o_id' :record.labour_voucher_number.id,
             }
 
             lwi_p_2_i = dict(record.l_w_in_products.all().values_list('product_sku','return_pcs')) 
@@ -7455,6 +7481,7 @@ def qc_approved_model_wise_report(request,ref_id):
                 
                 if only_sku in lwi_p_2_i:
                     skus[only_sku] = lwi_p_2_i[only_sku]
+
                 else:
                     
                     skus[only_sku] = 0
