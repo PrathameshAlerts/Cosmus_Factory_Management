@@ -962,6 +962,8 @@ class labour_workin_approval_report(models.Model):
 class raw_material_production_estimation(models.Model):
     raw_material_godown_id = models.ForeignKey(Godown_raw_material, on_delete=models.PROTECT)
 
+
+
 class raw_material_product_ref_items(models.Model):
     raw_material_estimation_master = models.ForeignKey(raw_material_production_estimation, related_name='raw_material_production_estimations', on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, on_delete=models.PROTECT)
