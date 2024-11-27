@@ -15,7 +15,7 @@
                 
                     <tr class ="text-nowrap text-center">
                         <th>Date</th>
-                        <th>Particular</th>
+                        <th>Description</th>
                         <th>Voucher Type</th>
                         <th>Voucher No</th>
                         <th colspan="2" class="bg-c-blue">INWards - {{shade_name.items.unit_name_item.unit_name}}</th>
@@ -39,6 +39,27 @@
                 </tbody>
               
                 <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+
+                    {% for data in opening_godown_data %}
+                    <tr>
+                        <td style="color: red; font-weight:bold" >{{data.date}}</td>
+                        <td style="color: red; font-weight:bold" >{{data.particular}}<br>
+                        </td>
+                        <td>{{data.voucher_type}}</td>
+                        <td>{{data.vch_no}}</td>
+                        <td style="background-color: #90D5FF;" class="inwardQty">{{data.inward_quantity}}</td>
+                        <td style="background-color: #90D5FF;" class="inwardValue">{{data.inward_value}}</td>
+                        <td style="background-color: #ffcccb;" class="outwardQty">{{data.outward_quantity}}</td>
+                        <td style="background-color: #ffcccb;" class="outwardValue">{{data.outward_value}}</td>
+                        <td class="closingQty" style="background-color: #a3efe0;">{{data.closing_quantity}}</td>
+                        <td style="background-color: #a3efe0;">{{data.rate}}</td>
+                        <td class="closingValue" style="background-color: #a3efe0;">{{data.closing_value}}</td>
+                
+                    </tr>
+
+                    {% endfor %}
+
+
                     {% for data in report_data %}
                     <tr>
                         <td>{{data.date}}</td>
@@ -52,7 +73,11 @@
 
                         </td>
                         <td>{{data.voucher_type}}</td>
-                        <td>{{data.vch_no}}</td>
+                        <td>
+                        <button class="border-0 rounded  mb-1 px-2 py-1" style="color: rgb(255, 255, 255); background-color: #052b39;">
+                            <a style="color: rgb(255, 255, 255); text-decoration: none;" href="{{data.embedded_url}}">{{data.vch_no}}</a>
+                        </button>
+                        </td>
                         <td style="background-color: #90D5FF;" class="inwardQty">{{data.inward_quantity}}</td>
                         <td style="background-color: #90D5FF;" class="inwardValue">{{data.inward_value}}</td>
                         <td style="background-color: #ffcccb;" class="outwardQty">{{data.outward_quantity}}</td>
