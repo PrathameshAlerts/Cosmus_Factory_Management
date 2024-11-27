@@ -6843,22 +6843,24 @@ def product_transfer_to_warehouse_ajax(request):
             filtered_product = list(product_godown_quantity_through_table.objects.filter(
             godown_name__id = godown_id).values('product_color_name__Product__Product_Name','product_color_name__PProduct_SKU','product_color_name__PProduct_color__color_name','quantity'))
             
-           
-            dict_to_send = {}
+            if filtered_product:
+                dict_to_send = {}
 
-            for query in filtered_product:
+                for query in filtered_product:
 
-                p_sku = query.get('product_color_name__PProduct_SKU')
-                product_name = query.get('product_color_name__Product__Product_Name')
-                color = query.get('product_color_name__PProduct_color__color_name')
-                qty = query.get('quantity')
-                dict_to_send[p_sku] = {'qty':qty,'color': color,'product_name': product_name}
+                    p_sku = query.get('product_color_name__PProduct_SKU')
+                    product_name = query.get('product_color_name__Product__Product_Name')
+                    color = query.get('product_color_name__PProduct_color__color_name')
+                    qty = query.get('quantity')
+                    
+                    dict_to_send[p_sku] = {'qty':qty,'color': color,'product_name': product_name}
 
+                return JsonResponse({'filtered_product':dict_to_send})
             
-            if not filtered_product:
+            else:
                 raise ObjectDoesNotExist
 
-            return JsonResponse({'filtered_product':filtered_product})
+            
         
         except ObjectDoesNotExist as oe:
             return JsonResponse({'error': 'No items found.'}, status=404)

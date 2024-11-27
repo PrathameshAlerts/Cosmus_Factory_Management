@@ -83,7 +83,7 @@ MIDDLEWARE = [
 AUTH_USER_MODEL = 'core.CustomUser'
 
 ROOT_URLCONF = 'config.urls'
-print(ROOT_URLCONF)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
