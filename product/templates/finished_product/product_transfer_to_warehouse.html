@@ -107,7 +107,7 @@
                       <td>
                           <div class="custom-dropdown-container">
                             <input  type="hidden" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product" value=""  > 
-                              <input  type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="product2Selectpurchase search-input"  placeholder="Product Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                              <input  type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="product2Selectpurchase search-input stock_product_name"  placeholder="Product Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
                               <div name="select_product_name_{{forloop.counter0}}" class="product2Selectpurchase stock_input_name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
                                 
                              
@@ -242,15 +242,15 @@
           var enterPressed = false;
           var itemName;
           var purchaseValue
-          $('#id_source_godown').on('change', function () {
-              const selectedGodownId = $(this).val();
+          $('#id_source_warehouse').on('change', function () {
+              const godown_id = $(this).val();
               const id = $(this).attr('id');
              
               $.ajax({
-                  url: '/stocktransferrawcreate/',
+                  url: '/producttransfertowarehouseajax/',
                   method: 'GET',
                   data: {
-                      'selected_godown_id': selectedGodownId
+                      'godown_id': godown_id
                   },
                   success: function (response) {
                       $('.stock_product_name').empty()
@@ -260,8 +260,8 @@
                       $('.stock_remarks').val('');
   
   
-                  //     const itemsInGodown = response.items_in_godown;
-                  //   console.log('itemsInGodown',itemsInGodown)
+                      const itemsInGodown = response.filtered_product;
+                    console.log('itemsInGodown',itemsInGodown)
                       $(document).on('click input keyup focus keydown', 'input[name$="-products"]', function () {
                       itemName = $(this).closest('tr').find('input[name$="-product_quantity_transfer"]').attr('name');
                       purchaseValue = itemName.split('-')[1];
@@ -288,7 +288,7 @@
                       function escapeRegExp(string) {
                               return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                       }
-                          searchedItemNameDict = response.items_in_godown;
+                          searchedItemNameDict = response.filtered_product;
                           var searchQuery = nameValue.toLowerCase();
                           var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                           var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
@@ -315,7 +315,6 @@
                           
                               $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
                               $(this).addClass('selected').siblings().removeClass('selected');
-  
                           
                               handleSelection(StockValue,itemName, item_value)
                               suggestionsContainer.css('display', 'none');
