@@ -1,13 +1,7 @@
 {% extends 'product/base.html' %}
-
-
-
 {% load static %}
-
-
-
 {% block body %}
-
+<!-- 
     <form action="" method="POST">
 
         {% csrf_token %}
@@ -28,6 +22,510 @@
 
         <input type="submit">
 
-    </form>
+    </form> -->
+    <form action="" method="post" id="stockTransferForm" class="mt-3">
+      {% csrf_token %}
+      <div class="d-flex mb-2">
+          <label for="id_voucher_no" class="">Voucher No:</label>
+          <input value="{{form.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">
+          <div>
+              <label for="" class="item-form">Source Godown:</label>
+              <p>(Transfer from)</p>
+          </div>
+          <div class="d-flex mb-3 ms-3 my-2">
+              <select name="source_warehouse" required class="item-select" id="id_source_warehouse">
+  
+                  {% if form.instance.pk %}
+                    <option value="{{form.instance.source_godown.id}}">{{form.instance.source_warehouse.godown_name_finished}}</option>
+                        
+                    {% for godown in godowns %}
+                    <option value="{{godown.id}}">{{godown.godown_name_finished}}</option>
+                    {% endfor %}
+  
+                  {% elif not form.instance.pk %}
+  
+                    <option value=""></option>
+                    
+                    {% for godown in godowns %}
+                    <option value="{{ godown.id }}">{{godown.godown_name_finished}}</option>
+                    {% endfor %}
+                  
+  
+                  {% endif %}
+              </select>
+          </div>
+          <span class="pt-3 px-2">To</span>
+          <div class="mx-2">
+              <label for="" class="item-form">Target Godown:</label>
+              <p>(Transfer to)</p>
+          </div>
+          <div class=" d-flex mb-3 ms-3 my-2">
+              <select class="item-select destination_godowns" required name="destination_warehouse" id="id_destination_warehouse">
+                {% if form.instance.pk %}
+                  <option value="{{form.instance.destination_warehouse.id}}">{{form.instance.destination_warehouse.warehouse_name_finished}}</option>
+                      
+                  {% for warehouse in warehouses %}
+                  <option value="{{warehouse.id}}">{{warehouse.warehouse_name_finished}}</option>
+                  {% endfor %}
+
+                {% elif not form.instance.pk %}
+
+                  <option value=""></option>
+      
+                  {% for warehouse in warehouses %}
+                  <option value="{{ warehouse.id }}">{{warehouse.warehouse_name_finished}}</option>
+                  {% endfor %}
+                
+
+                {% endif %}
+              </select>
+          </div>
+      </div>
+      <div class="d-flex mb-3">
+          
+      </div>
+     
+      <div class=" ms-3">
+          <table class="table table-striped table-hover table-bordered" id="mainProductForm">
+              <thead>
+                  <tr>
+                      <th>No</th>
+                      <th>Product Name</th>
+                      <th>Color</th>
+                      <th>Qty</th>
+                      <th>Units</th>
+                      <th>Remark</th>
+                      <th>Delete</th>
+                  </tr>
+              </thead>
+              <tbody class="mainTableList">
+                  {{ formset.management_form}}
+                  {% for form in formset %}
+                  {{ form.id }}
+                  <tr>
+                      <td><span id="id_stock_{{forloop.counter0}}">{{forloop.counter}}</span></td>
+                      <td>
+                          <div class="custom-dropdown-container">
+                            <input  type="hidden" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product" value=""  > 
+                              <input  type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="product2Selectpurchase search-input"  placeholder="Product Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                              <div name="select_product_name_{{forloop.counter0}}" class="product2Selectpurchase stock_input_name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
+                                
+                             
+                               </div>
+                          </div> 
+                      </td>
+                      <td>
+                          <input type="text" value="{{form.instance.item_shade_transfer.items.Item_Color}}" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
+                      </td>
+                      <td>
+                          <input type="text" value="{{form.instance.item_quantity_transfer|default_if_none:''}}" class="purchase-amount stock_qty" name="{{form.prefix}}-product_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-product_quantity_transfer">
+                      </td>
+                      <td>
+                          <input type="text" value="NOS" name='stock_per_{{forloop.counter0}}' id="id_stock_per_{{forloop.counter0}}" class="purchase-amount stock_units" readonly>
+                      </td>
+                      <td>
+                          <input type="text" value="{{form.instance.remarks|default_if_none:''}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
+                      </td>
+                      <td>
+                          <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: block;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          <button type="button" class="create-btn" id="addRowButton">Add +</button>
+      </div>
+      <button type="submit" id="submitButtonStockTransfer" class="create-btn mt-4" name="save" value="Save">Submit</button>
+  </form>
+  
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+  
+          const addRowButton = document.getElementById('addRowButton');
+          const mainTable = document.querySelector('.mainTableList');
+  
+          if (addRowButton && mainTable) {
+              addRowButton.addEventListener('click', function () {
+                  let lastVisibleRow = null;
+                  mainTable.querySelectorAll('tr').forEach(row => {
+                      if (window.getComputedStyle(row).display !== 'none') {
+                          lastVisibleRow = row;
+                      }
+                  });
+                  if (lastVisibleRow) {
+                      const newForm = document.getElementById('id_finished_goods_transfer_records_set-TOTAL_FORMS');
+                      const newFormCount = parseInt(newForm.value);
+                      const newTable = lastVisibleRow.cloneNode(true);
+                      newTable.querySelectorAll("input select").forEach(function (e) {
+                          e.value = "";
+                      });
+  
+                      const newId = newTable.querySelector('td:first-child span');
+                      newId.id = `id_stock_${newFormCount}`;
+                      newId.textContent = newFormCount + 1;
+                     
+  
+                      const productNameElement = newTable.querySelector('input[name^="finished_goods_transfer_records_set-"][name$="-product"]');
+                      productNameElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-product`;
+                      productNameElement.name = `finished_goods_transfer_records_set-${newFormCount}-product`;
+                      productNameElement.value = "";
+
+                      const itemNameElement = newTable.querySelector('input[name^="finished_goods_transfer_records_set-"][name$="-products"]');
+                      itemNameElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-products`;
+                      itemNameElement.name = `finished_goods_transfer_records_set-${newFormCount}-products`;
+                      itemNameElement.value = "";
+  
+                      const selectElement = newTable.querySelector('.stock_input_name[name^="select_product_name_"]');
+                      selectElement.id = `select_product_name_${newFormCount}`;
+                      selectElement.name = `select_product_name_${newFormCount}`;
+                      selectElement.innerHTML = '';
+  
+                      const itemColorElement = newTable.querySelector('input[name^="stock_color_"]');
+                      itemColorElement.id = `id_stock_color_${newFormCount}`;
+                      itemColorElement.name = `stock_color_${newFormCount}`;
+                      itemColorElement.value = "";
+  
+                      const itemQuantityElement = newTable.querySelector('input[name^="finished_goods_transfer_records_set-"][name$="product_quantity_transfer"]');
+                      itemQuantityElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-product_quantity_transfer`;
+                      itemQuantityElement.name = `finished_goods_transfer_records_set-${newFormCount}-product_quantity_transfer`;
+                      itemQuantityElement.value = "";
+  
+                      const itemPerElement = newTable.querySelector('input[name^="stock_per_"]');
+                      itemPerElement.id = `id_stock_per_${newFormCount}`;
+                      itemPerElement.name = `stock_per_${newFormCount}`;
+                      itemPerElement.value = "NOS";
+  
+                      const itemRemarksElement = newTable.querySelector('input[name^="finished_goods_transfer_records_set-"][name$="remarks"]');
+                      itemRemarksElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-remarks`;
+                      itemRemarksElement.name = `finished_goods_transfer_records_set-${newFormCount}-remarks`;
+                      itemRemarksElement.value = "";
+  
+                      const deleteElement = newTable.querySelector('.stock_deleteId[name^="finished_goods_transfer_records_set-"][name$="-transnfer_cancelled_records"]');
+                      deleteElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-transnfer_cancelled_records`;
+                      deleteElement.name = `finished_goods_transfer_records_set-${newFormCount}-transnfer_cancelled_records`;
+                      deleteElement.value = "";
+                      deleteElement.checked = false;
+  
+                      newForm.value = newFormCount + 1;
+  
+                      mainTable.appendChild(newTable);
+                      deleteRow();
+                  } else {
+                      console.error("No visible rows found to clone.");
+                  }
+              });
+          }
+  
+          function deleteRow() {
+              // Add click event listener to all delete buttons
+              document.querySelectorAll('.delete-btn').forEach(function (button) {
+                  button.addEventListener('click', function () {
+                      // Find the row containing the clicked delete button
+                      const row = this.closest('tr');
+                      const checkRow = row.querySelector('.stock_deleteId[name^="finished_goods_transfer_records_set-"][name$="-transnfer_cancelled_records"]');
+                      if (checkRow) {
+                          checkRow.checked = true; // Mark as checked
+                          checkRow.value = 'true'; // Set the value to 'true'
+                          row.style.display = 'none';
+  
+                      } else {
+                          console.error("Checkbox for deletion not found in this row");
+                      }
+                  });
+              });
+          };
+          deleteRow();
+      });
+
+      $(document).ready(function () {
+          var searchedItemNameDict;
+          var enterPressed = false;
+          var itemName;
+          var purchaseValue
+          $('#id_source_godown').on('change', function () {
+              const selectedGodownId = $(this).val();
+              const id = $(this).attr('id');
+             
+              $.ajax({
+                  url: '/stocktransferrawcreate/',
+                  method: 'GET',
+                  data: {
+                      'selected_godown_id': selectedGodownId
+                  },
+                  success: function (response) {
+                      $('.stock_product_name').empty()
+                      $('.stock_color').val('');
+                      $('.stock_qty').val('');
+                      $('.stock_units').val('');
+                      $('.stock_remarks').val('');
+  
+  
+                  //     const itemsInGodown = response.items_in_godown;
+                  //   console.log('itemsInGodown',itemsInGodown)
+                      $(document).on('click input keyup focus keydown', 'input[name$="-products"]', function () {
+                      itemName = $(this).closest('tr').find('input[name$="-product_quantity_transfer"]').attr('name');
+                      purchaseValue = itemName.split('-')[1];
+                              
+                      });
+                     $(document).on('input', 'input[name$="-products"]', function(e) {
+                      var StockValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
+                      var nameValue = $(this).val().trim();
+                      var selectNameValue = `select_item_name_${StockValue}`;
+                      var suggestionsContainer = $(`#${selectNameValue}`);
+                      console.log("name",nameValue)
+                      if (nameValue === 'None') {
+                          var selectNameValue = $(this).closest('tr').find('[name^="select_product_name_"]');
+                              
+                          selectNameValue.css('display', 'none');
+                          $(this).attr('data-key', '');
+                          return;
+                      }
+                      if(!enterPressed){
+                          suggestionsContainer.css('display', 'block');
+                      }
+                      enterPressed = false;
+                      
+                      function escapeRegExp(string) {
+                              return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
+                      }
+                          searchedItemNameDict = response.items_in_godown;
+                          var searchQuery = nameValue.toLowerCase();
+                          var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+                          var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+                          var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+                         
+                          suggestionsContainer.empty();
+                       
+                          $.each(filteredOptions, function(index, [key, value]) {
+                              let highlightedText = value;
+                              let colorStyle = '';
+                              if (searchQuery) {
+                                  highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                             
+                                  suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</span>
+                                      </div>`);
+                              } 
+                              
+                  
+                          });
+                          suggestionsContainer.on('click', '.itemName-div', function(e) {
+                              var item_value = $(this).data('key');
+                              var itemNamevaluesCheck = $(this).text();
+              
+                          
+                              $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
+                              $(this).addClass('selected').siblings().removeClass('selected');
+  
+                          
+                              handleSelection(StockValue,itemName, item_value)
+                              suggestionsContainer.css('display', 'none');
+                              
+                          });
+  
+                     })  
+                     function handleSelection(StockValue,itemName, item_value) {
+  
+                          if (item_value !== undefined) {
+                          var selectedValue = searchedItemNameDict[item_value];
+                          var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
+                          var newnameValue = namevalueCheck.replace(/[\.\s 0-9]+$/, '');
+                          const selectedValueGodown = $('#id_source_godown').val();
+                             console.log('namevalueCheck',namevalueCheck) 
+                          $(`input[name^="stock_name_${StockValue}"]`).val(newnameValue);
+  
+                          $.ajax({
+                                  url: '/stocktransferrawcreate/',
+                                  method: 'GET',
+                                  data: {
+                                      'item_value': item_value,
+                                      'selected_godown_id': selectedValueGodown
+                                  },
+                                  success: function (response) {
+                                      var itemrownameid = itemName.split('-')[1];
+                                      $('#id_rawstocktrasferrecords_set-' + itemrownameid + '-item_shade_transfer').empty().append('<option value="">Select Shade</option>');
+                                      const item_shades = response.item_shades;
+                                      const item_per = response.item_per;
+                                      const item_color = response.item_color;
+                                      const item_shade_quantity = response.items_shade_quantity_in_godown;
+  
+                                      const itemcolorinput = document.querySelector('#id_stock_color_' + itemrownameid);
+                                      const itemperinput = document.querySelector('#id_stock_per_' + itemrownameid);
+  
+                                      itemcolorinput.value = item_color;
+                                      itemperinput.value = item_per;
+  
+                                      $.each(item_shades, function (key, value) {
+                                          if (item_shade_quantity.hasOwnProperty(key)) {
+                                              $('#id_rawstocktrasferrecords_set-' + itemrownameid + '-item_shade_transfer').append('<option value="' + key + '">' + value + ' - ' + item_shade_quantity[key] + '</option>');
+                                          } else {
+                                              $('#id_rawstocktrasferrecords_set-' + itemrownameid + '-item_shade_transfer').append('<option value="' + key + '">' + value + '</option>');
+                                          }
+                                      });
+  
+                                  },
+                                  error: function (xhr, errmsg, err) {
+                                      console.log('Error sending value to the backend');
+                                  }
+                              })
+                          }
+                      } 
+  
+  
+                      var index = 0; // Declare index outside of the event listener
+                      var indexbool = true;
+  
+                  $(document).on('keydown', 'input[name^="stock_name_"]', function(event) {
+                      const $inputField = $(this);
+                      const $dropdownOptions = $inputField.next('.stock_input_name');
+                      const $options = $dropdownOptions.find('.itemName-div');
+                      const optionsCount = $options.length - 1;
+                      const searchText = $inputField.val().trim();
+                      const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_item_name_${purchaseValue}`);
+                      if (searchText === '') {
+                          index = 0;
+                          return;
+                      }
+                      const newHeight = $inputField.offset();
+                      const windowHeight = $(window).height();
+                      const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+              
+  
+                      if (event.key === 'ArrowDown') {
+                          event.preventDefault();
+  
+                          if (index <= optionsCount) {
+                          
+                              const $selectedItem = $options.eq(index);
+                              const $nextItem = $selectedItem.next();
+                              const nameDataKey = $selectedItem.text();
+                              const nameKey = $selectedItem.data('key');
+  
+                              $inputField.attr('data-key', nameKey);
+                          
+                              $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+                              const itemOffsetTop = $nextItem.position().top;
+                              const itemHeight = $nextItem.outerHeight();
+                              const selectScrollTop = $dropdownOptions.scrollTop();
+                              const selectHeight = $dropdownOptions.height();
+  
+                              if (itemOffsetTop + itemHeight > selectHeight) {
+                                  $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                              } else if (itemOffsetTop < 0) {
+                                  $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                              }
+                              $selectedItem.addClass('selected');
+                              if (index !== optionsCount) {
+                                  index += 1;
+                                  indexbool = true;
+                              }
+                          } else {
+                              index = 0;
+                          }
+                      }
+  
+                      if (event.key === 'ArrowUp') {
+                          event.preventDefault();
+  
+                          if (index != 0 && indexbool == true) {
+                              index -= 1;
+                          }
+  
+                          if (index <= optionsCount) {
+                          
+                              const $selectedItem = $options.eq(index);
+                              const $prevItem = $selectedItem.prev();
+                              const nameDataKey = $selectedItem.text();
+                              const nameKey = $selectedItem.data('key');
+  
+                              $inputField.attr('data-key', nameKey);
+                              
+                              $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+                              
+                              const itemOffsetTop = $prevItem.position().top;
+                              const itemHeight = $prevItem.outerHeight();
+                              const selectScrollTop = $dropdownOptions.scrollTop();
+                              const selectHeight = $dropdownOptions.height();
+  
+                              if (itemOffsetTop < 0) {
+                                  $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                              } else if (itemOffsetTop + itemHeight > selectHeight) {
+                                  $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                              }
+  
+                              $selectedItem.addClass('selected');
+                          } else {
+                              index = 0;
+                          }
+                      }
+  
+                      if (event.key === 'Enter') {
+                          event.preventDefault();
+                          const itemEnterValue = $(this);
+                          const item_value = itemEnterValue.attr('data-key');
+  
+                          nameDataKey = '';
+                          nameKey = '';
+                          index = 0;
+                          indexbool = false;
+  
+                          // const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
+                          // const itemShade = $('#input_item_shade_' + purchaseValue);
+                          // const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
+                      
+  
+                          // if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
+                          //     itemShade.text(itemShadeValue);
+                          //     itemShade.show();
+                          // }else{
+  
+                          //     itemShade.hide();
+                          // }
+                      
+                      
+                          handleSelection(purchaseValue,itemName, item_value);
+                          enterPressed = true;
+                          hiddenValue.css("display" ,"none");
+                          $inputField.blur();
+                      }
+                      if (event.key === 'Tab' && enterPressed) {
+                      enterPressed = false; // Reset Enter key handling
+                      return true; // Allow default Tab behavior
+                  }
+              
+                  });
+  
+                  },
+                  error: function (error) {
+                      console.log('Error sending value to the backend');
+                  }
+              })
+          })
+  
+      
+          $(document).on('change', 'select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]', function () {
+              const nameValue = $(this).attr('name');
+              const newValue = nameValue.split('-')[1];
+              const selectshadesid = $(this).val();
+              const selectedValueGodown = $('#id_source_godown').val();
+  
+              $.ajax({
+                  url: '/stocktransferrawcreate/',
+                  method: 'GET',
+                  data: {
+                      'selected_shade_id': selectshadesid,
+                      'selected_godown_id': selectedValueGodown
+                  },
+                  success: function (response) {
+                      var shade_quantity = response.shade_quantity;
+                      $('#id_rawstocktrasferrecords_set-' + newValue + '-item_quantity_transfer').val(shade_quantity);
+                  },
+                  error: function (xhr, errmsg, err) {
+                      console.log('Error sending value to the backend');
+                  }
+              })
+          })
+      
+      })
+  </script>
 
 {% endblock body %}

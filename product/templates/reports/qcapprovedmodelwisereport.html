@@ -2,18 +2,16 @@
 {% load static %}
 {% block body %}
 
-<div>
-    <span>Refrence ID - {{product_instance.Product_Refrence_ID}}</span>
-    <span>Model Name - {{product_instance.Model_Name}}</span>
-    <span>
+<div class="mt-2 mb-3">
+    <Label class="fw-bold">Refrence ID : <span class="text-danger ms-2 me-4">{{product_instance.Product_Refrence_ID}}</span></Label>
+    <label class="fw-bold">Model No: <span class="text-danger ms-2 me-4"> {{product_instance.Model_Name}}</span></label>
+    <label class="fw-bold">Images :</label>
+        {% for record in product_instance.productdetails.all %}
+        {% if record.PProduct_image.url is not None %}
+        <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
+        {% endif %}
+        {% endfor %}
 
-        <label>Images :</label>
-            {% for record in product_instance.productdetails.all %}
-            {% if record.PProduct_image.url is not None %}
-            <img src="{{record.PProduct_image.url}}" style="width: 60px; height: 60px; padding:2px; margin: 2px;" alt="Img">
-            {% endif %}
-            {% endfor %}
-    </span>
 </div>
 
 <div>
@@ -68,6 +66,79 @@
 
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function calculateValues() {
+        const approveValue = document.querySelectorAll('.productApprove');
+        let total = 0;
+        approveValue.forEach(element => {
+            const approveQty = parseInt(element.textContent) || 0;
+            total += approveQty;
+        });
+        const totalApprove = document.querySelector('.totalApprovedValueCheck');
+        totalApprove.textContent = total; // Format to 2 decimal places
+    }
 
+    const tableRows = document.querySelectorAll(".mainTableList .lwicheckValue");
+    const totalApprovalPendingCells = document.querySelectorAll(".productApprove");
+    const totalAllLwiValue = document.querySelectorAll('.totalCalculation');
+    const columnCount = tableRows[0].querySelectorAll("td").length - 1;
+
+    // Initialize column totals
+    const columnTotals = new Array(columnCount).fill(0);
+
+    // Calculate row-wise totals
+    tableRows.forEach(row => {
+        const lwiValues = row.querySelectorAll(".lwiValues");
+        let rowTotal = 0;
+        lwiValues.forEach(cell => {
+            const value = parseInt(cell.textContent.trim()) || 0;
+            rowTotal += value;
+        });
+
+        const totalCell = row.querySelector(".totalCalculation");
+        if (totalCell) {
+            totalCell.textContent = rowTotal;
+        }
+    });
+
+    // Calculate column-wise totals
+    tableRows.forEach(row => {
+        const cells = row.querySelectorAll(".lwiValues");
+        cells.forEach((cell, index) => {
+            const value = parseInt(cell.textContent.trim()) || 0;
+            columnTotals[index] += value;
+        });
+    });
+
+    // Calculate and display pending approvals
+    totalApprovalPendingCells.forEach((cell, index) => {
+        const currentTotal = parseInt(cell.textContent.trim()) || 0;
+        const newTotal = (columnTotals[index] || 0) - currentTotal;
+
+        const totalCell = document.querySelectorAll(".totalApprovalPending")[index];
+        if (totalCell) {
+            totalCell.textContent = newTotal;
+        }
+    });
+
+    // Calculate grand total
+    let newValue = 0;
+    totalAllLwiValue.forEach(value => {
+        newValue += parseInt(value.textContent.trim()) || 0;
+    });
+
+    const totalApproveData = parseInt(document.querySelector('.totalApprovedValueCheck').textContent) || 0;
+    const grandTotal = newValue - totalApproveData;
+    document.querySelector('.grandTotalValue').textContent = grandTotal;
+
+    // Call calculateValues to ensure totals are updated
+    calculateValues();
+});
+
+    </script>
+    
+        
+    
 
 {% endblock %}

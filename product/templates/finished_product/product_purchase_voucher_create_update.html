@@ -89,13 +89,7 @@
                 {% for forms in product_purchase_voucher_items_formset_instance %}
                 {{ forms.id }}
                 
-                <tr>
-                    <!-- <input type="hidden" id="{{forms.prefix}}-popupData" name="{{forms.prefix}}-popupData" value="">    
-                    <input type="hidden" id="{{forms.prefix}}-jsonDataInputquantity" value="" name="{{forms.prefix}}-jsonDataInputquantity">
-                    <input type="hidden" class="unique-id" name="item_unique_id_{{forloop.counter0}}" value='' id="item_unique_id_{{forloop.counter0}}"> -->
-                   
-                   
-                    
+                <tr> 
                     <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
                     <td colspan="2">
                         <div class="custom-dropdown-container">
@@ -412,24 +406,17 @@ function getGstNo() {
                         function escapeRegExp(string) {
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                         }
-
-                        searchedProductNameDic = response.products; // Example: { '101': ['MADISON', '40051011046', 'Blue', 18] }
-
-                        // Lowercase search query for case-insensitive comparison
+                        searchedProductNameDic = response.products; 
                         const searchQuery = productnamevalue.toLowerCase();
-
-                        // Split the query into parts (e.g., ["MADISON", "40051011046", "Blue"])
                         const searchTerms = searchQuery.split(/\s+/);
                         const convertStringData = searchTerms.toString();
-                         console.log(convertStringData)
-                        // Escape each search term for use in a regex
+                    
                         const escapedTerms = searchTerms.map(escapeRegExp);
 
-                        // Create regex for highlighting (matches any term)
                         const regex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
 
                         const normalizeSpaces = (str) => str.replace(/\s+/g, ' ').trim();
-                        console.log(normalizeSpaces)
+      
                         const filteredOptions = Object.entries(searchedProductNameDic).filter(
                         ([key, value]) => {
                             const normalizedKey = normalizeSpaces(key.toString().toLowerCase());
@@ -437,13 +424,13 @@ function getGstNo() {
                             const normalizedColor = normalizeSpaces(value[1].toString().toLowerCase());
                         
                             const normalizedQuery = normalizeSpaces(convertStringData.toLowerCase());
-                            console.log(normalizedColor)
+           
                             return normalizedKey.includes(normalizedQuery) ||
                                 normalizedProductName.includes(normalizedQuery) ||
                                 normalizedColor.includes(normalizedQuery);
                         }
                     );
-                        console.log(filteredOptions);
+         
                         suggestionsContainer.empty();
 
                         // Generate suggestions for matching options
@@ -491,7 +478,6 @@ function getGstNo() {
 
                 if (item_value !== undefined) {
                 var selectedValue = searchedProductNameDic[item_value];
-                // console.log(selectedValue,'selectedValue')
                 var namevalueCheck = selectedValue[0];
 
                 $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name"]`).val(selectedValue);

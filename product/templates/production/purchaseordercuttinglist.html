@@ -158,7 +158,7 @@
   createButton();
   document.body.appendChild(document.getElementById('exampleModal'));
   document.body.appendChild(document.getElementById('staticBackdrop'));
-  // document.body.appendChild(document.getElementById('exampleModalSpinner'));
+
   $(document).ready(function() {
     $('.delete-btn').click(function() {
         // Fetching data from the clicked row
@@ -185,7 +185,7 @@
  
             if (approvedValues === 0) {
               $(this).prop('disabled', true);
-                $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
+                var originalButtonText = $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
                 $.ajax({
                     type: 'POST',
                     url: "{% url 'purchase-order-cutting-master-cancel' %}",
