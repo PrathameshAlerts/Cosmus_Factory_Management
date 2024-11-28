@@ -16,8 +16,8 @@
     </div>  
   </div>   
 
-<div>
-    <table class="table table-striped table-hover table-responsive table-bordered">
+<div class="table-res">
+    <table class="table table-striped table-hover table-bordered">
         <thead class="name_absolute sticky-top">
             <tr>
                 <th>No</th>
@@ -29,7 +29,7 @@
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody class="mainTableList">
+        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
             {% for record in product_purchase_voucher_all %}
             <tr>
                 <td>{{forloop.counter}}</td>

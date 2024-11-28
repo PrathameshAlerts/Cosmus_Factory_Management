@@ -15,56 +15,59 @@
 </div>
 
 <div>
-<table>
-    <tr>
-        <th>GRN No</th>
-        <th>Date</th>
-        <th>Description / Vendor Name</th>
-        <th>Challan No</th>
-        <th>LWO Total</th>
-        <th>Description</th>
-        {% for x in all_sku %}
-        <th>{{x}}</th>
+<table class="table table-striped table-bordered table-hover" id="qctableRow">
+    <thead class="name_absolute sticky-top">
+        <tr>
+            <th>GRN No</th>
+            <th>Date</th>
+            <th>Description / Vendor Name</th>
+            <th>Challan No</th>
+            <th>LWO Total</th>
+            <th>Description</th>
+            {% for x in all_sku %}
+            <th>{{x}}</th>
+            {% endfor %}
+            <th>Total</th>
+        </tr>
+        <tr>
+            <th colspan="5"></th>
+            <th style="color: darkblue;">Approved</th>
+            {% for key,value in consolidated_approval_dict.items %}
+            <th><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #6400f9;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-approval-split' product_instance.Product_Refrence_ID %}"> <span  class="productApprove">{{ value }}</span></a></button></th>
+            {% endfor %}
+            <th style="color: darkblue;"><span class="totalApprovedValueCheck"></span></th>
+        </tr>
+    </thead>
+   <tbody class="mainTableList">
+        {% for record in sorted_data %}
+        <tr class="lwicheckValue">
+            <td><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #f5239a;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-view-update' record.l_w_o_id record.id True %}">{{record.GRN_No}}</a></button></td>
+            <td>{{record.Date}}</td>
+            <td>{{record.Description}}</td>
+            <td><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #f5a623;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workout-single-view' record.l_w_o_id %}">{{record.challan_no}}</a></button> </td>
+            <td >{{record.total_lwo}}</td>
+            <td class="text-danger fw-bold">{{record.desc}}</td>
+            {% for key,val in record.SKUS.items %}
+            <td ><span class="lwiValues"> {{val}}</span></td>
+            {% endfor %} 
+            <td class="totalCalculation text-danger fw-bold" ></td>
+         </tr>
         {% endfor %}
-        <th>Total</th>
-       
-    </tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>Approved</td>
-    {% for key,value in consolidated_approval_dict.items %}
-    <td><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #6400f9;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-approval-split' product_instance.Product_Refrence_ID %}"> {{ value }}</a></button> </td>
-    {% endfor %}
-
-
-    {% for record in sorted_data %}
-    <tr>
-    <td><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #f5239a;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-view-update' record.l_w_o_id record.id True %}">{{record.GRN_No}}</a></button></td>
-    <td>{{record.Date}}</td>
-    <td>{{record.Description}}</td>
-    <td> <button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #f5a623;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workout-single-view' record.l_w_o_id %}">{{record.challan_no}}</a></button> </td>
-    <td>{{record.total_lwo}}</td>
-    <td>{{record.desc}}</td>
-    {% for key,val in record.SKUS.items %}
-    <td>
-        {{val}}
-    </td>
-    {% endfor %}
-   </tr>
-    {% endfor %}
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-   <td>Total Aproval Pending</td>
+        <tr>
+            <td colspan="4"></td>
+            <td colspan="2" class="fw-bold">Total Aproval Pending</td>
+            {% for x in all_sku %}
+            <td><span class="totalApprovalPending fw-bold"></span></td>
+            {% endfor %}
+          
+            <td ><span class="grandTotalValue text-danger fw-bold"></span></td>
+        </tr>
+   </tbody>
 </table>
 
 
 </div>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

@@ -16,29 +16,32 @@
     
 
 </div>
-<table class="table table-striped table-hover table-responsive table-bordered">
-    <thead class="name_absolute sticky-top"> 
-        <tr> 
-            <th>Product Name</th>
-            <th>Refrence No</th>
-            <th>Product SKU</th>
-            <th>Product Color</th>
-            <th>Quantity</th>
-        </tr>
-    </thead>
-    <tbody class="mainTableList">
-        {% for record in finished_godown_all %}
-        <tr>
-            <td>{{record.Product.Product_Name}}</td>
-            <td>{{record.Product.Product_Refrence_ID}}</td>
-            <td>{{record.PProduct_SKU}}</td>
-            <td>{{record.PProduct_color}}</td>
-            <td>{{record.total_warehouse_stock | default_if_none:0}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="name_absolute sticky-top"> 
+            <tr> 
+                <th>Product Name</th>
+                <th>Refrence No</th>
+                <th>Product SKU</th>
+                <th>Product Color</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+            {% for record in finished_godown_all %}
+            <tr>
+                <td>{{record.Product.Product_Name}}</td>
+                <td>{{record.Product.Product_Refrence_ID}}</td>
+                <td>{{record.PProduct_SKU}}</td>
+                <td>{{record.PProduct_color}}</td>
+                <td>{{record.total_warehouse_stock | default_if_none:0}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    
+    </table>
+</div>
 
-</table>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
