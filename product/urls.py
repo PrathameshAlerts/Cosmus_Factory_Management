@@ -276,8 +276,10 @@ urlpatterns = [
     path('finishedgoodsmodelwisereport/<int:ref_id>', views.finished_goods_model_wise_report, name = 'finished-goods-model-wise-report'),
     path('qcapprovedmodelwisereport/<int:ref_id>', views.qc_approved_model_wise_report, name = 'qc_approved-goods-model-wise-report'),
 
-
     path('labourworkinapprovalsplit/<int:ref_id>', views.labour_workin_approval_split, name= 'labour-workin-approval-split'),
+    
+    path('lwoandlwireportvendorwise/', views.lwo_and_lwi_report_vendor_wise, name='lwo-and-lwi-report-vendor-wise'),
+
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),

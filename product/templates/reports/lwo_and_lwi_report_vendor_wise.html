@@ -1,0 +1,137 @@
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+<form action="" method="POST">
+
+    {% csrf_token %}
+
+    <input value="{{vendor_name|default_if_none:''}}" type="text" name="vendor_name">
+
+    <input type="submit">
+
+</form>
+
+<div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>PO NO</th>
+
+                <th>Challan No</th>
+
+                <th>Date</th>
+
+                <th>Images</th>
+
+                <th>Ref No</th>
+
+                <th>Model No</th>
+
+                <th>Total Labour Work Out</th>
+
+                <th>Total Labour Work In</th>
+
+                <th>Rep Out</th>
+
+                <th>Rep In</th>
+
+                <th>Total Received</th>
+
+                <th>Total Balance to Vendor</th>
+
+                <th>Approval Pending Qty</th>
+
+                <th>Total Approved Qty</th>
+
+                <th>Remark</th>
+
+            </tr>
+
+        </thead>
+
+
+
+        <tbody>
+
+            {% if queryset %}
+
+            {% for instance in queryset %}
+
+            
+
+                <tr onclick="window.location.href='{% url 'finished-goods-godown-product-ref-vendor-wise-report' instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID instance.challan_no %}'" style= "cursor: pointer;">
+
+                    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+
+                    <td>{{instance.challan_no}}</td>
+
+                    <td>{{instance.created_date}}</td>
+
+                    <td>
+
+                        
+
+                        {% if images %}
+
+                        {% for image in images %}
+
+                        {% if forloop.first %}
+
+                        <img src="{{images.PProduct_image.url }}" alt="img" style="width:40px;">
+
+                        {% endif %}
+
+                        {% endfor %}
+
+                        {% endif %}
+
+                        
+
+                    </td>
+
+                    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>
+
+                    <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Name}}</td>
+
+                    <td>{{instance.total_process_pcs}}</td>
+
+                    <td>{{instance.Total_Labour_Work_In}}</td>
+
+                    <td>0</td>
+
+                    <td>0</td>
+
+                    <td>{{instance.Total_Labour_Work_In}}</td>
+
+                    <td>{{instance.Total_Balance_to_Vendor}}</td>
+
+                    <td>{{instance.Total_Pending_Qty}}</td>
+
+                    <td>{{instance.Total_Approve_Qty}}</td>
+
+                    <td>{{instance.note}}</td>
+
+                </tr>
+
+            
+
+            {% endfor %}
+
+            {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+{% endblock body %}
+
