@@ -257,12 +257,11 @@
                       $('.stock_product_name').empty()
                       $('.stock_color').val('');
                       $('.stock_qty').val('');
-                      $('.stock_units').val('');
                       $('.stock_remarks').val('');
   
   
                       const itemsInGodown = response.filtered_product;
-                    console.log('itemsInGodown',itemsInGodown)
+                        console.log('itemsInGodown',itemsInGodown)
                       $(document).on('click input keyup focus keydown', 'input[name$="-products"]', function () {
                       itemName = $(this).closest('tr').find('input[name$="-product_quantity_transfer"]').attr('name');
                       purchaseValue = itemName.split('-')[1];
@@ -273,11 +272,9 @@
                       var nameValue = $(this).val().trim();
                       var selectNameValue = `select_product_name_${StockValue}`;
                       var suggestionsContainer = $(`#${selectNameValue}`);
-                      console.log("name",nameValue)
-                      if (nameValue === 'None') {
-                          var selectNameValue = $(this).closest('tr').find('[name^="select_product_name_"]');
-                              
-                          selectNameValue.css('display', 'none');
+
+                      if (nameValue === 'None' || nameValue === '') {
+                        suggestionsContainer.css('display', 'none').empty();
                           $(this).attr('data-key', '');
                           return;
                       }
@@ -290,6 +287,7 @@
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                         }
                         searchedProductNameDic = response.filtered_product; 
+                        console.log(searchedProductNameDic)
                         const searchQuery = nameValue.toLowerCase();
                         const searchTerms = searchQuery.split(/\s+/);
                         const convertStringData = searchTerms.toString();
@@ -303,16 +301,15 @@
                         const filteredOptions = Object.entries(searchedProductNameDic).filter(
                         ([key, value]) => {
                             const normalizedKey = normalizeSpaces(key.toString().toLowerCase());
-                            // const normalizedProductName = normalizeSpaces(value[0].toString().toLowerCase());
-                            // const normalizedColor = normalizeSpaces(value[1].toString().toLowerCase());
+                            const normalizedProductName = normalizeSpaces(value[0].toString().toLowerCase());
+                            const normalizedColor = normalizeSpaces(value[1].toString().toLowerCase());
                         
                             const normalizedQuery = normalizeSpaces(convertStringData.toLowerCase());
            
-                            return normalizedKey.includes(normalizedQuery) 
-                                // normalizedProductName.includes(normalizedQuery) ||
-                                // normalizedColor.includes(normalizedQuery);
-                        }
-                    );
+                            return normalizedKey.includes(normalizedQuery) ||
+                                normalizedProductName.includes(normalizedQuery) ||
+                                normalizedColor.includes(normalizedQuery);
+                        });
          
                         suggestionsContainer.empty();
 
@@ -333,31 +330,31 @@
                                     ${highlightedText}<span>${highlightedSKU}</span>&nbsp;<span>${highlightedColor}</span>
                                 </div>
                             `);
-                       
-                    
-                  
-                          });
+                        });
+                           
                           suggestionsContainer.on('click', '.itemName-div', function(e) {
                             var item_value = $(this).data('key');
                             var itemNamevaluesCheck = $(this).text().trim();
-                            
-                            $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
+                         
+                            $(this).closest('.custom-dropdown-container').find('.search-input').val(newNameValue);
                             $(this).closest('.custom-dropdown-container').find('[name$="-product_name"]').val(item_value)
                             $(this).addClass('selected').siblings().removeClass('selected');
 
                             if (item_value !== undefined) {
                             var selectedValue = searchedProductNameDic[item_value];
                             var namevalueCheck = selectedValue[0];
-
-                            $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name"]`).val(selectedValue);
+                            console.log('selectedValue',selectedValue)
+                            var newNameValue = namevalueCheck + '-'+ item_value;
+                            console.log(newNameValue)
+                            $(`input[name$="finished_goods_transfer_records_set-${purchaseValue}-products"]`).val(newNameValue);
                             
-                                const productColor = selectedValue[1];
-                                const productGst = selectedValue[2];
-                                var itemcolorinput = document.querySelector('#item_color_' + purchaseValue);
-                                var itemgstinputs = document.getElementById('product_purchase_voucher_items_set-' + purchaseValue + '-gst');
+                                const productColor = selectedValue[1]
+                                const productQty = selectedValue[2];
+                                var productcolorinput = document.querySelector('#id_stock_color_' + purchaseValue);
+                                var productQtyinputs = document.getElementById('id_finished_goods_transfer_records_set-' + purchaseValue + '-product_quantity_transfer');
                                                     
-                                    itemcolorinput.value = productColor;
-                                    itemgstinputs.value = productGst ;
+                                productcolorinput.value = productColor;
+                                productQtyinputs.value = productQty ;
                             
                             }
                         
@@ -371,111 +368,130 @@
                       var index = 0; // Declare index outside of the event listener
                       var indexbool = true;
   
-                //   $(document).on('keydown', 'input[name^="stock_name_"]', function(event) {
-                //       const $inputField = $(this);
-                //       const $dropdownOptions = $inputField.next('.stock_input_name');
-                //       const $options = $dropdownOptions.find('.itemName-div');
-                //       const optionsCount = $options.length - 1;
-                //       const searchText = $inputField.val().trim();
-                //       const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_item_name_${purchaseValue}`);
-                //       if (searchText === '') {
-                //           index = 0;
-                //           return;
-                //       }
-                //       const newHeight = $inputField.offset();
-                //       const windowHeight = $(window).height();
-                //       const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+                  $(document).on('keydown', 'input[name$="-products"]', function(event) {
+                      const $inputField = $(this);
+                      console.log($inputField)
+                      const $dropdownOptions = $inputField.next('.stock_input_name');
+                      console.log($dropdownOptions)
+                      const $options = $dropdownOptions.find('.itemName-div');
+                      console.log('$options',$options)
+                      const optionsCount = $options.length - 1;
+                      const searchText = $inputField.val().trim();
+                      const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_product_name_${purchaseValue}`);
+                      if (searchText === '') {
+                          index = 0;
+                          return;
+                      }
+                      const newHeight = $inputField.offset();
+                      const windowHeight = $(window).height();
+                      const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
               
   
-                //       if (event.key === 'ArrowDown') {
-                //           event.preventDefault();
+                      if (event.key === 'ArrowDown') {
+                          event.preventDefault();
   
-                //           if (index <= optionsCount) {
+                          if (index <= optionsCount) {
                           
-                //               const $selectedItem = $options.eq(index);
-                //               const $nextItem = $selectedItem.next();
-                //               const nameDataKey = $selectedItem.text();
-                //               const nameKey = $selectedItem.data('key');
+                              const $selectedItem = $options.eq(index);
+                              const $nextItem = $selectedItem.next();
+                              const nameDataKey = $selectedItem.text();
+                              const nameKey = $selectedItem.data('key');
   
-                //               $inputField.attr('data-key', nameKey);
+                              $inputField.attr('data-key', nameKey);
                           
-                //               $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
-                //               const itemOffsetTop = $nextItem.position().top;
-                //               const itemHeight = $nextItem.outerHeight();
-                //               const selectScrollTop = $dropdownOptions.scrollTop();
-                //               const selectHeight = $dropdownOptions.height();
+                              $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+                              const itemOffsetTop = $nextItem.position().top;
+                              const itemHeight = $nextItem.outerHeight();
+                              const selectScrollTop = $dropdownOptions.scrollTop();
+                              const selectHeight = $dropdownOptions.height();
   
-                //               if (itemOffsetTop + itemHeight > selectHeight) {
-                //                   $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
-                //               } else if (itemOffsetTop < 0) {
-                //                   $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
-                //               }
-                //               $selectedItem.addClass('selected');
-                //               if (index !== optionsCount) {
-                //                   index += 1;
-                //                   indexbool = true;
-                //               }
-                //           } else {
-                //               index = 0;
-                //           }
-                //       }
+                              if (itemOffsetTop + itemHeight > selectHeight) {
+                                  $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                              } else if (itemOffsetTop < 0) {
+                                  $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                              }
+                              $selectedItem.addClass('selected');
+                              if (index !== optionsCount) {
+                                  index += 1;
+                                  indexbool = true;
+                              }
+                          } else {
+                              index = 0;
+                          }
+                      }
   
-                //       if (event.key === 'ArrowUp') {
-                //           event.preventDefault();
+                      if (event.key === 'ArrowUp') {
+                          event.preventDefault();
   
-                //           if (index != 0 && indexbool == true) {
-                //               index -= 1;
-                //           }
+                          if (index != 0 && indexbool == true) {
+                              index -= 1;
+                          }
   
-                //           if (index <= optionsCount) {
+                          if (index <= optionsCount) {
                           
-                //               const $selectedItem = $options.eq(index);
-                //               const $prevItem = $selectedItem.prev();
-                //               const nameDataKey = $selectedItem.text();
-                //               const nameKey = $selectedItem.data('key');
+                              const $selectedItem = $options.eq(index);
+                              const $prevItem = $selectedItem.prev();
+                              const nameDataKey = $selectedItem.text();
+                              const nameKey = $selectedItem.data('key');
   
-                //               $inputField.attr('data-key', nameKey);
+                              $inputField.attr('data-key', nameKey);
                               
-                //               $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+                              $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
                               
-                //               const itemOffsetTop = $prevItem.position().top;
-                //               const itemHeight = $prevItem.outerHeight();
-                //               const selectScrollTop = $dropdownOptions.scrollTop();
-                //               const selectHeight = $dropdownOptions.height();
+                              const itemOffsetTop = $prevItem.position().top;
+                              const itemHeight = $prevItem.outerHeight();
+                              const selectScrollTop = $dropdownOptions.scrollTop();
+                              const selectHeight = $dropdownOptions.height();
   
-                //               if (itemOffsetTop < 0) {
-                //                   $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
-                //               } else if (itemOffsetTop + itemHeight > selectHeight) {
-                //                   $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
-                //               }
+                              if (itemOffsetTop < 0) {
+                                  $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                              } else if (itemOffsetTop + itemHeight > selectHeight) {
+                                  $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                              }
   
-                //               $selectedItem.addClass('selected');
-                //           } else {
-                //               index = 0;
-                //           }
-                //       }
+                              $selectedItem.addClass('selected');
+                          } else {
+                              index = 0;
+                          }
+                      }
   
-                //       if (event.key === 'Enter') {
-                //           event.preventDefault();
-                //           const itemEnterValue = $(this);
-                //           const item_value = itemEnterValue.attr('data-key');
+                      if (event.key === 'Enter') {
+                          event.preventDefault();
+                          const itemEnterValue = $(this);
+                          const item_value = itemEnterValue.attr('data-key');
   
-                //           nameDataKey = '';
-                //           nameKey = '';
-                //           index = 0;
-                //           indexbool = false;
+                          nameDataKey = '';
+                          nameKey = '';
+                          index = 0;
+                          indexbool = false;
+                          if (item_value !== undefined) {
+                            var selectedValue = searchedProductNameDic[item_value];
+                            var namevalueCheck = selectedValue[0]
+                            var newNameValue = namevalueCheck + '-'+ item_value;
+                            console.log('selectedValue',selectedValue)
+                            $(`input[name$="finished_goods_transfer_records_set-${purchaseValue}-products"]`).val(newNameValue);
+                            
+                                const productColor = selectedValue[1];
+                                const productQty = selectedValue[2];
+                                var productcolorinput = document.querySelector('#id_stock_color_' + purchaseValue);
+                                var productQtyinputs = document.getElementById('id_finished_goods_transfer_records_set-' + purchaseValue + '-product_quantity_transfer');
+                                                    
+                                productcolorinput.value = productColor;
+                                productQtyinputs.value = productQty ;
+                            
+                            }
   
 
-                //           enterPressed = true;
-                //           hiddenValue.css("display" ,"none");
-                //           $inputField.blur();
-                //       }
-                //       if (event.key === 'Tab' && enterPressed) {
-                //       enterPressed = false; // Reset Enter key handling
-                //       return true; // Allow default Tab behavior
-                //   }
+                          enterPressed = true;
+                          hiddenValue.css("display" ,"none");
+                          $inputField.blur();
+                      }
+                      if (event.key === 'Tab' && enterPressed) {
+                      enterPressed = false; // Reset Enter key handling
+                      return true; // Allow default Tab behavior
+                  }
               
-                //   });
+                  });
   
                   },
                   error: function (error) {
@@ -483,31 +499,7 @@
                   }
               })
           })
-  
-      
-          $(document).on('change', 'select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]', function () {
-              const nameValue = $(this).attr('name');
-              const newValue = nameValue.split('-')[1];
-              const selectshadesid = $(this).val();
-              const selectedValueGodown = $('#id_source_godown').val();
-  
-              $.ajax({
-                  url: '/stocktransferrawcreate/',
-                  method: 'GET',
-                  data: {
-                      'selected_shade_id': selectshadesid,
-                      'selected_godown_id': selectedValueGodown
-                  },
-                  success: function (response) {
-                      var shade_quantity = response.shade_quantity;
-                      $('#id_rawstocktrasferrecords_set-' + newValue + '-item_quantity_transfer').val(shade_quantity);
-                  },
-                  error: function (xhr, errmsg, err) {
-                      console.log('Error sending value to the backend');
-                  }
-              })
-          })
-      
+
       })
 
   </script>

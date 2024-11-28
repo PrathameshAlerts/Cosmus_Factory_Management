@@ -6845,7 +6845,7 @@ def product_transfer_to_warehouse_ajax(request):
                 product_name = query.get('product_color_name__Product__Product_Name')
                 color = query.get('product_color_name__PProduct_color__color_name')
                 qty = query.get('quantity')
-                dict_to_send[p_sku] = {'qty':qty,'color': color,'product_name': product_name}
+                dict_to_send[p_sku] = [product_name,color,qty]
 
             
             if not filtered_product:
