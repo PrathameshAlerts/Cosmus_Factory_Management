@@ -976,19 +976,9 @@ Finished_goods_transfer_records_formset_update = inlineformset_factory(Finished_
 
 
 class Finished_goods_Stock_TransferMaster_form(forms.ModelForm):
-
     class Meta:
-
         model = Finished_goods_Stock_TransferMaster
-
         fields = ['voucher_no','source_warehouse','destination_warehouse']
-
-
-
-
-
-
-
 
 
 class Finished_goods_transfer_records_form(forms.ModelForm):
@@ -998,7 +988,7 @@ class Finished_goods_transfer_records_form(forms.ModelForm):
 
 
 
-Finished_goods_transfer_records_formset_create = inlineformset_factory(Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, form=Finished_goods_transfer_records_form, extra=2, can_delete=False)
+Finished_goods_transfer_records_formset_create = inlineformset_factory(Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, form=Finished_goods_transfer_records_form, extra=1, can_delete=False)
 
 Finished_goods_transfer_records_formset_update = inlineformset_factory(Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, form=Finished_goods_transfer_records_form, extra=0, can_delete=False)
 

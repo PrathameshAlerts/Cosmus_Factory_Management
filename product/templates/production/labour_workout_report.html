@@ -16,6 +16,7 @@
                     <th>Model Name</th>
                     <th>All Godown Stock</th>
                     <th>Approval Pending Qty</th>
+                    <th>Total Balance to Vendor</th>
                     <th>Unfinished Stage</th>
                 </tr>
             </thead>
@@ -29,6 +30,7 @@
                     <td><span class="text-danger fw-bold">{{record.Model_Name|default_if_none:''}}</span></td>
                     <td>{{record.total_quantity_product|default_if_none:0}}</td>
                     <td>{{record.total_qty_pending|default_if_none:0}}</td>
+                    <td>{{record.total_bal_vendor}}</td>
                     <!-- <td>{{record.all_godown_qty}}</td> -->
                     <td></td>
                 </tr>

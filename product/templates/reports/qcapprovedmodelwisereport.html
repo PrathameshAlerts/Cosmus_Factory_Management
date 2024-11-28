@@ -33,7 +33,7 @@
             <th colspan="5"></th>
             <th style="color: darkblue;">Approved</th>
             {% for key,value in consolidated_approval_dict.items %}
-            <th><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #6400f9;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-approval-split' product_instance.Product_Refrence_ID %}"> <span  class="productApprove">{{ value }}</span></a></button></th>
+            <th><button class="border-0 rounded  mb-1 px-2" style="color:white; background-color: #6400f9;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-approval-split' product_instance.Product_Refrence_ID %}"> <span  class="productApprove">{{ value }}</span></a></button></th>
             {% endfor %}
             <th style="color: darkblue;"><span class="totalApprovedValueCheck"></span></th>
         </tr>
@@ -41,10 +41,10 @@
    <tbody class="mainTableList">
         {% for record in sorted_data %}
         <tr class="lwicheckValue">
-            <td><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #f5239a;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-view-update' record.l_w_o_id record.id True %}">{{record.GRN_No}}</a></button></td>
+            <td><button class="border-0 rounded  mb-1 px-2" style="color:white; background-color: #f5239a;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workin-view-update' record.l_w_o_id record.id True %}">{{record.GRN_No}}</a></button></td>
             <td>{{record.Date}}</td>
             <td>{{record.Description}}</td>
-            <td><button class="border-0 rounded  mb-1 px-2 py-0.9" style="color:white; background-color: #f5a623;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workout-single-view' record.l_w_o_id %}">{{record.challan_no}}</a></button> </td>
+            <td><button class="border-0 rounded  mb-1 px-2" style="color:white; background-color: #f5a623;"><a style="color:white; text-decoration: none;" href="{% url 'labour-workout-single-view' record.l_w_o_id %}">{{record.challan_no}}</a></button> </td>
             <td >{{record.total_lwo}}</td>
             <td class="text-danger fw-bold">{{record.desc}}</td>
             {% for key,val in record.SKUS.items %}
@@ -120,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const newTotal = (columnTotals[index] || 0) - currentTotal;
 
         const totalCell = document.querySelectorAll(".totalApprovalPending")[index];
+
         if (totalCell) {
             totalCell.textContent = newTotal;
         }

@@ -241,7 +241,7 @@ urlpatterns = [
 
     # warehouse product transfer
     path('allproducttransfertowarehouse/', views.product_transfer_to_warehouse_list,name='all-product-transfer-to-warehouse'),
-    path('producttransfertowarehousedelete/<int:id>', views.product_transfer_to_warehouse_delete,name='product-transfer-to-warehouse-delete'),
+    path('producttransfertowarehousedelete/', views.product_transfer_to_warehouse_delete,name='product-transfer-to-warehouse-delete'),
     path('warehouseproducttransfercreate/', views.warehouse_product_transfer_create_and_update,name="warehouse-product-transfer-create"),
     path('warehouseproducttransferupdate/<int:pk>', views.warehouse_product_transfer_create_and_update,name="warehouse-product-transfer-update"),
     path('producttransfertowarehouseajax/', views.product_transfer_to_warehouse_ajax,name='product-transfer-to-warehouse-ajax'),

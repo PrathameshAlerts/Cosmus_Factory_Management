@@ -66,7 +66,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,product_purchase_voucher_items_formset_update,
                                 purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset_create,
-                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form, raw_material_product_estimation_formset)
+                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form, raw_material_product_estimation_formset,Finished_goods_transfer_records_formset_update)
 
 
 logger = logging.getLogger('product_views')
@@ -5907,9 +5907,15 @@ def finished_goods_godown_wise_report_all(request):
             'product_reference_number__Product_Refrence_ID').annotate(pending_approval_total = Sum(
         'cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master__l_w_in_products__pending_for_approval')).values('pending_approval_total')
 
+    purchase_order_bal_vendor = purchase_order.objects.filter(
+        product_reference_number__Product_Refrence_ID = OuterRef('Product_Refrence_ID')).values(
+            'product_reference_number__Product_Refrence_ID').annotate(vendor_bal_qty = Sum(
+        'cutting_pos__labourworkouts__labour_workout_childs__labour_work_in_master__l_w_in_products__pending_to_return_pcs')).values('vendor_bal_qty')
+
 
     product_quantity = Product.objects.annotate(total_quantity_product=Sum(
-        'productdetails__godown_colors__quantity'), total_qty_pending = Subquery(purchase_order_instances))
+        'productdetails__godown_colors__quantity'), total_qty_pending = Subquery(purchase_order_instances),
+        total_bal_vendor = Subquery(purchase_order_bal_vendor))
     
     
     return render(request,'production/labour_workout_report.html', {'product_quantity' : product_quantity})
@@ -6285,26 +6291,33 @@ def raw_material_estimation_popup(request, pk=None):
 
 
 def labour_workin_approval_split(request,ref_id):
-    queryset = labour_work_in_product_to_item.objects.filter(
-        labour_workin_instance__labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_id)
+    queryset = labour_work_in_master.objects.filter(labour_voucher_number__labour_workout_master_instance__purchase_order_cutting_master__purchase_order_id__product_reference_number__Product_Refrence_ID = ref_id)
+
+    sku_list = [sku.PProduct_SKU for sku in PProduct_Creation.objects.filter(Product__Product_Refrence_ID=ref_id)]
+
     
-    headers ={}
     list_to_send = []
-    
-    for i in queryset:
-
-        headers[i.product_sku] = i.product_sku
-
+    for query in queryset:
         dict_to_append = {
-      'product_sku' : i.product_sku,
-      'aprv_qty' : i.approved_qty,
-      'grn_no' : i.labour_workin_instance.voucher_number,
-      'challan' : i.labour_workin_instance.labour_voucher_number.challan_no,
-      'vendor' : i.labour_workin_instance.labour_voucher_number.labour_name.name }
+            'vendor_name' : query.labour_voucher_number.labour_name.name,
+            "grn_no" : query.voucher_number,
+            'challan_no' : query.labour_voucher_number.challan_no,
+            'approve_qty' : [],  
+        }
+        qty_dict = dict(query.l_w_in_products.all().values_list('product_sku','approved_qty'))
 
+        qty = {}
+        for x in sku_list:
+            if x in qty_dict:
+                qty[x] = qty_dict[x]
+            else:
+                qty[x] = 0
+            dict_to_append['approve_qty'] = qty
+        
         list_to_send.append(dict_to_append)
+
   
-    return render(request,'finished_product/labourworkinapprovalsplit.html',{'data':list_to_send,'headers':headers})
+    return render(request,'finished_product/labourworkinapprovalsplit.html',{'list_to_send':list_to_send,'sku_list':sku_list})
 
 
 
@@ -6662,6 +6675,9 @@ def product_purchase_voucher_list(request):
 
     return render(request,'finished_product/product_purchase_voucher_list.html',{'product_purchase_voucher_all':product_purchase_voucher_all})
 
+
+
+
 @login_required(login_url='login')
 def product_purchase_voucher_delete(request,pk):
 
@@ -6672,18 +6688,24 @@ def product_purchase_voucher_delete(request,pk):
     
 
 
+
+
 @login_required(login_url='login')
 def warehouse_product_transfer_create_and_update(request,pk=None):
     products = PProduct_Creation.objects.all()
     godowns = Godown_finished_goods.objects.all()
     warehouses =Finished_goods_warehouse.objects.all()
+
+
     if pk:
         voucher_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=pk)
+        form = Finished_goods_Stock_TransferMaster_form(instance=voucher_instance)
+        formset = Finished_goods_transfer_records_formset_update(instance=voucher_instance)
     else:
         voucher_instance = None
         
-    form = Finished_goods_Stock_TransferMaster_form(instance=voucher_instance)
-    formset = Finished_goods_transfer_records_formset_create(instance=voucher_instance)
+        form = Finished_goods_Stock_TransferMaster_form()
+        formset = Finished_goods_transfer_records_formset_create()
 
 
     if request.method == 'POST':
@@ -6811,18 +6833,22 @@ def product_transfer_to_warehouse_list(request):
 
 
 @login_required(login_url='login')
-def product_transfer_to_warehouse_delete(request,id):
-    if request.method == 'POST':  
-        transfer_records = Finished_goods_transfer_records.objects.filter(Finished_goods_Stock_TransferMasterinstance = id)
-        for record in transfer_records:
-            if not record.transnfer_cancelled_records:
-                godown_transfer_records_quantity_revert = product_godown_quantity_through_table.objects.get(product_color_name = record.product, godown_name = record.Finished_goods_Stock_TransferMasterinstance.source_warehouse)
-                godown_transfer_records_quantity_revert.quantity = godown_transfer_records_quantity_revert.quantity + record.product_quantity_transfer
-                godown_transfer_records_quantity_revert.save()
-                warehouse_transfer_records_quantity_revert = Product_warehouse_quantity_through_table.objects.get(product = record.product)
-                warehouse_transfer_records_quantity_revert.quantity = warehouse_transfer_records_quantity_revert.quantity - record.product_quantity_transfer
-                warehouse_transfer_records_quantity_revert.save()
-                transfer_records.update(transnfer_cancelled_records=True)
+def product_transfer_to_warehouse_delete(request):
+    id = request.POST.get('ProductId')
+    print(id)
+     
+    transfer_records = Finished_goods_transfer_records.objects.filter(Finished_goods_Stock_TransferMasterinstance = id)
+    for record in transfer_records:
+        if not record.transnfer_cancelled_records:
+            godown_transfer_records_quantity_revert = product_godown_quantity_through_table.objects.get(product_color_name = record.product, godown_name = record.Finished_goods_Stock_TransferMasterinstance.source_warehouse)
+            godown_transfer_records_quantity_revert.quantity = godown_transfer_records_quantity_revert.quantity + record.product_quantity_transfer
+            godown_transfer_records_quantity_revert.save()
+            
+            warehouse_transfer_records_quantity_revert = Product_warehouse_quantity_through_table.objects.get(product = record.product)
+            warehouse_transfer_records_quantity_revert.quantity = warehouse_transfer_records_quantity_revert.quantity - record.product_quantity_transfer
+            warehouse_transfer_records_quantity_revert.save()
+            transfer_records.update(transnfer_cancelled_records=True)
+            return JsonResponse({'response':True},status=200)
     return redirect('all-product-transfer-to-warehouse')
 
 
@@ -6836,22 +6862,24 @@ def product_transfer_to_warehouse_ajax(request):
             filtered_product = list(product_godown_quantity_through_table.objects.filter(
             godown_name__id = godown_id).values('product_color_name__Product__Product_Name','product_color_name__PProduct_SKU','product_color_name__PProduct_color__color_name','quantity'))
             
-           
-            dict_to_send = {}
+            if filtered_product:
+                dict_to_send = {}
 
-            for query in filtered_product:
+                for query in filtered_product:
 
-                p_sku = query.get('product_color_name__PProduct_SKU')
-                product_name = query.get('product_color_name__Product__Product_Name')
-                color = query.get('product_color_name__PProduct_color__color_name')
-                qty = query.get('quantity')
-                dict_to_send[p_sku] = [product_name,color,qty]
+                    p_sku = query.get('product_color_name__PProduct_SKU')
+                    product_name = query.get('product_color_name__Product__Product_Name')
+                    color = query.get('product_color_name__PProduct_color__color_name')
+                    qty = query.get('quantity')
+                    
+                    dict_to_send[p_sku] = [product_name,color,qty]
 
+                return JsonResponse({'filtered_product':dict_to_send})
             
-            if not filtered_product:
+            else:
                 raise ObjectDoesNotExist
 
-            return JsonResponse({'filtered_product':dict_to_send})
+            
         
         except ObjectDoesNotExist as oe:
             return JsonResponse({'error': 'No items found.'}, status=404)
@@ -6941,7 +6969,7 @@ def productdynamicsearchajax(request):
             Q(Product__Product_Name__icontains=product_name_typed)
         ).distinct().values('PProduct_SKU', 'PProduct_color__color_name', 
                             'Product__Product_Name', 'Product__Product_GST__gst_percentage')
-        print(products)
+        
         if products.exists():
             product_searched_dict = {
                 product['PProduct_SKU']: [
