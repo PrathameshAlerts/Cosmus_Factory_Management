@@ -7,9 +7,11 @@
 
 <form action="" method="post" id="stockTransferForm" class="mt-3">
     {% csrf_token %}
-    {{source_godown_items}}
+    <input type="hidden" id="id_godownData" value=" {{source_godown_items_dict|default_if_none:''}}">
    
-        
+
+
+
     <div class="d-flex mb-2">
         <label for="id_voucher_no" class="">Voucher No:</label>
         <input value="{{masterstockform.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">
@@ -222,11 +224,12 @@
             var stockId = document.getElementById('id_rawstocktrasferrecords_set-' + i +'-id').value;
             console.log(stockId)
             if(stockId !== ""){
+                var vouchareNo = document.getElementById('id_voucher_no');
                 var stockItemName = document.getElementById('id_stock_name_' + i);
-                stockItemName.disabled = true;
-                console.log(stockItemName)
+                stockItemName.readOnly = true;
+                vouchareNo.readOnly = true;
                 var StockShades = document.getElementById('id_rawstocktrasferrecords_set-'+i+'-item_shade_transfer');
-                StockShades.disabled = true;
+               
                 var stockQty = document.getElementById('id_rawstocktrasferrecords_set-'+i+'-item_quantity_transfer');
                 stockQty.readOnly = true;
             }
@@ -239,7 +242,11 @@
         var enterPressed = false;
         var itemName;
         var purchaseValue
-        $('#id_source_godown').on('change', function () {
+        var ramMaterialGodown = $('#id_rawstocktrasferrecords_set-0-id').val();
+        console.log('ramMaterialGodown',ramMaterialGodown)
+        if( ramMaterialGodown == ""){
+            console.log('test')
+            $('#id_source_godown').on('change', function () {
             const selectedGodownId = $(this).val();
             const id = $(this).attr('id');
            console.log('selectedGodownId',selectedGodownId)
@@ -292,6 +299,7 @@
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                     }
                         searchedItemNameDict = response.items_in_godown;
+                        console.log(typeof(searchedItemNameDict))
                         var searchQuery = nameValue.toLowerCase();
                         var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                         var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
@@ -308,9 +316,12 @@
                                 suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</span>
                                     </div>`);
                             } 
-                            
-                
                         });
+                        if(filteredOptions == ''){
+                            suggestionsContainer.show();
+                            suggestionsContainer.empty();
+                            suggestionsContainer.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
+                        }
                         suggestionsContainer.on('click', '.itemName-div', function(e) {
                             var item_value = $(this).data('key');
                             var itemNamevaluesCheck = $(this).text();
@@ -344,6 +355,7 @@
                                     'selected_godown_id': selectedValueGodown
                                 },
                                 success: function (response) {
+                                    console.log(response)
                                     var itemrownameid = itemName.split('-')[1];
                                     $('#id_rawstocktrasferrecords_set-' + itemrownameid + '-item_shade_transfer').empty().append('<option value="">Select Shade</option>');
                                     const item_shades = response.item_shades;
@@ -470,20 +482,6 @@
                         nameKey = '';
                         index = 0;
                         indexbool = false;
-
-                        // const newData = $('#purchase_voucher_items_set-' + purchaseValue + '-jsonDataInputquantity').val();
-                        // const itemShade = $('#input_item_shade_' + purchaseValue);
-                        // const itemShadeValue = $('#purchase_voucher_items_set-' + purchaseValue + '-old_item_shade_for_dropdown_change').val();
-                    
-
-                        // if (newData == '' && itemShadeValue != '' && itemShadeValue != "None") {
-                        //     itemShade.text(itemShadeValue);
-                        //     itemShade.show();
-                        // }else{
-
-                        //     itemShade.hide();
-                        // }
-                    
                     
                         handleSelection(purchaseValue,itemName, item_value);
                         enterPressed = true;
@@ -503,7 +501,247 @@
                 }
             })
         })
+        }else{
+            const stockData =$('#id_godownData').val();
+            console.log(typeof(stockData))
+            var stockDataObject;
+            try {
+            // Fix single quotes and mismatched quotes in the JSON string
+                const sanitizedData = stockData
+                    .replace(/'/g, '"') // Replace single quotes with double quotes
+                    .replace(/([{,])\s*(\d+)\s*:/g, '$1"$2":'); // Add quotes around numeric keys
+                
+                        console.log('Sanitized data:', sanitizedData);
+                    // Parse the sanitized JSON string
+                    stockDataObject = JSON.parse(sanitizedData);
+                    console.log('Parsed object:', stockDataObject);
+                } catch (error) {
+                    console.error('Error parsing stockData:', error);
+                }
+                        $(document).on('click input keyup focus keydown', 'input[name^="stock_name_"]', function () {
+                itemName = $(this).closest('tr').find('select[name$="-item_shade_transfer"]').attr('name');
+                purchaseValue = itemName.split('-')[1];
+                   
+            });
+            $(document).on('input', 'input[name^="stock_name_"]', function (e) {
+                var StockValue = $(this).attr('name').match(/\d+/)[0]; // Extract the numeric value from the input name
+                var nameValue = $(this).val().trim();
+                var selectNameValue = `select_item_name_${StockValue}`;
+                var suggestionsContainer = $(`#${selectNameValue}`);
 
+                if (nameValue === 'None') {
+                    var selectNameValue = $(this).closest('tr').find('[name^="select_item_name_"]');
+
+                    selectNameValue.css('display', 'none');
+                    $(this).attr('data-key', '');
+                    return;
+                }
+                if (!enterPressed) {
+                    suggestionsContainer.css('display', 'block');
+                }
+                enterPressed = false;
+
+                function escapeRegExp(string) {
+                            return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
+                    }
+                        searchedItemNameDict = stockDataObject;
+                        var searchQuery = nameValue.toLowerCase();
+                        var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
+                        var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
+                        var filteredOptions = Object.entries(searchedItemNameDict).filter(([key, value]) => value.toLowerCase().includes(searchQuery));
+                       
+                        suggestionsContainer.empty();
+                     
+                        $.each(filteredOptions, function(index, [key, value]) {
+                            let highlightedText = value;
+                            let colorStyle = '';
+                            if (searchQuery) {
+                                highlightedText = value.split("|")[0].replace(regex, '<span class="highlight">$1</span>');
+                           
+                                suggestionsContainer.append(`<div id="itemName-div_${index}" class="itemName-div itemName-div-suggestion " data-key="${key}">${highlightedText}</span>
+                                    </div>`);
+                            } 
+                        });
+
+                        if(filteredOptions == ''){
+                            suggestionsContainer.show();
+                            suggestionsContainer.empty();
+                            suggestionsContainer.append(`<div" class="itemName-div itemName-div-suggestion ">No item found</div>`);
+                        }
+                suggestionsContainer.on('click', '.itemName-div', function (e) {
+                    var item_value = $(this).data('key');
+                    var itemNamevaluesCheck = $(this).text();
+
+
+                    $(this).closest('.custom-dropdown-container').find('.search-input').val(itemNamevaluesCheck);
+                    $(this).addClass('selected').siblings().removeClass('selected');
+
+
+                    handleSelection(StockValue, itemName, item_value)
+                    suggestionsContainer.css('display', 'none');
+
+                });
+
+            })
+            function handleSelection(StockValue, itemName, item_value) {
+
+                if (item_value !== undefined) {
+                    var selectedValue = searchedItemNameDict[item_value];
+                    var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
+                    var newnameValue = namevalueCheck.replace(/[\.\s 0-9]+$/, '');
+                    const selectedValueGodown = $('#id_source_godown').val();
+                    console.log('namevalueCheck', namevalueCheck)
+                    $(`input[name^="stock_name_${StockValue}"]`).val(newnameValue);
+
+                    $.ajax({
+                        url: '/stocktransferrawcreate/',
+                        method: 'GET',
+                        data: {
+                            'item_value': item_value,
+                            'selected_godown_id': selectedValueGodown
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            var itemrownameid = itemName.split('-')[1];
+                            $('#id_rawstocktrasferrecords_set-' + itemrownameid + '-item_shade_transfer').empty().append('<option value="">Select Shade</option>');
+                            const item_shades = response.item_shades;
+                            const item_per = response.item_per;
+                            const item_color = response.item_color;
+                            const item_shade_quantity = response.items_shade_quantity_in_godown;
+
+                            const itemcolorinput = document.querySelector('#id_stock_color_' + itemrownameid);
+                            const itemperinput = document.querySelector('#id_stock_per_' + itemrownameid);
+
+                            itemcolorinput.value = item_color;
+                            itemperinput.value = item_per;
+
+                            $.each(item_shades, function (key, value) {
+                                if (item_shade_quantity.hasOwnProperty(key)) {
+                                    $('#id_rawstocktrasferrecords_set-' + itemrownameid + '-item_shade_transfer').append('<option value="' + key + '">' + value + ' - ' + item_shade_quantity[key] + '</option>');
+                                } else {
+                                    $('#id_rawstocktrasferrecords_set-' + itemrownameid + '-item_shade_transfer').append('<option value="' + key + '">' + value + '</option>');
+                                }
+                            });
+
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.log('Error sending value to the backend');
+                        }
+                    })
+                }
+            }
+
+
+            var index = 0; // Declare index outside of the event listener
+            var indexbool = true;
+
+            $(document).on('keydown', 'input[name^="stock_name_"]', function (event) {
+                const $inputField = $(this);
+                const $dropdownOptions = $inputField.next('.stock_input_name');
+                const $options = $dropdownOptions.find('.itemName-div');
+                const optionsCount = $options.length - 1;
+                const searchText = $inputField.val().trim();
+                const hiddenValue = $inputField.closest('.custom-dropdown-container').find(`#select_item_name_${purchaseValue}`);
+                if (searchText === '') {
+                    index = 0;
+                    return;
+                }
+                const newHeight = $inputField.offset();
+                const windowHeight = $(window).height();
+                const availableSpace = windowHeight - newHeight.top - $inputField.outerHeight();
+
+
+                if (event.key === 'ArrowDown') {
+                    event.preventDefault();
+
+                    if (index <= optionsCount) {
+
+                        const $selectedItem = $options.eq(index);
+                        const $nextItem = $selectedItem.next();
+                        const nameDataKey = $selectedItem.text();
+                        const nameKey = $selectedItem.data('key');
+
+                        $inputField.attr('data-key', nameKey);
+
+                        $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+                        const itemOffsetTop = $nextItem.position().top;
+                        const itemHeight = $nextItem.outerHeight();
+                        const selectScrollTop = $dropdownOptions.scrollTop();
+                        const selectHeight = $dropdownOptions.height();
+
+                        if (itemOffsetTop + itemHeight > selectHeight) {
+                            $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                        } else if (itemOffsetTop < 0) {
+                            $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                        }
+                        $selectedItem.addClass('selected');
+                        if (index !== optionsCount) {
+                            index += 1;
+                            indexbool = true;
+                        }
+                    } else {
+                        index = 0;
+                    }
+                }
+
+                if (event.key === 'ArrowUp') {
+                    event.preventDefault();
+
+                    if (index != 0 && indexbool == true) {
+                        index -= 1;
+                    }
+
+                    if (index <= optionsCount) {
+
+                        const $selectedItem = $options.eq(index);
+                        const $prevItem = $selectedItem.prev();
+                        const nameDataKey = $selectedItem.text();
+                        const nameKey = $selectedItem.data('key');
+
+                        $inputField.attr('data-key', nameKey);
+
+                        $selectedItem.addClass('bg-highlight').siblings().removeClass('bg-highlight');
+
+                        const itemOffsetTop = $prevItem.position().top;
+                        const itemHeight = $prevItem.outerHeight();
+                        const selectScrollTop = $dropdownOptions.scrollTop();
+                        const selectHeight = $dropdownOptions.height();
+
+                        if (itemOffsetTop < 0) {
+                            $dropdownOptions.scrollTop(selectScrollTop - itemHeight);
+                        } else if (itemOffsetTop + itemHeight > selectHeight) {
+                            $dropdownOptions.scrollTop(selectScrollTop + itemHeight);
+                        }
+
+                        $selectedItem.addClass('selected');
+                    } else {
+                        index = 0;
+                    }
+                }
+
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const itemEnterValue = $(this);
+                    const item_value = itemEnterValue.attr('data-key');
+
+                    nameDataKey = '';
+                    nameKey = '';
+                    index = 0;
+                    indexbool = false;
+
+                    handleSelection(purchaseValue, itemName, item_value);
+                    enterPressed = true;
+                    hiddenValue.css("display", "none");
+                    $inputField.blur();
+                }
+                if (event.key === 'Tab' && enterPressed) {
+                    enterPressed = false; // Reset Enter key handling
+                    return true; // Allow default Tab behavior
+                }
+
+            });
+
+        }
     
         $(document).on('change', 'select[name^="rawstocktrasferrecords_set-"][name$="-item_shade_transfer"]', function () {
             const nameValue = $(this).attr('name');
