@@ -7,6 +7,9 @@
 
 <form action="" method="post" id="stockTransferForm" class="mt-3">
     {% csrf_token %}
+    {{source_godown_items}}
+   
+        
     <div class="d-flex mb-2">
         <label for="id_voucher_no" class="">Voucher No:</label>
         <input value="{{masterstockform.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">
@@ -73,20 +76,9 @@
                 <tr>
                     <td><span id="id_stock_{{forloop.counter0}}">{{forloop.counter}}</span></td>
                     <td>
-                        <!-- <select name="stock_name_{{forloop.counter0}}" class="acc-subInput stock_input_name" placeholder="Item Name" id="id_stock_name_{{forloop.counter0}}">
                         
-                            {% if masterstockform.instance.pk %}
-                            <option value="{{form.instance.item_shade_transfer.items.pk}}">
-                                {{form.instance.item_shade_transfer.items.item_name}}</option>
-
-                            {% for item_shade in source_godown_items %}
-                            <option value="{{item_shade.Item_shade_name.items.id}}">
-                                {{item_shade.Item_shade_name.items.item_name}}</option>
-                            {% endfor %}
-                            {% endif %}
-                        </select> -->
                         <div class="custom-dropdown-container">
-                            <input  type="text" name="stock_name_{{forloop.counter0}}" id="id_stock_name_{{forloop.counter0}}" class="product2Selectpurchase search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                            <input  type="text" name="stock_name_{{forloop.counter0}}" id="id_stock_name_{{forloop.counter0}}" class="product2Selectpurchase search-input"  placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.item_shade_transfer.items.item_name }}{% endif %}"  > 
                             <div name="select_item_name_{{forloop.counter0}}" class="product2Selectpurchase stock_input_name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                               
                            
