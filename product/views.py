@@ -2,7 +2,7 @@ from collections import defaultdict
 import datetime
 import decimal
 from io import BytesIO
-from operator import itemgetter
+from operator import attrgetter, itemgetter
 import os
 from sys import exception
 import uuid
@@ -1184,11 +1184,12 @@ def color_create_update(request, pk=None):
     elif request.path == '/colorcreate_update/':
         template_name = "product/create_color_modal.html"
         title = 'Colors'
+        page_name='Edit Color'
 
     elif request.path == '/color_popup/':
         template_name = "product/color_popup.html"
         title = 'Create Colors'
-    
+        page_name='Create Color'
 
     if pk:
         instance = get_object_or_404(Color, pk = pk)
@@ -7870,7 +7871,33 @@ def lwo_and_lwi_report_vendor_wise(request):
     return render(request,'reports/lwo_and_lwi_report_vendor_wise.html',{'queryset':queryset,'vendor_name':vendor_name})
 
 
+def finished_goods_sorting_list(request):
+    
+    finished_goods_purchase_voucher_instances = product_purchase_voucher_master.objects.all().annotate(
+        total_recieved_qty= Sum('product_purchase_voucher_items__quantity_total'), 
+        total_qc_qty=Sum('product_purchase_voucher_items__qc_recieved_qty'),
+        total_diff_qty = Sum('product_purchase_voucher_items__diffrence_qty')
+        )
 
+
+    finished_goods_transfer_m_instances = Finished_goods_Stock_TransferMaster.objects.all().annotate(
+        total_recieved_qty= Sum('finished_goods_transfer_records__product_quantity_transfer'), 
+        total_qc_qty=Sum('finished_goods_transfer_records__qc_recieved_qty'),
+        total_diff_qty = Sum('finished_goods_transfer_records__diffrence_qty')
+        )
+    
+
+
+    finished_goods_all_records = list(finished_goods_purchase_voucher_instances) + list(finished_goods_transfer_m_instances)
+
+    
+    
+    sorted_data = sorted(finished_goods_all_records, key=attrgetter('created_date'), reverse = False)
+
+
+    
+
+    return render(request,'finished_product/finishedgoodssortinglist.html',{'sorted_data':sorted_data})
 
 
 

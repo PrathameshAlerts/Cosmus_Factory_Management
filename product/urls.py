@@ -280,6 +280,11 @@ urlpatterns = [
     
     path('lwoandlwireportvendorwise/', views.lwo_and_lwi_report_vendor_wise, name='lwo-and-lwi-report-vendor-wise'),
 
+    # finished warehouse routes
+    path('finishedgoodssortinglist/', views.finished_goods_sorting_list, name='finished-goods-sorting-list'),
+
+
+
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),

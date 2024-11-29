@@ -1,7 +1,7 @@
 
 from django.db import models
 from django.conf import settings
-from django.forms import ValidationError
+from django.forms import CharField, ValidationError
 from multiselectfield import MultiSelectField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
@@ -1024,6 +1024,13 @@ class Product_warehouse_quantity_through_table(models.Model):
 
 
 class product_purchase_voucher_master(models.Model):
+
+    ACTIONS = [
+        ('Hold', 'Hold'),
+        ('Cancelled','Cancelled'),
+        ('Inward Process','Inward Process'),
+        ]
+
     purchase_number = models.CharField(max_length = 100, unique = True, null = False, blank = False)
     supplier_invoice_number = models.CharField(max_length = 100)
     ledger_type = models.CharField(max_length = 20, default = 'purchase(product)')
@@ -1034,6 +1041,7 @@ class product_purchase_voucher_master(models.Model):
     grand_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
+    actions = models.CharField(max_length=20,choices=ACTIONS)
 
 class product_purchase_voucher_items(models.Model):
     product_purchase_master = models.ForeignKey(product_purchase_voucher_master, on_delete=models.CASCADE)
@@ -1043,17 +1051,29 @@ class product_purchase_voucher_items(models.Model):
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
-
+    qc_recieved_qty = models.IntegerField(default=0)
+    diffrence_qty = models.IntegerField()
+    
 
 class Finished_goods_Stock_TransferMaster(models.Model):
-    voucher_no = models.IntegerField(unique=True,blank=False,null=False)
+
+    ACTIONS = [
+        ('Hold', 'Hold'),
+        ('Cancelled','Cancelled'),
+        ('Inward Process','Inward Process'),
+        ]
+
+    voucher_no = models.IntegerField(unique=True ,blank=False ,null=False)
     source_warehouse = models.ForeignKey(Godown_finished_goods, on_delete=models.PROTECT , related_name='source_warehouse')
     destination_warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT, related_name='destination_warehouse')
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
-    transnfer_cancelled = models.BooleanField(default=False)
+    transnfer_cancelled = models.BooleanField(default = False)
+    actions = models.CharField(max_length=20, choices = ACTIONS)
+
 
 class Finished_goods_transfer_records(models.Model):
+
     Finished_goods_Stock_TransferMasterinstance = models.ForeignKey(Finished_goods_Stock_TransferMaster, on_delete = models.CASCADE)
     product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
     product_quantity_transfer = models.BigIntegerField()
@@ -1061,5 +1081,6 @@ class Finished_goods_transfer_records(models.Model):
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
     transnfer_cancelled_records = models.BooleanField(default=False)
-
+    qc_recieved_qty = models.IntegerField(default=0)
+    diffrence_qty = models.IntegerField()
 

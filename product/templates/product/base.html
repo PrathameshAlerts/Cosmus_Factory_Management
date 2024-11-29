@@ -131,6 +131,7 @@
         <a class="sub-btn"><img src="../../../static/images/warehouse.png" alt="industry icon" style="width: 33px; padding-right: 10px;">Warehouse<i class="fas fa-angle-right dropdown"></i></a>
         <div class="sub-menu">
           <a href="{% url 'finished-goods-stock-all' %}" class="sub-item">Finished Goods Stock</a>
+          <a href="{% url 'finished-goods-sorting-list' %}">FG Warehouse QC</a>
           
         </div>
       </div>
@@ -247,7 +248,8 @@
         <a class="nav-link text-white" style="cursor: pointer;"  data-bs-toggle="dropdown" aria-expanded="false">Warehouse</a> 
         <ul class="dropdown-menu dropdown-menu-right">
           <li class="pro-head"><a href="{% url 'finished-goods-stock-all' %}" class="navText">Finished Goods Stock</a></li>
-
+          <li class="pro-head"><a href="{% url 'finished-goods-sorting-list' %}" class="navText">FG Warehouse QC</a></li>
+          
        </ul>  
       </li> 
         <li class="nav-item mx-2">
