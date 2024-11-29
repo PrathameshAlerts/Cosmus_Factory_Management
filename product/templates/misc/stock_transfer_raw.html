@@ -226,7 +226,7 @@
             if(stockId !== ""){
                 var vouchareNo = document.getElementById('id_voucher_no');
                 var stockItemName = document.getElementById('id_stock_name_' + i);
-                stockItemName.disabled = true;
+                stockItemName.readOnly = true;
                 vouchareNo.readOnly = true;
                 var StockShades = document.getElementById('id_rawstocktrasferrecords_set-'+i+'-item_shade_transfer');
                
