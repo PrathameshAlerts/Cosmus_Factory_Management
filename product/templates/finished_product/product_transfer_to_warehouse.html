@@ -241,8 +241,8 @@
                       $('.stock_remarks').val('');
   
   
-                      const itemsInGodown = response.filtered_product;
-                        console.log('itemsInGodown',itemsInGodown)
+                      //const itemsInGodown = response.filtered_product;
+                    
                       $(document).on('click input keyup focus keydown', 'input[name$="-products"]', function () {
                       itemName = $(this).closest('tr').find('input[name$="-product_quantity_transfer"]').attr('name');
                       purchaseValue = itemName.split('-')[1];

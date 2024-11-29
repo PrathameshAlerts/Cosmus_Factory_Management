@@ -65,7 +65,7 @@ the input field will be pre-filled with that value when the page is loaded. -->
             </tr>
             <tr>
               <th colspan="3"></th>
-              <th><span class="me-5">Shade</span><span class="ms-4">Shade Details <span style="float: right; width: 16%;">QTY</span></span></th>
+              <th><span class="me-5">Shade</span><span class="ms-4">Shade Details <span style="padding-left: 30px;">QTY</span></span></th>
               <th colspan="6"></th>
             </tr>
           </thead>
@@ -91,12 +91,12 @@ the input field will be pre-filled with that value when the page is loaded. -->
                   <tbody>
                     {% for shade in item.shades.all %}
                     <tr class="more-content" >
-                      <td  style="width: 32%;">{{shade.item_shade_name}}</td>
-                      <td class="">
+                      <td  style="width: 40%;">{{shade.item_shade_name}}</td>
+                      <td style="width: 60%;">
                         <table class="table-bordered">
                             {% for shade_q in shade.godown_shades.all %}
-                              <tr >
-                                <td style="width: 76%;">{{shade_q.godown_name}}</td>
+                              <tr style="width: 100%;" >
+                                <td style="width: 80%;">{{shade_q.godown_name}}</td>
                                 <td style="width: 100%;" class="px-2 shadeColor float-right">{{shade_q.quantity}}</td>
                               </tr>
                           {% endfor %}

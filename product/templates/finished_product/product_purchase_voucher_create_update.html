@@ -94,7 +94,11 @@
                         <td colspan="2">
                             <div class="custom-dropdown-container">
                                 <input type="hidden" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name"  value="" > 
+
+
                                 <input type="text" name="{{forms.prefix}}-product_name_value" id="id_{{forms.prefix}}-product_name_Value" class="product2Selectpurchase search-input"  placeholder="Product Name" autocomplete="off" value="{% if forms.instance.id %}{{forms.instance.product_name.Product.Product_Name}}{% endif %}" > 
+
+                                
                                 <div name="select_product_name_{{forloop.counter0}}" class="product2Selectpurchase product-name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
                                   
                                
@@ -481,9 +485,9 @@ function getGstNo() {
                 if (item_value !== undefined) {
                 var selectedValue = searchedProductNameDic[item_value];
                 var namevalueCheck = selectedValue[0];
-
-                $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name"]`).val(selectedValue);
-                
+                var newnameValue = namevalueCheck +''+item_value;
+                $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name"]`).val(item_value);
+                $(`input[name$="product_purchase_voucher_items_set-${purchaseValue}-product_name_value"]`).val(newnameValue)
                     const productColor = selectedValue[1];
                     const productGst = selectedValue[2];
                     var itemcolorinput = document.querySelector('#item_color_' + purchaseValue);

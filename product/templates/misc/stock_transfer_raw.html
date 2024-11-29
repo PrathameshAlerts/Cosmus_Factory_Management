@@ -250,7 +250,7 @@
         $('#id_source_godown').on('change', function () {
             const selectedGodownId = $(this).val();
             const id = $(this).attr('id');
-           
+           console.log('selectedGodownId',selectedGodownId)
             $.ajax({
                 url: '/stocktransferrawcreate/',
                 method: 'GET',
@@ -271,8 +271,8 @@
                         $('#id_destination_godown').append('<option value="' + key + '">' + value + '</option>');
                     });
 
-                //     const itemsInGodown = response.items_in_godown;
-                //   console.log('itemsInGodown',itemsInGodown)
+                     const itemsInGodown = response.items_in_godown;
+                      console.log('itemsInGodown',itemsInGodown)
                     $(document).on('click input keyup focus keydown', 'input[name^="stock_name_"]', function () {
                     itemName = $(this).closest('tr').find('select[name$="-item_shade_transfer"]').attr('name');
                     purchaseValue = itemName.split('-')[1];
