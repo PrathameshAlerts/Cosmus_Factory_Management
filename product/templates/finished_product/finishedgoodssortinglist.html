@@ -1,0 +1,58 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+
+<table>
+<tr>
+    <th>Purchase/Stock Trf No</th>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Ship From</th>
+    <th>Ship To</th>
+    <th>Boxes</th>
+    <th>Dispatch QTY</th>
+    <th>Received QTY</th>
+    <th>Discrepancy QTY</th>
+    <th>Select Actions</th>
+    <th>Problems</th>
+</tr>
+{% for records in sorted_data %}
+
+{% if records.purchase_number %}
+<tr>
+    <td>{{records.purchase_number}}</td>
+    <td>{{records.created_date}}</td>
+    <td>Status</td>
+    <td>{{records.party_name.name}}</td>
+    <td>{{records.finished_godowns.warehouse_name_finished}}</td>
+    <td>BOX</td>
+    <td>{{records.total_recieved_qty}}</td>
+    <td>{{records.total_qc_qty}}</td>
+    <td>{{records.total_diff_qty}}</td>
+    <td>{{records.actions}}</td>
+    <td>{{records.}}</td>
+    <td>{{records.}}</td>
+</tr>
+{% elif records.voucher_no %}
+<tr>
+    <td>{{records.voucher_no}}</td>
+    <td>{{records.created_date}}</td>
+    <td>Status</td>
+    <td>{{records.source_warehouse.godown_name_finished}}</td>
+    <td>{{records.destination_warehouse.warehouse_name_finished}}</td>
+    <td>BOX</td>
+    <td>{{records.total_recieved_qty}}</td>
+    <td>{{records.total_qc_qty}}</td>
+    <td>{{records.total_diff_qty}}</td>
+    <td>{{records.actions}}</td>
+    <td>{{records.}}</td>
+    <td>{{records.}}</td>
+</tr>
+{% endif %}
+{% endfor %}
+
+</table>
+
+
+
+{% endblock body %}
