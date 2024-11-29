@@ -16,9 +16,9 @@
 
 <div>
 
-    <table>
+    <table class="table table-striped table-bordered table-hover">
 
-        <thead>
+        <thead class="name_absolute sticky-top">
 
             <tr>
 
@@ -58,7 +58,7 @@
 
 
 
-        <tbody>
+        <tbody class="mainTableList">
 
             {% if queryset %}
 
@@ -75,25 +75,11 @@
                     <td>{{instance.created_date}}</td>
 
                     <td>
-
+                        {% if instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.productdetails.all.first.PProduct_image %}
                         
+                        <img src="{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.productdetails.all.first.PProduct_image.url}}" alt="img" style="width:40px;">
 
-                        {% if images %}
-
-                        {% for image in images %}
-
-                        {% if forloop.first %}
-
-                        <img src="{{images.PProduct_image.url }}" alt="img" style="width:40px;">
-
-                        {% endif %}
-
-                        {% endfor %}
-
-                        {% endif %}
-
-                        
-
+                        {% endif  %}
                     </td>
 
                     <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.Product_Refrence_ID}}</td>

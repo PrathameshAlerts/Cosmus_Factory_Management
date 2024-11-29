@@ -66,7 +66,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,product_purchase_voucher_items_formset_update,
                                 purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset_create,
-                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form, raw_material_product_estimation_formset)
+                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form, raw_material_product_estimation_formset,Finished_goods_transfer_records_formset_update)
 
 
 logger = logging.getLogger('product_views')
@@ -399,7 +399,7 @@ def product2subcategoryproductajax(request):
 
 @login_required(login_url='login')
 def product_color_sku(request,ref_id = None):
-    print(request.POST)
+    
     color = Color.objects.all()
 
     if ref_id:
@@ -443,8 +443,7 @@ def product_color_sku(request,ref_id = None):
                     messages.error(request,f'{e}')
                     logger.error(e)
             else:
-                print(formset.errors)
-                print(formset.non_form_errors())
+                
                 return render(request, 'product/product_color_sku.html', {'formset': formset, 'color': color,'ref_id': ref_id,'page_name':'Create Product'})
 
 
@@ -654,7 +653,7 @@ def definesubcategoryproduct(request, pk=None):
             
                 return redirect('define-sub-category-product')
             else:
-                print(form.errors)
+                
                 messages.error(request,f'An Exception occoured - {form.errors}')
         
         except Exception as e:
@@ -6564,6 +6563,7 @@ def product_purchase_voucher_create_update(request, pk=None):
     warehouses = Finished_goods_warehouse.objects.all()
     party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
     
+    print(request.POST)
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
 
         sku = request.GET.get('productName')
@@ -6696,6 +6696,9 @@ def product_purchase_voucher_list(request):
 
     return render(request,'finished_product/product_purchase_voucher_list.html',{'product_purchase_voucher_all':product_purchase_voucher_all})
 
+
+
+
 @login_required(login_url='login')
 def product_purchase_voucher_delete(request,pk):
 
@@ -6706,18 +6709,43 @@ def product_purchase_voucher_delete(request,pk):
     
 
 
+
+
 @login_required(login_url='login')
 def warehouse_product_transfer_create_and_update(request,pk=None):
     products = PProduct_Creation.objects.all()
     godowns = Godown_finished_goods.objects.all()
     warehouses =Finished_goods_warehouse.objects.all()
+
+    dict_to_send = None
+
     if pk:
         voucher_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=pk)
+        form = Finished_goods_Stock_TransferMaster_form(instance=voucher_instance)
+        formset = Finished_goods_transfer_records_formset_update(instance=voucher_instance)
+        godown_id = voucher_instance.source_warehouse.id
+
+        filtered_product = list(product_godown_quantity_through_table.objects.filter(
+            godown_name__id = godown_id).values('product_color_name__Product__Product_Name','product_color_name__PProduct_SKU','product_color_name__PProduct_color__color_name','quantity'))
+        
+        if filtered_product:
+            dict_to_send = {}
+
+            for query in filtered_product:
+
+                p_sku = query.get('product_color_name__PProduct_SKU')
+                product_name = query.get('product_color_name__Product__Product_Name')
+                color = query.get('product_color_name__PProduct_color__color_name')
+                qty = query.get('quantity')
+                
+                dict_to_send[p_sku] = [product_name,color,qty]
+                
+                
     else:
         voucher_instance = None
         
-    form = Finished_goods_Stock_TransferMaster_form(instance=voucher_instance)
-    formset = Finished_goods_transfer_records_formset_create(instance=voucher_instance)
+        form = Finished_goods_Stock_TransferMaster_form()
+        formset = Finished_goods_transfer_records_formset_create()
 
 
     if request.method == 'POST':
@@ -6834,7 +6862,8 @@ def warehouse_product_transfer_create_and_update(request,pk=None):
 
             except Exception as e:
                 print(e)
-    return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset,'godowns':godowns,'warehouses':warehouses})
+    return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset,'godowns':godowns,
+                                                                                'warehouses':warehouses,'dict_to_send':dict_to_send})
 
 
 
@@ -6845,31 +6874,37 @@ def product_transfer_to_warehouse_list(request):
 
 
 @login_required(login_url='login')
-def product_transfer_to_warehouse_delete(request,id):
-    if request.method == 'POST':  
-        transfer_records = Finished_goods_transfer_records.objects.filter(Finished_goods_Stock_TransferMasterinstance = id)
-        for record in transfer_records:
-            if not record.transnfer_cancelled_records:
-                godown_transfer_records_quantity_revert = product_godown_quantity_through_table.objects.get(product_color_name = record.product, godown_name = record.Finished_goods_Stock_TransferMasterinstance.source_warehouse)
-                godown_transfer_records_quantity_revert.quantity = godown_transfer_records_quantity_revert.quantity + record.product_quantity_transfer
-                godown_transfer_records_quantity_revert.save()
-                warehouse_transfer_records_quantity_revert = Product_warehouse_quantity_through_table.objects.get(product = record.product)
-                warehouse_transfer_records_quantity_revert.quantity = warehouse_transfer_records_quantity_revert.quantity - record.product_quantity_transfer
-                warehouse_transfer_records_quantity_revert.save()
-                transfer_records.update(transnfer_cancelled_records=True)
+def product_transfer_to_warehouse_delete(request):
+    id = request.POST.get('ProductId')
+    
+     
+    transfer_records = Finished_goods_transfer_records.objects.filter(Finished_goods_Stock_TransferMasterinstance = id)
+    for record in transfer_records:
+        if not record.transnfer_cancelled_records:
+            godown_transfer_records_quantity_revert = product_godown_quantity_through_table.objects.get(product_color_name = record.product, godown_name = record.Finished_goods_Stock_TransferMasterinstance.source_warehouse)
+            godown_transfer_records_quantity_revert.quantity = godown_transfer_records_quantity_revert.quantity + record.product_quantity_transfer
+            godown_transfer_records_quantity_revert.save()
+            
+            warehouse_transfer_records_quantity_revert = Product_warehouse_quantity_through_table.objects.get(product = record.product)
+            warehouse_transfer_records_quantity_revert.quantity = warehouse_transfer_records_quantity_revert.quantity - record.product_quantity_transfer
+            warehouse_transfer_records_quantity_revert.save()
+            transfer_records.update(transnfer_cancelled_records=True)
+
+            return JsonResponse({'response':True},status=200)
+        
     return redirect('all-product-transfer-to-warehouse')
 
 
 def product_transfer_to_warehouse_ajax(request):
     
     godown_id = request.GET.get('godown_id')
-
+    
     if godown_id:
 
         try:
             filtered_product = list(product_godown_quantity_through_table.objects.filter(
             godown_name__id = godown_id).values('product_color_name__Product__Product_Name','product_color_name__PProduct_SKU','product_color_name__PProduct_color__color_name','quantity'))
-            
+           
             if filtered_product:
                 dict_to_send = {}
 
@@ -6881,7 +6916,7 @@ def product_transfer_to_warehouse_ajax(request):
                     qty = query.get('quantity')
                     
                     dict_to_send[p_sku] = [product_name,color,qty]
-
+                
                 return JsonResponse({'filtered_product':dict_to_send})
             
             else:
@@ -6986,8 +7021,8 @@ def productdynamicsearchajax(request):
                     product.get('Product__Product_GST__gst_percentage', '')
                 ] for product in products
             }
-            print(product_name_typed)
-            print(product_searched_dict)
+            
+            
             logger.info(f"Search results for {product_name_typed}: {product_searched_dict}")
             return JsonResponse({'typed': product_name_typed, 
                                  'products': product_searched_dict}, status=200)
@@ -7016,7 +7051,7 @@ def CheckUniqueFieldDuplicate(model_name, searched_value, col_name):
             
         except Exception as e:
             return JsonResponse({f'Status':'Exception Occoured - {e}'}, status=404)
-        print(validation_flag)
+        
         return JsonResponse({'validation_flag':validation_flag})
     else:
         return JsonResponse({f'Status':'No data recieved - {e}'}, status=404)
@@ -7028,7 +7063,7 @@ def UniqueValidCheckAjax(request):
     
     if 'purchase_number' in searched_from:
         searched_value = request.GET.get('purchase_number').strip()
-        print('searched_value',searched_value)
+        
         model_name = item_purchase_voucher_master
         col_name = 'purchase_number'
 
@@ -7787,24 +7822,26 @@ def finished_goods_model_wise_report(request,ref_id):
 
 
 def lwo_and_lwi_report_vendor_wise(request):
+
     vendor_name = request.POST.get("vendor_name")
 
     if vendor_name:
-        Approval_Pending_Qty = labour_workout_childs.objects.filter(id = OuterRef('id')).annotate(total_pending = Sum('labour_work_in_master__l_w_in_products__pending_for_approval')).values('total_pending')
-        Approve_Qty = labour_workout_childs.objects.filter(id = OuterRef('id')).annotate(total_approve = Sum('labour_work_in_master__l_w_in_products__approved_qty')).values('total_approve')
-        Labour_Work_In = labour_workout_childs.objects.filter(id=OuterRef('id')).annotate(total_workin = Sum('labour_work_in_master__total_return_pcs')).values('total_workin')
 
-        queryset_by_name = labour_workout_childs.objects.filter(labour_name__name__icontains=vendor_name).annotate(
+        Approval_Pending_Qty = labour_workout_childs.objects.filter(id = OuterRef('id')).annotate(total_pending = Sum(
+            'labour_work_in_master__l_w_in_products__pending_for_approval')).values('total_pending')
+        
+        Approve_Qty = labour_workout_childs.objects.filter(id = OuterRef('id')).annotate(total_approve = Sum(
+            'labour_work_in_master__l_w_in_products__approved_qty')).values('total_approve')
+        
+        Labour_Work_In = labour_workout_childs.objects.filter(id=OuterRef('id')).annotate(total_workin = Sum(
+            'labour_work_in_master__total_return_pcs')).values('total_workin')
+
+
+        queryset = labour_workout_childs.objects.filter(labour_name__name__icontains=vendor_name).annotate(
                     Total_Balance_to_Vendor = Sum('labour_workout_child_items__labour_w_in_pending'),
                     Total_Pending_Qty=Subquery(Approval_Pending_Qty),
                     Total_Approve_Qty=Subquery(Approve_Qty),
                     Total_Labour_Work_In = Subquery(Labour_Work_In))
-
-    
-        queryset=queryset_by_name
-        for i in queryset_by_name:
-            product = i.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number
-            images = PProduct_Creation.objects.filter(Product=product).values('PProduct_image')
 
     else:
         Approval_Pending_Qty = labour_workout_childs.objects.filter(id = OuterRef('id')).annotate(total_pending = Sum('labour_work_in_master__l_w_in_products__pending_for_approval')).values('total_pending')
@@ -7817,10 +7854,10 @@ def lwo_and_lwi_report_vendor_wise(request):
                     Total_Pending_Qty=Subquery(Approval_Pending_Qty),
                     Total_Approve_Qty=Subquery(Approve_Qty),
                     Total_Labour_Work_In = Subquery(Labour_Work_In))
-        for i in queryset:
-            product = i.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number
-            images = PProduct_Creation.objects.filter(Product=product).values('PProduct_image')
-    return render(request,'reports/lwo_and_lwi_report_vendor_wise.html',{'queryset':queryset,"images":images,'vendor_name':vendor_name})
+        
+        
+
+    return render(request,'reports/lwo_and_lwi_report_vendor_wise.html',{'queryset':queryset,'vendor_name':vendor_name})
 
 
 

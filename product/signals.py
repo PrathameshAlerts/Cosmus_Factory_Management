@@ -49,9 +49,17 @@ def handle_invoice_delete(sender, instance, **kwargs):
         for g_items in  item_godowns_instance:
             godown = g_items.godown_id
             quantity = g_items.quantity
-            godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)  # godown_quantity_to_delete carries the already present quantity in the table
+            
+            godown_quantity_to_delete, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown,Item_shade_name=item_shade)  # godown_quantity_to_delete carries the already present quantity in the table
+            
             logger.info(f"quantity reduced from c/d table after Invoice Delete -- id - {godown_quantity_to_delete.id} - quantity -  {quantity}")
-            godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
+            
+            if created:
+                qty_to_deduct = 0
+            else:
+                qty_to_deduct =  godown_quantity_to_delete.quantity
+
+            godown_quantity_to_delete.quantity = qty_to_deduct - quantity
             godown_quantity_to_delete.save()
             
 
@@ -73,9 +81,17 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
         for g_items in invoice_godown_items_instance:            
             godown = g_items.godown_id
             quantity = g_items.quantity
-            godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
+            godown_quantity_to_delete, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown,Item_shade_name=item_shade)
+            
             logger.info(f"quantity reduced from c/d table after Invoice Items Delete -- id - {godown_quantity_to_delete.id} - quantity -  {quantity}")
-            godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
+            
+            if created:
+                qty_to_deduct = 0
+            else:
+                qty_to_deduct = godown_quantity_to_delete.quantity
+
+            godown_quantity_to_delete.quantity = qty_to_deduct - quantity
+
             godown_quantity_to_delete.save()
             
 
@@ -95,9 +111,16 @@ def handle_invoice_items_godowns_delete(sender, instance, **kwargs):
         else:
             item_shade = instance.purchase_voucher_godown_item.item_shade
         
-        godown_quantity_to_delete = item_godown_quantity_through_table.objects.get(godown_name=godown,Item_shade_name=item_shade)
+        godown_quantity_to_delete, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown,Item_shade_name=item_shade)
         logger.info(f"quantity reduced from c/d table after Invoice Items godown delete -- id - {godown_quantity_to_delete.id} - quantity -  {quantity}")
-        godown_quantity_to_delete.quantity = godown_quantity_to_delete.quantity - quantity
+        
+        if created:
+            qty_to_deduct = 0
+        else:
+            qty_to_deduct = godown_quantity_to_delete.quantity
+
+        godown_quantity_to_delete.quantity = qty_to_deduct - quantity
+
         godown_quantity_to_delete.save()
         
 

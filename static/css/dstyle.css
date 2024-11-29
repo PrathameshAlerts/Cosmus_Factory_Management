@@ -1543,7 +1543,7 @@ input[type=number] {
 }
 
 table>:not(caption)>*>*{
-    padding: .4rem .4rem !important;
+    padding: .3rem .3rem !important;
 }
 .purchase-amount{
     width: 110px;

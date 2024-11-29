@@ -68,7 +68,7 @@
             
             </div>
         </div>
-        <div class="table-res"> 
+        <div> 
             <table id="myTable" class="table table-striped table-hover  table-bordered">
                 <thead class="name_absolute">
                     <th>No</th>
@@ -84,7 +84,7 @@
                     <th>Total Amount</th>
                     <th>DELETE</th>
                 </thead>
-                <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                <tbody class="mainTableList">
                     {{product_purchase_voucher_items_formset_instance.management_form}}
                     {% for forms in product_purchase_voucher_items_formset_instance %}
                     {{ forms.id }}
@@ -409,6 +409,7 @@ function getGstNo() {
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                         }
                         searchedProductNameDic = response.products; 
+                        console.log(searchedProductNameDic)
                         const searchQuery = productnamevalue.toLowerCase();
                         const searchTerms = searchQuery.split(/\s+/);
                         const convertStringData = searchTerms.toString();
@@ -430,8 +431,7 @@ function getGstNo() {
                             return normalizedKey.includes(normalizedQuery) ||
                                 normalizedProductName.includes(normalizedQuery) ||
                                 normalizedColor.includes(normalizedQuery);
-                        }
-                    );
+                        });
          
                         suggestionsContainer.empty();
 
