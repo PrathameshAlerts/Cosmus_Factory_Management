@@ -1935,8 +1935,9 @@ def godowndelete(request,str,pk):
 
 @login_required(login_url='login')
 def stockTrasferRaw(request, pk=None):
+    print(request.POST)
     godowns = Godown_raw_material.objects.all()
-
+    source_godown_items_dict = None
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         
         try:
@@ -2034,7 +2035,16 @@ def stockTrasferRaw(request, pk=None):
         formset  = raw_material_stock_trasfer_items_formset(request.POST or None, instance = raw_transfer_instance)
         source_godown_items = item_godown_quantity_through_table.objects.filter(godown_name = raw_transfer_instance.source_godown.id)
         page_name = 'Edit Stock Transfer'
-        print(source_godown_items)
+
+        source_godown_items_dict = {x.Item_shade_name.items.id:x.Item_shade_name.items.item_name for x in source_godown_items}
+        # for x in source_godown_items:
+        #     source_godown_items_dict[x.Item_shade_name.items.id] = x.Item_shade_name.items.item_name
+        # print(source_godown_items_dict)
+    # {{x.Item_shade_name.items.item_name}}
+    # {{x.quantity}}
+    # {{x.item_rate}}
+    
+
     else:
         source_godown_items = None
         raw_transfer_instance = None
@@ -2068,7 +2078,7 @@ def stockTrasferRaw(request, pk=None):
             return redirect('stock-transfer-raw-list')
 
 
-    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'source_godown_items':source_godown_items,'page_name':page_name}
+    context = {'masterstockform':masterstockform,'formset':formset,'godowns':godowns,'source_godown_items':source_godown_items,'source_godown_items_dict':source_godown_items_dict,'page_name':page_name}
 
     return render(request,'misc/stock_transfer_raw.html', context=context)
 

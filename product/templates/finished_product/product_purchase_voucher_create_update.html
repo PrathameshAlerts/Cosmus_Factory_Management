@@ -317,7 +317,6 @@ function getGstNo() {
                     
                 },
                 success: function (data) {
-                    console.log(data.validation_flag)
                     if(data.validation_flag === true){
                        purchase.css('border', '1px solid red');
                         errorElement.text('*Purchase number already exists');
