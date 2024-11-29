@@ -7860,8 +7860,7 @@ def lwo_and_lwi_report_vendor_wise(request):
     return render(request,'reports/lwo_and_lwi_report_vendor_wise.html',{'queryset':queryset,'vendor_name':vendor_name})
 
 
-def Test():
-    pass
+
 
 
 
