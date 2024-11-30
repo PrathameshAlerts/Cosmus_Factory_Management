@@ -1012,6 +1012,22 @@ class raw_material_production_total(models.Model):
 class Finished_goods_warehouse(models.Model):
     warehouse_name_finished = models.CharField(max_length=100)
 
+
+class finished_goods_warehouse_zone(models.Model):
+    zone_name = models.CharField(max_length=30, unique=True, blank=False, null=False)
+    warehouse_finished_name = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT, related_name='warehouses')
+
+
+class finished_goods_warehouse_racks(models.Model):
+    rack_name = models.CharField(max_length=30, unique=True, blank=False, null=False)
+    zone_finished_name  = models.ForeignKey(finished_goods_warehouse_zone, on_delete=models.PROTECT, related_name='zones')
+
+
+class finished_product_warehouse_bin(models.Model):
+    bin_name = models.CharField(max_length=30, unique=True, blank=False, null = False)
+    rack_finished_name = models.ForeignKey(finished_goods_warehouse_racks, on_delete=models.PROTECT, related_name='racks')
+
+
 class Product_warehouse_quantity_through_table(models.Model):
     warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT)
     product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
@@ -1052,7 +1068,7 @@ class product_purchase_voucher_items(models.Model):
     updated_date = models.DateTimeField(auto_now = True)
     amount = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
     qc_recieved_qty = models.IntegerField(default=0)
-    diffrence_qty = models.IntegerField()
+    diffrence_qty = models.IntegerField(null=True, blank=True)
     
 
 class Finished_goods_Stock_TransferMaster(models.Model):
@@ -1071,7 +1087,6 @@ class Finished_goods_Stock_TransferMaster(models.Model):
     transnfer_cancelled = models.BooleanField(default = False)
     actions = models.CharField(max_length=20, choices = ACTIONS)
 
-
 class Finished_goods_transfer_records(models.Model):
     Finished_goods_Stock_TransferMasterinstance = models.ForeignKey(Finished_goods_Stock_TransferMaster, on_delete = models.CASCADE)
     product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
@@ -1081,18 +1096,24 @@ class Finished_goods_transfer_records(models.Model):
     updated_date = models.DateTimeField(auto_now = True)
     transnfer_cancelled_records = models.BooleanField(default=False)
     qc_recieved_qty = models.IntegerField(default=0)
-    diffrence_qty = models.IntegerField()
+    diffrence_qty = models.IntegerField(null=True, blank=True)
 
-# class finished_product_warehouse_bin(models.Model):
-#     bin_name = models.CharField(max_length=20,unique=True, blank=False,null=False)
+class finishedgoodsbinallocation(models.Model):
+    related_purchase_item = models.ForeignKey(product_purchase_voucher_items, on_delete=models.PROTECT, null=True, blank=True)
+    related_transfer_record = models.ForeignKey(Finished_goods_transfer_records, on_delete=models.PROTECT, null=True, blank=True)
+    unique_serial_no = models.CharField(max_length=50, unique=True, blank=False, null=False)
+    product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
+    bin_number = models.ForeignKey(finished_product_warehouse_bin, on_delete=models.PROTECT)
+    source_type = models.CharField(max_length=20, choices=[('purchase', 'Purchase'), ('transfer', 'Transfer')])
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
 
-# class finished_product_to_finished_product_warehouse_bin(models.Model):
-#     created_date = models.DateTimeField(auto_now_add = True)
-#     updated_date = models.DateTimeField(auto_now = True)
-#     unique_serial_no = models.CharField(max_length=50, unique=True, blank=False,null=False)
-#     p_purchase_voucher_items = models.ForeignKey(product_purchase_voucher_items, on_delete=models.PROTECT, related_name='serial_bin_products')
-#     bin_number = models.ForeignKey(finished_product_warehouse_bin, on_delete=models.PROTECT, related_name='bin_instances')
+
+
+
+
+
 
 
 

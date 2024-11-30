@@ -282,7 +282,7 @@ urlpatterns = [
 
     # finished warehouse routes
     path('finishedgoodssortinglist/', views.finished_goods_sorting_list, name='finished-goods-sorting-list'),
-
+    path('stocktransferinstancelistpopup/<int:id>/', views.stock_transfer_instance_list_popup, name="stock-transfer-instance-list-popup"),
 
 
     #common Routes

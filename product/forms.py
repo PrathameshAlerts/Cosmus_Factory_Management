@@ -1024,3 +1024,23 @@ Finished_goods_transfer_records_formset_update = inlineformset_factory(Finished_
 
 
 
+class Finished_goods_transfer_records_form_for_FG_Warehouse_QC(forms.ModelForm):
+
+    class Meta:
+        model = Finished_goods_transfer_records
+        fields = ['product','product_quantity_transfer','qc_recieved_qty','diffrence_qty']
+
+stock_transfer_instance_formset_only_for_update = inlineformset_factory(
+    Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, 
+    form=Finished_goods_transfer_records_form_for_FG_Warehouse_QC, extra=0, can_delete=False)
+
+
+class product_purchase_voucher_items_form_for_FG_Warehouse_QC(forms.ModelForm):
+    class Meta:
+        model = product_purchase_voucher_items
+        fields = [
+            'product_name','quantity_total','qc_recieved_qty', 'diffrence_qty']
+
+product_purchase_voucher_items_instance_formset_only_for_update = inlineformset_factory(
+    product_purchase_voucher_master,product_purchase_voucher_items,
+    form = product_purchase_voucher_items_form_for_FG_Warehouse_QC, extra=0, can_delete=True)

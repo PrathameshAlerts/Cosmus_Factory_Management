@@ -1,0 +1,11 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<form action="">
+    {{ formset.management_form}}
+    {% for form in formset %}
+        {{ form.as_p }}
+    {% endfor %}
+</form>
+{% endblock body %}
+
