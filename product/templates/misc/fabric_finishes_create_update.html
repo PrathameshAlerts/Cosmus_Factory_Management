@@ -2,12 +2,12 @@
 {% load static %} 
  {% block body %}
 
- <div class="row mt-2">
+ <div class="row mt-4">
     <div class="col-lg-5">
         <form action="" method="POST" id="fabricFinishesForm">
 
             {% csrf_token %}
-            <div class="d-flex my-4">
+            <div class="d-flex">
                 <label for="id_fabric_finish" class="item-form">Fabric Finishes :</label>
                 <input type="text" name="fabric_finish" class="item-select" required id="id_fabric_finish" value="{{form.instance.fabric_finish}}">    
             </div>
@@ -16,8 +16,8 @@
             
         </form>
     </div>
-    <div class="col-lg-5 mt-2">
-        <div class="row mt-4">
+    <div class="col-lg-5">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="d-flex mb-3">
                     <form method="GET">

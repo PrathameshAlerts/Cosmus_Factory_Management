@@ -15,7 +15,7 @@
     </form>
   </div>
 
-  <div class="col-lg-5 mt-2">
+  <div class="col-lg-5">
     <div class="row ">
       <div class="col-lg-12">
         <div class="d-flex mb-3">
@@ -25,6 +25,7 @@
               <input type="submit" class="mx-2"></input>
             </div>
           </form>
+          <button class="item-btn mx-2" onclick="redirectMainPeoductFilter()">Clear Filter</button>
         </div>
       </div>
     </div>
@@ -98,6 +99,9 @@
     });
   });
 
+  function redirectMainPeoductFilter(){
+    window.location.href = "/definemaincategoryproduct/"
+  }
 </script>
 
 {% endblock body %}

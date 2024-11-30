@@ -6,9 +6,10 @@
 
     <div class="row mt-3 mb-3">
         <div class="col-lg-12 d-flex">
-            <form method="GET">
+            <form method="POST">
+                {% csrf_token %}
                 <div class="container-flex">
-                  <input type="search" placeholder="Search" name="vendor_name" aria-label="Search" value="{{item_search | default_if_none:''}}">
+                  <input type="search" placeholder="Search" name="vendor_name" aria-label="Search" value="{{vendor_name|default_if_none:''}}">
                   <input type="submit" class="mx-2"></input>
                 </div>
               </form>
@@ -16,24 +17,13 @@
         </div>
     </div>
 
-
-  <!-- <button type="button" class="item-btn mb-2" onclick="redirectlistFilter()">Clear Filter</button> -->
-<!-- <form action="" method="POST">
-
-    {% csrf_token %}
-
-    <input value="{{vendor_name|default_if_none:''}}" type="text" name="vendor_name">
-
-    <input type="submit">
-
-</form> -->
-
 <div class="row">
     <div class="col-lg-12">
         <table class="table table-striped table-bordered table-hover">
             <thead class="name_absolute sticky-top">
                 <tr>
                     <th>PO NO</th>
+                    <th>Vendor Name</th>
                     <th>Challan No</th>
                     <th>Date</th>
                     <th>Images</th>
@@ -56,8 +46,9 @@
              
                     <tr>
                         <td>{{instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.purchase_order_number}}</td>
+                        <td class="text-nowrap">{{instance.labour_name.name}}</td>
                         <td><span class="challanNo">{{instance.challan_no}}</span></td>
-                        <td>{{instance.created_date}}</td>
+                        <td class="text-nowrap">{{instance.created_date}}</td>
                         <td>
                             {% if instance.labour_workout_master_instance.purchase_order_cutting_master.purchase_order_id.product_reference_number.productdetails.all.first.PProduct_image %}
                             
@@ -78,6 +69,13 @@
                         <td>{{instance.note}}</td>
                     </tr>
                 {% endfor %}
+                {% else %}
+                <tfoot>
+                    <tr>
+                        <td >No Record Found</td>
+                    </tr>
+                </tfoot>
+                
                 {% endif %}
     
             </tbody>

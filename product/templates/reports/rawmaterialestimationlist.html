@@ -1,9 +1,17 @@
 {% extends 'product/base.html' %}
 {% block body %}
 
-<div class="mt-2 mb-3">
-    <button class="item-btn" id="openSpinnerBtn"><a id="addLabourWorkIn" class="text-decoration-none text-white" href="{% url 'rawmaterial-estimation-create' %}">Create</a></button>
-
+<div class="row">
+  <div class="col-lg-12 mt-4">
+    <div class="d-flex mb-2">
+      <button class="product-btn" id="addLedgerClick" onclick="reversAddRawEstimation()">Add +</button>
+      <div class="container-flex"> 
+       <input class="" type="search" placeholder="Search" aria-label="Search" id="p_search" name="product_search" >
+       <input type="submit" class="mx-2"></input>
+      </div>
+      <button class="product-btn ml-3" onclick="redirectRawEstinationFilter()">Clear Filter</button>
+    </div>
+  </div>  
 </div>
 
 <div>
@@ -50,25 +58,29 @@
     document.body.appendChild(document.getElementById('exampleModal'));
     $(document).ready(function() {
         $('.delete-btn').click(function () {
-      var itemId = $(this).data('item-id');
-      var name = $(this).closest('tr').find('td').eq(1).text();
-      var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
+          var itemId = $(this).data('item-id');
+          var name = $(this).closest('tr').find('td').eq(1).text();
+          var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
 
-      $('#modal-body-text').html('Are you sure you want to delete the Godown ' + coloredName + '?');
-      $('#confirmDeleteButton').attr('data-item-id', itemId);
-      $('#exampleModal').modal('show');
-    });
+          $('#modal-body-text').html('Are you sure you want to delete the Godown ' + coloredName + '?');
+          $('#confirmDeleteButton').attr('data-item-id', itemId);
+          $('#exampleModal').modal('show');
+        });
 
     // Confirm delete button click event
-    $('#confirmDeleteButton').click(function () {
-      var itemId = $(this).data('item-id');
-      // Redirect to delete view
-      var deleteUrl = '/rawmaterialestimatedelete/'  + itemId
-
-      window.location.href = deleteUrl
-
-    });
+        $('#confirmDeleteButton').click(function () {
+          var itemId = $(this).data('item-id');
+          var deleteUrl = '/rawmaterialestimatedelete/'  + itemId
+          window.location.href = deleteUrl;
+        });
     })
+
+    function reversAddRawEstimation(){
+      window.location.href = '/rawmaterialestimationcreate/';
+    }
+    function redirectRawEstinationFilter(){
+      window.location.href = '/rawmaterialestimationlist/';
+    }
 </script>
 {% endblock %}
 
