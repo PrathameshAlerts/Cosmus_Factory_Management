@@ -900,12 +900,13 @@ input[type=number] {
     
   }
 .item-select{
-    width: 180px;
+    width: 220px;
     border: 1px solid #cecdcd;
     border-radius: 3px;
     padding-left: 5px;
     height: 33px;
 }
+
 .item-rank{
     width: 30px;
     border: none;
@@ -1222,7 +1223,7 @@ input[type=number] {
     border-radius: 10px;
     margin: 0 0;
     width: 265px;
-    margin-left: 160px;
+    margin-left: 300px;
 
 }
 .acc-btn{
@@ -1636,7 +1637,7 @@ table>:not(caption)>*>*{
     height: 33px; 
 }
 .ledger-input{
-    width: 270px;
+    width: 225px;
     border: 1px solid  #cecdcd ;
     border-radius: 3px;
     padding-left: 5px; 
@@ -1646,8 +1647,7 @@ table>:not(caption)>*>*{
 .item-inputs{
     width: 200px;
     border: none;
-    border-top: 1px solid  #cecdcd ;
-    border-bottom: 1px solid  #cecdcd ;
+    border: 1px solid  #cecdcd ;
     border-radius: 3px;
     padding-left: 5px;
     height: 33px; 
@@ -1883,7 +1883,7 @@ table>:not(caption)>*>*{
     height: 33px;
 }
 .product2Selectpurchase{
-    width: 320px;
+    width: 360px;
     border: 1px solid #cecdcd;
     border-radius: 3px;
     padding-left: 5px;

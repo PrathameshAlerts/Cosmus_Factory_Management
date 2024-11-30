@@ -1,8 +1,8 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-<div class="mt-2 mb-3">
-    <h2>Warehouse List</h2>
+<div class="mt-4 mb-3">
+    <!-- <h2>Warehouse List</h2> -->
     <div class="d-flex ">
         <label for="id_warehouse_select" class="">Warehouse :</label>
         <select name="warehouse_select" id="id_warehouse_select" class="ms-2 item-select">
@@ -34,7 +34,7 @@
                 <td>{{record.Product.Product_Refrence_ID}}</td>
                 <td>{{record.PProduct_SKU}}</td>
                 <td>{{record.PProduct_color}}</td>
-                <td>{{record.total_warehouse_stock | default_if_none:0}}</td>
+                <td class="stockQty">{{record.total_warehouse_stock | default_if_none:0}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -48,8 +48,19 @@
         document.getElementById('id_warehouse_select').addEventListener('change',function(){
             changeValue() ;
         })
-        
-   
+        function stockQty(){
+            var stockQty = document.querySelectorAll('.stockQty')
+            stockQty.forEach(function(qty){
+               var stock=  parseInt(qty.textContent)
+               console.log(stock)
+               if(stock >= 0){
+                qty.style.color = 'green';
+               }else{
+                qty.style.color = 'red';
+               }
+            })
+        }
+        stockQty()
     })
     function changeValue(){
         var selectedValue =document.getElementById('id_warehouse_select').value
