@@ -1025,7 +1025,7 @@ class finished_goods_warehouse_racks(models.Model):
 class finished_product_warehouse_bin(models.Model):
     bin_name = models.CharField(max_length=30, unique=True, blank=False, null = False)
     rack_finished_name = models.ForeignKey(finished_goods_warehouse_racks, on_delete=models.PROTECT, related_name='racks')
-    sub_catergory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='sub_categories')
+    sub_catergory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='sub_categories', null=True, blank=True)
     product_size_in_bin = models.IntegerField(default=0)
     
 class Product_warehouse_quantity_through_table(models.Model):

@@ -68,7 +68,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset_create,
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,
                                 raw_material_product_estimation_formset, Finished_goods_transfer_records_formset_update,
-                                stock_transfer_instance_formset_only_for_update,product_purchase_voucher_items_instance_formset_only_for_update,
+                                stock_transfer_instance_formset_only_for_update,product_purchase_voucher_items_instance_formset_only_for_update, subcat_and_bin_form,
                                 transfer_product_to_bin_formset,purchase_product_to_bin_formset)
 
 
@@ -639,32 +639,54 @@ def definesubcategoryproduct(request, pk=None):
     main_categories = MainCategory.objects.all()
     sub_category = SubCategory.objects.all()
 
-    sub_category_and_bin_formset = modelformset_factory(finished_product_warehouse_bin, fields=['bin_name','product_size_in_bin'], extra=0, can_delete=True)
+    sub_category_and_bin_formset = modelformset_factory(finished_product_warehouse_bin,
+    form=subcat_and_bin_form, extra=0, can_delete=False)
 
     bin_queryset = finished_product_warehouse_bin.objects.all()
-    formset = sub_category_and_bin_formset(queryset=bin_queryset)
-    print(formset)
+
+    formset = sub_category_and_bin_formset(queryset = bin_queryset)
     
     form = product_sub_category_form(instance = instance)
+
     if request.method == 'POST':
-        
+        print(request.POST)
         try:
+            formset = sub_category_and_bin_formset(request.POST)
+
             form = product_sub_category_form(request.POST,instance = instance)
-            if form.is_valid():
+
+            if form.is_valid() and formset.is_valid():
+
                 form_instance = form.save(commit=False)
                 form_instance.c_user = request.user
                 form_instance.save()
+
+                for form in formset:
+                    if form.cleaned_data.get('check_if_added'):
+                        form.sub_catergory_id = form_instance
+                        form.save()
+
+                    else:
+                        form.sub_catergory_id = None
+                        form.save()
+
+
                 if message == 'created':
                     messages.success(request,'Sub-Category created sucessfully')
                 if message == 'updated':
                     messages.success(request,'Sub-Category updated sucessfully')
             
                 return redirect('define-sub-category-product')
+            
             else:
-                
-                messages.error(request,f'An Exception occoured - {form.errors}')
+                print(formset.non_form_errors())
+                print(form.errors)
+                logger.error(formset.non_form_errors)
+
+                messages.error(request,f'An Exception occoured TEST - {form.errors}')
         
         except Exception as e:
+            print(formset.non_form_errors())
             messages.error(request,f'An Exception occoured - {e}')
 
     return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 
