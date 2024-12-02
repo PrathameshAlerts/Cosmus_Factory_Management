@@ -3,7 +3,7 @@
 
 {% block body %}
 <div class="row mt-4">
-  <div class="col-lg-5 mt-2">
+  <div class="col-lg-6 mt-2">
    
     <form action="" method="POST" id="subCategoryForm">
       {% csrf_token %}
@@ -33,18 +33,37 @@
           <label for="id_product_sub_category_name" class="item-form">Sub Category:</label>
           <input type="text" class="product2Select" value="{{form.instance.product_sub_category_name}}" name="product_sub_category_name" maxlength="255" required id="id_product_sub_category_name">
         </div>
-        <button type="submit" id="submitButtonSubCategory" class="product2create-btn" name="save" value="Save">Save</button>
+        <div class="mt-2">
+          <table class="table table-bordered table-striped table-hover">
+              <thead class="name_absolute">
+                  <tr>
+                    <th>Bin Name</th>
+                    <th>Bin Size</th>
+                    <th>checkBox</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {{ formset.management_form }}
+                {% for form in formset %}
+                <tr>
+                  <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-bin_name" value="{{form.instance.bin_name}}" maxlength="30" id="id_{{form.prefix}}-bin_name" readonly></td>
+                  <td> <input type="number" class="purchase-amount" name="{{form.prefix}}-product_size_in_bin" value="{{form.instance.product_size_in_bin}}" id="id_{{form.prefix}}-product_size_in_bin"></td>
+                  <td> <input type="checkbox" name="{{form.prefix}}-check_if_added" id="id_{{form.prefix}}-check_if_added" value="{{form.instance.check_if_added}}"></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+          <!-- {{formset}} -->
+        </div>
+        <button type="submit" id="submitButtonSubCategory" class="create-btn" name="save" value="Save">Save</button>
       </div>
 
-      <div>
-        
-        {{formset}}
-      </div>
+      
     </form>
   </div>
-  <div class="col-lg-7 mt-4">
+  <div class="col-lg-6 mt-4">
 <div class="row">
-  <div class="col-lg-9">
+  <div class="col-lg-10">
     <div class="table-res">
       <table class="table table-bordered table-striped table-hover" style="width: 100%;">
         <thead class="name_absolute sticky-top text-nowrap">
