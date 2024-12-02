@@ -1,0 +1,16 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<form action="">
+
+Product_sku={{product_name}}
+Voucher_type={{voucher_type}}
+
+{{formset.management_form}}
+
+{% for form in formset %}
+{{form}}
+{% endfor %}
+
+</form>
+{% endblock body %}

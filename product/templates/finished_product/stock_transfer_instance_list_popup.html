@@ -1,0 +1,42 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<form action="">
+    <table>
+        
+    <tr>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Difference Qty</th>
+        <th>QC Recieved QTY</th>
+        <th>Scan QTY</th>
+    </tr>
+
+    {{ formset.management_form}}
+    {% for form in formset %}
+    {% if form.instance.product_purchase_master.purchase_number %}
+
+    <tr>
+        <td>{{ form.product_name }}</td>
+        <td>{{ form.quantity_total }}</td>
+        <td>{{ form.diffrence_qty }}</td>
+        <td>{{form.qc_recieved_qty}}</td>
+        <td><a href="{% url 'finished-product-to-bin' form.instance.id 'purchase' %}">click</a></td>
+    </tr>
+
+    {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
+    <tr>
+        <td>{{ form.product }}</td>
+        <td>{{ form.product_quantity_transfer }}</td>
+        <td>{{ form.diffrence_qty }}</td>
+        <td>{{form.qc_recieved_qty}}</td>
+        <td><a href="{% url 'finished-product-to-bin' form.instance.id 'transfer' %}">click</a></td>
+    </tr>
+
+    {% endif %}
+
+    {% endfor %}
+</table>
+</form>
+{% endblock body %}
+

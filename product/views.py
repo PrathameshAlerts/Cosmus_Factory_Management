@@ -66,7 +66,10 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 Product2ItemFormset,Product2CommonItemFormSet,purchase_order_product_qty_formset,
                                 purchase_order_raw_product_qty_formset,purchase_order_raw_product_qty_cutting_formset,product_purchase_voucher_items_formset_update,
                                 purchase_order_cutting_approval_formset,product_purchase_voucher_items_formset,Finished_goods_transfer_records_formset_create,
-                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form, raw_material_product_estimation_formset,Finished_goods_transfer_records_formset_update)
+                                purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,
+                                raw_material_product_estimation_formset, Finished_goods_transfer_records_formset_update,
+                                stock_transfer_instance_formset_only_for_update,product_purchase_voucher_items_instance_formset_only_for_update,
+                                transfer_product_to_bin_formset,purchase_product_to_bin_formset)
 
 
 logger = logging.getLogger('product_views')
@@ -2038,12 +2041,12 @@ def stockTrasferRaw(request, pk=None):
         page_name = 'Edit Stock Transfer'
 
         source_godown_items_dict = {x.Item_shade_name.items.id:x.Item_shade_name.items.item_name for x in source_godown_items}
-        # for x in source_godown_items:
-        #     source_godown_items_dict[x.Item_shade_name.items.id] = x.Item_shade_name.items.item_name
-        # print(source_godown_items_dict)
-    # {{x.Item_shade_name.items.item_name}}
-    # {{x.quantity}}
-    # {{x.item_rate}}
+        
+        
+        
+    
+    
+    
     
 
     else:
@@ -6574,7 +6577,6 @@ def product_purchase_voucher_create_update(request, pk=None):
     warehouses = Finished_goods_warehouse.objects.all()
     party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
     
-    print(request.POST)
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
 
         sku = request.GET.get('productName')
@@ -6622,7 +6624,8 @@ def product_purchase_voucher_create_update(request, pk=None):
                             
                             product_purchase_voucher_items_form = form.save(commit=False)
                             product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
-                            
+                            product_purchase_voucher_items_form.diffrence_qty = product_purchase_voucher_items_form.quantity_total
+
                             old_quantity = form.initial.get('quantity_total')  
 
                             
@@ -6785,6 +6788,7 @@ def warehouse_product_transfer_create_and_update(request,pk=None):
                     for form in formset:
                         form_instance = form.save(commit=False)
                         form_instance.Finished_goods_Stock_TransferMasterinstance = first_form_instance
+                        form_instance.diffrence_qty = form_instance.product_quantity_transfer
                         form_instance.save()
 
 
@@ -6944,9 +6948,57 @@ def product_transfer_to_warehouse_ajax(request):
 
     
 
+def stock_transfer_instance_list_popup(request,id):
+
+    try:
+        stock_transfer_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=id)
+        formset = stock_transfer_instance_formset_only_for_update(instance=stock_transfer_instance)
+
+    except Finished_goods_Stock_TransferMaster.DoesNotExist:
+        product_purchase_voucher_items_instance = product_purchase_voucher_master.objects.get(pk=id)
+        formset = product_purchase_voucher_items_instance_formset_only_for_update(instance=product_purchase_voucher_items_instance)
+
+    return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset})
 
 
 
+
+def product_to_bin(request,pk,sent_from):
+
+    if sent_from and pk:
+        product_name = None
+        voucher_type = None
+        if sent_from == 'purchase':
+            p_purchase_voucher_item_instances = get_object_or_404(product_purchase_voucher_items, pk = pk)
+            formset = purchase_product_to_bin_formset(request.POST or None, instance= p_purchase_voucher_item_instances)
+
+            voucher_type = 'purchase'
+            product_name = p_purchase_voucher_item_instances.product_name
+
+            
+            for form in formset.forms:
+                form.initial['source_type'] = 'purchase'
+                form.initial['product'] = p_purchase_voucher_item_instances.product_name
+
+        elif sent_from == 'transfer':
+            p_transfer_voucher_item_instances = get_object_or_404(Finished_goods_transfer_records,pk=pk)
+            formset = transfer_product_to_bin_formset(request.POST or None, instance=p_transfer_voucher_item_instances) 
+
+            voucher_type = 'transfer'
+            product_name = p_transfer_voucher_item_instances.product
+
+            
+            for form in formset.forms:
+                form.initial['source_type'] = 'transfer'
+                form.initial['product'] = p_transfer_voucher_item_instances.product
+
+        if request.method == 'POST':
+            if formset.is_valid():
+                for form in formset:
+                    form_instance = form.save(commit=False)
+                    form_instance.save()
+
+    return render(request,'finished_product/producttobin.html',{'formset':formset,'product_name':product_name,'voucher_type':voucher_type})
 
 
 
