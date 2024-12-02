@@ -120,10 +120,15 @@
       $('#submitButtonSubCategory').attr('disabled', 'disabled');
     });
     $('[name$="-check_if_added"]').on('click', function () {
-  var checkbox = $(this);
-  checkbox.prop('checked', true); // Set as checked
-  checkbox.val('true'); // Set value as 'true'
-});
+    var checkbox = $(this);
+
+    // Check the current state and update accordingly
+    if (checkbox.prop('checked')) {
+      checkbox.val('true'); // Set value to 'true' if checked
+    } else {
+      checkbox.val('false'); // Set value to 'false' if unchecked
+    }
+  });
   })
 </script>
 
