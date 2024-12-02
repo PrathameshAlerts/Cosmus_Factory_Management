@@ -655,13 +655,16 @@ def definesubcategoryproduct(request, pk=None):
 
             form = product_sub_category_form(request.POST,instance = instance)
 
+
+            print(request.POST)
             if form.is_valid() and formset.is_valid():
 
                 form_instance = form.save(commit=False)
                 form_instance.c_user = request.user
                 form_instance.save()
-
+                
                 for form in formset:
+                    print(form.instance.sub_catergory_id)
                     if form.cleaned_data.get('check_if_added'):
                         form_instance = form.save(commit=False)
                         form_instance.sub_catergory_id = form_instance
