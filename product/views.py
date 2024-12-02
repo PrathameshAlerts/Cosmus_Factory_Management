@@ -40,7 +40,7 @@ from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Finished_goods_warehouse, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
                            Product2SubCategory, Product_warehouse_quantity_through_table,  ProductImage, RawStockTransferMaster, RawStockTrasferRecords, StockItem,
-                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, godown_item_report_for_cutting_room,
+                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, finished_goods_warehouse_racks, finished_goods_warehouse_zone, finished_product_warehouse_bin, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
@@ -52,7 +52,7 @@ from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                     CustomPProductaddFormSet, Finished_goods_Stock_TransferMaster_form, ProductCreateSkuFormsetCreate,
                      ProductCreateSkuFormsetUpdate, cutting_room_form,
-                       factory_employee_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, product_purchase_voucher_master_form, purchase_order_for_raw_material_cutting_items_form, 
+                       factory_employee_form, finished_goods_warehouse_racks_form, finished_goods_warehouse_zone_form, finished_product_warehouse_bin_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, product_purchase_voucher_master_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form, raw_material_product_estimation_items_form, raw_material_product_estimation_product_2_item_form, raw_material_production_estimation_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
                      OpeningShadeFormSetupdate, PProductAddForm, PProductCreateForm, ShadeFormSet,
@@ -638,7 +638,12 @@ def definesubcategoryproduct(request, pk=None):
 
     main_categories = MainCategory.objects.all()
     sub_category = SubCategory.objects.all()
-    
+
+    sub_category_and_bin_formset = modelformset_factory(finished_product_warehouse_bin, fields=['bin_name','product_size_in_bin'], extra=0, can_delete=True)
+
+    bin_queryset = finished_product_warehouse_bin.objects.all()
+    formset = sub_category_and_bin_formset(queryset=bin_queryset)
+    print(formset)
     
     form = product_sub_category_form(instance = instance)
     if request.method == 'POST':
@@ -662,7 +667,8 @@ def definesubcategoryproduct(request, pk=None):
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
 
-    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 'sub_category':sub_category,'form':form,'title':title,'page_name':page_name})
+    return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 
+                        'sub_category':sub_category,'form':form,'title':title,'page_name':page_name,'formset':formset})
 
 
 @login_required(login_url='login')
@@ -682,7 +688,7 @@ def product2subcategory(request):
     products = Product.objects.all()
     sub_category = SubCategory.objects.all()
     main_categories = MainCategory.objects.all()
-    
+
     if request.method == 'POST':
 
         try:
@@ -738,7 +744,8 @@ def product2subcategory(request):
         except Exception as e:
             messages.error(request,f'An Exception occoured - {e}')
 
-    return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category})
+    return render(request,'product/product2subcategory.html',{'main_categories':main_categories,'products':products,'sub_category':sub_category
+                                                              })
 
 
 
@@ -6999,6 +7006,162 @@ def product_to_bin(request,pk,sent_from):
                     form_instance.save()
 
     return render(request,'finished_product/producttobin.html',{'formset':formset,'product_name':product_name,'voucher_type':voucher_type})
+
+
+
+
+
+
+def add_zone_in_warehouse(request,id):
+    warehouse_id = get_object_or_404(Finished_goods_warehouse, id=id)
+    warehouse_name = warehouse_id.warehouse_name_finished
+
+    if request.method == "POST":
+        form = finished_goods_warehouse_zone_form(request.POST)
+
+        if form.is_valid():
+            zone = form.save(commit=False)
+            zone.warehouse_finished_name = warehouse_id
+            zone.save()
+
+    form = finished_goods_warehouse_zone_form()
+    zones = finished_goods_warehouse_zone.objects.filter(warehouse_finished_name = warehouse_id)
+
+    return render(request,'finished_product/add_zone_in_warehouse.html',{'form':form,'zones':zones,'warehouse_name':warehouse_name})
+
+
+
+
+def edit_zone_in_warehouse(request,zone_id):
+    zone = finished_goods_warehouse_zone.objects.get(id = zone_id)
+
+    warehouse_id = finished_goods_warehouse_zone.objects.get(id = zone_id).warehouse_finished_name
+
+    warehouse_name = warehouse_id.warehouse_name_finished
+
+    zones = finished_goods_warehouse_zone.objects.filter(warehouse_finished_name = warehouse_id)
+
+    if request.method == "POST":
+        form = finished_goods_warehouse_zone_form(request.POST,instance=zone)
+        if form.is_valid():
+            form.save()
+            return redirect('add-zone-in-warehouse',id=warehouse_id.id)
+    form = finished_goods_warehouse_zone_form(instance=zone)
+
+    return render(request,'finished_product/edit_zone_in_warehouse.html',{'form':form,'zones':zones,'warehouse_name':warehouse_name})
+
+
+
+
+
+def delete_zone_in_warehouse(request,zone_id):
+    warehouse_id = finished_goods_warehouse_zone.objects.get(id = zone_id).warehouse_finished_name
+    zone = finished_goods_warehouse_zone.objects.get(id = zone_id)
+    zone.delete()
+    return redirect('add-zone-in-warehouse',id=warehouse_id.id)
+
+
+
+
+
+def add_rack_in_zone(request,zone_id):
+    racks = finished_goods_warehouse_racks.objects.filter(zone_finished_name=zone_id)
+    zone = finished_goods_warehouse_zone.objects.get(id = zone_id)
+    zone_name = zone.zone_name
+
+    if request.method == "POST":
+        form = finished_goods_warehouse_racks_form(request.POST)
+
+        if form.is_valid():
+            rack = form.save(commit=False)
+            rack.zone_finished_name = zone
+            rack.save()
+
+            return redirect('add-rack-in-zone', zone_id=zone_id)
+    form = finished_goods_warehouse_racks_form()
+    return render(request,"finished_product/add_rack_in_zone.html",{'form':form,'racks':racks,'zone_name':zone_name})
+
+
+
+
+
+
+
+def edit_rack_in_zone(request,rack_id):
+    rack_instance = finished_goods_warehouse_racks.objects.get(id=rack_id)
+    rack_zone = finished_goods_warehouse_racks.objects.get(id = rack_id).zone_finished_name
+    zone_name = rack_zone.zone_name
+    racks = finished_goods_warehouse_racks.objects.filter(zone_finished_name=rack_zone)
+    if request.method == 'POST':
+        form = finished_goods_warehouse_racks_form(request.POST,instance=rack_instance)
+        if form.is_valid():
+            form.save()
+            
+            return redirect('add-rack-in-zone', zone_id=rack_zone.id)
+
+    form = finished_goods_warehouse_racks_form(instance=rack_instance)
+    return render(request,"finished_product/edit_rack_in_zone.html",{'form':form,'racks':racks,'zone_name':zone_name})
+
+
+
+
+
+
+
+def delete_rack_in_zone(request,rack_id):
+    rack = finished_goods_warehouse_racks.objects.get(id=rack_id)
+    zone = finished_goods_warehouse_racks.objects.get(id=rack_id).zone_finished_name
+    rack.delete()
+    return redirect('add-rack-in-zone', zone_id=zone.id)
+
+
+
+
+
+def add_bin_in_rack(request,rack_id):
+    bins = finished_product_warehouse_bin.objects.filter(rack_finished_name = rack_id)
+    rack = finished_goods_warehouse_racks.objects.get(id=rack_id)
+    rack_name = rack.rack_name
+
+    if request.method == "POST":
+        form = finished_product_warehouse_bin_form(request.POST)
+
+        if form.is_valid():
+            bin = form.save(commit=False)
+            bin.rack_finished_name = rack
+            bin.save()
+            return redirect('add-bin-in-rack', rack_id=rack_id)
+    form = finished_product_warehouse_bin_form()
+    return render(request,"finished_product/add_bin_in_rack.html",{'form':form,'bins':bins,'rack_name':rack_name})
+
+
+
+
+
+
+
+def edit_bin_in_rack(request,bin_id):
+    bin_instance = finished_product_warehouse_bin.objects.get(id=bin_id)
+    bin_rack = finished_product_warehouse_bin.objects.get(id=bin_id).rack_finished_name
+    rack_name = bin_rack.rack_name
+    bins = finished_product_warehouse_bin.objects.filter(rack_finished_name = bin_rack)
+
+    if request.method == "POST":
+        form = finished_product_warehouse_bin_form(request.POST,instance=bin_instance)
+        if form.is_valid():
+            form.save()
+            return redirect("add-bin-in-rack" ,rack_id = bin_rack.id)
+    form = finished_product_warehouse_bin_form(instance=bin_instance)
+    return render(request,"finished_product/edit_bin_in_rack.html",{'form':form,'bins':bins,'rack_name':rack_name})
+
+
+
+def delete_bin_in_rack(request,bin_id):
+    rack_id = finished_product_warehouse_bin.objects.get(id=bin_id).rack_finished_name
+    bin = finished_product_warehouse_bin.objects.get(id=bin_id)
+    bin.delete()
+    return redirect('add-bin-in-rack', rack_id = rack_id.id)
+
 
 
 

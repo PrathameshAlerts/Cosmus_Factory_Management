@@ -384,7 +384,6 @@ class Item_Creation(models.Model):
     def Unit_Name(self):
         return self.unit_name_item.unit_name
 
-
     def Item_GST(self):
         return self.Item_Creation_GST.gst_percentage
     
@@ -665,7 +664,7 @@ class item_godown_quantity_through_table(models.Model):
             
 class product_2_item_through_table(models.Model):
     c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, blank=True, null=True)
-    PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
+    PProduct_pk = models.ForeignKey(PProduct_Creation, on_delete=models.CASCADE)
     Item_pk = models.ForeignKey(Item_Creation, on_delete=models.PROTECT)
     row_number = models.IntegerField(null = True, blank=True)   
     grand_total = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
@@ -1026,8 +1025,9 @@ class finished_goods_warehouse_racks(models.Model):
 class finished_product_warehouse_bin(models.Model):
     bin_name = models.CharField(max_length=30, unique=True, blank=False, null = False)
     rack_finished_name = models.ForeignKey(finished_goods_warehouse_racks, on_delete=models.PROTECT, related_name='racks')
-
-
+    sub_catergory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='sub_categories')
+    product_size_in_bin = models.IntegerField(default=0)
+    
 class Product_warehouse_quantity_through_table(models.Model):
     warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT)
     product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)

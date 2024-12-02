@@ -286,6 +286,18 @@ urlpatterns = [
 
     path('finished_products_to_bin/<int:pk>/<str:sent_from>/',views.product_to_bin, name ='finished-product-to-bin' ),
 
+    path('addzoneinwarehouse/<int:id>/', views.add_zone_in_warehouse, name="add-zone-in-warehouse"),
+    path('editzoneinwarehouse/<int:zone_id>/', views.edit_zone_in_warehouse, name="edit-zone-in-warehouse"),
+    path('deletezoneinwarehouse/<int:zone_id>/', views.delete_zone_in_warehouse, name="delete-zone-in-warehouse"),
+
+    path('addrackinzone/<int:zone_id>/', views.add_rack_in_zone, name="add-rack-in-zone"),
+    path('editrackinzone/<int:rack_id>/', views.edit_rack_in_zone, name="edit-rack-in-zone"),
+    path('deleterackinzone/<int:rack_id>/', views.delete_rack_in_zone, name="delete-rack-in-zone"),
+
+    path('addbininrack/<int:rack_id>/',views.add_bin_in_rack, name="add-bin-in-rack"),
+    path('editbininrack/<int:bin_id>/',views.edit_bin_in_rack, name="edit-bin-in-rack"),
+    path('deletebininrack/<int:bin_id>/',views.delete_bin_in_rack, name="delete-bin-in-rack"),
+    
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),

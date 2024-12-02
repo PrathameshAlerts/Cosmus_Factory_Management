@@ -1,0 +1,65 @@
+{% extends 'product/base.html' %}
+
+{% load static %}
+
+
+
+{% block body %}
+
+    <h1>{{rack_name}}</h1>
+
+    <form action="" method="POST">
+
+        {% csrf_token %}
+
+        {{form.as_p}}
+
+        <input type="submit" class="btn btn-success" id="btnSave" value="save">
+
+    </form>
+
+
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Bin Name</th>
+
+                <th>Edit</th>
+
+                <th>Delete</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for bin in bins %}
+
+            <tr>
+
+                <td><p>{{bin.bin_name}}</p></td>
+
+                <td><a href="{% url 'edit-bin-in-rack' bin.id %}">edit</a></td>
+
+
+
+                <td><a href="{% url 'delete-bin-in-rack' bin.id %}" onclick="return confirm('Are you sure you want to delete this zone?');">delete</a></td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+
+
+
+
+    {% endblock body %}

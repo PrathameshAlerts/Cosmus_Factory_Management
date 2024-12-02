@@ -87,7 +87,8 @@
             <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
         
               {% for warehouse in warehouses %}
-              <tr>
+              <tr onclick="window.location.href='{% url 'add-zone-in-warehouse' warehouse.id %}'" style= "cursor: pointer;">
+                
                 <td>{{ forloop.counter }}</td>
                 <td>{{ warehouse.warehouse_name_finished }}</a></td>
                 <td><a href="{% url 'godown-update' 'Warehouse' warehouse.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
