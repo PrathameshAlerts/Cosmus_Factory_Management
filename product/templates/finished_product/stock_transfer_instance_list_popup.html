@@ -1,42 +1,103 @@
 {% extends 'product/base.html' %}
 {% load static %}
 {% block body %}
-<form action="">
-    <table>
+<div class="mt-4">
+    <form action="">
+        <div class="mb-3">
+            <h5 class="fw-bold">Purchase No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
+        </div>
         
-    <tr>
-        <th>Product Name</th>
-        <th>Quantity</th>
-        <th>Difference Qty</th>
-        <th>QC Recieved QTY</th>
-        <th>Scan QTY</th>
-    </tr>
+        <div class="row mb-4">
+            <div class="col-lg-7">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="name_absolute sticky-top">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Difference Qty</th>
+                            <th>QC Recieved QTY</th>
+                            <th>Scan QTY</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                        {{ formset.management_form}}
+                        {% for form in formset %}
+                        {% if form.instance.product_purchase_master.purchase_number %}
+                    
+                        <tr>
+                            <td><input type="text" class="productShadeCutting_Material_input" value="{{ form.instance.product_name.Product.Product_Name }}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
+                            <td> <input type="number" class="productorderrawqty-input" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" value="{{form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
+                            <td><button type="button" class="item-btn"><a style="text-decoration:none; color: white" href="{% url 'finished-product-to-bin' form.instance.id 'purchase' %}">click</a></button></td>
+                        </tr>
+                    
+                        {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
+                        <tr>
+                            <td><input type="text" class="productShadeCutting_Material_input" value="{{ form.instance.product.Product.Product_Name }}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.product_quantity_transfer |default_if_none:0 }}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
+                            <td><button type="button" class="item-btn"><a style="text-decoration:none; color: white" href="{% url 'finished-product-to-bin' form.instance.id 'transfer' %}">click</a></button></td>
+                        </tr>
+                    
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>    
+                </table>
+            </div>
+        </div>
+        <div class="mb-3">
+            <h4 class="fw-bold">INWard Process</h4>
+            <div class="mb-2">
+                <label class="fw-bold">Serial No :</label>
+                <input type="text" class="item-select" id="inwordSerialNo">
+            </div>
+            <div class="row">
+                <div class="col-lg-7 ">
+                    <table class="table table-striped table-hover table-bordered" style="display:none" id="stockTransferList">
+                        <thead class="name_absolute">
+                            <tr>
+                                <th>Name</th>
+                                <th>SKU</th>
+                                <th>IMG</th>
+                                <th>BIN</th>
+                                <th>BIN No</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList" >
+                            {{formset.management_form}}
+        
+                                {% for form in formset %}
+                            <tr>
+                                <td><input type="text" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product"></td>
+                                <td><input name="{{form.prefix}}-product_sku" id="id_{{form.prefix}}-product_sku"></td>
+                                <td><img src="" alt="product" width="50px"></td>
+                                <td>0</td>
+                                <td><input name="{{form.prefix}}-bin_number" id="id_{{form.prefix}}-bin_number"></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="newProductCreateBtn mt-5" name="save" value="Save" id="">Submit</button>
+    </form>
+</div>
 
-    {{ formset.management_form}}
-    {% for form in formset %}
-    {% if form.instance.product_purchase_master.purchase_number %}
-
-    <tr>
-        <td>{{ form.product_name }}</td>
-        <td>{{ form.quantity_total }}</td>
-        <td>{{ form.diffrence_qty }}</td>
-        <td>{{form.qc_recieved_qty}}</td>
-        <td><a href="{% url 'finished-product-to-bin' form.instance.id 'purchase' %}">click</a></td>
-    </tr>
-
-    {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
-    <tr>
-        <td>{{ form.product }}</td>
-        <td>{{ form.product_quantity_transfer }}</td>
-        <td>{{ form.diffrence_qty }}</td>
-        <td>{{form.qc_recieved_qty}}</td>
-        <td><a href="{% url 'finished-product-to-bin' form.instance.id 'transfer' %}">click</a></td>
-    </tr>
-
-    {% endif %}
-
-    {% endfor %}
-</table>
-</form>
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+        var inwardSearch = document.getElementById('inwordSerialNo');
+        var stockTable = document.getElementById('stockTransferList')
+        inwardSearch.focus();
+        inwardSearch.addEventListener('input',function(item){
+            console.log(inwardSearch.value)
+            if(inwardSearch.value){
+                stockTable.style.display ="block";
+            }
+        })
+    })
+</script>
 {% endblock body %}
 

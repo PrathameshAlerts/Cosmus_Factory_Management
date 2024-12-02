@@ -6952,13 +6952,15 @@ def stock_transfer_instance_list_popup(request,id):
 
     try:
         stock_transfer_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=id)
+        purchase_number = stock_transfer_instance.voucher_no
         formset = stock_transfer_instance_formset_only_for_update(instance=stock_transfer_instance)
 
     except Finished_goods_Stock_TransferMaster.DoesNotExist:
         product_purchase_voucher_items_instance = product_purchase_voucher_master.objects.get(pk=id)
+        purchase_number = product_purchase_voucher_items_instance.purchase_number
         formset = product_purchase_voucher_items_instance_formset_only_for_update(instance=product_purchase_voucher_items_instance)
 
-    return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset})
+    return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset,'purchase_number':purchase_number})
 
 
 
