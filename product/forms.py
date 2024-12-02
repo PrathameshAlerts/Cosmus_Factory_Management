@@ -1,4 +1,5 @@
 
+from email.policy import default
 from django import forms
 from django.shortcuts import get_object_or_404
 
@@ -1072,3 +1073,8 @@ class finished_product_warehouse_bin_form(forms.ModelForm):
         fields = ['bin_name']
 
 
+class subcat_and_bin_form(forms.ModelForm):
+    check_if_added = forms.BooleanField(initial=False, required=False)
+    class Meta:
+        model = finished_product_warehouse_bin
+        fields = ['bin_name','product_size_in_bin','check_if_added']
