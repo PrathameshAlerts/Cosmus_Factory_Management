@@ -1074,16 +1074,51 @@ class finished_product_warehouse_bin_form(forms.ModelForm):
 
 
 class subcat_and_bin_form(forms.ModelForm):
-    check_if_added = forms.BooleanField(required=False)
+    check_if_added = forms.BooleanField(required=False,initial=False)
+    check_if_added_all = forms.BooleanField(required=False, initial=False)
 
     class Meta:
         model = finished_product_warehouse_bin
-        fields = ['bin_name','product_size_in_bin','check_if_added']
+        fields = ['bin_name','product_size_in_bin','check_if_added','check_if_added_all']
+
+    def __init__(self, *args, **kwargs):
+        self.sub_cat_instance = kwargs.pop('sub_cat_instance', None)  
+        super().__init__(*args, **kwargs)
+
 
 
 class FinishedProductWarehouseBinFormSet(BaseModelFormSet): 
 
     def __init__(self, *args, **kwargs):
+        self.sub_cat_instance = kwargs.pop('form_kwargs', None)  
+        self.sub_cat_instance = self.sub_cat_instance['sub_cat_instance']
+        
         super().__init__(*args, **kwargs)
+        
         for form in self.forms:
-            form.fields['check_if_added'].initial = False
+            if form.instance:
+                sub_cat_instance = finished_product_warehouse_bin.objects.get(pk=form.instance.pk)
+
+                if sub_cat_instance.sub_catergory_id == self.sub_cat_instance: 
+                    form.fields['check_if_added'].initial = True
+                    form.fields['check_if_added_all'].initial = True
+
+                else:
+                    form.fields['check_if_added'].initial = False  
+                    form.fields['check_if_added_all'].initial = False
+
+                    if sub_cat_instance.sub_catergory_id is None or sub_cat_instance.sub_catergory_id == '':
+                        form.fields['check_if_added_all'].initial = True
+
+
+'''
+if you want to pass extra kwrgs from formsets to forms 
+you need to pass that kwarg to form of formset first using pop and then to the formset 
+example:
+formset = sub_category_and_bin_formset(queryset = bin_queryset, form_kwargs={'sub_cat_instance': instance})
+
+if i need to pass form_kwargs to each form so first i need to pass it in subcat_and_bin_form like above 
+and then to each formset in FinishedProductWarehouseBinFormSet
+
+'''
+                

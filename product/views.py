@@ -643,8 +643,8 @@ def definesubcategoryproduct(request, pk=None):
     form=subcat_and_bin_form,formset=FinishedProductWarehouseBinFormSet, extra=0, can_delete=False)
 
     bin_queryset = finished_product_warehouse_bin.objects.all()
-
-    formset = sub_category_and_bin_formset(queryset = bin_queryset)
+    
+    formset = sub_category_and_bin_formset(queryset = bin_queryset, form_kwargs={'sub_cat_instance': instance}) 
     
     form = product_sub_category_form(instance = instance)
 
@@ -653,9 +653,8 @@ def definesubcategoryproduct(request, pk=None):
         try:
             formset = sub_category_and_bin_formset(request.POST)
 
-            form = product_sub_category_form(request.POST,instance = instance)
+            form = product_sub_category_form(request.POST, instance = instance)
 
-            print(request.POST)
             if form.is_valid() and formset.is_valid():
 
                 form_instance = form.save(commit=False)
@@ -666,9 +665,10 @@ def definesubcategoryproduct(request, pk=None):
                     print(form.cleaned_data.get('check_if_added'))
                     print(form.instance.sub_catergory_id)
                     if form.cleaned_data.get('check_if_added'):
-                        form_instance = form.save(commit=False)
-                        form_instance.sub_catergory_id = form_instance
-                        form_instance.save()
+                        formset_instance = form.save(commit=False)
+                        formset_instance.sub_catergory_id = form_instance
+                        formset_instance.save()
+
 
                 if message == 'created':
                     messages.success(request,'Sub-Category created sucessfully')
@@ -682,10 +682,11 @@ def definesubcategoryproduct(request, pk=None):
                 print(form.errors)
                 logger.error(formset.non_form_errors)
 
-                messages.error(request,f'An Exception occoured TEST - {form.errors}')
+                
         
         except Exception as e:
             print(formset.non_form_errors())
+            print(e)
             messages.error(request,f'An Exception occoured - {e}')
 
     return render(request,'product/definesubcategoryproduct.html',{'main_categories':main_categories, 
