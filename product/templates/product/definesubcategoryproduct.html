@@ -45,10 +45,11 @@
               <tbody>
                 {{ formset.management_form }}
                 {% for form in formset %}
+                <span>{{form.initial.check_if_added}}</span>
                 <tr>
                   <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-bin_name" value="{{form.instance.bin_name}}" maxlength="30" id="id_{{form.prefix}}-bin_name" readonly></td>
                   <td> <input type="number" class="purchase-amount" name="{{form.prefix}}-product_size_in_bin" value="{{form.instance.product_size_in_bin}}" id="id_{{form.prefix}}-product_size_in_bin"></td>
-                  <td> <input type="checkbox" name="{{form.prefix}}-check_if_added" id="id_{{form.prefix}}-check_if_added" value=""></td>
+                  <td> {{ form.check_if_added }}</td> 
                 </tr>
                 {% endfor %}
               </tbody>
