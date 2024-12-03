@@ -298,6 +298,10 @@ urlpatterns = [
     path('editbininrack/<int:bin_id>/',views.edit_bin_in_rack, name="edit-bin-in-rack"),
     path('deletebininrack/<int:bin_id>/',views.delete_bin_in_rack, name="delete-bin-in-rack"),
     
+
+    path('warehousenavigator/',views.warehouse_navigator, name="warehouse-navigator"),
+
+
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),

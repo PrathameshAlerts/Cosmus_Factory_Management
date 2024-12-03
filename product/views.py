@@ -8138,5 +8138,13 @@ def finished_goods_sorting_list(request):
     return render(request,'finished_product/finishedgoodssortinglist.html',{'sorted_data':sorted_data})
 
 
+def warehouse_navigator(request):
 
+    warehouses = Finished_goods_warehouse.objects.prefetch_related(
+
+        'warehouses__zones__racks'
+
+    ).all()
+
+    return render(request,'finished_product/warehouse_navigator.html',{'warehouses':warehouses})
 
