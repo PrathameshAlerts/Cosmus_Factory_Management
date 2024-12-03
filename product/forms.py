@@ -7,7 +7,7 @@ from core.models import Company
 from .models import AccountSubGroup, Color, Fabric_Group_Model, FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Item_Creation, Ledger, MainCategory, RawStockTransferMaster, RawStockTrasferRecords,  StockItem ,Product, ProductImage, PProduct_Creation, SubCategory, Unit_Name_Create, cutting_room,  factory_employee, finished_goods_warehouse_racks, finished_goods_warehouse_zone, finished_product_warehouse_bin, finishedgoodsbinallocation, gst, item_color_shade , ProductVideoUrls,ProductImage, item_godown_quantity_through_table,item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, packaging, product_2_item_through_table, product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, purchase_order_for_raw_material, purchase_order_for_raw_material_cutting_items, purchase_order_raw_material_cutting, purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, shade_godown_items, shade_godown_items_temporary_table
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import ValidationError
-from django.forms import modelformset_factory, BaseInlineFormSet 
+from django.forms import BaseModelFormSet, modelformset_factory, BaseInlineFormSet 
 from django.db import transaction
 import logging
 from .mixins import CompanyUniqueFieldMixin, UniqueFieldMixin
@@ -71,7 +71,7 @@ class PProductCreateForm(forms.ModelForm):
 
 
 
-class PProductCreateFormset(BaseInlineFormSet):
+class PProductCreateFormset(BaseInlineFormSet): 
 
     def __init__(self, *args, **kwargs):
         self.c_user = kwargs.pop('c_user', None)  
@@ -1074,7 +1074,16 @@ class finished_product_warehouse_bin_form(forms.ModelForm):
 
 
 class subcat_and_bin_form(forms.ModelForm):
-    check_if_added = forms.BooleanField(initial=False, required=False)
+    check_if_added = forms.BooleanField(required=False)
+
     class Meta:
         model = finished_product_warehouse_bin
         fields = ['bin_name','product_size_in_bin','check_if_added']
+
+
+class FinishedProductWarehouseBinFormSet(BaseModelFormSet): 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.forms:
+            form.fields['check_if_added'].initial = False

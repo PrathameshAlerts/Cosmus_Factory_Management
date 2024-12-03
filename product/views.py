@@ -69,7 +69,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,
                                 raw_material_product_estimation_formset, Finished_goods_transfer_records_formset_update,
                                 stock_transfer_instance_formset_only_for_update,product_purchase_voucher_items_instance_formset_only_for_update, subcat_and_bin_form,
-                                transfer_product_to_bin_formset,purchase_product_to_bin_formset)
+                                transfer_product_to_bin_formset,purchase_product_to_bin_formset,FinishedProductWarehouseBinFormSet)
 
 
 logger = logging.getLogger('product_views')
@@ -640,7 +640,7 @@ def definesubcategoryproduct(request, pk=None):
     sub_category = SubCategory.objects.all()
 
     sub_category_and_bin_formset = modelformset_factory(finished_product_warehouse_bin,
-    form=subcat_and_bin_form, extra=0, can_delete=False)
+    form=subcat_and_bin_form,formset=FinishedProductWarehouseBinFormSet, extra=0, can_delete=False)
 
     bin_queryset = finished_product_warehouse_bin.objects.all()
 
@@ -649,27 +649,26 @@ def definesubcategoryproduct(request, pk=None):
     form = product_sub_category_form(instance = instance)
 
     if request.method == 'POST':
-        print(request.POST)
+        
         try:
             formset = sub_category_and_bin_formset(request.POST)
 
             form = product_sub_category_form(request.POST,instance = instance)
 
+            print(request.POST)
             if form.is_valid() and formset.is_valid():
 
                 form_instance = form.save(commit=False)
                 form_instance.c_user = request.user
                 form_instance.save()
-
+                
                 for form in formset:
+                    print(form.cleaned_data.get('check_if_added'))
+                    print(form.instance.sub_catergory_id)
                     if form.cleaned_data.get('check_if_added'):
-                        form.sub_catergory_id = form_instance
-                        form.save()
-
-                    else:
-                        form.sub_catergory_id = None
-                        form.save()
-
+                        form_instance = form.save(commit=False)
+                        form_instance.sub_catergory_id = form_instance
+                        form_instance.save()
 
                 if message == 'created':
                     messages.success(request,'Sub-Category created sucessfully')
