@@ -301,6 +301,7 @@ urlpatterns = [
 
     path('warehousenavigator/',views.warehouse_navigator, name="warehouse-navigator"),
 
+    path('processserialno/', views.process_serial_no,name="process-serial-no"),
 
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
