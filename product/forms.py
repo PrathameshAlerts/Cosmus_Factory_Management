@@ -1097,18 +1097,27 @@ class FinishedProductWarehouseBinFormSet(BaseModelFormSet):
         
         for form in self.forms:
             if form.instance:
-                sub_cat_instance = finished_product_warehouse_bin.objects.get(pk=form.instance.pk)
+                try:
+                    sub_cat_instance = finished_product_warehouse_bin.objects.get(pk=form.instance.pk)
+    
+                    if sub_cat_instance.sub_catergory_id == self.sub_cat_instance and self.sub_cat_instance is not None: 
+                        form.fields['check_if_added'].initial = True  
+                        form.fields['check_if_added_all'].initial = True   
+                    else:                                                  
+                        form.fields['check_if_added'].initial = False   
+                        form.fields['check_if_added_all'].initial = False  
 
-                if sub_cat_instance.sub_catergory_id == self.sub_cat_instance: 
-                    form.fields['check_if_added'].initial = True
-                    form.fields['check_if_added_all'].initial = True
+                        if sub_cat_instance.sub_catergory_id is None or sub_cat_instance.sub_catergory_id == '':
+                            form.fields['check_if_added_all'].initial = True
+                
+                except finished_product_warehouse_bin.DoesNotExist:
+                    continue
 
-                else:
-                    form.fields['check_if_added'].initial = False  
-                    form.fields['check_if_added_all'].initial = False
 
-                    if sub_cat_instance.sub_catergory_id is None or sub_cat_instance.sub_catergory_id == '':
-                        form.fields['check_if_added_all'].initial = True
+
+
+
+
 
 
 '''

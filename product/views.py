@@ -4,7 +4,6 @@ import decimal
 from io import BytesIO
 from operator import attrgetter, itemgetter
 import os
-from sys import exception
 import uuid
 from django.conf import settings
 
@@ -34,7 +33,6 @@ from PIL import Image as PILImage
 from openpyxl.styles import Font
 from openpyxl.styles import Alignment
 from openpyxl.styles import Border, Side
-
 
 from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Finished_goods_warehouse, Godown_finished_goods, Godown_raw_material,
@@ -649,29 +647,32 @@ def definesubcategoryproduct(request, pk=None):
     form = product_sub_category_form(instance = instance)
 
     if request.method == 'POST':
-        
+        print(request.POST)
         try:
-            formset = sub_category_and_bin_formset(request.POST)
-
             form = product_sub_category_form(request.POST, instance = instance)
-
+            
+            formset = sub_category_and_bin_formset(request.POST,form_kwargs={'sub_cat_instance': instance})
+            
             if form.is_valid() and formset.is_valid():
-
+                
                 form_instance = form.save(commit=False)
                 form_instance.c_user = request.user
                 form_instance.save()
                 
                 for form in formset:
-                    print(form.cleaned_data.get('check_if_added'))
-                    print(form.instance.sub_catergory_id)
-                    if form.cleaned_data.get('check_if_added'):
+                    if form.cleaned_data.get('check_if_added') == True:
                         formset_instance = form.save(commit=False)
                         formset_instance.sub_catergory_id = form_instance
                         formset_instance.save()
 
+                    
+                    
+                    
+                    
 
                 if message == 'created':
                     messages.success(request,'Sub-Category created sucessfully')
+
                 if message == 'updated':
                     messages.success(request,'Sub-Category updated sucessfully')
             
@@ -8139,13 +8140,9 @@ def finished_goods_sorting_list(request):
     return render(request,'finished_product/finishedgoodssortinglist.html',{'sorted_data':sorted_data})
 
 
+
+
 def warehouse_navigator(request):
-
-    warehouses = Finished_goods_warehouse.objects.prefetch_related(
-
-        'warehouses__zones__racks'
-
-    ).all()
-
+    warehouses = Finished_goods_warehouse.objects.prefetch_related('warehouses__zones__racks').all()
     return render(request,'finished_product/warehouse_navigator.html',{'warehouses':warehouses})
 
