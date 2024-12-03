@@ -1,0 +1,59 @@
+{% extends 'product/base.html' %}
+{% load static %}
+{% block body %}
+<div class="container mt-4">
+    <div class="accordion w-75" id="warehouseAccordion">
+      {% for warehouse in warehouses %}
+      <div class="accordion-item mb-3">
+        <h2 class="accordion-header" id="headingWarehouse{{ forloop.counter }}">
+          <button class="accordion-button rounded-1 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWarehouse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseWarehouse{{ forloop.counter }}">
+            <img src="../../../static/images/distribution-center_18207949.png" width="25px"><span class="ms-2"> Warehouse: {{ warehouse.warehouse_name_finished }}</span>
+          </button>
+        </h2>
+        <div id="collapseWarehouse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingWarehouse{{ forloop.counter }}" data-bs-parent="#warehouseAccordion">
+          <div class="accordion-body">
+            <div class="accordion" id="zoneAccordion{{ forloop.counter }}">
+              {% for zone in warehouse.warehouses.all %}
+              <div class="accordion-item mb-2">
+                <h5 class="accordion-header" id="headingZone{{ forloop.counter0 }}{{ forloop.counter }}">
+                  <button class="accordion-button rounded-1 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseZone{{ forloop.counter0 }}{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseZone{{ forloop.counter0 }}{{ forloop.counter }}">
+                    <img src="../../../static/images/product_13271495.png" width="25px"> <span class="ms-2">Zone: {{ zone.zone_name }}</span>
+                  </button>
+                </h5>
+                <div id="collapseZone{{ forloop.counter0 }}{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingZone{{ forloop.counter0 }}{{ forloop.counter }}" data-bs-parent="#zoneAccordion{{ forloop.counter }}">
+                  <div class="accordion-body">
+                    <div class="accordion" id="rackAccordion{{ forloop.counter0 }}{{ forloop.counter }}">
+                      {% for rack in zone.zones.all %}
+                      <div class="accordion-item mb-2">
+                        <h6 class="accordion-header" id="headingRack{{ forloop.counter0 }}{{ forloop.counter1 }}">
+                          <button class="accordion-button rounded-1 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRack{{ forloop.counter0 }}{{ forloop.counter1 }}" aria-expanded="false" aria-controls="collapseRack{{ forloop.counter0 }}{{ forloop.counter1 }}">
+                            <img src="../../../static/images/warehouse_5161243.png" width="25px"><span class="ms-2"> Rack: {{ rack.rack_name }}</span>
+                          </button>
+                        </h6>
+                        <div id="collapseRack{{ forloop.counter0 }}" class="accordion-collapse collapse" aria-labelledby="headingRack{{ forloop.counter0 }}{{ forloop.counter1 }}" data-bs-parent="#rackAccordion{{ forloop.counter0 }}">
+                          <div class="accordion-body">
+                            {% for bin in rack.racks.all %}
+                            <p class="ms-3 mb-2">
+                              <img src="../../../static/images/bin.jpeg" width="25px"><span class="ms-2">Bin: {{ bin.bin_name }}</span> 
+                            </p>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  
+
+{% endblock body %}
+

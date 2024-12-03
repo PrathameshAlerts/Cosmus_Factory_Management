@@ -43,16 +43,18 @@
                     <th>checkBox</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody class="mainTableList" id="checkboxTable">
                 {{ formset.management_form }}
                 {% for form in formset %}
                 {{form.id}}
                 <tr>
-                  <span>{{form.check_if_added.initial}}</span>
-                  <span>{{form.check_if_added_all.initial}}</span>
                   <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-bin_name" value="{{form.instance.bin_name}}" maxlength="30" id="id_{{form.prefix}}-bin_name" readonly></td>
                   <td> <input type="number" class="purchase-amount" name="{{form.prefix}}-product_size_in_bin" value="{{form.instance.product_size_in_bin}}" id="id_{{form.prefix}}-product_size_in_bin"></td>
-                  <td> <input type="checkbox" name="{{form.prefix}}-check_if_added" id="id_{{form.prefix}}-check_if_added" value="{{form.check_if_added.initial}}"></td>
+                  <td> 
+                    <input type="checkbox" class="px-3" name="{{form.prefix}}-check_if_added" id="id_{{form.prefix}}-check_if_added" value=""><i style="display: none;" class="fa-solid fa-check-to-slot fa-xl my-2 iconClass"></i>
+                    <input type="hidden" class="initialCheckId" value="{{form.check_if_added.initial}}">
+                    <input type="hidden" class="initialCheckAllId" value="{{form.check_if_added_all.initial}}">
+                  </td>
                   
                 </tr>
                 {% endfor %}
@@ -124,17 +126,45 @@
     $('#subCategoryForm').on('submit', function () {
       $('#submitButtonSubCategory').attr('disabled', 'disabled');
     });
-    $('[name$="-check_if_added"]').on('click', function () {
-    var checkbox = $(this);
 
-    // Check the current state and update accordingly
-    if (checkbox.prop('checked')) {
-      checkbox.val('True'); // Set value to 'true' if checked
-    } else {
-      checkbox.val('False'); // Set value to 'false' if unchecked
-    }
-  });
+
+    
   })
+  //document.addEventListener('DOMContentLoaded', function () {
+  
+  //checkEdit()
+//})
+
+function checkEdit(){
+  var rows = document.querySelectorAll('#checkboxTable tr');
+  rows.forEach(function(row){
+    var checkForm = row.querySelector('[name$="-check_if_added"]');
+    var binSize = row.querySelector('[name$="-product_size_in_bin"]')
+    var initialCheck = row.querySelector('.initialCheckId').value;
+    var initialAllValues = row.querySelector('.initialCheckAllId').value;
+    var icon = row.querySelector('.iconClass')
+   
+    if(initialCheck === "True" && initialAllValues ==="True"){
+      checkForm.checked = true;
+      checkForm.value = True;
+    }else if(initialCheck === "False" && initialAllValues ==="False"){
+      if (binSize) {
+        binSize.readOnly = true; // Set input field to read-only
+      }
+      if (checkForm) {
+        checkForm.style.display = 'block'; // Hide the checkbox
+      }
+      if(icon){
+        icon.style.display = 'block';
+      }else{
+        checkForm.checked = false;
+        checkForm.value = False;
+      }
+    }
+  })
+
+  }
+  //checkEdit()
 </script>
 
 {% endblock body %}
