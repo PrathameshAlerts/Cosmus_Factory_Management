@@ -7071,7 +7071,7 @@ def edit_zone_in_warehouse(request,zone_id):
             return redirect('add-zone-in-warehouse',id=warehouse_id.id)
     form = finished_goods_warehouse_zone_form(instance=zone)
 
-    return render(request,'finished_product/edit_zone_in_warehouse.html',{'form':form,'zones':zones,'warehouse_name':warehouse_name})
+    return render(request,'finished_product/add_zone_in_warehouse.html',{'form':form,'zones':zones,'warehouse_name':warehouse_name})
 
 
 
@@ -7123,7 +7123,7 @@ def edit_rack_in_zone(request,rack_id):
             return redirect('add-rack-in-zone', zone_id=rack_zone.id)
 
     form = finished_goods_warehouse_racks_form(instance=rack_instance)
-    return render(request,"finished_product/edit_rack_in_zone.html",{'form':form,'racks':racks,'zone_name':zone_name})
+    return render(request,"finished_product/add_rack_in_zone.html",{'form':form,'racks':racks,'zone_name':zone_name})
 
 
 
@@ -7175,13 +7175,13 @@ def edit_bin_in_rack(request,bin_id):
             form.save()
             return redirect("add-bin-in-rack" ,rack_id = bin_rack.id)
     form = finished_product_warehouse_bin_form(instance=bin_instance)
-    return render(request,"finished_product/edit_bin_in_rack.html",{'form':form,'bins':bins,'rack_name':rack_name})
+    return render(request,"finished_product/add_bin_in_rack.html",{'form':form,'bins':bins,'rack_name':rack_name})
 
 
 
 def delete_bin_in_rack(request,bin_id):
     rack_id = finished_product_warehouse_bin.objects.get(id=bin_id).rack_finished_name
-    bin = finished_product_warehouse_bin.objects.get(id=bin_id)
+    bin = get_object_or_404(finished_product_warehouse_bin,id=bin_id)
     bin.delete()
     return redirect('add-bin-in-rack', rack_id = rack_id.id)
 
