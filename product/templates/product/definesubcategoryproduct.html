@@ -51,8 +51,8 @@
                   <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-bin_name" value="{{form.instance.bin_name}}" maxlength="30" id="id_{{form.prefix}}-bin_name" readonly></td>
                   <td> <input type="number" class="purchase-amount" name="{{form.prefix}}-product_size_in_bin" value="{{form.instance.product_size_in_bin}}" id="id_{{form.prefix}}-product_size_in_bin"></td>
                   <td> 
-                    <input type="checkbox" class="px-3" name="{{form.prefix}}-check_if_added_value" id="id_{{form.prefix}}-check_if_added_value" value="{{form.check_if_added.initial}}" onchange="updateCheckboxValue(this)">
-                    <input type="hidden" class="px-3" name="{{form.prefix}}-check_if_added" id="id_{{form.prefix}}-check_if_added" value="{{form.check_if_added.initial}}">
+                    <input type="checkbox" class="px-3" name="{{form.prefix}}-check_if_added_value" id="id_{{form.prefix}}-check_if_added_value" value="{{form.check_if_added.initial}}">
+                    <input type="hidden" class="px-3" name="{{form.prefix}}-check_if_added" id="id_{{form.prefix}}-check_if_added" value="">
                     <i style="display: none;" class="fa-solid fa-check-to-slot fa-xl my-2 iconClass"></i>
                     <input type="hidden" class="initialCheckId" value="{{form.check_if_added.initial}}">
                     <input type="hidden" class="initialCheckAllId" value="{{form.check_if_added_all.initial}}">
@@ -130,60 +130,65 @@
 
     
   })
-  document.addEventListener('DOMContentLoaded', function () {
-    var checkFormValue = document.querySelectorAll('[name$="-check_if_added"]');
-    // checkFormValue.forEach(function(data){
-    //     data.addEventListener('click',checkEdit)
-    // })
-  checkEdit()
-})
 
-function updateCheckboxValue(checkbox) {
-  var checkForms = document.querySelector('[name$="-check_if_added"]');
-  if (checkbox.checked) {
-    checkbox.value = "True";
-    checkForms.value = "True";
-  } else {
-    checkbox.value = "False";
-    checkForms.value = "False";
-  }
-  checkEdit()
-}
-function checkEdit(){
+function checkEdit() {
+  // Select all rows in the table
   var rows = document.querySelectorAll('#checkboxTable tr');
-  rows.forEach(function(row){
-    var checkForm = row.querySelector('[name$="-check_if_added_value"]');
-    var mainCheck = row.querySelector('[name$="-check_if_added"]');
-    var binSize = row.querySelector('[name$="-product_size_in_bin"]')
-    var initialCheck = row.querySelector('.initialCheckId').value;
-    var initialAllValues = row.querySelector('.initialCheckAllId').value;
-    var icon = row.querySelector('.iconClass')
-   
-    if(initialCheck === "True" && initialAllValues ==="True" && checkForm.value === "True" ){
-      checkForm.checked = true;
-      mainCheck.value = "True";
-      console.log('checkFormT',checkForm)
-    }else if(initialCheck === "False" && initialAllValues ==="False" && checkForm.value === "False"){
-      if (binSize) {
-        binSize.readOnly = true; // Set input field to read-only
-      }
-      if (checkForm) {
-        checkForm.style.display = 'none'; // Hide the checkbox
-      }
-      if(icon){
-        icon.style.display = 'block';
-      }
-      console.log('checkFormF',checkForm)
-    }else if(initialCheck === "True" && initialAllValues ==="True" && checkForm.value === "False" ){
-        checkForm.checked = false;
-        mainCheck.value = "False";
-        checkForm.value = "False";
-        console.log('checkForm',checkForm)
-      }
-  })
 
-  }
-  //checkEdit()
+  rows.forEach(function (row) {
+      var checkForm = row.querySelector('[name$="-check_if_added_value"]');
+      var mainCheck = row.querySelector('[name$="-check_if_added"]');
+      var binSize = row.querySelector('[name$="-product_size_in_bin"]');
+      var initialCheck = row.querySelector('.initialCheckId').value;
+      var initialAllValues = row.querySelector('.initialCheckAllId').value;
+      var icon = row.querySelector('.iconClass');
+
+      // Initialize based on initial values
+      if (initialCheck === "True" && initialAllValues === "True") {
+          checkForm.checked = true;
+          mainCheck.value = "True";
+      } else if (initialCheck === "False" && initialAllValues === "False") {
+          if (binSize) {
+              binSize.readOnly = true; // Set input field to read-only
+          }
+          if (checkForm) {
+              checkForm.style.display = 'none'; // Hide the checkbox
+          }
+          if (icon) {
+              icon.style.display = 'block';
+          }
+      }
+
+      // Add event listener for checkbox changes
+      if (checkForm) {
+          checkForm.addEventListener('change', function () {
+              if (checkForm.checked) {
+                  // Checkbox is checked
+                  mainCheck.value = "True";
+                  if (binSize) {
+                      binSize.readOnly = false; // Make input editable
+                  }
+                  if (icon) {
+                      icon.style.display = 'none'; // Hide the icon
+                  }
+              } else {
+                  // Checkbox is unchecked
+                  mainCheck.value = "False";
+                  if (binSize) {
+                      binSize.readOnly = true; // Make input read-only
+                  }
+                  if (icon) {
+                      icon.style.display = 'none'; // Show the icon
+                  }
+              }
+          });
+      }
+  });
+}
+
+// Call the function once to initialize
+checkEdit();
+
 </script>
 
 {% endblock body %}
