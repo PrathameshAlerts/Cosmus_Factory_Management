@@ -301,12 +301,13 @@ urlpatterns = [
 
     path('warehousenavigator/',views.warehouse_navigator, name="warehouse-navigator"),
 
+    path('processserialno/', views.process_serial_no,name="process-serial-no"),
 
     #common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),
 
-
+    path('producttoitemajax/', views.product_2_item_ajax, name='product-2-item-ajax'),
 
     #testing
     path('testsession/', views.session_data_test, name='test-session'),

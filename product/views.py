@@ -33,6 +33,7 @@ from PIL import Image as PILImage
 from openpyxl.styles import Font
 from openpyxl.styles import Alignment
 from openpyxl.styles import Border, Side
+import requests
 
 from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Finished_goods_warehouse, Godown_finished_goods, Godown_raw_material,
@@ -651,24 +652,27 @@ def definesubcategoryproduct(request, pk=None):
         try:
             form = product_sub_category_form(request.POST, instance = instance)
             
-            formset = sub_category_and_bin_formset(request.POST,form_kwargs={'sub_cat_instance': instance})
+            formset = sub_category_and_bin_formset(request.POST, form_kwargs={'sub_cat_instance': instance})
             
             if form.is_valid() and formset.is_valid():
                 
                 form_instance = form.save(commit=False)
                 form_instance.c_user = request.user
                 form_instance.save()
-                
+                print(formset.cleaned_data)
                 for form in formset:
-                    if form.cleaned_data.get('check_if_added') == True:
-                        formset_instance = form.save(commit=False)
-                        formset_instance.sub_catergory_id = form_instance
-                        formset_instance.save()
+                    
+                    if form.cleaned_data.get('check_if_added_all') != False:
+                        
+                        if form.cleaned_data.get('check_if_added') == True:
+                            formset_instance = form.save(commit=False)
+                            formset_instance.sub_catergory_id = form_instance
+                            formset_instance.save()
 
-                    
-                    
-                    
-                    
+                        elif form.cleaned_data.get('check_if_added') == False :
+                            formset_instance = form.save(commit=False)
+                            formset_instance.sub_catergory_id = None
+                            formset_instance.save()
 
                 if message == 'created':
                     messages.success(request,'Sub-Category created sucessfully')
@@ -2893,6 +2897,9 @@ def packaging_delete(request,pk):
 def product2item(request,product_refrence_id):
     
     try:
+
+        all_ref_ids = Product.objects.all()
+        
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
         Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
@@ -2943,8 +2950,15 @@ def product2item(request,product_refrence_id):
         else:
             formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
 
+        print(formset_common)
+
+        
+        clone_ajax_valid = False
+        if extraformcommon and extraformspecial:
+            clone_ajax_valid = True
+
         if request.method == 'POST':
-            
+            print(request.POST)
             formset_single = Product2ItemFormset(request.POST, queryset=product2item_instances, prefix='product2itemuniqueformset')
             formset_common = Product2CommonItemFormSet(request.POST, queryset=distinct_product2item_commmon_instances, prefix='product2itemcommonformset') 
             
@@ -3106,8 +3120,8 @@ def product2item(request,product_refrence_id):
                 return HttpResponse(close_window_script)
 
 
-        return render(request,'production/product2itemsetproduction.html', { 'formset_single':formset_single,'formset_common':formset_common,
-                                                                'Products_all':Products_all,
+        return render(request,'production/product2itemsetproduction.html', {'formset_single':formset_single,'formset_common':formset_common,
+                                                                'Products_all':Products_all,'all_ref_ids':all_ref_ids,'clone_ajax_valid':clone_ajax_valid,
                                                                 'items':items,'product_refrence_no': product_refrence_no})
 
     except Exception as e:
@@ -6990,6 +7004,9 @@ def stock_transfer_instance_list_popup(request,id):
         purchase_number = product_purchase_voucher_items_instance.purchase_number
         formset = product_purchase_voucher_items_instance_formset_only_for_update(instance=product_purchase_voucher_items_instance)
 
+
+
+
     return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset,'purchase_number':purchase_number})
 
 
@@ -7032,6 +7049,28 @@ def product_to_bin(request,pk,sent_from):
 
     return render(request,'finished_product/producttobin.html',{'formset':formset,'product_name':product_name,'voucher_type':voucher_type})
 
+
+
+
+
+def process_serial_no(request):
+    if request.method == 'POST':
+        serial_no = request.POST.get('serialNo')
+        
+        if serial_no:  
+
+            url = f'https://www.cosmusbags.com/cosmus/qrcode.php?wc={serial_no}'
+            
+            response_post = requests.get(url)
+            response_data =  response_post.json()
+            
+            if response_data['response_code'] == 200 and response_data['response_desc'] == 'success':
+                product_scanned_sku = response_data['sku']
+                print('product_scanned_sku',product_scanned_sku)
+
+            return JsonResponse({'message': f'Serial No {serial_no} processed successfully.'})
+        else:
+            return JsonResponse({'message': 'Invalid Serial No.'}, status=400)
 
 
 
@@ -7400,6 +7439,37 @@ def finished_goods_stock_all(request,pk=None):
                                 'finished_godown_all':finished_godown_all, 'wareshouse_all':wareshouse_all})
 
 
+def product_2_item_ajax(request):
+
+    product_ref_id_get = request.GET.get('product_ref_id')
+    if product_ref_id_get is not None or product_ref_id_get != '':
+        try:
+
+            product_ref_id = get_object_or_404(Product, pk=product_ref_id_get)
+
+            product_2_items_instances_unique = list(product_2_item_through_table.objects.filter(
+                                PProduct_pk__Product__Product_Refrence_ID = product_ref_id.Product_Refrence_ID, common_unique = False).order_by(
+                                    'row_number').values('Item_pk','Item_pk__item_name','row_number','no_of_rows','Remark'))
+        
+            product_2_items_instances_common = list(product_2_item_through_table.objects.filter(
+                                PProduct_pk__Product__Product_Refrence_ID = product_ref_id.Product_Refrence_ID, common_unique = True).order_by(
+                                    'row_number','id').distinct('row_number').values('Item_pk','Item_pk__item_name','row_number','no_of_rows','Remark'))
+            
+
+            return JsonResponse({'status': 'success', 'product_2_items_instances_unique':product_2_items_instances_unique,
+                                     'product_2_items_instances_common':product_2_items_instances_common})
+        
+        except ObjectDoesNotExist as e:
+            logger.error(f'Record not found: {e}')
+            return JsonResponse({'status': 'error', 'message': 'Record not found'}, status=404)
+
+        except Exception as e:
+            logger.error(f'Invalid data: {e}')
+            return JsonResponse({'status': 'error', 'message': 'Invalid input data'}, status=400)
+
+    else:
+        logger.error(f'Invalid data: {e}')
+        return JsonResponse({'status': 'error', 'message': 'Invalid input data else'}, status=400)
 
 
 

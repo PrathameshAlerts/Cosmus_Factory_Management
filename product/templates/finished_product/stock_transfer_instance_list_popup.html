@@ -3,6 +3,7 @@
 {% block body %}
 <div class="mt-4">
     <form action="">
+        {% csrf_token %}
         <div class="mb-3">
             <h5 class="fw-bold">Purchase No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
         </div>
@@ -13,6 +14,7 @@
                     <thead class="name_absolute sticky-top">
                         <tr>
                             <th>Product Name</th>
+                            <th>Product SKU</th>
                             <th>Quantity</th>
                             <th>Difference Qty</th>
                             <th>QC Recieved QTY</th>
@@ -26,6 +28,7 @@
                     
                         <tr>
                             <td><input type="text" class="productShadeCutting_Material_input" value="{{ form.instance.product_name.Product.Product_Name }}" readonly></td>
+                            <td><input type="text" class="productShadeCutting_Material_input" value="{{ form.instance.product_name.PProduct_SKU }}" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
                             <td> <input type="number" class="productorderrawqty-input" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" value="{{form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
@@ -98,6 +101,42 @@
             }
         })
     })
+
+    $(document).ready(function () {
+        $('#inwordSerialNo').on('input', function () {
+            let inputUrl = $(this).val(); // Get the current value of the input
+            let serialNo = '';
+    
+            // Extract value after '=' in the URL
+            if (inputUrl.includes('=')) {
+                serialNo = inputUrl.split('=').pop(); // Get everything after the '='
+                $(this).val(serialNo); // Update the input field with the extracted value
+            }
+    
+            if (serialNo) {
+                // Send AJAX request with the serialNo
+                $.ajax({
+                    url: '/process-serial-no/', // Replace with your server endpoint
+                    type: 'POST',
+                    data: {
+                        serialNo: serialNo,
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(), // Include CSRF token for Django
+                    },
+                    success: function (response) {
+                        // Handle success: Update the UI with the server's response
+                        $('#responseMessage').html('<span class="text-success">' + response.message + '</span>');
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error: Display the error message
+                        $('#responseMessage').html('<span class="text-danger">An error occurred: ' + xhr.responseText + '</span>');
+                    }
+                });
+            }
+        });
+    });
+    
+
+
 </script>
 {% endblock body %}
 

@@ -51,11 +51,12 @@
                   <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-bin_name" value="{{form.instance.bin_name}}" maxlength="30" id="id_{{form.prefix}}-bin_name" readonly></td>
                   <td> <input type="number" class="purchase-amount" name="{{form.prefix}}-product_size_in_bin" value="{{form.instance.product_size_in_bin}}" id="id_{{form.prefix}}-product_size_in_bin"></td>
                   <td> 
-                    <input type="checkbox" class="px-3" name="{{form.prefix}}-check_if_added_value" id="id_{{form.prefix}}-check_if_added_value" value="">
+                    <input type="checkbox" class="px-3" name="{{form.prefix}}-check_if_added_value" id="id_{{form.prefix}}-check_if_added_value" value="{{form.check_if_added.initial}}">
                     <input type="hidden" class="px-3" name="{{form.prefix}}-check_if_added" id="id_{{form.prefix}}-check_if_added" value="{{form.check_if_added.initial}}">
-                    <i style="display: none;" class="fa-solid fa-check-to-slot fa-xl my-2 iconClass"></i>
-                    <input type="hidden" class="initialCheckId" value="{{form.check_if_added.initial}}">
-                    <input type="hidden" class="initialCheckAllId" value="{{form.check_if_added_all.initial}}">
+                    <input type="hidden" class="px-3" name="{{form.prefix}}-check_if_added_all" id="id_{{form.prefix}}-check_if_added_all" value="{{form.check_if_added_all.initial}}">
+                  <i style="display: none;" class="fa-solid fa-square-check fa-xl my-2 iconClass" style="color: #ef0b4f;"></i>
+                  
+              
                   </td>
                   
                 </tr>
@@ -121,50 +122,54 @@
 </div>
 
 <script>
- 
- function handleCheckbox(checkbox) {
-  // Update the value of the clicked checkbox
-  checkbox.value = checkbox.checked ? "True" : "False";
+ function CheckValue(checkbox) {
+  const checkForms = checkbox.closest('tr').querySelector('[name$="-check_if_added"]');
+  console.log(checkForms);
 
-  // Iterate over all rows in the table
-  var rows = document.querySelectorAll('#checkboxTable tr');
+  if (checkbox.checked) {
+    checkbox.value = "True";
+    checkForms.value = "True";
+  } else {
+    checkbox.value = "False";
+    checkForms.value = "False";
+  }
+}
 
-  rows.forEach(function (row) {
-    var checkForm = row.querySelector('[name$="-check_if_added_value"]');
-    var mainCheck = row.querySelector('[name$="-check_if_added"]');
-    var binSize = row.querySelector('[name$="-product_size_in_bin"]');
-    var initialCheck = row.querySelector('.initialCheckId')?.value || "False";
-    var initialAllValues = row.querySelector('.initialCheckAllId')?.value || "False";
-    var icon = row.querySelector('.iconClass');
+function handleCheckbox(box) {
+  const rows = document.querySelectorAll('#checkboxTable tr');
 
-    // Logic for handling the state of checkboxes and associated UI elements
-    if (initialCheck === "True" && initialAllValues === "True") {
-      if (checkForm) {
-         checkForm.checked = true;
-        // checkForm.value = "True";
+  rows.forEach(row => {
+    const checkForm = row.querySelector('[name$="-check_if_added_value"]');
+    const mainCheck = row.querySelector('[name$="-check_if_added"]');
+    const binSize = row.querySelector('[name$="-product_size_in_bin"]');
+    const checkAll = row.querySelector('[name$="-check_if_added_all"]')
+  
+    const icon = row.querySelector('.iconClass');
+
+    const setCheckState = (checkbox, state) => {
+      if (checkbox) {
+        checkbox.checked = state;
+        checkbox.value = state ? "True" : "False";
       }
-      if (mainCheck) {
-        mainCheck.value = "True";
-      }
-    } else if (initialCheck === "False" && initialAllValues === "False") {
-      if (binSize) {
-        binSize.readOnly = true; // Set input field to read-only
-      }
-      if (checkForm) {
-        checkForm.style.display = 'none'; // Hide the checkbox
-        //checkForm.checked = false;
-      }
-      if (icon) {
-        icon.style.display = 'block'; // Show the icon
-      }
-    } else if (initialCheck === "False" && initialAllValues === "True") {
-      if (checkForm) {
-        //checkForm.checked = false;
-        //checkForm.value = "False";
-      }
-      if (mainCheck) {
-        mainCheck.value = "False";
-      }
+    };
+
+    const toggleDisplay = (element, show) => {
+      if (element) element.style.display = show ? "block" : "none";
+    };
+
+    // Logic for handling the state of checkboxes and UI elements
+    if (mainCheck.value === "True" && checkAll.value === "True" && checkForm.value === "True") {
+      setCheckState(checkForm, true);
+      mainCheck.value = "True";
+      checkAll.value = "True";
+    } else if (mainCheck.value === "False" && checkAll.value === "False" && checkForm.value === "False") {
+      if (binSize) binSize.readOnly = true;
+      toggleDisplay(checkForm, false);
+      setCheckState(checkForm, false);
+      
+      mainCheck.value = ""
+      checkAll.value = "False";
+      toggleDisplay(icon, true);
     }
   });
 }
@@ -172,17 +177,17 @@
 // Add event listeners to checkboxes
 document.querySelectorAll('[name$="-check_if_added_value"]').forEach(checkbox => {
   checkbox.addEventListener('change', function () {
-    handleCheckbox(this);
+    CheckValue(this);
   });
 });
 
 // Ensure initial setup on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function () {
-  // Trigger the function for initial state setup
-  document.querySelectorAll('[name$="-check_if_added_value"]').forEach(checkbox => {
-    handleCheckbox(checkbox);
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[name$="-check_if_added_value"]').forEach(box => {
+    handleCheckbox(box);
   });
 });
+
 
 </script>
 
