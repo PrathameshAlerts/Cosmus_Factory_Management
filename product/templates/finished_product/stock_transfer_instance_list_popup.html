@@ -95,7 +95,8 @@
         var stockTable = document.getElementById('stockTransferList')
         inwardSearch.focus();
         inwardSearch.addEventListener('input',function(item){
-            console.log(inwardSearch.value)
+            
+            inwardSearch.style.color = 'white'
             if(inwardSearch.value){
                 stockTable.style.display ="block";
             }
@@ -103,39 +104,57 @@
     })
 
     $(document).ready(function () {
+        let debounceTimeout;
+    
         $('#inwordSerialNo').on('input', function () {
-            let inputUrl = $(this).val(); // Get the current value of the input
-            let serialNo = '';
+            clearTimeout(debounceTimeout); // Clear any previous timeout
     
-            // Extract value after '=' in the URL
-            if (inputUrl.includes('=')) {
-                serialNo = inputUrl.split('=').pop(); // Get everything after the '='
-                $(this).val(serialNo); // Update the input field with the extracted value
-            }
+            let inputField = $(this);
+            debounceTimeout = setTimeout(async function () {
+                let inputUrl = inputField.val(); // Get the current value of the input
+                let serialNo = '';
     
-            if (serialNo) {
-                // Send AJAX request with the serialNo
-                $.ajax({
-                    url: '/process-serial-no/', // Replace with your server endpoint
-                    type: 'POST',
-                    data: {
-                        serialNo: serialNo,
-                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(), // Include CSRF token for Django
-                    },
-                    success: function (response) {
-                        // Handle success: Update the UI with the server's response
+                // Extract value after '=' in the URL
+                if (inputUrl.includes('=')) {
+                    serialNo = inputUrl.split('=').pop(); // Get everything after the '='
+                    inputField.val(serialNo); // Update the input field with the extracted value
+                    inputField.css('color','black')
+                }
+    
+                if (serialNo) {
+                    try {
+                        // Send AJAX request with the serialNo using async/await
+                        let response = await sendSerialNumber(serialNo);
+                        
+                        // Handle success
                         $('#responseMessage').html('<span class="text-success">' + response.message + '</span>');
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle error: Display the error message
-                        $('#responseMessage').html('<span class="text-danger">An error occurred: ' + xhr.responseText + '</span>');
+                    } catch (error) {
+                        // Handle error
+                        $('#responseMessage').html('<span class="text-danger">An error occurred: ' + error.responseText + '</span>');
                     }
-                });
-            }
+                }
+            }, 500); // Debounce delay (500ms)
         });
-    });
     
-
+        // Function to send the serial number
+        async function sendSerialNumber(serialNo) {
+            const csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // Get CSRF token
+            const response = await $.ajax({
+                url: '/processserialno/', // Replace with your server endpoint
+                type: 'POST',
+                data: {
+                    serialNo: serialNo,
+                    csrfmiddlewaretoken: csrfToken, // Include CSRF token for Django
+                },
+            });
+            console.log(response.product_name)
+            console.log(response.product_sku)
+            console.log(response.product_color)
+            console.log(response.product_image)
+            return response; // Return the AJAX response
+            
+        }
+    });
 
 </script>
 {% endblock body %}
