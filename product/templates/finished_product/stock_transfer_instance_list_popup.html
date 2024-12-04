@@ -63,23 +63,27 @@
                             <tr>
                                 <th>Name</th>
                                 <th>SKU</th>
+                                <th>Color</th>
                                 <th>IMG</th>
                                 <th>BIN</th>
-                                <th>BIN No</th>
+                              
                             </tr>
                         </thead>
                         <tbody class="mainTableList" >
-                            {{formset.management_form}}
-        
-                                {% for form in formset %}
+                           
                             <tr>
-                                <td><input type="text" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product"></td>
-                                <td><input name="{{form.prefix}}-product_sku" id="id_{{form.prefix}}-product_sku"></td>
-                                <td><img src="" alt="product" width="50px"></td>
-                                <td>0</td>
-                                <td><input name="{{form.prefix}}-bin_number" id="id_{{form.prefix}}-bin_number"></td>
+                                <td><input type="text" class="productSelect" id="id_product" readonly></td>
+                                <td><input type="number" class="productSelect"  id="id_product_sku" readonly></td>
+                                <td><input type="text" class="productSelect"  id="id_product_color" readonly></td>
+                                <td>
+                                    <img id="productImgPreview" src="" alt="Product Image" style="width: 100px; height: 100px;">
+                               </td>
+                                <td><select  class="productSelect"  id="id_bin_Name">
+                                    </select>
+                                </td>
+                                
                             </tr>
-                            {% endfor %}
+                         
                         </tbody>
                     </table>
                 </div>
@@ -147,6 +151,16 @@
                     csrfmiddlewaretoken: csrfToken, // Include CSRF token for Django
                 },
             });
+            const productName = document.getElementById('id_product')
+            productName.value = response.product_name; 
+            const productSku = document.getElementById('id_product_sku')
+            productSku.value = response.product_sku; 
+            const productColor = document.getElementById('id_product_color');
+            productColor.value = response.product_color;
+            const productIMG = document.getElementById('productImg')
+            const productImgPreview = document.getElementById('productImgPreview');
+            //productIMG.href = response.product_image;
+            productImgPreview.src = response.product_image;
             console.log(response.product_name)
             console.log(response.product_sku)
             console.log(response.product_color)

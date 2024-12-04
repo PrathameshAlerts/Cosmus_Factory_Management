@@ -89,8 +89,8 @@
                       <td>
                           <div class="custom-dropdown-container">
                             <input  type="hidden" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product" value="{% if form.instance.id %}{{form.instance.product.PProduct_SKU}}{% endif %}" > 
-                              <input type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="product2Selectpurchase search-input stock_product_name"  placeholder="Product Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.product.Product.Product_Name }} {{form.instance.product.PProduct_SKU}}{% endif %}"> 
-                              <div name="select_product_name_{{forloop.counter0}}" class="product2Selectpurchase stock_input_name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
+                              <input type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="productpurchaseInvoice search-input stock_product_name"  placeholder="Product Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.product.Product.Product_Name }} {{form.instance.product.PProduct_SKU}}{% endif %}"> 
+                              <div name="select_product_name_{{forloop.counter0}}" class="productpurchaseInvoice stock_input_name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
   
                                </div>
                           </div> 

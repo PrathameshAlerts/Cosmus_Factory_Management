@@ -89,11 +89,11 @@
                     <input type="hidden" id="{{forms.prefix}}-old_item_shade_for_dropdown_change" value="{{forms.instance.item_shade}}" name="{{forms.prefix}}-old_item_shade_for_dropdown_change">
                     
                     
-                    <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
+                    <td><input type="number" class="rowNo  bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}" readonly></td>
                     <td colspan="2">
                         <div class="custom-dropdown-container">
-                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="product2Selectpurchase search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
-                            <div name="select_item_name_{{forloop.counter0}}" class="product2Selectpurchase item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
+                            <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="productpurchaseInvoice search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
+                            <div name="select_item_name_{{forloop.counter0}}" class="productpurchaseInvoice item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                               
                            
                              </div>
