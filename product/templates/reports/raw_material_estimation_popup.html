@@ -9,7 +9,7 @@
         <h4 class="mb-3">Raw Material Estimation</h4>
         <div class="mb-2">
             <label class="fw-bold">Product Name :</label>
-            <input type="text" name="product_name" class="productinput text-danger text-capitalize" value="{{product_ref_items_instance.product_id.Product_Name}}" id="id_product_name" readonly>
+            <input type="text" name="product_name" class="productShadeRmEstimation_input text-danger text-capitalize" value="{{product_ref_items_instance.product_id.Product_Name}}" id="id_product_name" readonly>
             <label class="fw-bold">Total Qty :</label>
             <input type="number" name="product_Qty" class="productinput text-danger" value="{{product_ref_items_instance.total_product_qty}}" id="id_product_Qty" readonly>
             <label class="fw-bold">Balance Qty :</label>
@@ -83,7 +83,7 @@
                 <tr class="text-nowrap">
                     <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.instance.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                     <td><input type="text" class="productinput rawProductColor" name="{{form.prefix}}-product_color" value="{{form.instance.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
-                    <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.instance.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                    <td><input type="text" class="productShadeRmEstimation_input" name="{{form.prefix}}-material_name" value="{{form.instance.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
                     <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.instance.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
                     <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.instance.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
                     <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.instance.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>
@@ -100,7 +100,7 @@
                 <tr class="text-nowrap">
                     <td><input type="text" class="productinput" name="{{form.prefix}}-product_sku" value="{{form.initial.product_sku}}" maxlength="100" id="id_{{form.prefix}}-product_sku" readonly></td>
                     <td><input type="text" class="productinput rawProductColor" name="{{form.prefix}}-product_color" value="{{form.initial.product_color}}" maxlength="100" id="id_{{form.prefix}}-product_color" readonly></td>
-                    <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
+                    <td><input type="text" class="productShadeRmEstimation_input" name="{{form.prefix}}-material_name" value="{{form.initial.material_name}}" maxlength="100" id="id_{{form.prefix}}-material_name" readonly></td>
                     <td><input type="number" name="{{form.prefix}}-rate" class="productorderrawqty-input" value="{{form.initial.rate}}" step="0.01" id="id_{{form.prefix}}-rate" readonly></td>
                     <td><input type="number" name="{{form.prefix}}-panha" class="productorderrawqty-input" value="{{form.initial.panha}}" step="0.01" id="id_{{form.prefix}}-panha" readonly></td>
                     <td><input type="text" name="{{form.prefix}}-unit_value" class="productorderrawqty-input" value="{{form.initial.unit_value}}" step="0.01" id="id_{{form.prefix}}-unit_value" readonly></td>

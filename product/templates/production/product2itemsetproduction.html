@@ -14,66 +14,69 @@
         <button type="button" class="color_btn mb-3" onclick="openNewColor()">Color +</button>
     </div>
  
-        <div class=""> 
-            <table class="table table-striped table-bordered" id="mainProductForm">
-                <thead class="text-nowrap name_absolute">
-                    <tr>
-                        <th>No</th>
-                        <th>Product Sku</th>
-                        <th>Item Name</th>
-                        <th>Rows</th>
-                        <th>Total</th>
-                        <th>Combi Total</th>
-                        <th>Remark</th>
-                        <th>Delete</th>
-                        <th>Add Row</th>
-                    </tr>
-                </thead>
-        
-                <tbody class="mainTableList">
-                   
-                    {{formset_single.management_form}}
-                    
-                    {% for form in formset_single %}
+        <div>
+            <div >
+                <table class="table table-striped table-bordered" id="mainProductForm">
+                    <thead class="name_absolute">
+                        <tr>
+                            <th>No</th>
+                            <th>Product Sku</th>
+                            <th>Item Name</th>
+                            <th>Rows</th>
+                            <th>Total</th>
+                            <th>Combi Total</th>
+                            <th>Remark</th>
+                            <th>Delete</th>
+                            <th>Add Row</th>
+                        </tr>
+                    </thead>
             
-                    <tr>
-                        {{ form.id }}
-                        <td> <input type="hidden"  id="id_{{form.prefix}}-row_number" name="{{form.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" readonly>
-                            <input type="number"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}" readonly>
-                        </td>
-            
-                        <td>
-                            <span id="productError_{{forloop.counter0}}" class="error-messages_product" ></span>
-                            <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
-                                id="id_{{form.prefix}}-PProduct_pk">
-                                <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">
-                                    {{form.instance.PProduct_pk.PProduct_SKU}} &nbsp; &nbsp;
-                                    {{form.instance.PProduct_pk.PProduct_color}}</option>
-                                {% for product in Products_all %}
-                                <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp;
-                                    &nbsp;{{product.PProduct_color}}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td>
-                            <span id="uniqueError_{{forloop.counter0}}" class="error-messagesorderCreate" ></span>
-                            <div class="custom-dropdown-container">
-                                <input type="hidden" name="{{form.prefix}}-Item_pk" id="id_{{form.prefix}}-Item_pk" class="product2Select input_hidden-value" value="{% if form.instance.id %}{{ form.instance.Item_pk.id }}{% endif %}">
-                                <input type="text" name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks" class="product2Selectpurchase input_text search-input" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
-                                <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="product2Selectpurchase item-name s-suggestion-container" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
+                    <tbody class="mainTableList">
+                       
+                        {{formset_single.management_form}}
+                        
+                        {% for form in formset_single %}
+                
+                        <tr>
+                            {{ form.id }}
+                            <td> <input type="hidden"  id="id_{{form.prefix}}-row_number" name="{{form.prefix}}-row_number" class="Serial_no" value="{{forloop.counter}}" readonly>
+                                <input type="number"  id="id_serial_no_unique-{{forloop.counter0}}" class="Serial_no" value="{{forloop.counter}}" readonly>
+                            </td>
+                
+                            <td class="productTd">
+                                <span id="productError_{{forloop.counter0}}" class="error-messages_product" ></span>
+                                <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
+                                    id="id_{{form.prefix}}-PProduct_pk">
+                                    <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">
+                                        {{form.instance.PProduct_pk.PProduct_SKU}} &nbsp; &nbsp;
+                                        {{form.instance.PProduct_pk.PProduct_color}}</option>
+                                    {% for product in Products_all %}
+                                    <option value="{{product.PProduct_SKU}}">{{product.PProduct_SKU}} &nbsp;
+                                        &nbsp;{{product.PProduct_color}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <span id="uniqueError_{{forloop.counter0}}" class="error-messagesorderCreate" ></span>
+                                <div class="custom-dropdown-container">
+                                    <input type="hidden" name="{{form.prefix}}-Item_pk" id="id_{{form.prefix}}-Item_pk" class="product2Select input_hidden-value" value="{% if form.instance.id %}{{ form.instance.Item_pk.id }}{% endif %}">
+                                    <input type="text" name="{{form.prefix}}-Item_pks" id="id_{{form.prefix}}-Item_pks" class="product2Selectpurchase input_text search-input" placeholder="Item Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.Item_pk.item_name }}{% endif %}">
+                                    <div name="itemName_{{forloop.counter0}}" id="id_itemName_{{forloop.counter0}}" class="product2Selectpurchase item-name s-suggestion-container" style="display: none; height: auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name">
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td><input type="text" class="product_row" name="{{form.prefix}}-no_of_rows" required value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
-                        <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total" value="{{form.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total" readonly></td>
-                        <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total_combi" value="{{form.instance.grand_total_combi | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total_combi" readonly></td>
-                        <td><input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-Remark"></td>
-                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
-                        <td><input type="button" class="add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="+" style="display: none;" ></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            </td>
+                            <td><input type="text" class="product_row" name="{{form.prefix}}-no_of_rows" required value="{{form.instance.no_of_rows}}" maxlength="255" id="id_{{form.prefix}}-no_of_rows"></td>
+                            <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total" value="{{form.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total" readonly></td>
+                            <td><input type="number" class="product_remark" name="{{form.prefix}}-grand_total_combi" value="{{form.instance.grand_total_combi | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-grand_total_combi" readonly></td>
+                            <td><input type="text" class="product_remark" name="{{form.prefix}}-Remark" value="{{form.instance.Remark | default_if_none:''}}" maxlength="255" id="id_{{form.prefix}}-Remark"></td>
+                            <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_Item_deleteId px-2" style="display: none;" name="{{form.prefix}}-DELETE" id="id_{{form.prefix}}-DELETE" value=""></i></span></td>
+                            <td><input type="button" class="product2item_add_btn mb-3 add_btn_row" name="{{form.prefix}}-add_btn" id="id_{{form.prefix}}-add_btn" value="+" style="display: none;" ></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> 
+           
         </div>
         <input type="number" class="product_row" name="productNoRow" id="id_productNoRow" value="1">
         <button type="button" class="add_btn mb-4" id="addForm">Add</button>
@@ -116,9 +119,9 @@
                             <td><input type="number" class="product_row" name="{{forms.prefix}}-no_of_rows" required value="{{forms.instance.no_of_rows}}" maxlength="255"id="id_{{forms.prefix}}-no_of_rows"></td>
                             <td><input type="number" class="product_remark" name="{{forms.prefix}}-grand_total" value="{{forms.instance.grand_total | default_if_none:''}}" maxlength="255" id="id_{{forms.prefix}}-grand_total" readonly></td>
                             <td><input type="number" class="product_remark" name="{{forms.prefix}}-grand_total_combi" value="{{forms.instance.grand_total_combi | default_if_none:''}}" maxlength="255" id="id_{{forms.prefix}}-grand_total_combi" readonly></td>
-                            <td><input type="text" class="product_remark" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remark | default_if_none:'Common'}}" maxlength="255" id="id_{{forms.prefix}}-Remark"></td>
+                            <td><input type="text" class="product_remark_common" name="{{forms.prefix}}-Remark" value="{{forms.instance.Remark | default_if_none:'Common'}}" maxlength="255" id="id_{{forms.prefix}}-Remark"></td>
                             <td><span class="deleteButton border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="product_deleteId px-2" style="display: none;" name="{{forms.prefix}}-DELETE" id="id_{{forms.prefix}}-DELETE"value=""></i></span></td>
-                            <td><input type="button" class="add_btn add_btn_CommonForm mb-3" name="{{forms.prefix}}-add_btns" id="id_{{forms.prefix}}-add_btns" value="+" style="display: none;"></td>
+                            <td><input type="button" class="product2item_add_btn add_btn_CommonForm mb-3" name="{{forms.prefix}}-add_btns" id="id_{{forms.prefix}}-add_btns" value="+" style="display: none;"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
