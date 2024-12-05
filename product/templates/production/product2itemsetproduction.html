@@ -23,10 +23,6 @@
             {% endif %}</div>
         
     </div>
-   
-
-
-    <div id="responseMessage" class="mt-2"></div>
         <div>
             <div >
                 <table class="table table-striped table-bordered" id="mainProductForm">
@@ -57,7 +53,9 @@
                             </td>
                 
                             <td class="productTd">
-                                <span id="productError_{{forloop.counter0}}" class="error-messages_product" ></span>
+                                <div>
+                                    <span id="productError_{{forloop.counter0}}" class="error-messages_product" ></span>
+                                </div>
                                 <select class=" productSelect" name="{{form.prefix}}-PProduct_pk"
                                     id="id_{{form.prefix}}-PProduct_pk">
                                     <option value="{{form.instance.PProduct_pk.PProduct_SKU}}">
@@ -159,18 +157,17 @@
                         product_ref_id: selectedId,  // Send the selected record ID
                     },
                     success: function (response) {
-                        // console.log(response.product_2_items_instances_unique)
-                        // console.log(response.product_2_items_instances_common)
                         const uniqueData = response.product_2_items_instances_unique;
                         const commonData = response.product_2_items_instances_common;
+
                         const table = document.getElementById('mainProductForm')
                         const commonTable = document.getElementById('myProduct')
                         const lastRowValue = commonTable.querySelector('.mainTable')
-                        const rows = table.querySelector('.mainTableList')
-                        // lastRowValue.innerHTML= "";
-                        // rows.innerHTML= "";
+                        const rows = table.querySelector('.mainTableList');
+                      
                         let lastDataRow = null;
                         let lastVisibleRow = null;
+
                         rows.querySelectorAll('tr').forEach(row => {
                             if (window.getComputedStyle(row).display !== 'none') {
                                 lastVisibleRow = row;
@@ -499,7 +496,7 @@
                     },
                     error: function (xhr, status, error) {
                         // Handle errors
-                        $('#responseMessage').html('<span class="text-danger">An error occurred: ' + xhr.responseText + '</span>');
+                        
                     }
                 });
             });
