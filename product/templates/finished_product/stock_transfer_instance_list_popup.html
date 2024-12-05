@@ -2,11 +2,18 @@
 {% load static %}
 {% block body %}
 <div class="mt-4">
-    <form action="">
+    <form method="POST">
         {% csrf_token %}
         <div class="mb-3">
+            {% if voucher_type == 'purchase' %}
             <h5 class="fw-bold">Purchase No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
+            {% elif voucher_type == 'transfer' %}
+            <h5 class="fw-bold">Transfer No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
+
+            {% endif %}
+        
         </div>
+
         
         <div class="row mb-4">
             <div class="col-lg-7">
@@ -18,7 +25,6 @@
                             <th>Quantity</th>
                             <th>Difference Qty</th>
                             <th>QC Recieved QTY</th>
-                            <!-- <th>Scan QTY</th> -->
                         </tr>
                     </thead>
                     <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
@@ -27,24 +33,23 @@
                         {% if form.instance.product_purchase_master.purchase_number %}
                     
                         <tr>
-                            <td><input type="text" class="productShadeCutting_Material_input " value="{{ form.instance.product_name.Product.Product_Name }}" readonly></td>
-                            <td><input type="number" class="productShadeCutting_Material_input productInwordSku" value="{{ form.instance.product_name.PProduct_SKU }}" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input quantityTotal" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
-                            <td> <input type="number" class="productorderrawqty-input productInwordDiffernceQty" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input productInwordRecivedQty" value="{{form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
-                            <!-- <td><button type="button" class="item-btn"><a style="text-decoration:none; color: white" href="{% url 'finished-product-to-bin' form.instance.id 'purchase' %}">click</a></button></td> -->
+                            <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-Product_Name" id="id_{{form.prefix}}-Product_Name" value="{{ form.instance.product_name.Product.Product_Name }}" readonly></td>
+                            <td><input type="number" class="productShadeCutting_Material_input productInwordSku" name="{{form.prefix}}-product_sku" id="id_{{form.prefix}}-product_sku" value="{{ form.instance.product_name.PProduct_SKU }}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input quantityTotal"  name="{{form.prefix}}-quantity_total" id="id_{{form.prefix}}-quantity_total" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
+                            <td> <input type="number" class="productorderrawqty-input productInwordDiffernceQty" name="{{form.prefix}}-diffrence_qty" id="id_{{form.prefix}}-diffrence_qty" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input productInwordRecivedQty" name="{{form.prefix}}-qc_recieved_qty" id="id_{{form.prefix}}-qc_recieved_qty" value="{{form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
                         </tr>
                     
                         {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
                         <tr>
-                            <td><input type="text" class="productShadeCutting_Material_input" value="{{ form.instance.product.Product.Product_Name }}" readonly></td>
+                            <td><input type="text" name="{{form.prefix}}-stock_transfer_name" class="productShadeCutting_Material_input" id="id_{{form.prefix}}-stock_transfer_name" value="{{ form.instance.product.Product.Product_Name }}" readonly></td>
 
-                            <td><input type="number" class="productShadeCutting_Material_input productInwordSku" value="{{ form.instance.product.PProduct_SKU }}" readonly></td>
-                            <td><input type="number" class="productorderrawqty-input quantityTotal" value="{{ form.instance.product_quantity_transfer |default_if_none:0 }}" readonly></td>
+                            <td><input type="number" class="productShadeCutting_Material_input productInwordSku" name="{{form.prefix}}-stock_transfer_sku" id="id_{{form.prefix}}-stock_transfer_sku" value="{{ form.instance.product.PProduct_SKU }}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input quantityTotal" name="{{form.prefix}}-product_quantity_transfer" id="id_{{form.prefix}}-product_quantity_transfer" value="{{ form.instance.product_quantity_transfer |default_if_none:0 }}" readonly></td>
 
-                            <td><input type="number" class="productorderrawqty-input productInwordDiffernceQty" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input productInwordDiffernceQty" name="{{form.prefix}}-diffrence_qty" id="id_{{form.prefix}}-diffrence_qty" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
 
-                            <td><input type="number" class="productorderrawqty-input productInwordRecivedQty" value="{{ form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
+                            <td><input type="number" class="productorderrawqty-input productInwordRecivedQty" name="{{form.prefix}}-qc_recieved_qty" id="id_{{form.prefix}}-qc_recieved_qty" value="{{ form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
 
                         </tr>
                     
@@ -212,10 +217,23 @@
             const productImgPreview = document.getElementById('productImgPreview');
           
             productImgPreview.src = response.product_image;
+            const binSelect = document.getElementById('id_bin_Name');
+            const bindata = response.bin_to_dict;
+            console.log(bindata)
+         
+            Object.entries(bindata).forEach(([key, value]) => {
+               
+                const option = document.createElement('option');
+                option.value = value.bin_id; 
+                option.textContent = value.bin_name + '-'+value.bin_size; 
+        
+                binSelect.appendChild(option);
+            });
             console.log(response.product_name)
             console.log(response.product_sku)
             console.log(response.product_color)
             console.log(response.product_image)
+            console.log(response.bin_to_dict)
             return response; // Return the AJAX response
             
         }

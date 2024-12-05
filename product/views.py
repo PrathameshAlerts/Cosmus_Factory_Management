@@ -6989,20 +6989,29 @@ def product_transfer_to_warehouse_ajax(request):
 
     
 
-def stock_transfer_instance_list_popup(request,id):
+def stock_transfer_instance_list_popup(request,id,voucher_type):
 
     try:
-        stock_transfer_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=id)
-        purchase_number = stock_transfer_instance.voucher_no
-        formset = stock_transfer_instance_formset_only_for_update(instance=stock_transfer_instance)
+        if voucher_type == 'transfer':
+            stock_transfer_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=id)
 
-    except Finished_goods_Stock_TransferMaster.DoesNotExist:
-        product_purchase_voucher_items_instance = product_purchase_voucher_master.objects.get(pk=id)
-        purchase_number = product_purchase_voucher_items_instance.purchase_number
-        formset = product_purchase_voucher_items_instance_formset_only_for_update(instance=product_purchase_voucher_items_instance)
+            purchase_number = stock_transfer_instance.voucher_no
+            formset = stock_transfer_instance_formset_only_for_update(instance=stock_transfer_instance)
+
+        elif voucher_type == 'purchase':
+            product_purchase_voucher_items_instance = product_purchase_voucher_master.objects.get(pk=id)
+
+            purchase_number = product_purchase_voucher_items_instance.purchase_number
+            formset = product_purchase_voucher_items_instance_formset_only_for_update(instance=product_purchase_voucher_items_instance)
+
+    except Exception as e:
+        print(e)
+
+    print(request.POST)
 
 
-    return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset,'purchase_number':purchase_number})
+    return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset,
+                                                'purchase_number':purchase_number,'voucher_type': voucher_type})
 
 
 
@@ -7083,10 +7092,22 @@ def process_serial_no(request):
                 
 
                 flatterned_bins_related_to_product_list = list(chain.from_iterable(bins_related_to_product))
-                
-            
+                print(flatterned_bins_related_to_product_list)
+
+                bin_to_dict = []
+
+                for qs in flatterned_bins_related_to_product_list:
+                    dict_to_append = {
+                        'bin_id' : qs.id,
+                        'bin_name' : qs.bin_name,
+                        'bin_size' :qs.product_size_in_bin}
+                    bin_to_dict.append(dict_to_append)
+
+                print(bin_to_dict)
             return JsonResponse({'product_name':product_name, 'product_sku': product_sku,
-                                'product_color':product_color, 'product_image':product_image, 'message': f'Serial No {serial_no} processed successfully.'})
+                                'bin_to_dict':bin_to_dict,
+                                'product_color' : product_color,'product_image':product_image, 
+                                'message': f'Serial No {serial_no} processed successfully.'})
         else:
             return JsonResponse({'message': 'Invalid Serial No.'}, status=400)
         

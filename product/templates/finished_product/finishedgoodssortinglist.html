@@ -26,6 +26,7 @@
                     {% if records.purchase_number %}
                     
                     <tr>
+                        <input type="hidden" value="purchase" class="recordtype">
                         <input type="hidden" value="{{records.id}}" class="recordId">
                         <td><span class="stockValue">Purchase</span>/{{records.purchase_number}}</td>
                         <td>{{records.created_date}}</td>
@@ -37,11 +38,12 @@
                         <td>{{records.total_qc_qty}}</td>
                         <td>{{records.total_diff_qty}}</td>
                         <td>{{records.actions}}</td>
-                        <td>{{records.}}</td>
+                        <td></td>
                     </tr>
                     
                     {% elif records.voucher_no %}
                     <tr>
+                        <input type="hidden" value="transfer" class="recordtype">
                         <input type="hidden" value="{{records.id}}" class="recordId">
                         <td><span class="stockValue">Transfer</span>/{{records.voucher_no}}</td>
                         <td>{{records.created_date}}</td>
@@ -79,11 +81,12 @@
                 row.addEventListener('click',function(event){
                     event.preventDefault();
                     var recordId = parseInt(row.querySelector('.recordId').value)
+                    var recordtype = row.querySelector('.recordtype').value
                     var stockValues = row.querySelector('.stockValue').textContent;
                     console.log(recordId)
                     console.log(stockValues,'stockValues')
                    
-                    window.location.href = '/stocktransferinstancelistpopup/'+  recordId;
+                    window.location.href = '/stocktransferinstancelistpopup/'+  recordId +'/'+ recordtype;
                     
                 })
             })
