@@ -87,6 +87,7 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
             
             if created:
                 qty_to_deduct = 0
+
             else:
                 qty_to_deduct = godown_quantity_to_delete.quantity
 
@@ -118,9 +119,7 @@ def handle_invoice_items_godowns_delete(sender, instance, **kwargs):
             qty_to_deduct = 0
         else:
             qty_to_deduct = godown_quantity_to_delete.quantity
-
         godown_quantity_to_delete.quantity = qty_to_deduct - quantity
-
         godown_quantity_to_delete.save()
         
 
@@ -132,7 +131,7 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
     ledger_type = instance.ledger_type
     grand_total = instance.grand_total
     
-    
+
     if created:
         instance_create = account_credit_debit_master_table.objects.create(voucher_no = purchase_voucher,ledger=purchase_ledger,voucher_type = ledger_type, particulars= 'Raw Material', debit = grand_total, credit = 0)
         logger.info(f"Purchase Voucher Created with purchase voucher no - {purchase_voucher}, ledger no - {purchase_ledger.name}, Total - {grand_total}")

@@ -2,11 +2,18 @@
 {% load static %}
 {% block body %}
 <div class="mt-4">
-    <form action="">
+    <form method="POST">
         {% csrf_token %}
         <div class="mb-3">
+            {% if voucher_type == 'purchase' %}
             <h5 class="fw-bold">Purchase No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
+            {% elif voucher_type == 'transfer' %}
+            <h5 class="fw-bold">Transfer No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
+
+            {% endif %}
+        
         </div>
+
         
         <div class="row mb-4">
             <div class="col-lg-7">
@@ -18,7 +25,7 @@
                             <th>Quantity</th>
                             <th>Difference Qty</th>
                             <th>QC Recieved QTY</th>
-                            <th>Scan QTY</th>
+                            <!-- <th>Scan QTY</th> -->
                         </tr>
                     </thead>
                     <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
@@ -32,7 +39,7 @@
                             <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
                             <td> <input type="number" class="productorderrawqty-input" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" value="{{form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
-                            <td><button type="button" class="item-btn"><a style="text-decoration:none; color: white" href="{% url 'finished-product-to-bin' form.instance.id 'purchase' %}">click</a></button></td>
+                            <!-- <td><button type="button" class="item-btn"><a style="text-decoration:none; color: white" href="{% url 'finished-product-to-bin' form.instance.id 'purchase' %}">click</a></button></td> -->
                         </tr>
                     
                         {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
@@ -41,7 +48,7 @@
                             <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.product_quantity_transfer |default_if_none:0 }}" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
                             <td><input type="number" class="productorderrawqty-input" value="{{ form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
-                            <td><button type="button" class="item-btn"><a style="text-decoration:none; color: white" href="{% url 'finished-product-to-bin' form.instance.id 'transfer' %}">click</a></button></td>
+                            <!-- <td><button type="button" class="item-btn"><a style="text-decoration:none; color: white" href="{% url 'finished-product-to-bin' form.instance.id 'transfer' %}">click</a></button></td> -->
                         </tr>
                     
                         {% endif %}
@@ -159,12 +166,24 @@
             productColor.value = response.product_color;
             const productIMG = document.getElementById('productImg')
             const productImgPreview = document.getElementById('productImgPreview');
-            //productIMG.href = response.product_image;
             productImgPreview.src = response.product_image;
+            const binSelect = document.getElementById('id_bin_Name');
+            const bindata = response.bin_to_dict;
+            console.log(bindata)
+         
+            Object.entries(bindata).forEach(([key, value]) => {
+               
+                const option = document.createElement('option');
+                option.value = value.bin_id; 
+                option.textContent = value.bin_name + '-'+value.bin_size; 
+        
+                binSelect.appendChild(option);
+            });
             console.log(response.product_name)
             console.log(response.product_sku)
             console.log(response.product_color)
             console.log(response.product_image)
+            console.log(response.bin_to_dict)
             return response; // Return the AJAX response
             
         }
