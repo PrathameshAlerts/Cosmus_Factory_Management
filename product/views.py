@@ -2,6 +2,7 @@ from collections import defaultdict
 import datetime
 import decimal
 from io import BytesIO
+from itertools import chain
 from operator import attrgetter, itemgetter
 import os
 import uuid
@@ -797,8 +798,6 @@ def product2subcategoryajax(request):
 
 
 
-
-
 @login_required(login_url='login')
 def item_create(request):
 
@@ -1376,7 +1375,6 @@ def unit_name_create_update(request,pk=None):
 
     if unit_name_search != '':
         queryset = Unit_Name_Create.objects.filter(unit_name__icontains = unit_name_search)
-
 
     if pk:
         unit_name_pk = get_object_or_404(Unit_Name_Create,pk=pk)
@@ -2950,7 +2948,6 @@ def product2item(request,product_refrence_id):
         else:
             formset_common = Product2CommonItemFormSet(queryset=distinct_product2item_commmon_instances,prefix='product2itemcommonformset')
 
-        print(formset_common)
 
         
         clone_ajax_valid = False
@@ -7005,8 +7002,6 @@ def stock_transfer_instance_list_popup(request,id):
         formset = product_purchase_voucher_items_instance_formset_only_for_update(instance=product_purchase_voucher_items_instance)
 
 
-
-
     return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset,'purchase_number':purchase_number})
 
 
@@ -7056,7 +7051,7 @@ def product_to_bin(request,pk,sent_from):
 def process_serial_no(request):
     if request.method == 'POST':
         serial_no = request.POST.get('serialNo')
-        
+        print(serial_no)
         if serial_no:  
 
             url = f'https://www.cosmusbags.com/cosmus/qrcode.php?wc={serial_no}'
@@ -7066,11 +7061,36 @@ def process_serial_no(request):
             
             if response_data['response_code'] == 200 and response_data['response_desc'] == 'success':
                 product_scanned_sku = response_data['sku']
-                print('product_scanned_sku',product_scanned_sku)
 
-            return JsonResponse({'message': f'Serial No {serial_no} processed successfully.'})
+                product_instance = get_object_or_404(PProduct_Creation,PProduct_SKU=product_scanned_sku)
+                
+                product_name = product_instance.Product.Product_Name if product_instance.Product.Product_Name else None
+                product_sku = product_instance.PProduct_SKU
+                product_color = product_instance.PProduct_color.color_name if  product_instance.PProduct_color else None
+                product_image = product_instance.PProduct_image.url if product_instance.PProduct_image else None
+                
+                
+                product_sub_cats = product_instance.Product.product_cats.all()
+                sub_cats_all = [x.SubCategory_id for x in product_sub_cats]
+
+                bins_related_to_product = []
+                for records in sub_cats_all:
+                    product_suggested_bins = finished_product_warehouse_bin.objects.filter(sub_catergory_id = records)
+                    bins_related_to_product.append(product_suggested_bins)
+                
+                
+                
+                
+
+                flatterned_bins_related_to_product_list = list(chain.from_iterable(bins_related_to_product))
+                
+            
+            return JsonResponse({'product_name':product_name, 'product_sku': product_sku,
+                                'product_color':product_color, 'product_image':product_image, 'message': f'Serial No {serial_no} processed successfully.'})
         else:
             return JsonResponse({'message': 'Invalid Serial No.'}, status=400)
+        
+
 
 
 

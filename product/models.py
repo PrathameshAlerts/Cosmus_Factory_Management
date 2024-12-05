@@ -59,9 +59,9 @@ class SubCategory(models.Model):
 
 
 class Product2SubCategory(models.Model):
-    c_user = models.ForeignKey(CustomUserModel, on_delete=models.PROTECT, null=True, blank=True)
-    Product_id = models.ForeignKey('Product', on_delete=models.PROTECT, related_name='product_cats')
-    SubCategory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='subcategories')
+    c_user = models.ForeignKey(CustomUserModel, on_delete = models.PROTECT, null=True, blank=True)
+    Product_id = models.ForeignKey('Product', on_delete = models.PROTECT, related_name='product_cats')
+    SubCategory_id = models.ForeignKey(SubCategory, on_delete = models.PROTECT, related_name='subcategories')
 
     
     
@@ -194,7 +194,7 @@ class Product(models.Model):
     Model_Name = models.CharField(unique=True,max_length=255, blank = True ,null =True)
     Product_Brand = models.CharField(max_length=200, choices= BRAND_CHOICES , blank = True, null = True)
     Product_Status= models.CharField(max_length=100, choices= PRODUCT_STATUS,  blank = True, null = True)
-    Product_Channel= MultiSelectField(max_length=100, choices = PRODUCT_CHANNEL , blank = True)
+    Product_Channel = MultiSelectField(max_length=100, choices = PRODUCT_CHANNEL , blank = True)
     Product_Refrence_ID = models.PositiveBigIntegerField(unique = True, blank = False,null =False)
     Product_Cost_price = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank = True, null = True)
     Product_MRP = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT, blank = True, null = True)
@@ -1028,9 +1028,13 @@ class finished_product_warehouse_bin(models.Model):
     sub_catergory_id = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='sub_categories', null=True, blank=True)
     product_size_in_bin = models.IntegerField(default=0)
     
+
+
+
+
 class Product_warehouse_quantity_through_table(models.Model):
     warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT)
-    product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
+    product = models.ForeignKey(PProduct_Creation, on_delete = models.PROTECT)
     quantity =  models.BigIntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
@@ -1098,6 +1102,7 @@ class Finished_goods_transfer_records(models.Model):
     qc_recieved_qty = models.IntegerField(default=0)
     diffrence_qty = models.IntegerField(null=True, blank=True)
 
+
 class finishedgoodsbinallocation(models.Model):
     related_purchase_item = models.ForeignKey(product_purchase_voucher_items, on_delete=models.PROTECT, null=True, blank=True)
     related_transfer_record = models.ForeignKey(Finished_goods_transfer_records, on_delete=models.PROTECT, null=True, blank=True)
@@ -1107,13 +1112,5 @@ class finishedgoodsbinallocation(models.Model):
     source_type = models.CharField(max_length=20, choices=[('purchase', 'purchase'), ('transfer', 'transfer')])
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-
-
-
-
-
-
-
-
 
 
