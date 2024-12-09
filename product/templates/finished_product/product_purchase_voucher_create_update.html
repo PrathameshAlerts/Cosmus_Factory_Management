@@ -22,7 +22,11 @@
                 <span id="SupplierError" class="error-messages"></span>
                 <div class="d-flex ms-2">
                     <label for="id_supplier_invoice_number" class="" >Supplier No :</label>
+                    {% if product_pur_vouch_form.instance.id %}
+                    <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{product_pur_vouch_form.instance.supplier_invoice_number}}" maxlength="255" readonly>
+                    {% elif not product_pur_vouch_form.instance.id %}
                     <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{product_pur_vouch_form.instance.supplier_invoice_number}}" maxlength="255" required  aria-required="true">
+                    {% endif %}
                 </div>
                
                 <div class="d-flex ms-3">

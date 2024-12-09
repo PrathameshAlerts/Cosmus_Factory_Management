@@ -1439,7 +1439,7 @@ function inputCheck(){
 
             const closestRow = input.closest('tr');
             const allInputsInRow = closestRow.querySelector('[name^="item_name_"]').value;
-            console.log('allInputsInRow',allInputsInRow)
+       
             if(productInvoiceId === ''){
                 if(allInputsInRow === ''){
                     if (event.key === "Tab") {

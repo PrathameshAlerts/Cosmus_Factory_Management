@@ -155,6 +155,7 @@
                       itemNameElement.id = `id_finished_goods_transfer_records_set-${newFormCount}-products`;
                       itemNameElement.name = `finished_goods_transfer_records_set-${newFormCount}-products`;
                       itemNameElement.value = "";
+                      itemNameElement.style.readonly ="false";
   
                       const selectElement = newTable.querySelector('.stock_input_name[name^="select_product_name_"]');
                       selectElement.id = `select_product_name_${newFormCount}`;
@@ -191,6 +192,9 @@
   
                       mainTable.appendChild(newTable);
                       deleteRow();
+                    editStockTransferProduct()
+                
+                    
                   } else {
                       console.error("No visible rows found to clone.");
                   }
@@ -601,8 +605,8 @@
               })  
                      
   
-                      var index = 0; // Declare index outside of the event listener
-                      var indexbool = true;
+                var index = 0; // Declare index outside of the event listener
+                var indexbool = true;
   
                 $(document).on('keydown', 'input[name$="-products"]', function(event) {
                       const $inputField = $(this);
@@ -723,38 +727,104 @@
                       if (event.key === 'Tab' && enterPressed) {
                       enterPressed = false; // Reset Enter key handling
                       return true; // Allow default Tab behavior
-                  }
+                    }
               
-                });
-            
-          }
-   
-
-      })
+                }); 
+            }
+        })
 
   </script>
   <script>
     function editStockTransferProduct() {
+        
         var forms = document.getElementById('id_finished_goods_transfer_records_set-TOTAL_FORMS').value;
         for(var i=0; i<forms; i++){
-            var stockId = document.getElementById('id_finished_goods_transfer_records_set-' + i +'-id').value;
+            var stockId = document.getElementById('id_finished_goods_transfer_records_set-0-id').value || '';
             console.log(stockId)
             if(stockId !== ""){
                 var vouchareNo = document.getElementById('id_voucher_no');
                 var source_warehouse = document.getElementById('id_source_warehouse');
+                var destination_warehouse = document.getElementById('id_destination_warehouse');
 
                 vouchareNo.readOnly = true;
-                source_warehouse.readOnly = true; 
+                // source_warehouse.disabled = true;
+                // source_warehouse.style.color = 'black'; 
+                // destination_warehouse .disabled = true;
+                // destination_warehouse .style.color = 'black';
                 
                 var StockProductName = document.getElementById('id_finished_goods_transfer_records_set-'+i+'-products');
-                StockProductName.readOnly = true;
                 var stockQty = document.getElementById('id_finished_goods_transfer_records_set-'+i+'-product_quantity_transfer');
-                stockQty.readOnly = true;
+                 var stockName = StockProductName.value;
+                 console.log('stockName',stockName)
+                 if(stockName !== ""){
+                    StockProductName.readOnly = true;
+                    stockQty.readOnly = true;
+                 }else{
+                    StockProductName.readOnly = false;
+                    stockQty.readOnly = false;
+                 }
+                
+                
+               
             }
         }
       
     }
-    editStockTransferProduct()
+
+//     function inputCheck(){
+
+//         const itemNameInputsid = document.querySelectorAll('[name$="-products"]');
+//         const productInvoiceId = document.getElementById('id_finished_goods_transfer_records_set-0-id').value;
+       
+//         // Loop through each input and add keydown event listener
+//         itemNameInputsid.forEach((input, index) => {
+//         input.addEventListener("keydown", function (event) {
+
+//             const closestRow = input.closest('tr');
+//             const allInputsInRow = closestRow.querySelector('[name$="-products"]').value;
+//             console.log('allInputsInRow',allInputsInRow)
+//             if(productInvoiceId === ''){
+//                 if(allInputsInRow === ''){
+//                     if (event.key === "Tab") {
+//                 event.preventDefault(); // Prevent default tab behavior
+
+//                 // Check if the current input has a value
+//                 if (input.value.trim() !== "") {
+//                     // If not the last input, move focus to the next row's item name
+//                     if (itemNameInputsid[index + 1]) {
+//                         itemNameInputsid[index + 1].focus();
+//                     }
+//                 } else {
+//                     // If current input is empty, refocus on it
+//                     input.focus();
+//                 }
+//             }
+//             if (event.key === 'Enter') {
+//                 event.preventDefault(); // Prevent default Enter key behavior
+
+//                 // Find the current <td> containing this input
+//                 const currentTd = this.closest('td');
+//                     console.log('currentId',currentTd)
+//                 // Find the next <td> sibling
+//                 if (currentTd) {
+//                     const nextTd = currentTd.nextElementSibling;
+
+//                     // Check if next <td> exists and contains an input
+//                     if (nextTd) {
+//                         const nextInput = nextTd.querySelector('input');
+//                         if (nextInput) {
+//                             nextInput.focus(); // Move focus to the next input
+//                         }
+//                     }
+//                 }
+//             }
+//                 }
+//             }
+            
+//         });
+//         });
+//         }
+// inputCheck()
   </script>
 
 {% endblock body %}
