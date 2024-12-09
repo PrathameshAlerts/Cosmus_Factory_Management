@@ -41,27 +41,24 @@
                 <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ms-3">
                     <label for="id_party_name" class="me-3" >Party A/C Name :</label>
-                    {% if master_form.instance.id %}
-                    <select class="product2Select text-dark" name="party_name" required id="id_party_name" disabled>
-                      
+              
+                    <select class="product2Select text-dark" name="party_name" required id="id_party_name">
+                        {% if master_form.instance.id %}
                         {% for x in party_names %}
                         <option value="{{x.id}}">{{x.name}}</option>
                         {% endfor %}
-            
-                      
-                    </select>
-                    {% elif not master_form.instance.id %}
-                    <select class="product2Select" name="party_name" required id="id_party_name">
                         {% elif not master_form.instance.id %}
                         <option value=""></option>
                         {% for x in party_names %}
                         <option value="{{x.id}}">{{x.name}}</option>
                         {% endfor %}
-                      
+                        {% endif%}
                     </select>
-                    {% endif %}
-                    <button type="button" class="itemCreate_btn popup-trigger" onclick="openPurchasePartyPopup()">+</button>
+                
+                  
                 </div>
+                    <button type="button" class="itemCreate_btn popup-trigger" onclick="openPurchasePartyPopup()">+</button>
+             
                 <div class="d-flex ms-3">
                     <label for="id_GST_number" class="me-2" >Party GST No :</label>
                     <input type="text" class="item-select" name="GST_number" id ="id_GST_number"  value="{% if master_form.instance.id %}{{ master_form.instance.party_name.Gst_no }}{% endif %}" maxlength="15" readonly required>
@@ -1345,7 +1342,6 @@ function getGstNo() {
 </script>
 <script>
     const form = document.getElementById("newForm");
-    const submitButton = document.getElementById("parentFormClick");
     const supplier_invoice_number = document.getElementById('')
     // Prevent Enter key from submitting the form
     form.addEventListener("keydown", function(event) {
@@ -1365,7 +1361,7 @@ function getGstNo() {
         let isValid = true;
         // Check all item name inputs
         itemNameInputs.forEach(input => {
-            console.log('ew',typeof(input.value.trim()))
+            console.log('ew',input.value)
             if (!input.value.trim()) {
                 isValid = false;
             }
@@ -1377,19 +1373,19 @@ function getGstNo() {
             
         });
 
-        // Check all item shade selects
-        itemShadeSelects.forEach(select => {
-            console.log('sdasds',typeof(select.value.trim()))
-            if (!select.value.trim()) {
-                isValid = false;
+        // // Check all item shade selects
+        // itemShadeSelects.forEach(select => {
+        //     console.log('sdasds',select.value.trim())
+        //     if (!select.value.trim()) {
+        //         isValid = false;
              
-            }
-            if(select.value.trim() == ""){
-                submitButton.disabled = true;
-            }else{
-                submitButton.disabled = false; 
-            }
-        });
+        //     }
+        //     if(select.value.trim() == ""){
+        //         submitButton.disabled = true;
+        //     }else{
+        //         submitButton.disabled = false; 
+        //     }
+        // });
 
     }
     
@@ -1409,13 +1405,13 @@ function getGstNo() {
         }
     });
 });
-    itemNameInputs.forEach(input => {
-        input.addEventListener("input", validateInputs);
-    });
+    // itemNameInputs.forEach(input => {
+    //     input.addEventListener("input", validateInputs);
+    // });
 
-    itemShadeSelects.forEach(select => {
-        select.addEventListener("change", validateInputs);
-    });
+    // itemShadeSelects.forEach(select => {
+    //     select.addEventListener("change", validateInputs);
+    // });
     submitButton.addEventListener('click',function(){
         validateInputs()
     })
@@ -1427,13 +1423,26 @@ function getGstNo() {
 
 
 function inputCheck(){
-    const closestRow = document.querySelector('tr')
-    console.log(closestRow)
+
         const itemNameInputsid = document.querySelectorAll('[name^="item_name_"]');
+        const productInvoiceId = document.getElementById('id_purchase_voucher_items_set-0-id').value;
+        const productPartyName = document.getElementById('id_party_name');
+        console.log('product',productInvoiceId)
+        if(productInvoiceId !== ''){
+            productPartyName.disabled = true;
+        }else{
+            productPartyName.disabled = false;
+        }
     // Loop through each input and add keydown event listener
     itemNameInputsid.forEach((input, index) => {
         input.addEventListener("keydown", function (event) {
-            if (event.key === "Tab") {
+
+            const closestRow = input.closest('tr');
+            const allInputsInRow = closestRow.querySelector('[name^="item_name_"]').value;
+            console.log('allInputsInRow',allInputsInRow)
+            if(productInvoiceId === ''){
+                if(allInputsInRow === ''){
+                    if (event.key === "Tab") {
                 event.preventDefault(); // Prevent default tab behavior
 
                 // Check if the current input has a value
@@ -1466,6 +1475,9 @@ function inputCheck(){
                     }
                 }
             }
+                }
+            }
+            
         });
     });
     }
