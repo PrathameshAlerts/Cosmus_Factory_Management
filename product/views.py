@@ -2901,6 +2901,8 @@ def product2item(request,product_refrence_id):
         
         items = Item_Creation.objects.all().order_by('item_name')
         product_refrence_no = product_refrence_id
+        model_name = Product.objects.get(Product_Refrence_ID=product_refrence_id)
+
         Products_all = PProduct_Creation.objects.filter(Product__Product_Refrence_ID=product_refrence_id).select_related('PProduct_color')
 
         if not Products_all.exists():
@@ -3120,7 +3122,7 @@ def product2item(request,product_refrence_id):
 
         return render(request,'production/product2itemsetproduction.html', {'formset_single':formset_single,'formset_common':formset_common,
                                                                 'Products_all':Products_all,'all_ref_ids':all_ref_ids,'clone_ajax_valid':clone_ajax_valid,
-                                                                'items':items,'product_refrence_no': product_refrence_no})
+                                                                'items':items,'product_refrence_no': product_refrence_no,'model_name':model_name})
 
     except Exception as e:
         logger.error(f'Error with forms - {product_refrence_id } - {e}')
@@ -3130,7 +3132,8 @@ def product2item(request,product_refrence_id):
             'formset_common': formset_common,
             'Products_all': Products_all,
             'items': items,
-            'product_refrence_no': product_refrence_no
+            'product_refrence_no': product_refrence_no,
+            'model_name':model_name
         })
 
 

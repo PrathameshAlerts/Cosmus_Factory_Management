@@ -7,8 +7,8 @@
         
         {% csrf_token %}
         <div class="">
-            <div class="d-flex mb-3">
                 <span id="purchaseError" class="error-messages"></span>
+            <div class="d-flex mb-3">
                 <div class="d-flex ">
                     <label for="id_purchase_number"  class="me-3">Purchase No :</label>
                     {% if master_form.instance.id %}
@@ -20,7 +20,11 @@
                 <span id="SupplierError" class="error-messages"></span>
                 <div class="d-flex ms-3">
                     <label for="id_supplier_invoice_number" class="item-form" >Supplier Invoice No :</label>
+                    {% if master_form.instance.id %}
+                    <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{master_form.instance.supplier_invoice_number}}" maxlength="255" readonly>
+                    {% elif not master_form.instance.id %}
                     <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{master_form.instance.supplier_invoice_number}}" maxlength="255" required  aria-required="true">
+                    {% endif %}
                 </div>
                
                 <div class="d-flex ms-3">
@@ -37,7 +41,8 @@
                 <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ms-3">
                     <label for="id_party_name" class="me-3" >Party A/C Name :</label>
-                    <select class="product2Select" name="party_name" required id="id_party_name">
+              
+                    <select class="product2Select text-dark" name="party_name" required id="id_party_name">
                         {% if master_form.instance.id %}
                         {% for x in party_names %}
                         <option value="{{x.id}}">{{x.name}}</option>
@@ -47,10 +52,13 @@
                         {% for x in party_names %}
                         <option value="{{x.id}}">{{x.name}}</option>
                         {% endfor %}
-                        {% endif %}
+                        {% endif%}
                     </select>
-                    <button type="button" class="itemCreate_btn popup-trigger" onclick="openPurchasePartyPopup()">+</button>
+                
+                  
                 </div>
+                    <button type="button" class="itemCreate_btn popup-trigger" onclick="openPurchasePartyPopup()">+</button>
+             
                 <div class="d-flex ms-3">
                     <label for="id_GST_number" class="me-2" >Party GST No :</label>
                     <input type="text" class="item-select" name="GST_number" id ="id_GST_number"  value="{% if master_form.instance.id %}{{ master_form.instance.party_name.Gst_no }}{% endif %}" maxlength="15" readonly required>
@@ -293,10 +301,13 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
         $('#id_purchase_number').on('focusout',function(){
             var purchase_number = $(this).val();
            console.log(purchase_number)
+           var purchaseId = $('#id_purchase_voucher_items_set-0-id').val();
+           console.log('purchaseId',purchaseId)
             var purchase = $("#id_purchase_number");
             var errorElement = $('#purchaseError'); // The error message element
             var submitForm = $('#parentFormClick');
-            $.ajax({
+            if(purchaseId === ''){
+                $.ajax({
                 url: '/uniquevalidcheckajax/',
                 method: 'GET',
                 data: {
@@ -325,6 +336,8 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
                 }
 
             })
+            }
+            
         })
    
 //this ajax is for gst no 
@@ -399,8 +412,6 @@ function populateDropdownLedger(items, dropdownSelector, valueKey, defaultText) 
     }
 
 </script>
-
-
  <script>
 // this code contain the popup window for on submit button send to to parent window 
 // this function retrive the data and compare with same unquie id and update the table data
@@ -531,7 +542,7 @@ function getGstNo() {
                             return string.replace(/[.*+?^${}()|[\]\\,]/g, '\\$&');
                         }
                         searchedItemNameDict = response.searched_item_name_dict;
-                        console.log('search',response.searched_item_name_dict)
+                     
                         var searchQuery = nameValue.toLowerCase();
                         var escapedSearchQuery = escapeRegExp(searchQuery); // Escape special characters in search query
                         var regex = new RegExp('(' + escapedSearchQuery + ')', 'gi');
@@ -541,7 +552,7 @@ function getGstNo() {
                         suggestionsContainer.empty();
 
                         $.each(filteredOptions, function(index, [key, value]) {
-                            console.log('key',key)
+                         
                             let highlightedText = value;
                             let colorStyle = '';
                             if (searchQuery) {
@@ -621,7 +632,6 @@ function getGstNo() {
 
         if (item_value !== undefined) {
         var selectedValue = searchedItemNameDict[item_value];
-        console.log(selectedValue)
         var namevalueCheck = selectedValue.match(/[a-zA-Z\s().0-9]+/g).join('');
 
         var numberValue = selectedValue.match(/-?\d+(\.\d+)?/g)[0];
@@ -894,17 +904,6 @@ function getGstNo() {
         
             }
 
-            //     // Handle Tab key press to trigger the popup logic
-            // if (event.key === 'Tab') {
-            //     const selectedShade = $dropdown.val();
-            //     const uniqueIdValue = $dropdown.closest('tr').find('input[name^="item_unique_id_"]').val();
-            //     const itemShades = $dropdown.closest('tr').find('[name^="input_item_shade_"]');
-
-            //     $dropdown.attr('disabled', 'disabled'); // Temporarily disable dropdown to prevent conflicts
-            //     itemShades.hide(); // Hide irrelevant fields if any
-            //     handlePopup(selectedShade, uniqueIdValue); // Call the function to handle the popup logic
-            //     $dropdown.removeAttr('disabled'); // Re-enable dropdown after action
-            // }
         });
 
     // Handle the change event for dropdown selection
@@ -1140,7 +1139,7 @@ function getGstNo() {
                         lastVisibleRow = row;
                     }
             });
-            console.log(lastVisibleRow)
+
             if (lastVisibleRow) {
                 const formCountInput = document.getElementById("id_purchase_voucher_items_set-TOTAL_FORMS");
                
@@ -1343,7 +1342,6 @@ function getGstNo() {
 </script>
 <script>
     const form = document.getElementById("newForm");
-    const submitButton = document.getElementById("parentFormClick");
     const supplier_invoice_number = document.getElementById('')
     // Prevent Enter key from submitting the form
     form.addEventListener("keydown", function(event) {
@@ -1363,7 +1361,7 @@ function getGstNo() {
         let isValid = true;
         // Check all item name inputs
         itemNameInputs.forEach(input => {
-            console.log('ew',typeof(input.value.trim()))
+            console.log('ew',input.value)
             if (!input.value.trim()) {
                 isValid = false;
             }
@@ -1375,19 +1373,19 @@ function getGstNo() {
             
         });
 
-        // Check all item shade selects
-        itemShadeSelects.forEach(select => {
-            console.log('sdasds',typeof(select.value.trim()))
-            if (!select.value.trim()) {
-                isValid = false;
+        // // Check all item shade selects
+        // itemShadeSelects.forEach(select => {
+        //     console.log('sdasds',select.value.trim())
+        //     if (!select.value.trim()) {
+        //         isValid = false;
              
-            }
-            if(select.value.trim() == ""){
-                submitButton.disabled = true;
-            }else{
-                submitButton.disabled = false; 
-            }
-        });
+        //     }
+        //     if(select.value.trim() == ""){
+        //         submitButton.disabled = true;
+        //     }else{
+        //         submitButton.disabled = false; 
+        //     }
+        // });
 
     }
     
@@ -1407,15 +1405,14 @@ function getGstNo() {
         }
     });
 });
-    itemNameInputs.forEach(input => {
-        input.addEventListener("input", validateInputs);
-    });
+    // itemNameInputs.forEach(input => {
+    //     input.addEventListener("input", validateInputs);
+    // });
 
-    itemShadeSelects.forEach(select => {
-        select.addEventListener("change", validateInputs);
-    });
+    // itemShadeSelects.forEach(select => {
+    //     select.addEventListener("change", validateInputs);
+    // });
     submitButton.addEventListener('click',function(){
-        console.log('tesssssssttt')
         validateInputs()
     })
  
@@ -1426,11 +1423,26 @@ function getGstNo() {
 
 
 function inputCheck(){
+
         const itemNameInputsid = document.querySelectorAll('[name^="item_name_"]');
+        const productInvoiceId = document.getElementById('id_purchase_voucher_items_set-0-id').value;
+        const productPartyName = document.getElementById('id_party_name');
+        console.log('product',productInvoiceId)
+        if(productInvoiceId !== ''){
+            productPartyName.disabled = true;
+        }else{
+            productPartyName.disabled = false;
+        }
     // Loop through each input and add keydown event listener
     itemNameInputsid.forEach((input, index) => {
         input.addEventListener("keydown", function (event) {
-            if (event.key === "Tab") {
+
+            const closestRow = input.closest('tr');
+            const allInputsInRow = closestRow.querySelector('[name^="item_name_"]').value;
+            console.log('allInputsInRow',allInputsInRow)
+            if(productInvoiceId === ''){
+                if(allInputsInRow === ''){
+                    if (event.key === "Tab") {
                 event.preventDefault(); // Prevent default tab behavior
 
                 // Check if the current input has a value
@@ -1463,6 +1475,9 @@ function inputCheck(){
                     }
                 }
             }
+                }
+            }
+            
         });
     });
     }
