@@ -50,10 +50,11 @@
                         </tr>
                     
                         {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
+                        
                         <tr>
                             <td>
                                 <input type="text" name="{{form.prefix}}-stock_transfer_name_value" class="productShadeCutting_Material_input" id="id_{{form.prefix}}-stock_transfer_name_value" value="{{ form.instance.product.Product.Product_Name }}" readonly>
-                                <input type="hidden" name="{{form.prefix}}-stock_transfer_name" class="productShadeCutting_Material_input" id="id_{{form.prefix}}-stock_transfer_name" value="{{ form.instance.product.PProduct_SKU }}">
+                                <input type="hidden" name="{{form.prefix}}-product" class="productShadeCutting_Material_input" id="id_{{form.prefix}}-product" value="{{ form.instance.product.PProduct_SKU }}">
                             </td>
 
                             <td><input type="number" class="productShadeCutting_Material_input productInwordSku" name="{{form.prefix}}-stock_transfer_sku" id="id_{{form.prefix}}-stock_transfer_sku" value="{{ form.instance.product.PProduct_SKU }}" readonly></td>

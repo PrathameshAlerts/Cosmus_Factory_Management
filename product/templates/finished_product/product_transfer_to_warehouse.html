@@ -260,12 +260,12 @@
           var enterPressed = false;
           var itemName;
           var purchaseValue;
-          var productWerhouseid = $('#id_finished_goods_transfer_records_set-0-id').val()  
+          var productWerhouseid = $('#id_finished_goods_transfer_records_set-0-id').val() || '';  
           if(productWerhouseid == ''){
             $('#id_source_warehouse').on('change', function () {
               const godown_id = $(this).val();
               const id = $(this).attr('id');
-              
+              console.log(godown_id)
               $.ajax({
                   url: '/producttransfertowarehouseajax/',
                   method: 'GET',

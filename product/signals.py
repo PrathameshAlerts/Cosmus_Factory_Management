@@ -16,31 +16,31 @@ import logging
 logger = logging.getLogger('product_signals')
 
 
-
+#post_save signal for item_color_shade if Item_Creation instance is created 
 @receiver(post_save, sender=Item_Creation)
-def save_primary_item_color_shade(sender, instance, created, **kwargs): 
-
+def save_primary_item_color_shade(sender, instance, created, **kwargs): #instance is the created instance of Item_Creation
+# data in the instance is from the form which is submitted in the front end 
     if created:
 
-        
-        color_name = instance.Item_Color.color_name  
+        #getting the color name attribte instead of object
+        color_name = instance.Item_Color.color_name  #  color_name is in str representation in color model or else it will give obj of 
         
         logger.info(f"Item Shade of color- {color_name}-created")
-        
-        primary_color_shade = item_color_shade.objects.create(items=instance,  
+        # Create a new item_color_shade object related to the newly created instance
+        primary_color_shade = item_color_shade.objects.create(items=instance,  # Assign the instance itself, not just the primary key
                                                             item_name_rank= 1,
                                                             c_user = instance.c_user,
                                                             item_shade_name = color_name,
                                                             item_color_image = instance.item_shade_image)
-        
+        # Save the newly created item_color_shade object
         primary_color_shade.save()
 
 
 
-
+#signal to reduce the quantity from all the godowns in the invoice if it was deleted and delete it form c/d master table
 @receiver(pre_delete, sender=item_purchase_voucher_master)
 def handle_invoice_delete(sender, instance, **kwargs):
-    invoice_item_instance = instance.purchase_voucher_items_set.all() 
+    invoice_item_instance = instance.purchase_voucher_items_set.all() # invoice_item_instance carried the deleted instance data before deleting
     
     for items in invoice_item_instance:
         item_shade = items.item_shade
@@ -50,7 +50,7 @@ def handle_invoice_delete(sender, instance, **kwargs):
             godown = g_items.godown_id
             quantity = g_items.quantity
             
-            godown_quantity_to_delete, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown,Item_shade_name=item_shade)  
+            godown_quantity_to_delete, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=godown,Item_shade_name=item_shade)  # godown_quantity_to_delete carries the already present quantity in the table
             
             logger.info(f"quantity reduced from c/d table after Invoice Delete -- id - {godown_quantity_to_delete.id} - quantity -  {quantity}")
             
@@ -63,18 +63,18 @@ def handle_invoice_delete(sender, instance, **kwargs):
             godown_quantity_to_delete.save()
             
 
-    
+    # delete instance form c/d master if entire invoice is deleted
     purchase_voucher = instance.purchase_number
     instance_get = account_credit_debit_master_table.objects.get(voucher_no = purchase_voucher)        
     instance_get.delete()
 
 
 
-
+#signal to reduce the quantity from all the godowns in the invoice item was deleted 
 @receiver(pre_delete, sender=purchase_voucher_items)
 def handle_invoice_items_delete(sender, instance, **kwargs):
     
-    
+    #check if instance was deleted directly or via models.CASCADE
     if instance.deleted_directly:
         invoice_godown_items_instance = instance.shade_godown_items_set.all()
         item_shade = instance.item_shade
@@ -96,16 +96,16 @@ def handle_invoice_items_delete(sender, instance, **kwargs):
             godown_quantity_to_delete.save()
             
 
-
+#signal to reduce the quantity from the godowns in the godown in the itemrow was deleted 
 @receiver(pre_delete, sender=shade_godown_items)
 def handle_invoice_items_godowns_delete(sender, instance, **kwargs):
     
-    
+    #check if instance was deleted directly or via models.CASCADE
     if instance.deleted_directly:
         godown = instance.godown_id
         quantity = instance.quantity
 
-        
+        #get the extra attribute created in purchasevoucherpopupupdate() to get the old_shade and reduce the quantity.
         old_item_shade = getattr(instance, 'extra_data_old_shade', None)
         if old_item_shade is not None:
             item_shade = old_item_shade
@@ -148,11 +148,11 @@ def save_purchase_invoice_report(sender, instance, created, **kwargs):
         instance_get.save()
     
 
-
+# signal to delete record from item_godown_quantity_through_table if qty = 0 after saving the record in the table 
 @receiver(post_save, sender=item_godown_quantity_through_table)
 def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
     
-    if not created:  
+    if not created:  #FIXME remove this if statement if 0 quantity values are creating issue on creating new model instances
         quantity_after_save = instance.quantity
         if quantity_after_save == 0:
             logger.info(f"Item Godown quantity instance deleted as quantity is 0, id - {instance.id}, - {instance.godown_name.godown_name_raw}, - {instance.Item_shade_name.item_shade_name}")
@@ -160,7 +160,7 @@ def delete_item_godown_quantity_if_0(sender, instance, created, **kwargs):
 
 
 
-
+# signal for opening godown items in item create update 
 @receiver(post_save, sender= opening_shade_godown_quantity)
 def created_updated_opening_item_godown(sender, instance, created, **kwargs):
 
@@ -173,14 +173,14 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
     opening_quantity_created = False
     opening_quantity_updated = False
 
-    
+    # if opening godown item instance created
     if created:
         opening_quantity_created = True
         opening_quantity = instance.opening_quantity
 
 
 
-    
+    # if opening godown item instance updated 
     elif not created:
         opening_quantity_updated = True
         old_opening_quantity = getattr(instance, 'old_opening_g_quantity', None)
@@ -190,7 +190,7 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
         
 
 
-    
+    # if created 
     if opening_quantity_created:
         obj, created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
         if created:
@@ -204,54 +204,54 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
             obj.save()
 
 
-    
+    # if updated 
     if opening_quantity_updated:
-        old_opening_godown_id = getattr(instance, 'old_opening_godown_id', None) 
+        old_opening_godown_id = getattr(instance, 'old_opening_godown_id', None) # old godown id to check if godown has changed or not 
         
 
         if old_opening_godown_id:
             
-            
+            # if godown has not changed 
             if old_opening_godown_id == new_opening_godown:
 
-                
+                # get Item2godown instance with instance godown and item shade 
                 get_obj = item_godown_quantity_through_table.objects.get(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
                 get_obj.item_rate = opening_rate
-                get_obj.quantity = get_obj.quantity + opening_quantity_diffrence 
+                get_obj.quantity = get_obj.quantity + opening_quantity_diffrence # add the diffrence_quantity to the quantity
                 get_obj.save()
 
 
 
-            
+            # if godown has changed but quantities are same 
             elif old_opening_godown_id != new_opening_godown and instance.opening_quantity == old_opening_quantity:
                 
-                
-                
+                # decrease the qty
+                # get Item2godown instance with old_gid and item shade
                 decrease_obj_q = item_godown_quantity_through_table.objects.get(godown_name=old_opening_godown_id,Item_shade_name=item_shade_instance)
                 decrease_obj_q.item_rate = opening_rate
-                decrease_obj_q.quantity = decrease_obj_q.quantity - instance.opening_quantity 
+                decrease_obj_q.quantity = decrease_obj_q.quantity - instance.opening_quantity # decrease the instance quantity from the quantity
                 decrease_obj_q.save()
 
-                
-                
+                # increase the qty 
+                # get Item2godown instance with new_gid and item shade
                 get_obj , created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
                 get_obj.item_rate = opening_rate
-                get_obj.quantity = get_obj.quantity + instance.opening_quantity 
+                get_obj.quantity = get_obj.quantity + instance.opening_quantity # increase the instance quantity from the quantity
                 get_obj.save()
         
 
 
-            
+            # if godown has changed and also the quantities
             elif old_opening_godown_id != new_opening_godown and instance.opening_quantity != old_opening_quantity:
                 
-                
-                
+                # decrease the quantity 
+                # get Item2godown instance with old_gid and decrease the quantity in respect to old quantity
                 decrease_obj_q = item_godown_quantity_through_table.objects.get(godown_name=old_opening_godown_id, Item_shade_name=item_shade_instance)
                 decrease_obj_q.item_rate = opening_rate
                 decrease_obj_q.quantity = decrease_obj_q.quantity - old_opening_quantity
                 decrease_obj_q.save()
 
-                
+                # get Item2godown instance with new_gid and increase the quantity in respect to new quantity
                 get_obj , created = item_godown_quantity_through_table.objects.get_or_create(godown_name=new_opening_godown,Item_shade_name=item_shade_instance)
                 get_obj.item_rate = opening_rate
                 get_obj.quantity = get_obj.quantity + instance.opening_quantity
@@ -260,7 +260,7 @@ def created_updated_opening_item_godown(sender, instance, created, **kwargs):
 
 
 
-
+# decrese quantity from item_godown_quantity_through_table if opening_shade_godown_quantity instance is deleted 
 @receiver(pre_delete, sender= opening_shade_godown_quantity)
 def handle_opening_godown_deleted(sender, instance, **kwargs):
     item_id = instance.opening_purchase_voucher_godown_item.id
@@ -275,18 +275,18 @@ def handle_opening_godown_deleted(sender, instance, **kwargs):
             godown_item_through.save()
 
     except item_godown_quantity_through_table.DoesNotExist:
-        
+        # Log a message if the entry does not exist
         logger.error(f"No item_godown_quantity_through_table entry found for item_id {item_id} and godown_id {godown_id}")
         print(f"No item_godown_quantity_through_table entry found for item_id {item_id} and godown_id {godown_id}")
 
     except Exception as e:
-        
+        # Log any other exceptions that occur
         logger.error(f"An error occurred: {e}")
         print(f"An error occurred: {e}")
         
 
 
-
+#for stock transfer
 @receiver(post_save, sender=RawStockTrasferRecords)
 def created_updated_raw_stock_trasfer(sender, instance, created, **kwargs):
 
@@ -322,7 +322,7 @@ def created_updated_raw_stock_trasfer(sender, instance, created, **kwargs):
 
 
 
-
+# signal to create purchase_order_to_product instances on purchase_order creation
 @receiver(post_save, sender=purchase_order)
 def created_updated_purchase_order_product_qty(sender, instance, created, **kwargs):
     purchase_order_instance = instance
@@ -344,7 +344,7 @@ def created_updated_purchase_order_product_qty(sender, instance, created, **kwar
 
 
 
-
+# signal to set latest rate of an item after purchase invoice
 @receiver(post_save, sender=purchase_voucher_items)
 def set_item_rate_on_purchase(sender, instance, created, **kwargs):
     item_rate = instance.rate
@@ -356,7 +356,7 @@ def set_item_rate_on_purchase(sender, instance, created, **kwargs):
         item_instance.save()
 
 
-
+# signal to set latest rate of an item after opening godown quantity added
 @receiver(post_save, sender = opening_shade_godown_quantity)
 def set_item_rate_on_purchase(sender, instance, created, **kwargs):
     item_rate = instance.opening_rate
@@ -368,7 +368,7 @@ def set_item_rate_on_purchase(sender, instance, created, **kwargs):
         item_instance.save()
 
 
-
+# signal for purchase order status flag while saving purchase_order
 @receiver(post_save, sender=purchase_order)
 def set_purchase_order_product_status(sender, instance, created, **kwargs):
     if created:
@@ -395,7 +395,7 @@ def handle_purchase_order_update(sender, instance, **kwargs):
 
 
     
-
+# signal to save cutting_room_cancelled 
 @receiver(post_save, sender = purchase_order_for_raw_material_cutting_items)
 def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
     
@@ -426,7 +426,7 @@ def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
 
             elif instance.cutting_room_status == 'cutting_room_cancelled':
 
-                
+                # instance_voucher_type = 'Purchase Voucher - Cutting Cancelled'
                 instance_inward = True
 
                 godown_item_report_for_cutting_room.objects.create(particular = instance_particular,
@@ -437,7 +437,7 @@ def raw_material_cutting_items_cancelled(sender, instance, created, **kwargs):
                                                                 rate = instance_rate,p_o_id=instance_p_o_id,product_ref_no=instance_ref_no,cutting_pk=instance_cutting_id)
 
 
-
+# signal for reducing qty if product purchase voucher or its elemets are deleted 
 @receiver(pre_delete, sender=product_purchase_voucher_items)
 def handle_product_invoice_items_godowns_delete(sender, instance, **kwargs):
     product_instance = instance.product_name
@@ -456,11 +456,11 @@ def handle_product_invoice_items_godowns_delete(sender, instance, **kwargs):
         product_2_warehouse_instance.save()
 
 
-
+# signal to delete record from Product_warehouse_quantity_through_table if qty = 0 after saving the record in the table 
 @receiver(post_save, sender=Product_warehouse_quantity_through_table)
 def delete_product_warehouse_quantity_if_0(sender, instance, created, **kwargs):
     
-    if not created:  
+    if not created:  #FIXME remove this if statement if 0 quantity values are creating issue on creating new model instances
         quantity_after_save = instance.quantity
         if quantity_after_save == 0:
             logger.info(f"product warehouse quantity instance deleted as quantity is 0, id - {instance.id}, - {instance.warehouse.warehouse_name_finished}, - {instance.product.PProduct_SKU}")
@@ -495,12 +495,12 @@ def create_update_warehouse_stock_transfer(sender, instance, created, **kwargs):
         or in forms
             def clean(self):
         cleaned_data = super().clean()
-        
+        # Get values from the three fields
         value1 = cleaned_data.get('field1')
         value2 = cleaned_data.get('field2')
         value3 = cleaned_data.get('field3')
 
-        
+        # Perform logic to autofill the autofill_field
         if value1 and value2 and value3:
             autofill_value = f'{value1}-{value2}-{value3}'
             cleaned_data['autofill_field'] = autofill_value
