@@ -37,9 +37,17 @@
                 <td>{{record.party_name.name}}</td>
                 <td>{{record.supplier_invoice_number}}</td>
                 <td>{{record.grand_total}}</td>
+
+                {% if record.check_diff_qty > 0 %}
+                <td><a href="{% url 'product-purchase-voucher-update' record.id %}"><i style="color:rgb(0, 0, 0)" class="fa-solid fa-pen-to-square px-1"></i></a></td>
+
+                <td><button disabled class="border-0 bg-transparent delete-btn" data-item-id="{{ record.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
+                {% else %}
                 <td><a href="{% url 'product-purchase-voucher-update' record.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
+
                 <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ record.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-          
+
+                {% endif %}
             </tr>
                 {% endfor %}
             

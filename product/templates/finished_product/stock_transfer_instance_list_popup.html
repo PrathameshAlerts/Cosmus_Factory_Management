@@ -6,8 +6,12 @@
         {% csrf_token %}
         <div class="mb-3">
             {% if voucher_type == 'purchase' %}
+            <input type="hidden"  value="purchase"  name="voucher_type" id="id_voucher_type">
+            <input type="hidden" id="id_voucher_no" value="{{purchase_number}}">
             <h5 class="fw-bold">Purchase No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
             {% elif voucher_type == 'transfer' %}
+            <input type="hidden" value="transfer" name="voucher_type" id="id_voucher_type">
+            <input type="hidden" id="id_voucher_no" value="{{purchase_number}}">
             <h5 class="fw-bold">Transfer No :<span class="text-danger ms-2">{{ purchase_number }}</span></h5>
 
             {% endif %}
@@ -29,11 +33,16 @@
                     </thead>
                     <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                         {{ formset.management_form}}
+
                         {% for form in formset %}
+                        {{form.id}}
                         {% if form.instance.product_purchase_master.purchase_number %}
                     
                         <tr>
-                            <td><input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-Product_Name" id="id_{{form.prefix}}-Product_Name" value="{{ form.instance.product_name.Product.Product_Name }}" readonly></td>
+                            <td>
+                                <input type="text" class="productShadeCutting_Material_input" name="{{form.prefix}}-Product_name_Value" id="id_{{form.prefix}}-Product_name_Value" value="{{ form.instance.product_name.Product.Product_Name }}" readonly>
+                                <input type="hidden" class="productShadeCutting_Material_input" name="{{form.prefix}}-product_name" id="id_{{form.prefix}}-product_name" value="{{ form.instance.product_name.PProduct_SKU }}">
+                            </td>
                             <td><input type="number" class="productShadeCutting_Material_input productInwordSku" name="{{form.prefix}}-product_sku" id="id_{{form.prefix}}-product_sku" value="{{ form.instance.product_name.PProduct_SKU }}" readonly></td>
                             <td><input type="number" class="productorderrawqty-input quantityTotal"  name="{{form.prefix}}-quantity_total" id="id_{{form.prefix}}-quantity_total" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
                             <td> <input type="number" class="productorderrawqty-input productInwordDiffernceQty" name="{{form.prefix}}-diffrence_qty" id="id_{{form.prefix}}-diffrence_qty" value="{{ form.instance.diffrence_qty |default_if_none:0}}" readonly></td>
@@ -42,7 +51,10 @@
                     
                         {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
                         <tr>
-                            <td><input type="text" name="{{form.prefix}}-stock_transfer_name" class="productShadeCutting_Material_input" id="id_{{form.prefix}}-stock_transfer_name" value="{{ form.instance.product.Product.Product_Name }}" readonly></td>
+                            <td>
+                                <input type="text" name="{{form.prefix}}-stock_transfer_name_value" class="productShadeCutting_Material_input" id="id_{{form.prefix}}-stock_transfer_name_value" value="{{ form.instance.product.Product.Product_Name }}" readonly>
+                                <input type="hidden" name="{{form.prefix}}-stock_transfer_name" class="productShadeCutting_Material_input" id="id_{{form.prefix}}-stock_transfer_name" value="{{ form.instance.product.PProduct_SKU }}">
+                            </td>
 
                             <td><input type="number" class="productShadeCutting_Material_input productInwordSku" name="{{form.prefix}}-stock_transfer_sku" id="id_{{form.prefix}}-stock_transfer_sku" value="{{ form.instance.product.PProduct_SKU }}" readonly></td>
                             <td><input type="number" class="productorderrawqty-input quantityTotal" name="{{form.prefix}}-product_quantity_transfer" id="id_{{form.prefix}}-product_quantity_transfer" value="{{ form.instance.product_quantity_transfer |default_if_none:0 }}" readonly></td>
@@ -60,11 +72,23 @@
             </div>
         </div>
         <div class="mb-3">
-            <h4 class="fw-bold">INWard Process</h4>
+            <h4 class="fw-bold d-inline">INWard Process</h4> <span id="responseMessage" class="mx-5 fw-bold"></span>
             <div class="mb-2">
-                <label class="fw-bold">Serial No :</label>
-                <input type="text" class="item-select" id="inwordSerialNo">
+                <label class="fw-bold">Scan S/N :</label>
+                <input type="text" name="scanned_serial_number" class="item-select" id="inwordSerialNo" style="margin-right: 50px;">
+
+
+                <label class="fw-bold">Manual S/N :</label>
+                <input type="text" name="manual_serial_number" class="item-select" id="id_manualSerialNo">
+                <button type="button"class="" id="manualAjaxButton">Fetch</button>
             </div>
+            <!-- <span>OR</span> -->
+            <!-- <div>
+                <label class="fw-bold">Manual Serial No  :</label>
+                <input type="text" name="manual_serial_number" class="item-select" id="id_manualSerialNo">
+                <button type="button" class="btn btn-primary" id="manualAjaxButton">Send Request</button>
+            </div> -->
+            
             <div class="row mb-3">
                 <div class="col-lg-7 " style="display:none" id="stockTransferList">
                     <table class="table table-striped table-hover table-bordered" >
@@ -81,13 +105,13 @@
                         <tbody class="mainTableList" >
                            
                             <tr>
-                                <td><input type="text" class="productSelect" id="id_product" readonly></td>
-                                <td><input type="number" class="productSelect"  id="id_product_sku" readonly></td>
-                                <td><input type="text" class="productSelect"  id="id_product_color" readonly></td>
+                                <td><input name="product_name" type="text" class="productSelect" id="id_product" readonly></td>
+                                <td><input name="product_sku" type="number" class="productSelect"  id="id_product_sku" readonly></td>
+                                <td><input name="product_color" type="text" class="productSelect"  id="id_product_color" readonly></td>
                                 <td>
-                                    <img id="productImgPreview" src="" alt="Product Image" style="width: 100px; height: 100px;">
+                                    <img id="productImgPreview" name="product_img" src="" alt="Product Image" style="width: 100px; height: 100px;">
                                </td>
-                                <td><select  class="productSelect"  id="id_bin_Name">
+                                <td><select  class="productSelect" name="product_bin" id="id_bin_Name">
                                     </select>
                                 </td>
                                 
@@ -95,180 +119,196 @@
                          
                         </tbody>
                     </table>
-                    <div>
-                        <button type="button" class="add_btn" id="EnterValue">Click</button>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-2">
-                <div>
-                    <h4 class="fw-bold">INWarded Product</h4>
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <table class="table table-striped table-hover table-bordered">
-                                <thead class="name_absolute sticky-top">
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Product SKU</th>
-                                        <th>Quantity</th>
-                                        <th>QC Recieved QTY</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
-                                    {{ formset.management_form}}
-                                    {% for form in formset %}
-                                    {% if form.instance.product_purchase_master.purchase_number %}
-                                
-                                    <tr>
-                                        <td><input type="text" class="productShadeCutting_Material_input " value="{{ form.instance.product_name.Product.Product_Name }}" readonly></td>
-                                        <td><input type="number" class="productShadeCutting_Material_input inwardedsku" value="{{ form.instance.product_name.PProduct_SKU }}" readonly></td>
-                                        <td><input type="number" class="productorderrawqty-input inwardedQty" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
-                                        <td><input type="number" class="productorderrawqty-input inwardedReceivedQty" value="{{form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>   
-                                    </tr>
-                                
-                                    {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
-                                    <tr>
-                                        <td><input type="text" class="productShadeCutting_Material_input" value="{{ form.instance.product.Product.Product_Name }}" readonly></td>
-                                        <td><input type="number" class="productShadeCutting_Material_input inwardedsku" value="{{ form.instance.product.PProduct_SKU }}" readonly></td>
-                                        <td><input type="number" class="productorderrawqty-input inwardedQty" value="{{ form.instance.product_quantity_transfer |default_if_none:0 }}" readonly></td>
-                                        <td><input type="number" class="productorderrawqty-input inwardedReceivedQty" value="{{ form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
-                                    </tr>
-                                
-                                    {% endif %}
-                                    {% endfor %}
-                                </tbody>    
-                            </table>
-                        </div>
-                    </div>
+                    
+                        <button type="submit"  class="newProductCreateBtn" name="save" value="Save" id="">Submit</button>
                    
                 </div>
             </div>
+          
         </div>
-        <button type="submit" class="newProductCreateBtn mt-5" name="save" value="Save" id="">Submit</button>
+        
     </form>
+    <div class="mt-2">
+        <div>
+            <h4 class="fw-bold">INWarded Product</h4>
+            <div class="row">
+                <div class="col-lg-7">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead class="name_absolute sticky-top">
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Product SKU</th>
+                                <th>Quantity</th>
+                                <th>QC Recieved QTY</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
+                            {{ completed_formset.management_form}}
+                            {% for form in completed_formset %}
+                            {% if form.instance.product_purchase_master.purchase_number %}
+                        
+                            <tr>
+                                <td><input type="text" class="productShadeCutting_Material_input " value="{{ form.instance.product_name.Product.Product_Name }}" readonly></td>
+                                <td><input type="number" class="productShadeCutting_Material_input inwardedsku" value="{{ form.instance.product_name.PProduct_SKU }}" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input inwardedQty" value="{{ form.instance.quantity_total|default_if_none:0 }}" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input inwardedReceivedQty" value="{{form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>   
+                            </tr>
+                        
+                            {% elif form.instance.Finished_goods_Stock_TransferMasterinstance.voucher_no %}
+                            <tr>
+                                <td><input type="text" class="productShadeCutting_Material_input" value="{{ form.instance.product.Product.Product_Name }}" readonly></td>
+                                <td><input type="number" class="productShadeCutting_Material_input inwardedsku" value="{{ form.instance.product.PProduct_SKU }}" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input inwardedQty" value="{{ form.instance.product_quantity_transfer |default_if_none:0 }}" readonly></td>
+                                <td><input type="number" class="productorderrawqty-input inwardedReceivedQty" value="{{ form.instance.qc_recieved_qty |default_if_none:0}}" readonly></td>
+                            </tr>
+                        
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>    
+                    </table>
+                </div>
+            </div>
+           
+        </div>
+    </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded',function(){
-        var inwardSearch = document.getElementById('inwordSerialNo');
-        var stockTable = document.getElementById('stockTransferList')
+    document.addEventListener('DOMContentLoaded', function () {
+        const inwardSearch = document.getElementById('inwordSerialNo');
+        const manualSearch = document.getElementById('id_manualSerialNo');
+        const stockTable = document.getElementById('stockTransferList');
+        const responseMessage = $('#responseMessage');
+    
+        // Focus on input field and hide table initially for `inwordSerialNo`
         inwardSearch.focus();
-        inwardSearch.addEventListener('input',function(item){
-            
-            inwardSearch.style.color = 'white'
-            if(inwardSearch.value){
-                stockTable.style.display ="block";
+        inwardSearch.addEventListener('input', function () {
+            inwardSearch.style.color = 'white';
+            responseMessage.html(''); // Clear any previous messages
+            if (inwardSearch.value) {
+                stockTable.style.display = "block";
+                manualSearch.value = ''; // Clear manual search if `inwordSerialNo` has input
             }
-        })
-        
-    })
-
+        });
+    
+        // Add similar event listener for `id_manualSerialNo`
+        manualSearch.addEventListener('input', function () {
+            
+            responseMessage.html(''); // Clear any previous messages
+            if (manualSearch.value) {
+                stockTable.style.display = "block";
+                inwardSearch.value = ''; // Clear inward search if `id_manualSerialNo` has input
+            }
+        });
+    });
+    
     $(document).ready(function () {
         let debounceTimeout;
     
+        // Handle input in inwordSerialNo
         $('#inwordSerialNo').on('input', function () {
-            clearTimeout(debounceTimeout); // Clear any previous timeout
+            clearTimeout(debounceTimeout);
     
-            let inputField = $(this);
+            // Clear id_manualSerialNo
+            const manual_serial = $('#id_manualSerialNo');
+            manual_serial.val('');
+    
+            // Prevent manual button functionality
+            const manualButton = $('#manualAjaxButton');
+            manualButton.prop('disabled', true);
+            
+            const responseMessage = $('#responseMessage');
+            responseMessage.html(''); // Clear any previous messages
+
+            const inputField = $(this);
+    
             debounceTimeout = setTimeout(async function () {
-                let inputUrl = inputField.val(); // Get the current value of the input
+                let inputUrl = inputField.val();
                 let serialNo = '';
     
-                // Extract value after '=' in the URL
+                // Extract serial number
                 if (inputUrl.includes('=')) {
-                    serialNo = inputUrl.split('=').pop(); // Get everything after the '='
-                    inputField.val(serialNo); // Update the input field with the extracted value
-                    inputField.css('color','black')
+                    serialNo = inputUrl.split('=').pop();
+                    inputField.val(serialNo);
+                    inputField.css('color', 'black');
                 }
     
                 if (serialNo) {
                     try {
-                        // Send AJAX request with the serialNo using async/await
-                        let response = await sendSerialNumber(serialNo);
-                        
-                        // Handle success
+                        const response = await sendSerialNumber(serialNo);
                         $('#responseMessage').html('<span class="text-success">' + response.message + '</span>');
                     } catch (error) {
-                        // Handle error
-                        $('#responseMessage').html('<span class="text-danger">An error occurred: ' + error.responseText + '</span>');
+                        const errorMessage = error.responseJSON?.message || 'An unexpected error occurred.';
+                        $('#responseMessage').html('<span class="text-danger">' + errorMessage + '</span>');
                     }
                 }
-            }, 500); // Debounce delay (500ms)
+            }, 500); // Debounce delay
         });
     
-        // Function to send the serial number
+        // Handle input in id_manualSerialNo
+        $('#id_manualSerialNo').on('input', function () {
+            // Clear inwordSerialNo
+            $('#inwordSerialNo').val('');
+    
+            // Enable manual button
+            const manualButton = $('#manualAjaxButton');
+            manualButton.prop('disabled', false); // Enable manual button
+
+            const responseMessage = $('#responseMessage');
+            responseMessage.html(''); // Clear any previous messages
+
+        });
+    
+        // Handle click on the normal button
+        $('#manualAjaxButton').on('click', async function () {
+            const manualSerialNo = $('#id_manualSerialNo').val();
+    
+            if (manualSerialNo) {
+                try {
+                    const response = await sendSerialNumber(manualSerialNo);
+                    $('#responseMessage').html('<span class="text-success">' + response.message + '</span>');
+                } catch (error) {
+                    const errorMessage = error.responseJSON?.message || 'An unexpected error occurred.';
+                    $('#responseMessage').html('<span class="text-danger">' + errorMessage + '</span>');
+                }
+            } else {
+                $('#responseMessage').html('<span class="text-danger">Please enter a Manual Serial Number.</span>');
+            }
+        });
+    
+        // Function to send serial number to the backend
         async function sendSerialNumber(serialNo) {
-            const csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // Get CSRF token
+            const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+            const instance_number = $('#id_voucher_no').val();
+            const instance_type = $('#id_voucher_type').val();
+    
             const response = await $.ajax({
-                url: '/processserialno/', // Replace with your server endpoint
+                url: '/processserialno/',
                 type: 'POST',
-                data: {
-                    serialNo: serialNo,
-                    csrfmiddlewaretoken: csrfToken, // Include CSRF token for Django
+                data: { 
+                    serialNo: serialNo, 
+                    csrfmiddlewaretoken: csrfToken,
+                    instance_number_post: instance_number,
+                    instance_type_post: instance_type
                 },
             });
-            const productName = document.getElementById('id_product')
-            productName.value = response.product_name; 
-            const productSku = document.getElementById('id_product_sku')
-            productSku.value = response.product_sku; 
-            const productColor = document.getElementById('id_product_color');
-            productColor.value = response.product_color;
-            const productIMG = document.getElementById('productImg')
-            const productImgPreview = document.getElementById('productImgPreview');
-          
-            productImgPreview.src = response.product_image;
-            const binSelect = document.getElementById('id_bin_Name');
-            const bindata = response.bin_to_dict;
-            console.log(bindata)
-         
-            Object.entries(bindata).forEach(([key, value]) => {
-               
-                const option = document.createElement('option');
-                option.value = value.bin_id; 
-                option.textContent = value.bin_name + '-'+value.bin_size; 
-        
-                binSelect.appendChild(option);
-            });
+    
+            // Populate fields
             console.log(response.product_name)
-            console.log(response.product_sku)
-            console.log(response.product_color)
-            console.log(response.product_image)
-            console.log(response.bin_to_dict)
-            return response; // Return the AJAX response
-            
-        }
-        $('#EnterValue').on('click', function () {
-            var inwardSku = $('.productInwordSku'); 
-            var productSku = $('#id_product_sku').val(); 
-            var inwardedsku = $('.inwardedsku');
-            console.log(productSku,typeof(productSku))
-            inwardSku.each(function () {
-                var items = $(this).val(); 
-                var recivedQtyField = $(this).closest('tr').find('.productInwordRecivedQty'); 
-                var Allqty = $(this).closest('tr').find('.quantityTotal');
-                var diffrence_qty =$(this).closest('tr').find('.productInwordDiffernceQty');
-                var qty = parseFloat(Allqty.val()) || 0 ;
-                var recivedQty = parseFloat(recivedQtyField.val()) || 0; 
-                console.log(items,typeof(items))
-                if (productSku === items) {
-                    console.log('items',items)
-                    recivedQty += 1; 
-                   var latestDiffentQty = qty - recivedQty;
-                    recivedQtyField.val(recivedQty); 
-                    diffrence_qty.val(latestDiffentQty);
-                }
+            $('#id_product').val(response.product_name);
+            $('#id_product_sku').val(response.product_sku);
+            $('#id_product_color').val(response.product_color);
+            $('#productImgPreview').attr('src', response.product_image);
+    
+            const binSelect = $('#id_bin_Name');
+            binSelect.empty(); // Clear existing options
+    
+            response.bin_to_dict.forEach(bin => {
+                binSelect.append(new Option(`${bin.bin_name} - ${bin.bin_size} - ${bin.products_in_bin}`, bin.bin_id));
             });
-            inwardedsku.each(function(){
-                var inwardproductSku = $(this).val()
-                var inwardProductQty = $(this).closest('tr').find('.inwardedReceivedQty')
-                var productReceivedQty = parseFloat(inwardProductQty.val()) || 0;
-                if(productSku === inwardproductSku){
-                    productReceivedQty += 1;
-                    inwardProductQty.val(productReceivedQty);
-                }
-            })
-        });
-
+    
+            return response;
+        }
     });
 
 </script>

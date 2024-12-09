@@ -8,16 +8,75 @@
     <form class="mt-4" action="" method="POST" autocomplete="off" id="newForm">
         
         {% csrf_token %}
+        {% if product_pur_vouch_form.instance.id %}
         <div class="">
             <div class="d-flex mb-3">
                 <span id="purchaseError" class="error-messages"></span>
                 <div class="d-flex ">
                     <label for="id_purchase_number"  class="me-3">Purchase No :</label>
-                    {% if product_pur_vouch_form.instance.id %}
+                
                     <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{product_pur_vouch_form.instance.purchase_number}}" maxlength="255" required readonly>
-                    {% elif not product_pur_vouch_form.instance.id %}
-                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{product_pur_vouch_form.purchase_number.initial|default_if_none:''}}" maxlength="255" required>
-                    {% endif %}
+                </div>
+                <span id="SupplierError" class="error-messages"></span>
+                <div class="d-flex ms-2">
+                    <label for="id_supplier_invoice_number" class="" >Supplier No :</label>
+                    <input type="text" class="item-select" name="supplier_invoice_number" id ="id_supplier_invoice_number" value="{{product_pur_vouch_form.instance.supplier_invoice_number}}" maxlength="255" required readonly  aria-required="true">
+                </div>
+               
+                <div class="d-flex ms-3">
+                    <label for="id_GST_numbers" class="" >Company GST No :</label>
+                    <input type="text" class="item-select" name="GST_numbers" id ="id_company_GST_numbers" value="27AAACG20210238" maxlength="50" readonly >
+                </div>
+                <div class="d-flex ms-3">
+                    <label for="id_ledger_type" class="me-2" >ledger Type :</label>
+                    <input type="text" class="item-select border-0 bg-transparent" name="ledger_type" id ="id_ledger_type" value="{{product_pur_vouch_form.instance.ledger_type}}" maxlength="50" default='Purchase(Product)' readonly placeholder="Purchase(Product)" >
+                </div>
+                
+            </div>
+            <span id="ledgerError" class="error-messages"></span>
+            <div class="d-flex mb-3">
+                <div class="d-flex">
+                    <label for="id_GST_numbers" class="me-2" >Finished godowns :</label>
+                    <select name="finished_godowns" required id="id_finished_godowns" class="item-select" disabled>
+                        {% for warehouse in warehouses %}
+                          <option value="{{ warehouse.pk }}">{{ warehouse.warehouse_name_finished }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <span id="purchaseError" class="error-messages"></span>
+                <div class="d-flex ms-3">
+                    <label for="id_party_name" class="me-3" >Party A/C Name :</label>
+                    <select class="product2Select" name="party_name" required id="id_party_name" disabled>
+                        {% if product_pur_vouch_form.instance.id %}
+                        <option value="{{product_pur_vouch_form.instance.party_name.id}}">{{product_pur_vouch_form.instance.party_name.name}}</option>
+                        {% elif not form.instance.id %}
+                        <option value=""></option>
+                        {% endif %}
+                        
+                        {% for x in party_names %}
+                        <option value="{{x.id}}">{{x.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <button disabled type="button" class="itemCreate_btn popup-trigger" onclick="openPurchasePartyPopup()">+</button>
+                </div>
+                <div class="d-flex ms-3">
+                    <label for="id_GST_number" class="me-2" >Party GST No :</label>
+                    <input type="text" class="item-select" name="GST_number" id ="id_GST_number"  value="{% if product_pur_vouch_form.instance.id %}{{ product_pur_vouch_form.instance.party_name.Gst_no }}{% endif %}" maxlength="15" readonly required>
+                </div>
+            
+            </div>
+        </div>
+
+        {% elif not product_pur_vouch_form.instance.id %}
+        <div class="">
+            <div class="d-flex mb-3">
+                <span id="purchaseError" class="error-messages"></span>
+                <div class="d-flex ">
+                    <label for="id_purchase_number"  class="me-3">Purchase No :</label>
+                    
+                    <input type="text" class="item-select" name="purchase_number" id ="id_purchase_number" value="{{product_pur_vouch_form.instance.purchase_number}}" maxlength="255" required>
+                    
+                    
                 </div>
                 <span id="SupplierError" class="error-messages"></span>
                 <div class="d-flex ms-2">
@@ -68,6 +127,7 @@
             
             </div>
         </div>
+        {% endif %}
         <div> 
             <table id="myTable" class="table table-striped table-hover  table-bordered">
                 <thead class="name_absolute">
@@ -88,7 +148,46 @@
                     {{product_purchase_voucher_items_formset_instance.management_form}}
                     {% for forms in product_purchase_voucher_items_formset_instance %}
                     {{ forms.id }}
-                    
+                    {% if product_pur_vouch_instance.total_qc_qty > 0 %}
+                    <tr> 
+                        <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
+                        <td colspan="2">
+                            <div class="custom-dropdown-container">
+                                <input type="hidden" name="{{forms.prefix}}-product_name" id="id_{{forms.prefix}}-product_name"  value="{% if forms.instance.id %}{{forms.instance.product_name.PProduct_SKU}}{% endif %}" > 
+
+
+                                <input type="text" readonly name="{{forms.prefix}}-product_name_value" id="id_{{forms.prefix}}-product_name_Value" class="productpurchaseInvoice search-input"  placeholder="Product Name" autocomplete="off" value="{% if forms.instance.id %}{{forms.instance.product_name.Product.Product_Name}} {{forms.instance.product_name.PProduct_SKU}} {% endif %}" > 
+
+                                
+                                <div name="select_product_name_{{forloop.counter0}}" class="productpurchaseInvoice product-name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
+                                  
+                               
+                                 </div>
+                            </div> 
+                        </td>
+                        <td><input type="text" readonly name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{forms.instance.product_name.PProduct_color}}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
+               
+                        <td><input type="number" readonly id="{{forms.prefix}}-quantity_total" class="purchase-input purchase-qunatity" name="{{forms.prefix}}-quantity_total" value="{{forms.instance.quantity_total | default_if_none:'' }}" ></td>
+                        <td><input type="number" readonly id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="{{forms.instance.rate | default_if_none:''}}"></td>
+                        <td style="width: 50px;"><input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="NOS" class="purchase-mark" readonly></td>
+                        <td>
+                            <input type="number" id="{{forms.prefix}}-amount" class="purchase-amount total-amount" name="{{forms.prefix}}-amount" value="{{forms.instance.amount | default_if_none:''}}" readonly>
+                        </td>
+                        <td>
+                            
+                            <input type="number" id="{{forms.prefix}}-gst" class="purchase-mark purchase-gst" name="{{forms.prefix}}-gst" value="{{ forms.instance.product_name.Product.Product_GST.gst_percentage }}" readonly >
+                        </td>
+                        <td>
+                            <input type="number" id="{{forms.prefix}}-cgst" class="purchase-input purchase-cgst" name="{{forms.prefix}}-cgst" value=""readonly >
+                        </td>
+                        <td>
+                            <input type="number" id="{{forms.prefix}}-sgst" class="purchase-input purchase-sgst" name="{{forms.prefix}}-sgst" value=""readonly >
+                        </td>
+                        <td><input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly></td>
+                        <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
+                        
+                    </tr>
+                    {% else %}
                     <tr> 
                         <td><input type="number" class="rowNo purchase-mark bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}"></td>
                         <td colspan="2">
@@ -126,7 +225,8 @@
                         <td><input type="number" id="{{forms.prefix}}-total_amount" class="purchase-amount purchase-total" name="{{forms.prefix}}-total_amount" value="" readonly></td>
                         <td><span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="godown_deleteId px-2" style="display: none;"  name="{{forms.prefix}}-DELETE" id="{{forms.prefix}}-DELETE" value="" ></i></span></td>
                         
-                    </tr>   
+                    </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
                 <tbody>
@@ -150,8 +250,13 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="ms-2">
-                <input type="number" class="product_row" name="productRow" id="id_productRow" value="1">
+                {% if product_pur_vouch_instance.total_qc_qty > 0 %}
+                <input readonly type="number" class="product_row" name="productRow" id="id_productRow" value="1">
+                <button disabled type="button" class="item-btn mb-3" id="addRowButton">Add +</button>
+                {% else %}
+                <input  type="number" class="product_row" name="productRow" id="id_productRow" value="1">
                 <button type="button" class="item-btn mb-3" id="addRowButton">Add +</button>
+                {% endif %}
             </div>
         </div>
         <div class="col-lg-3">
@@ -163,10 +268,17 @@
                     </span>           
                 </div>
                 <div class=" mb-3">
+                    {% if product_pur_vouch_instance.total_qc_qty > 0 %}
+                    <label class="purchase-lable fw-bold">Fright & Transport</label>
+                    <span class="purchase-span">
+                        <input readonly type="number" class="purchaseTableLabel-transport  purchase-amounts" name="fright_transport" id ="id_fright_transport" value="{{product_pur_vouch_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
+                    </span>
+                    {% else %}
                     <label class="purchase-lable fw-bold">Fright & Transport</label>
                     <span class="purchase-span">
                         <input type="number" class="purchaseTableLabel-transport  purchase-amounts" name="fright_transport" id ="id_fright_transport" value="{{product_pur_vouch_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
                     </span>
+                    {% endif %}
                 </div>
                 <div class=" mb-3">
                     <input type="hidden" id="temp_grand_total" value="">
@@ -184,9 +296,10 @@
         </div>
         
         
-        
+    {% if not product_pur_vouch_instance.total_qc_qty > 0 %}
     </div>
       <button type="submit" class="ms-5 newProductCreateBtn" id="parentFormClick">Submit</button>
+    {% endif %}
     </form>
 </div>
 

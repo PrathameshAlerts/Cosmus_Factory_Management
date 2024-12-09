@@ -27,14 +27,23 @@
         </thead>
         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
             {% for warehouse_product_transfer in warehouse_product_transfer_list %}
+            
           <tr>
             <td>{{ warehouse_product_transfer.voucher_no }}</td>
             <td>{{ warehouse_product_transfer.source_warehouse.godown_name_finished }}</td>
             <td>{{ warehouse_product_transfer.destination_warehouse.warehouse_name_finished }}</td>
             <td>{{warehouse_product_transfer.created_date}}</td>
-            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i class="fa-solid fa-pen-to-square"></i></span></a></td>
+            {% if warehouse_product_transfer.all_qc_qty > 0 %}
+            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i style="color:black" class="fa-solid fa-pen-to-square"></i></span></a></td>
+            <td><button disabled class="border-0 bg-transparent delete-btn" data-item-id="{{warehouse_product_transfer.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
+            {% else %}
+            <td><a href="{% url 'warehouse-product-transfer-update' warehouse_product_transfer.id %}"><span class="ps-3"><i  class="fa-solid fa-pen-to-square"></i></span></a></td>
             <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{warehouse_product_transfer.id}}" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa-solid fa-xmark text-danger px-3 fs-5"></i></button></td>
+            {% endif %}
           </tr>
+          
+          
+          
           {% endfor %}
         </tbody>
       </table>
