@@ -25,9 +25,9 @@
         
     </div>
         <div>
-            <div >
+            <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="mainProductForm">
-                    <thead class="name_absolute">
+                    <thead class="name_absolute sticky-top">
                         <tr>
                             <th>No</th>
                             <th>Product Sku</th>
@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
             
-                    <tbody class="mainTableList">
+                    <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
                        
                         {{formset_single.management_form}}
                         
@@ -145,11 +145,9 @@
 </form>
 
     <script>
-
-        $(document).ready(function () {
-            $('#productSelector').on('change', function () {
+        document.addEventListener('DOMContentLoaded',function(){
+            document.getElementById('productSelector').addEventListener('change',function(){
                 let selectedId = $(this).val(); 
-        
                 $.ajax({
                     url: '/producttoitemajax/',  // Replace with the correct URL endpoint
                     type: 'GET',
@@ -165,8 +163,10 @@
                         const lastRowValue = commonTable.querySelector('.mainTable')
                         const rows = table.querySelector('.mainTableList');
                         const addButtonUnique = rows.querySelector('.add_btn_row')
-                        console.log('addButtonUnique',addButtonUnique)
+                        const addButtonCommon = lastRowValue.querySelector('.add_btn_CommonForm')
+        
                         addButtonUnique.style.display ="block";
+                        addButtonCommon.style.display = "block";
                         let lastDataRow = null;
                         let lastVisibleRow = null;
 
@@ -336,7 +336,7 @@
                         const inputElement = lastRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
                         inputElement.id = `id_product2itemcommonformset-${newCount}-Remark`;
                         inputElement.name = `product2itemcommonformset-${newCount}-Remark`;
-                        inputElement.value = commonData[i].Remark || 'common';
+                        inputElement.value =  'common';
 
 
                         const deleteElement = lastRow.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
@@ -424,202 +424,310 @@
                         const visibleRowsunique = document.querySelectorAll('.mainTableList tr:not([style*="display: none"])');
                         return visibleRowsunique;
                     }
-                function deleteRowUniqueSingle() {
-                    document.querySelectorAll('.delete-btn').forEach(function (button) {
-                        button.addEventListener('click', function () {
-                            const rows = getVisibleuniqueRows()
-                            if(rows.length > 1){
-                                const row = this.closest('tr');
-                                if(row){
-                                    const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
-                                    const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
-                                    const submitBut= document.getElementById('id_submitForms');
-                                    if (checkRow) {
-                                        checkRow.checked = true;
-                                        checkRow.value = 'true';
-                                        rowValue.required = false;
-                                        row.style.display = 'none';
-                                        submitBut.disabled = false;
-                                        submitBut.style.cursor = 'pointer';
-                                    } else {
-                                        console.error("Checkbox for deletion not found in this row");
-                                    }
-                                }
-                                
-                            }else{
-                                alert('Cannot delete this row; at least one row must remain.');
-                            }
-                            
-                                submitFormRowNumber();
-                                inputCheck()
-                        });
-                    });
-                };
-                function getVisibleRows() {
-                    // Select all rows that are not hidden (excluding those with display: none)
-                    return document.querySelectorAll('.mainTable tr:not([style*="display: none"])');
-                
-                }
-                    function deletedCommonRow() {
-                        // Add click event listener to all delete buttons
-                        document.querySelectorAll('.deleteButton').forEach(function (button) {
+                    function deleteRowUniqueSingle() {
+                        document.querySelectorAll('.delete-btn').forEach(function (button) {
                             button.addEventListener('click', function () {
-                                const rows =  getVisibleRows();
-                                console.log(rows)
+                                const rows = getVisibleuniqueRows()
                                 if(rows.length > 1){
-                                    // Find the row containing the clicked delete button
                                     const row = this.closest('tr');
                                     if(row){
-                                    const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
-                                    const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
-                                    const submitButtons= document.getElementById('id_submitForms');
-                                    if (checkRow) {
-                                        checkRow.checked = true; // Mark as checked
-                                        checkRow.value = 'true'; // Set the value to 'true'
-                                        rowValues.required = false;
-                                        row.style.display = 'none';
-                                        submitButtons.disabled = false;
-                                        submitButtons.style.cursor = 'pointer';
-                                
-                                    } else {
-                                        console.error("Checkbox for deletion not found in this row");
-                                    }
+                                        const checkRow = row.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="-DELETE"]');
+                                        const rowValue = row.querySelector('.product_row[name^="product2itemuniqueformset-"][name$="-no_of_rows"]');
+                                        const submitBut= document.getElementById('id_submitForms');
+                                        if (checkRow) {
+                                            checkRow.checked = true;
+                                            checkRow.value = 'true';
+                                            rowValue.required = false;
+                                            row.style.display = 'none';
+                                            submitBut.disabled = false;
+                                            submitBut.style.cursor = 'pointer';
+                                        } else {
+                                            console.error("Checkbox for deletion not found in this row");
+                                        }
                                     }
                                     
                                 }else{
                                     alert('Cannot delete this row; at least one row must remain.');
                                 }
-                            
+                                
+                                    submitFormRowNumber();
+                                    inputCheck()
                             });
                         });
                     };
+                    function getVisibleRows() {
+                        // Select all rows that are not hidden (excluding those with display: none)
+                        return document.querySelectorAll('.mainTable tr:not([style*="display: none"])');
+                    
+                    }
+                    function deletedCommonRow() {
+                            // Add click event listener to all delete buttons
+                            document.querySelectorAll('.deleteButton').forEach(function (button) {
+                                button.addEventListener('click', function () {
+                                    const rows =  getVisibleRows();
+                                    console.log(rows)
+                                    if(rows.length > 1){
+                                        // Find the row containing the clicked delete button
+                                        const row = this.closest('tr');
+                                        if(row){
+                                        const checkRow = row.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="-DELETE"]');
+                                        const rowValues = row.querySelector('.product_row[name^="product2itemcommonformset-"][name$="-no_of_rows"]');
+                                        const submitButtons= document.getElementById('id_submitForms');
+                                        if (checkRow) {
+                                            checkRow.checked = true; // Mark as checked
+                                            checkRow.value = 'true'; // Set the value to 'true'
+                                            rowValues.required = false;
+                                            row.style.display = 'none';
+                                            submitButtons.disabled = false;
+                                            submitButtons.style.cursor = 'pointer';
+                                    
+                                        } else {
+                                            console.error("Checkbox for deletion not found in this row");
+                                        }
+                                        }
+                                        
+                                    }else{
+                                        alert('Cannot delete this row; at least one row must remain.');
+                                    }
+                                
+                                });
+                            });
+                    };
                     const addButtonValue = document.querySelectorAll('.add_btn_row');               
-    const tableBodys = document.querySelector('#mainProductForm tbody');
+                    const tableBodys = document.querySelector('#mainProductForm tbody');
+                    //singleRowButton()
     
-    
-    if(addButtonValue && tableBodys){
-        addButtonValue.forEach(function (el) {
-        el.addEventListener('click', function () {
-            const currentRow = el.closest('tr');
-            const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
-            const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
-            
-         
-            const formsInsertValue = parseInt(mainForms.value);
-            const formValue = inputValue.split('-')[1];
-        
-            const formsInsert = parseInt(formValue) + 2;
-        
-            const formDataValue = parseInt(formsInsertValue);
-           
-            const newRow = currentRow.cloneNode(true);
-            const submitbutton = document.getElementById('id_submitForms');
-            submitbutton.setAttribute('disabled', false);
-           
-            newRow.querySelectorAll("input, select").forEach(function (e) {
-                e.value = "";
-            });
+                    if(addButtonValue && tableBodys){
+                        addButtonValue.forEach(function (el) {
+                        el.addEventListener('click', function () {
+                            const currentRow = el.closest('tr');
+                            const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');
+                            const mainForms = document.getElementById('id_product2itemuniqueformset-TOTAL_FORMS');
+                            
+                        console.log('test')
+                            const formsInsertValue = parseInt(mainForms.value);
+                            const formValue = inputValue.split('-')[1];
+                        
+                            const formsInsert = parseInt(formValue) + 2;
+                            console.log('formsInsertValue',formsInsertValue)
+                            const formDataValue = parseInt(formsInsertValue);
+                        
+                            const newRow = currentRow.cloneNode(true);
+                            const submitbutton = document.getElementById('id_submitForms');
+                            submitbutton.setAttribute('disabled', false);
+                        
+                            newRow.querySelectorAll("input, select").forEach(function (e) {
+                                e.value = "";
+                            });
 
-            const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
-            rowValue.id = `id_serial_no_unique-${formDataValue}`;
-            rowValue.value = formsInsert;
+                            const rowValue = newRow.querySelector('[id^="id_serial_no_unique-"]');
+                            rowValue.id = `id_serial_no_unique-${formDataValue}`;
+                            rowValue.value = formsInsert;
 
-            const rowNumber = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-row_number"]');
-            rowNumber.id = `id_product2itemuniqueformset-${formDataValue}-row_number`;
-            rowNumber.name = `product2itemuniqueformset-${formDataValue}-row_number`;
-            rowNumber.value = '';
+                            const rowNumber = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-row_number"]');
+                            rowNumber.id = `id_product2itemuniqueformset-${formDataValue}-row_number`;
+                            rowNumber.name = `product2itemuniqueformset-${formDataValue}-row_number`;
+                            rowNumber.value = '';
 
-            const hiddenProductError = newRow.querySelector('[id^="productError_"]');
-            hiddenProductError.id = `productError_${formDataValue}`;
-            hiddenProductError.style.display = 'none';
+                            const hiddenProductError = newRow.querySelector('[id^="productError_"]');
+                            hiddenProductError.id = `productError_${formDataValue}`;
+                            hiddenProductError.style.display = 'none';
 
-            const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
-            newSelectElement.id = `id_product2itemuniqueformset-${formDataValue}-PProduct_pk`;
-            newSelectElement.name = `product2itemuniqueformset-${formDataValue}-PProduct_pk`;
-            newSelectElement.value = '';
+                            const newSelectElement = newRow.querySelector('select[name^="product2itemuniqueformset-"][name$="PProduct_pk"]');
+                            newSelectElement.id = `id_product2itemuniqueformset-${formDataValue}-PProduct_pk`;
+                            newSelectElement.name = `product2itemuniqueformset-${formDataValue}-PProduct_pk`;
+                            newSelectElement.value = '';
 
-            const inputValueElement = newRow.querySelector('[name^="itemName_"]');
-            inputValueElement.id = `id_itemName_${formDataValue}`;
-            inputValueElement.name = `itemName_${formDataValue}`;
-            inputValueElement.value = '';
+                            const inputValueElement = newRow.querySelector('[name^="itemName_"]');
+                            inputValueElement.id = `id_itemName_${formDataValue}`;
+                            inputValueElement.name = `itemName_${formDataValue}`;
+                            inputValueElement.value = '';
 
-            const hiddenError = newRow.querySelector('[id^="uniqueError_"]');
-            hiddenError.id = `uniqueError_${formDataValue}`;
-            hiddenError.style.display = 'none';
+                            const hiddenError = newRow.querySelector('[id^="uniqueError_"]');
+                            hiddenError.id = `uniqueError_${formDataValue}`;
+                            hiddenError.style.display = 'none';
 
-            const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
-            hiddenValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pks`;
-            hiddenValueName.name = `product2itemuniqueformset-${formDataValue}-Item_pks`;
-            hiddenValueName.value = '';
-            hiddenValueName.style.border = '1px solid #ced4da';
+                            const hiddenValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pks"]');
+                            hiddenValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pks`;
+                            hiddenValueName.name = `product2itemuniqueformset-${formDataValue}-Item_pks`;
+                            hiddenValueName.value = '';
+                            hiddenValueName.style.border = '1px solid #ced4da';
 
-            const selectValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
-            selectValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pk`;
-            selectValueName.name = `product2itemuniqueformset-${formDataValue}-Item_pk`;
-            selectValueName.value = '';
+                            const selectValueName = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="Item_pk"]');
+                            selectValueName.id = `id_product2itemuniqueformset-${formDataValue}-Item_pk`;
+                            selectValueName.name = `product2itemuniqueformset-${formDataValue}-Item_pk`;
+                            selectValueName.value = '';
 
-            const inputElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
-            inputElement.id = `id_product2itemuniqueformset-${formDataValue}-no_of_rows`;
-            inputElement.name = `product2itemuniqueformset-${formDataValue}-no_of_rows`;
-            inputElement.value = '1';
+                            const inputElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="no_of_rows"]');
+                            inputElement.id = `id_product2itemuniqueformset-${formDataValue}-no_of_rows`;
+                            inputElement.name = `product2itemuniqueformset-${formDataValue}-no_of_rows`;
+                            inputElement.value = '1';
 
-            const grandElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
-            grandElement.id = `id_product2itemuniqueformset-${formDataValue}-grand_total`;
-            grandElement.name = `product2itemuniqueformset-${formDataValue}-grand_total`;
-            grandElement.value = '0';
+                            const grandElement = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total"]');
+                            grandElement.id = `id_product2itemuniqueformset-${formDataValue}-grand_total`;
+                            grandElement.name = `product2itemuniqueformset-${formDataValue}-grand_total`;
+                            grandElement.value = '0';
 
-            const grandTotalCombi = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total_combi"]');
-            grandTotalCombi.id = `id_product2itemuniqueformset-${formDataValue}-grand_total_combi`;
-            grandTotalCombi.name = `product2itemuniqueformset-${formDataValue}-grand_total_combi`;
-            grandTotalCombi.value = '0';
+                            const grandTotalCombi = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="grand_total_combi"]');
+                            grandTotalCombi.id = `id_product2itemuniqueformset-${formDataValue}-grand_total_combi`;
+                            grandTotalCombi.name = `product2itemuniqueformset-${formDataValue}-grand_total_combi`;
+                            grandTotalCombi.value = '0';
 
-            const inputRemark = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
-            inputRemark.id = `id_product2itemuniqueformset-${formDataValue}-Remark`;
-            inputRemark.name = `product2itemuniqueformset-${formDataValue}-Remark`;
-            inputRemark.value = '';
+                            const inputRemark = newRow.querySelector('input[name^="product2itemuniqueformset-"][name$="Remark"]');
+                            inputRemark.id = `id_product2itemuniqueformset-${formDataValue}-Remark`;
+                            inputRemark.name = `product2itemuniqueformset-${formDataValue}-Remark`;
+                            inputRemark.value = '';
 
-            const deleteElement = newRow.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
-            deleteElement.id = `id_product2itemuniqueformset-${formDataValue}-DELETE`;
-            deleteElement.name = `product2itemuniqueformset-${formDataValue}-DELETE`;
-            deleteElement.value = '';
-            deleteElement.checked = false;
+                            const deleteElement = newRow.querySelector('.product_Item_deleteId[name^="product2itemuniqueformset-"][name$="DELETE"]');
+                            deleteElement.id = `id_product2itemuniqueformset-${formDataValue}-DELETE`;
+                            deleteElement.name = `product2itemuniqueformset-${formDataValue}-DELETE`;
+                            deleteElement.value = '';
+                            deleteElement.checked = false;
 
-            const addButtonElement = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
-            addButtonElement.id = `id_product2itemuniqueformset-${formDataValue}-add_btn`;
-            addButtonElement.name = `product2itemuniqueformset-${formDataValue}-add_btn`;
-            addButtonElement.value = '+';
-            addButtonElement.style.display = 'none';
+                            const addButtonElement = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-add_btn"]');
+                            addButtonElement.id = `id_product2itemuniqueformset-${formDataValue}-add_btn`;
+                            addButtonElement.name = `product2itemuniqueformset-${formDataValue}-add_btn`;
+                            addButtonElement.value = '+';
+                            addButtonElement.style.display = 'none';
 
-            
-            const mainId = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
-            mainId.id = `id_product2itemuniqueformset-${formDataValue}-id`;
-            mainId.name = `product2itemuniqueformset-${formDataValue}-id`;
-            mainId.value = '';
-            
+                            
+                            const mainId = newRow.querySelector('[name^="product2itemuniqueformset-"][name$="-id"]');
+                            mainId.id = `id_product2itemuniqueformset-${formDataValue}-id`;
+                            mainId.name = `product2itemuniqueformset-${formDataValue}-id`;
+                            mainId.value = '';
+                            
 
-            // Insert the new row after the current row
-            currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
+                            // Insert the new row after the current row
+                            currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
 
-            // Re-bind delete functionality after adding a new 
-            // deleteRowSingle();
-            // updateAddButtonVisibility();
-            // inputCheck()
-            // Update the total forms count
-            mainForms.value = formsInsertValue + 1;
-    
-        });
-    });
-    }
-       
+                            // Re-bind delete functionality after adding a new 
+                            deleteRowUniqueSingle();
+                            // inputCheck()
+                            // Update the total forms count
+                            mainForms.value = formsInsertValue + 1;
+                    
+                        });
+                    });
+                    }
+                        const addButtonValues = document.querySelectorAll('.add_btn_CommonForm');
+                        const tableBody = document.querySelector('#myProduct tbody');
+
+                        if(addButtonValues){
+                            addButtonValues.forEach(function (el){
+                            el.addEventListener('click',function(){
+
+                                const currentRow = el.closest('tr');
+                                const inputValue = currentRow.querySelector('[name$="-no_of_rows"]').getAttribute('name');     
+                                const mainForms = document.getElementById('id_product2itemcommonformset-TOTAL_FORMS');         
+                                const formsInsertValue = parseInt(mainForms.value);   
+                                const formValue = inputValue.split('-')[1];
+                                
+                                const formsInsert = parseInt(formValue) + 2;
+                                const formDataValues = formsInsertValue;
+
+                                const newRow = currentRow.cloneNode(true);
+                    
+                                const submitbutton = document.getElementById('id_submitForms');
+                                submitbutton.setAttribute('disabled', true);
+                            
+                                newRow.querySelectorAll("input select").forEach(function (e) {
+                                        e.value = "";
+                                });
+
+                                    const SerialNo = newRow.querySelector('[id^="id_serial_no-"]');
+                                    SerialNo.id = `id_serial_no-${formDataValues}`;
+                                    SerialNo.value = formsInsert ;
+
+                                    const Numbers = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-row_number"]');
+                                    Numbers.id = `id_product2itemcommonformset-${formDataValues}-row_number`;
+                                    Numbers.name = `product2itemcommonformset-${formDataValues}-row_number`;
+                                    Numbers.value = '';
+
+                                    const inputnameElement = newRow.querySelector('[name^="item_input_Name_"]');
+                                    inputnameElement.id = `id_item_input_Name_${formDataValues}`;
+                                    inputnameElement.name = `item_input_Name_${formDataValues}`;
+                                    inputnameElement.value = '';
+
+                                    const hiddenErrors = newRow.querySelector('[id^="commonCreateError_"]');
+                                    hiddenErrors.id = `commonCreateError_${formDataValues}`;
+                                    hiddenErrors.style.display = 'none';
+
+                                    const hiddenElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pks"]');
+                                    hiddenElement.id = `id_product2itemcommonformset-${formDataValues}-Item_pks`;
+                                    hiddenElement.name = `product2itemcommonformset-${formDataValues}-Item_pks`;
+                                    hiddenElement.value = "";
+                                    hiddenElement.style.border = '1px solid #ced4da';
+
+                                    const selectElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="Item_pk"]');
+                                    selectElement.id = `id_product2itemcommonformset-${formDataValues}-Item_pk`;
+                                    selectElement.name = `product2itemcommonformset-${formDataValues}-Item_pk`;
+                                    selectElement.value = '';
+
+                                    const inputNameValue = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="no_of_rows"]');
+                                    inputNameValue.id = `id_product2itemcommonformset-${formDataValues}-no_of_rows`;
+                                    inputNameValue.name = `product2itemcommonformset-${formDataValues}-no_of_rows`;
+                                    inputNameValue.value = '1';
+
+                                    const grandTotalElement = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total"]');
+                                    grandTotalElement.id = `id_product2itemcommonformset-${formDataValues}-grand_total`;
+                                    grandTotalElement.name = `product2itemcommonformset-${formDataValues}-grand_total`;
+                                    grandTotalElement.value = '0';
+
+                                    const grandTotalCombiCommon = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="grand_total_combi"]');
+                                    grandTotalCombiCommon.id = `id_product2itemcommonformset-${formDataValues}-grand_total_combi`;
+                                    grandTotalCombiCommon.name = `product2itemcommonformset-${formDataValues}-grand_total_combi`;
+                                    grandTotalCombiCommon.value = '0';
+
+                                    const inputElement = newRow.querySelector('input[name^="product2itemcommonformset-"][name$="Remark"]');
+                                    inputElement.id = `id_product2itemcommonformset-${formDataValues}-Remark`;
+                                    inputElement.name = `product2itemcommonformset-${formDataValues}-Remark`;
+                                    inputElement.value = 'Common';
+
+                                    const deleteElement = newRow.querySelector('.product_deleteId[name^="product2itemcommonformset-"][name$="DELETE"]');
+                                    deleteElement.id = `id_product2itemcommonformset-${formDataValues}-DELETE`;
+                                    deleteElement.name = `product2itemcommonformset-${formDataValues}-DELETE`;
+                                    deleteElement.value = '';
+                                    deleteElement.checked = false;
+
+                                    const addButtonElement = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-add_btns"]');
+                                    addButtonElement.id = `id_product2itemcommonformset-${formDataValues}-add_btns`;
+                                    addButtonElement.name = `product2itemcommonformset-${formDataValues}-add_btns`;
+                                    addButtonElement.value = '+';
+                                    addButtonElement.style.display = 'none';
+
+                                    const mainId = newRow.querySelector('[name^="product2itemcommonformset-"][name$="-id"]');
+                                    mainId.id = `id_product2itemcommonformset-${formDataValues}-id`;
+                                    mainId.name = `product2itemcommonformset-${formDataValues}-id`;
+                                    mainId.value = '';
+                            
+                                currentRow.parentNode.insertBefore(newRow, currentRow.nextSibling);
+                                // Update the prefix of the rows below the newly added row
+                    
+                            mainForms.value = formDataValues + 1;
+                            deletedCommonRow();
+                            
+                            })
+                        
+                        })
+                        }
+                    
+                    
                     },
                     error: function (xhr, status, error) {
-                        // Handle errors
-                        
+                                        // Handle errors
+                                        
                     }
                 });
-            });
-        });
-    </script>
+            })
+        })
+        // $(document).ready(function () {
+        //     $('#productSelector').on('change', function () {
+        //         let selectedId = $(this).val(); 
+        
+     
+        //     });
+        // });
+</script>
 
 <script>
         let popUpWindow = null;
@@ -721,7 +829,6 @@
             window.opener.postMessage(data, '*');
         }
     });
-
 
     $(document).ready(function () {
         let newValueKey;
@@ -1233,7 +1340,7 @@
             suggestionsContainerCommon.on('click', '.itemName-div-suggestion', function () {
                 const currentRow = $(this).closest('tr'); 
                 const newDataValue = $(this).find('.itemhighlightname').text().trim();
-                console.log('newDataValue',newDataValue)
+             
                 const dataKey = $(this).attr('data-key');  // New row's data-key (item to be added)
                 const errorShow = currentRow.find('.error-messagesorderCreate');  // Error display element
                 const submitButton = $(this).closest('form').find('#id_submitForms');
@@ -1551,11 +1658,11 @@
             }
         });
     }
-
+    singleRowButton()
     // Initial call to update the visibility when the page loads
     updateAddButtonVisibility();
-
-    if(addButtonValue && tableBodys){
+    function singleRowButton(){
+        if(addButtonValue && tableBodys){
     addButtonValue.forEach(function (el) {
         el.addEventListener('click', function () {
             const currentRow = el.closest('tr');
@@ -1668,6 +1775,8 @@
         });
     });
     }
+    }
+    
     function getVisibleuniqueRows() {
     // Select all rows that are not hidden (excluding those with display: none)
     const visibleRowsunique = document.querySelectorAll('.mainTableList tr:not([style*="display: none"])');
@@ -2227,8 +2336,6 @@ function submitFormRowNumber(){
             unique++;
         })       
 }
-
-
 submitFormRowNumber();
 
 // Call the function on page load
@@ -2286,19 +2393,19 @@ document.querySelector('#myProductForm').addEventListener('submit', function() {
             if(itemIds ===''){
                 if(selectProduct !== ''){
                     if (event.key === "Tab") {
-                event.preventDefault(); // Prevent default tab behavior
-                console.log('test')
-                // Check if the current input has a value
-                if (input.value.trim() !== "") {
-                    // If not the last input, move focus to the next row's item name
-                    if (itemNameInputsid[index + 1]) {
-                        itemNameInputsid[index + 1].focus();
+                        event.preventDefault(); // Prevent default tab behavior
+                        console.log('test')
+                        // Check if the current input has a value
+                        if (input.value.trim() !== "") {
+                            // If not the last input, move focus to the next row's item name
+                            if (itemNameInputsid[index + 1]) {
+                                itemNameInputsid[index + 1].focus();
+                            }
+                        } else {
+                            // If current input is empty, refocus on it
+                            input.focus();
+                        }
                     }
-                } else {
-                    // If current input is empty, refocus on it
-                    input.focus();
-                }
-            }
                 }
                
             }
