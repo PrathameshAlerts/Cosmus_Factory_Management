@@ -2273,11 +2273,19 @@ document.querySelector('#myProductForm').addEventListener('submit', function() {
 
     function inputCheck(){
         const itemNameInputsid = document.querySelectorAll('[name$="-Item_pks"]');
-       
+        const itemIds = document.getElementById('id_product2itemuniqueformset-0-id').value;
+        document.getElementById('productSelector').addEventListener('change',function(){
+            var selectProduct = this.value;
+            return;
+            
+        });
+   
     // Loop through each input and add keydown event listener
     itemNameInputsid.forEach((input, index) => {
         input.addEventListener("keydown", function (event) {
-            if (event.key === "Tab") {
+            if(itemIds ===''){
+                if(selectProduct !== ''){
+                    if (event.key === "Tab") {
                 event.preventDefault(); // Prevent default tab behavior
                 console.log('test')
                 // Check if the current input has a value
@@ -2291,6 +2299,10 @@ document.querySelector('#myProductForm').addEventListener('submit', function() {
                     input.focus();
                 }
             }
+                }
+               
+            }
+       
             if (event.key === 'Enter') {
                 event.preventDefault(); // Prevent default Enter key behavior
 
