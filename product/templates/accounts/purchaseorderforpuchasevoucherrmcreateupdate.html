@@ -88,7 +88,7 @@
                         </div> 
                     </td>
                     <td><input type="text" name="item_color_{{forloop.counter0}}" id="item_color_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.Item_Color.color_name }}{% endif %}" class="purchase-input" style="margin-left: 10px;" readonly></td>
-                    <td><input type="text" name="{{forms.prefix}}-quantity" id="id_{{forms.prefix}}-quantity" value="{{forms.instance.quantity_total | default_if_none:'' }}" class="purchase-input" style="margin-left: 10px;"></td>
+                    <td><input type="number" name="{{forms.prefix}}-quantity" id="{{forms.prefix}}-quantity" value="{{forms.instance.quantity_total | default_if_none:'' }}" class="purchase-input"></td>
                     <td><input type="text" name="item_per_{{forloop.counter0}}" id="item_per_{{forloop.counter0}}" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.unit_name_item.unit_name }}{% endif %}" class="purchase-mark" readonly></td>
                     <td><input type="number" id="{{forms.prefix}}-rate" class="purchase-input purchase-rate" name="{{forms.prefix}}-rate" value="250" ></td>
                     <td>
@@ -141,7 +141,7 @@
                     <div class=" mb-3">
                         <label class="purchase-lable fw-bold">Fright & Transport</label>
                         <span class="purchase-span">
-                            <input type="number" class="purchaseTableLabel-transport  purchase-amounts" name="fright_transport" id ="id_fright_transport" value="{{master_form.instance.fright_transport | default_if_none:'0'}}" maxlength="50" step=".01" required >
+                            <input type="number" class="purchaseTableLabel-transport  purchase-amounts" name="fright_transport" id ="id_fright_transport" value="0" maxlength="50" step=".01" required >
                         </span>
                     </div>
                     <div class=" mb-3">
@@ -507,6 +507,7 @@ function getGstNo() {
         const rows = Array.from(document.querySelectorAll('.mainTableList tr'))
         .filter(row => row.style.display !== 'none');
         rows.forEach(function(row) {
+            console.log(row)
             // Find the quantity, rate, and amount input fields for the current row
             const quantityInput = row.querySelector('.purchase-input[name^="purchase_order_for_puchase_voucher_rm_set-"][name$="-quantity"]');
             const rateInput = row.querySelector('.purchase-input[name^="purchase_order_for_puchase_voucher_rm_set-"][name$="-rate"]');
@@ -520,7 +521,8 @@ function getGstNo() {
             const quantity = parseFloat(quantityInput.value);
             const rate = parseFloat(rateInput.value);
             const gst = parseFloat(gstValue.value);
-         
+            console.log('quantity',quantity)
+            console.log('rate',rate)
             // Calculate the amount for the current row
             const amount = quantity * rate;
             totalQty  += quantity;
@@ -562,13 +564,15 @@ function getGstNo() {
             document.getElementById('id_grand_quantity').value = isNaN(totalQty) ? '' :totalQty.toFixed(2);
             document.getElementById('id_grand_cgst').value = isNaN(totalCgst) ? '' :totalCgst.toFixed(2);
             document.getElementById('id_grand_sgst').value = isNaN(totalSgst) ? '' : totalSgst.toFixed(2);
-            document.getElementById('id_grand_amount').value =isNaN(grandTotalAmount) ? '' : grandTotalAmount.toFixed(2);      
+            document.getElementById('id_grand_amount').value =isNaN(grandTotalAmount) ? '' : grandTotalAmount.toFixed(2);   
+            calculateOtherTotal()   
     }
     function calculateOtherTotal(grandTotal) {
 
-         const grandTotals = parseFloat(document.getElementById('id_grand_amount').value);
-          let  grossTotal = grandTotals;      
-    
+        const grandTotals = parseFloat(document.getElementById('id_grand_amount').value);
+        //console.log('grandTotals',grandTotals)
+        let  grossTotal = grandTotals;      
+
         // Set the calculated gross total value to the gross total input field
         document.getElementById('id_gross_total').value =isNaN(grossTotal) ? '' : grossTotal.toFixed(2);
 
@@ -578,14 +582,14 @@ function getGstNo() {
 
         document.getElementById('temp_grand_total').value =isNaN(finalTotal) ? '' : finalTotal.toFixed(2);
 
-          
+        
         let finalTotals = Math.round(finalTotal)
         let roundOff = finalTotals - finalTotal;
 
         document.getElementById('id_round_off').value =isNaN(roundOff) ? '' : roundOff.toFixed(2);
         // Set the calculated grand total value to the grand total input field
         document.getElementById('id_grand_total').value = isNaN(finalTotals) ? '' : finalTotals.toFixed(2);
-    }
+        }
     // Call the function initially to calculate total amount, GST, and grand total on page load
  
     // Add onchange event handler to id_fright_transport
@@ -714,7 +718,7 @@ function getGstNo() {
                 calculateTotalAmount();
                 calculateOtherTotal();
                 deleteRowData();
-                // inputCheck();
+               
                
             }   
              
