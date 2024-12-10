@@ -1,0 +1,29 @@
+{% extends 'product/base.html' %} 
+
+{% load static %}
+
+{% block body %}
+
+
+
+<form action="" method='POST'>
+
+    {% csrf_token %}
+
+    {{master_form.as_p}}
+
+    {{ formset.management_form}}
+
+    
+
+    {% for form in formset %}
+
+        {{ form.as_p }}
+
+    {% endfor %}
+
+    <input type="submit">
+
+</form>
+
+{% endblock body %}

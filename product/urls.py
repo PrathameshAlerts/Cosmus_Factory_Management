@@ -4,7 +4,7 @@ from . import views
 handler404 = 'product.views.custom_404_view'
 
 urlpatterns = [
-    #factoryroutes
+    
     #product_routes
     path('editpproduct/<int:pk>',views.edit_production_product , name= 'edit_production_product'),
     path('pproduct_creation/',views.product_color_sku , name='pproduct_creation'),
@@ -296,18 +296,24 @@ urlpatterns = [
     path('editbininrack/<int:bin_id>/',views.edit_bin_in_rack, name="edit-bin-in-rack"),
     path('deletebininrack/<int:bin_id>/',views.delete_bin_in_rack, name="delete-bin-in-rack"),
     
-
     path('warehousenavigator/',views.warehouse_navigator, name="warehouse-navigator"),
 
     path('processserialno/', views.process_serial_no,name="process-serial-no"),
 
-    #common Routes
+    # common Routes
     path('', views.dashboard , name = 'dashboard-main'),
     path('exceldownloadproduction/<str:module_name>/<int:pk>', views.excel_download_production, name ='excel-download-production'),
 
     path('producttoitemajax/', views.product_2_item_ajax, name='product-2-item-ajax'),
 
-    #testing
+    # testing
     path('testsession/', views.session_data_test, name='test-session'),
+
+    # purchase order for rawmaterial
+    path('purchaseorderforpuchasevoucherrmcreateupdate/', views.purchase_order_for_puchase_voucher_rm_create_update, name = 'purchase-order-for-puchase-voucher-rm-create-update'),
+    path('purchaseorderforpuchasevoucherrmcreateupdate/<int:p_id>/', views.purchase_order_for_puchase_voucher_rm_create_update, name = 'purchase-order-for-puchase-voucher-rm-create-update'),
+    path('purchaseorderforpuchasevoucherrmlist/', views.purchase_order_for_puchase_voucher_rm_list, name='purchase-order-for-puchase-voucher-rm-list'),
+
+
 ]   
 
