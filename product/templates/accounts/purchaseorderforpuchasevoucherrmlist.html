@@ -50,45 +50,65 @@
     <button type="button" class="edit_btn w-100 mb-2" id="NegativeList_btn">Negative List<span class="production_padding"><i class="fas fa-angle-right arrowBtn"></i></span></button>
     <div id="NegativeList" style="display: none;">
         <div>
-            <form action="" method="GET">
+            <form action="/purchase-order-for-puchase-voucher-rm-list/" method="GET" id="filterForm">
                 <h4>negetive stock</h4>
-                    Ascending 
-                    descending
-                    Fabric Group
-                    Less Than 
-                    <input type="hidden" id="" name="" value="">
-                    <input type="submit">
+                <div>
+                    <label>Sort by:</label>
+                    <button type="submit" class="add_btn" name="sort_name" value="lowest" class="sort-btn">
+                       Assending
+                    </button>
+                    <button type="submit" class="add_btn" name="sort_name" value="highest" class="sort-btn">
+                       Decending
+                    </button>
+                   
+                </div>
+                    <div class="d-flex mb-3">
+                        <label>Fabric Group :</label>
+                        <input type="number" name="Fabric_Group" id="id_Fabric_Group" class="item-select" value="">
+                    <label>Less Than:</label>
+                        <input type="number" name="less_Number" id="id_lessNumber" class="item-select" value="">
+                        
+                    </div>
+                    <button type="submit" class="ms-5 newProductCreateBtn" id="parentClick">Submit</button>
+                </form>
+                <form action="/purchase-order-for-puchase-voucher-rm-list/" method="GET">
+                   
                 </form>
                 <div>
                     <table class="table table-striped table-hover table-bordered">
-                        <tr>
-                            <th>No</th>
-                            <th>M Code/Color Code</th>
-                            <th>Item Name</th>
-                            <th>F Group</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Units</th>
-                            <th>Select</th>
-                            <th>Last Buying seller</th>
-                            <th>Mobile No</th>
-                            <th>Email</th>
-                        </tr>
-                        {% for item in negetive_stock_report %}
-                        <tr>
-                            <input type="hidden" id="id_item_pk" value="{{item.id}}">
-                            <td>{{forloop.counter}}</td>
-                            <td>{{item.Material_code}}</td>
-                            <td>{{item.item_name}}</td>
-                            <td>{{item.Fabric_Group.fab_grp_name}}</td>
-                            <td>{{item.Item_Color.color_name}}</td>
-                            <td>{{item.total_qty | default_if_none:0}}</td>
-                            <td>{{item.Units}}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        {% endfor %}
+                        <thead class="name_absolute">
+                            <tr>
+                                <th>No</th>
+                                <th>M Code/Color Code</th>
+                                <th>Item Name</th>
+                                <th>F Group</th>
+                                <th>Color</th>
+                                <th>Quantity</th>
+                                <th>Units</th>
+                                <th>Select</th>
+                                <th>Last Buying seller</th>
+                                <th>Mobile No</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mainTableList">
+                            {% for item in negetive_stock_report %}
+                            <tr>
+                                <input type="hidden" id="id_item_pk" value="{{item.id}}">
+                                <td>{{forloop.counter}}</td>
+                                <td>{{item.Material_code}}</td>
+                                <td>{{item.item_name}}</td>
+                                <td>{{item.Fabric_Group.fab_grp_name}}</td>
+                                <td>{{item.Item_Color.color_name}}</td>
+                                <td>{{item.total_qty | default_if_none:0}}</td>
+                                <td>{{item.Units}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        
                     </table>
                 
                    
@@ -101,32 +121,32 @@
 
 </div>
 
-
-
-
 <script>
     function redirectVoucher(){
         window.location.href = "{% url 'purchase-order-for-puchase-voucher-rm-create-update' %}"
     }
     document.addEventListener("DOMContentLoaded", function () {
-    function toggleVisible(toggleButtonId, dataContainerId) {
-      const toggleButton = document.getElementById(toggleButtonId);
-      const icon = toggleButton.querySelector(".arrowBtn");
-      const dataContainer = document.getElementById(dataContainerId);
-      toggleButton.addEventListener("click", function () {
-        // Toggle the visibility of the data container
-        if (dataContainer.style.display === "none") {
-          dataContainer.style.display = "block";
-          icon.classList.add("rotate"); // Add rotate class to the icon
-        } else {
-          dataContainer.style.display = "none";
-          icon.classList.remove("rotate"); // Remove rotate class from the icon
+        function toggleVisible(toggleButtonId, dataContainerId) {
+        const toggleButton = document.getElementById(toggleButtonId);
+        const icon = toggleButton.querySelector(".arrowBtn");
+        const dataContainer = document.getElementById(dataContainerId);
+        toggleButton.addEventListener("click", function () {
+            // Toggle the visibility of the data container
+            if (dataContainer.style.display === "none") {
+            dataContainer.style.display = "block";
+            icon.classList.add("rotate"); // Add rotate class to the icon
+            } else {
+            dataContainer.style.display = "none";
+            icon.classList.remove("rotate"); // Remove rotate class from the icon
+            }
+        });
         }
-      });
-    }
-    toggleVisible("poRMEstimation_btn", "poRMEstimation_div");
-    toggleVisible("NegativeList_btn", "NegativeList");
-    toggleVisible("set_production_btn", "set_production");
+        toggleVisible("poRMEstimation_btn", "poRMEstimation_div");
+        toggleVisible("NegativeList_btn", "NegativeList");
+        toggleVisible("set_production_btn", "set_production");
+
+
+        
     })
 </script>
 {% endblock body %}

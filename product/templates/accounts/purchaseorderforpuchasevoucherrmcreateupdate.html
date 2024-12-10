@@ -55,7 +55,7 @@
             <thead class="name_absolute">
                 <tr>
                     <th>No</th>
-                    <th>M code/ Colour Code</th>
+                    <th>M code/C Code</th>
                     <th>Item Name</th>
                     <th>Color</th>
                     <th>Qty</th>
@@ -75,9 +75,10 @@
                 {{ forms.id }}
                 <tr>
                     <td><input type="number" class="rowNo  bg-transparent border-0" name="rowNo_{{forloop.counter0}}" id="rowNo_{{forloop.counter0}}" value="{{forloop.counter}}" readonly></td>
-                    <td><input type="text" name="item_Mcode_{{forloop.counter0}}" id="item_Mcode_{{forloop.counter0}}" value="" class="purchase-input" style="margin-left: 10px;" readonly></td>
+                    <td><input type="text" name="item_Mcode_{{forloop.counter0}}" id="item_Mcode_{{forloop.counter0}}" value="" class="purchase-amount" readonly></td>
                     <td>
                         <div class="custom-dropdown-container">
+                            <input  type="hidden" name="{{forms.prefix}}-item_name" id="{{forms.prefix}}-item_name" class="purchaseDate"  value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
                             <input  type="text" name="item_name_{{forloop.counter0}}" id="item_name_{{forloop.counter0}}" class="productpurchaseInvoice search-input"  placeholder="Item Name" autocomplete="off" value="{% if forms.instance.id %}{{ forms.instance.item_shade.items.item_name }}{% endif %}"  > 
                             <div name="select_item_name_{{forloop.counter0}}" class="productpurchaseInvoice item-name s-suggestion-container item-select_input" id="select_item_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Item Name" >
                               
@@ -302,6 +303,7 @@
         var valueKey = namevalueCheck + ' ' + numberValue ;
             
         $(`input[name^="item_name_${purchaseValue}"]`).val(newnameValue);
+        $(`input[name^="purchase_order_for_puchase_voucher_rm_set-${purchaseValue}-item_name"]`).val(item_value);
 
         $.ajax({
             url: '/purchasevouchercreate/',
@@ -311,7 +313,7 @@
             },
             success: function (response) {
                 var itemrownameid = itemName.split('-')[1];
-                console.log(response.item_m_code_out)
+                console.log('ews',response.item_m_code_out)
             
                     var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
                     var item_color = response.item_color;
@@ -327,9 +329,13 @@
                     itemgstinput.value = item_gst_value_response;
 
                     var mCode = document.querySelector('#item_Mcode_' + itemrownameid );
-                    // var newMcodeValue = 
-
-              
+                     var newMcodeValue = response.item_m_code_out
+                        if(newMcodeValue !== ''){
+                            mCode.value = newMcodeValue  
+                        }else{
+                            mCode.value = '';
+                        }
+                     
                 ajaxInProgress = false;
             },
             error: function (xhr, errmsg, err) {
@@ -519,10 +525,11 @@ function getGstNo() {
             const quantity = parseFloat(quantityInput.value);
             const rate = parseFloat(rateInput.value);
             const gst = parseFloat(gstValue.value);
-            console.log('quantity',quantity)
+            console.log('quantity',typeof(quantity))
             console.log('rate',rate)
             // Calculate the amount for the current row
             const amount = quantity * rate;
+            console.log('amount',amount)
             totalQty  += quantity;
             // This function use for comparing the company gst with party gst no and calculate the cgst,sgst and igst
             if(getGstNo()){ 
@@ -635,6 +642,12 @@ function getGstNo() {
                     rowElement.value = formIndex + 1 ;
                     rowElement.style.border="none";
 
+                    const inputHiddenElement = lastRow.querySelector('input[name$="-item_name"]');
+                    inputHiddenElement.id = `purchase_order_for_puchase_voucher_rm_set-${formIndex}-item_name`;
+                    inputHiddenElement.name = `purchase_order_for_puchase_voucher_rm_set-${formIndex}-item_name`;
+                    inputHiddenElement.value="";
+                    
+
                     const inputSelectElement = lastRow.querySelector('.search-input[name^="item_name_"]');
                     inputSelectElement.id = `item_name_${formIndex}`;
                     inputSelectElement.name = `item_name_${formIndex}`;
@@ -642,7 +655,7 @@ function getGstNo() {
                     inputSelectElement.removeAttribute('readonly');
                     
                     const oldShadeElement = lastRow.querySelector('[id^="item_Mcode_"]');
-                    oldShadeElement.id = `item_Mcode__${formIndex}`;
+                    oldShadeElement.id = `item_Mcode_${formIndex}`;
                     oldShadeElement.name =  `item_Mcode_${formIndex}`;
                     oldShadeElement.value="";
              ;
@@ -659,15 +672,15 @@ function getGstNo() {
                     colorInputElement.value="";
 
 
-                    const qunatityInputElement = lastRow.querySelector('[name^="purchase_order_for_puchase_voucher_rm_set-"][name$="-quantity"]');
-                    qunatityInputElement.id = `id_purchase_order_for_puchase_voucher_rm_set-${formIndex}-quantity`;
+                    const qunatityInputElement = lastRow.querySelector('.purchase-input[name^="purchase_order_for_puchase_voucher_rm_set-"][name$="-quantity"]');
+                    qunatityInputElement.id = `purchase_order_for_puchase_voucher_rm_set-${formIndex}-quantity`;
                     qunatityInputElement.name = `purchase_order_for_puchase_voucher_rm_set-${formIndex}-quantity`;
                     qunatityInputElement.value="";
 
                     const rateInputElement = lastRow.querySelector('.purchase-rate[name^="purchase_order_for_puchase_voucher_rm_set-"][name$="-rate"]');
                     rateInputElement.id = `purchase_order_for_puchase_voucher_rm_set-${formIndex}-rate`;
                     rateInputElement.name = `purchase_order_for_puchase_voucher_rm_set-${formIndex}-rate`;
-                    rateInputElement.value="250";
+                    rateInputElement.value="";
 
                     const perInputElement = lastRow.querySelector('.purchase-mark[name^="item_per"]');
                     perInputElement.id = `item_per_${formIndex}`;
@@ -710,13 +723,12 @@ function getGstNo() {
 
                     formCountInput.value = formCount + 1; 
                     tableBody.appendChild(lastRow);
-                
+                    bindRowListeners(lastRow)
                 }
                 document.getElementById('id_productRow').value = '1';
                 calculateTotalAmount();
                 calculateOtherTotal();
                 deleteRowData();
-               
                
             }   
              
@@ -760,7 +772,7 @@ function getGstNo() {
 
             if (row) {
                 // Find the checkbox for deletion in the row
-                const checkRow = row.querySelector('.godown_deleteId[name^="purchase_voucher_items_set-"][name$="-DELETE"]');
+                const checkRow = row.querySelector('.godown_deleteId[name^="purchase_order_for_puchase_voucher_rm_set-"][name$="-DELETE"]');
 
                 if (checkRow) {
                     checkRow.checked = true; // Mark as checked
@@ -788,17 +800,14 @@ function getGstNo() {
   };
 
   document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('[name$="-quantity"], [name$="-rate"]').forEach(input => {
+            input.addEventListener('input', function(){
+            calculateTotalAmount();
+            calculateOtherTotal();
+            });
+        });
 
-document.querySelectorAll('[name$="-quantity"], [name$="-rate"]').forEach(input => {
-input.addEventListener('input', function(){
-calculateTotalAmount();
-calculateOtherTotal();
-});
-});
-
-
-
-})
+    })
  deleteRowData();
  calculateTotalAmount();
  calculateOtherTotal();
