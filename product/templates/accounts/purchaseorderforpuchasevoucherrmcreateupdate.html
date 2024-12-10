@@ -9,11 +9,9 @@
         <div class="col-lg-4">
             <div class="d-flex mb-3">
                 <label for="id_po_no"  class="item-form">Po No :</label>
-                {% if master_form.instance.id %}
-                <input type="text" class="item-select" name="po_no" id ="id_po_no" value="{{master_form.instance.po_no}}" maxlength="255" required readonly>
-                {% elif not master_form.instance.id %}
-                <input type="text" class="item-select" name="po_no" id ="id_po_no" value="{{master_form.po_no.initial}}" maxlength="255" required>
-                {% endif %}
+               
+                <input type="text" class="item-select" name="po_no" id ="id_po_no" value="{{master_form.instance.po_no| default_if_none:''}}" maxlength="255" required>
+                
             </div>
             <div class="d-flex mb-3">
                 <label for="id_party_name" class="item-form" >Party A/C Name :</label>
@@ -38,7 +36,7 @@
             </div>
             <div class="d-flexmb-3">
                 <label for="id_paymentTerm"  class="item-form">Payment Term :</label>
-                <input type="text" class="item-select" name="paymentTerm" id ="id_paymentTerm" value="" maxlength="255" required readonly>
+                <input type="text" class="item-select" name="paymentTerm" id ="id_paymentTerm" value="{{form.instance.payment_term}}" maxlength="255" required >
               
             </div>
            
@@ -313,7 +311,7 @@
             },
             success: function (response) {
                 var itemrownameid = itemName.split('-')[1];
-                console.log(response)
+                console.log(response.item_m_code_out)
             
                     var itemcolorinput = document.querySelector('#item_color_' + itemrownameid);
                     var item_color = response.item_color;

@@ -1177,12 +1177,12 @@ class purchase_order_master_for_puchase_voucher_rm(models.Model):
     po_no = models.IntegerField(unique=True,null=False,blank=False)
     party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
     payment_term = models.CharField(max_length=20, null=True, blank=True)
-
+    fright_transport = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
 
 class purchase_order_for_puchase_voucher_rm(models.Model):
     master_instance = models.ForeignKey(purchase_order_master_for_puchase_voucher_rm, on_delete=models.CASCADE)
     item_name = models.ForeignKey(Item_Creation,on_delete=models.PROTECT)
-    quantity = models.IntegerField()
-    rate = models.IntegerField()
+    quantity = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    rate = models.DecimalField(default = 0, max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
 
 

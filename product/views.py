@@ -2202,6 +2202,7 @@ def purchasevouchercreateupdate(request, pk = None):
         item_color_out = ''
         item_per_out = ''
         item_gst_out = 0
+        item_m_code_out = ''
         
     
         if item_value is not None: 
@@ -2216,6 +2217,9 @@ def purchasevouchercreateupdate(request, pk = None):
 
             item_gst = item.Item_Creation_GST.gst_percentage
             item_gst_out = item_gst_out + item_gst
+
+            item_material_code = item.Material_code
+            item_m_code_out = item_m_code_out + item_material_code
 
         
         
@@ -2247,7 +2251,7 @@ def purchasevouchercreateupdate(request, pk = None):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
              return JsonResponse({'item_color': item_color_out , 'item_shade': item_shades_dict,'auto_popup_flag':auto_popup_flag,
                                   "item_per":item_per_out, 'item_shades_total_quantity_dict':item_shades_total_quantity_dict,
-                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no})
+                                  'item_gst_out':item_gst_out,'party_gst_no':party_gst_no,'item_m_code_out':item_m_code_out})
 
     if request.method == 'POST':
         
@@ -6081,7 +6085,7 @@ def finished_goods_vendor_model_wise_report(request, ref_no, challan_no):
         labour_workout_p_2_i={}
 
         sku_to_processed_pcs = dict(total_labour_workout.labour_workout_child_items.all().values_list('product_sku', 'processed_pcs'))
-        print( sku_to_processed_pcs)
+        
         for x in SKU_List:
 
             sku = str(x.split('-')[0])  
@@ -7429,7 +7433,6 @@ def delete_bin_in_rack(request,bin_id):
 
 
 def purchase_order_for_puchase_voucher_rm_create_update(request,p_id=None):
-
     party_names = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
     if p_id:
         order_instance = purchase_order_master_for_puchase_voucher_rm.objects.get(id=p_id)
@@ -7530,7 +7533,7 @@ def itemdynamicsearchajax(request):
                 searched_item_name_dict[item_id] = item_name
             
             logger.info(f"searched result via itemdynamicsearchajax {searched_item_name_dict}")
-            
+            print(searched_item_name_dict)
             return JsonResponse({'item_name_typed': item_name_typed, 'searched_item_name_dict': searched_item_name_dict}, status=200)
         
         else:
