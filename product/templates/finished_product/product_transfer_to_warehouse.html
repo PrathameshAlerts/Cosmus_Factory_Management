@@ -9,7 +9,11 @@
       <input type="hidden" id="productTransferDate" value="{{dict_to_send}}">
       <div class="d-flex mb-2">
           <label for="id_voucher_no" class="">Voucher No:</label>
+          {% if form.instance.pk %}
+          <input value="{{form.instance.voucher_no}}" class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no" readonly>
+          {% elif not form.instance.pk %}
           <input value="{{form.instance.voucher_no}}" required class="item-select mx-3" type="number" name="voucher_no" id="id_voucher_no">
+          {% endif %}
           <div>
               <label for="" class="item-form">Source warehouse:</label>
               <p>(Transfer from)</p>
@@ -20,10 +24,6 @@
                   {% if form.instance.pk %}
                     <option value="{{form.instance.source_warehouse.id}}">{{form.instance.source_warehouse.godown_name_finished}}</option>
                         
-                    {% for godown in godowns %}
-                    <option value="{{godown.id}}">{{godown.godown_name_finished}}</option>
-                    {% endfor %}
-  
                   {% elif not form.instance.pk %}
   
                     <option value=""></option>
@@ -45,10 +45,7 @@
               <select class="item-select destination_godowns" required name="destination_warehouse" id="id_destination_warehouse">
                 {% if form.instance.pk %}
                   <option value="{{form.instance.destination_warehouse.id}}">{{form.instance.destination_warehouse.warehouse_name_finished}}</option>
-                      
-                  {% for warehouse in warehouses %}
-                  <option value="{{warehouse.id}}">{{warehouse.warehouse_name_finished}}</option>
-                  {% endfor %}
+    
 
                 {% elif not form.instance.pk %}
 
@@ -67,9 +64,9 @@
           
       </div>
      
-      <div class=" ms-3">
+      <div class="">
           <table class="table table-striped table-hover table-bordered" id="mainProductForm">
-              <thead>
+              <thead class="name_absolute sticky-top">
                   <tr>
                       <th>No</th>
                       <th>Product Name</th>
@@ -83,13 +80,15 @@
               <tbody class="mainTableList">
                   {{ formset.management_form}}
                   {% for form in formset %}
+            
+                  {% if voucher_instance.qc_all_qty > 0 %}
                   {{ form.id }}
                   <tr>
                       <td><span id="id_stock_{{forloop.counter0}}">{{forloop.counter}}</span></td>
                       <td>
                           <div class="custom-dropdown-container">
-                            <input  type="hidden" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product" value="{% if form.instance.id %}{{form.instance.product.PProduct_SKU}}{% endif %}" > 
-                              <input type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="productpurchaseInvoice search-input stock_product_name"  placeholder="Product Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.product.Product.Product_Name }} {{form.instance.product.PProduct_SKU}}{% endif %}"> 
+                            <input readonly  type="hidden" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product" value="{% if form.instance.id %}{{form.instance.product.PProduct_SKU}}{% endif %}" > 
+                              <input readonly type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="productpurchaseInvoice search-input stock_product_name"  placeholder="Product Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.product.Product.Product_Name }} {{form.instance.product.PProduct_SKU}}{% endif %}"> 
                               <div name="select_product_name_{{forloop.counter0}}" class="productpurchaseInvoice stock_input_name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
   
                                </div>
@@ -99,25 +98,61 @@
                           <input type="text" value="{{form.instance.product.PProduct_color.color_name}}" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
                       </td>
                       <td>
-                          <input type="text" value="{{form.instance.product_quantity_transfer|default_if_none:''}}" class="purchase-amount stock_qty" name="{{form.prefix}}-product_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-product_quantity_transfer">
+                          <input readonly type="text" value="{{form.instance.product_quantity_transfer|default_if_none:''}}" class="purchase-amount stock_qty" name="{{form.prefix}}-product_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-product_quantity_transfer">
                       </td>
                       <td>
-                          <input type="text" value="NOS" name='stock_per_{{forloop.counter0}}' id="id_stock_per_{{forloop.counter0}}" class="purchase-amount stock_units" readonly>
+                          <input readonly type="text" value="NOS" name='stock_per_{{forloop.counter0}}' id="id_stock_per_{{forloop.counter0}}" class="purchase-amount stock_units" readonly>
                       </td>
                       <td>
-                          <input type="text" value="{{form.instance.remarks|default_if_none:''}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
+                          <input readonly type="text" value="{{form.instance.remarks|default_if_none:''}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
                       </td>
                       <td>
-                          <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
+                          <span class="delete-btn border-0 bg-transparent" style="cursor: pointer; display: none;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input disabled type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
                       </td>
                   </tr>
+                  {% else %}
+                  {{ form.id }}
+                  <tr>
+                    <td><span id="id_stock_{{forloop.counter0}}">{{forloop.counter}}</span></td>
+                    <td>
+                        <div class="custom-dropdown-container">
+                          <input  type="hidden" name="{{form.prefix}}-product" id="id_{{form.prefix}}-product" value="{% if form.instance.id %}{{form.instance.product.PProduct_SKU}}{% endif %}" > 
+                            <input type="text" name="{{form.prefix}}-products" id="id_{{form.prefix}}-products" class="productpurchaseInvoice search-input stock_product_name"  placeholder="Product Name" autocomplete="off" value="{% if form.instance.id %}{{ form.instance.product.Product.Product_Name }} {{form.instance.product.PProduct_SKU}}{% endif %}"> 
+                            <div name="select_product_name_{{forloop.counter0}}" class="productpurchaseInvoice stock_input_name s-suggestion-container item-select_input" id="select_product_name_{{forloop.counter0}}" style="display: none; height:auto;" dir="auto" spellcheck="false" tabindex="0" aria-label="Product Name" >
+
+                             </div>
+                        </div> 
+                    </td>
+                    <td>
+                        <input type="text" value="{{form.instance.product.PProduct_color.color_name}}" name="stock_color_{{forloop.counter0}}" id="id_stock_color_{{forloop.counter0}}" class="purchase-amount stock_color" readonly>
+                    </td>
+                    <td>
+                        <input type="text" value="{{form.instance.product_quantity_transfer|default_if_none:''}}" class="purchase-amount stock_qty" name="{{form.prefix}}-product_quantity_transfer" maxlength="200" id="id_{{form.prefix}}-product_quantity_transfer">
+                    </td>
+                    <td>
+                        <input type="text" value="NOS" name='stock_per_{{forloop.counter0}}' id="id_stock_per_{{forloop.counter0}}" class="purchase-amount stock_units" readonly>
+                    </td>
+                    <td>
+                        <input type="text" value="{{form.instance.remarks|default_if_none:''}}" class="purchase-amount stock_remarks" name="{{form.prefix}}-remarks" maxlength="255" id="id_{{form.prefix}}-remarks">
+                    </td>
+                    <td>
+                        <span class="delete-btn border-0 bg-transparent" style="cursor: pointer;"><i class="fa-solid fa-trash text-danger px-3 py-2 fs-6"><input type="checkbox" class="stock_deleteId px-2" style="display: none;" name="{{form.prefix}}-transnfer_cancelled_records" id="id_{{form.prefix}}-transnfer_cancelled_records" value=""></i></span>
+                    </td>
+                </tr>
+                  {% endif %}
                   {% endfor %}
               </tbody>
           </table>
+          {% if voucher_instance.qc_all_qty > 0 %}
+          <button style="display: none;" type="button" class="create-btn" id="addRowButton">Add +</button>
+          {% else %}
           <button type="button" class="create-btn" id="addRowButton">Add +</button>
+          {% endif %}
       </div>
+      {% if not voucher_instance.qc_all_qty > 0 %}
       <button type="submit" id="submitButtonStockTransfer" class="create-btn mt-4" name="save" value="Save">Submit</button>
-  </form>
+      {% endif %}
+    </form>
   
   <script>
       document.addEventListener('DOMContentLoaded', function () {
@@ -222,18 +257,36 @@
           deleteRow();
          
       });
+      function editStockTransferProduct() {
+        var forms = document.getElementById('id_finished_goods_transfer_records_set-TOTAL_FORMS').value;
+        console.log(forms)
+        for(var i=0; i<forms; i++){
+            var stockId = document.getElementById('id_finished_goods_transfer_records_set-' + i +'-id').value;
+        
+            if(stockId !== ""){
+             
+                var stockItemName = document.getElementById('id_finished_goods_transfer_records_set-'+ i+'-products');
+                stockItemName.readOnly = true;
+            
+                var stockQty = document.getElementById('id_finished_goods_transfer_records_set-'+i+'-product_quantity_transfer');
+                stockQty.readOnly = true;
+            }
+        }
+      
+    }
+    editStockTransferProduct()
 
       $(document).ready(function () {
           var searchedItemNameDict;
           var enterPressed = false;
           var itemName;
           var purchaseValue;
-          var productWerhouseid = $('#id_finished_goods_transfer_records_set-0-id').val()  
+          var productWerhouseid = $('#id_finished_goods_transfer_records_set-0-id').val() || '';  
           if(productWerhouseid == ''){
             $('#id_source_warehouse').on('change', function () {
               const godown_id = $(this).val();
               const id = $(this).attr('id');
-              
+              console.log(godown_id)
               $.ajax({
                   url: '/producttransfertowarehouseajax/',
                   method: 'GET',
@@ -733,98 +786,6 @@
             }
         })
 
-  </script>
-  <script>
-    function editStockTransferProduct() {
-        
-        var forms = document.getElementById('id_finished_goods_transfer_records_set-TOTAL_FORMS').value;
-        for(var i=0; i<forms; i++){
-            var stockId = document.getElementById('id_finished_goods_transfer_records_set-0-id').value || '';
-            console.log(stockId)
-            if(stockId !== ""){
-                var vouchareNo = document.getElementById('id_voucher_no');
-                var source_warehouse = document.getElementById('id_source_warehouse');
-                var destination_warehouse = document.getElementById('id_destination_warehouse');
-
-                vouchareNo.readOnly = true;
-                // source_warehouse.disabled = true;
-                // source_warehouse.style.color = 'black'; 
-                // destination_warehouse .disabled = true;
-                // destination_warehouse .style.color = 'black';
-                
-                var StockProductName = document.getElementById('id_finished_goods_transfer_records_set-'+i+'-products');
-                var stockQty = document.getElementById('id_finished_goods_transfer_records_set-'+i+'-product_quantity_transfer');
-                 var stockName = StockProductName.value;
-                 console.log('stockName',stockName)
-                 if(stockName !== ""){
-                    StockProductName.readOnly = true;
-                    stockQty.readOnly = true;
-                 }else{
-                    StockProductName.readOnly = false;
-                    stockQty.readOnly = false;
-                 }
-                
-                
-               
-            }
-        }
-      
-    }
-
-//     function inputCheck(){
-
-//         const itemNameInputsid = document.querySelectorAll('[name$="-products"]');
-//         const productInvoiceId = document.getElementById('id_finished_goods_transfer_records_set-0-id').value;
-       
-//         // Loop through each input and add keydown event listener
-//         itemNameInputsid.forEach((input, index) => {
-//         input.addEventListener("keydown", function (event) {
-
-//             const closestRow = input.closest('tr');
-//             const allInputsInRow = closestRow.querySelector('[name$="-products"]').value;
-//             console.log('allInputsInRow',allInputsInRow)
-//             if(productInvoiceId === ''){
-//                 if(allInputsInRow === ''){
-//                     if (event.key === "Tab") {
-//                 event.preventDefault(); // Prevent default tab behavior
-
-//                 // Check if the current input has a value
-//                 if (input.value.trim() !== "") {
-//                     // If not the last input, move focus to the next row's item name
-//                     if (itemNameInputsid[index + 1]) {
-//                         itemNameInputsid[index + 1].focus();
-//                     }
-//                 } else {
-//                     // If current input is empty, refocus on it
-//                     input.focus();
-//                 }
-//             }
-//             if (event.key === 'Enter') {
-//                 event.preventDefault(); // Prevent default Enter key behavior
-
-//                 // Find the current <td> containing this input
-//                 const currentTd = this.closest('td');
-//                     console.log('currentId',currentTd)
-//                 // Find the next <td> sibling
-//                 if (currentTd) {
-//                     const nextTd = currentTd.nextElementSibling;
-
-//                     // Check if next <td> exists and contains an input
-//                     if (nextTd) {
-//                         const nextInput = nextTd.querySelector('input');
-//                         if (nextInput) {
-//                             nextInput.focus(); // Move focus to the next input
-//                         }
-//                     }
-//                 }
-//             }
-//                 }
-//             }
-            
-//         });
-//         });
-//         }
-// inputCheck()
   </script>
 
 {% endblock body %}

@@ -1029,13 +1029,32 @@ class finished_product_warehouse_bin(models.Model):
     product_size_in_bin = models.IntegerField(default=0)
     
 
+    def save(self, *args, **kwargs):
+        
+        if self.pk:
 
+            
+            current_instance = finished_product_warehouse_bin.objects.get(pk=self.pk)
+            current_bin_size = current_instance.product_size_in_bin  
+            
+            
+            current_bin_count = self.finishedgoodsbinallocation_set.count()
+
+            
+            if self.product_size_in_bin < current_bin_count:
+                raise ValueError(
+                    f"Cannot reduce bin size to {self.product_size_in_bin}, "
+                    f"as there are {current_bin_count} items currently in the bin."
+                )
+
+        
+        super().save(*args, **kwargs)
 
 
 class Product_warehouse_quantity_through_table(models.Model):
     warehouse = models.ForeignKey(Finished_goods_warehouse, on_delete=models.PROTECT)
     product = models.ForeignKey(PProduct_Creation, on_delete = models.PROTECT)
-    quantity =  models.BigIntegerField(default=0)
+    quantity =  models.PositiveBigIntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
 
@@ -1062,6 +1081,7 @@ class product_purchase_voucher_master(models.Model):
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
     actions = models.CharField(max_length=20,choices=ACTIONS)
+
 
 class product_purchase_voucher_items(models.Model):
     product_purchase_master = models.ForeignKey(product_purchase_voucher_master, on_delete=models.CASCADE)
@@ -1091,6 +1111,7 @@ class Finished_goods_Stock_TransferMaster(models.Model):
     transnfer_cancelled = models.BooleanField(default = False)
     actions = models.CharField(max_length=20, choices = ACTIONS)
 
+
 class Finished_goods_transfer_records(models.Model):
     Finished_goods_Stock_TransferMasterinstance = models.ForeignKey(Finished_goods_Stock_TransferMaster, on_delete = models.CASCADE)
     product = models.ForeignKey(PProduct_Creation, on_delete=models.PROTECT)
@@ -1112,5 +1133,54 @@ class finishedgoodsbinallocation(models.Model):
     source_type = models.CharField(max_length=20, choices=[('purchase', 'purchase'), ('transfer', 'transfer')])
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+
+    def save(self, *args, **kwargs):
+        
+        parent_bin_size = self.bin_number.product_size_in_bin
+
+        
+        current_bin_count = finishedgoodsbinallocation.objects.filter(bin_number=self.bin_number).count()
+
+        
+        if current_bin_count >= parent_bin_size:
+            raise ValueError(f"The bin {self.bin_number.bin_name} is full. Cannot allocate more items.")
+
+        
+        super().save(*args, ** kwargs)
+
+
+class sales_voucher_master_finish_Goods(models.Model):
+    sales_no = models.CharField(max_length = 100, unique = True, null = False, blank = False)
+    buyer_inv_no = models.CharField(max_length = 100)
+    company_gst = models.IntegerField()
+    ledger_type = models.CharField(max_length = 20, default = 'sales')
+    party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
+    fright_transport = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    gross_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    cash_disct = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    grand_total = models.DecimalField(max_digits=10, decimal_places=DECIMAL_PLACE_CONSTANT)
+    created_date = models.DateTimeField(auto_now_add = True)
+    modified_date_time = models.DateTimeField(auto_now = True)
+
+
+class sales_voucher_finish_Goods(models.Model):
+    sales_voucher_master = models.ForeignKey(sales_voucher_master_finish_Goods,on_delete=models.CASCADE)
+    product_name = models.ForeignKey(PProduct_Creation,on_delete = models.PROTECT)
+    quantity = models.IntegerField()
+    trade_disct = models.IntegerField()
+    spl_disct = models.IntegerField()
+
+
+class purchase_order_master_for_puchase_voucher_rm(models.Model):
+    po_no = models.IntegerField(unique=True,null=False,blank=False)
+    party_name = models.ForeignKey(Ledger, on_delete = models.PROTECT)
+
+
+class purchase_order_for_puchase_voucher_rm(models.Model):
+    master_instance = models.ForeignKey(purchase_order_master_for_puchase_voucher_rm, on_delete=models.CASCADE)
+    item_name = models.ForeignKey(Item_Creation,on_delete=models.PROTECT)
+    quantity = models.IntegerField()
+    rate = models.IntegerField()
 
 

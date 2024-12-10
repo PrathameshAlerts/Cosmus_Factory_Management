@@ -1,6 +1,7 @@
 from collections import defaultdict
 import datetime
 import decimal
+from email import message
 from io import BytesIO
 from itertools import chain
 from operator import attrgetter, itemgetter
@@ -40,7 +41,7 @@ from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                        FabricFinishes, Finished_goods_Stock_TransferMaster, Finished_goods_transfer_records, Finished_goods_warehouse, Godown_finished_goods, Godown_raw_material,
                          Item_Creation, Ledger, MainCategory, PProduct_Creation, Product,
                            Product2SubCategory, Product_warehouse_quantity_through_table,  ProductImage, RawStockTransferMaster, RawStockTrasferRecords, StockItem,
-                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, finished_goods_warehouse_racks, finished_goods_warehouse_zone, finished_product_warehouse_bin, godown_item_report_for_cutting_room,
+                             SubCategory, Unit_Name_Create, account_credit_debit_master_table, cutting_room, factory_employee, finished_goods_warehouse_racks, finished_goods_warehouse_zone, finished_product_warehouse_bin, finishedgoodsbinallocation, godown_item_report_for_cutting_room,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
@@ -6377,7 +6378,7 @@ def labour_workin_approval_split(request,ref_id):
         }
         qty_dict = dict(query.l_w_in_products.all().values_list('product_sku','approved_qty'))
 
-        print(qty_dict)
+        
         qty = {}
 
         for sku in sku_list:
@@ -6627,12 +6628,13 @@ def product_purchase_voucher_create_update(request, pk=None):
         pro = PProduct_Creation.objects.get(PProduct_SKU = sku)
         color = pro.PProduct_color.color_name
         gst = pro.Product.Product_GST.gst_percentage
-        return JsonResponse({'color':color,'gst':gst})
+        return JsonResponse({'color':color, 'gst':gst})
     
     
     if pk:
-        product_pur_vouch_instance = product_purchase_voucher_master.objects.get(pk=pk)
-
+        product_pur_vouch_instance = product_purchase_voucher_master.objects.filter(pk=pk).annotate(
+            total_qc_qty=Sum('product_purchase_voucher_items__qc_recieved_qty')).first()
+        
         product_pur_vouch_form = product_purchase_voucher_master_form(instance=product_pur_vouch_instance)
         product_purchase_voucher_items_formset_instance = product_purchase_voucher_items_formset_update(instance=product_pur_vouch_instance)
         
@@ -6716,7 +6718,7 @@ def product_purchase_voucher_create_update(request, pk=None):
 
                                 product_purchase_voucher_items_form = form.save(commit=False)
                                 product_purchase_voucher_items_form.product_purchase_master = product_pur_vouch_form_instance
-                                
+                                product_purchase_voucher_items_form.diffrence_qty = product_purchase_voucher_items_form.quantity_total
                                 
                                 obj, created = Product_warehouse_quantity_through_table.objects.get_or_create(
                                     warehouse= selected_warehouse, 
@@ -6742,16 +6744,15 @@ def product_purchase_voucher_create_update(request, pk=None):
             print(product_purchase_voucher_items_formset_instance.errors)
             print(product_purchase_voucher_items_formset_instance.non_form_errors())
 
-    return render(request,'finished_product/product_purchase_voucher_create_update.html',{'product_pur_vouch_form':product_pur_vouch_form,
-            'product_purchase_voucher_items_formset_instance':product_purchase_voucher_items_formset_instance,'products':products,'warehouses':warehouses,'party_names':party_names})
+    return render(request,'finished_product/product_purchase_voucher_create_update.html',{'product_pur_vouch_form':product_pur_vouch_form,'product_pur_vouch_instance':product_pur_vouch_instance,
+            'product_purchase_voucher_items_formset_instance' : product_purchase_voucher_items_formset_instance,'products':products,'warehouses':warehouses,'party_names':party_names})
 
 
 
 @login_required(login_url='login')
 def product_purchase_voucher_list(request):
 
-    product_purchase_voucher_all = product_purchase_voucher_master.objects.all()
-
+    product_purchase_voucher_all = product_purchase_voucher_master.objects.all().annotate(check_diff_qty = Sum('product_purchase_voucher_items__qc_recieved_qty'))
     return render(request,'finished_product/product_purchase_voucher_list.html',{'product_purchase_voucher_all':product_purchase_voucher_all})
 
 
@@ -6759,7 +6760,6 @@ def product_purchase_voucher_list(request):
 
 @login_required(login_url='login')
 def product_purchase_voucher_delete(request,pk):
-
     if pk:
         product_purchase_voucher_instance = get_object_or_404(product_purchase_voucher_master,pk=pk)
         product_purchase_voucher_instance.delete()
@@ -6778,7 +6778,7 @@ def warehouse_product_transfer_create_and_update(request,pk=None):
     dict_to_send = None
 
     if pk:
-        voucher_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=pk)
+        voucher_instance = Finished_goods_Stock_TransferMaster.objects.filter(pk=pk).annotate(qc_all_qty = Sum('finished_goods_transfer_records__qc_recieved_qty')).first()
         form = Finished_goods_Stock_TransferMaster_form(instance=voucher_instance)
         formset = Finished_goods_transfer_records_formset_update(instance=voucher_instance)
         godown_id = voucher_instance.source_warehouse.id
@@ -6921,14 +6921,15 @@ def warehouse_product_transfer_create_and_update(request,pk=None):
 
             except Exception as e:
                 print(e)
-    return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset,'godowns':godowns,
+    return render(request,'finished_product/product_transfer_to_warehouse.html',{'form':form,'formset':formset,'godowns':godowns,'voucher_instance':voucher_instance,
                                                                                 'warehouses':warehouses,'dict_to_send':dict_to_send})
 
 
 
 @login_required(login_url='login')
 def product_transfer_to_warehouse_list(request):
-    warehouse_product_transfer_list = Finished_goods_Stock_TransferMaster.objects.all().order_by('voucher_no')
+    warehouse_product_transfer_list = Finished_goods_Stock_TransferMaster.objects.all().annotate(all_qc_qty=Sum('finished_goods_transfer_records__qc_recieved_qty')).order_by('voucher_no')
+    
     return render(request,'finished_product/product_transfer_to_warehouse_list.html',{'warehouse_product_transfer_list':warehouse_product_transfer_list})
 
 
@@ -6979,10 +6980,8 @@ def product_transfer_to_warehouse_ajax(request):
                 return JsonResponse({'filtered_product':dict_to_send})
             
             else:
-                raise ObjectDoesNotExist
+                raise ObjectDoesNotExist('product not found')
 
-            
-        
         except ObjectDoesNotExist as oe:
             return JsonResponse({'error': 'No items found.'}, status=404)
         
@@ -6992,127 +6991,256 @@ def product_transfer_to_warehouse_ajax(request):
 
     
 
-def stock_transfer_instance_list_popup(request,id,voucher_type):
+def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
 
     try:
         if voucher_type == 'transfer':
             stock_transfer_instance = Finished_goods_Stock_TransferMaster.objects.get(pk=id)
+            
+            finished_goods_transfer_items_instances =  Finished_goods_transfer_records.objects.filter(Finished_goods_Stock_TransferMasterinstance = stock_transfer_instance, transnfer_cancelled_records=False)
 
             purchase_number = stock_transfer_instance.voucher_no
-            formset = stock_transfer_instance_formset_only_for_update(instance=stock_transfer_instance)
+
+            formset = stock_transfer_instance_formset_only_for_update(request.POST or None, queryset=finished_goods_transfer_items_instances, instance=stock_transfer_instance)
+
+            completed_qs = Finished_goods_transfer_records.objects.filter(Finished_goods_Stock_TransferMasterinstance=stock_transfer_instance, qc_recieved_qty__gt = 0, transnfer_cancelled_records=False)
+
+            completed_formset = stock_transfer_instance_formset_only_for_update(queryset = completed_qs, instance=stock_transfer_instance)
 
         elif voucher_type == 'purchase':
             product_purchase_voucher_items_instance = product_purchase_voucher_master.objects.get(pk=id)
 
             purchase_number = product_purchase_voucher_items_instance.purchase_number
-            formset = product_purchase_voucher_items_instance_formset_only_for_update(instance=product_purchase_voucher_items_instance)
+            formset = product_purchase_voucher_items_instance_formset_only_for_update(request.POST or None, instance=product_purchase_voucher_items_instance)
+
+            completed_qs = product_purchase_voucher_items.objects.filter(product_purchase_master=product_purchase_voucher_items_instance, qc_recieved_qty__gt = 0)
+
+            completed_formset = product_purchase_voucher_items_instance_formset_only_for_update(queryset=completed_qs, instance=product_purchase_voucher_items_instance)
+
 
     except Exception as e:
         print(e)
 
-    print(request.POST)
+    
+    if request.method == 'POST':
+        print(request.POST)
+        try:
+            with transaction.atomic():
+                manual_serial_number = request.POST.get('manual_serial_number')
+                scanned_sku = int(request.POST.get('product_sku'))
+                scanned_serialnumber = request.POST.get('scanned_serial_number')
+                selected_product_bin = request.POST.get('product_bin')
+                selected_voucher_type = request.POST.get('voucher_type')
 
+                if scanned_serialnumber:
+                    serial_number = scanned_serialnumber
+                else:
+                    serial_number = manual_serial_number
+                
+                if serial_number and scanned_sku and selected_product_bin and selected_voucher_type:
+
+                    if formset.is_valid():
+                        form_present = False 
+
+                        if selected_voucher_type == 'purchase':
+                            
+                            for form in formset:
+                                if form.instance.product_name.PProduct_SKU == scanned_sku and form.instance.quantity_total > form.instance.qc_recieved_qty and form.instance.diffrence_qty != 0:
+                                    
+                                    try:
+                                        product_pur_items_instance = get_object_or_404(product_purchase_voucher_items,pk=form.instance.id)
+
+                                        product_instance = get_object_or_404(PProduct_Creation, pk=scanned_sku)
+
+                                        bin_instance = get_object_or_404(finished_product_warehouse_bin,pk=selected_product_bin)
+                                        
+                                        finishedgoodsbinallocation.objects.create(related_purchase_item = product_pur_items_instance, 
+                                                unique_serial_no = serial_number,product = product_instance, 
+                                                bin_number = bin_instance ,source_type = 'purchase')
+                                        
+                                        form.instance.qc_recieved_qty = form.instance.qc_recieved_qty + 1
+                                        form.instance.diffrence_qty = form.instance.diffrence_qty - 1
+
+                                    except ValueError as ve:
+                                        messages.error(request, f'{ve}')
+                                        raise
+
+                                    except Exception as e:
+                                        messages.error(request, f'{e}')
+                                        raise
+
+                                    try:
+                                        product_warehouse_obj =  Product_warehouse_quantity_through_table.objects.get(
+                                                warehouse=product_pur_items_instance.product_purchase_master.finished_godowns,
+                                                product=product_instance) 
+                                    
+                                        product_warehouse_obj.quantity = product_warehouse_obj.quantity - 1
+
+                                    except ObjectDoesNotExist:
+                                        messages.error(request, 'Product quantity in Warhouse not found')
+                                        raise
+
+                                    form.save()
+                                    form_present = True
+                                    messages.success(request,f'SerialNumber - {serial_number} added to Bin - {bin_instance.bin_name} Sucessfully')
+                                    break            
+                                else:
+                                    form_present = False
+                                    
+                            
+                        elif selected_voucher_type == 'transfer':
+                            for form in formset:
+                                if form.instance.product.PProduct_SKU == scanned_sku and form.instance.product_quantity_transfer > form.instance.qc_recieved_qty and form.instance.diffrence_qty != 0:
+                                    
+                                    try:
+
+                                        product_transfer_items_instance = get_object_or_404(Finished_goods_transfer_records,pk=form.instance.id)
+
+                                        product_instance = get_object_or_404(PProduct_Creation,pk=scanned_sku)
+
+                                        bin_instance = get_object_or_404(finished_product_warehouse_bin,pk=selected_product_bin)
+
+                                        finishedgoodsbinallocation.objects.create(related_transfer_record = product_transfer_items_instance, 
+                                                    unique_serial_no = serial_number, product = product_instance, 
+                                                    bin_number = bin_instance ,source_type='transfer')
+                                        
+                                        form.instance.qc_recieved_qty = form.instance.qc_recieved_qty + 1
+                                        form.instance.diffrence_qty = form.instance.diffrence_qty - 1
+
+                                    except ValueError as ve:
+                                        messages.error(request, f'{ve}')
+                                        raise
+
+                                    except Exception as e:
+                                        messages.error(request, f'{e}')
+                                        raise
+
+                                    try:
+                                        product_warehouse_obj =  Product_warehouse_quantity_through_table.objects.get(
+                                                warehouse=product_pur_items_instance.product_purchase_master.finished_godowns,
+                                                product=product_instance) 
+                                    
+                                        product_warehouse_obj.quantity = product_warehouse_obj.quantity - 1
+
+                                    except ObjectDoesNotExist:
+                                        messages.error(request, 'Product quantity in Warhouse not found')
+                                        raise
+
+                                    form.save()
+                                    form_present = True
+                                    messages.success(request,f'SerialNumber - {scanned_serialnumber} added to Bin - {bin_instance.bin_name} Sucessfully')
+                                    break
+                                else:
+                                    form_present = False
+
+                        if form_present == False:
+                            messages.error(request,f'No Product SKU found in the scanned Voucher')
+
+                    else:
+                        messages.error(request,f'Error with formset validation - {formset.errors}')
+
+                else:
+                    raise ValidationError('Name , SKU, Color or Bin not selected')
+
+        except IntegrityError:
+            messages.error(request,f'The scanned Serial Number already Exists')
+
+        except ValidationError as ve:
+            messages.error(request,f'Required Data not filled {ve} ')
+
+        except Exception as e:
+            messages.error(request,f'Exception Occoured - {e}')
 
     return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset,
-                                                'purchase_number':purchase_number,'voucher_type': voucher_type})
-
-
-
-
-def product_to_bin(request,pk,sent_from):
-
-    if sent_from and pk:
-        product_name = None
-        voucher_type = None
-        if sent_from == 'purchase':
-            p_purchase_voucher_item_instances = get_object_or_404(product_purchase_voucher_items, pk = pk)
-            formset = purchase_product_to_bin_formset(request.POST or None, instance= p_purchase_voucher_item_instances)
-
-            voucher_type = 'purchase'
-            product_name = p_purchase_voucher_item_instances.product_name
-
-            
-            for form in formset.forms:
-                form.initial['source_type'] = 'purchase'
-                form.initial['product'] = p_purchase_voucher_item_instances.product_name
-
-        elif sent_from == 'transfer':
-            p_transfer_voucher_item_instances = get_object_or_404(Finished_goods_transfer_records,pk=pk)
-            formset = transfer_product_to_bin_formset(request.POST or None, instance=p_transfer_voucher_item_instances) 
-
-            voucher_type = 'transfer'
-            product_name = p_transfer_voucher_item_instances.product
-
-            
-            for form in formset.forms:
-                form.initial['source_type'] = 'transfer'
-                form.initial['product'] = p_transfer_voucher_item_instances.product
-
-        if request.method == 'POST':
-            if formset.is_valid():
-                for form in formset:
-                    form_instance = form.save(commit=False)
-                    form_instance.save()
-
-    return render(request,'finished_product/producttobin.html',{'formset':formset,'product_name':product_name,'voucher_type':voucher_type})
-
-
+                                                'purchase_number':purchase_number,'voucher_type': voucher_type,
+                                                'completed_formset':completed_formset})
 
 
 
 def process_serial_no(request):
     if request.method == 'POST':
         serial_no = request.POST.get('serialNo')
-        print(serial_no)
+        
         if serial_no:  
-
-            url = f'https://www.cosmusbags.com/cosmus/qrcode.php?wc={serial_no}'
+            try:
+                if finishedgoodsbinallocation.objects.filter(unique_serial_no=serial_no).exists():
+                    return JsonResponse({'message': 'This Serial Number has already been processed.'}, status=400)
             
-            response_post = requests.get(url)
-            response_data =  response_post.json()
+            except IntegrityError:
+                return JsonResponse({'message': 'This serial number has already been processed'}, status=400)
+
             
-            if response_data['response_code'] == 200 and response_data['response_desc'] == 'success':
-                product_scanned_sku = response_data['sku']
+            
+            
 
-                product_instance = get_object_or_404(PProduct_Creation,PProduct_SKU=product_scanned_sku)
-                
-                product_name = product_instance.Product.Product_Name if product_instance.Product.Product_Name else None
-                product_sku = product_instance.PProduct_SKU
-                product_color = product_instance.PProduct_color.color_name if  product_instance.PProduct_color else None
-                product_image = product_instance.PProduct_image.url if product_instance.PProduct_image else None
-                
-                
-                product_sub_cats = product_instance.Product.product_cats.all()
-                sub_cats_all = [x.SubCategory_id for x in product_sub_cats]
+            
+            
 
-                bins_related_to_product = []
-                for records in sub_cats_all:
-                    product_suggested_bins = finished_product_warehouse_bin.objects.filter(sub_catergory_id = records)
-                    bins_related_to_product.append(product_suggested_bins)
-                
-                
-                
-                
 
-                flatterned_bins_related_to_product_list = list(chain.from_iterable(bins_related_to_product))
-                print(flatterned_bins_related_to_product_list)
+            try:
+                url = f'https://www.cosmusbags.com/cosmus/qrcode.php?wc={serial_no}'
+                
+                response_post = requests.get(url)
+                response_data =  response_post.json()
 
-                bin_to_dict = []
+                if response_data.get('response_code') == 200 and response_data.get('response_desc') == 'success':
+                    product_scanned_sku = response_data['sku']
 
-                for qs in flatterned_bins_related_to_product_list:
-                    dict_to_append = {
-                        'bin_id' : qs.id,
-                        'bin_name' : qs.bin_name,
-                        'bin_size' :qs.product_size_in_bin}
-                    bin_to_dict.append(dict_to_append)
+                    product_instance = PProduct_Creation.objects.get(PProduct_SKU=product_scanned_sku)
+                
+                    product_name = product_instance.Product.Product_Name if product_instance.Product.Product_Name else None
+                    product_sku = product_instance.PProduct_SKU
+                    product_color = product_instance.PProduct_color.color_name if  product_instance.PProduct_color else None
+                    product_image = product_instance.PProduct_image.url if product_instance.PProduct_image else None
+                    
+                    
+                    product_sub_cats = product_instance.Product.product_cats.all()
+                    sub_cats_all = [x.SubCategory_id for x in product_sub_cats]
 
-                print(bin_to_dict)
-            return JsonResponse({'product_name':product_name, 'product_sku': product_sku,
-                                'bin_to_dict':bin_to_dict,
-                                'product_color' : product_color,'product_image':product_image, 
-                                'message': f'Serial No {serial_no} processed successfully.'})
+                    bins_related_to_product = []
+                    for records in sub_cats_all:
+                        product_suggested_bins = finished_product_warehouse_bin.objects.filter(sub_catergory_id = records)
+                        bins_related_to_product.append(product_suggested_bins)
+                    
+                    
+                    
+                    
+
+                    flatterned_bins_related_to_product_list = list(chain.from_iterable(bins_related_to_product))
+                    
+                    bin_to_dict = []
+                    
+                    for qs in flatterned_bins_related_to_product_list:
+                        products_in_bin = finishedgoodsbinallocation.objects.filter(bin_number=qs).count()
+
+                        dict_to_append = {
+                            'bin_id' : qs.id,
+                            'bin_name' : qs.bin_name,
+                            'bin_size' :qs.product_size_in_bin,
+                            'products_in_bin':products_in_bin}
+                        bin_to_dict.append(dict_to_append)
+
+                    return JsonResponse({'product_name':product_name, 'product_sku': product_sku,
+                                    'bin_to_dict':bin_to_dict,
+                                    'product_color' : product_color,'product_image':product_image, 
+                                    'message': f'Serial No {serial_no} processed successfully.'})
+
+                else:
+                    return JsonResponse({'message': 'Invalid response from external API.'}, status=400)
+
+            except ObjectDoesNotExist :
+                return JsonResponse({'message': 'Product SKU does not Exist.'}, status=404)
+
+            except requests.RequestException:
+                return JsonResponse({'message': 'Failed to fetch data from external API.'}, status=500)
+            
+            except Exception:
+                return JsonResponse({'message': 'Failed to fetch data from external API.'}, status=500)
+             
         else:
             return JsonResponse({'message': 'Invalid Serial No.'}, status=400)
+
+    return JsonResponse({'message': 'Invalid Request Method.'}, status=405)
         
 
 
@@ -8234,11 +8362,11 @@ def finished_goods_sorting_list(request):
         )
 
 
-    finished_goods_transfer_m_instances = Finished_goods_Stock_TransferMaster.objects.all().annotate(
+    finished_goods_transfer_m_instances = Finished_goods_Stock_TransferMaster.objects.filter(transnfer_cancelled=False).annotate(
         total_recieved_qty= Sum('finished_goods_transfer_records__product_quantity_transfer'), 
         total_qc_qty=Sum('finished_goods_transfer_records__qc_recieved_qty'),
         total_diff_qty = Sum('finished_goods_transfer_records__diffrence_qty')
-        )
+        )   
     
 
 

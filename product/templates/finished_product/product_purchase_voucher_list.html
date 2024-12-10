@@ -32,14 +32,19 @@
         <tbody class="mainTableList" style="max-height: 450px; overflow-y: auto;">
             {% for record in product_purchase_voucher_all %}
             <tr>
+              <input type="hidden" class="check_diffQty" value="{{record.check_diff_qty}}">
                 <td>{{forloop.counter}}</td>
                 <td>{{record.purchase_number}}</td>
                 <td>{{record.party_name.name}}</td>
                 <td>{{record.supplier_invoice_number}}</td>
                 <td>{{record.grand_total}}</td>
+
+                {% if record.check_diff_qty > 0 %}
+                <td><a href="{% url 'product-purchase-voucher-update' record.id %}"><i style="color:rgb(0, 0, 0)" class="fa-solid fa-eye px-1"></i></a></td>
+                {% else %}
                 <td><a href="{% url 'product-purchase-voucher-update' record.id %}"><i class="fa-solid fa-pen-to-square px-1"></i></a></td>
-                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ record.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
-          
+                {% endif %}
+                <td><button class="border-0 bg-transparent delete-btn" data-item-id="{{ record.id }}" data-key="{{record.check_diff_qty}}" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-trash text-danger px-2"></button></td>
             </tr>
                 {% endfor %}
             
@@ -68,11 +73,14 @@
     $(document).ready(function(){
       $('.delete-btn').click(function(){
         var itemId = $(this).data('item-id');
+        var key = $(this).data('key')
         var name = $(this).closest('tr').find('td').eq(1).text();
         var coloredName = '<span class="color-name" style="color:' + name + ';">' + name + '</span>';
-  
+        var differenceQty = $(this).closest('tr').find('.check_diffQty').val();
+        console.log(differenceQty)
           $('#confirmDeleteMessage').html('Are you sure you want to delete the Purchase Voucher ' + coloredName + '?');
           $('#confirmDeleteButton').attr('data-item-id', itemId); // Set the item id to the confirm button's data
+          $('#confirmDeleteButton').attr('data-key',key);
           $('#confirmDeleteModal').modal('show');
       });
 
@@ -80,16 +88,26 @@
       $('#confirmDeleteButton').off('click').on('click', function(){
         var itemId = $(this).data('item-id');
         var $this = $(this);
+        var key = $(this).data('key')
+        console.log(key)
+ 
         var spinner = $this.html();
         $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...');
-        $this.prop('disabled', true);
-          // Redirect to delete view
-          if(itemId){
-            $this.prop('disabled', false);
-            $this.html(spinner);
-            window.location.href = '/productpurchasevoucherdelete/' + itemId;
+     
+          // // Redirect to delete view
+          if(key > 0){
+            $('#confirmDeleteMessage').html('Can not Delete this invoice  already use in bin');
+            $this.css('display', 'none');
+            $this.html('');
+          }else{
+              if(itemId){
+              $this.prop('disabled', false);
+              $this.html(spinner);
+              window.location.href = '/productpurchasevoucherdelete/' + itemId;
 
+            }
           }
+          
         
       });
     });
