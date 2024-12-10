@@ -45,14 +45,14 @@ from .models import (AccountGroup, AccountSubGroup, Color, Fabric_Group_Model,
                                gst, item_color_shade, item_godown_quantity_through_table,
                                  item_purchase_voucher_master, labour_work_in_master, labour_work_in_product_to_item, labour_workin_approval_report, labour_workout_childs, labour_workout_cutting_items, labour_workout_master, ledgerTypes, opening_shade_godown_quantity, 
                                  packaging, product_2_item_through_table, product_godown_quantity_through_table, product_purchase_voucher_items, product_purchase_voucher_master, product_to_item_labour_child_workout, product_to_item_labour_workout, purchase_order, 
-                                 purchase_order_for_raw_material, purchase_order_raw_material_cutting, 
+                                 purchase_order_for_raw_material, purchase_order_master_for_puchase_voucher_rm, purchase_order_raw_material_cutting, 
                                  purchase_order_to_product, purchase_order_to_product_cutting, purchase_voucher_items, raw_material_product_ref_items, raw_material_product_to_items, raw_material_product_wise_qty, raw_material_production_estimation, raw_material_production_total,
                                    set_prod_item_part_name, shade_godown_items,
                                    shade_godown_items_temporary_table,purchase_order_for_raw_material_cutting_items)
 
 from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, ColorForm, 
                     CustomPProductaddFormSet, Finished_goods_Stock_TransferMaster_form, ProductCreateSkuFormsetCreate,
-                     ProductCreateSkuFormsetUpdate, cutting_room_form,
+                     ProductCreateSkuFormsetUpdate, Purchaseordermasterforpuchasevoucherrmform, cutting_room_form,
                        factory_employee_form, finished_goods_warehouse_racks_form, finished_goods_warehouse_zone_form, finished_product_warehouse_bin_form, labour_work_in_product_to_item_approval_formset, labour_work_in_product_to_item_form, labour_workin_master_form, labour_workout_child_form, labour_workout_cutting_items_form, ledger_types_form, product_purchase_voucher_master_form, purchase_order_for_raw_material_cutting_items_form, 
                        purchase_order_to_product_cutting_form, raw_material_product_estimation_items_form, raw_material_product_estimation_product_2_item_form, raw_material_production_estimation_form,raw_material_stock_trasfer_items_formset,
                     FabricFinishes_form, ItemFabricGroup, Itemform, LedgerForm,
@@ -70,7 +70,7 @@ from .forms import( Basepurchase_order_for_raw_material_cutting_items_form, Colo
                                 purchase_order_raw_product_sheet_form,purchase_order_raw_material_cutting_form,
                                 raw_material_product_estimation_formset, Finished_goods_transfer_records_formset_update,
                                 stock_transfer_instance_formset_only_for_update,product_purchase_voucher_items_instance_formset_only_for_update, subcat_and_bin_form,
-                                transfer_product_to_bin_formset,purchase_product_to_bin_formset,FinishedProductWarehouseBinFormSet)
+                                transfer_product_to_bin_formset, purchase_product_to_bin_formset,FinishedProductWarehouseBinFormSet,Purchaseorderforpuchasevoucherrmformset)
 
 
 logger = logging.getLogger('product_views')
@@ -7023,7 +7023,6 @@ def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
 
     
     if request.method == 'POST':
-        print(request.POST)
         try:
             with transaction.atomic():
                 manual_serial_number = request.POST.get('manual_serial_number')
@@ -7033,11 +7032,11 @@ def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
                 selected_voucher_type = request.POST.get('voucher_type')
 
                 if scanned_serialnumber:
-                    serial_number = scanned_serialnumber
+                    prathamesh = scanned_serialnumber
                 else:
-                    serial_number = manual_serial_number
+                    prathamesh = manual_serial_number
                 
-                if serial_number and scanned_sku and selected_product_bin and selected_voucher_type:
+                if prathamesh and scanned_sku and selected_product_bin and selected_voucher_type:
 
                     if formset.is_valid():
                         form_present = False 
@@ -7055,7 +7054,7 @@ def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
                                         bin_instance = get_object_or_404(finished_product_warehouse_bin,pk=selected_product_bin)
                                         
                                         finishedgoodsbinallocation.objects.create(related_purchase_item = product_pur_items_instance, 
-                                                unique_serial_no = serial_number,product = product_instance, 
+                                                unique_serial_no = prathamesh,product = product_instance, 
                                                 bin_number = bin_instance ,source_type = 'purchase')
                                         
                                         form.instance.qc_recieved_qty = form.instance.qc_recieved_qty + 1
@@ -7075,14 +7074,18 @@ def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
                                                 product=product_instance) 
                                     
                                         product_warehouse_obj.quantity = product_warehouse_obj.quantity - 1
+                                        product_warehouse_obj.save()
 
                                     except ObjectDoesNotExist:
                                         messages.error(request, 'Product quantity in Warhouse not found')
                                         raise
+                                    except Exception as e:
+                                        messages.error(request, f'Other exception {e}')
+                                        raise
 
                                     form.save()
                                     form_present = True
-                                    messages.success(request,f'SerialNumber - {serial_number} added to Bin - {bin_instance.bin_name} Sucessfully')
+                                    messages.success(request,f'SerialNumber - {prathamesh} added to Bin - {bin_instance.bin_name} Sucessfully')
                                     break            
                                 else:
                                     form_present = False
@@ -7101,7 +7104,7 @@ def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
                                         bin_instance = get_object_or_404(finished_product_warehouse_bin,pk=selected_product_bin)
 
                                         finishedgoodsbinallocation.objects.create(related_transfer_record = product_transfer_items_instance, 
-                                                    unique_serial_no = serial_number, product = product_instance, 
+                                                    unique_serial_no = prathamesh, product = product_instance, 
                                                     bin_number = bin_instance ,source_type='transfer')
                                         
                                         form.instance.qc_recieved_qty = form.instance.qc_recieved_qty + 1
@@ -7117,13 +7120,18 @@ def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
 
                                     try:
                                         product_warehouse_obj =  Product_warehouse_quantity_through_table.objects.get(
-                                                warehouse=product_pur_items_instance.product_purchase_master.finished_godowns,
+                                                warehouse=product_transfer_items_instance.Finished_goods_Stock_TransferMasterinstance.destination_warehouse,
                                                 product=product_instance) 
                                     
                                         product_warehouse_obj.quantity = product_warehouse_obj.quantity - 1
+                                        product_warehouse_obj.save()
 
                                     except ObjectDoesNotExist:
                                         messages.error(request, 'Product quantity in Warhouse not found')
+                                        raise
+
+                                    except Exception as e:
+                                        messages.error(request, f'Other exception {e}')
                                         raise
 
                                     form.save()
@@ -7132,24 +7140,29 @@ def stock_transfer_instance_list_and_recieve(request,id,voucher_type):
                                     break
                                 else:
                                     form_present = False
-
+                                    
                         if form_present == False:
                             messages.error(request,f'No Product SKU found in the scanned Voucher')
+                            return redirect(reverse('stock-transfer-instance-list-popup', args=[id,selected_voucher_type]))
 
                     else:
                         messages.error(request,f'Error with formset validation - {formset.errors}')
+                        return redirect(reverse('stock-transfer-instance-list-popup', args=[id,selected_voucher_type]))
 
                 else:
                     raise ValidationError('Name , SKU, Color or Bin not selected')
 
         except IntegrityError:
             messages.error(request,f'The scanned Serial Number already Exists')
+            return redirect(reverse('stock-transfer-instance-list-popup', args=[id,selected_voucher_type]))
 
         except ValidationError as ve:
             messages.error(request,f'Required Data not filled {ve} ')
+            return redirect(reverse('stock-transfer-instance-list-popup', args=[id,selected_voucher_type]))
 
         except Exception as e:
             messages.error(request,f'Exception Occoured - {e}')
+            return redirect(reverse('stock-transfer-instance-list-popup', args=[id,selected_voucher_type]))
 
     return render(request, 'finished_product/stock_transfer_instance_list_popup.html',{'formset': formset,
                                                 'purchase_number':purchase_number,'voucher_type': voucher_type,
@@ -7192,7 +7205,6 @@ def process_serial_no(request):
                     product_sku = product_instance.PProduct_SKU
                     product_color = product_instance.PProduct_color.color_name if  product_instance.PProduct_color else None
                     product_image = product_instance.PProduct_image.url if product_instance.PProduct_image else None
-                    
                     
                     product_sub_cats = product_instance.Product.product_cats.all()
                     sub_cats_all = [x.SubCategory_id for x in product_sub_cats]
@@ -7399,6 +7411,64 @@ def delete_bin_in_rack(request,bin_id):
     return redirect('add-bin-in-rack', rack_id = rack_id.id)
 
 
+
+
+
+
+
+
+def purchase_order_for_puchase_voucher_rm_create_update(request,p_id=None):
+    if p_id:
+        order_instance = purchase_order_master_for_puchase_voucher_rm.objects.get(id=p_id)
+        master_form = Purchaseordermasterforpuchasevoucherrmform(instance=order_instance)
+        formset = Purchaseorderforpuchasevoucherrmformset(instance=order_instance)
+
+    else:
+        order_instance = None
+        master_form = Purchaseordermasterforpuchasevoucherrmform()
+        formset = Purchaseorderforpuchasevoucherrmformset()
+
+    if request.method == 'POST':
+        master_form = Purchaseordermasterforpuchasevoucherrmform(request.POST,instance=order_instance)
+        formset = Purchaseorderforpuchasevoucherrmformset(request.POST,instance=order_instance)
+
+        if master_form.is_valid() and formset.is_valid():
+            master_form_instance = master_form.save(commit=False)
+            master_form_instance.save()
+
+            for form in formset:
+                if form.cleaned_data:
+                    form_instance = form.save(commit=False)
+                    form_instance.master_instance = master_form_instance
+                    form_instance.save()
+
+        else:
+            print(master_form.errors)
+            print(formset.errors)
+        return redirect('purchase-order-for-puchase-voucher-rm-create-update')
+    return render(request,'accounts/purchaseorderforpuchasevoucherrmcreateupdate.html',{'master_form':master_form,'formset':formset})
+
+
+
+
+
+def purchase_order_for_puchase_voucher_rm_list(request):
+    
+    order_list = purchase_order_master_for_puchase_voucher_rm.objects.all().order_by('po_no')
+
+    negetive_stock_report =  Item_Creation.objects.all().annotate(total_qty = Sum(
+        'shades__godown_shades__quantity')).order_by('item_name').select_related('Item_Color','Fabric_Group')
+
+    negetive_stock_sellerwise = Ledger.objects.filter(under_group__account_sub_group = 'Sundry Creditors')
+
+    for x in negetive_stock_sellerwise:
+        for y in x.item_purchase_voucher_master_set.all():
+            print(y.party_name.name)
+            for x in y.purchase_voucher_items_set.all():
+                print(x.item_shade.items.item_name)
+
+
+    return render(request,'accounts/purchaseorderforpuchasevoucherrmlist.html',{'order_list':order_list ,'negetive_stock_report':negetive_stock_report ,'negetive_stock_sellerwise':negetive_stock_sellerwise})
 
 
 
@@ -7812,7 +7882,7 @@ def godown_item_report(request, shade_id,g_id=None):
 
         
         opening_godown_qty = opening_shade_godown_quantity.objects.filter(
-            opening_purchase_voucher_godown_item=shade_name)
+            opening_purchase_voucher_godown_item = shade_name)
         
 
 

@@ -1,0 +1,71 @@
+{% extends 'product/base.html' %} 
+
+{% load static %}
+
+{% block body %}
+
+
+
+<a href="{% url 'purchase-order-for-puchase-voucher-rm-create-update' %}">create</a>
+
+
+
+
+
+{% for order in order_list %}
+
+    {{ order.po_no }}
+
+    <a href='{% url "purchase-order-for-puchase-voucher-rm-create-update" order.id %}'>edit</a>
+
+{% endfor %}
+
+<form action="" method="GET">
+<h4>negetive stock</h4>
+    Ascending 
+    descending
+    Fabric Group
+    Less Than 
+    <input type="hidden" id="" name="" value="">
+    <input type="submit">
+</form>
+<div>
+    <table>
+        <tr>
+            <th>No</th>
+            <th>M Code/Color Code</th>
+            <th>Item Name</th>
+            <th>F Group</th>
+            <th>Color</th>
+            <th>Quantity</th>
+            <th>Units</th>
+            <th>Select</th>
+            <th>Last Buying seller</th>
+            <th>Mobile No</th>
+            <th>Email</th>
+        </tr>
+        {% for item in negetive_stock_report %}
+        <tr>
+            <input type="hidden" id="id_item_pk" value="{{item.id}}">
+            <td>{{forloop.counter}}</td>
+            <td>{{item.Material_code}}</td>
+            <td>{{item.item_name}}</td>
+            <td>{{item.Fabric_Group.fab_grp_name}}</td>
+            <td>{{item.Item_Color.color_name}}</td>
+            <td>{{item.total_qty | default_if_none:0}}</td>
+            <td>{{item.Units}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+   
+</div>
+
+
+{% endblock body %}
+
+
+
